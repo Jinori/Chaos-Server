@@ -203,6 +203,14 @@ public class RecipeLibraryScript : DialogScriptBase
                             Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                         }
 
+                if (source.Trackers.Flags.TryGetFlag(out ArmorsmithingRecipes2 gearRecipes2))
+                    foreach (var recipe2 in CraftingRequirements.ArmorSmithingGearRequirements2)
+                        if (gearRecipes2.HasFlag(recipe2.Key))
+                        {
+                            var item = ItemFactory.CreateFaux(recipe2.Value.TemplateKey);
+                            Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                        }
+
                 break;
             }
             #endregion
@@ -3890,6 +3898,114 @@ public class RecipeLibraryScript : DialogScriptBase
 
                         return;
                     }
+                    case "crimsonitesapphiregauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Polished Crimsonite Bars, 4 Exquisite Hemp, and 3 Pristine Sapphire.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "crimsoniterubygauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Polished Crimsonite Bars, 4 Exquisite Hemp, and 3 Pristine Ruby.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "crimsoniteemeraldgauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Polished Crimsonite Bars, 4 Exquisite Hemp, and 3 Pristine Emerald.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "crimsoniteheartstonegauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Polished Crimsonite Bars, 4 Exquisite Hemp, and 3 Pristine Heartstone.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "crimsoniteberylgauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Polished Crimsonite Bars, 4 Exquisite Hemp, and 3 Pristine Beryl.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    case "azuriumsapphiregauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Polished Azurium Bars, 4 Exquisite Hemp, and 3 Pristine Sapphire.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "azuriumrubygauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Polished Azurium Bars, 4 Exquisite Hemp, and 3 Pristine Ruby.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "azuriumemeraldgauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Polished Azurium Bars, 4 Exquisite Hemp, and 3 Pristine Emerald.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "azuriumheartstonegauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Polished Azurium Bars, 4 Exquisite Hemp, and 3 Pristine Heartstone.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "azuriumberylgauntlet":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 3 Polished Azurium Bars, 4 Exquisite Hemp, and 3 Pristine Beryl.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
                     case "jeweledseabelt":
                     {
                         Subject.Reply(
@@ -4144,7 +4260,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
-                            } requires 3 Exquisite Silk, 1 Polished Hybrasyl Bar and 5 Pristine Ruby.",
+                            } requires 3 Exquisite Silk, 1 Polished Hy-brasyl Bar and 5 Pristine Ruby.",
                             "armorsmithingbook");
 
                         return;
@@ -4155,7 +4271,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
-                            } requires 3 Exquisite Silk, 1 Polished Hybrasyl Bar and 5 Pristine Sapphire.",
+                            } requires 3 Exquisite Silk, 1 Polished Hy-brasyl Bar and 5 Pristine Sapphire.",
                             "armorsmithingbook");
 
                         return;
@@ -4166,7 +4282,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
-                            } requires 3 Exquisite Silk, 1 Polished Hybrasyl Bar and 5 Pristine Beryl.",
+                            } requires 3 Exquisite Silk, 1 Polished Hy-brasyl Bar and 5 Pristine Beryl.",
                             "armorsmithingbook");
 
                         return;
@@ -4177,7 +4293,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
-                            } requires 3 Exquisite Silk, 1 Polished Hybrasyl Bar and 5 Pristine Emerald.",
+                            } requires 3 Exquisite Silk, 1 Polished Hy-brasyl Bar and 5 Pristine Emerald.",
                             "armorsmithingbook");
 
                         return;
@@ -4188,7 +4304,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
-                            } requires 3 Exquisite Silk, 1 Polished Hybrasyl Bar and 5 Pristine Heartstone.",
+                            } requires 3 Exquisite Silk, 1 Polished Hy-brasyl Bar and 5 Pristine Heartstone.",
                             "armorsmithingbook");
 
                         return;
@@ -4199,7 +4315,137 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
-                            } requires 3 Exquisite Silk, 1 Polished Hybrasyl Bar and 5 Pristine Heartstone.",
+                            } requires 3 Exquisite Silk, 1 Polished Hy-brasyl Bar and 5 Pristine Heartstone.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    case "firecrimsonitebelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 4 Exquisite Hemp, 1 Polished Crimsonite Bar, and 7 Pristine Ruby.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "seacrimsonitebelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 4 Exquisite Hemp, 1 Polished Crimsonite Bar, and 7 Pristine Sapphire.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "earthcrimsonitebelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 4 Exquisite Hemp, 1 Polished Crimsonite Bar, and 7 Pristine Beryl.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "windcrimsonitebelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 4 Exquisite Hemp, 1 Polished Crimsonite Bar, and 7 Pristine Emerald.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "darkcrimsonitebelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 4 Exquisite Hemp, 1 Polished Crimsonite Bar, and 7 Pristine Heartstone.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "lightcrimsonitebelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 4 Exquisite Hemp, 1 Polished Crimsonite Bar, and 7 Pristine Heartstone.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+                    case "fireazuriumbelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 4 Exquisite Hemp, 1 Polished Azurium Bar, and 7 Pristine Ruby.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "seaazuriumbelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 4 Exquisite Hemp, 1 Polished Azurium Bar, and 7 Pristine Sapphire.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "earthazuriumbelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 4 Exquisite Hemp, 1 Polished Azurium Bar, and 7 Pristine Beryl.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "windazuriumbelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 4 Exquisite Hemp, 1 Polished Azurium Bar, and 7 Pristine Emerald.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "darkazuriumbelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 4 Exquisite Hemp, 1 Polished Azurium Bar, and 7 Pristine Heartstone.",
+                            "armorsmithingbook");
+
+                        return;
+                    }
+
+                    case "lightazuriumbelt":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"Level Required: {FauxItem.Level}.\nCrafting {FauxItem.Template.Name
+                            } requires 4 Exquisite Hemp, 1 Polished Azurium Bar, and 7 Pristine Heartstone.",
                             "armorsmithingbook");
 
                         return;

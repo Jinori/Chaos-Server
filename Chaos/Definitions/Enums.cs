@@ -764,7 +764,9 @@ public enum ArmorSmithCategories
     InitiateArmors = 1 << 11,
     ArtisanArmors = 1 << 12,
     AdeptArmors = 1 << 13,
-    RefiningKit = 1 << 14
+    RefiningKit = 1 << 14,
+    AdvancedGauntlets = 1 << 15,
+    AdvancedBelts = 1 << 16
 }
 
 [Flags]
@@ -825,6 +827,34 @@ public enum ArmorsmithingRecipes : ulong
     DarkHybrasylBraidBelt = 1L << 52,
     LightHybrasylBraidBelt = 1L << 53,
     LeatherGauntlet = 1L << 54
+}
+
+[Flags]
+public enum ArmorsmithingRecipes2 : ulong
+{
+    None = 0,
+    WindCrimsoniteBelt = 1L << 1,
+    EarthCrimsoniteBelt = 1L << 2,
+    FireCrimsoniteBelt = 1L << 3,
+    SeaCrimsoniteBelt = 1L << 4,
+    DarkCrimsoniteBelt = 1L << 5,
+    LightCrimsoniteBelt = 1L << 6,
+    WindAzuriumBelt = 1L << 7,
+    EarthAzuriumBelt = 1L << 8,
+    FireAzuriumBelt = 1L << 9,
+    SeaAzuriumBelt = 1L << 10,
+    DarkAzuriumBelt = 1L << 11,
+    LightAzuriumBelt = 1L << 12,
+    CrimsoniteRubyGauntlet = 1L << 13,
+    CrimsoniteSapphireGauntlet = 1L << 14,
+    CrimsoniteEmeraldGauntlet = 1L << 15,
+    CrimsoniteBerylGauntlet = 1L << 16,
+    CrimsoniteHeartstoneGauntlet = 1L << 17,
+    AzuriumRubyGauntlet = 1L << 18,
+    AzuriumSapphireGauntlet = 1L << 19,
+    AzuriumEmeraldGauntlet = 1L << 20,
+    AzuriumBerylGauntlet = 1L << 21,
+    AzuriumHeartstoneGauntlet = 1L << 22
 }
 
 [Flags]
@@ -2046,4 +2076,29 @@ public enum SenaanFlagsHalloweenEvent
     None = 0,
     CompletedYear1 = 1 << 1,
     CompletedYear2 = 1 << 2
+}
+
+public enum ThanksgivingChallenge
+{
+    None = 0,
+    FirstWave = 1 << 1,
+    SecondWave = 1 << 2,
+    ThirdWave = 1 << 3,
+    FourthWave = 1 << 4,
+    FifthWave = 1 << 5,
+    SixthWave = 1 << 6,
+    SeventhWave = 1 << 7,
+    EighthWave = 1 << 8,
+    NinthWave = 1 << 9,
+    TenthWave = 1 << 10,
+    EleventhWave = 1 << 11,
+    TwelvethWave = 1 << 12,
+    ThirteenthWave = 1 << 13,
+    FourteenthWave = 1 << 14,
+    FifteenthWave = 1 << 15,
+    SixteenthWave = 1 << 16,
+    SeventeenthWave = 1 << 17,
+    EighteenthWave = 1 << 18,
+    NinteenthWave = 1 << 19,
+    TwentyEighthWave = 1 << 20
 }

@@ -36,14 +36,16 @@ public class ArenaDeathScript : MonsterScriptBase
                             .Where(x => x.IsGodModeEnabled())
                             .ToList();
 
-        foreach (var item in Subject.Items)
-        {
-            var randomMember = playersOnArenaMap.PickRandom();
-            randomMember.GiveItemOrSendToBank(item);
-            randomMember.SendOrangeBarMessage($"You received {item.DisplayName} from {Subject.Name}");
+        // Check if there are any players to receive items
+        if (playersOnArenaMap.Any())
+            foreach (var item in Subject.Items)
+            {
+                var randomMember = playersOnArenaMap.PickRandom();
+                randomMember.GiveItemOrSendToBank(item);
+                randomMember.SendOrangeBarMessage($"You received {item.DisplayName} from {Subject.Name}");
 
-            foreach (var admin in adminOnMap)
-                admin.SendOrangeBarMessage($"{randomMember.Name} received {item.DisplayName}.");
-        }
+                foreach (var admin in adminOnMap)
+                    admin.SendOrangeBarMessage($"{randomMember.Name} received {item.DisplayName}.");
+            }
     }
 }

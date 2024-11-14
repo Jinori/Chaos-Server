@@ -226,6 +226,28 @@ public class RecipeItemScript : ItemScriptBase
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.WindHybrasylBraidBelt);
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.DarkHybrasylBraidBelt);
                 source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LightHybrasylBraidBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.FireCrimsoniteBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.SeaCrimsoniteBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.EarthCrimsoniteBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.WindCrimsoniteBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.DarkCrimsoniteBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.LightCrimsoniteBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.FireAzuriumBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.SeaAzuriumBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.EarthAzuriumBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.WindAzuriumBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.DarkAzuriumBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.LightAzuriumBelt);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.CrimsoniteRubyGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.CrimsoniteSapphireGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.CrimsoniteEmeraldGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.CrimsoniteBerylGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.CrimsoniteHeartstoneGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.AzuriumRubyGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.AzuriumSapphireGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.AzuriumEmeraldGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.AzuriumBerylGauntlet);
+                source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.AzuriumHeartstoneGauntlet);
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Eppe);
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Saber);
                 source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.SnowDagger);
@@ -1027,6 +1049,42 @@ public class RecipeItemScript : ItemScriptBase
 
                 return;
             }
+            case "recipe_advancedgauntlets":
+            {
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.AdvancedGauntlets))
+                {
+                    if (craft != Crafts.Armorsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Armorsmith to learn this recipe.");
+
+                        return;
+                    }
+
+                    ArmorSmithRecipeLearn(
+                        source,
+                        ani,
+                        ArmorSmithCategories.AdvancedGauntlets,
+                        "Advanced Gauntlets",
+                        $"{Subject.Template.TemplateKey}");
+
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.CrimsoniteEmeraldGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.CrimsoniteRubyGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.CrimsoniteHeartstoneGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.CrimsoniteSapphireGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.CrimsoniteBerylGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.AzuriumEmeraldGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.AzuriumRubyGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.AzuriumHeartstoneGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.AzuriumSapphireGauntlet);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.AzuriumBerylGauntlet);
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
             case "recipe_basicbelts":
             {
                 if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.BasicBelts))
@@ -1148,6 +1206,44 @@ public class RecipeItemScript : ItemScriptBase
                     source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.WindHybrasylBraidBelt);
                     source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.DarkHybrasylBraidBelt);
                     source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LightHybrasylBraidBelt);
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_advancedbelts":
+            {
+                if (!source.Trackers.Flags.HasFlag(ArmorSmithCategories.AdvancedBelts))
+                {
+                    if (craft != Crafts.Armorsmithing)
+                    {
+                        source.SendOrangeBarMessage("You must be an Armorsmith to learn this recipe.");
+
+                        return;
+                    }
+
+                    ArmorSmithRecipeLearn(
+                        source,
+                        ani,
+                        ArmorSmithCategories.AdvancedBelts,
+                        "Advanced Belts",
+                        $"{Subject.Template.TemplateKey}");
+
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.FireCrimsoniteBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.SeaCrimsoniteBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.EarthCrimsoniteBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.WindCrimsoniteBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.DarkCrimsoniteBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.LightCrimsoniteBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.FireAzuriumBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.SeaAzuriumBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.EarthAzuriumBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.WindAzuriumBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.DarkAzuriumBelt);
+                    source.Trackers.Flags.AddFlag(ArmorsmithingRecipes2.LightAzuriumBelt);
 
                     return;
                 }

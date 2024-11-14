@@ -74,4 +74,46 @@ public static class TimeSpanExtensions
         return sb.ToString()
                  .Trim();
     }
+
+    public static string ToReadableStringSimplified(
+        this TimeSpan timeSpan,
+        bool showMilliseconds = false,
+        bool showSeconds = true,
+        bool showMinutes = true,
+        bool showHours = true,
+        bool showDays = true)
+    {
+        var sb = new StringBuilder();
+
+        if (showDays)
+            if (timeSpan.Days > 1)
+                sb.Append($"{timeSpan.Days}: ");
+            else if (timeSpan.Days > 0)
+                sb.Append($"{timeSpan.Days}: ");
+
+        if (showHours)
+            if (timeSpan.Hours > 1)
+                sb.Append($"{timeSpan.Hours}:");
+            else if (timeSpan.Hours > 0)
+                sb.Append($"{timeSpan.Hours}:");
+
+        if (showMinutes)
+            if (timeSpan.Minutes > 1)
+                sb.Append($"{timeSpan.Minutes}:");
+            else if (timeSpan.Minutes > 0)
+                sb.Append($"{timeSpan.Minutes}:");
+
+        if (showSeconds)
+            if (timeSpan.Seconds > 1)
+                sb.Append($"{timeSpan.Seconds:D2}");
+            else if (timeSpan.Seconds > 0)
+                sb.Append($"{timeSpan.Seconds:D2}");
+
+        if (showMilliseconds)
+            if (timeSpan.Milliseconds > 0)
+                sb.Append($"{timeSpan.Milliseconds}:");
+
+        return sb.ToString()
+                 .Trim();
+    }
 }

@@ -9,6 +9,7 @@ namespace Chaos.Collections;
 
 public sealed class LootTable(IItemFactory itemFactory) : ILootTable
 {
+    private const double DROPCHANCE_MULTIPLIER = 1.0;
     private readonly IItemFactory ItemFactory = itemFactory;
     public required string Key { get; init; }
     public required ICollection<LootDrop> LootDrops { get; init; } = Array.Empty<LootDrop>();
@@ -21,8 +22,12 @@ public sealed class LootTable(IItemFactory itemFactory) : ILootTable
             case LootTableMode.ChancePerItem:
             {
                 foreach (var drop in LootDrops)
-                    if (DecimalRandomizer.RollChance(drop.DropChance))
+                {
+                    var adjustedDropChance = drop.DropChance * (decimal)DROPCHANCE_MULTIPLIER;
+
+                    if (DecimalRandomizer.RollChance(adjustedDropChance))
                         yield return ItemFactory.Create(drop.ItemTemplateKey);
+                }
 
                 break;
             }

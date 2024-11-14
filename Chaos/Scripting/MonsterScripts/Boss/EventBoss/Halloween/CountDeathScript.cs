@@ -8,7 +8,7 @@ using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Scripting.ReactorTileScripts;
 using Chaos.Services.Servers.Options;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.Halloween;
+namespace Chaos.Scripting.MonsterScripts.Boss.EventBoss.Halloween;
 
 public class CountDeathScript(Monster subject) : MonsterScriptBase(subject)
 {

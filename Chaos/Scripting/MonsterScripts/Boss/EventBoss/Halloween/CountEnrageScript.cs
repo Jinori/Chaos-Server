@@ -9,11 +9,12 @@ using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.Halloween;
+namespace Chaos.Scripting.MonsterScripts.Boss.EventBoss.Halloween;
 
-public sealed class CountessEnrageScript : MonsterScriptBase
+public sealed class CountEnrageScript : MonsterScriptBase
 {
     private readonly IEffectFactory EffectFactory;
+    private readonly IIntervalTimer InvulnerableTimer;
     private readonly IMonsterFactory MonsterFactory;
     private readonly IIntervalTimer RandomAbilityTimer;
     private readonly IIntervalTimer RegenerateTimer;
@@ -24,7 +25,7 @@ public sealed class CountessEnrageScript : MonsterScriptBase
     private readonly Spell SpellToCast3;
 
     /// <inheritdoc />
-    public CountessEnrageScript(
+    public CountEnrageScript(
         Monster subject,
         IMonsterFactory monsterFactory,
         ISpellFactory spellFactory,
@@ -33,11 +34,12 @@ public sealed class CountessEnrageScript : MonsterScriptBase
     {
         SpellFactory = spellFactory;
         EffectFactory = effectFactory;
-        SpellToCast = SpellFactory.Create("bind");
-        SpellToCast2 = SpellFactory.Create("chainlightning");
+        SpellToCast = SpellFactory.Create("grasp");
+        SpellToCast2 = SpellFactory.Create("ghastlypain");
         SpellToCast3 = SpellFactory.Create("ardcradh");
         MonsterFactory = monsterFactory;
         RegenerateTimer = new IntervalTimer(TimeSpan.FromSeconds(6), false);
+        InvulnerableTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
 
         RandomAbilityTimer = new RandomizedIntervalTimer(
             TimeSpan.FromSeconds(80),
@@ -66,33 +68,34 @@ public sealed class CountessEnrageScript : MonsterScriptBase
 
         var pickedAisling = randomAisling.PickRandom();
 
-        if (random < 33)
+        if (random < 20)
         {
             Subject.TryUseSpell(SpellToCast, pickedAisling.Id);
 
             return;
         }
 
-        if (random < 66)
+        if (random < 70)
         {
-            Subject.TryUseSpell(SpellToCast2, pickedAisling.Id);
+            foreach (var player in randomAisling)
+                Subject.TryUseSpell(SpellToCast2, player.Id);
 
             return;
         }
 
-        if (random < 100)
+        if (random < 101)
             Subject.TryUseSpell(SpellToCast3, pickedAisling.Id);
     }
 
-    private void RegenerateFromDolls()
+    private void RegenerateFromBats()
     {
-        var amountdolls = Subject.MapInstance
-                                 .GetEntities<Monster>()
-                                 .Count(x => x.Name == "Macabre Doll");
+        var amountBats = Subject.MapInstance
+                                .GetEntities<Monster>()
+                                .Count(x => x.Name == "Macabre Bat");
 
-        if (amountdolls > 0)
+        if (amountBats > 0)
         {
-            var healamt = amountdolls * 0.002;
+            var healamt = amountBats * 0.002;
             var amountToHeal = Subject.StatSheet.EffectiveMaximumHp * healamt;
 
             var newHp = Subject.StatSheet.CurrentHp + amountToHeal;
@@ -113,12 +116,31 @@ public sealed class CountessEnrageScript : MonsterScriptBase
         RandomAbilityTimer.Update(delta);
         RegenerateTimer.Update(delta);
         SpellTimer.Update(delta);
+        InvulnerableTimer.Update(delta);
+
+        if (InvulnerableTimer.IntervalElapsed)
+        {
+            var countMonster = Subject.MapInstance
+                                      .GetEntitiesWithinRange<Monster>(Subject, 12) // Search within a range of 12
+                                      .FirstOrDefault(x => x.Name == "Countess"); // Look for the monster named "Count"
+
+            // If the Count is found, apply the invulnerable effect
+            if (countMonster != null)
+            {
+                if (!countMonster.Effects.Contains("invulnerability"))
+                {
+                    var invulnerable = EffectFactory.Create("invulnerability");
+                    Subject.Effects.Apply(Subject, invulnerable);
+                }
+            } else
+                Subject.Effects.Terminate("invulnerability");
+        }
 
         if (SpellTimer.IntervalElapsed)
             CastASpell();
 
         if (RegenerateTimer.IntervalElapsed)
-            RegenerateFromDolls();
+            RegenerateFromBats();
 
         if (RandomAbilityTimer.IntervalElapsed)
         {
@@ -126,24 +148,24 @@ public sealed class CountessEnrageScript : MonsterScriptBase
 
             if (random < 50)
             {
-                var dollCount = Subject.MapInstance
-                                       .GetEntities<Monster>()
-                                       .Count(x => x.Name == "Macabre Doll");
+                var batCount = Subject.MapInstance
+                                      .GetEntities<Monster>()
+                                      .Count(x => x.Name == "Macabre Bat");
 
-                if (dollCount > 2)
+                if (batCount > 2)
                     return;
 
-                Subject.Say("Dolls! Come play...");
+                Subject.Say("There can never be enough bats!");
 
                 var rectangle = new Rectangle(Subject, 12, 12);
 
-                var mobsSpawned = dollCount;
+                var mobsSpawned = batCount;
 
                 // Continue spawning until 5 mobs are spawned
                 while (mobsSpawned < 5)
                     if (rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
                     {
-                        var mob = MonsterFactory.Create("countess_doll", Subject.MapInstance, point);
+                        var mob = MonsterFactory.Create("count_bat", Subject.MapInstance, point);
                         Subject.MapInstance.AddEntity(mob, point);
                         mobsSpawned++; // Increment count when a mob is successfully spawned
                     }
@@ -151,9 +173,9 @@ public sealed class CountessEnrageScript : MonsterScriptBase
                 return;
             }
 
-            if (random < 100)
+            if (random < 101)
             {
-                Subject.Say("There's no where to go. Stay awhile.");
+                Subject.Say("How about we rearrange the room a little bit?");
 
                 foreach (var target in Subject.MapInstance
                                               .GetEntities<Aisling>()
@@ -163,8 +185,10 @@ public sealed class CountessEnrageScript : MonsterScriptBase
                     if (target.IsDead)
                         continue;
 
-                    var root = EffectFactory.Create("root");
-                    target.Effects.Apply(target, root);
+                    var point = target.MapInstance.TryGetRandomWalkablePoint(out var walkablePoint, CreatureType.Aisling);
+
+                    if (walkablePoint != null)
+                        target.WarpTo(walkablePoint);
                 }
             }
         }

@@ -389,15 +389,6 @@ public class WeaponSmithingCraftScript : DialogScriptBase
 
                     // Show items from WeaponsmithingCraftRequirements
                     foreach (var recipe in CraftingRequirements.WeaponSmithingCraftRequirements)
-                    {
-                        if (source.IsGodModeEnabled() && recipes.HasFlag(recipe.Key))
-                        {
-                            var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
-
-                            if (source.UserStatSheet.Level >= item.Level)
-                                Subject.Items.Add(ItemDetails.DisplayRecipe(item));
-                        }
-
                         if (recipes.HasFlag(recipe.Key) && (playerRank >= GetStatusAsInt(recipe.Value.Rank)))
                         {
                             var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
@@ -405,21 +396,11 @@ public class WeaponSmithingCraftScript : DialogScriptBase
                             if (source.UserStatSheet.Level >= item.Level)
                                 Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                         }
-                    }
 
                 if (source.Trackers.Flags.TryGetFlag(out WeaponSmithingRecipes2 recipes2))
 
                     // Show items from WeaponsmithingCraftRequirements
                     foreach (var recipe2 in CraftingRequirements.WeaponSmithingCraftRequirements2)
-                    {
-                        if (source.IsGodModeEnabled() && recipes2.HasFlag(recipe2.Key))
-                        {
-                            var item = ItemFactory.CreateFaux(recipe2.Value.TemplateKey);
-
-                            if (source.UserStatSheet.Level >= item.Level)
-                                Subject.Items.Add(ItemDetails.DisplayRecipe(item));
-                        }
-
                         if (recipes2.HasFlag(recipe2.Key) && (playerRank >= GetStatusAsInt(recipe2.Value.Rank)))
                         {
                             var item = ItemFactory.CreateFaux(recipe2.Value.TemplateKey);
@@ -427,7 +408,6 @@ public class WeaponSmithingCraftScript : DialogScriptBase
                             if (source.UserStatSheet.Level >= item.Level)
                                 Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                         }
-                    }
             }
 
             if (Subject.Items.Count == 0)

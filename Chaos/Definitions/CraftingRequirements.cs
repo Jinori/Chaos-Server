@@ -6204,5 +6204,361 @@ public static class CraftingRequirements
             }
         }
     };
+
+    public static Dictionary<ArmorsmithingRecipes2, Recipe> ArmorSmithingGearRequirements2 { get; } = new()
+    {
+        {
+            ArmorsmithingRecipes2.WindCrimsoniteBelt, new Recipe
+            {
+                Name = "Wind Crimsonite Belt",
+                TemplateKey = "windcrimsonitebelt",
+                Ingredients =
+                [
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 1),
+                    new Ingredient("exquisitehemp", "Exquisite Hemp", 4),
+                    new Ingredient("pristineemerald", "Pristine Emerald", 7)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6
+            }
+        },
+        {
+            ArmorsmithingRecipes2.EarthCrimsoniteBelt, new Recipe
+            {
+                Name = "Earth Crimsonite Belt",
+                TemplateKey = "earthcrimsonitebelt",
+                Ingredients =
+                [
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 1),
+                    new Ingredient("exquisitehemp", "Exquisite Hemp", 4),
+                    new Ingredient("pristineberyl", "Pristine Beryl", 7)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6
+            }
+        },
+        {
+            ArmorsmithingRecipes2.FireCrimsoniteBelt, new Recipe
+            {
+                Name = "Fire Crimsonite Belt",
+                TemplateKey = "firecrimsonitebelt",
+                Ingredients =
+                [
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 1),
+                    new Ingredient("exquisitehemp", "Exquisite Hemp", 4),
+                    new Ingredient("pristineruby", "Pristine Ruby", 7)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6
+            }
+        },
+        {
+            ArmorsmithingRecipes2.SeaCrimsoniteBelt, new Recipe
+            {
+                Name = "Sea Crimsonite Belt",
+                TemplateKey = "seacrimsonitebelt",
+                Ingredients =
+                [
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 1),
+                    new Ingredient("exquisitehemp", "Exquisite Hemp", 4),
+                    new Ingredient("pristinesapphire", "Pristine Sapphire", 7)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6
+            }
+        },
+        {
+            ArmorsmithingRecipes2.DarkCrimsoniteBelt, new Recipe
+            {
+                Name = "Dark Crimsonite Belt",
+                TemplateKey = "darkcrimsonitebelt",
+                Ingredients =
+                [
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 1),
+                    new Ingredient("exquisitehemp", "Exquisite Hemp", 4),
+                    new Ingredient("pristineheartstone", "Pristine Heartstone", 7)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6
+            }
+        },
+        {
+            ArmorsmithingRecipes2.LightCrimsoniteBelt, new Recipe
+            {
+                Name = "Light Crimsonite Belt",
+                TemplateKey = "lightcrimsonitebelt",
+                Ingredients =
+                [
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 1),
+                    new Ingredient("exquisitehemp", "Exquisite Hemp", 4),
+                    new Ingredient("pristineheartstone", "Pristine Heartstone", 7)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6
+            }
+        },
+        {
+            ArmorsmithingRecipes2.WindAzuriumBelt, new Recipe
+            {
+                Name = "Wind Azurium Belt",
+                TemplateKey = "windazuriumbelt",
+                Ingredients =
+                [
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 1),
+                    new Ingredient("exquisitehemp", "Exquisite Hemp", 4),
+                    new Ingredient("pristineemerald", "Pristine Emerald", 7)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6
+            }
+        },
+        {
+            ArmorsmithingRecipes2.EarthAzuriumBelt, new Recipe
+            {
+                Name = "Earth Azurium Belt",
+                TemplateKey = "earthazuriumbelt",
+                Ingredients =
+                [
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 1),
+                    new Ingredient("exquisitehemp", "Exquisite Hemp", 4),
+                    new Ingredient("pristineberyl", "Pristine Beryl", 7)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6
+            }
+        },
+        {
+            ArmorsmithingRecipes2.FireAzuriumBelt, new Recipe
+            {
+                Name = "Fire Azurium Belt",
+                TemplateKey = "fireazuriumbelt",
+                Ingredients =
+                [
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 1),
+                    new Ingredient("exquisitehemp", "Exquisite Hemp", 4),
+                    new Ingredient("pristineruby", "Pristine Ruby", 7)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6
+            }
+        },
+        {
+            ArmorsmithingRecipes2.SeaAzuriumBelt, new Recipe
+            {
+                Name = "Sea Azurium Belt",
+                TemplateKey = "seaazuriumbelt",
+                Ingredients =
+                [
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 1),
+                    new Ingredient("exquisitehemp", "Exquisite Hemp", 4),
+                    new Ingredient("pristinesapphire", "Pristine Sapphire", 7)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6
+            }
+        },
+        {
+            ArmorsmithingRecipes2.DarkAzuriumBelt, new Recipe
+            {
+                Name = "Dark Azurium Belt",
+                TemplateKey = "darkazuriumbelt",
+                Ingredients =
+                [
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 1),
+                    new Ingredient("exquisitehemp", "Exquisite Hemp", 4),
+                    new Ingredient("pristineheartstone", "Pristine Heartstone", 7)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6
+            }
+        },
+        {
+            ArmorsmithingRecipes2.LightAzuriumBelt, new Recipe
+            {
+                Name = "Light Azurium Belt",
+                TemplateKey = "lightazuriumbelt",
+                Ingredients =
+                [
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 1),
+                    new Ingredient("exquisitehemp", "Exquisite Hemp", 4),
+                    new Ingredient("pristineheartstone", "Pristine Heartstone", 7)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6
+            }
+        },
+        {
+            ArmorsmithingRecipes2.CrimsoniteRubyGauntlet, new Recipe
+            {
+                Name = "Crimsonite Ruby Gauntlet",
+                TemplateKey = "crimsoniterubygauntlet",
+                Ingredients =
+                [
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 3),
+                    new Ingredient("exquisitehemp", "Exquisite Hemp", 4),
+                    new Ingredient("pristineruby", "Pristine Ruby", 3)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6
+            }
+        },
+        {
+            ArmorsmithingRecipes2.CrimsoniteSapphireGauntlet, new Recipe
+            {
+                Name = "Crimsonite Sapphire Gauntlet",
+                TemplateKey = "crimsonitesapphiregauntlet",
+                Ingredients =
+                [
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 3),
+                    new Ingredient("exquisitehemp", "Exquisite Hemp", 4),
+                    new Ingredient("pristinesapphire", "Pristine Sapphire", 3)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6
+            }
+        },
+        {
+            ArmorsmithingRecipes2.CrimsoniteEmeraldGauntlet, new Recipe
+            {
+                Name = "Crimsonite Emerald Gauntlet",
+                TemplateKey = "crimsoniteemeraldgauntlet",
+                Ingredients =
+                [
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 3),
+                    new Ingredient("exquisitehemp", "Exquisite Hemp", 4),
+                    new Ingredient("pristineemerald", "Pristine Emerald", 3)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6
+            }
+        },
+        {
+            ArmorsmithingRecipes2.CrimsoniteHeartstoneGauntlet, new Recipe
+            {
+                Name = "Crimsonite Heartstone Gauntlet",
+                TemplateKey = "crimsoniteheartstonegauntlet",
+                Ingredients =
+                [
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 3),
+                    new Ingredient("exquisitehemp", "Exquisite Hemp", 4),
+                    new Ingredient("pristineheartstone", "Pristine Heartstone", 3)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6
+            }
+        },
+        {
+            ArmorsmithingRecipes2.CrimsoniteBerylGauntlet, new Recipe
+            {
+                Name = "Crimsonite Beryl Gauntlet",
+                TemplateKey = "crimsoniteberylgauntlet",
+                Ingredients =
+                [
+                    new Ingredient("polishedcrimsonitebar", "Polished Crimsonite Bar", 3),
+                    new Ingredient("exquisitehemp", "Exquisite Hemp", 4),
+                    new Ingredient("pristineberyl", "Pristine Beryl", 3)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6
+            }
+        },
+        {
+            ArmorsmithingRecipes2.AzuriumRubyGauntlet, new Recipe
+            {
+                Name = "Azurium Ruby Gauntlet",
+                TemplateKey = "azuriumrubygauntlet",
+                Ingredients =
+                [
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 3),
+                    new Ingredient("exquisitehemp", "Exquisite Hemp", 4),
+                    new Ingredient("pristineruby", "Pristine Ruby", 3)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6
+            }
+        },
+        {
+            ArmorsmithingRecipes2.AzuriumSapphireGauntlet, new Recipe
+            {
+                Name = "Azurium Sapphire Gauntlet",
+                TemplateKey = "azuriumsapphiregauntlet",
+                Ingredients =
+                [
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 3),
+                    new Ingredient("exquisitehemp", "Exquisite Hemp", 4),
+                    new Ingredient("pristinesapphire", "Pristine Sapphire", 3)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6
+            }
+        },
+        {
+            ArmorsmithingRecipes2.AzuriumEmeraldGauntlet, new Recipe
+            {
+                Name = "Azurium Emerald Gauntlet",
+                TemplateKey = "azuriumemeraldgauntlet",
+                Ingredients =
+                [
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 3),
+                    new Ingredient("exquisitehemp", "Exquisite Hemp", 4),
+                    new Ingredient("pristineemerald", "Pristine Emerald", 3)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6
+            }
+        },
+        {
+            ArmorsmithingRecipes2.AzuriumHeartstoneGauntlet, new Recipe
+            {
+                Name = "Azurium Heartstone Gauntlet",
+                TemplateKey = "azuriumheartstonegauntlet",
+                Ingredients =
+                [
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 3),
+                    new Ingredient("exquisitehemp", "Exquisite Hemp", 4),
+                    new Ingredient("pristineheartstone", "Pristine Heartstone", 3)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6
+            }
+        },
+        {
+            ArmorsmithingRecipes2.AzuriumBerylGauntlet, new Recipe
+            {
+                Name = "Azurium Beryl Gauntlet",
+                TemplateKey = "azuriumberylgauntlet",
+                Ingredients =
+                [
+                    new Ingredient("polishedazuriumbar", "Polished Azurium Bar", 3),
+                    new Ingredient("exquisitehemp", "Exquisite Hemp", 4),
+                    new Ingredient("pristineberyl", "Pristine Beryl", 3)
+                ],
+                Rank = "Advanced",
+                Level = 99,
+                Difficulty = 6
+            }
+        }
+    };
     #endregion
 }

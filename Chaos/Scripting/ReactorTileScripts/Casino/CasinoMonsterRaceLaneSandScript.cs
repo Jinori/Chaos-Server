@@ -84,19 +84,16 @@ public class CasinoMonsterRaceLaneSandScript : ReactorTileScriptBase
                     aisling.SendActiveMessage($"{winner.Name} wins on lane Grass!");
 
                 var winnings = AislingsAtCompletion.Count() * 25000;
-                var eightPercent = (int)(winnings * 0.08m);
-                var winningsMinusEight = winnings - eightPercent;
 
                 Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Gold)
                       .WithProperty(winner)
                       .WithProperty(Subject)
                       .LogInformation(
-                          "{@AislingName} has received {@GoldAmount} gold from a casino win, Casino took {@CasinoAmount} in taxes",
+                          "{@AislingName} has received {@GoldAmount} gold from a casino win.",
                           winner.Name,
-                          winningsMinusEight,
-                          eightPercent);
+                          winnings);
 
-                winner.TryGiveGold(winningsMinusEight);
+                winner.TryGiveGold(winnings);
                 winner.SendActiveMessage($"You won the game and receive {winnings.ToWords()} gold!");
 
                 break;

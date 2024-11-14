@@ -1,6 +1,7 @@
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.Legend;
@@ -18,7 +19,9 @@ public class ArmorsmithingGearScript : DialogScriptBase
     private const string ITEM_COUNTER_PREFIX = "[Armorsmithing]";
     private const string LEGENDMARK_KEY = "armsmith";
     private const double BASE_SUCCESS_RATE = 60;
+
     private const double SUCCESSRATEMAX = 95;
+
     //Ranks from lowest to highest
     private const string RANK_ONE_TITLE = "Beginner Armorsmith";
     private const string RANK_TWO_TITLE = "Novice Armorsmith";
@@ -27,7 +30,9 @@ public class ArmorsmithingGearScript : DialogScriptBase
     private const string RANK_FIVE_TITLE = "Adept Armorsmith";
     private const string RANK_SIX_TITLE = "Advanced Armorsmith";
     private const string RANK_SEVEN_TITLE = "Expert Armorsmith";
+
     private const string RANK_EIGHT_TITLE = "Master Armorsmith";
+
     //Set this to true if doing armorsmithing type crafting
     private readonly bool Craftgoodgreatgrand = false;
     private readonly IDialogFactory DialogFactory;
@@ -38,6 +43,7 @@ public class ArmorsmithingGearScript : DialogScriptBase
         AnimationSpeed = 100,
         TargetAnimation = 59
     };
+
     private Animation SuccessAnimation { get; } = new()
     {
         AnimationSpeed = 100,
@@ -58,8 +64,7 @@ public class ArmorsmithingGearScript : DialogScriptBase
         int timesCraftedThisItem,
         double baseSuccessRate,
         int recipeRank,
-        int difficulty
-    )
+        int difficulty)
     {
         var rankDifficultyReduction = recipeRank switch
         {
@@ -78,15 +83,26 @@ public class ArmorsmithingGearScript : DialogScriptBase
         var multiplier = GetMultiplier(totalTimesCrafted);
 
         // Calculate the success rate with all the factors
-        var successRate = (baseSuccessRate - rankDifficultyReduction - difficulty + timesCraftedThisItem / 5.0)
-                          * multiplier;
+        var successRate = (baseSuccessRate - rankDifficultyReduction - difficulty + timesCraftedThisItem / 5.0) * multiplier;
 
         // Ensure the success rate does not exceed the maximum allowed value
         return Math.Min(successRate, SUCCESSRATEMAX);
     }
 
-    private double GetMultiplier(int totalTimesCrafted) =>
-        totalTimesCrafted switch
+    private CraftingRequirements.Recipe? FindRecipeByName(string recipeName)
+    {
+        // First, check in WeaponsmithingRequirements
+        var recipe = CraftingRequirements.ArmorSmithingGearRequirements.Values.FirstOrDefault(r => r.Name.EqualsI(recipeName));
+
+        // If not found, check in WeaponsmithingRequirements2
+        if (recipe is null)
+            recipe = CraftingRequirements.ArmorSmithingGearRequirements2.Values.FirstOrDefault(r => r.Name.EqualsI(recipeName));
+
+        return recipe;
+    }
+
+    private double GetMultiplier(int totalTimesCrafted)
+        => totalTimesCrafted switch
         {
             <= 25   => 1.0,
             <= 75   => 1.05,
@@ -103,14 +119,30 @@ public class ArmorsmithingGearScript : DialogScriptBase
     {
         var rankMappings = new Dictionary<string, int>
         {
-            { RANK_EIGHT_TITLE, 8 },
-            { RANK_SEVEN_TITLE, 7 },
-            { RANK_SIX_TITLE, 6 },
-            { RANK_FIVE_TITLE, 5 },
-            { RANK_FOUR_TITLE, 4 },
-            { RANK_THREE_TITLE, 3 },
-            { RANK_TWO_TITLE, 2 },
-            { RANK_ONE_TITLE, 1 }
+            {
+                RANK_EIGHT_TITLE, 8
+            },
+            {
+                RANK_SEVEN_TITLE, 7
+            },
+            {
+                RANK_SIX_TITLE, 6
+            },
+            {
+                RANK_FIVE_TITLE, 5
+            },
+            {
+                RANK_FOUR_TITLE, 4
+            },
+            {
+                RANK_THREE_TITLE, 3
+            },
+            {
+                RANK_TWO_TITLE, 2
+            },
+            {
+                RANK_ONE_TITLE, 1
+            }
         };
 
         if (rankMappings.TryGetValue(rank, out var i))
@@ -124,14 +156,30 @@ public class ArmorsmithingGearScript : DialogScriptBase
     {
         var statusMappings = new Dictionary<string, int>
         {
-            { "Beginner", 1 },
-            { "Basic", 2 },
-            { "Initiate", 3 },
-            { "Artisan", 4 },
-            { "Adept", 5 },
-            { "Advanced", 6 },
-            { "Expert", 7 },
-            { "Master", 8 }
+            {
+                "Beginner", 1
+            },
+            {
+                "Basic", 2
+            },
+            {
+                "Initiate", 3
+            },
+            {
+                "Artisan", 4
+            },
+            {
+                "Adept", 5
+            },
+            {
+                "Advanced", 6
+            },
+            {
+                "Expert", 7
+            },
+            {
+                "Master", 8
+            }
         };
 
         if (statusMappings.TryGetValue(status, out var i))
@@ -175,8 +223,7 @@ public class ArmorsmithingGearScript : DialogScriptBase
             return;
         }
 
-        var recipe =
-            CraftingRequirements.ArmorSmithingGearRequirements.Values.FirstOrDefault(recipe1 => recipe1.Name.EqualsI(selectedRecipeName));
+        var recipe = FindRecipeByName(selectedRecipeName);
 
         if (recipe is null)
         {
@@ -205,8 +252,7 @@ public class ArmorsmithingGearScript : DialogScriptBase
         var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
         var legendMarkCount = existingMark?.Count ?? 0;
 
-        var timesCraftedThisItem =
-            source.Trackers.Counters.TryGetValue(ITEM_COUNTER_PREFIX + recipe.Name, out var value) ? value : 0;
+        var timesCraftedThisItem = source.Trackers.Counters.TryGetValue(ITEM_COUNTER_PREFIX + recipe.Name, out var value) ? value : 0;
 
         foreach (var removeRegant in recipe.Ingredients)
             source.Inventory.RemoveQuantity(removeRegant.DisplayName, removeRegant.Amount);
@@ -226,8 +272,10 @@ public class ArmorsmithingGearScript : DialogScriptBase
             dialog.InjectTextParameters(recipe.Name);
             dialog.Display(source);
             source.Animate(FailAnimation);
+
             //Give item counter exp even if failure
             source.Trackers.Counters.AddOrIncrement(ITEM_COUNTER_PREFIX + recipe.Name);
+
             return;
         }
 
@@ -241,10 +289,10 @@ public class ArmorsmithingGearScript : DialogScriptBase
             var recipeStatus = GetStatusAsInt(recipe.Rank);
             var playerRank = GetRankAsInt(existingMark.Text);
 
-            if ((playerRank >= 2) && (playerRank - 1 > recipeStatus))
+            if ((playerRank >= 2) && ((playerRank - 1) > recipeStatus))
                 source.SendOrangeBarMessage("You can no longer gain rank experience from this recipe.");
 
-            if ((playerRank >= recipeStatus) && (playerRank <= recipeStatus + 1))
+            if ((playerRank >= recipeStatus) && (playerRank <= (recipeStatus + 1)))
             {
                 UpdateLegendmark(source, legendMarkCount);
 
@@ -268,8 +316,7 @@ public class ArmorsmithingGearScript : DialogScriptBase
             source.GiveItemOrSendToBank(newCraft);
 
             Subject.InjectTextParameters(newCraft.DisplayName);
-        }
-        else
+        } else
         {
             var newCraft = ItemFactory.Create(recipe.TemplateKey);
 
@@ -291,8 +338,7 @@ public class ArmorsmithingGearScript : DialogScriptBase
             return;
         }
 
-        var recipe =
-            CraftingRequirements.ArmorSmithingGearRequirements.Values.FirstOrDefault(recipe1 => recipe1.Name.EqualsI(selectedRecipeName));
+        var recipe = FindRecipeByName(selectedRecipeName);
 
         if (recipe is null)
         {
@@ -315,13 +361,20 @@ public class ArmorsmithingGearScript : DialogScriptBase
     //ShowItems in a Shop Window to the player
     private void OnDisplayingShowItems(Aisling source)
     {
-        if (source.IsAdmin)
+        if (source.IsGodModeEnabled())
+        {
             foreach (var recipe in CraftingRequirements.ArmorSmithingGearRequirements)
             {
                 var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
                 Subject.Items.Add(ItemDetails.DisplayRecipe(item));
             }
-        else
+
+            foreach (var recipe2 in CraftingRequirements.ArmorSmithingGearRequirements2)
+            {
+                var item = ItemFactory.CreateFaux(recipe2.Value.TemplateKey);
+                Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+            }
+        } else
         {
             var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
 
@@ -337,6 +390,18 @@ public class ArmorsmithingGearScript : DialogScriptBase
                         if (recipes.HasFlag(recipe.Key) && (playerRank >= GetStatusAsInt(recipe.Value.Rank)))
                         {
                             var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
+
+                            if (source.UserStatSheet.Level >= item.Level)
+                                Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                        }
+
+                if (source.Trackers.Flags.TryGetFlag(out ArmorsmithingRecipes2 recipes2))
+
+                    // Show items from WeaponsmithingCraftRequirements
+                    foreach (var recipe2 in CraftingRequirements.ArmorSmithingGearRequirements2)
+                        if (recipes2.HasFlag(recipe2.Key) && (playerRank >= GetStatusAsInt(recipe2.Value.Rank)))
+                        {
+                            var item = ItemFactory.CreateFaux(recipe2.Value.TemplateKey);
 
                             if (source.UserStatSheet.Level >= item.Level)
                                 Subject.Items.Add(ItemDetails.DisplayRecipe(item));
@@ -366,13 +431,24 @@ public class ArmorsmithingGearScript : DialogScriptBase
         {
             var rankThresholds = new[]
             {
-                25, 75, 150, 300, 500, 1000, 1500
+                25,
+                75,
+                150,
+                300,
+                500,
+                1000,
+                1500
             };
 
             var rankTitles = new[]
             {
-                RANK_TWO_TITLE, RANK_THREE_TITLE, RANK_FOUR_TITLE, RANK_FIVE_TITLE, RANK_SIX_TITLE,
-                RANK_SEVEN_TITLE, RANK_EIGHT_TITLE
+                RANK_TWO_TITLE,
+                RANK_THREE_TITLE,
+                RANK_FOUR_TITLE,
+                RANK_FIVE_TITLE,
+                RANK_SIX_TITLE,
+                RANK_SEVEN_TITLE,
+                RANK_EIGHT_TITLE
             };
 
             var currentRankIndex = Array.IndexOf(rankTitles, existingMark.Text);
@@ -380,16 +456,13 @@ public class ArmorsmithingGearScript : DialogScriptBase
             existingMark.Count++;
 
             for (var i = currentRankIndex + 1; i < rankThresholds.Length; i++)
-            {
                 if (legendMarkCount >= rankThresholds[i])
                 {
                     var newTitle = rankTitles[i];
 
                     // Remove the previous title of the rank
                     if (source.Titles.Contains(existingMark.Text))
-                    {
                         source.Titles.Remove(existingMark.Text);
-                    }
 
                     // Add the new title
                     source.Titles.Add(newTitle);
@@ -401,6 +474,7 @@ public class ArmorsmithingGearScript : DialogScriptBase
                     if (source.Titles.Any())
                     {
                         var firstTitle = source.Titles.First();
+
                         if (firstTitle != newTitle)
                         {
                             source.Titles.Remove(newTitle);
@@ -413,7 +487,6 @@ public class ArmorsmithingGearScript : DialogScriptBase
 
                     break;
                 }
-            }
         }
     }
 }

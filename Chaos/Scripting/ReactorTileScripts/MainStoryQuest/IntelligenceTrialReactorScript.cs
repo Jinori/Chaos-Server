@@ -11,20 +11,18 @@ namespace Chaos.Scripting.ReactorTileScripts.MainStoryQuest;
 
 public class IntelligenceTrialReactorScript : ReactorTileScriptBase
 {
-
     private readonly IIntervalTimer AdminTrapViewInterval;
 
-    private readonly Animation ViewAnimation = new Animation
+    private readonly Animation ViewAnimation = new()
     {
         TargetAnimation = 96,
         AnimationSpeed = 100
     };
+
     /// <inheritdoc />
     public IntelligenceTrialReactorScript(ReactorTile subject)
         : base(subject)
-    {
-        AdminTrapViewInterval = new IntervalTimer(TimeSpan.FromSeconds(1));
-    }
+        => AdminTrapViewInterval = new IntervalTimer(TimeSpan.FromSeconds(1));
 
     /// <inheritdoc />
     public override void OnWalkedOn(Creature source)
@@ -34,7 +32,9 @@ public class IntelligenceTrialReactorScript : ReactorTileScriptBase
 
         if (source.MapInstance.Name != "Trial of Intelligence")
             return;
+
         var lifecounter = source.Trackers.Counters.TryGetValue("trialofintelligencelives", out var count);
+
         if (!lifecounter)
         {
             // If the counter doesn't exist, initialize it to 5
@@ -47,8 +47,7 @@ public class IntelligenceTrialReactorScript : ReactorTileScriptBase
             aisling.Trackers.Counters.Set("trialofintelligencelives", 5);
             aisling.SendOrangeBarMessage("You are out of tries, restart the maze.");
             aisling.WarpTo(new Point(9, 27));
-        }
-        else
+        } else
         {
             var newcount = count - 1;
             aisling.Trackers.Counters.Set("trialofintelligencelives", newcount);
@@ -65,12 +64,12 @@ public class IntelligenceTrialReactorScript : ReactorTileScriptBase
         if (AdminTrapViewInterval.IntervalElapsed)
         {
             var nearbyAdmins = Map.GetEntitiesWithinRange<Aisling>(Subject)
-                .Where(aisling => aisling.Trackers.Enums.HasValue(GodMode.Yes));
+                                  .Where(aisling => aisling.Trackers.Enums.HasValue(GodMode.Yes));
 
             foreach (var nearbyAdmin in nearbyAdmins)
-                Subject.Animate(ViewAnimation);
+                nearbyAdmin.Client.SendAnimation(ViewAnimation.GetPointAnimation(new Point(Subject.X, Subject.Y)));
         }
-        
+
         base.Update(delta);
     }
 }

@@ -1,4 +1,3 @@
-using System.Reactive.Subjects;
 using Chaos.Collections;
 using Chaos.Collections.Abstractions;
 using Chaos.Collections.Common;
@@ -38,10 +37,6 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
     private readonly IFactory<Exchange> ExchangeFactory;
     private readonly ICloningService<Item> ItemCloner;
     public Bank Bank { get; private set; }
-    
-    public uint SavedExpBoxed { get; set; }
-    public uint ExpGainedSinceStart { get; set; }
-    public DateTime ExpTrinketStartTime { get; set; }
     public bool BetGoldOnTwentyOne { get; set; }
     public bool BetOnMonsterRaceOption { get; set; }
     public BodyColor BodyColor { get; set; }
@@ -50,6 +45,8 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
     public IChaosWorldClient Client { get; set; }
     public int CurrentDiceScore { get; set; }
     public IEquipment Equipment { get; private set; }
+    public uint ExpGainedSinceStart { get; set; }
+    public DateTime ExpTrinketStartTime { get; set; }
     public int FaceSprite { get; set; }
     public Gender Gender { get; set; }
     public Group? Group { get; set; }
@@ -71,6 +68,8 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
     public byte[] Portrait { get; set; }
     public string ProfileText { get; set; }
     public RestPosition RestPosition { get; set; }
+
+    public uint SavedExpBoxed { get; set; }
     public IKnowledgeBook<Skill> SkillBook { get; private set; }
     public IKnowledgeBook<Spell> SpellBook { get; private set; }
     public TitleList Titles { get; init; }
@@ -322,7 +321,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
     {
         if (IsAdmin)
             return true;
-        
+
         var weightSum = 0;
         var slotSum = 0;
 
@@ -471,6 +470,25 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
             _                 => throw new ArgumentOutOfRangeException()
         };
 
+    public void GiveGoldOrSendToBank(int gold)
+    {
+        if (!TryGiveGold(gold))
+        {
+            Bank.AddGold((uint)gold);
+
+            Logger.WithTopics(
+                      Topics.Entities.Aisling,
+                      Topics.Actions.Deposit,
+                      Topics.Entities.Gold,
+                      Topics.Actions.Reward)
+                  .WithProperty(Gold)
+                  .WithProperty(this)
+                  .LogInformation("{@Amount} gold was sent to {@AislingName}'s bank", gold, Name);
+
+            SendOrangeBarMessage($"{gold} gold was sent to your bank as overflow.");
+        }
+    }
+
     public void GiveItemOrSendToBank(Item item)
     {
         var items = item.FixStacks(ItemCloner);
@@ -479,28 +497,21 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
             if (!CanCarry(single) || !Inventory.TryAddToNextSlot(single))
             {
                 Bank.Deposit(single);
-                Logger.WithTopics(Topics.Entities.Aisling, Topics.Actions.Deposit, Topics.Entities.Item,
-                          Topics.Actions.Reward)
-                      .WithProperty(single).WithProperty(this)
-                      .LogInformation("{@Amount} {@ItemName} was sent to {@AislingName}'s bank", single.Count,
-                          single.DisplayName, Name);
-                SendOrangeBarMessage($"{single.DisplayName} was sent to your bank as overflow");
-            }
-    }
 
-    public void GiveGoldOrSendToBank(int gold)
-    {
-        if (!TryGiveGold(gold))
-        {
-            Bank.AddGold((uint)gold);
-            
-            Logger.WithTopics(Topics.Entities.Aisling, Topics.Actions.Deposit, Topics.Entities.Gold,
-                      Topics.Actions.Reward)
-                  .WithProperty(Gold).WithProperty(this)
-                  .LogInformation("{@Amount} gold was sent to {@AislingName}'s bank", gold, Name);
-            
-            SendOrangeBarMessage($"{gold} gold was sent to your bank as overflow");
-        }
+                Logger.WithTopics(
+                          Topics.Entities.Aisling,
+                          Topics.Actions.Deposit,
+                          Topics.Entities.Item,
+                          Topics.Actions.Reward)
+                      .WithProperty(single)
+                      .WithProperty(this)
+                      .LogInformation(
+                          "{@Amount} {@ItemName} was sent to {@AislingName}'s bank.",
+                          single.Count,
+                          single.DisplayName,
+                          Name);
+                SendOrangeBarMessage($"{single.DisplayName} was sent to your bank as overflow.");
+            }
     }
 
     /// <summary>
@@ -740,8 +751,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
 
                     return true;
                 }
-        }
-        else
+        } else
         {
             if (Inventory.TryGetRemove(slot, out var droppedItem))
                 if (TryDrop(point, out groundItems, droppedItem))
@@ -756,7 +766,6 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
 
         return false;
     }
-
 
     /// <inheritdoc />
     public override bool TryDropGold(IPoint point, int amount, [MaybeNullWhen(false)] out Money money)

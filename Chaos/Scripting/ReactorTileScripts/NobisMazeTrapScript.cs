@@ -17,13 +17,13 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.ReactorTileScripts;
 
-public class PorteTrapScript : ConfigurableReactorTileScriptBase,
-                               GetTargetsAbilityComponent<Creature>.IGetTargetsComponentOptions,
-                               SoundAbilityComponent.ISoundComponentOptions,
-                               AnimationAbilityComponent.IAnimationComponentOptions,
-                               DamageAbilityComponent.IDamageComponentOptions,
-                               ManaDrainAbilityComponent.IManaDrainComponentOptions,
-                               ApplyEffectAbilityComponent.IApplyEffectComponentOptions
+public class NobisMazeTrapScript : ConfigurableReactorTileScriptBase,
+                                   GetTargetsAbilityComponent<Creature>.IGetTargetsComponentOptions,
+                                   SoundAbilityComponent.ISoundComponentOptions,
+                                   AnimationAbilityComponent.IAnimationComponentOptions,
+                                   DamageAbilityComponent.IDamageComponentOptions,
+                                   ManaDrainAbilityComponent.IManaDrainComponentOptions,
+                                   ApplyEffectAbilityComponent.IApplyEffectComponentOptions
 {
     protected IIntervalTimer AnimationTimer { get; set; }
     protected Creature Owner { get; set; }
@@ -37,7 +37,7 @@ public class PorteTrapScript : ConfigurableReactorTileScriptBase,
     };
 
     /// <inheritdoc />
-    public PorteTrapScript(ReactorTile subject, IEffectFactory effectFactory)
+    public NobisMazeTrapScript(ReactorTile subject, IEffectFactory effectFactory)
         : base(subject)
     {
         if (Subject.Owner == null)
@@ -70,30 +70,6 @@ public class PorteTrapScript : ConfigurableReactorTileScriptBase,
 
         if (source.IsGodModeEnabled())
             return;
-
-        var aisling = source as Aisling;
-
-        if ((aisling?.MapInstance.InstanceId == "pf_path") && aisling.Inventory.HasCount("Giant Ant Wing", 1))
-        {
-            aisling.Inventory.RemoveQuantity("Giant Ant Wing", 1);
-            Subject.MapInstance.RemoveEntity(Subject);
-
-            aisling.SendOrangeBarMessage(
-                $"You lay down a Giant Ant Wing to avoid the trap, {aisling.Inventory.CountOf("Giant Ant Wing")} left.");
-
-            return;
-        }
-
-        if ((aisling?.MapInstance.InstanceId == "karlopostrap") && aisling.Inventory.HasCount("Giant Ant Wing", 1))
-        {
-            aisling.Inventory.RemoveQuantity("Giant Ant Wing", 1);
-            Subject.MapInstance.RemoveEntity(Subject);
-
-            aisling.SendOrangeBarMessage(
-                $"You lay down a Giant Ant Wing to avoid the trap, {aisling.Inventory.CountOf("Giant Ant Wing")} left.");
-
-            return;
-        }
 
         var executed = new ComponentExecutor(Owner, source).WithOptions(this)
                                                            .ExecuteAndCheck<GetTargetsAbilityComponent<Creature>>()

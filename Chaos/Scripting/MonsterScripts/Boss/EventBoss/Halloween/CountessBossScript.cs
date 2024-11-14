@@ -2,9 +2,9 @@ using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.Halloween;
+namespace Chaos.Scripting.MonsterScripts.Boss.EventBoss.Halloween;
 
-public class CountBossScript : CompositeMonsterScript
+public class CountessBossScript : CompositeMonsterScript
 {
     private static readonly ICollection<string> ScriptKeys = new[]
     {
@@ -13,7 +13,7 @@ public class CountBossScript : CompositeMonsterScript
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),
-        GetScriptKey(typeof(CountEnrageScript)),
+        GetScriptKey(typeof(CountessEnrageScript)),
         GetScriptKey(typeof(AttackingScript)),
         GetScriptKey(typeof(WanderingScript)),
         GetScriptKey(typeof(CountDeathScript)),
@@ -23,7 +23,7 @@ public class CountBossScript : CompositeMonsterScript
 
     //If you are not using BossMoveToTargetScript, you need: MoveToTargetScript.
     /// <inheritdoc />
-    public CountBossScript(IScriptProvider scriptProvider, Monster subject)
+    public CountessBossScript(IScriptProvider scriptProvider, Monster subject)
     {
         if (scriptProvider.CreateScript<IMonsterScript, Monster>(ScriptKeys, subject) is not CompositeMonsterScript compositeScript)
             throw new InvalidOperationException("Unable to create componentized script");
