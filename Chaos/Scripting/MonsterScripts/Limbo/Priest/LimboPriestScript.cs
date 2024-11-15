@@ -86,6 +86,8 @@ public class LimboPriestScript : MonsterScriptBase
         {
             var possibleTargets = Map.GetEntitiesWithinRange<Aisling>(Subject)
                                      .Where(aisling => !aisling.IsPramhed())
+                                     .ThatAreObservedBy(Subject)
+                                     .ThatAreVisibleTo(Subject)
                                      .ToList();
 
             if (possibleTargets.Count > 0)

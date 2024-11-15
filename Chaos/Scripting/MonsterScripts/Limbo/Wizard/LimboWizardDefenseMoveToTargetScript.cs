@@ -15,13 +15,21 @@ public class LimboWizardDefenseMoveToTargetScript : MonsterScriptBase
     {
         base.Update(delta);
 
-        if ((Target == null) || !ShouldMove)
+        if (!ShouldMove)
             return;
 
         if (!Map.GetEntities<Aisling>()
                 .Any())
 
             return;
+
+        if (Target == null)
+        {
+            if (ShouldWander)
+                Subject.Wander();
+
+            return;
+        }
 
         var distance = Subject.ManhattanDistanceFrom(Target);
 

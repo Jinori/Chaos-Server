@@ -11,7 +11,7 @@ using Chaos.Services.Servers.Options;
 
 namespace Chaos.Scripting.MonsterScripts.Boss.EventBoss.Thanksgiving;
 
-public class TurkeyDeathScript(Monster subject) : MonsterScriptBase(subject)
+public class TgAntBossDeathScript(Monster subject) : MonsterScriptBase(subject)
 {
     private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
 

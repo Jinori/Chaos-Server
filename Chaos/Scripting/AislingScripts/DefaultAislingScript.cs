@@ -172,7 +172,8 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         "Nobis House",
         "Nobis Storage",
         "Nobis Weapon Shop",
-        "Mileth Tailor"
+        "Mileth Tailor",
+        "Thanksgiving Challenge"
     ];
 
     private readonly IMerchantFactory MerchantFactory;

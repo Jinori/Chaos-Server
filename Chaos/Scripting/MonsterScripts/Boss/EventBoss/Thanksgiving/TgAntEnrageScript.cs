@@ -11,7 +11,7 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.MonsterScripts.Boss.EventBoss.Thanksgiving;
 
-public sealed class TurkeyEnrageScript : MonsterScriptBase
+public sealed class TgAntEnrageScript : MonsterScriptBase
 {
     private readonly IIntervalTimer InvulnerableTimer;
     private readonly IMonsterFactory MonsterFactory;
@@ -23,7 +23,7 @@ public sealed class TurkeyEnrageScript : MonsterScriptBase
     private readonly Spell SpellToCast2;
 
     /// <inheritdoc />
-    public TurkeyEnrageScript(Monster subject, IMonsterFactory monsterFactory, ISpellFactory spellFactory)
+    public TgAntEnrageScript(Monster subject, IMonsterFactory monsterFactory, ISpellFactory spellFactory)
         : base(subject)
     {
         SpellFactory = spellFactory;
@@ -34,8 +34,8 @@ public sealed class TurkeyEnrageScript : MonsterScriptBase
         InvulnerableTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
 
         RandomAbilityTimer = new RandomizedIntervalTimer(
-            TimeSpan.FromSeconds(100),
-            50,
+            TimeSpan.FromSeconds(60),
+            10,
             RandomizationType.Balanced,
             false);
 
@@ -75,15 +75,15 @@ public sealed class TurkeyEnrageScript : MonsterScriptBase
                 Subject.TryUseSpell(SpellToCast2, player.Id);
     }
 
-    private void RegenerateFromTurkeys()
+    private void RegenerateFromAnts()
     {
-        var amountTurkeys = Subject.MapInstance
-                                   .GetEntitiesWithinRange<Monster>(Subject)
-                                   .Count(x => x.Name == "Turkey");
+        var amountAnts = Subject.MapInstance
+                                .GetEntitiesWithinRange<Monster>(Subject)
+                                .Count(x => x.Name == "Ant Warrior");
 
-        if (amountTurkeys > 0)
+        if (amountAnts > 0)
         {
-            var healamt = amountTurkeys * 0.001;
+            var healamt = amountAnts * 0.001;
             var amountToHeal = Subject.StatSheet.EffectiveMaximumHp * healamt;
 
             var newHp = Subject.StatSheet.CurrentHp + amountToHeal;
@@ -110,18 +110,16 @@ public sealed class TurkeyEnrageScript : MonsterScriptBase
             CastASpell();
 
         if (RegenerateTimer.IntervalElapsed)
-            RegenerateFromTurkeys();
+            RegenerateFromAnts();
 
         if (RandomAbilityTimer.IntervalElapsed)
         {
             var turkeyCount = Subject.MapInstance
                                      .GetEntities<Monster>()
-                                     .Count(x => x.Name == "Turkey");
+                                     .Count(x => x.Name == "Ant Warrior");
 
             if (turkeyCount > 2)
                 return;
-
-            Subject.Say("Gobble Gobble!");
 
             var rectangle = new Rectangle(Subject, 12, 12);
 
@@ -131,7 +129,7 @@ public sealed class TurkeyEnrageScript : MonsterScriptBase
             while (mobsSpawned < 4)
                 if (rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
                 {
-                    var mob = MonsterFactory.Create("tg_turkey", Subject.MapInstance, point);
+                    var mob = MonsterFactory.Create("tg_antwarrior", Subject.MapInstance, point);
                     Subject.MapInstance.AddEntity(mob, point);
                     mobsSpawned++; // Increment count when a mob is successfully spawned
                 }

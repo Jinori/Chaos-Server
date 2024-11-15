@@ -4,7 +4,7 @@ using Chaos.Scripting.MonsterScripts.Abstractions;
 
 namespace Chaos.Scripting.MonsterScripts.Boss.EventBoss.Thanksgiving;
 
-public class TgTurkeyBossScript : CompositeMonsterScript
+public class TgAntBossScript : CompositeMonsterScript
 {
     private static readonly ICollection<string> ScriptKeys = new[]
     {
@@ -13,17 +13,17 @@ public class TgTurkeyBossScript : CompositeMonsterScript
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),
-        GetScriptKey(typeof(TurkeyEnrageScript)),
+        GetScriptKey(typeof(TgAntEnrageScript)),
         GetScriptKey(typeof(AttackingScript)),
         GetScriptKey(typeof(WanderingScript)),
-        GetScriptKey(typeof(TurkeyDeathScript)),
+        GetScriptKey(typeof(TgAntBossDeathScript)),
         GetScriptKey(typeof(DisplayNameScript)),
         GetScriptKey(typeof(ThisIsABossScript))
     };
 
     //If you are not using BossMoveToTargetScript, you need: MoveToTargetScript.
     /// <inheritdoc />
-    public TgTurkeyBossScript(IScriptProvider scriptProvider, Monster subject)
+    public TgAntBossScript(IScriptProvider scriptProvider, Monster subject)
     {
         if (scriptProvider.CreateScript<IMonsterScript, Monster>(ScriptKeys, subject) is not CompositeMonsterScript compositeScript)
             throw new InvalidOperationException("Unable to create componentized script");
