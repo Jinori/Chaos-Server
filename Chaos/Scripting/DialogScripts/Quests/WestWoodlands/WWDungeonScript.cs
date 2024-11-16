@@ -65,6 +65,13 @@ public class WWDungeonScript(
 
             case "wwdungeon_initial":
             {
+                if (source.UserStatSheet.Master || (source.UserStatSheet.Level >= 71))
+                {
+                    Subject.Reply(source,"Lost Woodlands is beneath you now. Go pick on something your own size.");
+
+                    return;
+                }
+                
                 if (source.Trackers.TimedEvents.HasActiveEvent("wwdungeoncd", out var cdtime))
                 {
                     Subject.Reply(source,
@@ -121,7 +128,7 @@ public class WWDungeonScript(
                     {
                         if (member.UserStatSheet.Level < 50)
                         {
-                            Subject.Reply(source, "One of your group members are over level 50.");
+                            Subject.Reply(source, "One of your group members are under level 50.");
                         }
 
                         if (member.Trackers.TimedEvents.HasActiveEvent("wwdungeoncd", out _))

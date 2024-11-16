@@ -23,7 +23,12 @@ public class TgAntMapScript : MapScriptBase
     {
         MonsterFactory = monsterFactory;
         UpdateTimer = new IntervalTimer(TimeSpan.FromMilliseconds(UPDATE_INTERVAL_MS));
-        SpawnTimer = new RandomizedIntervalTimer(TimeSpan.FromHours(SPAWN_INTERVAL_HOURS), 50, RandomizationType.Positive);
+
+        SpawnTimer = new RandomizedIntervalTimer(
+            TimeSpan.FromHours(SPAWN_INTERVAL_HOURS),
+            50,
+            RandomizationType.Positive,
+            false);
     }
 
     private void ClearAnts()

@@ -218,30 +218,35 @@ public class RecipeLibraryScript : DialogScriptBase
             #region Weaponsmithing Book
             case "weaponsmithingbook":
             {
-                // Checking if the Alchemy recipe is available or not.
+                // Checking if the WeaponSmithing recipes are available.
                 if (source.Trackers.Flags.TryGetFlag(out WeaponSmithingRecipes recipes))
                 {
+                    // A set to track the added recipes.
+                    var addedRecipes = new HashSet<string>();
+
+                    // Process craft requirements.
                     foreach (var recipe in CraftingRequirements.WeaponSmithingCraftRequirements)
 
-                        // Checking if the recipe is available or not.
-                        if (recipes.HasFlag(recipe.Key))
+                        // Check if the recipe is available and not already added.
+                        if (recipes.HasFlag(recipe.Key) && addedRecipes.Add(recipe.Value.TemplateKey))
                         {
-                            // Creating a faux item for the recipe.
+                            // Create a faux item for the recipe.
                             var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
 
-                            // Adding the recipe to the subject's dialog window.
+                            // Add the recipe to the subject's dialog window.
                             Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                         }
 
+                    // Process upgrade requirements.
                     foreach (var recipe in CraftingRequirements.WeaponSmithingUpgradeRequirements)
 
-                        // Checking if the recipe is available or not.
-                        if (recipes.HasFlag(recipe.Key))
+                        // Check if the recipe is available and not already added.
+                        if (recipes.HasFlag(recipe.Key) && addedRecipes.Add(recipe.Value.TemplateKey))
                         {
-                            // Creating a faux item for the recipe.
+                            // Create a faux item for the recipe.
                             var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
 
-                            // Adding the recipe to the subject's dialog window.
+                            // Add the recipe to the subject's dialog window.
                             Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                         }
                 }
