@@ -10,19 +10,16 @@ namespace Chaos.Scripting.ReactorTileScripts.GatheringScripts.Wilderness;
 
 public class SpawnSilkWormReactorScript : ReactorTileScriptBase
 {
-    private readonly IItemFactory ItemFactory;
     private readonly IMonsterFactory MonsterFactory;
-    private readonly ISimpleCache SimpleCache;
 
     /// <inheritdoc />
-    public SpawnSilkWormReactorScript(ReactorTile subject, IItemFactory itemFactory, ISimpleCache simpleCache,
+    public SpawnSilkWormReactorScript(
+        ReactorTile subject,
+        IItemFactory itemFactory,
+        ISimpleCache simpleCache,
         IMonsterFactory monsterFactory)
         : base(subject)
-    {
-        MonsterFactory = monsterFactory;
-        ItemFactory = itemFactory;
-        SimpleCache = simpleCache;
-    }
+        => MonsterFactory = monsterFactory;
 
     /// <inheritdoc />
     public override void OnWalkedOn(Creature source)
@@ -30,7 +27,12 @@ public class SpawnSilkWormReactorScript : ReactorTileScriptBase
         if (source is not Aisling aisling)
             return;
 
-        var monsterpoint = source.DirectionalOffset(source.Direction);
+        var direction = source.Direction;
+        var monsterpoint = source.DirectionalOffset(direction);
+
+        if (!Subject.MapInstance.IsWithinMap(monsterpoint))
+            monsterpoint = new Point(source.X, source.Y);
+
         var worm = MonsterFactory.Create("dirty_silk_worm", Subject.MapInstance, monsterpoint);
 
         if (!IntegerRandomizer.RollChance(40))
