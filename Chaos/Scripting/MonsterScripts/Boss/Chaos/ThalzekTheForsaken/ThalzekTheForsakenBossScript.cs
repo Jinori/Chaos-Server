@@ -2,7 +2,7 @@ using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.Chaos;
+namespace Chaos.Scripting.MonsterScripts.Boss.Chaos.ThalzekTheForsaken;
 
 public class ThalzekTheForsakenBossScript : CompositeMonsterScript
 {

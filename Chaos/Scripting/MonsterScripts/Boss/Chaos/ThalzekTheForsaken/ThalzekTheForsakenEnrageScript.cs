@@ -4,7 +4,7 @@ using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.Chaos;
+namespace Chaos.Scripting.MonsterScripts.Boss.Chaos.ThalzekTheForsaken;
 
 public sealed class ThalzekTheForsakenEnrageScript : MonsterScriptBase
 {
@@ -41,7 +41,7 @@ public sealed class ThalzekTheForsakenEnrageScript : MonsterScriptBase
                 if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
                     continue;
 
-                var mobs1 = MonsterFactory.Create("chaos_deathknight", Subject.MapInstance, point);
+                var mobs1 = MonsterFactory.Create("chaos_Kabungkl", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(mobs1, point);
             }
         }
