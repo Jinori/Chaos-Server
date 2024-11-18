@@ -144,7 +144,7 @@ public class ThanksgivingChallengeMapScript : MapScriptBase
 
         CurrentWave++;
 
-        if (CurrentWave > 10) // Assuming 20 is the final wave
+        if (CurrentWave > 20) // Assuming 20 is the final wave
             return ScriptState.CompletedTrial;
 
         return ScriptState.SpawningWave;
@@ -182,7 +182,8 @@ public class ThanksgivingChallengeMapScript : MapScriptBase
                 aisling.TraverseMap(mapInstance, point);
                 aisling.SendOrangeBarMessage("Congratulations! You have completed the Thanksgiving Challenge!");
                 aisling.Trackers.Counters.Remove("tgwave", out _);
-                ExperienceDistributionScript.GiveExp(aisling, 75000000);
+                ExperienceDistributionScript.GiveExp(aisling, 50000000);
+                aisling.TryGiveGamePoints(5);
 
                 aisling.Legend.AddOrAccumulate(
                     new LegendMark(
@@ -244,7 +245,7 @@ public class ThanksgivingChallengeMapScript : MapScriptBase
         var playersInTrial = Subject.GetEntities<Aisling>()
                                     .Where(x => x.IsAlive)
                                     .ToList();
-        var experienceToGroup = CurrentWave * 5000000;
+        var experienceToGroup = CurrentWave * 500000;
         var groupCount = playersInTrial.Count;
 
         if (groupCount == 0)
