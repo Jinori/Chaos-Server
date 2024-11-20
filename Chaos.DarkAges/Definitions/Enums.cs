@@ -628,7 +628,7 @@ public enum Nation : byte
     Atlantis,
     Abel,
     Undine,
-    Purgatory
+    Void
 }
 
 /// <summary>
@@ -759,7 +759,7 @@ public enum SocialStatus : byte
     DayDreaming = 2,
     NeedGroup = 3,
     Grouped = 4,
-    LoneHunter = 5,
+    Gathering = 5,
     GroupHunting = 6,
     NeedHelp = 7
 }

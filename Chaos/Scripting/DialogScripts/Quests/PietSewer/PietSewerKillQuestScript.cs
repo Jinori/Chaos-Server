@@ -78,10 +78,10 @@ public class PietSewerKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestS
                     }
 
                     logger.WithTopics(
-                            Topics.Entities.Aisling,
+                            [Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
-                            Topics.Entities.Quest)
+                            Topics.Entities.Quest])
                         .WithProperty(source)
                         .WithProperty(Subject)
                         .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name,
@@ -107,10 +107,10 @@ public class PietSewerKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestS
                     }
 
                     logger.WithTopics(
-                            Topics.Entities.Aisling,
+                            [Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
-                            Topics.Entities.Quest)
+                            Topics.Entities.Quest])
                         .WithProperty(source)
                         .WithProperty(Subject)
                         .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name,
@@ -135,10 +135,10 @@ public class PietSewerKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestS
                     }
 
                     logger.WithTopics(
-                            Topics.Entities.Aisling,
+                            [Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
-                            Topics.Entities.Quest)
+                            Topics.Entities.Quest])
                         .WithProperty(source)
                         .WithProperty(Subject)
                         .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name,
@@ -163,10 +163,10 @@ public class PietSewerKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestS
                     }
 
                     logger.WithTopics(
-                            Topics.Entities.Aisling,
+                            [Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
-                            Topics.Entities.Quest)
+                            Topics.Entities.Quest])
                         .WithProperty(source)
                         .WithProperty(Subject)
                         .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name,
@@ -191,10 +191,10 @@ public class PietSewerKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestS
                     }
 
                     logger.WithTopics(
-                            Topics.Entities.Aisling,
+                            [Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
-                            Topics.Entities.Quest)
+                            Topics.Entities.Quest])
                         .WithProperty(source)
                         .WithProperty(Subject)
                         .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name,
@@ -219,10 +219,10 @@ public class PietSewerKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestS
                     }
 
                     logger.WithTopics(
-                            Topics.Entities.Aisling,
+                            [Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
-                            Topics.Entities.Quest)
+                            Topics.Entities.Quest])
                         .WithProperty(source)
                         .WithProperty(Subject)
                         .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name,
@@ -247,10 +247,10 @@ public class PietSewerKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestS
                     }
 
                     logger.WithTopics(
-                            Topics.Entities.Aisling,
+                            [Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
-                            Topics.Entities.Quest)
+                            Topics.Entities.Quest])
                         .WithProperty(source)
                         .WithProperty(Subject)
                         .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name,
@@ -278,10 +278,10 @@ public class PietSewerKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestS
                     }
 
                     logger.WithTopics(
-                            Topics.Entities.Aisling,
+                            [Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
-                            Topics.Entities.Quest)
+                            Topics.Entities.Quest])
                         .WithProperty(source)
                         .WithProperty(Subject)
                         .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name,
@@ -308,10 +308,10 @@ public class PietSewerKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestS
                     }
 
                     logger.WithTopics(
-                            Topics.Entities.Aisling,
+                            [Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
-                            Topics.Entities.Quest)
+                            Topics.Entities.Quest])
                         .WithProperty(source)
                         .WithProperty(Subject)
                         .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name,
@@ -339,10 +339,10 @@ public class PietSewerKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestS
                     }
 
                     logger.WithTopics(
-                            Topics.Entities.Aisling,
+                            [Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
-                            Topics.Entities.Quest)
+                            Topics.Entities.Quest])
                         .WithProperty(source)
                         .WithProperty(Subject)
                         .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name,
@@ -370,10 +370,10 @@ public class PietSewerKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestS
                     }
 
                     logger.WithTopics(
-                            Topics.Entities.Aisling,
+                            [Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
-                            Topics.Entities.Quest)
+                            Topics.Entities.Quest])
                         .WithProperty(source)
                         .WithProperty(Subject)
                         .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name,

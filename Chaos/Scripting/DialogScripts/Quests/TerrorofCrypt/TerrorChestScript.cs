@@ -1,5 +1,6 @@
 ﻿using Chaos.Collections;
 using Chaos.Common.Definitions;
+using Chaos.DarkAges.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Formulae;
 using Chaos.Models.Legend;
@@ -82,12 +83,12 @@ public class TerrorChestScript : DialogScriptBase
                 }
                 
                 Logger.WithTopics(
-                          Topics.Entities.Aisling,
+                          [Topics.Entities.Aisling,
                           Topics.Entities.Gold,
                           Topics.Entities.Experience,
                           Topics.Entities.Dialog,
                           Topics.Entities.Quest,
-                          Topics.Entities.Item)
+                          Topics.Entities.Item])
                       .WithProperty(source)
                       .WithProperty(Subject)
                       .LogInformation(

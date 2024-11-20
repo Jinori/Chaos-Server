@@ -1,5 +1,6 @@
 using Chaos.Collections;
 using Chaos.Common.Definitions;
+using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Legend;
@@ -491,11 +492,11 @@ public class PFQuestScript : DialogScriptBase
                 source.SendOrangeBarMessage("You've unlocked the Purple Cloak for mounts!");
 
                 Logger.WithTopics(
-                          Topics.Entities.Aisling,
+                          [Topics.Entities.Aisling,
                           Topics.Entities.Experience,
                           Topics.Entities.Item,
                           Topics.Entities.Dialog,
-                          Topics.Entities.Quest)
+                          Topics.Entities.Quest])
                       .WithProperty(source)
                       .WithProperty(Subject)
                       .LogInformation(

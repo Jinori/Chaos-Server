@@ -1,6 +1,7 @@
 using Chaos.Collections;
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
+using Chaos.DarkAges.Definitions;
 using Chaos.Models.World;
 using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Storage.Abstractions;

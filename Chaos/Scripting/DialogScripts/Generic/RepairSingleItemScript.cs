@@ -73,7 +73,7 @@ public class RepairSingleItemScript(Dialog subject, ILogger<RepairSingleItemScri
                 return;
             }
 
-            logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Item, Topics.Entities.Gold)
+            logger.WithTopics([Topics.Entities.Aisling, Topics.Entities.Item, Topics.Entities.Gold])
                   .WithProperty(source)
                   .WithProperty(Subject)
                   .LogInformation(

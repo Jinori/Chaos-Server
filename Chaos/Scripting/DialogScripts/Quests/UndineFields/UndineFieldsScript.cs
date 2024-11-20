@@ -1,4 +1,5 @@
 using Chaos.Common.Definitions;
+using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
@@ -121,11 +122,11 @@ public class UndineFieldsScript : DialogScriptBase
                             GameTime.Now));
                     
                     Logger.WithTopics(
-                            Topics.Entities.Aisling,
+                            [Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Item,
                             Topics.Entities.Dialog,
-                            Topics.Entities.Quest)
+                            Topics.Entities.Quest])
                         .WithProperty(source)
                         .WithProperty(Subject)
                         .LogInformation(

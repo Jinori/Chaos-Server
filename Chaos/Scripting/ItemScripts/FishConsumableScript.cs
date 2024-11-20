@@ -1,4 +1,5 @@
 ﻿using Chaos.Common.Definitions;
+using Chaos.DarkAges.Definitions;
 using Chaos.Formulae;
 using Chaos.Models.Legend;
 using Chaos.Models.Panel;

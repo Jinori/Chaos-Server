@@ -1,4 +1,5 @@
 using Chaos.Common.Definitions;
+using Chaos.DarkAges.Definitions;
 using Chaos.Models.World;
 using Chaos.Networking.Abstractions;
 using Chaos.NLog.Logging.Definitions;
@@ -140,7 +141,7 @@ public class TwentyOneScript(Merchant subject, IClientRegistry<IChaosWorldClient
                 var eightPercent = (int)(winnings * 0.08m);
                 var winningsMinusEight = winnings - eightPercent;
 
-                logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Gold)
+                logger.WithTopics([Topics.Entities.Aisling, Topics.Entities.Gold])
                       .WithProperty(winner)
                       .WithProperty(Subject)
                       .LogInformation(

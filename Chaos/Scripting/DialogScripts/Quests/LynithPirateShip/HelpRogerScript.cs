@@ -159,11 +159,11 @@ public class HelpRogerScript : DialogScriptBase
                 source.SendOrangeBarMessage("Jolly Roger sees the good in you.");
                 
                 Logger.WithTopics(
-                        Topics.Entities.Aisling,
+                        [Topics.Entities.Aisling,
                         Topics.Entities.Experience,
                         Topics.Entities.Item,
                         Topics.Entities.Dialog,
-                        Topics.Entities.Quest)
+                        Topics.Entities.Quest])
                     .WithProperty(source)
                     .WithProperty(Subject)
                     .LogInformation(

@@ -88,7 +88,7 @@ public class RepairAllItemsScript(Dialog subject, ILogger<RepairAllItemsScript> 
             return;
         }
 
-        logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Item, Topics.Entities.Gold)
+        logger.WithTopics([Topics.Entities.Aisling, Topics.Entities.Item, Topics.Entities.Gold])
               .WithProperty(source)
               .WithProperty(Subject)
               .LogInformation("{@AislingName} has repaired all items for {@AmountGold}", source.Name, RepairCost);

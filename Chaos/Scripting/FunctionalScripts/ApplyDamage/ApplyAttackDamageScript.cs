@@ -172,10 +172,10 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
         if (banked)
         {
             logger.WithTopics(
-                      Topics.Entities.Aisling,
+                      [Topics.Entities.Aisling,
                       Topics.Entities.Item,
                       Topics.Actions.Deposit,
-                      Topics.Actions.Penalty)
+                      Topics.Actions.Penalty])
                   .WithProperty(aisling)
                   .WithProperty(item)
                   .LogInformation("{@AislingName} almost broke {@ItemName} through durability {@SourceName} but it was sent to the bank", aisling.Name, item.DisplayName, source.Name);
@@ -183,10 +183,10 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
         else
         {
             logger.WithTopics(
-                      Topics.Entities.Aisling,
+                      [Topics.Entities.Aisling,
                       Topics.Entities.Item,
                       Topics.Actions.Remove,
-                      Topics.Actions.Penalty)
+                      Topics.Actions.Penalty])
                   .WithProperty(aisling)
                   .WithProperty(item)
                   .LogInformation("{@AislingName} broke {@ItemName} through durability from {@SourceName}", aisling.Name, item.DisplayName, source.Name);

@@ -1,5 +1,6 @@
 ﻿using Chaos.Collections;
 using Chaos.Common.Definitions;
+using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
@@ -279,10 +280,10 @@ public class SupplyLouresArmy : DialogScriptBase
                 source.Inventory.RemoveQuantity("Exquisite Cotton", 10);
                 source.Trackers.Enums.Set(SupplyLouresStage.TurnedInSupply);
                 Logger.WithTopics(
-                        Topics.Entities.Aisling,
+                        [Topics.Entities.Aisling,
                         Topics.Entities.Experience,
                         Topics.Entities.Dialog,
-                        Topics.Entities.Quest)
+                        Topics.Entities.Quest])
                     .WithProperty(source)
                     .WithProperty(Subject)
                     .LogInformation("{@AislingName} has received {@ExpAmount} exp and {@GoldAmount}", source.Name, 200000, 25000);
@@ -365,10 +366,10 @@ public class SupplyLouresArmy : DialogScriptBase
                 source.GiveItemOrSendToBank(item);
                 source.SendOrangeBarMessage("Knight Thibault hands you Silk Boots.");
                 Logger.WithTopics(
-                        Topics.Entities.Aisling,
+                        [Topics.Entities.Aisling,
                         Topics.Entities.Experience,
                         Topics.Entities.Dialog,
-                        Topics.Entities.Quest)
+                        Topics.Entities.Quest])
                     .WithProperty(source)
                     .WithProperty(Subject)
                     .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 300000);
@@ -414,10 +415,10 @@ public class SupplyLouresArmy : DialogScriptBase
                 source.GiveItemOrSendToBank(item);
                 source.SendOrangeBarMessage("King Bruce orders his men to give you a Sparkle Ring.");
                 Logger.WithTopics(
-                        Topics.Entities.Aisling,
+                        [Topics.Entities.Aisling,
                         Topics.Entities.Experience,
                         Topics.Entities.Dialog,
-                        Topics.Entities.Quest)
+                        Topics.Entities.Quest])
                     .WithProperty(source)
                     .WithProperty(Subject)
                     .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 150000);

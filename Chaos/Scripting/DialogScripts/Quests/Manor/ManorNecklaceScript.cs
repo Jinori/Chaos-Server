@@ -1,4 +1,5 @@
 using Chaos.Common.Definitions;
+using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
@@ -57,10 +58,10 @@ public class ManorNecklaceScript : DialogScriptBase
                 var necklace = ItemFactory.Create("zulerasHeirloom");
 
                 Logger.WithTopics(
-                          Topics.Entities.Aisling,
+                          [Topics.Entities.Aisling,
                           Topics.Entities.Item,
                           Topics.Entities.Dialog,
-                          Topics.Entities.Quest)
+                          Topics.Entities.Quest])
                       .WithProperty(source)
                       .WithProperty(Subject)
                       .LogInformation("{@AislingName} has received {@ItemName} from a quest", source.Name, necklace.DisplayName);
@@ -85,10 +86,10 @@ public class ManorNecklaceScript : DialogScriptBase
                     source.Trackers.Enums.Set(ManorNecklaceStage.ReturnedNecklace);
 
                 Logger.WithTopics(
-                          Topics.Entities.Aisling,
+                          [Topics.Entities.Aisling,
                           Topics.Entities.Experience,
                           Topics.Entities.Dialog,
-                          Topics.Entities.Quest)
+                          Topics.Entities.Quest])
                       .WithProperty(source)
                       .WithProperty(Subject)
                       .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, 150000);

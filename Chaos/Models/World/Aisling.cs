@@ -482,10 +482,10 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
             Bank.AddGold((uint)gold);
 
             Logger.WithTopics(
-                      Topics.Entities.Aisling,
+                      [Topics.Entities.Aisling,
                       Topics.Actions.Deposit,
                       Topics.Entities.Gold,
-                      Topics.Actions.Reward)
+                      Topics.Actions.Reward])
                   .WithProperty(Gold)
                   .WithProperty(this)
                   .LogInformation("{@Amount} gold was sent to {@AislingName}'s bank", gold, Name);
@@ -504,10 +504,10 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
                 Bank.Deposit(single);
 
                 Logger.WithTopics(
-                          Topics.Entities.Aisling,
+                          [Topics.Entities.Aisling,
                           Topics.Actions.Deposit,
                           Topics.Entities.Item,
-                          Topics.Actions.Reward)
+                          Topics.Actions.Reward])
                       .WithProperty(single)
                       .WithProperty(this)
                       .LogInformation(

@@ -1,6 +1,7 @@
 using Chaos.Collections;
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
+using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Common;
@@ -202,10 +203,10 @@ public class WWDungeonScript(
                 source.TryGiveGamePoints(10);
 
                 logger.WithTopics(
-                        Topics.Entities.Aisling,
+                        [Topics.Entities.Aisling,
                         Topics.Entities.Experience,
                         Topics.Entities.Dialog,
-                        Topics.Entities.Quest)
+                        Topics.Entities.Quest])
                     .WithProperty(source)
                     .WithProperty(Subject)
                     .LogInformation("{@AislingName} has received {@ExpAmount} exp from a Lost Woodlands quest",
@@ -309,10 +310,10 @@ public class WWDungeonScript(
                 source.TryGiveGamePoints(10);
 
                 logger.WithTopics(
-                        Topics.Entities.Aisling,
+                        [Topics.Entities.Aisling,
                         Topics.Entities.Experience,
                         Topics.Entities.Dialog,
-                        Topics.Entities.Quest)
+                        Topics.Entities.Quest])
                     .WithProperty(source)
                     .WithProperty(Subject)
                     .LogInformation("{@AislingName} has received {@ExpAmount} exp from a Lost Woodlands quest",

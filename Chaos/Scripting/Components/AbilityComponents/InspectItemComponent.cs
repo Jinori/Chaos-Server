@@ -5,6 +5,8 @@ using Chaos.Scripting.Components.Execution;
 using Chaos.Collections.Common;
 using Chaos.Models.Panel;
 using System.Text;
+using Chaos.DarkAges.Definitions;
+using Chaos.DarkAges.Extensions;
 using Chaos.Extensions.Common;
 
 namespace Chaos.Scripting.Components.AbilityComponents

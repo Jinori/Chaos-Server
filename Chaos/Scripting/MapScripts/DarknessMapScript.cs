@@ -1,6 +1,7 @@
 using System.Reactive.Subjects;
 using Chaos.Collections;
 using Chaos.Common.Definitions;
+using Chaos.DarkAges.Definitions;
 using Chaos.Scripting.MapScripts.Abstractions;
 
 namespace Chaos.Scripting.MapScripts;

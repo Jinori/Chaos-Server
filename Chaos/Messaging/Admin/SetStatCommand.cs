@@ -1,5 +1,6 @@
 using Chaos.Collections.Common;
 using Chaos.Common.Definitions;
+using Chaos.DarkAges.Definitions;
 using Chaos.Messaging.Abstractions;
 using Chaos.Models.Data;
 using Chaos.Models.World;

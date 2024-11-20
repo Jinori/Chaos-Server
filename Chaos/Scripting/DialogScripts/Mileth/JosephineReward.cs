@@ -1,4 +1,5 @@
 ﻿using Chaos.Common.Definitions;
+using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
@@ -28,11 +29,11 @@ public class JosephineRewardScript : DialogScriptBase
         {
             source.Trackers.Enums.Set(RionaTutorialQuestStage.CompletedBeautyShop);
             Logger.WithTopics(
-                      Topics.Entities.Aisling,
+                      [Topics.Entities.Aisling,
                       Topics.Entities.Gold,
                       Topics.Entities.Experience,
                       Topics.Entities.Dialog,
-                      Topics.Entities.Quest)
+                      Topics.Entities.Quest])
                   .WithProperty(source)
                   .WithProperty(Subject)
                   .LogInformation(

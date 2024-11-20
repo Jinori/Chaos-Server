@@ -1,5 +1,6 @@
 ﻿using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
+using Chaos.DarkAges.Definitions;
 using Chaos.Formulae;
 using Chaos.Models.Data;
 using Chaos.Models.Legend;
@@ -143,11 +144,11 @@ public class FishingEffect(IItemFactory itemFactory, ILogger<FishingEffect> logg
         UpdatePlayerLegend(aisling);
         
         logger.WithTopics(
-                Topics.Entities.Aisling,
+                [Topics.Entities.Aisling,
                 Topics.Entities.Item,
                 Topics.Entities.Dialog,
                 Topics.Entities.Quest,
-                Topics.Entities.Experience)
+                Topics.Entities.Experience])
             .WithProperty(aisling)
             .WithProperty(Subject)
             .LogInformation("{@AislingName} has received {@fish} and {@Experience} from fishing.", aisling.Name, fish.DisplayName, expGain);

@@ -154,11 +154,11 @@ public class HelpWolfgangScript : DialogScriptBase
                 source.SendOrangeBarMessage("Captain Wolfgang seems more outgoing now.");
                 
                 Logger.WithTopics(
-                        Topics.Entities.Aisling,
+                        [Topics.Entities.Aisling,
                         Topics.Entities.Experience,
                         Topics.Entities.Item,
                         Topics.Entities.Dialog,
-                        Topics.Entities.Quest)
+                        Topics.Entities.Quest])
                     .WithProperty(source)
                     .WithProperty(Subject)
                     .LogInformation(

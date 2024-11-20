@@ -83,10 +83,10 @@ public class AbelDungeonKillQuestScript(Dialog subject, ILogger<TheSacrificeQues
                     }
 
                     logger.WithTopics(
-                            Topics.Entities.Aisling,
+                            [Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
-                            Topics.Entities.Quest)
+                            Topics.Entities.Quest])
                         .WithProperty(source)
                         .WithProperty(Subject)
                         .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name,
@@ -112,10 +112,10 @@ public class AbelDungeonKillQuestScript(Dialog subject, ILogger<TheSacrificeQues
                     }
 
                     logger.WithTopics(
-                            Topics.Entities.Aisling,
+                            [Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
-                            Topics.Entities.Quest)
+                            Topics.Entities.Quest])
                         .WithProperty(source)
                         .WithProperty(Subject)
                         .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name,
@@ -140,10 +140,10 @@ public class AbelDungeonKillQuestScript(Dialog subject, ILogger<TheSacrificeQues
                     }
 
                     logger.WithTopics(
-                            Topics.Entities.Aisling,
+                            [Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
-                            Topics.Entities.Quest)
+                            Topics.Entities.Quest])
                         .WithProperty(source)
                         .WithProperty(Subject)
                         .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name,
@@ -168,10 +168,10 @@ public class AbelDungeonKillQuestScript(Dialog subject, ILogger<TheSacrificeQues
                     }
 
                     logger.WithTopics(
-                            Topics.Entities.Aisling,
+                            [Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
-                            Topics.Entities.Quest)
+                            Topics.Entities.Quest])
                         .WithProperty(source)
                         .WithProperty(Subject)
                         .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name,
@@ -196,10 +196,10 @@ public class AbelDungeonKillQuestScript(Dialog subject, ILogger<TheSacrificeQues
                     }
 
                     logger.WithTopics(
-                            Topics.Entities.Aisling,
+                            [Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
-                            Topics.Entities.Quest)
+                            Topics.Entities.Quest])
                         .WithProperty(source)
                         .WithProperty(Subject)
                         .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name,
@@ -224,10 +224,10 @@ public class AbelDungeonKillQuestScript(Dialog subject, ILogger<TheSacrificeQues
                     }
 
                     logger.WithTopics(
-                            Topics.Entities.Aisling,
+                            [Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
-                            Topics.Entities.Quest)
+                            Topics.Entities.Quest])
                         .WithProperty(source)
                         .WithProperty(Subject)
                         .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name,
@@ -252,10 +252,10 @@ public class AbelDungeonKillQuestScript(Dialog subject, ILogger<TheSacrificeQues
                     }
 
                     logger.WithTopics(
-                            Topics.Entities.Aisling,
+                            [Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
-                            Topics.Entities.Quest)
+                            Topics.Entities.Quest])
                         .WithProperty(source)
                         .WithProperty(Subject)
                         .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name,
@@ -283,10 +283,10 @@ public class AbelDungeonKillQuestScript(Dialog subject, ILogger<TheSacrificeQues
                     }
 
                     logger.WithTopics(
-                            Topics.Entities.Aisling,
+                            [Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
-                            Topics.Entities.Quest)
+                            Topics.Entities.Quest])
                         .WithProperty(source)
                         .WithProperty(Subject)
                         .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name,

@@ -282,10 +282,10 @@ public class LearnSkillScript : DialogScriptBase
         dialog.ReplyToUnknownInput(source);
 
         Logger.WithTopics(
-                  Topics.Entities.Aisling,
+                  [Topics.Entities.Aisling,
                   Topics.Entities.Skill,
                   Topics.Actions.Learn,
-                  Topics.Qualifiers.Cheating)
+                  Topics.Qualifiers.Cheating])
               .WithProperty(Subject)
               .WithProperty(Subject.DialogSource)
               .WithProperty(source)

@@ -1,6 +1,7 @@
 using Chaos.Collections;
 using Chaos.Collections.Common;
 using Chaos.Common.Definitions;
+using Chaos.DarkAges.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Messaging.Abstractions;
 using Chaos.Models.Legend;

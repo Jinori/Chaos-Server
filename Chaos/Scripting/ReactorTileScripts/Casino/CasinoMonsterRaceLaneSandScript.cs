@@ -85,7 +85,7 @@ public class CasinoMonsterRaceLaneSandScript : ReactorTileScriptBase
 
                 var winnings = AislingsAtCompletion.Count() * 25000;
 
-                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Gold)
+                Logger.WithTopics([Topics.Entities.Aisling, Topics.Entities.Gold])
                       .WithProperty(winner)
                       .WithProperty(Subject)
                       .LogInformation(
@@ -111,7 +111,7 @@ public class CasinoMonsterRaceLaneSandScript : ReactorTileScriptBase
                     var eightPercent = (int)(winnings * 0.08m);
                     var winningsMinusEight = winnings - eightPercent;
 
-                    Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Gold)
+                    Logger.WithTopics([Topics.Entities.Aisling, Topics.Entities.Gold])
                           .WithProperty(winner)
                           .WithProperty(Subject)
                           .LogInformation(

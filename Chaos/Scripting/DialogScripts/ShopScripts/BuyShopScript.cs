@@ -1,4 +1,6 @@
 using Chaos.Common.Definitions;
+using Chaos.DarkAges.Definitions;
+
 #region
 using Chaos.Models.Abstractions;
 using Chaos.Models.Data;

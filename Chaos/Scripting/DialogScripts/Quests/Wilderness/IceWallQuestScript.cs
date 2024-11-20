@@ -113,10 +113,10 @@ public class IceWallQuestScript : DialogScriptBase
                     source.Inventory.RemoveQuantity("Ice Sample 3", 1);
 
                     Logger.WithTopics(
-                              Topics.Entities.Aisling,
+                              [Topics.Entities.Aisling,
                               Topics.Entities.Experience,
                               Topics.Entities.Dialog,
-                              Topics.Entities.Quest)
+                              Topics.Entities.Quest])
                           .WithProperty(source)
                           .WithProperty(Subject)
                           .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 25000);
@@ -146,10 +146,10 @@ public class IceWallQuestScript : DialogScriptBase
                 }
 
                 Logger.WithTopics(
-                          Topics.Entities.Aisling,
+                          [Topics.Entities.Aisling,
                           Topics.Entities.Experience,
                           Topics.Entities.Dialog,
-                          Topics.Entities.Quest)
+                          Topics.Entities.Quest])
                       .WithProperty(source)
                       .WithProperty(Subject)
                       .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 25000);
@@ -180,10 +180,10 @@ public class IceWallQuestScript : DialogScriptBase
                 }
 
                 Logger.WithTopics(
-                          Topics.Entities.Aisling,
+                          [Topics.Entities.Aisling,
                           Topics.Entities.Experience,
                           Topics.Entities.Dialog,
-                          Topics.Entities.Quest)
+                          Topics.Entities.Quest])
                       .WithProperty(source)
                       .WithProperty(Subject)
                       .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 50000);
@@ -208,10 +208,10 @@ public class IceWallQuestScript : DialogScriptBase
                 }
 
                 Logger.WithTopics(
-                          Topics.Entities.Aisling,
+                          [Topics.Entities.Aisling,
                           Topics.Entities.Experience,
                           Topics.Entities.Dialog,
-                          Topics.Entities.Quest)
+                          Topics.Entities.Quest])
                       .WithProperty(source)
                       .WithProperty(Subject)
                       .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 100000);

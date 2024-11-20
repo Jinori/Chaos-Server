@@ -1,5 +1,6 @@
 ﻿using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
+using Chaos.DarkAges.Definitions;
 using Chaos.Formulae;
 using Chaos.Models.Data;
 using Chaos.Models.Legend;
@@ -171,11 +172,11 @@ public class ForagingEffect(IItemFactory itemFactory, ILogger<ForagingEffect> lo
             aisling.SendOrangeBarMessage($"You gather a {herb.DisplayName} and gained {expGain} experience!");
             
             logger.WithTopics(
-                    Topics.Entities.Aisling,
+                    [Topics.Entities.Aisling,
                     Topics.Entities.Item,
                     Topics.Entities.Dialog,
                     Topics.Entities.Quest,
-                    Topics.Entities.Experience)
+                    Topics.Entities.Experience])
                 .WithProperty(aisling)
                 .WithProperty(Subject)
                 .LogInformation("{@AislingName} has received {@Herb} and {@Experience} from foraging.", aisling.Name, herb.DisplayName, expGain);

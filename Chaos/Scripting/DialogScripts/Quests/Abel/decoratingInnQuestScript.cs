@@ -1,5 +1,6 @@
 ﻿using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
+using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Models.Legend;
@@ -136,11 +137,11 @@ public class DecoratingInnQuestScript : DialogScriptBase
                         source.Trackers.Enums.Set(DecoratingInn.CompletedPetunia);
 
                         Logger.WithTopics(
-                                Topics.Entities.Aisling,
+                                [Topics.Entities.Aisling,
                                 Topics.Entities.Gold,
                                 Topics.Entities.Experience,
                                 Topics.Entities.Dialog,
-                                Topics.Entities.Quest)
+                                Topics.Entities.Quest])
                             .WithProperty(source)
                             .WithProperty(Subject)
                             .LogInformation(
@@ -175,11 +176,11 @@ public class DecoratingInnQuestScript : DialogScriptBase
                         source.Trackers.Enums.Set(DecoratingInn.CompletedGoldRose);
 
                         Logger.WithTopics(
-                                Topics.Entities.Aisling,
+                                [Topics.Entities.Aisling,
                                 Topics.Entities.Gold,
                                 Topics.Entities.Experience,
                                 Topics.Entities.Dialog,
-                                Topics.Entities.Quest)
+                                Topics.Entities.Quest])
                             .WithProperty(source)
                             .WithProperty(Subject)
                             .LogInformation(
@@ -212,11 +213,11 @@ public class DecoratingInnQuestScript : DialogScriptBase
                         source.Trackers.TimedEvents.AddEvent("decoratingtheinncd", TimeSpan.FromHours(22), true);
 
                         Logger.WithTopics(
-                                Topics.Entities.Aisling,
+                                [Topics.Entities.Aisling,
                                 Topics.Entities.Gold,
                                 Topics.Entities.Experience,
                                 Topics.Entities.Dialog,
-                                Topics.Entities.Quest)
+                                Topics.Entities.Quest])
                             .WithProperty(source)
                             .WithProperty(Subject)
                             .LogInformation(
@@ -274,11 +275,11 @@ public class DecoratingInnQuestScript : DialogScriptBase
                      source.Trackers.TimedEvents.AddEvent("decoratingtheinncd", TimeSpan.FromHours(22), true);
 
                         Logger.WithTopics(
-                                Topics.Entities.Aisling,
+                                [Topics.Entities.Aisling,
                                 Topics.Entities.Gold,
                                 Topics.Entities.Experience,
                                 Topics.Entities.Dialog,
-                                Topics.Entities.Quest)
+                                Topics.Entities.Quest])
                             .WithProperty(source)
                             .WithProperty(Subject)
                             .LogInformation(

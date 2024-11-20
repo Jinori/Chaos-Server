@@ -1,5 +1,6 @@
 ﻿using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
+using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Models.Legend;
@@ -78,11 +79,11 @@ public class PrettyFlowerQuestScript(Dialog subject, ILogger<PrettyFlowerQuestSc
                             source.Trackers.TimedEvents.AddEvent("prettyflowercd", TimeSpan.FromHours(22), true);
 
                             logger.WithTopics(
-                                      Topics.Entities.Aisling,
+                                      [Topics.Entities.Aisling,
                                       Topics.Entities.Gold,
                                       Topics.Entities.Experience,
                                       Topics.Entities.Dialog,
-                                      Topics.Entities.Quest)
+                                      Topics.Entities.Quest])
                                   .WithProperty(source)
                                   .WithProperty(Subject)
                                   .LogInformation(

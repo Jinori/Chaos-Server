@@ -1,5 +1,6 @@
 ﻿using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
+using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
@@ -72,11 +73,11 @@ public class SpareAStickScript : DialogScriptBase
                 source.Trackers.Enums.Set(RionaTutorialQuestStage.CompletedSpareAStick);
 
                 Logger.WithTopics(
-                          Topics.Entities.Aisling,
+                          [Topics.Entities.Aisling,
                           Topics.Entities.Gold,
                           Topics.Entities.Experience,
                           Topics.Entities.Dialog,
-                          Topics.Entities.Quest)
+                          Topics.Entities.Quest])
                       .WithProperty(source)
                       .WithProperty(Subject)
                       .LogInformation(

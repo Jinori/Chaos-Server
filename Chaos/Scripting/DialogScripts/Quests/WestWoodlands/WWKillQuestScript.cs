@@ -98,10 +98,10 @@ public class WWKillQuestScript(Dialog subject, ILogger<WWKillQuestScript> logger
                     }
 
                     logger.WithTopics(
-                            Topics.Entities.Aisling,
+                            [Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
-                            Topics.Entities.Quest)
+                            Topics.Entities.Quest])
                         .WithProperty(source)
                         .WithProperty(Subject)
                         .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name,
@@ -129,10 +129,10 @@ public class WWKillQuestScript(Dialog subject, ILogger<WWKillQuestScript> logger
                     }
 
                     logger.WithTopics(
-                            Topics.Entities.Aisling,
+                            [Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
-                            Topics.Entities.Quest)
+                            Topics.Entities.Quest])
                         .WithProperty(source)
                         .WithProperty(Subject)
                         .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name,
@@ -161,10 +161,10 @@ public class WWKillQuestScript(Dialog subject, ILogger<WWKillQuestScript> logger
                     }
 
                     logger.WithTopics(
-                            Topics.Entities.Aisling,
+                            [Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
-                            Topics.Entities.Quest)
+                            Topics.Entities.Quest])
                         .WithProperty(source)
                         .WithProperty(Subject)
                         .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name,
@@ -192,10 +192,10 @@ public class WWKillQuestScript(Dialog subject, ILogger<WWKillQuestScript> logger
                     }
 
                     logger.WithTopics(
-                            Topics.Entities.Aisling,
+                            [Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
-                            Topics.Entities.Quest)
+                            Topics.Entities.Quest])
                         .WithProperty(source)
                         .WithProperty(Subject)
                         .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name,
@@ -223,10 +223,10 @@ public class WWKillQuestScript(Dialog subject, ILogger<WWKillQuestScript> logger
                     }
 
                     logger.WithTopics(
-                            Topics.Entities.Aisling,
+                            [Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
-                            Topics.Entities.Quest)
+                            Topics.Entities.Quest])
                         .WithProperty(source)
                         .WithProperty(Subject)
                         .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name,
@@ -254,10 +254,10 @@ public class WWKillQuestScript(Dialog subject, ILogger<WWKillQuestScript> logger
                     }
 
                     logger.WithTopics(
-                            Topics.Entities.Aisling,
+                            [Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
-                            Topics.Entities.Quest)
+                            Topics.Entities.Quest])
                         .WithProperty(source)
                         .WithProperty(Subject)
                         .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name,
@@ -285,10 +285,10 @@ public class WWKillQuestScript(Dialog subject, ILogger<WWKillQuestScript> logger
                     }
 
                     logger.WithTopics(
-                            Topics.Entities.Aisling,
+                            [Topics.Entities.Aisling,
                             Topics.Entities.Experience,
                             Topics.Entities.Dialog,
-                            Topics.Entities.Quest)
+                            Topics.Entities.Quest])
                         .WithProperty(source)
                         .WithProperty(Subject)
                         .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name,

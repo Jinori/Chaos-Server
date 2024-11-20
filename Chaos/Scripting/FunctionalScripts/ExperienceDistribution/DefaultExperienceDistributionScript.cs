@@ -167,7 +167,7 @@ public class DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistri
         return true;
     }
 
-    private bool HasCompletedMythic(Aisling[] aislings)
+    private bool HasCompletedMythic(ICollection<Aisling> aislings)
     {
         foreach (var aisling in aislings)
             if (aisling.Trackers.Enums.HasValue(MythicQuestMain.CompletedMythic))
@@ -176,7 +176,7 @@ public class DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistri
         return false;
     }
 
-    private bool HasGMKnowledgeEffect(Aisling[] aislings)
+    private bool HasGMKnowledgeEffect(ICollection<Aisling> aislings)
     {
         // Check if any of the Aislings have the "Strong Knowledge" effect
         foreach (var aisling in aislings)
@@ -186,7 +186,7 @@ public class DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistri
         return false;
     }
 
-    private bool HasKnowledgeEffect(Aisling[] aislings)
+    private bool HasKnowledgeEffect(ICollection<Aisling> aislings)
     {
         // Check if any of the Aislings have the "Knowledge" effect
         foreach (var aisling in aislings)
@@ -196,7 +196,7 @@ public class DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistri
         return false;
     }
 
-    private bool HasStrongKnowledgeEffect(Aisling[] aislings)
+    private bool HasStrongKnowledgeEffect(ICollection<Aisling> aislings)
     {
         // Check if any of the Aislings have the "Strong Knowledge" effect
         foreach (var aisling in aislings)

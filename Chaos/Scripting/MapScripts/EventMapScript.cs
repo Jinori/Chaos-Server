@@ -5,6 +5,7 @@ using Chaos.Services.Factories.Abstractions;
 using System;
 using System.Collections.Generic;
 using Chaos.Common.Definitions;
+using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.World;
 using Chaos.Networking.Abstractions;

@@ -1,5 +1,6 @@
 ﻿using Chaos.Collections;
 using Chaos.Common.Definitions;
+using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Models.Menu;
@@ -25,7 +26,7 @@ public class SgriosReviveScript : DialogScriptBase
 
     public override void OnDisplayed(Aisling source)
     {
-        Logger.WithTopics(Topics.Entities.Aisling, Topics.Actions.Death)
+        Logger.WithTopics([Topics.Entities.Aisling, Topics.Actions.Death])
               .WithProperty(source)
               .LogInformation("{@AislingName} has been revived by Sgrios", source.Name);
 

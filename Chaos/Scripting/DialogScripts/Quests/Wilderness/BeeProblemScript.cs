@@ -74,11 +74,11 @@ public class BeeProblemScript : DialogScriptBase
                 }
 
                 Logger.WithTopics(
-                          Topics.Entities.Aisling,
+                          [Topics.Entities.Aisling,
                           Topics.Entities.Experience,
                           Topics.Entities.Item,
                           Topics.Entities.Dialog,
-                          Topics.Entities.Quest)
+                          Topics.Entities.Quest])
                       .WithProperty(source)
                       .WithProperty(Subject)
                       .LogInformation(

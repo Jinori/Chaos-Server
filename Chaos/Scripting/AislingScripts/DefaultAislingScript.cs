@@ -1,5 +1,6 @@
 using Chaos.Collections;
 using Chaos.Collections.Abstractions;
+using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
@@ -816,10 +817,10 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 {
                     // Notify player that Mithril Dice saved their item
                     Logger.WithTopics(
-                              Topics.Entities.Aisling,
+                              [Topics.Entities.Aisling,
                               Topics.Entities.Item,
                               Topics.Actions.Death,
-                              Topics.Actions.Penalty)
+                              Topics.Actions.Penalty])
                           .WithProperty(Subject)
                           .WithProperty(item)
                           .LogInformation("{@AislingName}'s {@ItemName} was saved by Mithril Dice", Subject.Name, item.DisplayName);
@@ -837,10 +838,10 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 {
                     // Log and notify the player that they lost an item
                     Logger.WithTopics(
-                              Topics.Entities.Aisling,
+                              [Topics.Entities.Aisling,
                               Topics.Entities.Item,
                               Topics.Actions.Death,
-                              Topics.Actions.Penalty)
+                              Topics.Actions.Penalty])
                           .WithProperty(Subject)
                           .WithProperty(item)
                           .LogInformation("{@AislingName} has lost {@ItemName} to death", Subject.Name, item.DisplayName);
@@ -857,10 +858,10 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         if (ExperienceDistributionScript.TryTakeExp(Subject, tenPercent))
         {
             Logger.WithTopics(
-                      Topics.Entities.Aisling,
+                      [Topics.Entities.Aisling,
                       Topics.Actions.Death,
                       Topics.Actions.Penalty,
-                      Topics.Entities.Experience)
+                      Topics.Entities.Experience])
                   .WithProperty(Subject)
                   .LogInformation("{@AislingName} has lost {@ExperienceAmount} experience to death", Subject.Name, tenPercent);
 
@@ -943,7 +944,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             Subject.SpellBook.RemoveByTemplateKey(keyToRemove);
             NotifyPlayer(keyToRemove, keyToKeep);
 
-            Logger.WithTopics(Topics.Entities.Creature, Topics.Entities.Skill, Topics.Actions.Update)
+            Logger.WithTopics([Topics.Entities.Creature, Topics.Entities.Skill, Topics.Actions.Update])
                   .WithProperty(Subject)
                   .LogInformation(
                       "Aisling {@AislingName}'s ability {keyToKeep} removed an old ability {@keyToRemove}",
@@ -955,7 +956,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             Subject.SkillBook.RemoveByTemplateKey(keyToRemove);
             NotifyPlayer(keyToRemove, keyToKeep);
 
-            Logger.WithTopics(Topics.Entities.Creature, Topics.Entities.Skill, Topics.Actions.Update)
+            Logger.WithTopics([Topics.Entities.Creature, Topics.Entities.Skill, Topics.Actions.Update])
                   .WithProperty(Subject)
                   .LogInformation(
                       "Aisling {@AislingName}'s ability {keyToKeep} removed an old ability {@keyToRemove}",

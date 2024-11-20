@@ -1,4 +1,5 @@
 using Chaos.Common.Definitions;
+using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
@@ -61,7 +62,7 @@ public class AscendingScript(Dialog subject, ILogger<AscendingScript> logger) : 
                     source.StatSheet.Add(hp);
 
                     logger.WithTopics(
-                            Topics.Entities.Aisling, Topics.Entities.Dialog, Topics.Actions.Reward)
+                            [Topics.Entities.Aisling, Topics.Entities.Dialog, Topics.Actions.Reward])
                         .WithProperty(Subject)
                         .LogInformation("{@AislingName} has bought {@Attribute} health", source.Name, hp);
 
@@ -77,7 +78,7 @@ public class AscendingScript(Dialog subject, ILogger<AscendingScript> logger) : 
                     source.StatSheet.Add(mp);
 
                     logger.WithTopics(
-                            Topics.Entities.Aisling, Topics.Entities.Dialog, Topics.Actions.Reward)
+                            [Topics.Entities.Aisling, Topics.Entities.Dialog, Topics.Actions.Reward])
                         .WithProperty(Subject)
                         .LogInformation("{@AislingName} has bought {@Attribute} mana", source.Name, mp);
 

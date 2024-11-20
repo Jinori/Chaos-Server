@@ -1,4 +1,5 @@
 ﻿using Chaos.Common.Definitions;
+using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
@@ -69,11 +70,11 @@ public class GraveSiteScript (Dialog subject, ILogger<GraveSiteScript> logger, I
                             source.Inventory.RemoveQuantity("Pink Rose", 5, out _);
                             
                             logger.WithTopics(
-                                      Topics.Entities.Aisling,
+                                      [Topics.Entities.Aisling,
                                       Topics.Entities.Gold,
                                       Topics.Entities.Experience,
                                       Topics.Entities.Dialog,
-                                      Topics.Entities.Quest)
+                                      Topics.Entities.Quest])
                                   .WithProperty(source)
                                   .WithProperty(Subject)
                                   .LogInformation(

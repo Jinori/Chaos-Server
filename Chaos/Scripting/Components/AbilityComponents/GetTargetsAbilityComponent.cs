@@ -43,7 +43,7 @@ public struct GetTargetsAbilityComponent<TEntity> : IConditionalComponent where 
         if (options.StopOnFirstHit)
             targetEntities = targetEntities.Where(x =>
             {
-                var points = context.TargetPoint.RayTraceTo<IPoint>(x).Skip(1).SkipLast(1);
+                var points = context.TargetPoint.RayTraceTo(x).Skip(1).SkipLast(1);
                 return points.All(point => !targetEntities.Any(e => PointEqualityComparer.Instance.Equals(e, point)));
             }).ToList();
         

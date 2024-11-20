@@ -73,10 +73,10 @@ public class TheSacrificeQuestScript : DialogScriptBase
                         var experience = (numFlags * fivePercent);
                         
                         Logger.WithTopics(
-                                Topics.Entities.Aisling,
+                                [Topics.Entities.Aisling,
                                 Topics.Entities.Experience,
                                 Topics.Entities.Dialog,
-                                Topics.Entities.Quest)
+                                Topics.Entities.Quest])
                             .WithProperty(source)
                             .WithProperty(Subject)
                             .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, experience);
@@ -118,10 +118,10 @@ public class TheSacrificeQuestScript : DialogScriptBase
                         Subject.Reply(source, $"You killed {killamount.ToWords()} captors! That'll hurt them for sure! They will think twice about taking our kids again! Thank you for your heroic actions.", "chloe_initial");
 
                         Logger.WithTopics(
-                                Topics.Entities.Aisling,
+                                [Topics.Entities.Aisling,
                                 Topics.Entities.Experience,
                                 Topics.Entities.Dialog,
-                                Topics.Entities.Quest)
+                                Topics.Entities.Quest])
                             .WithProperty(source)
                             .WithProperty(Subject)
                             .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, experience);
@@ -146,10 +146,10 @@ public class TheSacrificeQuestScript : DialogScriptBase
                     if (source.Trackers.Flags.HasFlag(SavedChild.savedchild))
                     {
                         Logger.WithTopics(
-                                Topics.Entities.Aisling,
+                                [Topics.Entities.Aisling,
                                 Topics.Entities.Experience,
                                 Topics.Entities.Dialog,
-                                Topics.Entities.Quest)
+                                Topics.Entities.Quest])
                             .WithProperty(source)
                             .WithProperty(Subject)
                             .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, fiftyPercent);

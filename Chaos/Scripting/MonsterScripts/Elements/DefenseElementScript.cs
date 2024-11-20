@@ -1,4 +1,5 @@
 ﻿using Chaos.Common.Definitions;
+using Chaos.DarkAges.Definitions;
 using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 

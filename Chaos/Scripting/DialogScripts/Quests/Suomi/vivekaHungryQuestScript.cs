@@ -1,5 +1,6 @@
 ﻿using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
+using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Models.Legend;
@@ -134,11 +135,11 @@ public class VivekaHungryQuestScript : DialogScriptBase
                         source.GiveItemOrSendToBank(wine2);
 
                         Logger.WithTopics(
-                                Topics.Entities.Aisling,
+                                [Topics.Entities.Aisling,
                                 Topics.Entities.Gold,
                                 Topics.Entities.Experience,
                                 Topics.Entities.Dialog,
-                                Topics.Entities.Quest)
+                                Topics.Entities.Quest])
                             .WithProperty(source)
                             .WithProperty(Subject)
                             .LogInformation(
@@ -196,11 +197,11 @@ public class VivekaHungryQuestScript : DialogScriptBase
                         source.Trackers.TimedEvents.AddEvent("vivekahungrycd", TimeSpan.FromHours(22), true);
 
                         Logger.WithTopics(
-                                Topics.Entities.Aisling,
+                                [Topics.Entities.Aisling,
                                 Topics.Entities.Gold,
                                 Topics.Entities.Experience,
                                 Topics.Entities.Dialog,
-                                Topics.Entities.Quest)
+                                Topics.Entities.Quest])
                             .WithProperty(source)
                             .WithProperty(Subject)
                             .LogInformation(

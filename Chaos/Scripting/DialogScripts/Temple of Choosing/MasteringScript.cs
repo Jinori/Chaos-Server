@@ -1,4 +1,5 @@
 using Chaos.Common.Definitions;
+using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
@@ -313,7 +314,7 @@ public class MasteringScript : DialogScriptBase
                 source.Trackers.Enums.Set(ClassStatBracket.Master);
                 
                 Logger.WithTopics(
-                          Topics.Entities.Aisling, Topics.Actions.Promote, Topics.Entities.Quest)
+                          [Topics.Entities.Aisling, Topics.Actions.Promote, Topics.Entities.Quest])
                       .WithProperty(Subject)
                       .LogInformation("{@AislingName} has become a master aisling", source.Name);
                 
@@ -388,9 +389,9 @@ public class MasteringScript : DialogScriptBase
             source.GiveItemOrSendToBank(item);
         
         Logger.WithTopics(
-                  Topics.Entities.Aisling,
+                  [Topics.Entities.Aisling,
                   Topics.Entities.Item,
-                  Topics.Actions.Create)
+                  Topics.Actions.Create])
               .WithProperty(Subject)
               .WithProperty(itemsToGive)
               .LogInformation("{@AislingName} has received {@Armor}, {@Helm}, {@Weapon} from mastering", source.Name, armor.DisplayName, helm.DisplayName, weapon.DisplayName);
@@ -424,9 +425,9 @@ public class MasteringScript : DialogScriptBase
             source.GiveItemOrSendToBank(item);
         
         Logger.WithTopics(
-                  Topics.Entities.Aisling,
+                  [Topics.Entities.Aisling,
                   Topics.Entities.Item,
-                  Topics.Actions.Create)
+                  Topics.Actions.Create])
               .WithProperty(Subject)
               .WithProperty(itemsToGive)
               .LogInformation("{@AislingName} has received {@Armor}, {@Helm}, {@Weapon} from mastering", source.Name, armor.DisplayName, helm.DisplayName, weapon.DisplayName);
@@ -465,9 +466,9 @@ public class MasteringScript : DialogScriptBase
             source.GiveItemOrSendToBank(item);
         
         Logger.WithTopics(
-                  Topics.Entities.Aisling,
+                  [Topics.Entities.Aisling,
                   Topics.Entities.Item,
-                  Topics.Actions.Create)
+                  Topics.Actions.Create])
               .WithProperty(Subject)
               .WithProperty(itemsToGive)
               .LogInformation("{@AislingName} has received {@Armor}, {@Helm}, {@Weapon} from mastering", source.Name, armor.DisplayName, helm.DisplayName, weapon.DisplayName);
@@ -502,9 +503,9 @@ public class MasteringScript : DialogScriptBase
             source.GiveItemOrSendToBank(item);
         
         Logger.WithTopics(
-                  Topics.Entities.Aisling,
+                  [Topics.Entities.Aisling,
                   Topics.Entities.Item,
-                  Topics.Actions.Create)
+                  Topics.Actions.Create])
               .WithProperty(Subject)
               .WithProperty(itemsToGive)
               .LogInformation("{@AislingName} has received {@Armor}, {@Helm}, {@Weapon} from mastering", source.Name, armor.DisplayName, helm.DisplayName, weapon.DisplayName);
@@ -533,9 +534,9 @@ public class MasteringScript : DialogScriptBase
             source.GiveItemOrSendToBank(item);
         
         Logger.WithTopics(
-                  Topics.Entities.Aisling,
+                  [Topics.Entities.Aisling,
                   Topics.Entities.Item,
-                  Topics.Actions.Create)
+                  Topics.Actions.Create])
               .WithProperty(Subject)
               .WithProperty(itemsToGive)
               .LogInformation("{@AislingName} has received {@Armor}, {@Helm}, {@Weapon} from mastering", source.Name, armor.DisplayName, helm.DisplayName, weapon.DisplayName);

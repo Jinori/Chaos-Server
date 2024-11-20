@@ -1,5 +1,6 @@
 ﻿using Chaos.Collections;
 using Chaos.Common.Definitions;
+using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
@@ -91,7 +92,7 @@ public class PriestDedicateScript : DialogScriptBase
             source.Animate(ani, source.Id);
             
             Logger.WithTopics(
-                      Topics.Entities.Aisling, Topics.Actions.Promote)
+                      [Topics.Entities.Aisling, Topics.Actions.Promote])
                   .WithProperty(Subject)
                   .LogInformation("{@AislingName} has become priest", source.Name);
         }

@@ -1,4 +1,5 @@
 ﻿using Chaos.Common.Definitions;
+using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Models.Legend;
@@ -153,11 +154,11 @@ public class DragonScaleQuestScript : DialogScriptBase
                         source.Trackers.TimedEvents.AddEvent("dragonscalewait", TimeSpan.FromHours(1), true);
 
                         Logger.WithTopics(
-                                Topics.Entities.Aisling,
+                                [Topics.Entities.Aisling,
                                 Topics.Entities.Gold,
                                 Topics.Entities.Experience,
                                 Topics.Entities.Dialog,
-                                Topics.Entities.Quest)
+                                Topics.Entities.Quest])
                             .WithProperty(source)
                             .WithProperty(Subject)
                             .LogInformation(
@@ -361,11 +362,11 @@ public class DragonScaleQuestScript : DialogScriptBase
                         source.Trackers.TimedEvents.AddEvent("dragonscalewait", TimeSpan.FromHours(1), true);
 
                         Logger.WithTopics(
-                                Topics.Entities.Aisling,
+                                [Topics.Entities.Aisling,
                                 Topics.Entities.Gold,
                                 Topics.Entities.Experience,
                                 Topics.Entities.Dialog,
-                                Topics.Entities.Quest)
+                                Topics.Entities.Quest])
                             .WithProperty(source)
                             .WithProperty(Subject)
                             .LogInformation(
@@ -512,11 +513,11 @@ public class DragonScaleQuestScript : DialogScriptBase
                         source.Trackers.TimedEvents.AddEvent("dragonscalewait", TimeSpan.FromHours(1), true);
 
                         Logger.WithTopics(
-                                Topics.Entities.Aisling,
+                                [Topics.Entities.Aisling,
                                 Topics.Entities.Gold,
                                 Topics.Entities.Experience,
                                 Topics.Entities.Dialog,
-                                Topics.Entities.Quest)
+                                Topics.Entities.Quest])
                             .WithProperty(source)
                             .WithProperty(Subject)
                             .LogInformation(
@@ -664,11 +665,11 @@ public class DragonScaleQuestScript : DialogScriptBase
                         source.Trackers.TimedEvents.AddEvent("dragonscalewait", TimeSpan.FromHours(1), true);
 
                         Logger.WithTopics(
-                                Topics.Entities.Aisling,
+                                [Topics.Entities.Aisling,
                                 Topics.Entities.Gold,
                                 Topics.Entities.Experience,
                                 Topics.Entities.Dialog,
-                                Topics.Entities.Quest)
+                                Topics.Entities.Quest])
                             .WithProperty(source)
                             .WithProperty(Subject)
                             .LogInformation(
@@ -815,11 +816,11 @@ public class DragonScaleQuestScript : DialogScriptBase
                         source.Trackers.TimedEvents.AddEvent("dragonscalewait", TimeSpan.FromHours(1), true);
 
                         Logger.WithTopics(
-                                Topics.Entities.Aisling,
+                                [Topics.Entities.Aisling,
                                 Topics.Entities.Gold,
                                 Topics.Entities.Experience,
                                 Topics.Entities.Dialog,
-                                Topics.Entities.Quest)
+                                Topics.Entities.Quest])
                             .WithProperty(source)
                             .WithProperty(Subject)
                             .LogInformation(
