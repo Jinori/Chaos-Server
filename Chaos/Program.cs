@@ -1,3 +1,4 @@
+#region
 using System.Diagnostics;
 using System.Runtime;
 using System.Text;
@@ -34,6 +35,7 @@ using NLog;
 using NLog.Extensions.Logging;
 using AppContext = Chaos.AppContext;
 using Attributes = Chaos.Models.Data.Attributes;
+#endregion
 
 var encodingProvider = CodePagesEncodingProvider.Instance;
 Encoding.RegisterProvider(encodingProvider);
@@ -415,7 +417,7 @@ static void RegisterStructuredLoggingTransformations()
                                  Type = obj.Template.Type,
                                  Contextual = obj.Template.Contextual,
                                  HasContext = obj.Context is not null,
-                                 HasMenuArgs = obj.MenuArgs.Any()
+                                 HasMenuArgs = obj.MenuArgs.Count != 0
                              });
 
                          builder.RegisterObjectTransformation<Exchange>(

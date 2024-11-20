@@ -1,7 +1,9 @@
-﻿using System.Text.Json.Serialization;
+﻿#region
+using System.Text.Json.Serialization;
 using Chaos.Geometry.Abstractions;
 using Chaos.Geometry.Definitions;
 using Chaos.Geometry.JsonConverters;
+#endregion
 
 namespace Chaos.Geometry;
 
@@ -66,6 +68,11 @@ public readonly struct Point : IPoint, IEquatable<IPoint>, IEquatable<Point>
     ///     A tuple of two ints
     /// </param>
     public static implicit operator Point((int X, int Y) tuple) => new(tuple.X, tuple.Y);
+
+    /// <summary>
+    ///     Implicitly converts a ref struct point to a struct point
+    /// </summary>
+    public static implicit operator Point(ValuePoint point) => new(point.X, point.Y);
 
     /// <summary>
     ///     Determines inequality between a <see cref="Point" /> and any implementation of <see cref="IPoint" />
@@ -163,7 +170,7 @@ public readonly struct Point : IPoint, IEquatable<IPoint>, IEquatable<Point>
     public static bool TryParse(string str, out Point point)
     {
         point = new Point();
-        var match = RegexCache.POINT_REGEX.Match(str);
+        var match = RegexCache.PointRegex.Match(str);
 
         if (!match.Success)
             return false;

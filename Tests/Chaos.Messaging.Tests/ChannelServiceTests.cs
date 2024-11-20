@@ -1,4 +1,6 @@
-using Chaos.Common.Definitions;
+#region
+using Chaos.DarkAges.Definitions;
+using Chaos.DarkAges.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Messaging.Abstractions;
 using Chaos.Testing.Infrastructure.Mocks;
@@ -6,7 +8,7 @@ using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
-using Xunit;
+#endregion
 
 namespace Chaos.Messaging.Tests;
 
@@ -39,13 +41,13 @@ public sealed class ChannelServiceTests
         ChannelService = new ChannelService(ChannelServiceOptions, LoggerMock.Object);
     }
 
-    [Fact]
+    [Test]
     public void ContainsChannel_ShouldReturnFalseForNonExistentChannel()
         => ChannelService.ContainsChannel("!NonExistentChannel")
                          .Should()
                          .BeFalse();
 
-    [Fact]
+    [Test]
     public void GetSubscribers_ShouldReturnEmptyForNonExistentChannel()
     {
         var subscribers = ChannelService.GetSubscribers("!NonExistentChannel");
@@ -54,19 +56,19 @@ public sealed class ChannelServiceTests
                    .BeEmpty();
     }
 
-    [Fact]
+    [Test]
     public void IsChannel_ShouldReturnFalseIfDoesNotStartWithChannelPrefix()
         => ChannelService.IsChannel("Test")
                          .Should()
                          .BeFalse();
 
-    [Fact]
+    [Test]
     public void IsChannel_ShouldReturnTrueIfStartsWithChannelPrefix()
         => ChannelService.IsChannel("!Test")
                          .Should()
                          .BeTrue();
 
-    [Fact]
+    [Test]
     public void JoinChannel_ReservedChannelWithoutBypassValidation_ShouldFail()
     {
         ChannelService.JoinChannel(SubscriberMock.Object, "!Reserved");
@@ -74,7 +76,7 @@ public sealed class ChannelServiceTests
         SubscriberMock.Verify(s => s.SendMessage("Channel !Reserved not found"), Times.Once);
     }
 
-    [Fact]
+    [Test]
     public void JoinChannel_ShouldAddSubscriber()
     {
         ChannelService.RegisterChannel(
@@ -91,7 +93,7 @@ public sealed class ChannelServiceTests
                       .BeTrue();
     }
 
-    [Fact]
+    [Test]
     public void JoinChannel_ShouldFailForNonExistentChannel()
     {
         ChannelService.JoinChannel(SubscriberMock.Object, "!NonExistentChannel");
@@ -99,7 +101,7 @@ public sealed class ChannelServiceTests
         SubscriberMock.Verify(s => s.SendMessage("Channel !NonExistentChannel not found"), Times.Once);
     }
 
-    [Fact]
+    [Test]
     public void JoinChannel_WhenSubscriberAlreadySubscribed_ShouldNotAddSubscriber()
     {
         ChannelService.RegisterChannel(
@@ -118,7 +120,7 @@ public sealed class ChannelServiceTests
         SubscriberMock.Verify(s => s.SendMessage("You are already in channel !Test"), Times.Once);
     }
 
-    [Fact]
+    [Test]
     public void JoinChannel_WithBypassValidation_ShouldAddSubscriber()
     {
         ChannelService.RegisterChannel(
@@ -149,7 +151,7 @@ public sealed class ChannelServiceTests
                       .BeTrue();
     }
 
-    [Fact]
+    [Test]
     public void LeaveChannel_ShouldFailForNonExistentChannel()
     {
         ChannelService.LeaveChannel(SubscriberMock.Object, "!NonExistentChannel");
@@ -157,7 +159,7 @@ public sealed class ChannelServiceTests
         SubscriberMock.Verify(s => s.SendMessage("You are not in !NonExistentChannel"), Times.Once);
     }
 
-    [Fact]
+    [Test]
     public void LeaveChannel_ShouldRemoveSubscriber()
     {
         ChannelService.RegisterChannel(
@@ -175,7 +177,7 @@ public sealed class ChannelServiceTests
                       .BeFalse();
     }
 
-    [Fact]
+    [Test]
     public void LeaveChannel_WhenNotInChannel_ShouldNotRemoveSubscriber()
     {
         ChannelService.RegisterChannel(
@@ -193,7 +195,7 @@ public sealed class ChannelServiceTests
         SubscriberMock.Verify(s => s.SendMessage("You are not in channel !Test"), Times.Once);
     }
 
-    [Fact]
+    [Test]
     public void RegisterChannel_ChannelNameTooLong_ShouldFail()
     {
         var nameTooLongStr = $"!{new string('a', ChannelServiceOptions.Value.MaxChannelNameLength + 1)}";
@@ -210,7 +212,7 @@ public sealed class ChannelServiceTests
         SubscriberMock.Verify(s => s.SendMessage("Channel name is too long"), Times.Once);
     }
 
-    [Fact]
+    [Test]
     public void RegisterChannel_ChannelNameTooShort_ShouldFail()
     {
         ChannelService.RegisterChannel(
@@ -225,7 +227,7 @@ public sealed class ChannelServiceTests
         SubscriberMock.Verify(s => s.SendMessage("Channel name is too short"), Times.Once);
     }
 
-    [Fact]
+    [Test]
     public void RegisterChannel_ExistingChannel_ShouldFail()
     {
         ChannelService.RegisterChannel(
@@ -243,7 +245,7 @@ public sealed class ChannelServiceTests
         SubscriberMock.Verify(s => s.SendMessage("Channel already exists"), Times.Once);
     }
 
-    [Fact]
+    [Test]
     public void RegisterChannel_ShouldAddChannel()
     {
         ChannelService.RegisterChannel(
@@ -257,7 +259,7 @@ public sealed class ChannelServiceTests
                       .BeTrue();
     }
 
-    [Fact]
+    [Test]
     public void RegisterChannel_WithBlacklistedName_ShouldFail()
     {
         ChannelService.RegisterChannel(
@@ -272,7 +274,7 @@ public sealed class ChannelServiceTests
         SubscriberMock.Verify(s => s.SendMessage("Invalid channel name"), Times.Once);
     }
 
-    [Fact]
+    [Test]
     public void RegisterChannel_WithReservedName_ShouldFail()
     {
         ChannelService.RegisterChannel(
@@ -288,7 +290,7 @@ public sealed class ChannelServiceTests
         SubscriberMock.Verify(s => s.SendMessage("Invalid channel name"), Times.Once);
     }
 
-    [Fact]
+    [Test]
     public void RegisterChannel_WithSubscriber_ShouldJoinChannel()
     {
         ChannelService.RegisterChannel(
@@ -303,7 +305,7 @@ public sealed class ChannelServiceTests
                       .BeTrue();
     }
 
-    [Fact]
+    [Test]
     public void SendMessage_ShouldFailForNonExistentChannel()
     {
         ChannelService.SendMessage(SubscriberMock.Object, "!NonExistentChannel", "Test message");
@@ -311,7 +313,7 @@ public sealed class ChannelServiceTests
         SubscriberMock.Verify(s => s.SendMessage("Channel !NonExistentChannel not found"), Times.Once);
     }
 
-    [Fact]
+    [Test]
     public void SendMessage_ShouldFailIfSubscriberNotInChannel()
     {
         ChannelService.RegisterChannel(
@@ -325,7 +327,7 @@ public sealed class ChannelServiceTests
         SubscriberMock.Verify(s => s.SendMessage("You are not in that channel"), Times.Once);
     }
 
-    [Fact]
+    [Test]
     public void SendMessage_ShouldSendToSubscribers()
     {
         ChannelService.RegisterChannel(
@@ -341,7 +343,7 @@ public sealed class ChannelServiceTests
             Times.AtLeastOnce);
     }
 
-    [Fact]
+    [Test]
     public void SendMessage_TruncateLongString_ShouldSendTruncatedMessage()
     {
         ChannelService.RegisterChannel(
@@ -360,7 +362,7 @@ public sealed class ChannelServiceTests
             Times.AtLeastOnce);
     }
 
-    [Fact]
+    [Test]
     public void SendMessage_WithColorOverride_ShouldSendToSubscribersWithColorOverride()
     {
         ChannelService.RegisterChannel(
@@ -380,7 +382,7 @@ public sealed class ChannelServiceTests
             Times.AtLeastOnce);
     }
 
-    [Fact]
+    [Test]
     public void SendMessage_WithCustomColor_ShouldSendToSubscribersWithCustomColor()
     {
         ChannelService.RegisterChannel(
@@ -398,7 +400,7 @@ public sealed class ChannelServiceTests
             Times.AtLeastOnce);
     }
 
-    [Fact]
+    [Test]
     public void SetChannelColor_ShouldFailIfNotInChannel()
     {
         ChannelService.RegisterChannel(
@@ -412,13 +414,13 @@ public sealed class ChannelServiceTests
         SubscriberMock.Verify(s => s.SendMessage("You are not in channel !Test"), Times.Once);
     }
 
-    [Fact]
+    [Test]
     public void UnregisterChannel_ShouldFailForNonExistentChannel()
         => ChannelService.UnregisterChannel("!NonExistentChannel")
                          .Should()
                          .BeFalse();
 
-    [Fact]
+    [Test]
     public void UnregisterChannel_ShouldRemoveAllSubscribers()
     {
         ChannelService.RegisterChannel(
@@ -436,7 +438,7 @@ public sealed class ChannelServiceTests
                       .BeEmpty();
     }
 
-    [Fact]
+    [Test]
     public void UnregisterChannel_ShouldRemoveChannel()
     {
         ChannelService.RegisterChannel(

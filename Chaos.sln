@@ -14,6 +14,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{698D32AB-9BC9-4B0A-B5DD-19D98C0358DB}"
 	ProjectSection(SolutionItems) = preProject
 		Tools\Directory.Build.props = Tools\Directory.Build.props
+		Tools\do-release.bat = Tools\do-release.bat
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Benchmarks", "Tools\Benchmarks\Benchmarks.csproj", "{CAF46A23-C840-4278-BEF3-A65C4D51806C}"
@@ -114,6 +115,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 		docs\articles\ChaosTool.md = docs\articles\ChaosTool.md
 		docs\articles\BulletinBoards.md = docs\articles\BulletinBoards.md
 		docs\articles\ReactorTiles.md = docs\articles\ReactorTiles.md
+		docs\articles\ChaosAssetManager.md = docs\articles\ChaosAssetManager.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chaos.Storage", "Chaos.Storage\Chaos.Storage.csproj", "{776DB858-7973-4458-A923-49C31CC934C7}"
@@ -160,6 +162,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chaos.Wpf", "Chaos.Wpf\Chaos.Wpf.csproj", "{1335854C-C791-41EA-9EA0-0EE699DF1E6E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chaos.Collections", "Chaos.Collections\Chaos.Collections.csproj", "{A8FB8CC5-D1FB-4C61-9C06-79E3E27B723E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chaos.DarkAges", "Chaos.DarkAges\Chaos.DarkAges.csproj", "{563DD75B-0CB4-4327-BB8F-88B59D464DA6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -355,6 +359,10 @@ Global
 		{A8FB8CC5-D1FB-4C61-9C06-79E3E27B723E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8FB8CC5-D1FB-4C61-9C06-79E3E27B723E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8FB8CC5-D1FB-4C61-9C06-79E3E27B723E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{563DD75B-0CB4-4327-BB8F-88B59D464DA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{563DD75B-0CB4-4327-BB8F-88B59D464DA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{563DD75B-0CB4-4327-BB8F-88B59D464DA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{563DD75B-0CB4-4327-BB8F-88B59D464DA6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2,7 +2,7 @@ using System.Configuration;
 using System.Net;
 using System.Net.Sockets;
 using Chaos.Common.Abstractions;
-using Chaos.Common.Definitions;
+using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Messaging.Abstractions;
 using Chaos.MetaData;
@@ -63,6 +63,7 @@ public sealed class OptionsConfigurer(IStagingDirectory stagingDirectory, IChann
         options.UseBaseDirectory(StagingDirectory.StagingDirectory);
 
         // ReSharper disable once ArrangeMethodOrOperatorBody
+        //add more mutators here
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(MagicPrefixScript.Mutate));
 
         //dyeable mutator

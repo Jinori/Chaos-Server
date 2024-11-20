@@ -1,3 +1,4 @@
+#region
 using Chaos.Common.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Models.Abstractions;
@@ -5,6 +6,7 @@ using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.TypeMapper.Abstractions;
+#endregion
 
 namespace Chaos.Utilities;
 
@@ -405,12 +407,14 @@ public static class ComplexActionHelper
         return LearnSpellResult.NoRoom;
     }
 
-    public static RemoveManyItemsResult RemoveManyItems(Aisling source, params (string ItemNameOrTemplateKey, int Amount)[] items)
+    public static RemoveManyItemsResult RemoveManyItems(
+        Aisling source,
+        params IReadOnlyCollection<(string ItemNameOrTemplateKey, int Amount)> items)
     {
         ArgumentNullException.ThrowIfNull(source);
         ArgumentNullException.ThrowIfNull(items);
 
-        if (items.Length == 0)
+        if (items.Count == 0)
             return RemoveManyItemsResult.Success;
 
         var groupedItems = items.GroupBy(item => item.ItemNameOrTemplateKey)
@@ -426,7 +430,7 @@ public static class ComplexActionHelper
         return RemoveManyItemsResult.Success;
     }
 
-    public static RemoveManyItemsResult RemoveManyItems(Aisling source, params Item[] items)
+    public static RemoveManyItemsResult RemoveManyItems(Aisling source, params IEnumerable<Item> items)
         => RemoveManyItems(
             source,
             items.Select(item => (item.DisplayName, item.Count))

@@ -1,3 +1,4 @@
+#region
 using Chaos.Common.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Models.Abstractions;
@@ -10,6 +11,7 @@ using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Utilities;
+#endregion
 
 namespace Chaos.Scripting.DialogScripts.TrainerScripts
 {
@@ -176,7 +178,12 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
             switch (learnSpellResult)
             {
                 case ComplexActionHelper.LearnSpellResult.Success:
-                    Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Spell, Topics.Actions.Learn)
+                    Logger.WithTopics(
+                          [
+                              Topics.Entities.Aisling,
+                              Topics.Entities.Spell,
+                              Topics.Actions.Learn
+                          ])
                           .WithProperty(Subject)
                           .WithProperty(Subject.DialogSource)
                           .WithProperty(source)
@@ -370,10 +377,10 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
                 dialog.ReplyToUnknownInput(source);
 
                 Logger.WithTopics(
-                          Topics.Entities.Aisling,
+                          [Topics.Entities.Aisling,
                           Topics.Entities.Spell,
                           Topics.Actions.Learn,
-                          Topics.Qualifiers.Cheating)
+                          Topics.Qualifiers.Cheating])
                       .WithProperty(Subject)
                       .WithProperty(Subject.DialogSource)
                       .WithProperty(source)
@@ -391,10 +398,10 @@ namespace Chaos.Scripting.DialogScripts.TrainerScripts
                 dialog.ReplyToUnknownInput(source);
 
                 Logger.WithTopics(
-                          Topics.Entities.Aisling,
+                          [Topics.Entities.Aisling,
                           Topics.Entities.Spell,
                           Topics.Actions.Learn,
-                          Topics.Qualifiers.Cheating)
+                          Topics.Qualifiers.Cheating])
                       .WithProperty(Subject)
                       .WithProperty(Subject.DialogSource)
                       .WithProperty(source)

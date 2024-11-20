@@ -1,3 +1,4 @@
+#region
 using Chaos.Collections;
 using Chaos.Extensions;
 using Chaos.Models.World;
@@ -6,6 +7,7 @@ using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Scripting.ReactorTileScripts;
 using Chaos.Services.Servers.Options;
+#endregion
 
 namespace Chaos.Scripting.MonsterScripts
 {

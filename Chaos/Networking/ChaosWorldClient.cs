@@ -1,8 +1,10 @@
+#region
 using System.Net.Sockets;
 using Chaos.Collections;
 using Chaos.Collections.Abstractions;
-using Chaos.Common.Definitions;
 using Chaos.Cryptography.Abstractions;
+using Chaos.DarkAges.Definitions;
+using Chaos.DarkAges.Extensions;
 using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Common;
@@ -16,15 +18,16 @@ using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Networking.Abstractions;
+using Chaos.Networking.Abstractions.Definitions;
 using Chaos.Networking.Entities.Server;
 using Chaos.NLog.Logging.Definitions;
 using Chaos.NLog.Logging.Extensions;
 using Chaos.Packets;
 using Chaos.Packets.Abstractions;
-using Chaos.Packets.Abstractions.Definitions;
 using Chaos.Services.Storage.Abstractions;
 using Chaos.TypeMapper.Abstractions;
 using Microsoft.Extensions.Options;
+#endregion
 
 namespace Chaos.Networking;
 
@@ -835,11 +838,13 @@ public sealed class ChaosWorldClient : WorldClientBase, IChaosWorldClient
 
         if (LogRawPackets)
             Logger.WithTopics(
-                      Topics.Servers.WorldServer,
-                      Topics.Qualifiers.Raw,
-                      Topics.Entities.Client,
-                      Topics.Entities.Packet,
-                      Topics.Actions.Receive)
+                      [
+                          Topics.Servers.WorldServer,
+                          Topics.Qualifiers.Raw,
+                          Topics.Entities.Client,
+                          Topics.Entities.Packet,
+                          Topics.Actions.Receive
+                      ])
                   .WithProperty(this)
                   .LogTrace("[Rcv] {@Packet}", packet.ToString());
 

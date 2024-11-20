@@ -1,3 +1,4 @@
+#region
 using System.Buffers;
 using System.Net;
 using System.Net.Sockets;
@@ -11,6 +12,7 @@ using Chaos.NLog.Logging.Extensions;
 using Chaos.Packets;
 using Chaos.Packets.Abstractions;
 using Microsoft.Extensions.Logging;
+#endregion
 
 namespace Chaos.Networking.Abstractions;
 
@@ -150,6 +152,9 @@ public abstract class SocketClientBase : ISocketClient, IDisposable
     /// <inheritdoc />
     public virtual async void BeginReceive()
     {
+        if (!Socket.Connected)
+            return;
+
         Connected = true;
         await Task.Yield();
 
@@ -208,7 +213,12 @@ public abstract class SocketClientBase : ISocketClient, IDisposable
                                               .Replace("-", " ");
                         var ascii = Encoding.ASCII.GetString(buffer);
 
-                        Logger.WithTopics(Topics.Entities.Client, Topics.Entities.Packet, Topics.Actions.Processing)
+                        Logger.WithTopics(
+                                  [
+                                      Topics.Entities.Client,
+                                      Topics.Entities.Packet,
+                                      Topics.Actions.Processing
+                                  ])
                               .WithProperty(this)
                               .LogError(
                                   ex,
@@ -263,17 +273,19 @@ public abstract class SocketClientBase : ISocketClient, IDisposable
     /// <inheritdoc />
     public virtual void Send(ref Packet packet)
     {
-        if (!Connected)
+        if (!Connected || !Socket.Connected)
             return;
 
         //no way to pass the packet in because its a ref struct
         //but we still want to avoid serializing the packet to a string if we aren't actually going to log it
         if (LogRawPackets)
             Logger.WithTopics(
-                      Topics.Qualifiers.Raw,
-                      Topics.Entities.Client,
-                      Topics.Entities.Packet,
-                      Topics.Actions.Send)
+                      [
+                          Topics.Qualifiers.Raw,
+                          Topics.Entities.Client,
+                          Topics.Entities.Packet,
+                          Topics.Actions.Send
+                      ])
                   .WithProperty(this)
                   .LogTrace("[Snd] {Packet}", packet.ToString());
 

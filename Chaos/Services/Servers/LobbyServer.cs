@@ -1,21 +1,23 @@
+#region
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Reactive.Subjects;
 using System.Text;
 using Chaos.Common.Abstractions;
-using Chaos.Common.Definitions;
 using Chaos.Common.Identity;
+using Chaos.DarkAges.Definitions;
 using Chaos.Networking.Abstractions;
+using Chaos.Networking.Abstractions.Definitions;
 using Chaos.Networking.Entities;
 using Chaos.Networking.Entities.Client;
 using Chaos.NLog.Logging.Definitions;
 using Chaos.NLog.Logging.Extensions;
 using Chaos.Packets;
 using Chaos.Packets.Abstractions;
-using Chaos.Packets.Abstractions.Definitions;
 using Chaos.Services.Servers.Options;
 using Microsoft.Extensions.Options;
+#endregion
 
 namespace Chaos.Services.Servers;
 
@@ -86,7 +88,12 @@ public sealed class LobbyServer : ServerBase<IChaosLobbyClient>, ILobbyServer<IC
 
                         RedirectManager.Add(redirect);
 
-                        Logger.WithTopics(Topics.Servers.LobbyServer, Topics.Entities.Client, Topics.Actions.Redirect)
+                        Logger.WithTopics(
+                                  [
+                                      Topics.Servers.LobbyServer,
+                                      Topics.Entities.Client,
+                                      Topics.Actions.Redirect
+                                  ])
                               .LogDebug("Redirecting {@ClientIp} to {@ServerIp}", client.RemoteIp, serverInfo.Address.ToString());
 
                         client.SendRedirect(redirect);
@@ -114,15 +121,22 @@ public sealed class LobbyServer : ServerBase<IChaosLobbyClient>, ILobbyServer<IC
         var handler = ClientHandlers[opCode];
 
         if (handler is not null)
-            Logger.WithTopics(Topics.Servers.LobbyServer, Topics.Entities.Packet, Topics.Actions.Processing)
+            Logger.WithTopics(
+                      [
+                          Topics.Servers.LobbyServer,
+                          Topics.Entities.Packet,
+                          Topics.Actions.Processing
+                      ])
                   .WithProperty(client)
                   .LogTrace("Processing message with code {@OpCode} from {@ClientIp}", opCode, client.RemoteIp);
         else
             Logger.WithTopics(
-                      Topics.Servers.LobbyServer,
-                      Topics.Entities.Packet,
-                      Topics.Actions.Processing,
-                      Topics.Qualifiers.Cheating)
+                      [
+                          Topics.Servers.LobbyServer,
+                          Topics.Entities.Packet,
+                          Topics.Actions.Processing,
+                          Topics.Qualifiers.Cheating
+                      ])
                   .WithProperty(client)
                   .WithProperty(packet.ToString(), "HexData")
                   .LogWarning("Unknown message with code {@OpCode} from {@ClientIp}", opCode, client.RemoteIp);
@@ -145,12 +159,22 @@ public sealed class LobbyServer : ServerBase<IChaosLobbyClient>, ILobbyServer<IC
     {
         var ip = clientSocket.RemoteEndPoint as IPEndPoint;
 
-        Logger.WithTopics(Topics.Servers.LobbyServer, Topics.Entities.Client, Topics.Actions.Connect)
+        Logger.WithTopics(
+                  [
+                      Topics.Servers.LobbyServer,
+                      Topics.Entities.Client,
+                      Topics.Actions.Connect
+                  ])
               .LogDebug("Incoming connection from {@ClientIp}", ip!.Address);
 
         var client = ClientFactory.Create(clientSocket);
 
-        Logger.WithTopics(Topics.Servers.LobbyServer, Topics.Entities.Client, Topics.Actions.Connect)
+        Logger.WithTopics(
+                  [
+                      Topics.Servers.LobbyServer,
+                      Topics.Entities.Client,
+                      Topics.Actions.Connect
+                  ])
               .WithProperty(client)
               .LogInformation("Connection established with {@ClientIp}", client.RemoteIp);
 
@@ -158,7 +182,12 @@ public sealed class LobbyServer : ServerBase<IChaosLobbyClient>, ILobbyServer<IC
         {
             var stackTrace = new StackTrace(true).ToString();
 
-            Logger.WithTopics(Topics.Servers.LobbyServer, Topics.Entities.Client, Topics.Actions.Connect)
+            Logger.WithTopics(
+                      [
+                          Topics.Servers.LobbyServer,
+                          Topics.Entities.Client,
+                          Topics.Actions.Connect
+                      ])
                   .WithProperty(client.Id)
                   .WithProperty(stackTrace)
                   .LogError("Somehow, two clients got the same id");

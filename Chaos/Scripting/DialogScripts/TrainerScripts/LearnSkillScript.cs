@@ -1,3 +1,4 @@
+#region
 using Chaos.Extensions.Common;
 using Chaos.Models.Abstractions;
 using Chaos.Models.Data;
@@ -9,6 +10,7 @@ using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Utilities;
+#endregion
 
 namespace Chaos.Scripting.DialogScripts.TrainerScripts;
 
@@ -411,7 +413,12 @@ public class LearnSkillScript : DialogScriptBase
         switch (learnSkillResult)
         {
             case ComplexActionHelper.LearnSkillResult.Success:
-                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Skill, Topics.Actions.Learn)
+                Logger.WithTopics(
+                          [
+                              Topics.Entities.Aisling,
+                              Topics.Entities.Skill,
+                              Topics.Actions.Learn
+                          ])
                       .WithProperty(Subject)
                       .WithProperty(Subject.DialogSource)
                       .WithProperty(source)

@@ -1,6 +1,7 @@
+#region
 using System.Collections.Concurrent;
 using System.Text;
-using Chaos.Common.Definitions;
+using Chaos.DarkAges.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.IO.Memory;
 using Chaos.Messaging.Abstractions;
@@ -8,6 +9,7 @@ using Chaos.NLog.Logging.Definitions;
 using Chaos.NLog.Logging.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+#endregion
 
 namespace Chaos.Messaging;
 
@@ -72,7 +74,11 @@ public sealed class ChannelService : IChannelService
             return false;
         }
 
-        Logger.WithTopics(Topics.Entities.Channel, Topics.Actions.Join)
+        Logger.WithTopics(
+                  [
+                      Topics.Entities.Channel,
+                      Topics.Actions.Join
+                  ])
               .WithProperty(subscriber)
               .LogDebug("{@SubscriberName} has joined channel {@ChannelName}", subscriber.Name, channelName);
 
@@ -97,7 +103,11 @@ public sealed class ChannelService : IChannelService
 
         if (channelDetails.RemoveSubscriber(subscriber))
         {
-            Logger.WithTopics(Topics.Entities.Channel, Topics.Actions.Leave)
+            Logger.WithTopics(
+                      [
+                          Topics.Entities.Channel,
+                          Topics.Actions.Leave
+                      ])
                   .WithProperty(subscriber)
                   .LogDebug("{@SubscriberName} has left channel {@ChannelName}", subscriber.Name, channelName);
 
@@ -168,7 +178,11 @@ public sealed class ChannelService : IChannelService
         //only log if this person successfully created the channel
         //in a concurrent scenario this may return false due to someone else creating the channel first
         if (Channels.TryAdd(channelName, new ChannelDetails(defaultMessageColor, sendMessageAction, channelNameOverride)))
-            Logger.WithTopics(Topics.Entities.Channel, Topics.Actions.Create)
+            Logger.WithTopics(
+                      [
+                          Topics.Entities.Channel,
+                          Topics.Actions.Create
+                      ])
                   .LogInformation("Channel {@ChannelName} has been registered", channelName);
 
         //either way, join the channel
@@ -229,7 +243,12 @@ public sealed class ChannelService : IChannelService
 
         var defaultMessage = Encoding.Default.GetString(buffer);
 
-        Logger.WithTopics(Topics.Entities.Channel, Topics.Entities.Message, Topics.Actions.Send)
+        Logger.WithTopics(
+                  [
+                      Topics.Entities.Channel,
+                      Topics.Entities.Message,
+                      Topics.Actions.Send
+                  ])
               .WithProperty(subscriber)
               .LogInformation(
                   "Subscriber {@SubscriberName} sent message {@Message} to channel {@ChannelName}",
@@ -287,7 +306,11 @@ public sealed class ChannelService : IChannelService
         foreach (var subDetails in channel.Subscribers.Values)
             LeaveChannel(subDetails.Subscriber, channelName);
 
-        Logger.WithTopics(Topics.Entities.Channel, Topics.Actions.Delete)
+        Logger.WithTopics(
+                  [
+                      Topics.Entities.Channel,
+                      Topics.Actions.Delete
+                  ])
               .LogInformation("Channel {@ChannelName} has been unregistered", channelName);
 
         return Channels.TryRemove(channelName, out _);

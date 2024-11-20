@@ -1,17 +1,19 @@
+#region
 using System.Net;
 using System.Net.Sockets;
 using Chaos.Common.Synchronization;
 using Chaos.Extensions.Common;
+using Chaos.Networking.Abstractions.Definitions;
 using Chaos.Networking.Entities.Client;
 using Chaos.Networking.Options;
 using Chaos.NLog.Logging.Definitions;
 using Chaos.NLog.Logging.Extensions;
 using Chaos.Packets;
 using Chaos.Packets.Abstractions;
-using Chaos.Packets.Abstractions.Definitions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+#endregion
 
 namespace Chaos.Networking.Abstractions;
 
@@ -257,7 +259,11 @@ public abstract class ServerBase<T> : BackgroundService, IServer<T> where T: ICo
             await action(client, args);
         } catch (Exception e)
         {
-            Logger.WithTopics(Topics.Entities.Packet, Topics.Actions.Processing)
+            Logger.WithTopics(
+                      [
+                          Topics.Entities.Packet,
+                          Topics.Actions.Processing
+                      ])
                   .WithProperty(client)
                   .LogError(
                       e,
@@ -288,7 +294,11 @@ public abstract class ServerBase<T> : BackgroundService, IServer<T> where T: ICo
             await action(client);
         } catch (Exception e)
         {
-            Logger.WithTopics(Topics.Entities.Packet, Topics.Actions.Processing)
+            Logger.WithTopics(
+                      [
+                          Topics.Entities.Packet,
+                          Topics.Actions.Processing
+                      ])
                   .WithProperty(client)
                   .LogError(
                       e,
@@ -321,7 +331,11 @@ public abstract class ServerBase<T> : BackgroundService, IServer<T> where T: ICo
     {
         var args = PacketSerializer.Deserialize<ClientExceptionArgs>(in packet);
 
-        Logger.WithTopics(Topics.Entities.Packet, Topics.Actions.Processing)
+        Logger.WithTopics(
+                  [
+                      Topics.Entities.Packet,
+                      Topics.Actions.Processing
+                  ])
               .WithProperty(client)
               .LogError(
                   "{@ClientType} encountered an exception: {@Exception}",
