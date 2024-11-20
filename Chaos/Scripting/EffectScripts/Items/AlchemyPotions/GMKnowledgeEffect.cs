@@ -11,11 +11,11 @@ public class GMKnowledgeEffect : EffectBase, NonOverwritableEffectComponent.INon
 {
     public List<string> ConflictingEffectNames { get; init; } = ["GMKnowledgeEffect"];
 
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(30);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(60);
 
     protected Animation? Animation { get; } = new()
     {
-        TargetAnimation = 127,
+        TargetAnimation = 157,
         AnimationSpeed = 100
     };
 

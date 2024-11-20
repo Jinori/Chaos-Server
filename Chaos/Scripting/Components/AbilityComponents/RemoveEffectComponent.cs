@@ -20,12 +20,43 @@ public class RemoveEffectComponent : IComponent
             {
                 foreach (var effect in target.Effects.ToList()) // ToList() to avoid modification during iteration
                 {
+                    if (effect.Name == "Fury1")
+                        continue;
+
+                    if (effect.Name == "Fury2")
+                        continue;
+
+                    if (effect.Name == "Fury3")
+                        continue;
+
+                    if (effect.Name == "Fury4")
+                        continue;
+
+                    if (effect.Name == "Fury5")
+                        continue;
+
+                    if (effect.Name == "Fury6")
+                        continue;
+
                     if (effect.Name == "Invulnerability")
                         continue;
-                    
+
+                    if (effect.Name == "GM Knowledge")
+                        continue;
+
+                    if (effect.Name == "Strong Knowledge")
+                        continue;
+
+                    if (effect.Name == "Knowledge")
+                        continue;
+
+                    if (effect.Name == "Werewolf")
+                        continue;
+
                     target.Effects.Dispel(effect.Name);
                 }
             }
+
             // Exit after removing all effects
             return;
         }
@@ -33,32 +64,33 @@ public class RemoveEffectComponent : IComponent
         // If NegativeEffect is set to true, remove specific negative effects
         if (options.NegativeEffect == true)
         {
-            var negativeEffects = new[] { "Poison", "Blind", "Burn" };
+            var negativeEffects = new[]
+            {
+                "Poison",
+                "Blind",
+                "Burn"
+            };
+
             foreach (var target in targets)
             {
                 foreach (var effect in negativeEffects)
-                {
                     target.Effects.Dispel(effect);
-                }
             }
+
             // Exit after removing negative effects
             return;
         }
 
         // If EffectKey is provided, remove specific effect
         if (!string.IsNullOrEmpty(options.EffectKey))
-        {
             foreach (var target in targets)
-            {
                 target.Effects.Dispel(options.EffectKey);
-            }
-        }
     }
 
     public interface IRemoveEffectComponentOptions
     {
         string? EffectKey { get; init; }
-        bool? RemoveAllEffects { get; init; }
         bool? NegativeEffect { get; init; } // Add NegativeEffect option
+        bool? RemoveAllEffects { get; init; }
     }
 }
