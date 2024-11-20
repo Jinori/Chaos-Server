@@ -7,7 +7,6 @@ using Chaos.Models.World;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Services.Servers.Options;
 
@@ -16,8 +15,8 @@ namespace Chaos.Scripting.MonsterScripts.Boss.WestWoodlands;
 // ReSharper disable once ClassCanBeSealed.Global
 public class WWBossDeathScript : MonsterScriptBase
 {
-    protected IExperienceDistributionScript ExperienceDistributionScript { get; set; }
     private readonly IReactorTileFactory ReactorTileFactory;
+    protected IExperienceDistributionScript ExperienceDistributionScript { get; set; }
 
     /// <inheritdoc />
     public WWBossDeathScript(Monster subject, IReactorTileFactory reactorTileFactory)
@@ -59,12 +58,12 @@ public class WWBossDeathScript : MonsterScriptBase
         Subject.Items.AddRange(Subject.LootTable.GenerateLoot());
 
         if (rewardTarget?.Group != null)
-        {
             switch (rewardTarget.Group.LootOption)
             {
                 case Group.GroupLootOption.Default:
                     var droppedGold = Subject.TryDropGold(Subject, Subject.Gold, out var money);
                     var droppedITems = Subject.TryDrop(Subject, Subject.Items, out var groundItems);
+
                     if (rewardTargets is not null)
                     {
                         if (WorldOptions.Instance.LootDropsLockToRewardTargetSecs.HasValue)
@@ -81,22 +80,25 @@ public class WWBossDeathScript : MonsterScriptBase
 
                         ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
                     }
+
                     break;
                 case Group.GroupLootOption.Random:
                     // Ensure only members on the same map as the Subject (monster) receive loot
                     rewardTarget.Group.DistributeRandomized(Subject.Items, Subject);
-    
+
                     // Ensure only members on the same map as the Subject receive gold
                     rewardTarget.Group.DistributeEvenGold(Subject.Gold, Subject);
-    
+
                     // Distribute experience only to members on the same map as the monster
                     if (rewardTargets != null)
                         ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
+
                     break;
 
                 case Group.GroupLootOption.MasterLooter:
                     var droppedGold1 = Subject.TryDropGold(Subject, Subject.Gold, out var money1);
                     var droppedITems1 = Subject.TryDrop(Subject, Subject.Items, out var groundItems1);
+
                     if (rewardTargets is not null)
                     {
                         if (WorldOptions.Instance.LootDropsLockToRewardTargetSecs.HasValue)
@@ -113,13 +115,14 @@ public class WWBossDeathScript : MonsterScriptBase
 
                         ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
                     }
+
                     break;
             }
-        }
         else
         {
             var droppedGold = Subject.TryDropGold(Subject, Subject.Gold, out var money);
             var droppedITems = Subject.TryDrop(Subject, Subject.Items, out var groundItems);
+
             if (rewardTargets is not null)
             {
                 if (WorldOptions.Instance.LootDropsLockToRewardTargetSecs.HasValue)
@@ -138,11 +141,14 @@ public class WWBossDeathScript : MonsterScriptBase
             }
         }
 
-        if (Subject.MapInstance.GetEntities<Monster>()
-            .All(x => x.Name != "Elder Mage" && x.Name != "Fire Draco" && x.Name != "Twink" && x.Name != "Grunk"))
+        if (Subject.MapInstance
+                   .GetEntities<Monster>()
+                   .All(x => (x.Name != "Elder Mage") && (x.Name != "Fire Draco") && (x.Name != "Twink") && (x.Name != "Grunk")))
         {
-            var aislings = Subject.MapInstance.GetEntities<Aisling>()
-                .Where(x => x.Trackers.Enums.HasValue(WestWoodlandsDungeonQuestStage.Started)).ToList();
+            var aislings = Subject.MapInstance
+                                  .GetEntities<Aisling>()
+                                  .Where(x => x.Trackers.Enums.HasValue(WestWoodlandsDungeonQuestStage.Started))
+                                  .ToList();
 
             foreach (var aisling in aislings)
             {
@@ -154,17 +160,22 @@ public class WWBossDeathScript : MonsterScriptBase
 
             if (player == null)
                 return;
-            
+
+            if (Subject.MapInstance.Template.TemplateKey != "31103")
+                return;
+
             var portalSpawn = new Rectangle(player, 6, 6);
-            var outline = portalSpawn.GetOutline().ToList();
+
+            var outline = portalSpawn.GetOutline()
+                                     .ToList();
             Point point;
 
             do
                 point = outline.PickRandom();
             while (!Subject.MapInstance.IsWalkable(point, player.Type));
-                
+
             var reactortile = ReactorTileFactory.Create("wwdungeonescapeportal", Subject.MapInstance, Point.From(point));
-                
+
             Subject.MapInstance.SimpleAdd(reactortile);
         }
     }

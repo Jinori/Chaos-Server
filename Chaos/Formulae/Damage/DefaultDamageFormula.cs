@@ -1,13 +1,11 @@
 using System.Collections.Immutable;
 using Chaos.Common.Definitions;
 using Chaos.Extensions;
-using Chaos.Extensions.Common;
 using Chaos.Formulae.Abstractions;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
-using Chaos.Scripting.ReactorTileScripts;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
 using Chaos.Scripting.SkillScripts.Abstractions;
 using Chaos.Scripting.SpellScripts.Abstractions;
@@ -46,7 +44,6 @@ public class DefaultDamageFormula : IDamageFormula
         int damage,
         Element? elementOverride = null)
     {
-
         if (target.IsGodModeEnabled() || target.Effects.Contains("invulnerability"))
             return 0;
 
@@ -68,17 +65,18 @@ public class DefaultDamageFormula : IDamageFormula
         HandleWeaponDamage(ref damage, source);
         HandleDmgStat(ref damage, script, source);
         HandleEffectDmg(ref damage, target);
+
         return damage;
     }
 
-    protected virtual void ApplyAcModifier(ref int damage, int defenderAc) =>
-        damage = Convert.ToInt32(damage * (1 + defenderAc / 100m));
+    protected virtual void ApplyAcModifier(ref int damage, int defenderAc) => damage = Convert.ToInt32(damage * (1 + defenderAc / 100m));
 
-    protected virtual void ApplyElementalModifier(ref int damage, Element attackElement, Element defenseElement, IScript script)
-    {
-        damage = Convert.ToInt32(damage * ElementalModifierLookup[(int)attackElement][(int)defenseElement]);
-        
-    }
+    protected virtual void ApplyElementalModifier(
+        ref int damage,
+        Element attackElement,
+        Element defenseElement,
+        IScript script)
+        => damage = Convert.ToInt32(damage * ElementalModifierLookup[(int)attackElement][(int)defenseElement]);
 
     protected virtual void ApplySkillSpellModifier(ref int damage, IScript source, Creature attacker)
     {
@@ -88,10 +86,11 @@ public class DefaultDamageFormula : IDamageFormula
             {
                 if (source is not SubjectiveScriptBase<Skill> skillScript)
                     return;
-                
+
                 var addedFromPct = damage * (attacker.StatSheet.EffectiveSkillDamagePct / 100m);
-                     if (skillScript.Subject.Template.IsAssail)
-                         addedFromPct = 0;
+
+                if (skillScript.Subject.Template.IsAssail)
+                    addedFromPct = 0;
                 damage += Convert.ToInt32(attacker.StatSheet.EffectiveFlatSkillDamage + addedFromPct);
 
                 break;
@@ -113,46 +112,10 @@ public class DefaultDamageFormula : IDamageFormula
                     if (sourceScript is not null && sourceScript is not IReactorTileScript)
                         ApplySkillSpellModifier(ref damage, sourceScript, attacker);
                 }
+
                 break;
             }
         }
-    }
-
-    protected virtual void HandleAite(ref int damage, Creature defender)
-    {
-        if (defender.IsBeagAited())
-        {
-            damage = (int)(damage * 0.92);
-        }
-
-        if (defender.IsAited())
-        {
-            damage = (int)(damage * 0.85);
-        }
-
-        if (defender.IsMorAited())
-        {
-            damage = (int)(damage * 0.78);
-        }
-
-        if (defender.IsArdAited())
-        {
-            damage = (int)(damage * 0.70);
-        }
-
-        if (defender.IsBlessed())
-        {
-            damage = (int)(damage * 0.65);
-        }
-    }
-
-
-    protected virtual void HandleWeaponDamage(ref int damage, Creature attacker)
-    {
-        if (attacker is not Aisling aisling || !aisling.Equipment.TryGetObject((byte)EquipmentSlot.Weapon, out var obj))
-            return;
-
-        damage += obj.Modifiers.FlatSkillDamage;
     }
 
     protected virtual int GetDefenderAc(Creature defender)
@@ -162,11 +125,41 @@ public class DefaultDamageFormula : IDamageFormula
                 aisling.UserStatSheet.EffectiveAc,
                 WorldOptions.Instance.MinimumAislingAc,
                 WorldOptions.Instance.MaximumAislingAc),
-            _ => Math.Clamp(
-            defender.StatSheet.EffectiveAc,
-            WorldOptions.Instance.MinimumMonsterAc,
-            WorldOptions.Instance.MaximumMonsterAc)
+            _ => Math.Clamp(defender.StatSheet.EffectiveAc, WorldOptions.Instance.MinimumMonsterAc, WorldOptions.Instance.MaximumMonsterAc)
         };
+
+    protected virtual void HandleAite(ref int damage, Creature defender)
+    {
+        if (defender.IsBeagAited())
+            damage = (int)(damage * 0.92);
+
+        if (defender.IsAited())
+            damage = (int)(damage * 0.85);
+
+        if (defender.IsMorAited())
+            damage = (int)(damage * 0.78);
+
+        if (defender.IsArdAited())
+            damage = (int)(damage * 0.70);
+
+        if (defender.IsBlessed())
+            damage = (int)(damage * 0.65);
+
+        if (defender.IsTormented())
+            damage = (int)(damage * 0.68);
+    }
+
+    protected virtual void HandleChaosFist(ref int damage, IScript source, Creature attacker)
+    {
+        if (!attacker.Effects.Contains("chaosfist"))
+            return;
+
+        if (source is not SubjectiveScriptBase<Skill> skillScript)
+            return;
+
+        if (skillScript.Subject.Template.IsAssail)
+            damage = Convert.ToInt32(damage * 1.8);
+    }
 
     protected virtual void HandleClawFist(ref int damage, IScript source, Creature attacker)
     {
@@ -179,19 +172,7 @@ public class DefaultDamageFormula : IDamageFormula
         if (skillScript.Subject.Template.IsAssail)
             damage = Convert.ToInt32(damage * 1.4);
     }
-    
-    protected virtual void HandleChaosFist(ref int damage, IScript source, Creature attacker)
-    {
-        if (!attacker.Effects.Contains("chaosfist"))
-            return;
 
-        if (source is not SubjectiveScriptBase<Skill> skillScript)
-            return;
-
-        if (skillScript.Subject.Template.IsAssail)
-            damage = Convert.ToInt32(damage * 1.8);
-    }
-    
     protected virtual void HandleDmgStat(ref int damage, IScript source, Creature attacker)
     {
         if (source is not SubjectiveScriptBase<Skill> skillScript)
@@ -200,26 +181,30 @@ public class DefaultDamageFormula : IDamageFormula
         if (!skillScript.Subject.Template.IsAssail)
             return;
 
-        var damageMultiplier = 1 + (attacker.StatSheet.EffectiveDmg * 0.01);
+        var damageMultiplier = 1 + attacker.StatSheet.EffectiveDmg * 0.01;
         damage = (int)(damage * damageMultiplier);
     }
 
     protected virtual void HandleEffectDmg(ref int damage, Creature defender)
     {
         var damageMultiplier = 1.0;
-        
+
         if (defender.Effects.Contains("beagpramh"))
-        {
             damageMultiplier *= 1.25;
-        }
 
         if (defender.Effects.Contains("wolfFangFist") || defender.Effects.Contains("Crit") || defender.Effects.Contains("pramh"))
-        {
             damageMultiplier *= 2.0;
-        }
         var modifiedDamage = damage * damageMultiplier;
 
         // Round the modified damage to the nearest whole number.
         damage = (int)Math.Round(modifiedDamage);
+    }
+
+    protected virtual void HandleWeaponDamage(ref int damage, Creature attacker)
+    {
+        if (attacker is not Aisling aisling || !aisling.Equipment.TryGetObject((byte)EquipmentSlot.Weapon, out var obj))
+            return;
+
+        damage += obj.Modifiers.FlatSkillDamage;
     }
 }

@@ -10,22 +10,25 @@ namespace Chaos.Scripting.EffectScripts.Priest;
 public class MorFasDeireasEffect : EffectBase, HierarchicalEffectComponent.IHierarchicalEffectComponentOptions
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(5);
+
     public List<string> EffectNameHierarchy { get; init; } =
-    [
-        "blessing",
-        "mor fas deireas",
-        "fas deireas",
-    ];
-    
+        [
+            "torment",
+            "mor fas deireas",
+            "fas deireas"
+        ];
+
     private Animation? Animation { get; } = new()
     {
         TargetAnimation = 514,
         AnimationSpeed = 100
     };
-    
-    protected byte? Sound => 124;
+
     public override byte Icon => 106;
     public override string Name => "mor fas deireas";
+
+    protected byte? Sound => 124;
+
     public override void OnApplied()
     {
         base.OnApplied();
@@ -54,12 +57,12 @@ public class MorFasDeireasEffect : EffectBase, HierarchicalEffectComponent.IHier
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Damage has returned to normal.");
     }
-    
+
     public override bool ShouldApply(Creature source, Creature target)
     {
         var execution = new ComponentExecutor(source, target).WithOptions(this)
                                                              .ExecuteAndCheck<HierarchicalEffectComponent>();
-        
+
         return execution is not null;
     }
 }

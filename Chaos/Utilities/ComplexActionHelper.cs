@@ -17,15 +17,15 @@ public static class ComplexActionHelper
         BadInput
     }
 
-    public enum BuyItemResult
+    public enum BuyBugPointItemResult
     {
         Success,
         CantCarry,
-        NotEnoughGold,
+        NotEnoughGamePoints,
         BadInput,
         NotEnoughStock
     }
-    
+
     public enum BuyGamePointItemResult
     {
         Success,
@@ -34,12 +34,12 @@ public static class ComplexActionHelper
         BadInput,
         NotEnoughStock
     }
-    
-    public enum BuyBugPointItemResult
+
+    public enum BuyItemResult
     {
         Success,
         CantCarry,
-        NotEnoughGamePoints,
+        NotEnoughGold,
         BadInput,
         NotEnoughStock
     }
@@ -104,31 +104,103 @@ public static class ComplexActionHelper
         BadInput
     }
 
-    public static void BuyStatWithExp(
+    public static BuyBugPointItemResult BuyBugReportPointItem(
         Aisling source,
-        Stat stat,
-        long expCost
-    )
+        IBuyShopSource? shop,
+        Item fauxItem,
+        IItemFactory itemFactory,
+        ICloningService<Item> itemCloner,
+        int totalQuantityToGive,
+        int costPerStack,
+        int amountToBuy)
     {
-        if (source.UserStatSheet.TrySubtractTotalExp(expCost))
-        {
-            if (!source.UserStatSheet.IncrementStat(stat, source, true))
-            {
-                source.SendOrangeBarMessage("Something went wrong trying to increase this stat.");
-                return;
-            }
-            
-            source.Script.OnStatIncrease(stat);
-            source.Client.SendAttributes(StatUpdateType.Full);
-        }
-        else
-        {
-            source.SendOrangeBarMessage("Not enough experience to increase this stat.");
-            source.Client.SendAttributes(StatUpdateType.Full);
-        }
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(fauxItem);
+        ArgumentNullException.ThrowIfNull(itemFactory);
+        ArgumentNullException.ThrowIfNull(itemCloner);
+
+        if (totalQuantityToGive < 1)
+            return BuyBugPointItemResult.BadInput;
+
+        if (costPerStack < 0)
+            return BuyBugPointItemResult.BadInput;
+
+        // Fail fast
+        if ((shop != null) && (shop.GetStock(fauxItem.Template.TemplateKey) < totalQuantityToGive))
+            return BuyBugPointItemResult.NotEnoughStock;
+
+        if (!source.CanCarry((fauxItem, totalQuantityToGive)))
+            return BuyBugPointItemResult.CantCarry;
+
+        var totalCost = costPerStack * amountToBuy;
+
+        // Check if the player has enough bug points
+        if (!source.Trackers.Counters.TryGetValue("bugreportpoints", out var currentBugPoints) || (currentBugPoints < totalCost))
+            return BuyBugPointItemResult.NotEnoughGamePoints; // Use the same enum for insufficient funds
+
+        if ((shop != null) && !shop.TryDecrementStock(fauxItem.Template.TemplateKey, totalQuantityToGive))
+            return BuyBugPointItemResult.NotEnoughStock;
+
+        // Deduct bug points instead of game points
+        source.Trackers.Counters.Set("bugreportpoints", currentBugPoints - totalCost);
+
+        var stackedItem = itemFactory.Create(fauxItem.Template.TemplateKey, fauxItem.ScriptKeys);
+        stackedItem.Count = totalQuantityToGive;
+
+        foreach (var item in stackedItem.FixStacks(itemCloner))
+            source.Inventory.TryAddToNextSlot(item);
+
+        return BuyBugPointItemResult.Success;
     }
 
-    
+    public static BuyGamePointItemResult BuyGamePointItem(
+        Aisling source,
+        IBuyShopSource? shop,
+        Item fauxItem,
+        IItemFactory itemFactory,
+        ICloningService<Item> itemCloner,
+        int amount,
+        int costPerItem)
+    {
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(fauxItem);
+        ArgumentNullException.ThrowIfNull(itemFactory);
+        ArgumentNullException.ThrowIfNull(itemCloner);
+
+        if (amount < 1)
+            return BuyGamePointItemResult.BadInput;
+
+        if (costPerItem < 0)
+            return BuyGamePointItemResult.BadInput;
+
+        //fail fast
+        if ((shop != null) && (shop.GetStock(fauxItem.Template.TemplateKey) < amount))
+            return BuyGamePointItemResult.NotEnoughStock;
+
+        if (!source.CanCarry((fauxItem, amount)))
+            return BuyGamePointItemResult.CantCarry;
+
+        var totalCost = costPerItem * amount;
+
+        if ((shop != null) && !shop.TryDecrementStock(fauxItem.Template.TemplateKey, amount))
+            return BuyGamePointItemResult.NotEnoughStock;
+
+        if (!source.TryTakeGamePoints(totalCost))
+        {
+            shop?.TryDecrementStock(fauxItem.Template.TemplateKey, -amount);
+
+            return BuyGamePointItemResult.NotEnoughGamePoints;
+        }
+
+        var stackedItem = itemFactory.Create(fauxItem.Template.TemplateKey, fauxItem.ScriptKeys);
+        stackedItem.Count = amount;
+
+        foreach (var item in stackedItem.FixStacks(itemCloner))
+            source.Inventory.TryAddToNextSlot(item);
+
+        return BuyGamePointItemResult.Success;
+    }
+
     public static BuyItemResult BuyItem(
         Aisling source,
         IBuyShopSource? shop,
@@ -177,106 +249,26 @@ public static class ComplexActionHelper
 
         return BuyItemResult.Success;
     }
-    
-    public static BuyGamePointItemResult BuyGamePointItem(
-        Aisling source,
-        IBuyShopSource? shop,
-        Item fauxItem,
-        IItemFactory itemFactory,
-        ICloningService<Item> itemCloner,
-        int amount,
-        int costPerItem
-    )
+
+    public static void BuyStatWithExp(Aisling source, Stat stat, long expCost)
     {
-        ArgumentNullException.ThrowIfNull(source);
-        ArgumentNullException.ThrowIfNull(fauxItem);
-        ArgumentNullException.ThrowIfNull(itemFactory);
-        ArgumentNullException.ThrowIfNull(itemCloner);
-
-        if (amount < 1)
-            return BuyGamePointItemResult.BadInput;
-
-        if (costPerItem < 0)
-            return BuyGamePointItemResult.BadInput;
-
-        //fail fast
-        if ((shop != null) && (shop.GetStock(fauxItem.Template.TemplateKey) < amount))
-            return BuyGamePointItemResult.NotEnoughStock;
-
-        if (!source.CanCarry((fauxItem, amount)))
-            return BuyGamePointItemResult.CantCarry;
-
-        var totalCost = costPerItem * amount;
-
-        if ((shop != null) && !shop.TryDecrementStock(fauxItem.Template.TemplateKey, amount))
-            return BuyGamePointItemResult.NotEnoughStock;
-
-        if (!source.TryTakeGamePoints(totalCost))
+        if (source.UserStatSheet.TrySubtractTotalExp(expCost))
         {
-            shop?.TryDecrementStock(fauxItem.Template.TemplateKey, -amount);
-            return BuyGamePointItemResult.NotEnoughGamePoints;
-        }
+            if (!source.UserStatSheet.IncrementStat(stat, source, true))
+            {
+                source.SendOrangeBarMessage("Something went wrong trying to increase this stat.");
 
-        var stackedItem = itemFactory.Create(fauxItem.Template.TemplateKey, fauxItem.ScriptKeys);
-        stackedItem.Count = amount;
+                return;
+            }
 
-        foreach (var item in stackedItem.FixStacks(itemCloner))
-            source.Inventory.TryAddToNextSlot(item);
-
-        return BuyGamePointItemResult.Success;
-    }
-    
-    public static BuyBugPointItemResult BuyBugReportPointItem(
-        Aisling source,
-        IBuyShopSource? shop,
-        Item fauxItem,
-        IItemFactory itemFactory,
-        ICloningService<Item> itemCloner,
-        int amount,
-        int costPerItem
-    )
-    {
-        ArgumentNullException.ThrowIfNull(source);
-        ArgumentNullException.ThrowIfNull(fauxItem);
-        ArgumentNullException.ThrowIfNull(itemFactory);
-        ArgumentNullException.ThrowIfNull(itemCloner);
-
-        if (amount < 1)
-            return BuyBugPointItemResult.BadInput;
-
-        if (costPerItem < 0)
-            return BuyBugPointItemResult.BadInput;
-
-        // Fail fast
-        if ((shop != null) && (shop.GetStock(fauxItem.Template.TemplateKey) < amount))
-            return BuyBugPointItemResult.NotEnoughStock;
-
-        if (!source.CanCarry((fauxItem, amount)))
-            return BuyBugPointItemResult.CantCarry;
-
-        var totalCost = costPerItem * amount;
-
-        // Check if the player has enough bug points
-        if (!source.Trackers.Counters.TryGetValue("bugreportpoints", out var currentBugPoints) || currentBugPoints < totalCost)
+            source.Script.OnStatIncrease(stat);
+            source.Client.SendAttributes(StatUpdateType.Full);
+        } else
         {
-            return BuyBugPointItemResult.NotEnoughGamePoints; // Use the same enum for insufficient funds
+            source.SendOrangeBarMessage("Not enough experience to increase this stat.");
+            source.Client.SendAttributes(StatUpdateType.Full);
         }
-
-        if ((shop != null) && !shop.TryDecrementStock(fauxItem.Template.TemplateKey, amount))
-            return BuyBugPointItemResult.NotEnoughStock;
-
-        // Deduct bug points instead of game points
-        source.Trackers.Counters.Set("bugreportpoints", currentBugPoints - totalCost);
-
-        var stackedItem = itemFactory.Create(fauxItem.Template.TemplateKey, fauxItem.ScriptKeys);
-        stackedItem.Count = amount;
-
-        foreach (var item in stackedItem.FixStacks(itemCloner))
-            source.Inventory.TryAddToNextSlot(item);
-
-        return BuyBugPointItemResult.Success;
     }
-
 
     public static DepositGoldResult DepositGold(Aisling source, int amount)
     {

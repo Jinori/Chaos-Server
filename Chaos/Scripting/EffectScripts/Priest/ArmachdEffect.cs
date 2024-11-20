@@ -10,18 +10,19 @@ namespace Chaos.Scripting.EffectScripts.Priest;
 public class ArmachdEffect : EffectBase, HierarchicalEffectComponent.IHierarchicalEffectComponentOptions
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(8);
+
+    public List<string> EffectNameHierarchy { get; init; } =
+        [
+            "blessing",
+            "armachd"
+        ];
+
     protected Animation? Animation { get; } = new()
     {
         TargetAnimation = 512,
         AnimationSpeed = 100
     };
 
-    public List<string> EffectNameHierarchy { get; init; } =
-    [
-        "blessing",
-        "armachd"
-    ];
-    
     public override byte Icon => 0;
     public override string Name => "armachd";
 
@@ -55,12 +56,12 @@ public class ArmachdEffect : EffectBase, HierarchicalEffectComponent.IHierarchic
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Armor has returned to normal.");
     }
-    
+
     public override bool ShouldApply(Creature source, Creature target)
     {
         var execution = new ComponentExecutor(source, target).WithOptions(this)
                                                              .ExecuteAndCheck<HierarchicalEffectComponent>();
-        
+
         return execution is not null;
     }
 }

@@ -7,27 +7,35 @@ using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Priest;
 
-public class FasDeireasEffect : EffectBase, HierarchicalEffectComponent.IHierarchicalEffectComponentOptions
+public class TormentEffect : EffectBase, HierarchicalEffectComponent.IHierarchicalEffectComponentOptions
 {
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(5);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(15);
 
     public List<string> EffectNameHierarchy { get; init; } =
         [
             "torment",
+            "blessing",
+            "ard naomh aite",
+            "mor naomh aite",
+            "naomh aite",
+            "beag naomh aite",
+            "mor beannaich",
+            "beannaich",
             "mor fas deireas",
-            "fas deireas"
+            "fas deireas",
+            "motivate"
         ];
 
-    private Animation? Animation { get; } = new()
+    protected Animation? Animation { get; } = new()
     {
-        TargetAnimation = 520,
+        TargetAnimation = 75,
         AnimationSpeed = 100
     };
 
-    public override byte Icon => 106;
-    public override string Name => "fas deireas";
+    public override byte Icon => 87;
+    public override string Name => "torment";
 
-    protected byte? Sound => 124;
+    protected byte? Sound => 122;
 
     public override void OnApplied()
     {
@@ -35,13 +43,16 @@ public class FasDeireasEffect : EffectBase, HierarchicalEffectComponent.IHierarc
 
         var attributes = new Attributes
         {
-            Dmg = 6
+            Dmg = 14,
+            Hit = 22,
+            AtkSpeedPct = 45,
+            CooldownReductionPct = 25
         };
 
         Subject.Animate(Animation!);
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Damage increased.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You feel tormented.");
     }
 
     public override void OnDispelled() => OnTerminated();
@@ -50,12 +61,16 @@ public class FasDeireasEffect : EffectBase, HierarchicalEffectComponent.IHierarc
     {
         var attributes = new Attributes
         {
-            Dmg = 6
+            Ac = 6,
+            Dmg = 14,
+            Hit = 22,
+            AtkSpeedPct = 45,
+            CooldownReductionPct = 25
         };
 
         Subject.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Damage has returned to normal.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Torment has faded.");
     }
 
     public override bool ShouldApply(Creature source, Creature target)

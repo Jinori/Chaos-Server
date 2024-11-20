@@ -19,7 +19,9 @@ public class VortexEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(20);
+
     private Creature SourceOfEffect { get; set; } = null!;
+
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()
     {
@@ -29,6 +31,7 @@ public class VortexEffect : ContinuousAnimationEffectBase
 
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(20000), false);
+
     protected IApplyDamageScript ApplyDamageScript { get; }
 
     protected Animation CreatureAnimation { get; } = new()
@@ -36,33 +39,42 @@ public class VortexEffect : ContinuousAnimationEffectBase
         AnimationSpeed = 100,
         TargetAnimation = 55
     };
+
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000), false);
 
     /// <inheritdoc />
     public override byte Icon => 98;
+
     /// <inheritdoc />
     public override string Name => "Vortex";
 
     public VortexEffect() => ApplyDamageScript = ApplyAttackDamageScript.Create();
 
-    public override void OnApplied() =>
-        AislingSubject?.Client.SendServerMessage(
-            ServerMessageType.OrangeBar1,
-            "A vortex has started around you.");
+    public override void OnApplied()
+        => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A vortex has started around you.");
 
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
     {
         var points = AoeShape.AllAround.ResolvePoints(Subject);
 
-        var targets =
-            Subject.MapInstance.GetEntitiesAtPoints<Creature>(points.Cast<IPoint>()).WithFilter(Subject, TargetFilter.HostileOnly).ToList();
+        var targets = Subject.MapInstance
+                             .GetEntitiesAtPoints<Creature>(points.Cast<IPoint>())
+                             .WithFilter(Subject, TargetFilter.HostileOnly)
+                             .Where(x => !x.MapInstance.IsWall(Subject))
+                             .ToList();
 
-        if ((AislingSubject?.Group == null && AislingSubject?.Name != SourceOfEffect.Name && !Subject.Script.Is<PetScript>() && !Subject.Script.Is<NightmareTeammateScript>())
-            || AislingSubject?.Group != null && !AislingSubject.Group.Contains(SourceOfEffect) && !Subject.Script.Is<PetScript>() && !Subject.Script.Is<NightmareTeammateScript>())
+        if (((AislingSubject?.Group == null)
+             && (AislingSubject?.Name != SourceOfEffect.Name)
+             && !Subject.Script.Is<PetScript>()
+             && !Subject.Script.Is<NightmareTeammateScript>())
+            || ((AislingSubject?.Group != null)
+                && !AislingSubject.Group.Contains(SourceOfEffect)
+                && !Subject.Script.Is<PetScript>()
+                && !Subject.Script.Is<NightmareTeammateScript>()))
             Subject.Effects.Terminate("Vortex");
-        
+
         foreach (var target in targets)
         {
             ApplyDamageScript.ApplyDamage(
@@ -77,20 +89,18 @@ public class VortexEffect : ContinuousAnimationEffectBase
         }
     }
 
-    public override void OnTerminated() => AislingSubject?.Client.SendServerMessage(
-        ServerMessageType.OrangeBar1,
-        "Vortex has worn off.");
+    public override void OnTerminated() => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Vortex has worn off.");
 
     /// <inheritdoc />
     public override bool ShouldApply(Creature source, Creature target)
     {
         SourceOfEffect = source;
-        
+
         if (!target.IsFriendlyTo(source))
         {
             if (target.Name.Contains("Teammate") || target.Script.Is<PetScript>())
                 return true;
-            
+
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is not an ally.");
 
             return false;
@@ -98,11 +108,11 @@ public class VortexEffect : ContinuousAnimationEffectBase
 
         if (target.Effects.Contains("quake"))
         {
-           target.Effects.Terminate("quake");
+            target.Effects.Terminate("quake");
 
-           return true;
+            return true;
         }
-        
+
         if (target.Effects.Contains("vortex"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target has already has Vortex.");

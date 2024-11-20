@@ -10,27 +10,24 @@ namespace Chaos.Scripting.EffectScripts.Priest;
 public class BlessingEffect : EffectBase, HierarchicalEffectComponent.IHierarchicalEffectComponentOptions
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(15);
+
+    public List<string> EffectNameHierarchy { get; init; } =
+        [
+            "blessing",
+            "torment",
+            "ard naomh aite",
+            "mor naomh aite",
+            "naomh aite",
+            "beag naomh aite",
+            "armachd"
+        ];
+
     protected Animation? Animation { get; } = new()
     {
         TargetAnimation = 512,
         AnimationSpeed = 100
     };
 
-    public List<string> EffectNameHierarchy { get; init; } =
-    [
-        "blessing",
-        "ard naomh aite",
-        "mor naomh aite",
-        "naomh aite",
-        "beag naomh aite",
-        "armachd",
-        "mor beannaich",
-        "beannaich",
-        "mor fas deireas",
-        "fas deireas",
-        "motivate",
-    ];
-    
     public override byte Icon => 10;
     public override string Name => "blessing";
 
@@ -42,10 +39,9 @@ public class BlessingEffect : EffectBase, HierarchicalEffectComponent.IHierarchi
 
         var attributes = new Attributes
         {
-            Ac = -12,
-            Dmg = 14,
-            Hit = 22,
-            AtkSpeedPct = 45
+            Ac = -15,
+            MagicResistance = 20,
+            HealBonusPct = 25
         };
 
         Subject.Animate(Animation!);
@@ -60,22 +56,21 @@ public class BlessingEffect : EffectBase, HierarchicalEffectComponent.IHierarchi
     {
         var attributes = new Attributes
         {
-            Ac = -12,
-            Dmg = 14,
-            Hit = 22,
-            AtkSpeedPct = 45
+            Ac = -15,
+            MagicResistance = 20,
+            HealBonusPct = 25
         };
 
         Subject.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Blessing has faded.");
     }
-    
+
     public override bool ShouldApply(Creature source, Creature target)
     {
         var execution = new ComponentExecutor(source, target).WithOptions(this)
                                                              .ExecuteAndCheck<HierarchicalEffectComponent>();
-        
+
         return execution is not null;
     }
 }

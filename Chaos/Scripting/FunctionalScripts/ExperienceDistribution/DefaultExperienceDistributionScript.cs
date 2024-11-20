@@ -42,6 +42,9 @@ public class DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistri
         if (HasStrongKnowledgeEffect(aislings))
             totalBonus += 0.10m;
 
+        if (HasGMKnowledgeEffect(aislings))
+            totalBonus += 0.25m;
+
         // Apply an additional 5% bonus for mythic completion
         if (HasCompletedMythic(aislings))
             totalBonus += 0.05m;
@@ -146,6 +149,16 @@ public class DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistri
     {
         foreach (var aisling in aislings)
             if (aisling.Trackers.Enums.HasValue(MythicQuestMain.CompletedMythic))
+                return true;
+
+        return false;
+    }
+
+    private bool HasGMKnowledgeEffect(Aisling[] aislings)
+    {
+        // Check if any of the Aislings have the "Strong Knowledge" effect
+        foreach (var aisling in aislings)
+            if (aisling.Effects.Contains("GM Knowledge"))
                 return true;
 
         return false;

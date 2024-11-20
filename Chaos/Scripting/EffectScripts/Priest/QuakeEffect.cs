@@ -76,6 +76,7 @@ public class QuakeEffect : ContinuousAnimationEffectBase
         var targets = Subject.MapInstance
                              .GetEntitiesAtPoints<Creature>(points.Cast<IPoint>())
                              .WithFilter(Subject, TargetFilter.HostileOnly)
+                             .Where(x => !x.MapInstance.IsWall(Subject))
                              .ToList();
 
         if (((AislingSubject?.Group == null)

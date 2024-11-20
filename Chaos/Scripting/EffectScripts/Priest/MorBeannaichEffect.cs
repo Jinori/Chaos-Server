@@ -11,23 +11,24 @@ public class MorBeannaichEffect : EffectBase, HierarchicalEffectComponent.IHiera
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(5);
 
+    public List<string> EffectNameHierarchy { get; init; } =
+        [
+            "torment",
+            "mor beannaich",
+            "beannaich"
+        ];
+
     private Animation? Animation { get; } = new()
     {
         TargetAnimation = 515,
         AnimationSpeed = 100
     };
-    
-    protected byte? Sound => 123;
+
     public override byte Icon => 105;
     public override string Name => "mor beannaich";
 
-    public List<string> EffectNameHierarchy { get; init; } =
-    [
-        "blessing",
-        "mor beannaich",
-        "beannaich"
-    ];
-    
+    protected byte? Sound => 123;
+
     public override void OnApplied()
     {
         base.OnApplied();
@@ -36,7 +37,7 @@ public class MorBeannaichEffect : EffectBase, HierarchicalEffectComponent.IHiera
         {
             Hit = 20
         };
- 
+
         Subject.Animate(Animation!);
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
@@ -56,12 +57,12 @@ public class MorBeannaichEffect : EffectBase, HierarchicalEffectComponent.IHiera
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Hit has returned to normal.");
     }
-    
+
     public override bool ShouldApply(Creature source, Creature target)
     {
         var execution = new ComponentExecutor(source, target).WithOptions(this)
                                                              .ExecuteAndCheck<HierarchicalEffectComponent>();
-        
+
         return execution is not null;
     }
 }

@@ -9,31 +9,34 @@ namespace Chaos.Scripting.EffectScripts.Priest;
 
 public class AiteEffect : EffectBase, HierarchicalEffectComponent.IHierarchicalEffectComponentOptions
 {
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(12);
+
     /// <inheritdoc />
     public List<string> EffectNameHierarchy { get; init; } =
-    [
-        "blessing",
-        "ard naomh aite",
-        "mor naomh aite",
-        "naomh aite",
-        "beag naomh aite"
-    ];
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(12);
-    
+        [
+            "blessing",
+            "torment",
+            "ard naomh aite",
+            "mor naomh aite",
+            "naomh aite",
+            "beag naomh aite"
+        ];
+
     private Animation? Animation { get; } = new()
     {
         TargetAnimation = 412,
         AnimationSpeed = 100
     };
-    
-    protected byte? Sound => 123;
+
     public override byte Icon => 9;
     public override string Name => "naomh aite";
+
+    protected byte? Sound => 123;
 
     public override void OnApplied()
     {
         base.OnApplied();
-        
+
         Subject.Animate(Animation!);
 
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
@@ -44,16 +47,15 @@ public class AiteEffect : EffectBase, HierarchicalEffectComponent.IHierarchicalE
 
     public override void OnTerminated()
     {
-
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your defenses have returned to normal.");
     }
-    
+
     public override bool ShouldApply(Creature source, Creature target)
     {
         var execution = new ComponentExecutor(source, target).WithOptions(this)
                                                              .ExecuteAndCheck<HierarchicalEffectComponent>();
-        
+
         return execution is not null;
     }
 }
