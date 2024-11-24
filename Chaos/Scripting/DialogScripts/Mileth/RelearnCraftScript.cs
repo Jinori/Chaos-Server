@@ -1,25 +1,46 @@
 ﻿using Chaos.Common.Definitions;
+using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
+using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Mileth;
 
 public class RelearnCraftScript : DialogScriptBase
 {
-    public RelearnCraftScript(Dialog subject)
+    private readonly ISkillFactory SkillFactory;
+    private readonly ISpellFactory SpellFactory;
+
+    public RelearnCraftScript(Dialog subject, ISpellFactory spellFactory, ISkillFactory skillFactory)
         : base(subject)
     {
+        SpellFactory = spellFactory;
+        SkillFactory = skillFactory;
     }
 
     public override void OnDisplaying(Aisling source)
     {
-        
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "riona_relearnrecipes":
             {
+                if (source.SpellBook.ContainsByTemplateKey("morcradh")
+                    && !source.SpellBook.ContainsByTemplateKey("ardcradh")
+                    && source.UserStatSheet.Master)
+                {
+                    var ardcradh = SpellFactory.Create("ardcradh");
+                    source.SpellBook.TryAddToNextSlot(ardcradh);
+                }
+
+                if (!source.SpellBook.ContainsByTemplateKey("phoenixgrasp")
+                    && source.UserStatSheet is { BaseClass: BaseClass.Monk, Master: true })
+                {
+                    var phoenixgrasp = SpellFactory.Create("phoenixgrasp");
+                    source.SpellBook.TryAddToNextSlot(phoenixgrasp);
+                }
+
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact1)
                     || source.Trackers.Enums.HasValue(MainStoryEnums.FinishedArtifact1)
                     || source.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact2)
@@ -48,31 +69,24 @@ public class RelearnCraftScript : DialogScriptBase
                     || source.Trackers.Enums.HasValue(MainStoryEnums.FoundSummoner2)
                     || source.Trackers.Enums.HasValue(MainStoryEnums.KilledSummoner)
                     || source.Trackers.Enums.HasValue(MainStoryEnums.CompletedPreMasterMainStory))
-                {
                     source.Trackers.Flags.AddFlag(MainstoryFlags.AccessGodsRealm);
-                }
-                
+
                 if (source.Trackers.Counters.TryGetValue("CryptSlayerLegend", out var legend) && (legend >= 10))
                 {
                     source.Trackers.Flags.AddFlag(LanternSizes.None);
                     source.Trackers.Flags.AddFlag(LanternSizes.LargeLantern);
                     source.Trackers.Flags.AddFlag(LanternSizes.SmallLantern);
-                }
-                else if (legend is < 10 and > 0)
-                {
+                } else if (legend is < 10 and > 0)
                     source.Trackers.Flags.AddFlag(LanternSizes.SmallLantern);
-                }
-                
+
                 if (source.Trackers.Enums.HasValue(Crafts.Weaponsmithing))
                 {
-                   
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Eppe);
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Saber);
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.DullClaw);
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.SnowDagger);
                     source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.CenterDagger);
 
-                   
                     if (source.Trackers.Flags.HasFlag(WeaponSmithingCategories.BasicSwords))
                     {
                         source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Claidheamh);
@@ -112,7 +126,6 @@ public class RelearnCraftScript : DialogScriptBase
                         source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Club);
                         source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.SpikedClub);
                         source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.ChainMace);
-
                     }
 
                     if (source.Trackers.Flags.HasFlag(WeaponSmithingCategories.ArtisanWeapons))
@@ -172,14 +185,10 @@ public class RelearnCraftScript : DialogScriptBase
                     }
 
                     if (source.Trackers.Flags.HasFlag(WeaponSmithingCategories.AdeptDaggers))
-                    {
                         source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.NagetierDagger);
-                    }
 
                     if (source.Trackers.Flags.HasFlag(WeaponSmithingCategories.BasicClaws))
-                    {
                         source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.WolfClaw);
-                    }
 
                     if (source.Trackers.Flags.HasFlag(WeaponSmithingCategories.InitiateClaws))
                     {
@@ -188,14 +197,10 @@ public class RelearnCraftScript : DialogScriptBase
                     }
 
                     if (source.Trackers.Flags.HasFlag(WeaponSmithingCategories.ArtisanClaws))
-                    {
                         source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.PhoenixClaw);
-                    }
 
                     if (source.Trackers.Flags.HasFlag(WeaponSmithingCategories.AdeptClaws))
-                    {
                         source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.Nunchaku);
-                    }
 
                     if (source.Trackers.Flags.HasFlag(WeaponSmithingCategories.BasicShields))
                     {
@@ -212,12 +217,10 @@ public class RelearnCraftScript : DialogScriptBase
                     }
 
                     if (source.Trackers.Flags.HasFlag(WeaponSmithingCategories.ArtisanShields))
-                    {
                         source.Trackers.Flags.AddFlag(WeaponSmithingRecipes.HybrasylShield);
-                    }
                     source.SendOrangeBarMessage("You have learned all your Weapon Smithing recipes.");
                 }
-               
+
                 if (source.Trackers.Enums.HasValue(Crafts.Armorsmithing))
                 {
                     source.Trackers.Flags.AddFlag(ArmorSmithCategories.BeginnerArmors);
@@ -236,7 +239,6 @@ public class RelearnCraftScript : DialogScriptBase
                     source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLeatherTunic);
                     source.Trackers.Flags.AddFlag(CraftedArmors.RefinedEarthBodice);
                     source.Trackers.Flags.AddFlag(CraftedArmors.RefinedLeatherBliaut);
-
 
                     if (source.Trackers.Flags.HasFlag(ArmorSmithCategories.BasicArmors))
                     {
@@ -343,7 +345,6 @@ public class RelearnCraftScript : DialogScriptBase
                         source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.WindBronzeBelt);
                         source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.DarkBronzeBelt);
                         source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LightBronzeBelt);
-
                     }
 
                     if (source.Trackers.Flags.HasFlag(ArmorSmithCategories.InitiateBelts))
@@ -375,7 +376,7 @@ public class RelearnCraftScript : DialogScriptBase
                         source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.DarkHybrasylBraidBelt);
                         source.Trackers.Flags.AddFlag(ArmorsmithingRecipes.LightHybrasylBraidBelt);
                     }
-                   
+
                     source.SendOrangeBarMessage("You have learned all your Armor Smithing recipes.");
                 }
 
@@ -386,10 +387,10 @@ public class RelearnCraftScript : DialogScriptBase
                     source.Trackers.Flags.AddFlag(EnchantingRecipes.MiraelisSerenity);
                     source.Trackers.Flags.AddFlag(EnchantingRecipes.TheseleneElusion);
                     source.Trackers.Flags.AddFlag(EnchantingRecipes.AquaedonClarity);
-                   
+
                     source.SendOrangeBarMessage("You have learned all your Enchanting recipes.");
                 }
-               
+
                 if (source.Trackers.Enums.HasValue(Crafts.Alchemy))
                 {
                     source.Trackers.Flags.AddFlag(AlchemyRecipes.SmallHealthPotion);
@@ -398,7 +399,6 @@ public class RelearnCraftScript : DialogScriptBase
                     source.Trackers.Flags.AddFlag(AlchemyRecipes.SmallPowerBrew);
                     source.Trackers.Flags.AddFlag(AlchemyRecipes.SmallAccuracyPotion);
 
-                   
                     if (source.Trackers.Flags.HasFlag(AlchemyCategories.AttackTonics))
                     {
                         source.Trackers.Flags.AddFlag(AlchemyRecipes.FirestormTonic);
@@ -431,10 +431,10 @@ public class RelearnCraftScript : DialogScriptBase
                         source.Trackers.Flags.AddFlag(AlchemyRecipes.StrongJuggernautBrew);
                         source.Trackers.Flags.AddFlag(AlchemyRecipes.StrongAstralBrew);
                     }
-                   
+
                     source.SendOrangeBarMessage("You have learned all your Alchemy Recipes.");
                 }
-               
+
                 if (source.Trackers.Enums.HasValue(Crafts.Jewelcrafting))
                 {
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.SmallRubyRing);
@@ -443,7 +443,7 @@ public class RelearnCraftScript : DialogScriptBase
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.SeaNecklace);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.FireNecklace);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.WindNecklace);
-                   
+
                     if (source.Trackers.Flags.HasFlag(JewelcraftingCategories.BasicRings))
                     {
                         source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BronzeRubyRing);
@@ -547,10 +547,9 @@ public class RelearnCraftScript : DialogScriptBase
                         source.Trackers.Flags.AddFlag(JewelcraftingRecipes.StarSeaNecklace);
                         source.Trackers.Flags.AddFlag(JewelcraftingRecipes.StarWindNecklace);
                     }
-                   
+
                     source.SendOrangeBarMessage("You have learned all your Jewelcrafting Recipes.");
                 }
-               
 
                 break;
             }

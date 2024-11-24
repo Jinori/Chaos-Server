@@ -19,8 +19,8 @@ public struct DamageAbilityComponent : IComponent
         var options = vars.GetOptions<IDamageComponentOptions>();
         var targets = vars.GetTargets<Creature>();
 
-        bool surroundingTargets = options.SurroundingTargets ?? false;
-        int numberOfTargets = surroundingTargets ? targets.Count() : 1;
+        var surroundingTargets = options.SurroundingTargets ?? false;
+        var numberOfTargets = surroundingTargets ? targets.Count() : 1;
 
         foreach (var target in targets)
         {
@@ -28,7 +28,7 @@ public struct DamageAbilityComponent : IComponent
                 context.Source,
                 target,
                 numberOfTargets,
-                options.DamageMultiplierPerTarget ?? 0.05m,  // Default to 5% if not specified
+                options.DamageMultiplierPerTarget ?? 0.05m, // Default to 5% if not specified
                 options.BaseDamage,
                 options.PctHpDamage,
                 options.DamageStat,
@@ -40,14 +40,12 @@ public struct DamageAbilityComponent : IComponent
                 options.PctOfHealthMultiplier);
 
             if (damage > 0)
-            {
                 options.ApplyDamageScript.ApplyDamage(
                     context.Source,
                     target,
                     options.SourceScript,
                     damage,
                     options.Element);
-            }
         }
     }
 
@@ -72,6 +70,7 @@ public struct DamageAbilityComponent : IComponent
         if (moreDmgLowTargetHp == true)
         {
             var healthPercentFactor = 1 + (1 - target.StatSheet.HealthPercent / 100m);
+
             finalDamage += Convert.ToInt32(
                 MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, pctHpDamage ?? 0) * healthPercentFactor);
         }
@@ -80,18 +79,16 @@ public struct DamageAbilityComponent : IComponent
         if (pctHpDamage.HasValue)
         {
             if (!target.Script.Is<ThisIsABossScript>())
-            {
                 finalDamage += MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, pctHpDamage ?? 0);
-            }
-            if (target.Script.Is<ThisIsABossScript>() && pctHpDamage > 2)
-            {
+
+            if (target.Script.Is<ThisIsABossScript>() && (pctHpDamage > 2))
                 finalDamage += MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, 2);
-            }
         }
 
         if (pctOfHealth.HasValue)
         {
             var healthDamage = MathEx.GetPercentOf<int>((int)source.StatSheet.EffectiveMaximumHp, pctOfHealth.Value);
+
             if (pctOfHealthMultiplier.HasValue)
                 healthDamage = Convert.ToInt32(healthDamage * pctOfHealthMultiplier.Value);
 
@@ -100,16 +97,15 @@ public struct DamageAbilityComponent : IComponent
 
         // Add damage based on a specific stat (like Int, Str, etc.)
         if (damageStat.HasValue)
-        {
             finalDamage += damageStatMultiplier.HasValue
                 ? Convert.ToInt32(source.StatSheet.GetEffectiveStat(damageStat.Value) * damageStatMultiplier.Value)
                 : source.StatSheet.GetEffectiveStat(damageStat.Value);
-        }
 
         // Apply mana-based damage
         if (pctOfMana.HasValue)
         {
             var manaDamage = MathEx.GetPercentOf<int>((int)source.StatSheet.EffectiveMaximumMp, pctOfMana.Value);
+
             if (pctOfManaMultiplier.HasValue)
                 manaDamage = Convert.ToInt32(manaDamage * pctOfManaMultiplier.Value);
 
@@ -118,11 +114,10 @@ public struct DamageAbilityComponent : IComponent
 
         // Apply damage multiplier based on the number of surrounding targets
         if (numberOfTargets > 1)
-        {
             finalDamage = (int)(finalDamage * (1 + damageMultiplierPerTarget * (numberOfTargets - 1)));
-        }
 
         ApplyFuryEffects(source, ref finalDamage);
+        ApplyCunningEffects(source, ref finalDamage);
 
         return finalDamage;
     }
@@ -131,40 +126,77 @@ public struct DamageAbilityComponent : IComponent
     {
         var furyMultipliers = new Dictionary<string, double>
         {
-            { "fury1", 1.10 },
-            { "fury2", 1.20 },
-            { "fury3", 1.35 },
-            { "fury4", 1.50 },
-            { "fury5", 1.75 },
-            { "fury6", 2.00 }
+            {
+                "fury1", 1.10
+            },
+            {
+                "fury2", 1.20
+            },
+            {
+                "fury3", 1.35
+            },
+            {
+                "fury4", 1.50
+            },
+            {
+                "fury5", 1.75
+            },
+            {
+                "fury6", 2.00
+            }
         };
 
         foreach (var fury in furyMultipliers)
-        {
             if (source.Effects.Contains(fury.Key))
-            {
                 finalDamage = (int)(finalDamage * fury.Value);
+    }
+
+    private void ApplyCunningEffects(Creature source, ref int finalDamage)
+    {
+        var cunningMultipliers = new Dictionary<string, double>
+        {
+            {
+                "cunning1", 1.08
+            },
+            {
+                "cunning2", 1.16
+            },
+            {
+                "cunning3", 1.28
+            },
+            {
+                "cunning4", 1.40
+            },
+            {
+                "cunning5", 1.60
+            },
+            {
+                "cunning6", 1.80
             }
-        }
+        };
+
+        foreach (var cunning in cunningMultipliers)
+            if (source.Effects.Contains(cunning.Key))
+                finalDamage = (int)(finalDamage * cunning.Value);
     }
 
     public interface IDamageComponentOptions
     {
         IApplyDamageScript ApplyDamageScript { get; init; }
         int? BaseDamage { get; init; }
+        decimal? DamageMultiplierPerTarget { get; init; } // New option for damage multiplier per target
         Stat? DamageStat { get; init; }
         decimal? DamageStatMultiplier { get; init; }
         Element? Element { get; init; }
         bool? MoreDmgLowTargetHp { get; init; }
         decimal? PctHpDamage { get; init; }
-        decimal? PctOfHealthMultiplier { get; init; }
         decimal? PctOfHealth { get; init; }
-        IScript SourceScript { get; init; }
-        bool? SurroundingTargets { get; init; }  // New option to check for surrounding targets
-        decimal? DamageMultiplierPerTarget { get; init; }  // New option for damage multiplier per target
+        decimal? PctOfHealthMultiplier { get; init; }
 
         // Mana-based damage fields
         decimal? PctOfMana { get; init; }
         decimal? PctOfManaMultiplier { get; init; }
+        IScript SourceScript { get; init; }
+        bool? SurroundingTargets { get; init; } // New option to check for surrounding targets
     }
 }

@@ -35,9 +35,12 @@ public struct HealAbilityComponent : IComponent
                 if (target.Name != context.SourceAisling?.Name)
                 {
                     context.SourceAisling?.SendOrangeBarMessage($"{target.Name} is currently resisting heals.");
+
                     continue;
                 }
-                context.SourceAisling?.SendOrangeBarMessage($"You are currently resisting heals.");
+
+                context.SourceAisling?.SendOrangeBarMessage("You are currently resisting heals.");
+
                 continue;
             }
 
@@ -61,15 +64,9 @@ public struct HealAbilityComponent : IComponent
 
         finalHeal += MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, pctHpHeal ?? 0);
 
-        if (!healStat.HasValue)
-            return finalHeal;
-
-        if (!healStatMultiplier.HasValue)
-        {
-            finalHeal += source.StatSheet.GetEffectiveStat(healStat.Value);
-
-            return finalHeal;
-        }
+        if (healStat.HasValue)
+            if (healStatMultiplier.HasValue)
+                finalHeal += Convert.ToInt32(source.StatSheet.GetEffectiveStat(healStat.Value) * healStatMultiplier.Value);
 
         if (source.StatSheet.EffectiveHealBonusPct > 0)
         {
@@ -79,11 +76,7 @@ public struct HealAbilityComponent : IComponent
         }
 
         if (source.StatSheet.EffectiveHealBonus > 0)
-        {
             finalHeal += source.StatSheet.EffectiveHealBonus;
-        }
-
-        finalHeal += Convert.ToInt32(source.StatSheet.GetEffectiveStat(healStat.Value) * healStatMultiplier.Value);
 
         return finalHeal;
     }

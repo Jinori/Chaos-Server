@@ -1,4 +1,5 @@
 using Chaos.DarkAges.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
@@ -36,16 +37,25 @@ public class ThrowScript : SkillScriptBase
 
         foreach (var aisling in thrownAislings)
         {
+            if ((context.SourceAisling != null)
+                && (aisling.Effects.Contains("Fishing")
+                    || (aisling.Effects.Contains("Foraging") && !context.SourceAisling.IsGodModeEnabled())))
+            {
+                context.SourceAisling.SendOrangeBarMessage("That player is currently busy and cannot be thrown.");
+
+                continue;
+            }
+
             foreach (var point in potentialTargetPoints)
                 if (context.SourceMap.IsWalkable(point, CreatureType.Aisling, false))
                 {
                     var aislingPoint = Point.From(aisling);
 
                     context.SourceMap.ShowAnimation(ThrowAnimation.GetPointEffectAnimation(aislingPoint));
-                    
+
                     if (context.SourceMap.IsWall(targetPoint))
                         continue;
-                    
+
                     context.SourceMap.ShowAnimation(ThrowAnimation.GetPointEffectAnimation(point));
                     aisling.WarpTo(point);
 

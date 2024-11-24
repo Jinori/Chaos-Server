@@ -62,7 +62,6 @@ public class TormentEffect : EffectBase, HierarchicalEffectComponent.IHierarchic
     {
         var attributes = new Attributes
         {
-            Ac = 6,
             Dmg = 14,
             Hit = 22,
             AtkSpeedPct = 45,

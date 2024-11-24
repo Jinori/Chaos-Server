@@ -1,16 +1,9 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
-using Chaos.Definitions;
-using Chaos.Extensions;
-using Chaos.Geometry.Abstractions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
-using Chaos.Scripting.FunctionalScripts.ApplyDamage;
-using Chaos.Scripting.MonsterScripts.Nightmare.PriestNightmare;
-using Chaos.Scripting.MonsterScripts.Pet;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
@@ -20,7 +13,9 @@ public class RegenerationEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(30);
+
     private Creature SourceOfEffect { get; set; } = null!;
+
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()
     {
@@ -30,39 +25,52 @@ public class RegenerationEffect : ContinuousAnimationEffectBase
 
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromSeconds(1));
+
     protected IApplyHealScript ApplyHealScript { get; }
+
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000), false);
 
     /// <inheritdoc />
     public override byte Icon => 98;
+
     /// <inheritdoc />
     public override string Name => "Regeneration";
 
     public RegenerationEffect() => ApplyHealScript = FunctionalScripts.ApplyHealing.ApplyHealScript.Create();
 
-    public override void OnApplied() =>
-        AislingSubject?.Client.SendServerMessage(
-            ServerMessageType.OrangeBar1,
-            "Your body starts to regenerate quickly.");
+    public override void OnApplied()
+        => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your body starts to regenerate quickly.");
 
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
     {
-        // Calculate the heal amount based on source's WIS and 1% of target's max HP
+        // Step 1: Calculate the base heal amount using the source's WIS and 1% of the target's max HP
         var wis = SourceOfEffect.StatSheet.Wis;
-        var statmultiplier = wis * 5;
         var targetMaxHp = Subject.StatSheet.EffectiveMaximumHp;
-        var healAmount = statmultiplier + (targetMaxHp / 100);  // WIS + 1% of target's max HP
+        var baseHealAmount = wis * 5 + targetMaxHp / 100; // WIS multiplier + 1% of target's max HP
 
-        // Apply the heal to the target
-        ApplyHealScript.ApplyHeal(SourceOfEffect, Subject, ApplyHealScript, (int)healAmount);
+        // Step 2: Add the source's EffectiveHealBonus to the base heal amount
+        var healBonus = SourceOfEffect.StatSheet.EffectiveHealBonus;
+        var totalHealWithBonus = baseHealAmount + healBonus;
+
+        // Step 3: Multiply the result by the source's EffectiveHealBonusPct
+        var healBonusPct = SourceOfEffect.StatSheet.EffectiveHealBonusPct;
+        var finalHealAmount = totalHealWithBonus * (1 + healBonusPct); // Add 1 to include the base amount
+
+        // Apply the calculated heal to the target
+        ApplyHealScript.ApplyHeal(
+            SourceOfEffect,
+            Subject,
+            ApplyHealScript,
+            (int)finalHealAmount);
+
+        // Animate the target
         Subject.Animate(Animation);
     }
 
-    public override void OnTerminated() => AislingSubject?.Client.SendServerMessage(
-        ServerMessageType.OrangeBar1,
-        "Regeneration has worn off.");
+    public override void OnTerminated()
+        => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Regeneration has worn off.");
 
     /// <inheritdoc />
     public override bool ShouldApply(Creature source, Creature target)

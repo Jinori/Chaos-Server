@@ -56,6 +56,12 @@ public class LearnSkillScript : DialogScriptBase
             {
                 "sneakattack"
             }
+        },
+        {
+            "battlefieldsweep", new List<string>
+            {
+                "battlefieldsweep"
+            }
         }
     };
 

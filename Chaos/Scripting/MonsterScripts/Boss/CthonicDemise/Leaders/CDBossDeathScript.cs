@@ -114,131 +114,137 @@ public class CdBossDeathScript : MonsterScriptBase
 
         if (bossProgressions.TryGetValue(Subject.Template.TemplateKey, out var bossFlag))
         {
-            var nearbyAislingStartedPhoenix = Map
-                .GetEntitiesWithinRange<Aisling>(Subject, 13)
-                .FirstOrDefault(x => x.Trackers.Enums.TryGetValue(out MainstoryMasterEnums stage) &&
-                                     stage == MainstoryMasterEnums.StartedDungeon);
+            var nearbyAislings = Map
+                .GetEntitiesWithinRange<Aisling>(Subject, 13);
 
             foreach (var target in rewardTargets)
-                if (nearbyAislingStartedPhoenix != null && !target.Trackers.Flags.HasFlag(bossFlag))
+                if (nearbyAislings != null)
                 {
                     target.SendOrangeBarMessage($"You've defeated {Subject.Template.Name}.");
 
                     if (Subject.Template.TemplateKey == "darkmasterjohn")
-                        if (target.UserStatSheet.BaseClass == BaseClass.Warrior &&
-                            !target.Trackers.Flags.HasFlag(bossFlag))
+                        if (target.UserStatSheet.BaseClass == BaseClass.Warrior)
                         {
                             var skill = SkillFactory.Create("shockwave");
-                            target.SkillBook.TryAddToNextSlot(skill);
-                            target.SendOrangeBarMessage("You've learned a new ability!");
+
+                            if (!target.SkillBook.ContainsByTemplateKey("shockwave"))
+                            {
+                                target.SkillBook.TryAddToNextSlot(skill);
+                                target.SendOrangeBarMessage("You've learned a new ability!");
+                            }
                         }
 
                     if (Subject.Template.TemplateKey == "darkmasterjane")
-                        if (target.UserStatSheet.BaseClass == BaseClass.Warrior &&
-                            !target.Trackers.Flags.HasFlag(bossFlag))
+                        if (target.UserStatSheet.BaseClass == BaseClass.Warrior)
                         {
-                            target.SpellBook.Remove("berserk");
-                            
-                            var spell = SpellFactory.Create("fury");
-                            target.SpellBook.TryAddToNextSlot(spell);
-                            target.SendOrangeBarMessage("You've learned a new ability that replaced Berserk!");
+                            if (!target.SpellBook.ContainsByTemplateKey("fury"))
+                            {
+                                target.SpellBook.Remove("berserk");
+
+                                var spell = SpellFactory.Create("fury");
+                                target.SpellBook.TryAddToNextSlot(spell);
+                                target.SendOrangeBarMessage("You've learned a new ability that replaced Berserk!");
+                            }
                         }
 
                     if (Subject.Template.TemplateKey == "darkmasterroy")
-                        if (target.UserStatSheet.BaseClass == BaseClass.Rogue &&
-                            !target.Trackers.Flags.HasFlag(bossFlag))
-                        {
-                            var spell = SpellFactory.Create("vanish");
-                            target.SpellBook.TryAddToNextSlot(spell);
-                            target.SendOrangeBarMessage("You've learned a new ability!");
-                        }
+                        if (target.UserStatSheet.BaseClass == BaseClass.Rogue)
+                            if (!target.SpellBook.ContainsByTemplateKey("vanish"))
+                            {
+                                var spell = SpellFactory.Create("vanish");
+                                target.SpellBook.TryAddToNextSlot(spell);
+                                target.SendOrangeBarMessage("You've learned a new ability!");
+                            }
 
                     if (Subject.Template.TemplateKey == "darkmasterray")
-                        if (target.UserStatSheet.BaseClass == BaseClass.Rogue &&
-                            !target.Trackers.Flags.HasFlag(bossFlag))
-                        {
-                            var skill = SkillFactory.Create("surigumblitz");
-                            target.SkillBook.TryAddToNextSlot(skill);
-                            target.SendOrangeBarMessage("You've learned a new ability.");
-                        }
+                        if (target.UserStatSheet.BaseClass == BaseClass.Rogue)
+                            if (!target.SkillBook.ContainsByTemplateKey("surigumblitz"))
+                            {
+                                var skill = SkillFactory.Create("surigumblitz");
+                                target.SkillBook.TryAddToNextSlot(skill);
+                                target.SendOrangeBarMessage("You've learned a new ability.");
+                            }
 
                     if (Subject.Template.TemplateKey == "darkmastermike")
-                        if (target.UserStatSheet.BaseClass == BaseClass.Monk &&
-                            !target.Trackers.Flags.HasFlag(bossFlag))
-                        {
-                            var skill = SkillFactory.Create("leveragekick");
-                            target.SkillBook.TryAddToNextSlot(skill);
-                            target.SendOrangeBarMessage("You've learned a new ability!");
-                        }
+                        if (target.UserStatSheet.BaseClass == BaseClass.Monk)
+                            if (!target.SkillBook.ContainsByTemplateKey("leveragekick"))
+                            {
+                                var skill = SkillFactory.Create("leveragekick");
+                                target.SkillBook.TryAddToNextSlot(skill);
+                                target.SendOrangeBarMessage("You've learned a new ability!");
+                            }
 
                     if (Subject.Template.TemplateKey == "darkmastermary")
-                        if (target.UserStatSheet.BaseClass == BaseClass.Monk &&
-                            !target.Trackers.Flags.HasFlag(bossFlag))
-                        {
-                            var spell = SpellFactory.Create("cureailments");
-                            target.SpellBook.TryAddToNextSlot(spell);
-                            target.SendOrangeBarMessage("You've learned a new ability!");
-                        }
+                        if (target.UserStatSheet.BaseClass == BaseClass.Monk)
+                            if (!target.SpellBook.ContainsByTemplateKey("cureailments"))
+                            {
+                                var spell = SpellFactory.Create("cureailments");
+                                target.SpellBook.TryAddToNextSlot(spell);
+                                target.SendOrangeBarMessage("You've learned a new ability!");
+                            }
 
                     if (Subject.Template.TemplateKey == "darkmasterphil")
                     {
                         if (target.UserStatSheet.BaseClass == BaseClass.Priest &&
-                            target.Trackers.Enums.HasValue(MasterPriestPath.Dark) &&
-                            !target.Trackers.Flags.HasFlag(bossFlag))
-                        {
-                            var spell = SpellFactory.Create("miasma");
-                            target.SpellBook.TryAddToNextSlot(spell);
-                            target.SendOrangeBarMessage("You've learned a new ability!");
-                        }
+                            target.Trackers.Enums.HasValue(MasterPriestPath.Dark))
+                            if (!target.SpellBook.ContainsByTemplateKey("miasma"))
+                            {
+                                var spell = SpellFactory.Create("miasma");
+                                target.SpellBook.TryAddToNextSlot(spell);
+                                target.SendOrangeBarMessage("You've learned a new ability!");
+                            }
 
                         if (target.UserStatSheet.BaseClass == BaseClass.Priest &&
-                            target.Trackers.Enums.HasValue(MasterPriestPath.Light) &&
-                            !target.Trackers.Flags.HasFlag(bossFlag))
-                        {
-                            var spell = SpellFactory.Create("deolamh");
-                            target.SpellBook.TryAddToNextSlot(spell);
-                            target.SendOrangeBarMessage("You've learned a new ability!");
-                        }
+                            target.Trackers.Enums.HasValue(MasterPriestPath.Light))
+                            if (!target.SpellBook.ContainsByTemplateKey("deolamh"))
+                            {
+                                var spell = SpellFactory.Create("deolamh");
+                                target.SpellBook.TryAddToNextSlot(spell);
+                                target.SendOrangeBarMessage("You've learned a new ability!");
+                            }
                     }
 
                     if (Subject.Template.TemplateKey == "darkmasterpam")
                     {
                         if (target.UserStatSheet.BaseClass == BaseClass.Priest &&
-                            target.Trackers.Enums.HasValue(MasterPriestPath.Dark) &&
-                            !target.Trackers.Flags.HasFlag(bossFlag))
-                        {
-                            var spell = SpellFactory.Create("bind");
-                            target.SpellBook.TryAddToNextSlot(spell);
-                            target.SendOrangeBarMessage("You've learned a new ability!");
-                        }
+                            target.Trackers.Enums.HasValue(MasterPriestPath.Dark))
+                            if (!target.SpellBook.ContainsByTemplateKey("bind"))
+                            {
+                                var spell = SpellFactory.Create("bind");
+                                target.SpellBook.TryAddToNextSlot(spell);
+                                target.SendOrangeBarMessage("You've learned a new ability!");
+                            }
 
                         if (target.UserStatSheet.BaseClass == BaseClass.Priest &&
-                            target.Trackers.Enums.HasValue(MasterPriestPath.Light) &&
-                            !target.Trackers.Flags.HasFlag(bossFlag))
-                        {
-                            var spell = SpellFactory.Create("regeneration");
-                            target.SpellBook.TryAddToNextSlot(spell);
-                            target.SendOrangeBarMessage("You've learned a new ability!");
-                        }
+                            target.Trackers.Enums.HasValue(MasterPriestPath.Light))
+                            if (!target.SpellBook.ContainsByTemplateKey("regeneration"))
+                            {
+                                var spell = SpellFactory.Create("regeneration");
+                                target.SpellBook.TryAddToNextSlot(spell);
+                                target.SendOrangeBarMessage("You've learned a new ability!");
+                            }
                     }
 
                     if (Subject.Template.TemplateKey == "darkmasterwilliam")
-                        if (target.UserStatSheet.BaseClass == BaseClass.Wizard &&
-                            !target.Trackers.Flags.HasFlag(bossFlag))
-                        {
-                            var spell = SpellFactory.Create("chainlightning");
-                            target.SpellBook.TryAddToNextSlot(spell);
-                        }
+                        if (target.UserStatSheet.BaseClass == BaseClass.Wizard)
+                            if (!target.SpellBook.ContainsByTemplateKey("chainlightning"))
+                            {
+                                var spell = SpellFactory.Create("chainlightning");
+                                target.SpellBook.TryAddToNextSlot(spell);
+                                target.SendOrangeBarMessage("You've learned a new ability!");
+                            }
 
                     if (Subject.Template.TemplateKey == "darkmasterwanda")
-                        if (target.UserStatSheet.BaseClass == BaseClass.Wizard &&
-                            !target.Trackers.Flags.HasFlag(bossFlag))
-                        {
-                            var spell = SpellFactory.Create("tidalwave");
-                            target.SpellBook.TryAddToNextSlot(spell);
-                        }
+                        if (target.UserStatSheet.BaseClass == BaseClass.Wizard)
+                            if (!target.SpellBook.ContainsByTemplateKey("chainlightning"))
+                            {
+                                var spell = SpellFactory.Create("tidalwave");
+                                target.SpellBook.TryAddToNextSlot(spell);
+                                target.SendOrangeBarMessage("You've learned a new ability!");
+                            }
 
-                    target.Trackers.Flags.AddFlag(bossFlag);
+                    if (!target.Trackers.Flags.HasFlag(bossFlag))
+                        target.Trackers.Flags.AddFlag(bossFlag);
 
                     if (CheckAllBossesDefeated(target))
                     {
