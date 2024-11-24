@@ -61,4 +61,28 @@ public static class DirectionExtensions
             Direction.Left  => Direction.Right,
             _               => Direction.Invalid
         };
+    
+    public static Direction RotateLeft(this Direction direction)
+    {
+        return direction switch
+        {
+            Direction.Up => Direction.Left,
+            Direction.Left => Direction.Down,
+            Direction.Down => Direction.Right,
+            Direction.Right => Direction.Up,
+            _ => throw new ArgumentOutOfRangeException(nameof(direction), "Unsupported direction.")
+        };
+    }
+
+    public static Direction RotateRight(this Direction direction)
+    {
+        return direction switch
+        {
+            Direction.Up => Direction.Right,
+            Direction.Right => Direction.Down,
+            Direction.Down => Direction.Left,
+            Direction.Left => Direction.Up,
+            _ => throw new ArgumentOutOfRangeException(nameof(direction), "Unsupported direction.")
+        };
+    }
 }

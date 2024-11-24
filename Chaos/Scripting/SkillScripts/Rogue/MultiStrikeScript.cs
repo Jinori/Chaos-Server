@@ -1,10 +1,8 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
-using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
@@ -64,26 +62,48 @@ namespace Chaos.Scripting.SkillScripts.Rogue
         {
             SourceScript = this;
             ApplyDamageScript = ApplyAttackDamageScript.Create();
-            StrikeTimer = new IntervalTimer(TimeSpan.FromMilliseconds(330), false);
+            StrikeTimer = new IntervalTimer(TimeSpan.FromMilliseconds(310), false);
         }
 
         public override void OnUse(ActivationContext context)
         {
             Context = context;
             Targets = context.SourceMap.GetEntitiesWithinRange<Creature>(context.Source, 5)
-                             .Where(creature => !IsWallBetween(context.Source, creature) && creature.IsHostileTo(context.Source))
-                             .OrderBy(creature => creature.ManhattanDistanceFrom(context.Source)).Take(5)
-                             .ToList();
+                .Where(creature => IsSameSideOrNoWallBetween(context.Source, creature) && creature.IsHostileTo(context.Source))
+                .OrderBy(creature => creature.ManhattanDistanceFrom(context.Source)).Take(5)
+                .ToList();
         }
-        
-        private bool IsWallBetween(Creature source, Creature target)
+
+        private bool IsSameSideOrNoWallBetween(Creature source, Creature target)
         {
             var sourcePoint = new Point(source.X, source.Y);
             var targetPoint = new Point(target.X, target.Y);
             var path = sourcePoint.GetDirectPath(targetPoint);
-            return path.Any(point => source.MapInstance.IsWall(point));
-        }
 
+            // Check if there's a wall between source and target
+            var wallPoints = path.Where(point => source.MapInstance.IsWall(point)).ToList();
+
+            if (!wallPoints.Any())
+            {
+                // No walls between source and target
+                return true;
+            }
+
+            // Check if source and target are on the same side of the first wall encountered
+            var firstWallPoint = wallPoints.First();
+
+            // A line between source and firstWallPoint
+            var sourceToWallPath = sourcePoint.GetDirectPath(firstWallPoint);
+            var sourceRegion = sourceToWallPath.All(point => !source.MapInstance.IsWall(point));
+
+            // A line between target and firstWallPoint
+            var targetToWallPath = targetPoint.GetDirectPath(firstWallPoint);
+            var targetRegion = targetToWallPath.All(point => !source.MapInstance.IsWall(point));
+
+            // If both regions are true, source and target are on the same side of the wall
+            return sourceRegion && targetRegion;
+        }
+        
         public override void Update(TimeSpan delta)
         {
             StrikeTimer.Update(delta);
@@ -92,24 +112,46 @@ namespace Chaos.Scripting.SkillScripts.Rogue
             {
                 if ((Targets == null) || (Context?.Source == null))
                     return;
-                
+
                 if (Targets.Count <= 0)
                     return;
-                
+
                 var target = Targets.FirstOrDefault();
 
                 if (target != null)
                 {
-                    var destinationPoint = target.DirectionalOffset(target.Direction.Reverse());
-
-                    if (target.MapInstance.IsWalkable(destinationPoint, CreatureType.Normal) &&
-                        !target.MapInstance.IsBlockingReactor(destinationPoint))
+                    // Define priority order: back, left, right, front
+                    var directions = new[]
                     {
-                        Context.Source.WarpTo(destinationPoint);
+                        target.Direction.Reverse(),
+                        target.Direction.RotateLeft(),
+                        target.Direction.RotateRight(),
+                        target.Direction
+                    };
+
+                    // Find the first accessible direction
+                    Point? destinationPoint = null;
+                    foreach (var direction in directions)
+                    {
+                        var potentialPoint = target.DirectionalOffset(direction);
+                        if (target.MapInstance.IsWalkable(potentialPoint, CreatureType.Normal) &&
+                            !target.MapInstance.IsBlockingReactor(potentialPoint))
+                        {
+                            destinationPoint = potentialPoint;
+                            break;
+                        }
+                    }
+
+                    // Warp to the selected point and execute the skill
+                    if (destinationPoint != null)
+                    {
+                        Context.Source.WarpTo(destinationPoint.Value);
                         var newDirection = target.DirectionalRelationTo(Context.Source);
                         Context.Source.Turn(newDirection);
 
-                        new ComponentExecutor(Context).WithOptions(this).ExecuteAndCheck<GenericAbilityComponent<Creature>>()?.Execute<AssassinStrikeComponent>();
+                        new ComponentExecutor(Context)
+                            .WithOptions(this)
+                            .ExecuteAndCheck<GenericAbilityComponent<Creature>>()?.Execute<AssassinStrikeComponent>();
                     }
                 }
 
