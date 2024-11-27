@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
 using Chaos.Models.Data;
@@ -15,6 +14,7 @@ public sealed class PramhEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(12);
+
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()
     {
@@ -22,25 +22,29 @@ public sealed class PramhEffect : ContinuousAnimationEffectBase
         TargetAnimation = 28,
         Priority = 90
     };
+
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromSeconds(1), false);
+
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000), false);
+
     /// <inheritdoc />
     public override byte Icon => 95;
+
     /// <inheritdoc />
     public override string Name => "pramh";
-
-    public override void OnApplied() => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your eyelids become heavy.");
 
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
     {
         Subject.Animate(Animation);
         AislingSubject?.Client.SendCancelCasting();
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your eyelids are heavy.");
     }
 
-    public override void OnTerminated() => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You awake from your slumber.");
+    public override void OnTerminated()
+        => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You awake from your slumber.");
 
     public override bool ShouldApply(Creature source, Creature target)
     {
@@ -49,14 +53,16 @@ public sealed class PramhEffect : ContinuousAnimationEffectBase
 
         if (target.IsGodModeEnabled())
             return false;
-        
-        if (target.Effects.Contains("pramh")
-            || target.Effects.Contains("beagpramh"))
+
+        if (target.Effects.Contains("pramh") || target.Effects.Contains("beagpramh"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is already asleep.");
 
             return false;
         }
+
+        (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You cast {Name}.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{source.Name} casted {Name} on you.");
 
         return true;
     }

@@ -1,6 +1,6 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
+using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.EffectComponents;
 using Chaos.Scripting.Components.Execution;
@@ -18,6 +18,8 @@ public class BeannaichEffect : EffectBase, HierarchicalEffectComponent.IHierarch
             "mor beannaich",
             "beannaich"
         ];
+
+    private Creature SourceOfEffect { get; set; } = null!;
 
     private Animation? Animation { get; } = new()
     {
@@ -42,7 +44,6 @@ public class BeannaichEffect : EffectBase, HierarchicalEffectComponent.IHierarch
         Subject.Animate(Animation!);
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Hit increased.");
     }
 
     public override void OnDispelled() => OnTerminated();
@@ -61,8 +62,13 @@ public class BeannaichEffect : EffectBase, HierarchicalEffectComponent.IHierarch
 
     public override bool ShouldApply(Creature source, Creature target)
     {
+        SourceOfEffect = source;
+
         var execution = new ComponentExecutor(source, target).WithOptions(this)
                                                              .ExecuteAndCheck<HierarchicalEffectComponent>();
+
+        (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You cast {Name}.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{source.Name} casted {Name} on you.");
 
         return execution is not null;
     }

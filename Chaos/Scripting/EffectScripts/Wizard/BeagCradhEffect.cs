@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
 using Chaos.Models.Data;
@@ -12,21 +11,24 @@ namespace Chaos.Scripting.EffectScripts.Wizard;
 
 public class BeagCradhEffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
 {
+    public List<string> ConflictingEffectNames { get; init; } =
+        [
+            "dia cradh",
+            "ard cradh",
+            "mor cradh",
+            "cradh",
+            "beag cradh"
+        ];
+
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(2);
+
     protected Animation Animation { get; } = new()
     {
         TargetAnimation = 483,
         AnimationSpeed = 100,
         Priority = 100
     };
-    public List<string> ConflictingEffectNames { get; init; } =
-    [
-        "dia cradh",
-        "ard cradh",
-        "mor cradh",
-        "cradh",
-        "beag cradh"
-    ];
+
     public override byte Icon => 4;
     public override string Name => "beag cradh";
     protected byte? Sound => 27;
@@ -39,11 +41,10 @@ public class BeagCradhEffect : EffectBase, NonOverwritableEffectComponent.INonOv
         {
             Ac = -10
         };
-        
+
         Subject.Animate(Animation.GetPointAnimation(Subject));
         Subject.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've been cursed by beag cradh! AC lowered!");
     }
 
     public override void OnDispelled() => OnTerminated();
@@ -79,6 +80,9 @@ public class BeagCradhEffect : EffectBase, NonOverwritableEffectComponent.INonOv
 
         var execution = new ComponentExecutor(source, target).WithOptions(this)
                                                              .ExecuteAndCheck<NonOverwritableEffectComponent>();
+
+        (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You cast {Name}.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{source.Name} casted {Name} on you.");
 
         return execution is not null;
     }

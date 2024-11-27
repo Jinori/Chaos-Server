@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
 using Chaos.Models.Data;
@@ -28,8 +27,10 @@ public class PoisonEffect : ContinuousAnimationEffectBase
 
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000), false);
+
     /// <inheritdoc />
     public override byte Icon => 27;
+
     /// <inheritdoc />
     public override string Name => "Poison";
 
@@ -39,7 +40,7 @@ public class PoisonEffect : ContinuousAnimationEffectBase
         double maxHp = Subject.StatSheet.MaximumHp;
         const double DAMAGE_PERCENTAGE = 0.01;
         const int DAMAGE_CAP = 500;
-        
+
         var damage = (int)Math.Min(maxHp * DAMAGE_PERCENTAGE, DAMAGE_CAP);
 
         if (Subject.StatSheet.CurrentHp <= damage)
@@ -48,37 +49,43 @@ public class PoisonEffect : ContinuousAnimationEffectBase
         if (Subject.IsGodModeEnabled() || Subject.Effects.Contains("invulnerability"))
         {
             Subject.Effects.Terminate("poison");
+
             return;
         }
 
         if (Subject.StatSheet.TrySubtractHp(damage))
             AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
-        
+
         Subject.Animate(Animation);
     }
-    
+
     public override bool ShouldApply(Creature source, Creature target)
     {
         if (target.IsGodModeEnabled())
             return false;
-        
+
         if (target.Effects.Contains("Poison Immunity"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is currently immune to poison.");
+
             return true;
         }
-        
+
         if (target.Effects.Contains("poison"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target has this effect already.");
+
             return true;
         }
 
         if (target.Effects.Contains("miasma"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is currently affected by Miasma.");
+
             return false;
         }
+
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{source.Name} casted {Name} on you.");
 
         return true;
     }

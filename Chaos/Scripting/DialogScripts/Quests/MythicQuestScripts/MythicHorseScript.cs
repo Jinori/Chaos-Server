@@ -48,10 +48,7 @@ public class MythicHorseScript : DialogScriptBase
 
                 if (hasMain && !hasHorse)
                 {
-                    Subject.Reply(
-                        source,
-                        "Skip",
-                        "horse_start1start");
+                    Subject.Reply(source, "Skip", "horse_start1start");
 
                     return;
                 }
@@ -72,56 +69,38 @@ public class MythicHorseScript : DialogScriptBase
 
                 if (horse == MythicHorse.HigherHorse)
                 {
-                    Subject.Reply(
-                        source,
-                        "Skip",
-                        "horse_higher2start");
+                    Subject.Reply(source, "Skip", "horse_higher2start");
 
                     return;
                 }
 
                 if (horse == MythicHorse.HigherHorseComplete)
-                    Subject.Reply(
-                        source,
-                        "Skip",
-                        "horse_start4start");
+                    Subject.Reply(source, "Skip", "horse_start4start");
 
                 if (horse == MythicHorse.ItemHorse)
                 {
-                    Subject.Reply(
-                        source,
-                        "Skip",
-                        "horse_item2start");
+                    Subject.Reply(source, "Skip", "horse_item2start");
 
                     return;
                 }
 
                 if (horse == MythicHorse.ItemHorseComplete)
                 {
-                    Subject.Reply(
-                        source,
-                        "Skip",
-                        "horse_allystart");
+                    Subject.Reply(source, "Skip", "horse_allystart");
 
                     return;
                 }
 
                 if (horse == MythicHorse.AlliedHorse)
                 {
-                    Subject.Reply(
-                        source,
-                        "Skip",
-                        "horse_bossstart");
+                    Subject.Reply(source, "Skip", "horse_bossstart");
 
                     return;
                 }
 
                 if (horse == MythicHorse.BossHorseStarted)
                 {
-                    Subject.Reply(
-                        source,
-                        "Skip",
-                        "horse_boss2start");
+                    Subject.Reply(source, "Skip", "horse_boss2start");
 
                     return;
                 }
@@ -134,7 +113,7 @@ public class MythicHorseScript : DialogScriptBase
 
             case "horse_lower":
             {
-                Subject.Reply(source, "I knew i could count on you, I'll see you soon traveler.");
+                Subject.Reply(source, "I knew I could count on you, I'll see you soon traveler.");
                 source.SendOrangeBarMessage("Kill 15 Slick Bunnies for the Horse Leader");
                 source.Trackers.Enums.Set(MythicHorse.LowerHorse);
 
@@ -156,8 +135,7 @@ public class MythicHorseScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
                     source.SendOrangeBarMessage("You received 10000000 experience!");
@@ -206,8 +184,7 @@ public class MythicHorseScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
                     source.SendOrangeBarMessage("You received 10000000 experience!");
@@ -247,8 +224,7 @@ public class MythicHorseScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
                     source.SendOrangeBarMessage("You received 10000000 experience!");
@@ -324,8 +300,7 @@ public class MythicHorseScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, fiftyPercent);
                     source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 25000000);
                     source.SendOrangeBarMessage("You received 25000000 experience!");
@@ -335,11 +310,10 @@ public class MythicHorseScript : DialogScriptBase
                 source.Trackers.Enums.Set(MythicHorse.BossHorseDefeated);
                 source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);
 
-                if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5) &&
-                    !source.Trackers.Enums.HasValue(MythicQuestMain.CompletedMythic))
-                {
+                if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss)
+                    && (mythicboss >= 5)
+                    && !source.Trackers.Enums.HasValue(MythicQuestMain.CompletedMythic))
                     source.Trackers.Enums.Set(MythicQuestMain.CompletedAll);
-                }
             }
 
                 break;

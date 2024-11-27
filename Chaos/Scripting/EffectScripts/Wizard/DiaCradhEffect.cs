@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
 using Chaos.Models.Data;
@@ -12,21 +11,24 @@ namespace Chaos.Scripting.EffectScripts.Wizard;
 
 public class DiaCradhEffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
 {
+    public List<string> ConflictingEffectNames { get; init; } =
+        [
+            "dia cradh",
+            "ard cradh",
+            "mor cradh",
+            "cradh",
+            "beag cradh"
+        ];
+
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(10);
+
     protected Animation Animation { get; } = new()
     {
         TargetAnimation = 257,
         AnimationSpeed = 100,
         Priority = 100
     };
-    public List<string> ConflictingEffectNames { get; init; } =
-    [
-        "dia cradh",
-        "ard cradh",
-        "mor cradh",
-        "cradh",
-        "beag cradh"
-    ];
+
     public override byte Icon => 78;
     public override string Name => "dia cradh";
     protected byte? Sound => 27;
@@ -44,7 +46,6 @@ public class DiaCradhEffect : EffectBase, NonOverwritableEffectComponent.INonOve
         Subject.Animate(Animation.GetPointAnimation(Subject));
         Subject.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You've been cursed by dia cradh! AC and MR lowered!");
     }
 
     public override void OnDispelled() => OnTerminated();
@@ -61,7 +62,7 @@ public class DiaCradhEffect : EffectBase, NonOverwritableEffectComponent.INonOve
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Dia Cradh curse has been lifted.");
     }
-    
+
     public override bool ShouldApply(Creature source, Creature target)
     {
         if (source.IsCradhLocked())
@@ -80,6 +81,9 @@ public class DiaCradhEffect : EffectBase, NonOverwritableEffectComponent.INonOve
 
         var execution = new ComponentExecutor(source, target).WithOptions(this)
                                                              .ExecuteAndCheck<NonOverwritableEffectComponent>();
+
+        (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You cast {Name}.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{source.Name} casted {Name} on you.");
 
         return execution is not null;
     }

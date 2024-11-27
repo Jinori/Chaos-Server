@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Geometry.Abstractions;
@@ -52,13 +51,10 @@ public class QuakeEffect : ContinuousAnimationEffectBase
 
     public QuakeEffect() => ApplyDamageScript = ApplyAttackDamageScript.Create();
 
-    public override void OnApplied()
-        => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A quake has started around you.");
-
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
     {
-        if (AislingSubject == null)
+        if ((AislingSubject == null) && !Subject.Script.Is<PetScript>())
         {
             Subject.Effects.Terminate("quake");
 
@@ -114,7 +110,11 @@ public class QuakeEffect : ContinuousAnimationEffectBase
         if (!target.IsFriendlyTo(source))
         {
             if (target.Name.Contains("Teammate") || target.Script.Is<PetScript>())
+            {
+                Subject.Animate(Animation);
                 return true;
+            }
+            
 
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is not an ally.");
 
@@ -127,6 +127,17 @@ public class QuakeEffect : ContinuousAnimationEffectBase
 
             return false;
         }
+
+        if (target.Effects.Contains("vortex"))
+        {
+            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target has already has Vortex.");
+
+            return false;
+        }
+
+        Subject.Animate(Animation);
+        (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You cast {Name}.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{source.Name} casted {Name} on you.");
 
         return true;
     }

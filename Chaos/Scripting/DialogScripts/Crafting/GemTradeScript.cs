@@ -7,26 +7,23 @@ using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Crafting;
 
-public class EnchantTradeScript : DialogScriptBase
+public class GemTradeScript : DialogScriptBase
 {
     private readonly IDialogFactory DialogFactory;
 
-    private readonly List<string> EssenceTemplateKeys = new()
+    private readonly List<string> GemTemplateKeys = new()
     {
-        "essenceofignatar",
-        "essenceofgeolith",
-        "essenceofzephyra",
-        "essenceofaquaedon",
-        "essenceofskandara",
-        "essenceofmiraelis",
-        "essenceoftheselene",
-        "essenceofserendael"
+        "rawemerald",
+        "rawheartstone",
+        "rawsapphire",
+        "rawruby",
+        "rawberyl"
     };
 
     private readonly IItemFactory ItemFactory;
 
     /// <inheritdoc />
-    public EnchantTradeScript(Dialog subject, IItemFactory itemFactory, IDialogFactory dialogFactory)
+    public GemTradeScript(Dialog subject, IItemFactory itemFactory, IDialogFactory dialogFactory)
         : base(subject)
     {
         ItemFactory = itemFactory;
@@ -38,27 +35,27 @@ public class EnchantTradeScript : DialogScriptBase
     {
         switch (Subject.Template.TemplateKey.ToLower())
         {
-            case "enchant_trade_initial":
+            case "gem_trade_initial":
             {
                 OnDisplayingShowPlayerItems(source);
 
                 break;
             }
-            case "enchant_trade_confirmation":
+            case "gem_trade_confirmation":
             {
                 OnDisplayingConfirmation(source);
 
                 break;
             }
-            case "enchant_trade_accepted":
+            case "gem_trade_accepted":
             {
                 OnDisplayingAccepted(source);
 
                 break;
             }
-            case "new_essence_pick":
+            case "new_gem_pick":
             {
-                OnDisplayingEssences(source);
+                OnDisplayingGems(source);
 
                 break;
             }
@@ -74,45 +71,45 @@ public class EnchantTradeScript : DialogScriptBase
             return;
         }
 
-        var essence = ItemFactory.Create(
+        var gem = ItemFactory.Create(
             previous.ToLowerInvariant()
                     .Replace(" ", string.Empty));
 
         if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item) || (item.Count < 1))
         {
-            Subject.Reply(source, "You ran out of those essences to trade.", "enchant_trade_initial");
+            Subject.Reply(source, "You ran out of those gems to trade.", "gem_trade_initial");
 
             return;
         }
 
-        if (!source.TryTakeGold(2000))
+        if (!source.TryTakeGold(2500))
         {
-            Subject.Reply(source, "You can't afford to trade essences. Go get some more money for me.", "plant_trade_initial");
+            Subject.Reply(source, "You can't afford to trade gems. I need more gold for this trade.", "plant_trade_initial");
 
             return;
         }
 
         source.Inventory.RemoveQuantityByTemplateKey(item.Template.TemplateKey, 1);
 
-        source.GiveItemOrSendToBank(essence);
+        source.GiveItemOrSendToBank(gem);
 
-        Subject.InjectTextParameters(item.DisplayName, essence.DisplayName);
+        Subject.InjectTextParameters(item.DisplayName, gem.DisplayName);
     }
 
     public void OnDisplayingConfirmation(Aisling source)
     {
         if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item) || (item.Count < 1))
         {
-            Subject.Reply(source, "Skip", "enchant_trade_initial");
+            Subject.Reply(source, "Skip", "gem_trade_initial");
 
             return;
         }
 
-        if (!EssenceTemplateKeys.Contains(item.Template.TemplateKey.ToLower()))
-            Subject.Reply(source, "Essence cannot be traded", "enchant_trade_initial");
+        if (!GemTemplateKeys.Contains(item.Template.TemplateKey.ToLower()))
+            Subject.Reply(source, "Gem cannot be traded", "gem_trade_initial");
     }
 
-    public void OnDisplayingEssences(Aisling source)
+    public void OnDisplayingGems(Aisling source)
     {
         if (!Subject.MenuArgs.TryGet<int>(0, out var slot))
             return;
@@ -122,23 +119,23 @@ public class EnchantTradeScript : DialogScriptBase
         if (selectedItem == null)
             return;
 
-        foreach (var essenceTemplateKey in EssenceTemplateKeys)
-            if (!string.Equals(selectedItem.Template.TemplateKey, essenceTemplateKey, StringComparison.CurrentCultureIgnoreCase))
+        foreach (var gemTemplateKey in GemTemplateKeys)
+            if (!string.Equals(selectedItem.Template.TemplateKey, gemTemplateKey, StringComparison.CurrentCultureIgnoreCase))
             {
-                var fauxEssenceItem = ItemFactory.CreateFaux(essenceTemplateKey);
+                var fauxEssenceItem = ItemFactory.CreateFaux(gemTemplateKey);
                 Subject.Items.Add(ItemDetails.DisplayRecipe(fauxEssenceItem));
             }
     }
 
     public void OnDisplayingShowPlayerItems(Aisling source)
         => Subject.Slots = source.Inventory
-                                 .Where(x => EssenceTemplateKeys.Contains(x.Template.TemplateKey.ToLower()))
+                                 .Where(x => GemTemplateKeys.Contains(x.Template.TemplateKey.ToLower()))
                                  .Select(x => x.Slot)
                                  .ToList();
 
     public override void OnNext(Aisling source, byte? optionIndex = null)
     {
-        if (Subject.Template.TemplateKey.ToLower() == "new_essence_pick")
+        if (Subject.Template.TemplateKey.ToLower() == "new_gem_pick")
         {
             if (!Subject.MenuArgs.TryGet<string>(1, out var previous))
             {
@@ -160,20 +157,20 @@ public class EnchantTradeScript : DialogScriptBase
             // Find the slot of the essence item the player wants to trade.
             if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item))
             {
-                Subject.Reply(source, "You ran out of those essences to trade.", "enchant_trade_initial");
+                Subject.Reply(source, "You ran out of those gems to trade.", "gem_trade_initial");
 
                 return;
             }
 
             // Create the new essence item based on the player's selection.
-            var essence = ItemFactory.CreateFaux(items.Template.TemplateKey);
+            var gem = ItemFactory.CreateFaux(items.Template.TemplateKey);
 
             // Proceed to the confirmation dialog.
             Subject.Close(source);
-            var dialog = DialogFactory.Create("enchant_trade_confirmation", Subject.DialogSource);
+            var dialog = DialogFactory.Create("gem_trade_confirmation", Subject.DialogSource);
             dialog.MenuArgs = Subject.MenuArgs;
             dialog.Context = Subject.Context;
-            dialog.InjectTextParameters(essence.DisplayName, item.DisplayName);
+            dialog.InjectTextParameters(gem.DisplayName, item.DisplayName);
             dialog.Display(source);
         }
     }

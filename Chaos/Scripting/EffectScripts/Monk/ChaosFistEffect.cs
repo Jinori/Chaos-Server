@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -12,22 +11,26 @@ namespace Chaos.Scripting.EffectScripts.Monk;
 public class ChaosFistEffect : ContinuousAnimationEffectBase
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(12);
+
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 300,
         TargetAnimation = 54
     };
+
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1500));
+
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(400));
+
     public override byte Icon => 71;
-    public override string Name => "chaosfist";
+    public override string Name => "Chaos Fist";
 
     public override void OnApplied()
     {
         base.OnApplied();
-        
+
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your fists rush with a burst of energy.");
     }

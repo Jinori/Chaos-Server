@@ -62,6 +62,24 @@ public class LearnSkillScript : DialogScriptBase
             {
                 "battlefieldsweep"
             }
+        },
+        {
+            "paralyzeforce", new List<string>
+            {
+                "paralyzeforce"
+            }
+        },
+        {
+            "shadowfigure", new List<string>
+            {
+                "shadowfigure"
+            }
+        },
+        {
+            "multistrike", new List<string>
+            {
+                "multistrike"
+            }
         }
     };
 
@@ -288,10 +306,12 @@ public class LearnSkillScript : DialogScriptBase
         dialog.ReplyToUnknownInput(source);
 
         Logger.WithTopics(
-                  [Topics.Entities.Aisling,
-                  Topics.Entities.Skill,
-                  Topics.Actions.Learn,
-                  Topics.Qualifiers.Cheating])
+                  [
+                      Topics.Entities.Aisling,
+                      Topics.Entities.Skill,
+                      Topics.Actions.Learn,
+                      Topics.Qualifiers.Cheating
+                  ])
               .WithProperty(Subject)
               .WithProperty(Subject.DialogSource)
               .WithProperty(source)

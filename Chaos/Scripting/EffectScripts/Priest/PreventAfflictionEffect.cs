@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
@@ -10,15 +9,7 @@ public class PreventAfflictionEffect : EffectBase
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(9);
     public override byte Icon => 109;
-    public override string Name => "preventaffliction";
-
-    public override void OnApplied()
-    {
-        base.OnApplied();
-
-        AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your magic has been simplified.");
-    }
+    public override string Name => "prevent affliction";
 
     public override void OnDispelled() => OnTerminated();
 
@@ -36,6 +27,9 @@ public class PreventAfflictionEffect : EffectBase
 
             return false;
         }
+
+        (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You cast {Name}.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{source.Name} casted {Name} on you.");
 
         return true;
     }

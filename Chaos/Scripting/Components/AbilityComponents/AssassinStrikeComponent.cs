@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
@@ -36,21 +35,17 @@ public struct AssassinStrikeComponent : IComponent
                     continue;
 
                 // 20% chance to kill the target instantly
-                if (IntegerRandomizer.RollChance(20))
-                {
+                if (IntegerRandomizer.RollChance(15))
                     damage = target.StatSheet.CurrentHp;
-                }
             }
 
             if (damage > 0)
-            {
                 options.ApplyDamageScript.ApplyDamage(
                     context.Source,
                     target,
                     options.SourceScript,
                     damage,
                     options.Element);
-            }
         }
     }
 
@@ -73,24 +68,21 @@ public struct AssassinStrikeComponent : IComponent
 
         // Add additional damage based on the source's stat.
         if (damageStat != null)
-        {
             finalDamage += damageStatMultiplier.HasValue
                 ? Convert.ToInt32(source.StatSheet.GetEffectiveStat(damageStat.Value) * damageStatMultiplier.Value)
                 : source.StatSheet.GetEffectiveStat(damageStat.Value);
-        }
 
         if (target is not Monster monster)
             return finalDamage;
-        
-        if (monster.AggroList.TryGetValue(source.Id, out _)) 
+
+        if (monster.AggroList.TryGetValue(source.Id, out _))
             return finalDamage;
-            
+
         var bonusDamage = finalDamage * .50;
         finalDamage += Convert.ToInt32(bonusDamage);
 
         return finalDamage;
     }
-
 
     public interface IDamageComponentOptions
     {

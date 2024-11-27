@@ -1,8 +1,8 @@
 using Chaos.Collections;
 using Chaos.Collections.Abstractions;
 using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
 using Chaos.Common.Utilities;
+using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
@@ -180,7 +180,9 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     private readonly IMerchantFactory MerchantFactory;
     private readonly IIntervalTimer OneSecondTimer;
     private readonly ISimpleCache SimpleCache;
+    private readonly ISkillFactory SkillFactory;
     private readonly IIntervalTimer SleepAnimationTimer;
+    private readonly ISpellFactory SpellFactory;
     public IApplyDamageScript ApplyDamageScript { get; init; }
 
     /// <inheritdoc />
@@ -244,13 +246,17 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         IStore<MailBox> mailStore,
         IStore<BulletinBoard> boardStore,
         ILogger<DefaultAislingScript> logger,
-        IItemFactory itemFactory)
+        IItemFactory itemFactory,
+        ISpellFactory spellFactory,
+        ISkillFactory skillFactory)
         : base(subject)
     {
         MailStore = mailStore;
         BoardStore = boardStore;
         Logger = logger;
         ItemFactory = itemFactory;
+        SpellFactory = spellFactory;
+        SkillFactory = skillFactory;
         OneSecondTimer = new IntervalTimer(TimeSpan.FromSeconds(1));
         RestrictionBehavior = new RestrictionBehavior();
         VisibilityBehavior = new VisibilityBehavior();
@@ -817,10 +823,12 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 {
                     // Notify player that Mithril Dice saved their item
                     Logger.WithTopics(
-                              [Topics.Entities.Aisling,
-                              Topics.Entities.Item,
-                              Topics.Actions.Death,
-                              Topics.Actions.Penalty])
+                              [
+                                  Topics.Entities.Aisling,
+                                  Topics.Entities.Item,
+                                  Topics.Actions.Death,
+                                  Topics.Actions.Penalty
+                              ])
                           .WithProperty(Subject)
                           .WithProperty(item)
                           .LogInformation("{@AislingName}'s {@ItemName} was saved by Mithril Dice", Subject.Name, item.DisplayName);
@@ -838,10 +846,12 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 {
                     // Log and notify the player that they lost an item
                     Logger.WithTopics(
-                              [Topics.Entities.Aisling,
-                              Topics.Entities.Item,
-                              Topics.Actions.Death,
-                              Topics.Actions.Penalty])
+                              [
+                                  Topics.Entities.Aisling,
+                                  Topics.Entities.Item,
+                                  Topics.Actions.Death,
+                                  Topics.Actions.Penalty
+                              ])
                           .WithProperty(Subject)
                           .WithProperty(item)
                           .LogInformation("{@AislingName} has lost {@ItemName} to death", Subject.Name, item.DisplayName);
@@ -858,10 +868,12 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         if (ExperienceDistributionScript.TryTakeExp(Subject, tenPercent))
         {
             Logger.WithTopics(
-                      [Topics.Entities.Aisling,
-                      Topics.Actions.Death,
-                      Topics.Actions.Penalty,
-                      Topics.Entities.Experience])
+                      [
+                          Topics.Entities.Aisling,
+                          Topics.Actions.Death,
+                          Topics.Actions.Penalty,
+                          Topics.Entities.Experience
+                      ])
                   .WithProperty(Subject)
                   .LogInformation("{@AislingName} has lost {@ExperienceAmount} experience to death", Subject.Name, tenPercent);
 
@@ -944,7 +956,12 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             Subject.SpellBook.RemoveByTemplateKey(keyToRemove);
             NotifyPlayer(keyToRemove, keyToKeep);
 
-            Logger.WithTopics([Topics.Entities.Creature, Topics.Entities.Skill, Topics.Actions.Update])
+            Logger.WithTopics(
+                      [
+                          Topics.Entities.Creature,
+                          Topics.Entities.Skill,
+                          Topics.Actions.Update
+                      ])
                   .WithProperty(Subject)
                   .LogInformation(
                       "Aisling {@AislingName}'s ability {keyToKeep} removed an old ability {@keyToRemove}",
@@ -956,7 +973,12 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             Subject.SkillBook.RemoveByTemplateKey(keyToRemove);
             NotifyPlayer(keyToRemove, keyToKeep);
 
-            Logger.WithTopics([Topics.Entities.Creature, Topics.Entities.Skill, Topics.Actions.Update])
+            Logger.WithTopics(
+                      [
+                          Topics.Entities.Creature,
+                          Topics.Entities.Skill,
+                          Topics.Actions.Update
+                      ])
                   .WithProperty(Subject)
                   .LogInformation(
                       "Aisling {@AislingName}'s ability {keyToKeep} removed an old ability {@keyToRemove}",
@@ -1020,6 +1042,44 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
         foreach (var element in elementSkillsAndSpells.Where(element => element.Key != currentForm))
             RemoveSkillsAndSpells(aisling, element.Value.Skills, element.Value.Spells);
+    }
+
+    private void RemovePureOnlySkills(string keyToRemove)
+    {
+        if (Subject.SkillBook.ContainsByTemplateKey(keyToRemove) && Subject.Legend.ContainsKey("dedicated"))
+        {
+            Subject.SkillBook.RemoveByTemplateKey(keyToRemove);
+            var skill = SkillFactory.Create(keyToRemove);
+            Subject.SendOrangeBarMessage($"{skill.Template.Name} has been removed.");
+
+            Logger.WithTopics(
+                      [
+                          Topics.Entities.Creature,
+                          Topics.Entities.Skill,
+                          Topics.Actions.Update
+                      ])
+                  .WithProperty(Subject)
+                  .LogInformation("Aisling {@AislingName}'s ability {keyToKeep} removed.", Subject.Name, keyToRemove);
+        }
+    }
+
+    private void RemovePureOnlySpells(string keyToRemove)
+    {
+        if (Subject.SpellBook.ContainsByTemplateKey(keyToRemove) && Subject.Legend.ContainsKey("dedicated"))
+        {
+            Subject.SpellBook.RemoveByTemplateKey(keyToRemove);
+            var spell = SpellFactory.Create(keyToRemove);
+            Subject.SendOrangeBarMessage($"{spell.Template.Name} has been removed.");
+
+            Logger.WithTopics(
+                      [
+                          Topics.Entities.Creature,
+                          Topics.Entities.Skill,
+                          Topics.Actions.Update
+                      ])
+                  .WithProperty(Subject)
+                  .LogInformation("Aisling {@AislingName}'s ability {keyToKeep} removed.", Subject.Name, keyToRemove);
+        }
     }
 
     private static void RemoveSkillsAndSpells(Aisling aisling, List<string> skills, List<string> spells)
@@ -1091,6 +1151,26 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 Subject.Client.SendAttributes(StatUpdateType.Full);
             }
 
+            RemovePureOnlySpells("magmasurge");
+            RemovePureOnlySpells("tidalbreeze");
+            RemovePureOnlySpells("sightoffrailty");
+            RemovePureOnlySpells("diacradh");
+            RemovePureOnlySpells("hidegroup");
+            RemovePureOnlySpells("healingaura");
+            RemovePureOnlySpells("darkstorm");
+            RemovePureOnlySpells("resurrect");
+            RemovePureOnlySpells("evasion");
+            RemovePureOnlySkills("annihilate");
+            RemovePureOnlySkills("dragonstrike");
+            RemovePureOnlySkills("chaosfist");
+            RemovePureOnlySkills("madsoul");
+            RemovePureOnlySkills("onslaught");
+            RemovePureOnlySkills("sneakattack");
+            RemovePureOnlySkills("shadowfigure");
+            RemovePureOnlySkills("multistrike");
+            RemovePureOnlySkills("battlefieldsweep");
+            RemovePureOnlySkills("paralyzeforce");
+            RemovePureOnlySkills("shadowfigure");
             RemoveOldMonkFormSkillsSpells(Subject);
             RemoveAndNotifyIfBothExist("athar", "beagathar");
             RemoveAndNotifyIfBothExist("morathar", "athar");

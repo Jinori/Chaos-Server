@@ -85,6 +85,9 @@ public class PriestDedicateScript : DialogScriptBase
 
             if (!source.SkillBook.Contains(skill))
                 source.SkillBook.TryAddToNextSlot(skill);
+            
+            if (!source.SkillBook.Contains("assail"))
+                source.SkillBook.RemoveByTemplateKey("assail");
 
             var mapInstance = SimpleCache.Get<MapInstance>("toc");
             var point = new Point(8, 5);

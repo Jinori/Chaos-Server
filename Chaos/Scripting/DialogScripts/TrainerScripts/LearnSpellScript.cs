@@ -34,15 +34,33 @@ public class LearnSpellScript : DialogScriptBase
             }
         },
         {
-            "grouphide", new List<string>
+            "sightoffrailty", new List<string>
             {
-                "grouphide"
+                "sightoffrailty"
             }
         },
         {
-            "healzone", new List<string>
+            "resurrect", new List<string>
             {
-                "healzone"
+                "resurrect"
+            }
+        },
+        {
+            "diacradh", new List<string>
+            {
+                "diacradh"
+            }
+        },
+        {
+            "hidegroup", new List<string>
+            {
+                "hidegroup"
+            }
+        },
+        {
+            "healingaura", new List<string>
+            {
+                "healingaura"
             }
         },
         {
@@ -63,80 +81,391 @@ public class LearnSpellScript : DialogScriptBase
     private readonly ISpellFactory SpellFactory;
     private readonly ISpellTeacherSource SpellTeacherSource;
 
-        private readonly Dictionary<string, List<string>> SpellUpgradesByTemplateKey = new(StringComparer.OrdinalIgnoreCase)
+    private readonly Dictionary<string, List<string>> SpellUpgradesByTemplateKey = new(StringComparer.OrdinalIgnoreCase)
+    {
+        // Wizard - Athar family
         {
-            // Wizard - Athar family
-            { "beagathar", new List<string> { "athar", "morathar", "ardathar" } },
-            { "athar", new List<string> { "morathar", "ardathar" } },
-            { "morathar", new List<string> { "ardathar" } },
-            { "atharmeall", new List<string> { "moratharmeall", "ardatharmeall" } },
-            { "moratharmeall", new List<string> { "ardatharmeall" } },
-            { "beagatharlamh", new List<string> { "atharlamh", "moratharlamh" } },
-            { "atharlamh", new List<string> { "moratharlamh" } },
+            "beagathar", new List<string>
+            {
+                "athar",
+                "morathar",
+                "ardathar"
+            }
+        },
+        {
+            "athar", new List<string>
+            {
+                "morathar",
+                "ardathar"
+            }
+        },
+        {
+            "morathar", new List<string>
+            {
+                "ardathar"
+            }
+        },
+        {
+            "atharmeall", new List<string>
+            {
+                "moratharmeall",
+                "ardatharmeall"
+            }
+        },
+        {
+            "moratharmeall", new List<string>
+            {
+                "ardatharmeall"
+            }
+        },
+        {
+            "beagatharlamh", new List<string>
+            {
+                "atharlamh",
+                "moratharlamh"
+            }
+        },
+        {
+            "atharlamh", new List<string>
+            {
+                "moratharlamh"
+            }
+        },
 
-            // Wizard - Creag family
-            { "beagcreag", new List<string> { "creag", "morcreag", "ardcreag" } },
-            { "creag", new List<string> { "morcreag", "ardcreag" } },
-            { "morcreag", new List<string> { "ardcreag" } },
-            { "creagmeall", new List<string> { "morcreagmeall", "ardcreagmeall" } },
-            { "morcreagmeall", new List<string> { "ardcreagmeall" } },
-            { "beagcreaglamh", new List<string> { "creaglamh", "morcreaglamh" } },
-            { "creaglamh", new List<string> { "morcreaglamh" } },
+        // Wizard - Creag family
+        {
+            "beagcreag", new List<string>
+            {
+                "creag",
+                "morcreag",
+                "ardcreag"
+            }
+        },
+        {
+            "creag", new List<string>
+            {
+                "morcreag",
+                "ardcreag"
+            }
+        },
+        {
+            "morcreag", new List<string>
+            {
+                "ardcreag"
+            }
+        },
+        {
+            "creagmeall", new List<string>
+            {
+                "morcreagmeall",
+                "ardcreagmeall"
+            }
+        },
+        {
+            "morcreagmeall", new List<string>
+            {
+                "ardcreagmeall"
+            }
+        },
+        {
+            "beagcreaglamh", new List<string>
+            {
+                "creaglamh",
+                "morcreaglamh"
+            }
+        },
+        {
+            "creaglamh", new List<string>
+            {
+                "morcreaglamh"
+            }
+        },
 
-            // Wizard - Sal family
-            { "beagsal", new List<string> { "sal", "morsal", "ardsal" } },
-            { "sal", new List<string> { "morsal", "ardsal" } },
-            { "morsal", new List<string> { "ardsal" } },
-            { "salmeall", new List<string> { "morsalmeall", "ardsalmeall" } },
-            { "morsalmeall", new List<string> { "ardsalmeall" } },
-            { "beagsallamh", new List<string> { "sallamh", "morsallamh" } },
-            { "sallamh", new List<string> { "morsallamh" } },
+        // Wizard - Sal family
+        {
+            "beagsal", new List<string>
+            {
+                "sal",
+                "morsal",
+                "ardsal"
+            }
+        },
+        {
+            "sal", new List<string>
+            {
+                "morsal",
+                "ardsal"
+            }
+        },
+        {
+            "morsal", new List<string>
+            {
+                "ardsal"
+            }
+        },
+        {
+            "salmeall", new List<string>
+            {
+                "morsalmeall",
+                "ardsalmeall"
+            }
+        },
+        {
+            "morsalmeall", new List<string>
+            {
+                "ardsalmeall"
+            }
+        },
+        {
+            "beagsallamh", new List<string>
+            {
+                "sallamh",
+                "morsallamh"
+            }
+        },
+        {
+            "sallamh", new List<string>
+            {
+                "morsallamh"
+            }
+        },
 
-            // Wizard - Srad family
-            { "beagsrad", new List<string> { "srad", "morsrad", "ardsrad" } },
-            { "srad", new List<string> { "morsrad", "ardsrad" } },
-            { "morsrad", new List<string> { "ardsrad" } },
-            { "sradmeall", new List<string> { "morsradmeall", "ardatharmeall" } },
-            { "morsradmeall", new List<string> { "ardsradmeall" } },
-            { "beagsradlamh", new List<string> { "sradlamh", "morsradlamh" } },
-            { "sradlamh", new List<string> { "morsradlamh" } },
+        // Wizard - Srad family
+        {
+            "beagsrad", new List<string>
+            {
+                "srad",
+                "morsrad",
+                "ardsrad"
+            }
+        },
+        {
+            "srad", new List<string>
+            {
+                "morsrad",
+                "ardsrad"
+            }
+        },
+        {
+            "morsrad", new List<string>
+            {
+                "ardsrad"
+            }
+        },
+        {
+            "sradmeall", new List<string>
+            {
+                "morsradmeall",
+                "ardatharmeall"
+            }
+        },
+        {
+            "morsradmeall", new List<string>
+            {
+                "ardsradmeall"
+            }
+        },
+        {
+            "beagsradlamh", new List<string>
+            {
+                "sradlamh",
+                "morsradlamh"
+            }
+        },
+        {
+            "sradlamh", new List<string>
+            {
+                "morsradlamh"
+            }
+        },
 
-            // Wizard - Arcane family
-            { "arcanebolt", new List<string> { "arcanemissile", "arcaneblast", "arcaneexplosion" } },
-            { "arcanemissile", new List<string> { "arcaneblast", "arcaneexplosion" } },
-            { "arcaneblast", new List<string> { "arcaneexplosion" } },
+        // Wizard - Arcane family
+        {
+            "arcanebolt", new List<string>
+            {
+                "arcanemissile",
+                "arcaneblast",
+                "arcaneexplosion"
+            }
+        },
+        {
+            "arcanemissile", new List<string>
+            {
+                "arcaneblast",
+                "arcaneexplosion"
+            }
+        },
+        {
+            "arcaneblast", new List<string>
+            {
+                "arcaneexplosion"
+            }
+        },
 
-            // Rogue - Trap family
-            { "needletrap", new List<string> { "stilettotrap", "bolttrap", "coiledbolttrap", "springtrap", "maidentrap", "pitfalltrap" } },
-            { "stilettotrap", new List<string> { "bolttrap", "coiledbolttrap", "springtrap", "maidentrap", "pitfalltrap" } },
-            { "bolttrap", new List<string> { "coiledbolttrap", "springtrap", "maidentrap", "pitfalltrap" } },
-            { "coiledbolttrap", new List<string> { "springtrap", "maidentrap", "pitfalltrap" } },
-            { "springtrap", new List<string> { "maidentrap", "pitfalltrap" } },
-            { "maidentrap", new List<string> { "pitfalltrap" } },
+        // Rogue - Trap family
+        {
+            "needletrap", new List<string>
+            {
+                "stilettotrap",
+                "bolttrap",
+                "coiledbolttrap",
+                "springtrap",
+                "maidentrap",
+                "pitfalltrap"
+            }
+        },
+        {
+            "stilettotrap", new List<string>
+            {
+                "bolttrap",
+                "coiledbolttrap",
+                "springtrap",
+                "maidentrap",
+                "pitfalltrap"
+            }
+        },
+        {
+            "bolttrap", new List<string>
+            {
+                "coiledbolttrap",
+                "springtrap",
+                "maidentrap",
+                "pitfalltrap"
+            }
+        },
+        {
+            "coiledbolttrap", new List<string>
+            {
+                "springtrap",
+                "maidentrap",
+                "pitfalltrap"
+            }
+        },
+        {
+            "springtrap", new List<string>
+            {
+                "maidentrap",
+                "pitfalltrap"
+            }
+        },
+        {
+            "maidentrap", new List<string>
+            {
+                "pitfalltrap"
+            }
+        },
 
-            // Priest
-            { "beannaich", new List<string> { "morbeannaich" } },
-            { "fasdeireas", new List<string> { "morfasdeireas" } },
-            { "beagpramh", new List<string> { "pramh" } },
-            { "beothaich", new List<string> { "revive", "resurrect"} },
-            { "revive", new List<string> {"resurrect"} },
-            { "quake", new List<string> {"vortex"} },
-            { "zap", new List<string> {"voidjolt"} },
+        // Priest
+        {
+            "beannaich", new List<string>
+            {
+                "morbeannaich"
+            }
+        },
+        {
+            "fasdeireas", new List<string>
+            {
+                "morfasdeireas"
+            }
+        },
+        {
+            "beagpramh", new List<string>
+            {
+                "pramh"
+            }
+        },
+        {
+            "beothaich", new List<string>
+            {
+                "revive",
+                "resurrect"
+            }
+        },
+        {
+            "revive", new List<string>
+            {
+                "resurrect"
+            }
+        },
+        {
+            "quake", new List<string>
+            {
+                "vortex"
+            }
+        },
+        {
+            "zap", new List<string>
+            {
+                "voidjolt"
+            }
+        },
 
-            // Warrior
-            { "battlecry", new List<string> { "warcry" } },
-            { "wrath", new List<string> { "whirlwind", "inferno" } },
-            { "whirlwind", new List<string> { "inferno" } },
-            { "berserk", new List<string> { "fury" } },
+        // Warrior
+        {
+            "battlecry", new List<string>
+            {
+                "warcry"
+            }
+        },
+        {
+            "wrath", new List<string>
+            {
+                "whirlwind",
+                "inferno"
+            }
+        },
+        {
+            "whirlwind", new List<string>
+            {
+                "inferno"
+            }
+        },
+        {
+            "berserk", new List<string>
+            {
+                "fury"
+            }
+        },
 
-            // Monk
-            { "goad", new List<string> { "howl", "roar" } },
-            { "howl", new List<string> { "roar" } },
-            { "miststance", new List<string> { "tidestance" } },
-            { "smokestance", new List<string> { "flamestance" } },
-            { "earthenstance", new List<string> { "rockstance" } },
-            { "thunderstance", new List<string> { "lightningstance" } },
-        };
+        // Monk
+        {
+            "goad", new List<string>
+            {
+                "howl",
+                "roar"
+            }
+        },
+        {
+            "howl", new List<string>
+            {
+                "roar"
+            }
+        },
+        {
+            "miststance", new List<string>
+            {
+                "tidestance"
+            }
+        },
+        {
+            "smokestance", new List<string>
+            {
+                "flamestance"
+            }
+        },
+        {
+            "earthenstance", new List<string>
+            {
+                "rockstance"
+            }
+        },
+        {
+            "thunderstance", new List<string>
+            {
+                "lightningstance"
+            }
+        }
+    };
 
     public LearnSpellScript(
         Dialog subject,
@@ -307,7 +636,12 @@ public class LearnSpellScript : DialogScriptBase
         switch (learnSpellResult)
         {
             case ComplexActionHelper.LearnSpellResult.Success:
-                Logger.WithTopics([Topics.Entities.Aisling, Topics.Entities.Spell, Topics.Actions.Learn])
+                Logger.WithTopics(
+                          [
+                              Topics.Entities.Aisling,
+                              Topics.Entities.Spell,
+                              Topics.Actions.Learn
+                          ])
                       .WithProperty(Subject)
                       .WithProperty(Subject.DialogSource)
                       .WithProperty(source)
@@ -393,10 +727,12 @@ public class LearnSpellScript : DialogScriptBase
             dialog.ReplyToUnknownInput(source);
 
             Logger.WithTopics(
-                      [Topics.Entities.Aisling,
-                      Topics.Entities.Spell,
-                      Topics.Actions.Learn,
-                      Topics.Qualifiers.Cheating])
+                      [
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Spell,
+                          Topics.Actions.Learn,
+                          Topics.Qualifiers.Cheating
+                      ])
                   .WithProperty(Subject)
                   .WithProperty(Subject.DialogSource)
                   .WithProperty(source)
@@ -414,10 +750,12 @@ public class LearnSpellScript : DialogScriptBase
             dialog.ReplyToUnknownInput(source);
 
             Logger.WithTopics(
-                      [Topics.Entities.Aisling,
-                      Topics.Entities.Spell,
-                      Topics.Actions.Learn,
-                      Topics.Qualifiers.Cheating])
+                      [
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Spell,
+                          Topics.Actions.Learn,
+                          Topics.Qualifiers.Cheating
+                      ])
                   .WithProperty(Subject)
                   .WithProperty(Subject.DialogSource)
                   .WithProperty(source)

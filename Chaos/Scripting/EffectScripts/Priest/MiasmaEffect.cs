@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
 using Chaos.Models.Data;
@@ -28,8 +27,10 @@ public class MiasmaEffect : ContinuousAnimationEffectBase
 
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000), false);
+
     /// <inheritdoc />
     public override byte Icon => 27;
+
     /// <inheritdoc />
     public override string Name => "Miasma";
 
@@ -39,7 +40,7 @@ public class MiasmaEffect : ContinuousAnimationEffectBase
         double maxHp = Subject.StatSheet.MaximumHp;
         const double DAMAGE_PERCENTAGE = 0.02;
         const int DAMAGE_CAP = 1000;
-        
+
         var damage = (int)Math.Min(maxHp * DAMAGE_PERCENTAGE, DAMAGE_CAP);
 
         if (Subject.StatSheet.CurrentHp <= damage)
@@ -47,13 +48,13 @@ public class MiasmaEffect : ContinuousAnimationEffectBase
 
         if (Subject.IsGodModeEnabled())
             return;
-        
+
         if (Subject.StatSheet.TrySubtractHp(damage))
             AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
-        
+
         Subject.Animate(Animation);
     }
-    
+
     public override bool ShouldApply(Creature source, Creature target)
     {
         if (target.Script.Is<ThisIsABossScript>())
@@ -61,18 +62,23 @@ public class MiasmaEffect : ContinuousAnimationEffectBase
 
         if (target.IsGodModeEnabled())
             return false;
-        
+
         if (target.Effects.Contains("poison"))
         {
             target.Effects.Terminate("poison");
+
             return true;
         }
 
         if (target.Effects.Contains("miasma"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target has this effect already.");
+
             return false;
         }
+
+        (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You cast {Name}.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{source.Name} casted {Name} on you.");
 
         return true;
     }

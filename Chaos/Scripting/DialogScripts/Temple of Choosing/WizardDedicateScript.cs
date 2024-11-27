@@ -17,10 +17,10 @@ namespace Chaos.Scripting.DialogScripts.Temple_of_Choosing;
 public class WizardDedicateScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
+    private readonly ILogger<WizardDedicateScript> Logger;
     private readonly ISimpleCache SimpleCache;
     private readonly ISkillFactory SkillFactory;
     private readonly ISpellFactory SpellFactory;
-    private readonly ILogger<WizardDedicateScript> Logger;
 
     public WizardDedicateScript(
         Dialog subject,
@@ -28,8 +28,7 @@ public class WizardDedicateScript : DialogScriptBase
         ISimpleCache simpleCache,
         ISkillFactory skillFactory,
         ISpellFactory spellFactory,
-        ILogger<WizardDedicateScript> logger
-    )
+        ILogger<WizardDedicateScript> logger)
         : base(subject)
     {
         ItemFactory = itemFactory;
@@ -76,13 +75,19 @@ public class WizardDedicateScript : DialogScriptBase
             if (!source.SkillBook.Contains(skill))
                 source.SkillBook.TryAddToNextSlot(skill);
 
+            if (!source.SkillBook.Contains("assail"))
+                source.SkillBook.RemoveByTemplateKey("assail");
+
             var mapInstance = SimpleCache.Get<MapInstance>("toc");
             var point = new Point(8, 5);
             source.TraverseMap(mapInstance, point);
             source.Animate(ani, source.Id);
-            
+
             Logger.WithTopics(
-                      [Topics.Entities.Aisling, Topics.Actions.Promote])
+                      [
+                          Topics.Entities.Aisling,
+                          Topics.Actions.Promote
+                      ])
                   .WithProperty(Subject)
                   .LogInformation("{@AislingName} has become wizard", source.Name);
         }

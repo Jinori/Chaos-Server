@@ -39,9 +39,6 @@ public class RegenerationEffect : ContinuousAnimationEffectBase
 
     public RegenerationEffect() => ApplyHealScript = FunctionalScripts.ApplyHealing.ApplyHealScript.Create();
 
-    public override void OnApplied()
-        => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your body starts to regenerate quickly.");
-
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
     {
@@ -55,7 +52,7 @@ public class RegenerationEffect : ContinuousAnimationEffectBase
         var totalHealWithBonus = baseHealAmount + healBonus;
 
         // Step 3: Multiply the result by the source's EffectiveHealBonusPct
-        var healBonusPct = SourceOfEffect.StatSheet.EffectiveHealBonusPct;
+        var healBonusPct = SourceOfEffect.StatSheet.EffectiveHealBonusPct / 100f;
         var finalHealAmount = totalHealWithBonus * (1 + healBonusPct); // Add 1 to include the base amount
 
         // Apply the calculated heal to the target
@@ -83,6 +80,9 @@ public class RegenerationEffect : ContinuousAnimationEffectBase
 
             return false;
         }
+
+        (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You cast {Name}.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{source.Name} casted {Name} on you.");
 
         return true;
     }

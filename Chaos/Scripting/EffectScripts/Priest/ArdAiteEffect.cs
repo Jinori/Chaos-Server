@@ -1,6 +1,6 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
+using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.EffectComponents;
 using Chaos.Scripting.Components.Execution;
@@ -22,6 +22,8 @@ public class ArdAiteEffect : EffectBase, HierarchicalEffectComponent.IHierarchic
             "beag naomh aite"
         ];
 
+    private Creature SourceOfEffect { get; set; } = null!;
+
     private Animation? Animation { get; } = new()
     {
         TargetAnimation = 414,
@@ -39,7 +41,6 @@ public class ArdAiteEffect : EffectBase, HierarchicalEffectComponent.IHierarchic
 
         Subject.Animate(Animation!);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your defenses have been blessed.");
     }
 
     public override void OnDispelled() => OnTerminated();
@@ -54,6 +55,9 @@ public class ArdAiteEffect : EffectBase, HierarchicalEffectComponent.IHierarchic
     {
         var execution = new ComponentExecutor(source, target).WithOptions(this)
                                                              .ExecuteAndCheck<HierarchicalEffectComponent>();
+
+        (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You cast {Name}.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{source.Name} casted {Name} on you.");
 
         return execution is not null;
     }

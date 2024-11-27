@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Geometry.Abstractions;
@@ -27,7 +26,7 @@ public class VortexEffect : ContinuousAnimationEffectBase
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
-        TargetAnimation = 550
+        TargetAnimation = 587
     };
 
     /// <inheritdoc />
@@ -38,7 +37,7 @@ public class VortexEffect : ContinuousAnimationEffectBase
     protected Animation CreatureAnimation { get; } = new()
     {
         AnimationSpeed = 100,
-        TargetAnimation = 55
+        TargetAnimation = 283
     };
 
     /// <inheritdoc />
@@ -52,12 +51,23 @@ public class VortexEffect : ContinuousAnimationEffectBase
 
     public VortexEffect() => ApplyDamageScript = ApplyAttackDamageScript.Create();
 
-    public override void OnApplied()
-        => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A vortex has started around you.");
-
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
     {
+        if ((AislingSubject == null) && !Subject.Script.Is<PetScript>())
+        {
+            Subject.Effects.Terminate("vortex");
+
+            return;
+        }
+
+        if (Subject.MapInstance != SourceOfEffect.MapInstance)
+        {
+            Subject.Effects.Terminate("vortex");
+
+            return;
+        }
+
         var points = AoeShape.AllAround.ResolvePoints(Subject);
 
         var targets = Subject.MapInstance
@@ -100,7 +110,10 @@ public class VortexEffect : ContinuousAnimationEffectBase
         if (!target.IsFriendlyTo(source))
         {
             if (target.Name.Contains("Teammate") || target.Script.Is<PetScript>())
+            {
+                Subject.Animate(Animation);
                 return true;
+            }
 
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is not an ally.");
 
@@ -110,6 +123,7 @@ public class VortexEffect : ContinuousAnimationEffectBase
         if (target.Effects.Contains("quake"))
         {
             target.Effects.Terminate("quake");
+            Subject.Animate(Animation);
 
             return true;
         }
@@ -120,6 +134,10 @@ public class VortexEffect : ContinuousAnimationEffectBase
 
             return false;
         }
+        
+        Subject.Animate(Animation);
+        (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You cast {Name}.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{source.Name} casted {Name} on you.");
 
         return true;
     }
