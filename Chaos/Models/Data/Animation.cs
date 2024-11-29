@@ -1,4 +1,5 @@
 using Chaos.Geometry.Abstractions;
+using Chaos.Models.World;
 
 namespace Chaos.Models.Data;
 

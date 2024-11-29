@@ -11,7 +11,7 @@ public sealed class UserOptions
         {
             UserOption.Option1 => typeof(UserOptions).GetDescription(nameof(ShowBodyAnimations)),
             UserOption.Option2 => typeof(UserOptions).GetDescription(nameof(ListenToHitSounds)),
-            UserOption.Option3 => typeof(UserOptions).GetDescription(nameof(Option3)),
+            UserOption.Option3 => typeof(UserOptions).GetDescription(nameof(PriorityAnimations)),
             UserOption.Option4 => typeof(UserOptions).GetDescription(nameof(Option4)),
             UserOption.Option5 => typeof(UserOptions).GetDescription(nameof(Option5)),
             UserOption.Option6 => typeof(UserOptions).GetDescription(nameof(AllowExchange)),
@@ -25,7 +25,7 @@ public sealed class UserOptions
         {
             UserOption.Option1 => ShowBodyAnimations,
             UserOption.Option2 => ListenToHitSounds,
-            UserOption.Option3 => Option3,
+            UserOption.Option3 => PriorityAnimations,
             UserOption.Option4 => Option4,
             UserOption.Option5 => Option5,
             UserOption.Option6 => AllowExchange,
@@ -53,7 +53,7 @@ public sealed class UserOptions
 
                 break;
             case UserOption.Option3:
-                Option3 = !Option3;
+                PriorityAnimations = !PriorityAnimations;
 
                 break;
             case UserOption.Option4:
@@ -119,8 +119,8 @@ public sealed class UserOptions
     [Description("Listen to hit sounds")]
     public bool ListenToHitSounds { get; set; } = true;
 
-    [Description("Option 3")]
-    public bool Option3 { get; set; } = true;
+    [Description("Use Priority Animations")]
+    public bool PriorityAnimations { get; set; } = true;
 
     [Description("Option 4")]
     public bool Option4 { get; set; } = true;

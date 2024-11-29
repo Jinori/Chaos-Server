@@ -32,7 +32,7 @@ public sealed record UserOptionsSchema
     ///     Option 3
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
-    public bool Option3 { get; set; }
+    public bool PriorityAnimations { get; set; }
 
     /// <summary>
     ///     Option 4

@@ -479,7 +479,6 @@ public class MasteringScript : DialogScriptBase
         var armor = source.Gender == Gender.Male ? ItemFactory.Create("wizardMasterMantle") : ItemFactory.Create("wizardMasterdress");
         var helm = source.Gender == Gender.Male ? ItemFactory.Create("gnostichat") : ItemFactory.Create("gnosticumber");
         var weapon = ItemFactory.Create("magusorb");
-        var ardcradh = SpellFactory.Create("ardcradh");
         var fasspiorad = SpellFactory.Create("fasspiorad");
         
         if (!source.Legend.TryGetValue("dedicated", out _))
@@ -493,7 +492,6 @@ public class MasteringScript : DialogScriptBase
         source.Trackers.Flags.AddFlag(WizardElement.Fire);
         source.Trackers.Flags.AddFlag(WizardElement.Wind);
         source.SkillBook.Remove("Rumination");
-        source.SpellBook.TryAddToNextSlot(ardcradh);
         source.SpellBook.TryAddToNextSlot(fasspiorad);
         
         

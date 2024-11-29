@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
@@ -37,16 +36,12 @@ public class CryptSlayerScript : DialogScriptBase
         var tnl = LevelUpFormulae.Default.CalculateTnl(source);
         var tenPercent = MathEx.GetPercentOf<int>(tnl, 10);
         var randomCryptSlayerStage = CryptSlayerStage.None;
-        
+
         if (tenPercent > 320000)
-        {
             tenPercent = 320000;
-        }
-        
+
         if (source.StatSheet.Level >= 99)
-        {
             tenPercent = 10000000;
-        }
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
@@ -80,7 +75,9 @@ public class CryptSlayerScript : DialogScriptBase
                             1,
                             GameTime.Now));
 
-                    Subject.Reply(source, "Thanks for all your hard work Aisling, we can keep these creatures where they belong. Here's a Large Lantern for your troubles.");
+                    Subject.Reply(
+                        source,
+                        "Thanks for all your hard work Aisling, we can keep these creatures where they belong. Here's a Large Lantern for your troubles.");
                 }
 
                 break;
@@ -117,7 +114,9 @@ public class CryptSlayerScript : DialogScriptBase
                     {
                         randomCryptSlayerStage = new[]
                         {
-                            CryptSlayerStage.Rat, CryptSlayerStage.Centipede1, CryptSlayerStage.Spider1
+                            CryptSlayerStage.Rat,
+                            CryptSlayerStage.Centipede1,
+                            CryptSlayerStage.Spider1
                         }.PickRandom();
 
                         source.Trackers.Enums.Set(randomCryptSlayerStage);
@@ -127,7 +126,10 @@ public class CryptSlayerScript : DialogScriptBase
                     {
                         randomCryptSlayerStage = new[]
                         {
-                            CryptSlayerStage.Centipede2, CryptSlayerStage.Bat, CryptSlayerStage.Scorpion, CryptSlayerStage.Spider2
+                            CryptSlayerStage.Centipede2,
+                            CryptSlayerStage.Bat,
+                            CryptSlayerStage.Scorpion,
+                            CryptSlayerStage.Spider2
                         }.PickRandom();
 
                         source.Trackers.Enums.Set(randomCryptSlayerStage);
@@ -137,7 +139,9 @@ public class CryptSlayerScript : DialogScriptBase
                     {
                         randomCryptSlayerStage = new[]
                         {
-                            CryptSlayerStage.Scorpion, CryptSlayerStage.Bat, CryptSlayerStage.GiantBat
+                            CryptSlayerStage.Scorpion,
+                            CryptSlayerStage.Bat,
+                            CryptSlayerStage.GiantBat
                         }.PickRandom();
 
                         source.Trackers.Enums.Set(randomCryptSlayerStage);
@@ -147,7 +151,9 @@ public class CryptSlayerScript : DialogScriptBase
                     {
                         randomCryptSlayerStage = new[]
                         {
-                            CryptSlayerStage.WhiteBat, CryptSlayerStage.Mimic, CryptSlayerStage.GiantBat, CryptSlayerStage.Marauder, CryptSlayerStage.WhiteBat
+                            CryptSlayerStage.WhiteBat,
+                            CryptSlayerStage.Mimic,
+                            CryptSlayerStage.GiantBat
                         }.PickRandom();
 
                         source.Trackers.Enums.Set(randomCryptSlayerStage);
@@ -157,7 +163,9 @@ public class CryptSlayerScript : DialogScriptBase
                     {
                         randomCryptSlayerStage = new[]
                         {
-                            CryptSlayerStage.Succubus, CryptSlayerStage.Mimic, CryptSlayerStage.Marauder, CryptSlayerStage.Kardi
+                            CryptSlayerStage.Succubus,
+                            CryptSlayerStage.Marauder,
+                            CryptSlayerStage.Kardi
                         }.PickRandom();
 
                         source.Trackers.Enums.Set(randomCryptSlayerStage);
@@ -346,10 +354,12 @@ public class CryptSlayerScript : DialogScriptBase
                 }
 
                 Logger.WithTopics(
-                          [Topics.Entities.Aisling,
-                          Topics.Entities.Experience,
-                          Topics.Entities.Dialog,
-                          Topics.Entities.Quest])
+                          [
+                              Topics.Entities.Aisling,
+                              Topics.Entities.Experience,
+                              Topics.Entities.Dialog,
+                              Topics.Entities.Quest
+                          ])
                       .WithProperty(source)
                       .WithProperty(Subject)
                       .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, tenPercent);

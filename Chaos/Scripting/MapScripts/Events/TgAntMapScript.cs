@@ -57,8 +57,11 @@ public class TgAntMapScript : MapScriptBase
 
     private void SpawnAntBoss()
     {
-        var monster = MonsterFactory.Create("tg_antboss", Subject, new Point(18, 25));
-        Subject.AddEntity(monster, monster);
+        if (Subject.TryGetRandomWalkablePoint(out var point1))
+        {
+            var monster = MonsterFactory.Create("tg_antboss", Subject, point1);
+            Subject.AddEntity(monster, monster);
+        }
     }
 
     public override void Update(TimeSpan delta)

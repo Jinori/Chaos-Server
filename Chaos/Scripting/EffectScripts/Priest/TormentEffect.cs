@@ -34,7 +34,7 @@ public class TormentEffect : EffectBase, HierarchicalEffectComponent.IHierarchic
     };
 
     public override byte Icon => 87;
-    public override string Name => "Torment";
+    public override string Name => "torment";
 
     protected byte? Sound => 122;
 
