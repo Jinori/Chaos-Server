@@ -11,15 +11,15 @@ public class TrainingDummyScript(Monster subject) : MonsterScriptBase(subject)
         if (Subject.Effects.Contains("pramh"))
             Subject.Effects.Dispel("pramh");
 
-        if (Subject.Effects.Contains("beagpramh"))
-            Subject.Effects.Dispel("beagpramh");
+        if (Subject.Effects.Contains("beag pramh"))
+            Subject.Effects.Dispel("beag pramh");
 
-        if (Subject.Effects.Contains("wolfFangFist"))
-            Subject.Effects.Dispel("wolfFangFist");
+        if (Subject.Effects.Contains("Wolf Fang Fist"))
+            Subject.Effects.Dispel("Wolf Fang Fist");
 
         if (Subject.Effects.Contains("Amnesia"))
             Subject.Effects.Dispel("Amensia");
-        
+
         if (attacker is Aisling aisling)
             Subject.Say($"{aisling.Name} did {damage} damage.");
     }

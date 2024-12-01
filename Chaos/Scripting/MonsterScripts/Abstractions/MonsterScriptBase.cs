@@ -63,27 +63,21 @@ public abstract class MonsterScriptBase : SubjectiveScriptBase<Monster>, IMonste
 
     public virtual void OnAttacked(Creature source, int damage)
     {
-        if (Subject.Effects.Contains("pramh"))
-        {
-            Subject.Effects.Dispel("pramh");
-        }
+        if (Subject.Effects.Contains("Pramh"))
+            Subject.Effects.Dispel("Pramh");
 
-        if (Subject.Effects.Contains("beagpramh"))
-        {
-            Subject.Effects.Dispel("beagpramh");
-        }
+        if (Subject.Effects.Contains("Beag Pramh"))
+            Subject.Effects.Dispel("Beag Pramh");
 
-        if (Subject.Effects.Contains("wolfFangFist"))
-        {
-            Subject.Effects.Dispel("wolfFangFist");
-        }
-        
+        if (Subject.Effects.Contains("Wolf Fang Fist"))
+            Subject.Effects.Dispel("Wolf Fang Fist");
+
         if (Subject.Effects.Contains("Crit"))
             Subject.Effects.Dispel("Crit");
 
         if (Subject.Effects.Contains("Amnesia"))
             Subject.Effects.Terminate("Amnesia");
-            
+
         OnAttacked(source, damage, null);
     }
 

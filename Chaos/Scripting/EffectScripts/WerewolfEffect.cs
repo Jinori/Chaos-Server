@@ -1,7 +1,5 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
-using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.EffectComponents;
 using Chaos.Scripting.Components.Execution;
@@ -11,23 +9,26 @@ namespace Chaos.Scripting.EffectScripts;
 
 public class WerewolfEffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
 {
-
     private Attributes NegativeAttributes = null!;
+
+    public List<string> ConflictingEffectNames { get; init; } =
+        [
+            "Werewolf",
+            "Mount"
+        ];
+
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromHours(999);
+
     protected Animation? Animation { get; } = new()
     {
         TargetAnimation = 6,
         AnimationSpeed = 100
     };
-    public List<string> ConflictingEffectNames { get; init; } =
-    [
-        "Werewolf",
-        "Mount"
-    ];
+
     public override byte Icon => 85;
-    public override string Name => "werewolf";
+    public override string Name => "Werewolf";
     protected byte? Sound => 115;
-    
+
     public override void OnApplied()
     {
         base.OnApplied();
@@ -51,17 +52,15 @@ public class WerewolfEffect : EffectBase, NonOverwritableEffectComponent.INonOve
                 FlatSpellDamage = Convert.ToInt32(AislingSubject.UserStatSheet.EffectiveFlatSpellDamage * 0.25),
                 SpellDamagePct = Convert.ToInt32(AislingSubject.UserStatSheet.EffectiveSpellDamagePct * 0.25),
                 SkillDamagePct = Convert.ToInt32(AislingSubject.UserStatSheet.EffectiveSkillDamagePct * 0.25),
-                AtkSpeedPct = Convert.ToInt32(AislingSubject.UserStatSheet.EffectiveAttackSpeedPct * 0.25),
-                
-
+                AtkSpeedPct = Convert.ToInt32(AislingSubject.UserStatSheet.EffectiveAttackSpeedPct * 0.25)
             };
-            
+
             AislingSubject.StatSheet.SubtractBonus(NegativeAttributes);
             AislingSubject.Client.SendAttributes(StatUpdateType.Full);
             AislingSubject.SetSprite(426);
         }
     }
-    
+
     public override void OnTerminated()
     {
         if (AislingSubject != null)
@@ -71,6 +70,7 @@ public class WerewolfEffect : EffectBase, NonOverwritableEffectComponent.INonOve
             AislingSubject.SetSprite(0);
         }
     }
+
     public override bool ShouldApply(Creature source, Creature target)
     {
         var execution = new ComponentExecutor(source, target).WithOptions(this)

@@ -14,12 +14,12 @@ public class ArdAiteEffect : EffectBase, HierarchicalEffectComponent.IHierarchic
 
     public List<string> EffectNameHierarchy { get; init; } =
         [
-            "blessing",
-            "torment",
-            "ard naomh aite",
-            "mor naomh aite",
-            "naomh aite",
-            "beag naomh aite"
+            "Blessing",
+            "Torment",
+            "Ard Naomh Aite",
+            "Mor naomh Aite",
+            "Naomh Aite",
+            "Beag Naomh Aite"
         ];
 
     private Creature SourceOfEffect { get; set; } = null!;
@@ -31,7 +31,7 @@ public class ArdAiteEffect : EffectBase, HierarchicalEffectComponent.IHierarchic
     };
 
     public override byte Icon => 9;
-    public override string Name => "ard naomh aite";
+    public override string Name => "Ard Naomh Aite";
 
     protected byte? Sound => 31;
 

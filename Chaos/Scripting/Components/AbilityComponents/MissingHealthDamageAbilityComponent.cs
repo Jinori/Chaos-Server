@@ -1,5 +1,3 @@
-using Chaos.Common.Definitions;
-using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
@@ -30,14 +28,12 @@ public struct MissingHealthDamageAbilityComponent : IComponent
                 options.SourceScript);
 
             if (damage > 0)
-            {
                 options.ApplyDamageScript.ApplyDamage(
                     context.Source,
                     target,
                     options.SourceScript,
                     damage,
                     options.Element);
-            }
         }
     }
 
@@ -52,23 +48,17 @@ public struct MissingHealthDamageAbilityComponent : IComponent
     {
         // Calculate damage based on the source's missing health
         var missingHealth = source.StatSheet.EffectiveMaximumHp - source.StatSheet.CurrentHp;
-        int damage = Convert.ToInt32(missingHealth * 0.6m); // Full missing health as damage
+        var damage = Convert.ToInt32(missingHealth * 0.6m); // Full missing health as damage
 
         // If there's a base damage, add it
         if (baseDamage.HasValue)
-        {
             damage += baseDamage.Value;
-        }
 
         // If there's a stat multiplier, apply it
         if (damageStat.HasValue && damageStatMultiplier.HasValue)
-        {
             damage += Convert.ToInt32(source.StatSheet.GetEffectiveStat(damageStat.Value) * damageStatMultiplier.Value);
-        }
         else if (damageStat.HasValue)
-        {
             damage += source.StatSheet.GetEffectiveStat(damageStat.Value);
-        }
 
         // Apply additional effects if any
         ApplyFuryEffects(source, ref damage);
@@ -80,21 +70,29 @@ public struct MissingHealthDamageAbilityComponent : IComponent
     {
         var furyMultipliers = new Dictionary<string, double>
         {
-            { "fury1", 1.15 },
-            { "fury2", 1.30 },
-            { "fury3", 1.50 },
-            { "fury4", 1.70 },
-            { "fury5", 1.95 },
-            { "fury6", 2.20 }
+            {
+                "Fury1", 1.15
+            },
+            {
+                "Fury2", 1.30
+            },
+            {
+                "Fury3", 1.50
+            },
+            {
+                "Fury4", 1.70
+            },
+            {
+                "Fury5", 1.95
+            },
+            {
+                "Fury6", 2.20
+            }
         };
 
         foreach (var fury in furyMultipliers)
-        {
             if (source.Effects.Contains(fury.Key))
-            {
                 finalDamage = (int)(finalDamage * fury.Value);
-            }
-        }
     }
 
     public interface IDamageComponentOptions

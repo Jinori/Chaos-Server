@@ -56,14 +56,14 @@ public class VortexEffect : ContinuousAnimationEffectBase
     {
         if ((AislingSubject == null) && !Subject.Script.Is<PetScript>())
         {
-            Subject.Effects.Terminate("vortex");
+            Subject.Effects.Terminate("Vortex");
 
             return;
         }
 
         if (Subject.MapInstance != SourceOfEffect.MapInstance)
         {
-            Subject.Effects.Terminate("vortex");
+            Subject.Effects.Terminate("Vortex");
 
             return;
         }
@@ -112,6 +112,7 @@ public class VortexEffect : ContinuousAnimationEffectBase
             if (target.Name.Contains("Teammate") || target.Script.Is<PetScript>())
             {
                 Subject.Animate(Animation);
+
                 return true;
             }
 
@@ -120,21 +121,21 @@ public class VortexEffect : ContinuousAnimationEffectBase
             return false;
         }
 
-        if (target.Effects.Contains("quake"))
+        if (target.Effects.Contains("Quake"))
         {
-            target.Effects.Terminate("quake");
+            target.Effects.Terminate("Quake");
             Subject.Animate(Animation);
 
             return true;
         }
 
-        if (target.Effects.Contains("vortex"))
+        if (target.Effects.Contains("Vortex"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target has already has Vortex.");
 
             return false;
         }
-        
+
         Subject.Animate(Animation);
         (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You cast {Name}.");
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{source.Name} casted {Name} on you.");

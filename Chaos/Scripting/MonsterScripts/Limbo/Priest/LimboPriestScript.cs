@@ -157,7 +157,7 @@ public class LimboPriestScript : MonsterScriptBase
             }
         }
 
-        if (Subject.Effects.Contains("poison"))
+        if (Subject.Effects.Contains("Poison"))
         {
             Subject.TryUseSpell(AoPoison, Subject.Id);
 
@@ -165,7 +165,7 @@ public class LimboPriestScript : MonsterScriptBase
         }
 
         foreach (var monster in nearbyMonsters)
-            if (monster.Effects.Contains("poison"))
+            if (monster.Effects.Contains("Poison"))
             {
                 Subject.TryUseSpell(AoPoison, monster.Id);
 

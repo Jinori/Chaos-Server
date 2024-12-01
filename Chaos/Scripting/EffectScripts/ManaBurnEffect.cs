@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Time;
@@ -11,20 +10,25 @@ public class ManaBurnEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(18);
+
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
         TargetAnimation = 135
     };
+
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1500), false);
-    /// <inheritdoc />
-    public override byte Icon => 187;
+
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(500), false);
+
     /// <inheritdoc />
-    public override string Name => "Manaburn";
+    public override byte Icon => 187;
+
+    /// <inheritdoc />
+    public override string Name => "Mana Burn";
 
     /// <inheritdoc />
     protected override void OnIntervalElapsed()

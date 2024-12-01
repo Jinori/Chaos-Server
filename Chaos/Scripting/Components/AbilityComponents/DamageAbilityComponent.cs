@@ -127,22 +127,22 @@ public struct DamageAbilityComponent : IComponent
         var furyMultipliers = new Dictionary<string, double>
         {
             {
-                "fury1", 1.10
+                "Fury1", 1.10
             },
             {
-                "fury2", 1.20
+                "Fury2", 1.20
             },
             {
-                "fury3", 1.35
+                "Fury3", 1.35
             },
             {
-                "fury4", 1.50
+                "Fury4", 1.50
             },
             {
-                "fury5", 1.75
+                "Fury5", 1.75
             },
             {
-                "fury6", 2.00
+                "Fury6", 2.00
             }
         };
 
@@ -156,22 +156,22 @@ public struct DamageAbilityComponent : IComponent
         var cunningMultipliers = new Dictionary<string, double>
         {
             {
-                "cunning1", 1.08
+                "Cunning1", 1.08
             },
             {
-                "cunning2", 1.16
+                "Cunning2", 1.16
             },
             {
-                "cunning3", 1.28
+                "Cunning3", 1.28
             },
             {
-                "cunning4", 1.40
+                "Cunning4", 1.40
             },
             {
-                "cunning5", 1.60
+                "Cunning5", 1.60
             },
             {
-                "cunning6", 1.80
+                "Cunning6", 1.80
             }
         };
 

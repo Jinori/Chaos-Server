@@ -14,9 +14,9 @@ public sealed class DefaultRegenFormula : IRegenFormula
         if (creature.StatSheet.HealthPercent == 100)
             return 0;
 
-        if (creature.Effects.Contains("Poison") || creature.Effects.Contains("miasma"))
+        if (creature.Effects.Contains("Poison") || creature.Effects.Contains("Miasma"))
             return 0;
-        
+
         if (creature.IsInnerFired())
         {
             var percentToRegenerate = creature switch
@@ -28,8 +28,7 @@ public sealed class DefaultRegenFormula : IRegenFormula
             };
 
             return MathEx.GetPercentOf<int>((int)creature.StatSheet.EffectiveMaximumHp, percentToRegenerate);
-        }
-        else
+        } else
         {
             var percentToRegenerate = creature switch
             {
@@ -59,7 +58,7 @@ public sealed class DefaultRegenFormula : IRegenFormula
             Merchant => 100,
             _        => throw new ArgumentOutOfRangeException(nameof(creature), creature, null)
         };
-        
+
         return MathEx.GetPercentOf<int>((int)creature.StatSheet.EffectiveMaximumMp, percentToRegenerate);
     }
 }

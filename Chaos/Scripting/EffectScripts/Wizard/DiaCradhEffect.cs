@@ -13,11 +13,11 @@ public class DiaCradhEffect : EffectBase, NonOverwritableEffectComponent.INonOve
 {
     public List<string> ConflictingEffectNames { get; init; } =
         [
-            "dia cradh",
-            "ard cradh",
-            "mor cradh",
-            "cradh",
-            "beag cradh"
+            "Dia Cradh",
+            "Ard Cradh",
+            "Mor Cradh",
+            "Cradh",
+            "Beag Cradh"
         ];
 
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(10);
@@ -30,7 +30,7 @@ public class DiaCradhEffect : EffectBase, NonOverwritableEffectComponent.INonOve
     };
 
     public override byte Icon => 78;
-    public override string Name => "dia cradh";
+    public override string Name => "Dia Cradh";
     protected byte? Sound => 27;
 
     public override void OnApplied()

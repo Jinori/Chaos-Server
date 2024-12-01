@@ -14,9 +14,9 @@ public class MorFasDeireasEffect : EffectBase, HierarchicalEffectComponent.IHier
 
     public List<string> EffectNameHierarchy { get; init; } =
         [
-            "torment",
-            "mor fas deireas",
-            "fas deireas"
+            "Torment",
+            "Mor Fas Deireas",
+            "Fas Deireas"
         ];
 
     private Animation? Animation { get; } = new()
@@ -26,7 +26,7 @@ public class MorFasDeireasEffect : EffectBase, HierarchicalEffectComponent.IHier
     };
 
     public override byte Icon => 106;
-    public override string Name => "mor fas deireas";
+    public override string Name => "Mor Fas Deireas";
 
     protected byte? Sound => 124;
 

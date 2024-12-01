@@ -14,9 +14,9 @@ public class MorBeannaichEffect : EffectBase, HierarchicalEffectComponent.IHiera
 
     public List<string> EffectNameHierarchy { get; init; } =
         [
-            "torment",
-            "mor beannaich",
-            "beannaich"
+            "Torment",
+            "Mor Beannaich",
+            "Beannaich"
         ];
 
     private Animation? Animation { get; } = new()
@@ -26,7 +26,7 @@ public class MorBeannaichEffect : EffectBase, HierarchicalEffectComponent.IHiera
     };
 
     public override byte Icon => 105;
-    public override string Name => "mor beannaich";
+    public override string Name => "Mor Beannaich";
 
     protected byte? Sound => 123;
 

@@ -20,16 +20,16 @@ public struct ApplyEffectAbilityComponent : IComponent
             return;
 
         var targets = vars.GetTargets<Creature>();
-        
+
         foreach (var target in targets)
         {
             if (options.EffectApplyChance.HasValue && !IntegerRandomizer.RollChance(options.EffectApplyChance.Value))
                 continue;
 
             //bosses cannot be beagsuained by creag spells
-            if (options.EffectKey is "beagsuain" && target.Script.Is<ThisIsABossScript>())
+            if (options.EffectKey is "Beag Suain" && target.Script.Is<ThisIsABossScript>())
                 continue;
-            
+
             var effect = options.EffectFactory.Create(options.EffectKey);
 
             if (options.EffectDurationOverride.HasValue)
@@ -41,9 +41,9 @@ public struct ApplyEffectAbilityComponent : IComponent
 
     public interface IApplyEffectComponentOptions
     {
+        int? EffectApplyChance { get; init; }
         TimeSpan? EffectDurationOverride { get; init; }
         IEffectFactory EffectFactory { get; init; }
         string? EffectKey { get; init; }
-        int? EffectApplyChance { get; init; }
     }
 }

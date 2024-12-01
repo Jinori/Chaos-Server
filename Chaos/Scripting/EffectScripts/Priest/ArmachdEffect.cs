@@ -14,8 +14,8 @@ public class ArmachdEffect : EffectBase, HierarchicalEffectComponent.IHierarchic
 
     public List<string> EffectNameHierarchy { get; init; } =
         [
-            "blessing",
-            "armachd"
+            "Blessing",
+            "Armachd"
         ];
 
     protected Animation? Animation { get; } = new()
@@ -25,7 +25,7 @@ public class ArmachdEffect : EffectBase, HierarchicalEffectComponent.IHierarchic
     };
 
     public override byte Icon => 0;
-    public override string Name => "armachd";
+    public override string Name => "Armachd";
 
     protected byte? Sound => 122;
 

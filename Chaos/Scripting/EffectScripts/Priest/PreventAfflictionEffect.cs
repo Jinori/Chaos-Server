@@ -9,7 +9,7 @@ public class PreventAfflictionEffect : EffectBase
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(9);
     public override byte Icon => 109;
-    public override string Name => "prevent affliction";
+    public override string Name => "Prevent Affliction";
 
     public override void OnDispelled() => OnTerminated();
 
@@ -21,7 +21,7 @@ public class PreventAfflictionEffect : EffectBase
 
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (target.Effects.Contains("preventaffliction"))
+        if (target.Effects.Contains("Prevent Affliction"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "This magic has already been simplified.");
 

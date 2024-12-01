@@ -35,7 +35,7 @@ public sealed class BeagPramhEffect : ContinuousAnimationEffectBase
     public override byte Icon => 94;
 
     /// <inheritdoc />
-    public override string Name => "beag pramh";
+    public override string Name => "Beag Pramh";
 
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
@@ -58,7 +58,7 @@ public sealed class BeagPramhEffect : ContinuousAnimationEffectBase
         if (target.IsGodModeEnabled())
             return false;
 
-        if (target.Effects.Contains("pramh") || target.Effects.Contains("beagpramh"))
+        if (target.Effects.Contains("Pramh") || target.Effects.Contains("Beag Pramh"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is already asleep.");
 

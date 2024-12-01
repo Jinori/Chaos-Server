@@ -151,7 +151,7 @@ public class DefaultDamageFormula : IDamageFormula
 
     protected virtual void HandleChaosFist(ref int damage, IScript source, Creature attacker)
     {
-        if (!attacker.Effects.Contains("chaosfist"))
+        if (!attacker.Effects.Contains("Chaos Fist"))
             return;
 
         if (source is not SubjectiveScriptBase<Skill> skillScript)
@@ -163,7 +163,7 @@ public class DefaultDamageFormula : IDamageFormula
 
     protected virtual void HandleClawFist(ref int damage, IScript source, Creature attacker)
     {
-        if (!attacker.Effects.Contains("clawfist"))
+        if (!attacker.Effects.Contains("Claw Fist"))
             return;
 
         if (source is not SubjectiveScriptBase<Skill> skillScript)
@@ -189,10 +189,10 @@ public class DefaultDamageFormula : IDamageFormula
     {
         var damageMultiplier = 1.0;
 
-        if (defender.Effects.Contains("beagpramh"))
+        if (defender.Effects.Contains("Beag Pramh"))
             damageMultiplier *= 1.25;
 
-        if (defender.Effects.Contains("wolfFangFist") || defender.Effects.Contains("Crit") || defender.Effects.Contains("pramh"))
+        if (defender.Effects.Contains("Wolf Fang Fist") || defender.Effects.Contains("Crit") || defender.Effects.Contains("Pramh"))
             damageMultiplier *= 2.0;
         var modifiedDamage = damage * damageMultiplier;
 

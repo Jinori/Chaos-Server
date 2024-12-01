@@ -11,13 +11,22 @@ public class TerminusReviveScript : DialogScriptBase
     private readonly ISimpleCache SimpleCache;
 
     public TerminusReviveScript(Dialog subject, ISimpleCache simpleCache)
-        : base(subject) => SimpleCache = simpleCache;
+        : base(subject)
+        => SimpleCache = simpleCache;
 
     public override void OnDisplaying(Aisling source)
     {
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "terminus_existance":
+
+                if (!source.IsDead)
+                {
+                    Subject.Reply(source, "You aren't dead! Get back in there.");
+
+                    return;
+                }
+
                 Point point;
                 point = new Point(13, 10);
                 var mapInstance = SimpleCache.Get<MapInstance>("after_life");

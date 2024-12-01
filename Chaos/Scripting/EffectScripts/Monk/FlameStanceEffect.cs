@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
@@ -10,7 +9,7 @@ public class FlameStanceEffect : EffectBase
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(15);
     public override byte Icon => 93;
-    public override string Name => "flamestance";
+    public override string Name => "Flame Stance";
 
     public override void OnApplied()
     {
@@ -30,9 +29,9 @@ public class FlameStanceEffect : EffectBase
 
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (!target.Effects.Contains("smokestance") && !target.Effects.Contains("flamestance")) 
+        if (!target.Effects.Contains("Smoke Stance") && !target.Effects.Contains("Flame Stance"))
             return true;
-        
+
         (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A stance has already been applied.");
 
         return false;
