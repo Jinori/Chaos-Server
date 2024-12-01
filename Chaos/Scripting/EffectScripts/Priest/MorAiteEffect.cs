@@ -14,12 +14,12 @@ public class MorAiteEffect : EffectBase, HierarchicalEffectComponent.IHierarchic
 
     public List<string> EffectNameHierarchy { get; init; } =
         [
-            "blessing",
-            "torment",
-            "ard naomh aite",
-            "mor naomh aite",
-            "naomh aite",
-            "beag naomh aite"
+            "Blessing",
+            "Torment",
+            "Ard Naomh Aite",
+            "Mor Naomh Aite",
+            "Naomh Aite",
+            "Beag Naomh Aite"
         ];
 
     private Animation Animation { get; } = new()
@@ -29,7 +29,7 @@ public class MorAiteEffect : EffectBase, HierarchicalEffectComponent.IHierarchic
     };
 
     public override byte Icon => 9;
-    public override string Name => "mor naomh aite";
+    public override string Name => "Mor Naomh Aite";
 
     protected byte? Sound => 123;
 

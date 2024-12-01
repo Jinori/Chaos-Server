@@ -14,16 +14,16 @@ public class TormentEffect : EffectBase, HierarchicalEffectComponent.IHierarchic
 
     public List<string> EffectNameHierarchy { get; init; } =
         [
-            "torment",
-            "blessing",
-            "ard naomh aite",
-            "mor naomh aite",
-            "naomh aite",
-            "beag naomh aite",
-            "mor beannaich",
-            "beannaich",
-            "mor fas deireas",
-            "fas deireas",
+            "Torment",
+            "Blessing",
+            "Ard Naomh Aite",
+            "Mor Naomh Aite",
+            "Naomh Aite",
+            "Beag Naomh Aite",
+            "Mor Beannaich",
+            "Beannaich",
+            "Mor Fas Deireas",
+            "Fas Deireas",
             "motivate"
         ];
 
@@ -34,7 +34,7 @@ public class TormentEffect : EffectBase, HierarchicalEffectComponent.IHierarchic
     };
 
     public override byte Icon => 87;
-    public override string Name => "torment";
+    public override string Name => "Torment";
 
     protected byte? Sound => 122;
 

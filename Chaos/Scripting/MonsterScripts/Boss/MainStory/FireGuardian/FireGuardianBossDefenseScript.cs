@@ -14,9 +14,7 @@ public sealed class FireGuardianBossDefenseScript : MonsterScriptBase
     /// <inheritdoc />
     public FireGuardianBossDefenseScript(Monster subject, ISpellFactory spellFactory)
         : base(subject)
-    {
-        SpellFactory = spellFactory;
-    }
+        => SpellFactory = spellFactory;
 
     /// <inheritdoc />
     public override bool CanSee(VisibleEntity entity)
@@ -27,6 +25,7 @@ public sealed class FireGuardianBossDefenseScript : MonsterScriptBase
 
         return false;
     }
+
     private void RemoveEffect(IEffect effect) => Subject.Effects.Dispel(effect.Name);
 
     private void RemoveEffectAndHeal(IEffect effect)
@@ -47,7 +46,7 @@ public sealed class FireGuardianBossDefenseScript : MonsterScriptBase
         foreach (var effect in Subject.Effects)
             switch (effect.Name.ToLowerInvariant())
             {
-                case "beagpramh":
+                case "beag pramh":
                     RemoveEffectAndHeal(effect);
                     Subject.Say("*burns hotter*");
 
@@ -57,7 +56,7 @@ public sealed class FireGuardianBossDefenseScript : MonsterScriptBase
                     Subject.Say("*burns hotter*");
 
                     break;
-                case "wolffangfist":
+                case "Wolf Fang Fist":
                     RemoveEffectAndHeal(effect);
                     Subject.Say("*heats up*");
 
@@ -68,7 +67,7 @@ public sealed class FireGuardianBossDefenseScript : MonsterScriptBase
 
                     break;
 
-                case "beagsuain":
+                case "Beag Suain":
                     RemoveEffectAndHeal(effect);
                     Subject.Say("*unaffected*");
 

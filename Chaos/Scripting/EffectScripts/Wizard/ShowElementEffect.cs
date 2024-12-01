@@ -1,6 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
-using Chaos.Extensions.Common;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -12,6 +10,7 @@ namespace Chaos.Scripting.EffectScripts.Wizard;
 
 public class ShowElementEffect : ContinuousAnimationEffectBase
 {
+    private string ElementChant = "None";
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(9);
     protected Point Point { get; set; }
 
@@ -23,12 +22,12 @@ public class ShowElementEffect : ContinuousAnimationEffectBase
 
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromSeconds(3), false);
+
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromSeconds(3), false);
+
     public override byte Icon => 19;
     public override string Name => "Show Element";
-
-    private string ElementChant = "None";
 
     public override void OnApplied()
     {
@@ -43,51 +42,61 @@ public class ShowElementEffect : ContinuousAnimationEffectBase
             case Element.Earth:
                 Animation.TargetAnimation = 401;
                 ElementChant = "Earth";
+
                 break;
 
             case Element.Water:
                 Animation.TargetAnimation = 402;
                 ElementChant = "Water";
+
                 break;
 
             case Element.Fire:
                 Animation.TargetAnimation = 404;
                 ElementChant = "Fire";
+
                 break;
 
             case Element.Wind:
                 Animation.TargetAnimation = 403;
                 ElementChant = "Wind";
+
                 break;
 
             case Element.Darkness:
                 Animation.TargetAnimation = 76;
                 ElementChant = "Dark";
+
                 break;
 
             case Element.Holy:
                 Animation.TargetAnimation = 277;
                 ElementChant = "Light";
+
                 break;
 
             case Element.Metal:
                 Animation.TargetAnimation = 237;
                 ElementChant = "Metal";
+
                 break;
 
             case Element.Wood:
                 Animation.TargetAnimation = 235;
                 ElementChant = "Wood";
+
                 break;
 
             case Element.Undead:
                 Animation.TargetAnimation = 233;
                 ElementChant = "Nature";
+
                 break;
 
             case Element.None:
                 Animation.TargetAnimation = 363;
                 ElementChant = "None";
+
                 break;
         }
 
@@ -110,9 +119,9 @@ public class ShowElementEffect : ContinuousAnimationEffectBase
         if (target is Aisling { IsDead: true })
             return false;
 
-        if (target.Effects.Contains("showelement"))
+        if (target.Effects.Contains("Show Element"))
         {
-            target.Effects.Dispel("showelement");
+            target.Effects.Dispel("Show Element");
 
             return true;
         }

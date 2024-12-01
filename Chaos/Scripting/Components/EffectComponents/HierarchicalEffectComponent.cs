@@ -1,3 +1,4 @@
+using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
@@ -22,23 +23,22 @@ public struct HierarchicalEffectComponent : IConditionalComponent
 
         // Remove all effects that have a higher rank than the new effect
         var effectsToRemove = target.Effects
-            .Where(e => options.EffectNameHierarchy.Contains(e.Name))
-            .Where(e => options.EffectNameHierarchy.IndexOf(e.Name) >= thisRank)
-            .ToList();
+                                    .Where(e => options.EffectNameHierarchy.ContainsI(e.Name))
+                                    .Where(e => options.EffectNameHierarchy.IndexOf(e.Name) >= thisRank)
+                                    .ToList();
 
         foreach (var effect in effectsToRemove)
-        {
             target.Effects.Dispel(effect.Name);
-        }
 
         // Check if there's any lower-ranked effect still present
         var lowerRankEffect = target.Effects
-            .Where(e => options.EffectNameHierarchy.Contains(e.Name))
-            .FirstOrDefault(e => options.EffectNameHierarchy.IndexOf(e.Name) < thisRank);
+                                    .Where(e => options.EffectNameHierarchy.ContainsI(e.Name))
+                                    .FirstOrDefault(e => options.EffectNameHierarchy.IndexOf(e.Name) < thisRank);
 
         if (lowerRankEffect != null)
         {
             context.SourceAisling?.SendActiveMessage($"Target is already under a stronger effect. [{lowerRankEffect.Name}]");
+
             return false;
         }
 

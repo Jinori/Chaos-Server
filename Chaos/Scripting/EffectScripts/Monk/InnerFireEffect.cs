@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -12,22 +11,26 @@ namespace Chaos.Scripting.EffectScripts.Monk;
 public class InnerFireEffect : ContinuousAnimationEffectBase
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(8);
+
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 300,
         TargetAnimation = 5
     };
+
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMinutes(8), false);
+
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(400), false);
+
     public override byte Icon => 65;
-    public override string Name => "innerFire";
+    public override string Name => "Inner Fire";
 
     public override void OnApplied()
     {
         base.OnApplied();
-        
+
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your body is at inner peace.");
     }
@@ -44,7 +47,7 @@ public class InnerFireEffect : ContinuousAnimationEffectBase
 
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (target.Effects.Contains("innerFire"))
+        if (target.Effects.Contains("Inner Fire"))
         {
             (source as Aisling)?.Client.SendServerMessage(
                 ServerMessageType.OrangeBar1,

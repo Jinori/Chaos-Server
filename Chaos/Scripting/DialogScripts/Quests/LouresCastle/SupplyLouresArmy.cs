@@ -1,5 +1,4 @@
 ﻿using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Legend;
@@ -15,16 +14,22 @@ using Chaos.Storage.Abstractions;
 using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Quests.LouresCastle;
+
 public class SupplyLouresArmy : DialogScriptBase
 {
-    private readonly ILogger<SupplyLouresArmy> Logger;
-    private readonly IItemFactory ItemFactory;
-    private readonly ISimpleCache SimpleCache;
     private readonly IEffectFactory EffectFactory;
+    private readonly IItemFactory ItemFactory;
+    private readonly ILogger<SupplyLouresArmy> Logger;
+    private readonly ISimpleCache SimpleCache;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     /// <inheritdoc />
-    public SupplyLouresArmy(Dialog subject, ILogger<SupplyLouresArmy> logger, ISimpleCache simpleCache, IItemFactory itemFactory, IEffectFactory effectFactory)
+    public SupplyLouresArmy(
+        Dialog subject,
+        ILogger<SupplyLouresArmy> logger,
+        ISimpleCache simpleCache,
+        IItemFactory itemFactory,
+        IEffectFactory effectFactory)
         : base(subject)
     {
         Logger = logger;
@@ -33,14 +38,15 @@ public class SupplyLouresArmy : DialogScriptBase
         EffectFactory = effectFactory;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
     }
+
     public override void OnDisplaying(Aisling source)
     {
-
         var hasStage = source.Trackers.Enums.TryGetValue(out SupplyLouresStage stage);
 
-        if (!source.Trackers.Enums.HasValue(SickChildStage.SickChildComplete) &&
-            !source.Trackers.Enums.HasValue(SickChildStage.SickChildKilled)) return;
-        
+        if (!source.Trackers.Enums.HasValue(SickChildStage.SickChildComplete)
+            && !source.Trackers.Enums.HasValue(SickChildStage.SickChildKilled))
+            return;
+
         if (source.UserStatSheet.Level < 41)
             return;
 
@@ -52,9 +58,10 @@ public class SupplyLouresArmy : DialogScriptBase
                 {
                     Subject.Close(source);
                     source.SendOrangeBarMessage("Thibault won't even speak to you.");
+
                     return;
                 }
-                
+
                 var option = new DialogOption
                 {
                     DialogKey = "armysupply_initial1",
@@ -66,7 +73,7 @@ public class SupplyLouresArmy : DialogScriptBase
 
                 break;
             }
-            
+
             case "alistair_initial":
             {
                 if (source.UserStatSheet.Level < 41)
@@ -83,18 +90,18 @@ public class SupplyLouresArmy : DialogScriptBase
 
                 break;
             }
-            
+
             case "bruce_initial":
             {
                 if (source.Trackers.Enums.HasValue(SupplyLouresStage.CompletedAssassin1))
                 {
                     Subject.Reply(source, "Get out of my throne room!", "armysupply_kickplayer");
+
                     return;
                 }
-                
+
                 if (source.Trackers.Enums.HasValue(SupplyLouresStage.CompletedSupply))
                 {
-
                     var option = new DialogOption
                     {
                         DialogKey = "armysupply_kinginitial2",
@@ -104,10 +111,9 @@ public class SupplyLouresArmy : DialogScriptBase
                     if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
                 }
-                
+
                 if (source.Trackers.Enums.HasValue(SupplyLouresStage.KilledAssassin2))
                 {
-
                     var option = new DialogOption
                     {
                         DialogKey = "armysupply_kinginitial1",
@@ -128,12 +134,14 @@ public class SupplyLouresArmy : DialogScriptBase
                     if (source.Trackers.Enums.HasValue(SickChildStage.SickChildComplete))
                     {
                         Subject.Reply(source, "Skip", "armysupply_startquest10");
+
                         return;
                     }
 
                     if (source.Trackers.Enums.HasValue(SickChildStage.SickChildKilled))
                     {
                         Subject.Reply(source, "Skip", "armysupply_startquest1");
+
                         return;
                     }
                 }
@@ -143,49 +151,56 @@ public class SupplyLouresArmy : DialogScriptBase
                     if (stage == SupplyLouresStage.StartedQuest)
                     {
                         Subject.Reply(source, "Skip", "armysupply_return1");
+
                         return;
                     }
 
                     if (stage == SupplyLouresStage.TurnedInSupply)
                     {
                         Subject.Reply(source, "Skip", "armysupply_turnedin1");
+
                         return;
                     }
 
                     if (stage == SupplyLouresStage.StartedSupply)
                     {
-                        Subject.Reply(source, "Are you done getting supplies for Alistair? I think you should go back to speak to him if you forgot.");
+                        Subject.Reply(
+                            source,
+                            "Are you done getting supplies for Alistair? I think you should go back to speak to him if you forgot.");
+
                         return;
                     }
 
                     if (stage == SupplyLouresStage.SawAssassin)
                     {
                         Subject.Reply(source, "Skip", "armysupply_sawAssassin1");
+
                         return;
                     }
 
                     if (stage == SupplyLouresStage.KilledAssassin)
                     {
                         Subject.Reply(source, "Skip", "armysupply_killedAssassin1");
+
                         return;
                     }
 
                     if (stage == SupplyLouresStage.KeptThibaultsSecret)
                     {
                         Subject.Reply(source, "Skip", "armysupply_keptsecret1");
+
                         return;
                     }
 
                     if (stage == SupplyLouresStage.CompletedAssassin2)
                     {
                         Subject.Reply(source, "Skip", "armysupply_return6");
+
                         return;
                     }
 
                     if (stage == SupplyLouresStage.CompletedSupply)
-                    {
                         Subject.Reply(source, "Skip", "armysupply_return5");
-                    }
                 }
 
                 break;
@@ -195,50 +210,56 @@ public class SupplyLouresArmy : DialogScriptBase
             {
                 if (!hasStage)
                 {
-                    Subject.Reply(source,
+                    Subject.Reply(
+                        source,
                         "I am the lead of the Loures Army. My troops can handle their own. With my guidance, there isn't an army in Unora that can handle us.");
+
                     return;
                 }
 
                 if (hasStage)
                 {
-                    if (stage == SupplyLouresStage.StartedQuest && source.Trackers.Enums.HasValue(SickChildStage.SickChildComplete) && !source.Trackers.Enums.HasValue(SickChildStage.SickChildKilled))
+                    if ((stage == SupplyLouresStage.StartedQuest)
+                        && source.Trackers.Enums.HasValue(SickChildStage.SickChildComplete)
+                        && !source.Trackers.Enums.HasValue(SickChildStage.SickChildKilled))
                     {
                         Subject.Reply(source, "Skip", "armysupply_startsupply1");
+
                         return;
                     }
 
                     if (stage == SupplyLouresStage.StartedSupply)
                     {
                         Subject.Reply(source, "Skip", "armysupply_return3");
+
                         return;
                     }
 
                     if (stage == SupplyLouresStage.SawAssassin)
                     {
                         Subject.Reply(source, "You got what was coming to you, the death of the Princess was tragic.");
+
                         return;
                     }
 
                     if (stage == SupplyLouresStage.TurnedInSupply)
                     {
-                        Subject.Reply(source,
-                            "Skip", "armysupply_return7");
+                        Subject.Reply(source, "Skip", "armysupply_return7");
+
                         return;
                     }
 
-                    if (stage is SupplyLouresStage.CompletedAssassin1 or SupplyLouresStage.CompletedAssassin2 or SupplyLouresStage.KilledAssassin or SupplyLouresStage.KilledAssassin2)
-                    {
+                    if (stage is SupplyLouresStage.CompletedAssassin1
+                                 or SupplyLouresStage.CompletedAssassin2
+                                 or SupplyLouresStage.KilledAssassin
+                                 or SupplyLouresStage.KilledAssassin2)
                         Subject.Reply(source, "You should know, I had nothing to do with that attack.");
-                    }
+                }
 
-                }
-                
                 if (stage == SupplyLouresStage.CompletedSupply)
-                {
-                    Subject.Reply(source,
+                    Subject.Reply(
+                        source,
                         "Thank you again Aisling for bringing those materials back. Go tell Knight Thibault the army is as good as new!");
-                }
 
                 break;
             }
@@ -247,6 +268,7 @@ public class SupplyLouresArmy : DialogScriptBase
             {
                 source.Trackers.Enums.Set(SupplyLouresStage.StartedQuest);
                 source.SendOrangeBarMessage("Find Alistair behind the Loures Castle.");
+
                 break;
             }
 
@@ -254,24 +276,29 @@ public class SupplyLouresArmy : DialogScriptBase
             {
                 source.Trackers.Enums.Set(SupplyLouresStage.StartedQuest);
                 source.SendOrangeBarMessage("Find Alistair behind the Loures Castle.");
+
                 break;
             }
-            
+
             case "armysupply_startsupply7":
             {
                 source.Trackers.Enums.Set(SupplyLouresStage.StartedSupply);
-                source.SendOrangeBarMessage("Collect 10 Polished Iron Bars, 5 Pristine Ruby, and 10 Exquisite Cotton.");
+                source.SendOrangeBarMessage("Collect 10 Polished Iron Bars, 5 Pristine Ruby,");
+                source.SendOrangeBarMessage("and 10 Exquisite Cotton.");
+
                 return;
             }
 
             case "armysupply_return4":
             {
                 if (!source.Inventory.HasCount("Polished Iron Bar", 10)
-                    || (!source.Inventory.HasCount("Pristine Ruby", 5)
-                        || !source.Inventory.HasCount("Exquisite Cotton", 10)))
+                    || !source.Inventory.HasCount("Pristine Ruby", 5)
+                    || !source.Inventory.HasCount("Exquisite Cotton", 10))
                 {
-                    Subject.Reply(source,
+                    Subject.Reply(
+                        source,
                         "The army needs much more than that, we need 10 Polished Iron, 5 Pristine Ruby, and 10 Exquisite Cotton.");
+
                     return;
                 }
 
@@ -279,18 +306,26 @@ public class SupplyLouresArmy : DialogScriptBase
                 source.Inventory.RemoveQuantity("Pristine Ruby", 5);
                 source.Inventory.RemoveQuantity("Exquisite Cotton", 10);
                 source.Trackers.Enums.Set(SupplyLouresStage.TurnedInSupply);
+
                 Logger.WithTopics(
-                        [Topics.Entities.Aisling,
-                        Topics.Entities.Experience,
-                        Topics.Entities.Dialog,
-                        Topics.Entities.Quest])
-                    .WithProperty(source)
-                    .WithProperty(Subject)
-                    .LogInformation("{@AislingName} has received {@ExpAmount} exp and {@GoldAmount}", source.Name, 200000, 25000);
+                          [
+                              Topics.Entities.Aisling,
+                              Topics.Entities.Experience,
+                              Topics.Entities.Dialog,
+                              Topics.Entities.Quest
+                          ])
+                      .WithProperty(source)
+                      .WithProperty(Subject)
+                      .LogInformation(
+                          "{@AislingName} has received {@ExpAmount} exp and {@GoldAmount}",
+                          source.Name,
+                          200000,
+                          25000);
 
                 ExperienceDistributionScript.GiveExp(source, 200000);
                 source.TryGiveGold(25000);
                 source.TryGiveGamePoints(10);
+
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
                         "Supplied the Loures Army",
@@ -299,7 +334,7 @@ public class SupplyLouresArmy : DialogScriptBase
                         MarkColor.White,
                         1,
                         GameTime.Now));
-                
+
                 source.SendOrangeBarMessage("Go speak to Knight Thibault.");
 
                 break;
@@ -311,8 +346,7 @@ public class SupplyLouresArmy : DialogScriptBase
                 {
                     source.Trackers.Flags.AddFlag(CookingRecipes.SweetBuns);
                     source.SendOrangeBarMessage("Thibault gives you the recipe to make Sweet Buns.");
-                }
-                else
+                } else
                 {
                     source.TryGiveGamePoints(20);
                     source.TryGiveGold(100000);
@@ -320,6 +354,7 @@ public class SupplyLouresArmy : DialogScriptBase
                 }
 
                 source.Trackers.Enums.Set(SupplyLouresStage.CompletedSupply);
+
                 break;
             }
 
@@ -327,6 +362,7 @@ public class SupplyLouresArmy : DialogScriptBase
             {
                 source.Trackers.Enums.Set(SupplyLouresStage.KilledAssassin2);
                 source.SendOrangeBarMessage("Speak to King Bruce about Knight Thibault's actions.");
+
                 break;
             }
 
@@ -340,6 +376,7 @@ public class SupplyLouresArmy : DialogScriptBase
                 var ardcradheffect = EffectFactory.Create("ardcradh");
                 source.Effects.Apply(source, ardcradheffect);
                 source.Client.SendAttributes(StatUpdateType.Vitality);
+
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
                         "Thrown out of Loures Castle by the Knights",
@@ -350,12 +387,14 @@ public class SupplyLouresArmy : DialogScriptBase
                         GameTime.Now));
                 source.Trackers.Enums.Set(SupplyLouresStage.CompletedAssassin1);
                 source.SendOrangeBarMessage("The Loures Knights beat you up and throw you out.");
+
                 break;
             }
 
             case "armysupply_keptthibaultssecret2":
             {
                 source.Trackers.Enums.Set(SupplyLouresStage.KeptThibaultsSecret);
+
                 return;
             }
 
@@ -365,17 +404,21 @@ public class SupplyLouresArmy : DialogScriptBase
                 var item = ItemFactory.Create("silkboots");
                 source.GiveItemOrSendToBank(item);
                 source.SendOrangeBarMessage("Knight Thibault hands you Silk Boots.");
+
                 Logger.WithTopics(
-                        [Topics.Entities.Aisling,
-                        Topics.Entities.Experience,
-                        Topics.Entities.Dialog,
-                        Topics.Entities.Quest])
-                    .WithProperty(source)
-                    .WithProperty(Subject)
-                    .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 300000);
+                          [
+                              Topics.Entities.Aisling,
+                              Topics.Entities.Experience,
+                              Topics.Entities.Dialog,
+                              Topics.Entities.Quest
+                          ])
+                      .WithProperty(source)
+                      .WithProperty(Subject)
+                      .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 300000);
 
                 ExperienceDistributionScript.GiveExp(source, 300000);
                 source.TryGiveGamePoints(10);
+
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
                         "Made amends with Knight Thibault",
@@ -384,6 +427,7 @@ public class SupplyLouresArmy : DialogScriptBase
                         MarkColor.Blue,
                         1,
                         GameTime.Now));
+
                 return;
             }
             case "louresassassin_stabyou":
@@ -392,6 +436,7 @@ public class SupplyLouresArmy : DialogScriptBase
                 source.UserStatSheet.SetHealthPct(65);
                 source.Effects.Apply(source, blindeffect);
                 source.Client.SendAttributes(StatUpdateType.Vitality);
+
                 return;
             }
 
@@ -405,26 +450,31 @@ public class SupplyLouresArmy : DialogScriptBase
                 var ardcradheffect = EffectFactory.Create("ardcradh");
                 source.Effects.Apply(source, ardcradheffect);
                 source.Client.SendAttributes(StatUpdateType.Vitality);
+
                 return;
             }
-            
+
             case "armysupply_toldtheking5":
             {
                 source.Trackers.Enums.Set(SupplyLouresStage.CompletedAssassin3);
                 var item = ItemFactory.Create("sparklering");
                 source.GiveItemOrSendToBank(item);
                 source.SendOrangeBarMessage("King Bruce orders his men to give you a Sparkle Ring.");
+
                 Logger.WithTopics(
-                        [Topics.Entities.Aisling,
-                        Topics.Entities.Experience,
-                        Topics.Entities.Dialog,
-                        Topics.Entities.Quest])
-                    .WithProperty(source)
-                    .WithProperty(Subject)
-                    .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 150000);
+                          [
+                              Topics.Entities.Aisling,
+                              Topics.Entities.Experience,
+                              Topics.Entities.Dialog,
+                              Topics.Entities.Quest
+                          ])
+                      .WithProperty(source)
+                      .WithProperty(Subject)
+                      .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 150000);
 
                 ExperienceDistributionScript.GiveExp(source, 150000);
                 source.TryGiveGamePoints(10);
+
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
                         "Betrayed Knight Thibault by telling the King",
@@ -433,8 +483,9 @@ public class SupplyLouresArmy : DialogScriptBase
                         MarkColor.Orange,
                         1,
                         GameTime.Now));
+
                 return;
             }
         }
     }
-    }
+}

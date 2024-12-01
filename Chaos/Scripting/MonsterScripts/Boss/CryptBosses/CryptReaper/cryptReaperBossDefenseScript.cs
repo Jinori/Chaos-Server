@@ -9,7 +9,6 @@ namespace Chaos.Scripting.MonsterScripts.Boss.CryptBosses.CryptReaper;
 
 public sealed class CryptReaperBossDefenseScript : MonsterScriptBase
 {
-
     /// <inheritdoc />
     public CryptReaperBossDefenseScript(Monster subject)
         : base(subject) { }
@@ -24,13 +23,16 @@ public sealed class CryptReaperBossDefenseScript : MonsterScriptBase
         return false;
     }
 
-    private Aisling? FindLowestAggro() =>
-        Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, AggroRange)
-               .ThatAreObservedBy(Subject)
-               .FirstOrDefault(
-                   obj => !obj.Equals(Subject)
-                          && obj.IsAlive
-                          && (obj.Id == Subject.AggroList.FirstOrDefault(a => a.Value == Subject.AggroList.Values.Min()).Key));
+    private Aisling? FindLowestAggro()
+        => Subject.MapInstance
+                  .GetEntitiesWithinRange<Aisling>(Subject, AggroRange)
+                  .ThatAreObservedBy(Subject)
+                  .FirstOrDefault(
+                      obj => !obj.Equals(Subject)
+                             && obj.IsAlive
+                             && (obj.Id
+                                 == Subject.AggroList.FirstOrDefault(a => a.Value == Subject.AggroList.Values.Min())
+                                           .Key));
 
     private void RemoveEffect(IEffect effect) => Subject.Effects.Dispel(effect.Name);
 
@@ -52,7 +54,7 @@ public sealed class CryptReaperBossDefenseScript : MonsterScriptBase
         foreach (var effect in Subject.Effects)
             switch (effect.Name.ToLowerInvariant())
             {
-                case "beagpramh":
+                case "beag pramh":
                     RemoveEffectAndHeal(effect);
                     Subject.Say("Nice try!");
 
@@ -62,7 +64,7 @@ public sealed class CryptReaperBossDefenseScript : MonsterScriptBase
                     Subject.Say("Nice try!");
 
                     break;
-                case "wolffangfist":
+                case "Wolf Fang Fist":
                     RemoveEffectAndHeal(effect);
                     Subject.Say("Don't bother..");
 
@@ -73,7 +75,7 @@ public sealed class CryptReaperBossDefenseScript : MonsterScriptBase
 
                     break;
 
-                case "beagsuain":
+                case "Beag Suain":
                     RemoveEffectAndHeal(effect);
                     Subject.Say("Not a chance!");
 

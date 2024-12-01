@@ -29,7 +29,7 @@ public sealed class BossRegenScript : MonsterScriptBase
         {
             HPRegenTimer += (float)delta.TotalSeconds;
 
-            if (Subject.Effects.Contains("poison"))
+            if (Subject.Effects.Contains("Poison"))
                 return;
 
             if (HPRegenTimer >= HPRegenInterval)

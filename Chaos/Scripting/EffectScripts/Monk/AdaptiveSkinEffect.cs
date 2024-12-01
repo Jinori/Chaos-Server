@@ -58,7 +58,7 @@ public sealed class AdaptiveSkinEffect : ContinuousAnimationEffectBase
 
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (target.Effects.Contains("IronSkin"))
+        if (target.Effects.Contains("Adaptive Skin"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You already have Adaptive Skin applied.");
 

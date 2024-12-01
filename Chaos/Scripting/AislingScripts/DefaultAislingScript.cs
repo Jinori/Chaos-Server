@@ -379,12 +379,12 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     {
         if (Subject.IsPramhed())
         {
-            Subject.Effects.Dispel("pramh");
-            Subject.Effects.Dispel("beagpramh");
+            Subject.Effects.Dispel("Pramh");
+            Subject.Effects.Dispel("Beag Pramh");
         }
 
-        if (Subject.Effects.Contains("wolfFangFist"))
-            Subject.Effects.Dispel("wolfFangFist");
+        if (Subject.Effects.Contains("Wolf Fang Fist"))
+            Subject.Effects.Dispel("Wolf Fang Fist");
 
         if (Subject.Effects.Contains("Crit"))
             Subject.Effects.Dispel("Crit");
@@ -397,7 +397,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             if (IntegerRandomizer.RollChance(2))
                 if (!source.Script.Is<ThisIsABossScript>())
                 {
-                    var effect = EffectFactory.Create("BeagSuain");
+                    var effect = EffectFactory.Create("Beag Suain");
                     source.Effects.Apply(Subject, effect);
                 }
 
@@ -597,15 +597,15 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 Subject.Client.SendAttributes(StatUpdateType.Vitality);
             }
 
-        if (Subject.Effects.Contains("mount"))
+        if (Subject.Effects.Contains("Mount"))
         {
-            Subject.Effects.Dispel("mount");
+            Subject.Effects.Dispel("Mount");
             Subject.Refresh();
         }
 
         if (Subject.IsRuminating())
         {
-            Subject.Effects.Dispel("rumination");
+            Subject.Effects.Dispel("Rumination");
             Subject.SendOrangeBarMessage("Taking damage ended your rumination.");
         }
     }

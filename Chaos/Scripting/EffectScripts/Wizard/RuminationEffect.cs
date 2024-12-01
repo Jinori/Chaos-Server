@@ -1,7 +1,5 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.DarkAges.Extensions;
-using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -13,7 +11,7 @@ namespace Chaos.Scripting.EffectScripts.Wizard;
 
 public class RuminationEffect : ContinuousAnimationEffectBase
 {
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(15);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(999);
     protected Point Point { get; set; }
 
     protected override Animation Animation { get; } = new()
@@ -25,15 +23,17 @@ public class RuminationEffect : ContinuousAnimationEffectBase
 
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromSeconds(1), false);
+
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromSeconds(1), false);
+
     public override byte Icon => 19;
-    public override string Name => "rumination";
+    public override string Name => "Rumination";
 
     public override void OnApplied()
     {
         base.OnApplied();
-        
+
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
 
         AislingSubject?.Client.SendServerMessage(
@@ -85,9 +85,9 @@ public class RuminationEffect : ContinuousAnimationEffectBase
             return;
         }
 
-        //Remove and Add HP
-        Subject.StatSheet.SubtractHealthPct(6);
-        Subject.StatSheet.AddManaPct(4);
+        //Remove and Add MP
+        Subject.StatSheet.SubtractHealthPct(8);
+        Subject.StatSheet.AddManaPct(6);
 
         //Show Vitality
         AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
@@ -98,7 +98,7 @@ public class RuminationEffect : ContinuousAnimationEffectBase
 
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (target.Effects.Contains("rumination"))
+        if (target.Effects.Contains("Rumination"))
         {
             (source as Aisling)?.Client.SendServerMessage(
                 ServerMessageType.OrangeBar1,

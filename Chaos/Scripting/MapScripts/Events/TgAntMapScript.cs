@@ -11,7 +11,7 @@ namespace Chaos.Scripting.MapScripts.Events;
 
 public class TgAntMapScript : MapScriptBase
 {
-    private const int SPAWN_INTERVAL_HOURS = 16;
+    private const int SPAWN_INTERVAL_HOURS = 1;
     public const int UPDATE_INTERVAL_MS = 1000; // Increased for realistic update intervals
 
     private readonly IMonsterFactory MonsterFactory;
@@ -26,7 +26,7 @@ public class TgAntMapScript : MapScriptBase
         UpdateTimer = new IntervalTimer(TimeSpan.FromMilliseconds(UPDATE_INTERVAL_MS));
 
         SpawnTimer = new RandomizedIntervalTimer(
-            TimeSpan.FromHours(SPAWN_INTERVAL_HOURS),
+            TimeSpan.FromMinutes(SPAWN_INTERVAL_HOURS),
             50,
             RandomizationType.Positive,
             false);

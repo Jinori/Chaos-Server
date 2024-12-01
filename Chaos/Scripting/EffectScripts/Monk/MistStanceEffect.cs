@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
@@ -10,7 +9,7 @@ public class MistStanceEffect : EffectBase
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(15);
     public override byte Icon => 91;
-    public override string Name => "miststance";
+    public override string Name => "Mist Stance";
 
     public override void OnApplied()
     {
@@ -30,9 +29,9 @@ public class MistStanceEffect : EffectBase
 
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (!target.Effects.Contains("miststance") && !target.Effects.Contains("tidestance")) 
+        if (!target.Effects.Contains("Mist Stance") && !target.Effects.Contains("Tide Stance"))
             return true;
-        
+
         (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A stance has already been applied.");
 
         return false;

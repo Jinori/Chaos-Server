@@ -7,13 +7,13 @@ public class PreventRecradhEffect : EffectBase
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(8);
     public override byte Icon => 102;
-    public override string Name => "preventrecradh";
+    public override string Name => "Prevent Recradh";
 
     public override void OnDispelled() => OnTerminated();
-    
+
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (target.Effects.Contains("preventrecradh"))
+        if (target.Effects.Contains("Prevent Recradh"))
             return false;
 
         return true;

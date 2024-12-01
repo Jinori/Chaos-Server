@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Scripting.EffectScripts.Abstractions;
 
@@ -9,13 +8,12 @@ public class DmgTrinketEffect : EffectBase
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromHours(6);
     public override byte Icon => 87;
-    public override string Name => "dmgtrinket";
-    
+    public override string Name => "Dmg Trinket";
 
     public override void OnApplied()
     {
         base.OnApplied();
-        
+
         var attributes = new Attributes
         {
             Dmg = 10,

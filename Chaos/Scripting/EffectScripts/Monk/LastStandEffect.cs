@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -12,18 +11,22 @@ namespace Chaos.Scripting.EffectScripts.Monk;
 public class LastStandEffect : ContinuousAnimationEffectBase
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(9);
+
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
         TargetAnimation = 91,
         Priority = 70
     };
+
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(700), false);
+
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000), false);
+
     public override byte Icon => 74;
-    public override string Name => "laststand";
+    public override string Name => "Last Stand";
 
     public override void OnApplied()
     {
@@ -45,7 +48,7 @@ public class LastStandEffect : ContinuousAnimationEffectBase
 
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (target.Effects.Contains("laststand"))
+        if (target.Effects.Contains("Last Stand"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Double rainbow? What does it mean?");
 

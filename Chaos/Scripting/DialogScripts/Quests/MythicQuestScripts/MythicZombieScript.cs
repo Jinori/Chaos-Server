@@ -147,15 +147,17 @@ public class MythicZombieScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
                     source.SendOrangeBarMessage("You received 10000000 experience!");
                 }
 
                 source.Trackers.Counters.Remove("MythicZombie1", out _);
-                Subject.Reply(source, "Thas what i like to watch! A goooood smack to them Quirky Dunans does them right! You make uss look better when yous fight on our side.");
+
+                Subject.Reply(
+                    source,
+                    "Thas what i like to watch! A goooood smack to them Quirky Dunans does them right! You make uss look better when yous fight on our side.");
 
                 break;
             }
@@ -189,8 +191,7 @@ public class MythicZombieScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
                     source.SendOrangeBarMessage("You received 10000000 experience!");
@@ -216,13 +217,25 @@ public class MythicZombieScript : DialogScriptBase
             {
                 if (!source.Inventory.RemoveQuantity("Dark Flame", 25))
                 {
-                    Subject.Reply(source, "We noooo light anythiing with that! There no use for anything less than 25 Dark Flames! Go nooow!");
+                    Subject.Reply(
+                        source,
+                        "We noooo light anythiing with that! There no use for anything less than 25 Dark Flames! Go nooow!");
 
                     return;
                 }
 
                 source.Animate(ani, source.Id);
-                ExperienceDistributionScript.GiveExp(source, twentyPercent);
+
+                if (source.UserStatSheet.Level <= 98)
+                {
+                    ExperienceDistributionScript.GiveExp(source, twentyPercent);
+                    source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
+                } else
+                {
+                    ExperienceDistributionScript.GiveExp(source, 10000000);
+                    source.SendOrangeBarMessage("You received 10000000 experience!");
+                }
+
                 source.Trackers.Enums.Set(MythicZombie.ItemZombieComplete);
                 Subject.Reply(source, "Thisss is what we waanted. You did good Aisling!");
 
@@ -232,9 +245,14 @@ public class MythicZombieScript : DialogScriptBase
             case "zombie_ally":
             {
                 if (hasGargoyle
-                    && (hasGargoyle == gargoyle is MythicGargoyle.AlliedGargoyle or MythicGargoyle.BossGargoyleStarted or MythicGargoyle.BossGargoyleDefeated))
+                    && (hasGargoyle
+                        == gargoyle is MythicGargoyle.AlliedGargoyle
+                                       or MythicGargoyle.BossGargoyleStarted
+                                       or MythicGargoyle.BossGargoyleDefeated))
                 {
-                    Subject.Reply(source, "Thiss is not good. You went behind our baaacksss and helped them scummy Gargoylesss! I don't like you anymore! Leave my sightsss.");
+                    Subject.Reply(
+                        source,
+                        "Thiss is not good. You went behind our baaacksss and helped them scummy Gargoylesss! I don't like you anymore! Leave my sightsss.");
                     source.Trackers.Enums.Set(MythicZombie.EnemyZombieAllied);
 
                     return;
@@ -274,15 +292,16 @@ public class MythicZombieScript : DialogScriptBase
                     TargetAnimation = 21
                 };
 
-                Subject.Reply(source, "Yeaaahh you showed him whaat he can't do no more! I am grateful for yooour friendship Aisling! That was some gooood fightin.");
+                Subject.Reply(
+                    source,
+                    "Yeaaahh you showed him whaat he can't do no more! I am grateful for yooour friendship Aisling! That was some gooood fightin.");
                 source.Animate(ani2, source.Id);
 
                 if (source.UserStatSheet.Level <= 98)
                 {
                     ExperienceDistributionScript.GiveExp(source, fiftyPercent);
                     source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 25000000);
                     source.SendOrangeBarMessage("You received 25000000 experience!");
@@ -292,11 +311,10 @@ public class MythicZombieScript : DialogScriptBase
                 source.Trackers.Enums.Set(MythicZombie.BossZombieDefeated);
                 source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);
 
-                if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5) &&
-                    !source.Trackers.Enums.HasValue(MythicQuestMain.CompletedMythic))
-                {
+                if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss)
+                    && (mythicboss >= 5)
+                    && !source.Trackers.Enums.HasValue(MythicQuestMain.CompletedMythic))
                     source.Trackers.Enums.Set(MythicQuestMain.CompletedAll);
-                }
             }
 
                 break;

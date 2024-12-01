@@ -37,6 +37,9 @@ public class ThrowScript : SkillScriptBase
 
         foreach (var aisling in thrownAislings)
         {
+            if (aisling.IsGodModeEnabled())
+                continue;
+
             if ((context.SourceAisling != null)
                 && (aisling.Effects.Contains("Fishing")
                     || (aisling.Effects.Contains("Foraging") && !context.SourceAisling.IsGodModeEnabled())))

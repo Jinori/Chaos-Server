@@ -17,8 +17,8 @@ public sealed class ServantDefenseScript : MonsterScriptBase
 
     /// <inheritdoc />
     public ServantDefenseScript(Monster subject)
-        : base(subject) =>
-        AvoidBashers = new RandomizedIntervalTimer(
+        : base(subject)
+        => AvoidBashers = new RandomizedIntervalTimer(
             TimeSpan.FromSeconds(25),
             25,
             RandomizationType.Positive,
@@ -34,13 +34,16 @@ public sealed class ServantDefenseScript : MonsterScriptBase
         return false;
     }
 
-    private Aisling? FindLowestAggro() =>
-        Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, AggroRange)
-               .ThatAreObservedBy(Subject)
-               .FirstOrDefault(
-                   obj => !obj.Equals(Subject)
-                          && obj.IsAlive
-                          && (obj.Id == Subject.AggroList.FirstOrDefault(a => a.Value == Subject.AggroList.Values.Min()).Key));
+    private Aisling? FindLowestAggro()
+        => Subject.MapInstance
+                  .GetEntitiesWithinRange<Aisling>(Subject, AggroRange)
+                  .ThatAreObservedBy(Subject)
+                  .FirstOrDefault(
+                      obj => !obj.Equals(Subject)
+                             && obj.IsAlive
+                             && (obj.Id
+                                 == Subject.AggroList.FirstOrDefault(a => a.Value == Subject.AggroList.Values.Min())
+                                           .Key));
 
     private void RemoveEffect(IEffect effect) => Subject.Effects.Dispel(effect.Name);
 
@@ -59,7 +62,9 @@ public sealed class ServantDefenseScript : MonsterScriptBase
 
         if (AvoidBashers.IntervalElapsed)
         {
-            var aislings = Map.GetEntitiesWithinRange<Aisling>(Subject, AggroRange).Where(x => x.ManhattanDistanceFrom(Subject) <= 1).ToList();
+            var aislings = Map.GetEntitiesWithinRange<Aisling>(Subject, AggroRange)
+                              .Where(x => x.ManhattanDistanceFrom(Subject) <= 1)
+                              .ToList();
 
             if (aislings.Count >= 2)
             {
@@ -84,9 +89,9 @@ public sealed class ServantDefenseScript : MonsterScriptBase
                 case "burn":
                     RemoveEffect(effect);
                     Subject.Say("I've lived in the heat, that does nothing to me.");
-                    
+
                     break;
-                case "beagpramh":
+                case "beag pramh":
                     RemoveEffectAndHeal(effect);
                     Subject.Say("I won't fall for your weak magic. Only makes me stronger.");
 
@@ -96,7 +101,7 @@ public sealed class ServantDefenseScript : MonsterScriptBase
                     Subject.Say("I won't fall for your weak magic. Only makes me stronger.");
 
                     break;
-                case "wolffangfist":
+                case "Wolf Fang Fist":
                     RemoveEffectAndHeal(effect);
                     Subject.Say("What a joke, pity Aisling.");
 
@@ -107,7 +112,7 @@ public sealed class ServantDefenseScript : MonsterScriptBase
 
                     break;
 
-                case "beagsuain":
+                case "Beag Suain":
                     RemoveEffect(effect);
                     Subject.Say("What a joke.");
 

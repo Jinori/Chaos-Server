@@ -14,9 +14,9 @@ public class BeannaichEffect : EffectBase, HierarchicalEffectComponent.IHierarch
 
     public List<string> EffectNameHierarchy { get; init; } =
         [
-            "torment",
-            "mor beannaich",
-            "beannaich"
+            "Torment",
+            "Mor Beannaich",
+            "Beannaich"
         ];
 
     private Creature SourceOfEffect { get; set; } = null!;
@@ -28,7 +28,7 @@ public class BeannaichEffect : EffectBase, HierarchicalEffectComponent.IHierarch
     };
 
     public override byte Icon => 105;
-    public override string Name => "beannaich";
+    public override string Name => "Beannaich";
 
     protected byte? Sound => 123;
 

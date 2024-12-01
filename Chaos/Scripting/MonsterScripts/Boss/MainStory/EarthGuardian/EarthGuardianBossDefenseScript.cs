@@ -14,14 +14,15 @@ namespace Chaos.Scripting.MonsterScripts.Boss.MainStory.EarthGuardian;
 
 public sealed class EarthGuardianBossDefenseScript : MonsterScriptBase
 {
-    private IIntervalTimer PullLowestTarget { get; }
     private readonly ISpellFactory SpellFactory;
+    private IIntervalTimer PullLowestTarget { get; }
 
     /// <inheritdoc />
     public EarthGuardianBossDefenseScript(Monster subject, ISpellFactory spellFactory)
         : base(subject)
     {
         SpellFactory = spellFactory;
+
         PullLowestTarget = new RandomizedIntervalTimer(
             TimeSpan.FromSeconds(20),
             45,
@@ -39,13 +40,16 @@ public sealed class EarthGuardianBossDefenseScript : MonsterScriptBase
         return false;
     }
 
-    private Aisling? FindLowestAggro() =>
-        Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, AggroRange)
-               .ThatAreObservedBy(Subject)
-               .FirstOrDefault(
-                   obj => !obj.Equals(Subject)
-                          && obj.IsAlive
-                          && (obj.Id == Subject.AggroList.FirstOrDefault(a => a.Value == Subject.AggroList.Values.Min()).Key));
+    private Aisling? FindLowestAggro()
+        => Subject.MapInstance
+                  .GetEntitiesWithinRange<Aisling>(Subject, AggroRange)
+                  .ThatAreObservedBy(Subject)
+                  .FirstOrDefault(
+                      obj => !obj.Equals(Subject)
+                             && obj.IsAlive
+                             && (obj.Id
+                                 == Subject.AggroList.FirstOrDefault(a => a.Value == Subject.AggroList.Values.Min())
+                                           .Key));
 
     private void RemoveEffect(IEffect effect) => Subject.Effects.Dispel(effect.Name);
 
@@ -64,7 +68,9 @@ public sealed class EarthGuardianBossDefenseScript : MonsterScriptBase
 
         if (PullLowestTarget.IntervalElapsed)
         {
-            var aislings = Map.GetEntitiesWithinRange<Aisling>(Subject, AggroRange).Where(x => x.ManhattanDistanceFrom(Subject) <= 1).ToList();
+            var aislings = Map.GetEntitiesWithinRange<Aisling>(Subject, AggroRange)
+                              .Where(x => x.ManhattanDistanceFrom(Subject) <= 1)
+                              .ToList();
 
             if (aislings.Count >= 2)
             {
@@ -86,7 +92,7 @@ public sealed class EarthGuardianBossDefenseScript : MonsterScriptBase
         foreach (var effect in Subject.Effects)
             switch (effect.Name.ToLowerInvariant())
             {
-                case "beagpramh":
+                case "beag pramh":
                     RemoveEffectAndHeal(effect);
                     Subject.Say("*murmurs*");
 
@@ -96,7 +102,7 @@ public sealed class EarthGuardianBossDefenseScript : MonsterScriptBase
                     Subject.Say("*murmurs*");
 
                     break;
-                case "wolffangfist":
+                case "Wolf Fang Fist":
                     RemoveEffectAndHeal(effect);
                     Subject.Say("*grunts*");
 
@@ -107,7 +113,7 @@ public sealed class EarthGuardianBossDefenseScript : MonsterScriptBase
 
                     break;
 
-                case "beagsuain":
+                case "Beag Suain":
                     RemoveEffectAndHeal(effect);
                     Subject.Say("*squish*");
 

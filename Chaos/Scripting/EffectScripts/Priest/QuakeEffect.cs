@@ -112,23 +112,23 @@ public class QuakeEffect : ContinuousAnimationEffectBase
             if (target.Name.Contains("Teammate") || target.Script.Is<PetScript>())
             {
                 Subject.Animate(Animation);
+
                 return true;
             }
-            
 
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is not an ally.");
 
             return false;
         }
 
-        if (target.Effects.Contains("quake"))
+        if (target.Effects.Contains("Quake"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target has already has Quake.");
 
             return false;
         }
 
-        if (target.Effects.Contains("vortex"))
+        if (target.Effects.Contains("Vortex"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target has already has Vortex.");
 
