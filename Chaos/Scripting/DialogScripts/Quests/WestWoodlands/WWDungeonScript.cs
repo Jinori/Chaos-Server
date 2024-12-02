@@ -90,16 +90,6 @@ public class WWDungeonScript(
 
             case "wwdungeon_initial":
             {
-                if (source.Trackers.TimedEvents.HasActiveEvent("wwdungeoncd", out var cdtime))
-                {
-                    Subject.Reply(
-                        source,
-                        $"I'm sure glad you cleared those woods. That was awesome. They'll come back quickly, let's do this again tomorrow? (({cdtime.Remaining.ToReadableString()}))",
-                        "maxwell_initial");
-
-                    return;
-                }
-
                 if (!hasStage || (stage == WestWoodlandsDungeonQuestStage.None))
                 {
                     var option = new DialogOption
@@ -114,14 +104,17 @@ public class WWDungeonScript(
 
                 if (source.Trackers.Enums.HasValue(WestWoodlandsDungeonQuestStage.Started))
                 {
-                    if (source.Trackers.TimedEvents.HasActiveEvent("wwdungeontimer", out _))
-                    {
-                        Subject.Reply(source, "Skip", "wwdungeon_return2");
-
-                        return;
-                    }
-
                     Subject.Reply(source, "Skip", "wwdungeon_return");
+
+                    return;
+                }
+
+                if (source.Trackers.TimedEvents.HasActiveEvent("wwdungeoncd", out var cdtime))
+                {
+                    Subject.Reply(
+                        source,
+                        $"I'm sure glad you cleared those woods. That was awesome. They'll come back quickly, let's do this again tomorrow? (({cdtime.Remaining.ToReadableString()}))",
+                        "maxwell_initial");
 
                     return;
                 }
@@ -186,6 +179,7 @@ public class WWDungeonScript(
                         var point = rectangle.GetRandomPoint();
                         member.SendOrangeBarMessage("Clear the Lost Woodlands of all monsters.");
                         member.Trackers.TimedEvents.AddEvent("wwdungeontimer", TimeSpan.FromHours(2), true);
+                        member.Trackers.TimedEvents.AddEvent("wwdungeoncd", TimeSpan.FromHours(22), true);
                         member.TraverseMap(mapinstance, point);
                     }
                 }
@@ -196,22 +190,7 @@ public class WWDungeonScript(
             case "wwdungeon_return":
             {
                 source.Trackers.Enums.Set(WestWoodlandsDungeonQuestStage.None);
-                Subject.Reply(source, "Looks like you weren't able to clear the Lost Woods in time. That's okay.", "wwdungeon_initial");
-
-                break;
-            }
-
-            case "wwdungeon_return3":
-            {
-                var mapinstance = simpleCache.Get<MapInstance>("lost_woodlands");
-
-                var rectangle = new Rectangle(
-                    83,
-                    143,
-                    4,
-                    4);
-                var point = rectangle.GetRandomPoint();
-                source.TraverseMap(mapinstance, point);
+                Subject.Reply(source, "Looks like you weren't able to clear the Lost Woods. That's okay.", "wwdungeon_initial");
 
                 break;
             }
@@ -220,7 +199,6 @@ public class WWDungeonScript(
             {
                 source.Trackers.Enums.Set(WestWoodlandsDungeonQuestStage.None);
                 source.Trackers.Counters.AddOrIncrement("wwdungeon");
-                source.Trackers.TimedEvents.AddEvent("wwdungeoncd", TimeSpan.FromHours(22), true);
                 ExperienceDistributionScript.GiveExp(source, 500000);
                 source.TryGiveGamePoints(10);
 
@@ -235,93 +213,169 @@ public class WWDungeonScript(
                       .WithProperty(Subject)
                       .LogInformation("{@AislingName} has received {@ExpAmount} exp from a Lost Woodlands quest", source.Name, 500000);
 
-                source.Trackers.Counters.TryGetValue("wwdungeon", out _);
+                var dungeonCompleteCount = source.Trackers.Counters.TryGetValue("wwdungeon", out var counter) ? counter : 0;
 
+                // Roll and adjust based on completions
                 var roll = IntegerRandomizer.RollSingle(101);
 
-                switch (roll)
+                if (!source.Trackers.Flags.HasFlag(AvailableMounts.Ant))
                 {
-                    case < 10:
+                    var adjustedRoll = roll - dungeonCompleteCount * 2; // Reduce roll by 2 points per completion
+                    adjustedRoll = Math.Clamp(adjustedRoll, 0, 100);
+
+                    switch (adjustedRoll)
                     {
-                        if (!source.Trackers.Flags.HasFlag(AvailableMounts.Ant))
+                        case < 10:
                         {
                             source.Trackers.Flags.AddFlag(AvailableMounts.Ant);
                             source.SendOrangeBarMessage("Maxwell hands you a new mount!");
                             source.TryGiveGamePoints(5);
-                        } else
+
+                            break;
+                        }
+
+                        case < 25:
+                        {
+                            var item = itemFactory.Create("ialtagseye");
+                            source.GiveItemOrSendToBank(item);
+                            source.SendOrangeBarMessage("Maxwell hands you a Ialtag's Eye!");
+                            source.TryGiveGamePoints(5);
+
+                            break;
+                        }
+
+                        case < 40:
+                        {
+                            var boots = itemFactory.Create("silkboots");
+                            source.GiveItemOrSendToBank(boots);
+                            source.SendOrangeBarMessage("Maxwell thanks you with some boots he had.");
+                            source.TryGiveGamePoints(5);
+
+                            break;
+                        }
+                        case < 55:
+                        {
+                            var ring = itemFactory.Create("sonorring");
+                            source.GiveItemOrSendToBank(ring);
+                            source.SendOrangeBarMessage("Maxwell hands you a Sonor Ring!");
+                            source.TryGiveGamePoints(5);
+
+                            break;
+                        }
+                        case < 70:
+                        {
+                            var ring = itemFactory.Create("myanmarring");
+                            source.GiveItemOrSendToBank(ring);
+                            source.SendOrangeBarMessage("Maxwell thanks you with a spare ring he had.");
+                            source.TryGiveGamePoints(5);
+
+                            break;
+                        }
+                        case < 83:
+                        {
+                            if (!source.Inventory.ContainsByTemplateKey("cherubwings")
+                                || !source.Equipment.ContainsByTemplateKey("cherubwings")
+                                || !source.Bank.Contains("Cherub Wings"))
+                            {
+                                var wings = itemFactory.Create("cherubwings");
+                                source.GiveItemOrSendToBank(wings);
+                                source.SendOrangeBarMessage("Maxwell thanks you with some wings he had.");
+                                source.TryGiveGamePoints(5);
+
+                                return;
+                            }
+
+                            source.TryGiveGold(75000);
+                            source.SendOrangeBarMessage("Maxwell thanks you with 75,000 Gold.");
+                            source.TryGiveGamePoints(5);
+
+                            break;
+                        }
+                        case < 101:
+                        {
+                            source.SendOrangeBarMessage("Maxwell just thanks you.");
+                            source.TryGiveGamePoints(20);
+
+                            break;
+                        }
+                    }
+
+                    switch (roll)
+                    {
+                        case < 10:
                         {
                             var item = itemFactory.Create("sparklering");
                             source.GiveItemOrSendToBank(item);
                             source.SendOrangeBarMessage("Maxwell hands you a Sparkle Ring!");
                             source.TryGiveGamePoints(5);
+
+                            break;
                         }
 
-                        break;
-                    }
-
-                    case < 25:
-                    {
-                        var item = itemFactory.Create("ialtagseye");
-                        source.GiveItemOrSendToBank(item);
-                        source.SendOrangeBarMessage("Maxwell hands you a Ialtag's Eye!");
-                        source.TryGiveGamePoints(5);
-
-                        break;
-                    }
-
-                    case < 40:
-                    {
-                        var boots = itemFactory.Create("silkboots");
-                        source.GiveItemOrSendToBank(boots);
-                        source.SendOrangeBarMessage("Maxwell thanks you with some boots he had.");
-                        source.TryGiveGamePoints(5);
-
-                        break;
-                    }
-                    case < 55:
-                    {
-                        var ring = itemFactory.Create("sonorring");
-                        source.GiveItemOrSendToBank(ring);
-                        source.SendOrangeBarMessage("Maxwell hands you a Sonor Ring!");
-                        source.TryGiveGamePoints(5);
-
-                        break;
-                    }
-                    case < 70:
-                    {
-                        var ring = itemFactory.Create("myanmarring");
-                        source.GiveItemOrSendToBank(ring);
-                        source.SendOrangeBarMessage("Maxwell thanks you with a spare ring he had.");
-                        source.TryGiveGamePoints(5);
-
-                        break;
-                    }
-                    case < 83:
-                    {
-                        if (!source.Inventory.ContainsByTemplateKey("cherubwings")
-                            || !source.Equipment.ContainsByTemplateKey("cherubwings")
-                            || !source.Bank.Contains("Cherub Wings"))
+                        case < 25:
                         {
-                            var wings = itemFactory.Create("cherubwings");
-                            source.GiveItemOrSendToBank(wings);
-                            source.SendOrangeBarMessage("Maxwell thanks you with some wings he had.");
+                            var item = itemFactory.Create("ialtagseye");
+                            source.GiveItemOrSendToBank(item);
+                            source.SendOrangeBarMessage("Maxwell hands you a Ialtag's Eye!");
                             source.TryGiveGamePoints(5);
 
-                            return;
+                            break;
                         }
 
-                        source.TryGiveGold(75000);
-                        source.SendOrangeBarMessage("Maxwell thanks you with 75,000 Gold.");
-                        source.TryGiveGamePoints(5);
+                        case < 40:
+                        {
+                            var boots = itemFactory.Create("silkboots");
+                            source.GiveItemOrSendToBank(boots);
+                            source.SendOrangeBarMessage("Maxwell thanks you with some boots he had.");
+                            source.TryGiveGamePoints(5);
 
-                        break;
-                    }
-                    case < 101:
-                    {
-                        source.SendOrangeBarMessage("Maxwell just thanks you.");
-                        source.TryGiveGamePoints(20);
+                            break;
+                        }
+                        case < 55:
+                        {
+                            var ring = itemFactory.Create("sonorring");
+                            source.GiveItemOrSendToBank(ring);
+                            source.SendOrangeBarMessage("Maxwell hands you a Sonor Ring!");
+                            source.TryGiveGamePoints(5);
 
-                        break;
+                            break;
+                        }
+                        case < 70:
+                        {
+                            var ring = itemFactory.Create("myanmarring");
+                            source.GiveItemOrSendToBank(ring);
+                            source.SendOrangeBarMessage("Maxwell thanks you with a spare ring he had.");
+                            source.TryGiveGamePoints(5);
+
+                            break;
+                        }
+                        case < 83:
+                        {
+                            if (!source.Inventory.ContainsByTemplateKey("cherubwings")
+                                || !source.Equipment.ContainsByTemplateKey("cherubwings")
+                                || !source.Bank.Contains("Cherub Wings"))
+                            {
+                                var wings = itemFactory.Create("cherubwings");
+                                source.GiveItemOrSendToBank(wings);
+                                source.SendOrangeBarMessage("Maxwell thanks you with some wings he had.");
+                                source.TryGiveGamePoints(5);
+
+                                return;
+                            }
+
+                            source.TryGiveGold(75000);
+                            source.SendOrangeBarMessage("Maxwell thanks you with 75,000 Gold.");
+                            source.TryGiveGamePoints(5);
+
+                            break;
+                        }
+                        case < 101:
+                        {
+                            source.SendOrangeBarMessage("Maxwell just thanks you.");
+                            source.TryGiveGamePoints(20);
+
+                            break;
+                        }
                     }
                 }
 
@@ -332,7 +386,6 @@ public class WWDungeonScript(
             {
                 source.Trackers.Enums.Set(WestWoodlandsDungeonQuestStage.None);
                 source.Trackers.Counters.AddOrIncrement("wwdungeon");
-                source.Trackers.TimedEvents.AddEvent("wwdungeoncd", TimeSpan.FromHours(22), true);
                 ExperienceDistributionScript.GiveExp(source, 500000);
                 source.TryGiveGamePoints(10);
 

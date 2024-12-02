@@ -1,5 +1,6 @@
 using Chaos.Extensions.Common;
 using Chaos.Models.Data;
+using Chaos.Models.World;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.EffectScripts.Abstractions;
@@ -41,6 +42,11 @@ public struct HierarchicalEffectComponent : IConditionalComponent
 
             return false;
         }
+        
+        context.SourceAisling?.SendActiveMessage($"You cast {options.Name} on {target.Name}.");
+            
+        if (target is Aisling aisling)
+            aisling.SendActiveMessage($"{context.Source.Name} casted {options.Name} on you.");
 
         return true;
     }

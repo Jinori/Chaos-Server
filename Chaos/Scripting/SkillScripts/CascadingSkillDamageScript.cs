@@ -17,7 +17,7 @@ using Chaos.Services.Factories.Abstractions;
 namespace Chaos.Scripting.SkillScripts;
 
 public class CascadingSkillDamageScript : ConfigurableSkillScriptBase,
-                                     SpellComponent<Creature>.ISpellComponentOptions,
+                                     GenericAbilityComponent<Creature>.IAbilityComponentOptions,
                                      DamageAbilityComponent.IDamageComponentOptions,
                                      CascadingComponent<CascadingDamageTileScript>.ICascadingComponentOptions
 {
@@ -106,11 +106,7 @@ public class CascadingSkillDamageScript : ConfigurableSkillScriptBase,
     public decimal PctManaCost { get; init; }
     /// <inheritdoc />
     public bool ShouldNotBreakHide { get; init; }
-    /// <inheritdoc />
-    public bool IgnoreMagicResistance { get; init; }
+
     #endregion
 
-    public int SplashChance { get; init; }
-    public int SplashDistance { get; init; }
-    public TargetFilter SplashFilter { get; init; }
 }

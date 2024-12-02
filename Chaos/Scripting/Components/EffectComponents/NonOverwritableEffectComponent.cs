@@ -1,5 +1,6 @@
 using Chaos.Extensions.Common;
 using Chaos.Models.Data;
+using Chaos.Models.World;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.EffectScripts.Abstractions;
@@ -21,7 +22,14 @@ public class NonOverwritableEffectComponent : IConditionalComponent
         var conflictingEffect = target.Effects.FirstOrDefault(e => options.ConflictingEffectNames.ContainsI(e.Name));
 
         if (conflictingEffect is null)
+        {
+            context.SourceAisling?.SendActiveMessage($"You cast {options.Name}.");
+            
+            if (target is Aisling aisling)
+                aisling.SendActiveMessage($"{context.Source.Name} casted {options.Name} on you.");
+            
             return true;
+        }
 
         context.SourceAisling?.SendActiveMessage($"Target is already under another effect. [{conflictingEffect.Name}]");
 

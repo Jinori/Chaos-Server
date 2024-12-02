@@ -1,9 +1,7 @@
 using System.Text;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.DarkAges.Extensions;
 using Chaos.Definitions;
-using Chaos.Extensions.Common;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
@@ -58,6 +56,10 @@ public class TerminusShowRawStatsScript : DialogScriptBase
                 sb.AppendLineFColored(MessageColor.Yellow, "Base Defenses", MessageColor.Gray);
                 sb.Append($"MR: {source.StatSheet.MagicResistance}% ");
                 sb.AppendLine($"AC: {source.StatSheet.Ac} ");
+                sb.AppendLine($"Heal Bonus: {source.StatSheet.HealBonus} ");
+                sb.AppendLine($"Heal Bonus Pct: {source.StatSheet.HealBonusPct} ");
+                sb.AppendLine($"Cooldown Reduction: {source.StatSheet.CooldownReduction} ");
+                sb.AppendLine($"Cooldown Reduction Pct: {source.StatSheet.CooldownReductionPct} ");
 
                 sb.AppendLineFColored(MessageColor.Yellow, "Base Offenses", MessageColor.Gray);
                 sb.AppendLineF($"DMG: {source.StatSheet.Dmg} ");
@@ -91,6 +93,10 @@ public class TerminusShowRawStatsScript : DialogScriptBase
                 sb.AppendLineFColored(MessageColor.Yellow, "Geared Defenses", MessageColor.Gray);
                 sb.Append($"MR: {source.StatSheet.EffectiveMagicResistance}% ");
                 sb.AppendLine($"AC: {source.StatSheet.EffectiveAc} ");
+                sb.AppendLine($"Heal Bonus: {source.StatSheet.EffectiveHealBonus} ");
+                sb.AppendLine($"Heal Bonus Pct: {source.StatSheet.EffectiveHealBonusPct} ");
+                sb.AppendLine($"Cooldown Reduction: {source.StatSheet.EffectiveCooldownReduction} ");
+                sb.AppendLine($"Cooldown Reduction Pct: {source.StatSheet.EffectiveCooldownReductionPct} ");
 
                 sb.AppendLineFColored(MessageColor.Yellow, "Geared Offenses", MessageColor.Gray);
                 sb.AppendLineF($"DMG: {source.StatSheet.EffectiveDmg} ");

@@ -110,9 +110,7 @@ public class HealingAuraEffect : ContinuousAnimationEffectBase
             return false;
         }
 
-        (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You cast {Name}.");
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{source.Name} casted {Name} on you.");
-
+        
         return true;
     }
 }

@@ -372,8 +372,20 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     /// <inheritdoc />
     public override bool IsHostileTo(Creature creature) => RelationshipBehavior.IsHostileTo(Subject, creature);
 
-    private void NotifyPlayer(string keyToRemove, string keyToKeep)
-        => Subject.SendOrangeBarMessage("Ability " + keyToKeep + " removed old ability " + keyToRemove + ".");
+    private void NotifyPlayerSpells(string keyToRemove, string keyToKeep)
+    {
+        var nameToKeep = SpellFactory.Create(keyToKeep);
+        var nameToRemove = SpellFactory.Create(keyToRemove);
+        Subject.SendOrangeBarMessage("Ability " + nameToKeep.Template.Name + " removed old ability " + nameToRemove.Template.Name + ".");
+    }
+    
+    private void NotifyPlayerSkills(string keyToRemove, string keyToKeep)
+    {
+        var nameToKeep = SkillFactory.Create(keyToKeep);
+        var nameToRemove = SkillFactory.Create(keyToRemove);
+        Subject.SendOrangeBarMessage("Ability " + nameToKeep.Template.Name + " removed old ability " + nameToRemove.Template.Name + ".");
+    }
+    
 
     public override void OnAttacked(Creature source, int damage)
     {
@@ -954,7 +966,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         if (Subject.SpellBook.ContainsByTemplateKey(keyToKeep) && Subject.SpellBook.ContainsByTemplateKey(keyToRemove))
         {
             Subject.SpellBook.RemoveByTemplateKey(keyToRemove);
-            NotifyPlayer(keyToRemove, keyToKeep);
+            NotifyPlayerSpells(keyToRemove, keyToKeep);
 
             Logger.WithTopics(
                       [
@@ -971,7 +983,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         } else if (Subject.SkillBook.ContainsByTemplateKey(keyToKeep) && Subject.SkillBook.ContainsByTemplateKey(keyToRemove))
         {
             Subject.SkillBook.RemoveByTemplateKey(keyToRemove);
-            NotifyPlayer(keyToRemove, keyToKeep);
+            NotifyPlayerSkills(keyToRemove, keyToKeep);
 
             Logger.WithTopics(
                       [

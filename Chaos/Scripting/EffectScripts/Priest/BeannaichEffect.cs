@@ -67,9 +67,7 @@ public class BeannaichEffect : EffectBase, HierarchicalEffectComponent.IHierarch
         var execution = new ComponentExecutor(source, target).WithOptions(this)
                                                              .ExecuteAndCheck<HierarchicalEffectComponent>();
 
-        (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You cast {Name}.");
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{source.Name} casted {Name} on you.");
-
+        
         return execution is not null;
     }
 }
