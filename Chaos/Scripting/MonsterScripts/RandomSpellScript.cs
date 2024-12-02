@@ -8,7 +8,7 @@ namespace Chaos.Scripting.MonsterScripts
     {
         private static readonly string[] AllSpells =
         [
-            "ardioc", "morioc", "nuadhaich", "salvation",
+            "ardioc", "morioc", "nuadhaich",
             "aoardcradh", "aomorcradh", "aodall", "aopoison", "aosuain", "dinarcoli",
             "poison", "suain", "beagpramh", "pramh",
             "armachd", "innerfire", "dodge", "battlecry", "rage", "warcry", "asgallfaileas", 
@@ -28,14 +28,14 @@ namespace Chaos.Scripting.MonsterScripts
             _spellFactory = spellFactory;
 
             // Pick a random number of spells between 2 and 5
-            var numberOfSpells = new Random().Next(2, 6);
+            var numberOfSpells = new Random().Next(0, 7);
 
             // Pick the specified number of random spells from AllSpells
             var randomSpells = PickRandomSpells(AllSpells, numberOfSpells);
 
             foreach (var spellKey in randomSpells)
             {
-                var spell = _spellFactory.CreateFaux(spellKey);
+                var spell = _spellFactory.Create(spellKey);
                 Spells.Add(spell);
             }
         }

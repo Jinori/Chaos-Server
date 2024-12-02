@@ -33,7 +33,7 @@ public class CasinoLockTwentyOneScript : ReactorTileScriptBase
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
-        var aislings = Subject.MapInstance.GetEntitiesAtPoint<Aisling>(Subject);
+        var aislings = Subject.MapInstance.GetEntitiesAtPoints<Aisling>(Subject);
         AnimationTimer.Update(delta);
 
         if (aislings.Any())

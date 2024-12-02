@@ -116,7 +116,7 @@ public class ShadowtouchScript : MonsterScriptBase
             if (Subject.PetOwner is not null)
             {
                 var monster = Subject.MapInstance
-                    .GetEntitiesAtPoint<Creature>(Subject)
+                    .GetEntitiesAtPoints<Creature>(Subject)
                     .FirstOrDefault(x => Subject.PetOwner.IsHostileTo(x) && !x.Equals(Subject));
 
                 if (monster is not null)

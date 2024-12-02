@@ -53,7 +53,7 @@ public class ZertaScript : MerchantScriptBase
 
             if (WalkTimer.IntervalElapsed)
             {
-                var door = Subject.MapInstance.GetEntitiesAtPoint<Door>(CasinoDoorPoint).First();
+                var door = Subject.MapInstance.GetEntitiesAtPoints<Door>(CasinoDoorPoint).First();
 
                 if ((Source != null) && door.Closed)
                     door.OnClicked(Source);

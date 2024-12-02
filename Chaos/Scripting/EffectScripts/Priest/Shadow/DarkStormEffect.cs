@@ -54,7 +54,7 @@ namespace Chaos.Scripting.EffectScripts.Priest.Shadow
             // Apply the effect to multiple nearby targets instead of one random point
             foreach (var point in nonWallPoints)
             {
-                    var targets = Subject.MapInstance.GetEntitiesAtPoint<Creature>(point)
+                    var targets = Subject.MapInstance.GetEntitiesAtPoints<Creature>(point)
                         .Where(x => x is not Merchant && x.IsAlive && x.IsHostileTo(Subject)).ToList();
 
                 if (targets.Count <= 0) 

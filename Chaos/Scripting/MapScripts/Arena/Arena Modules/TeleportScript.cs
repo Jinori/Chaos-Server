@@ -65,7 +65,7 @@ public sealed class TeleportScript : MapScriptBase
                 var targetPoint = nonWallPoints[Random.Shared.Next(nonWallPoints.Count)];
 
                 // Identify all players on the animated tile
-                var playersOnTile = Subject.GetEntitiesAtPoint<Aisling>(AnimatedTile);
+                var playersOnTile = Subject.GetEntitiesAtPoints<Aisling>(AnimatedTile);
 
                 // Teleport each player to the random point
                 foreach (var player in playersOnTile)

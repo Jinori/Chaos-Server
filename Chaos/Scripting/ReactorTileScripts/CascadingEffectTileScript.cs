@@ -103,6 +103,8 @@ public sealed class CascadingEffectTileScript : ConfigurableReactorTileScriptBas
     /// <inheritdoc />
     public bool IgnoreWalls { get; init; }
 
+    public bool ExcludeSourcePoint { get; init; }
+
     /// <inheritdoc />
     public TargetFilter Filter { get; init; }
 

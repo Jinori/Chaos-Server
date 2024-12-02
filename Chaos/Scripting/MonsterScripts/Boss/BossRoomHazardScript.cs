@@ -74,7 +74,7 @@ public sealed class BossRoomHazardScript : MonsterScriptBase
 
     private void DealDamageToCreaturesAtPoint(IPoint point)
     {
-        var creaturesToDamage = Map.GetEntitiesAtPoint<Creature>(point);
+        var creaturesToDamage = Map.GetEntitiesAtPoints<Creature>(point);
 
         foreach (var creature in creaturesToDamage.ToList())
             if (creature.Id != Subject.Id)

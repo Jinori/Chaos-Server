@@ -115,7 +115,7 @@ public class BullRushScript : ConfigurableSkillScriptBase,
             }
 
             // Get the closest creature to the source at this point
-            var entity = context.SourceMap.GetEntitiesAtPoint<Creature>(point)
+            var entity = context.SourceMap.GetEntitiesAtPoints<Creature>(point)
                                 .OrderBy(creature => creature.ManhattanDistanceFrom(context.Source))
                                 .FirstOrDefault(creature => context.Source.WillCollideWith(creature));
 

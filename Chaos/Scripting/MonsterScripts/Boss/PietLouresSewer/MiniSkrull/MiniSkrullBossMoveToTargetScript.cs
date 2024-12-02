@@ -36,7 +36,7 @@ public sealed class MiniSkrullBossMoveToTargetScript : MonsterScriptBase
                 if (Subject.MapInstance.IsWall(point) || Subject.MapInstance.IsBlockingReactor(point))
                     return;
 
-                var entity = Subject.MapInstance.GetEntitiesAtPoint<Aisling>(point)
+                var entity = Subject.MapInstance.GetEntitiesAtPoints<Aisling>(point)
                                     .TopOrDefault();
 
                 if (entity != null)

@@ -144,7 +144,7 @@ public sealed class DoltooScript : MerchantScriptBase
                 {
                     var points = AoeShape.AllAround.ResolvePoints(Subject, 4);
                     var playersInAoe = points
-                        .SelectMany(point => Subject.MapInstance.GetEntitiesAtPoint<Aisling>(point)).ToList();
+                        .SelectMany(point => Subject.MapInstance.GetEntitiesAtPoints<Aisling>(point)).ToList();
 
                     var playerNearby = playersInAoe.Count >= 1;
 

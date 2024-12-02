@@ -58,7 +58,7 @@ public class EdragonScaleMoveToTargetScript : MonsterScriptBase
 
                 if (Subject.ManhattanDistanceFrom(fightSpot) <= 1)
                 {
-                    var lionFish = Subject.MapInstance.GetEntitiesAtPoint<GroundItem>(fightSpot).FirstOrDefault(x => x.Name == "Lion Fish");
+                    var lionFish = Subject.MapInstance.GetEntitiesAtPoints<GroundItem>(fightSpot).FirstOrDefault(x => x.Name == "Lion Fish");
 
                     if (lionFish != null)
                     {

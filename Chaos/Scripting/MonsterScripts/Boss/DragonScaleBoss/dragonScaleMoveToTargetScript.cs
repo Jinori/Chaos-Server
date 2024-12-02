@@ -46,7 +46,7 @@ public class dragonScaleMoveToTargetScript : MonsterScriptBase
 
             if (Subject.ManhattanDistanceFrom(FightSpot) <= 1)
             {
-                var rockFish = Subject.MapInstance.GetEntitiesAtPoint<GroundItem>(FightSpot).FirstOrDefault(x => x.Name == "Lion Fish");
+                var rockFish = Subject.MapInstance.GetEntitiesAtPoints<GroundItem>(FightSpot).FirstOrDefault(x => x.Name == "Lion Fish");
 
                 if (rockFish != null)
                 {

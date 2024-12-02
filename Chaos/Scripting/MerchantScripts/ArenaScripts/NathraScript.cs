@@ -172,7 +172,7 @@ public sealed class NathraScript : MerchantScriptBase
         if (WalkTimer.IntervalElapsed)
         {
             var points = AoeShape.AllAround.ResolvePoints(Subject, 3);
-            var playersInAoe = points.SelectMany(point => Subject.MapInstance.GetEntitiesAtPoint<Aisling>(point)).ToList();
+            var playersInAoe = points.SelectMany(point => Subject.MapInstance.GetEntitiesAtPoints<Aisling>(point)).ToList();
 
             var areDefendersPresent = playersInAoe.Any(x => x.Trackers.Enums.TryGetValue(out ArenaSide side) && side == ArenaSide.Defender);
             var areOffensivePresent = playersInAoe.Any(x => x.Trackers.Enums.TryGetValue(out ArenaSide side) && side == ArenaSide.Offensive);

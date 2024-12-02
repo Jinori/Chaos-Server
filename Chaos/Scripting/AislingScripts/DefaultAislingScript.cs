@@ -444,7 +444,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
                     // Check if an entity is standing on the point and apply damage
                     var target = Subject.MapInstance
-                                        .GetEntitiesAtPoint<Creature>(point)
+                        .GetEntitiesAtPoints<Creature>(point)
                                         .FirstOrDefault(x => x.IsAlive && x.IsHostileTo(Subject));
 
                     if (target != null)

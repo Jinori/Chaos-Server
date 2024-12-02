@@ -96,7 +96,7 @@ public class VillagerScript : MerchantScriptBase
 
     private void AttemptToOpenDoor(IPoint doorPoint)
     {
-        var door = Subject.MapInstance.GetEntitiesAtPoint<Door>(doorPoint).FirstOrDefault();
+        var door = Subject.MapInstance.GetEntitiesAtPoints<Door>(doorPoint).FirstOrDefault();
 
         if (door is { Closed: true })
             door.OnClicked(Subject);

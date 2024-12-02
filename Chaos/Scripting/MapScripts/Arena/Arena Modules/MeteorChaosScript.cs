@@ -78,7 +78,7 @@ public sealed class MeteorChaosScript : MapScriptBase
     /// <param name="targetPoint">The target point to apply damage.</param>
     private void ApplyDamageToEntitiesAtPoint(Point targetPoint)
     {
-        var targetPlayer = Subject.GetEntitiesAtPoint<Aisling>(targetPoint).FirstOrDefault();
+        var targetPlayer = Subject.GetEntitiesAtPoints<Aisling>(targetPoint).FirstOrDefault();
 
         if (targetPlayer == null) return;
 

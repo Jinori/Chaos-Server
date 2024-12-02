@@ -98,8 +98,7 @@ public sealed class CarnunBossRoomHazardScript : MonsterScriptBase
             if (!HazardAnimationTimer.IntervalElapsed)
                 return;
 
-            var hazardPoints = ArenaRectangle.GetPoints().Except(SafeRectangle!.GetPoints())
-                .ToListCast<IPoint>();
+            var hazardPoints = ArenaRectangle.GetPoints().Except(SafeRectangle!.GetPoints()).ToList().Cast<IPoint>();
             
             foreach (var point in hazardPoints) 
                 Map.ShowAnimation(HazardAnimation.GetPointAnimation(point));

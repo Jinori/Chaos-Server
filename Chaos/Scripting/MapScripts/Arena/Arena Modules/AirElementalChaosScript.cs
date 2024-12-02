@@ -50,7 +50,7 @@ public sealed class AirElementalChaosScript : MapScriptBase
         Subject.ShowAnimation(LightningAnimation.GetPointAnimation(targetPoint));
 
         // Check if a player is standing on the point and apply damage
-        var targetPlayer = Subject.GetEntitiesAtPoint<Aisling>(targetPoint).FirstOrDefault();
+        var targetPlayer = Subject.GetEntitiesAtPoints<Aisling>(targetPoint).FirstOrDefault();
         if (targetPlayer == null) 
             return;
             
