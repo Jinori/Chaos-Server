@@ -963,6 +963,9 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
     private void RemoveAndNotifyIfBothExist(string keyToKeep, string keyToRemove)
     {
+        if (Subject.IsGodModeEnabled())
+            return;
+        
         if (Subject.SpellBook.ContainsByTemplateKey(keyToKeep) && Subject.SpellBook.ContainsByTemplateKey(keyToRemove))
         {
             Subject.SpellBook.RemoveByTemplateKey(keyToRemove);
@@ -1058,6 +1061,9 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
     private void RemovePureOnlySkills(string keyToRemove)
     {
+        if (Subject.IsGodModeEnabled())
+            return;
+        
         if (Subject.SkillBook.ContainsByTemplateKey(keyToRemove) && Subject.Legend.ContainsKey("dedicated"))
         {
             Subject.SkillBook.RemoveByTemplateKey(keyToRemove);
@@ -1077,6 +1083,9 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
     private void RemovePureOnlySpells(string keyToRemove)
     {
+        if (Subject.IsGodModeEnabled())
+            return;
+        
         if (Subject.SpellBook.ContainsByTemplateKey(keyToRemove) && Subject.Legend.ContainsKey("dedicated"))
         {
             Subject.SpellBook.RemoveByTemplateKey(keyToRemove);
