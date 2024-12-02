@@ -13,11 +13,11 @@ public class ArdCradhEffect : EffectBase, NonOverwritableEffectComponent.INonOve
 {
     public List<string> ConflictingEffectNames { get; init; } =
         [
-            "dia cradh",
-            "ard cradh",
-            "mor cradh",
-            "cradh",
-            "beag cradh"
+            "Dia Cradh",
+            "Ard Cradh",
+            "Mor Cradh",
+            "Cradh",
+            "Beag Cradh"
         ];
 
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(8);
@@ -30,7 +30,7 @@ public class ArdCradhEffect : EffectBase, NonOverwritableEffectComponent.INonOve
     };
 
     public override byte Icon => 63;
-    public override string Name => "ard cradh";
+    public override string Name => "Ard Cradh";
     protected byte? Sound => 27;
 
     public override void OnApplied()

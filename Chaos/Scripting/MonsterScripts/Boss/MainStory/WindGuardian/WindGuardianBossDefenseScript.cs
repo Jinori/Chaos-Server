@@ -14,9 +14,7 @@ public sealed class WindGuardianBossDefenseScript : MonsterScriptBase
     /// <inheritdoc />
     public WindGuardianBossDefenseScript(Monster subject, ISpellFactory spellFactory)
         : base(subject)
-    {
-        SpellFactory = spellFactory;
-    }
+        => SpellFactory = spellFactory;
 
     /// <inheritdoc />
     public override bool CanSee(VisibleEntity entity)
@@ -28,10 +26,7 @@ public sealed class WindGuardianBossDefenseScript : MonsterScriptBase
         return false;
     }
 
-    private void RemoveEffect(IEffect effect)
-    {
-        Subject.Effects.Dispel(effect.Name);
-    }
+    private void RemoveEffect(IEffect effect) => Subject.Effects.Dispel(effect.Name);
 
     private void RemoveEffectAndHeal(IEffect effect)
     {
@@ -51,7 +46,7 @@ public sealed class WindGuardianBossDefenseScript : MonsterScriptBase
         foreach (var effect in Subject.Effects)
             switch (effect.Name.ToLowerInvariant())
             {
-                case "beagpramh":
+                case "beag pramh":
                     RemoveEffectAndHeal(effect);
                     Subject.Say("*blows away*");
 
@@ -61,7 +56,7 @@ public sealed class WindGuardianBossDefenseScript : MonsterScriptBase
                     Subject.Say("*blows away*");
 
                     break;
-                case "wolffangfist":
+                case "Wolf Fang Fist":
                     RemoveEffectAndHeal(effect);
                     Subject.Say("*blows away*");
 
@@ -72,7 +67,7 @@ public sealed class WindGuardianBossDefenseScript : MonsterScriptBase
 
                     break;
 
-                case "beagsuain":
+                case "Beag Suain":
                     RemoveEffectAndHeal(effect);
                     Subject.Say("*unaffected*");
 

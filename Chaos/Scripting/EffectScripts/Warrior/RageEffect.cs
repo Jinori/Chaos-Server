@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -13,7 +12,7 @@ public class RageEffect : EffectBase
 
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(25);
     public override byte Icon => 87;
-    public override string Name => "rage";
+    public override string Name => "Rage";
 
     public override void OnApplied()
     {
@@ -49,7 +48,7 @@ public class RageEffect : EffectBase
 
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (target.Effects.Contains("rage"))
+        if (target.Effects.Contains("Rage"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You couldn't possibly get any more pissed.");
 

@@ -1,6 +1,6 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
+using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.EffectComponents;
 using Chaos.Scripting.Components.Execution;
@@ -11,7 +11,6 @@ namespace Chaos.Scripting.EffectScripts.Items.AlchemyPotions;
 public class GMKnowledgeEffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
 {
     public List<string> ConflictingEffectNames { get; init; } = ["GMKnowledgeEffect"];
-
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(60);
 
     protected Animation? Animation { get; } = new()
@@ -40,6 +39,8 @@ public class GMKnowledgeEffect : EffectBase, NonOverwritableEffectComponent.INon
     {
         var execution = new ComponentExecutor(source, target).WithOptions(this)
                                                              .ExecuteAndCheck<NonOverwritableEffectComponent>();
+
+        (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You cast {Name} on {Subject.Name}.");
 
         return execution is not null;
     }

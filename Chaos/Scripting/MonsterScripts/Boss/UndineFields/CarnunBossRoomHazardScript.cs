@@ -45,12 +45,14 @@ public sealed class CarnunBossRoomHazardScript : MonsterScriptBase
         HazardAnimation = new Animation
         {
             AnimationSpeed = 100,
-            TargetAnimation = 13
+            TargetAnimation = 13,
+            Priority = 1
         };
         SafeAnimation = new Animation
         {
             AnimationSpeed = 100,
-            TargetAnimation = 214
+            TargetAnimation = 214,
+            Priority = 1
         };
         ArenaRectangle = new Rectangle(new Point(18, 18), 15, 15);
         ApplyDamageScript = ApplyNonAttackDamageScript.Create();

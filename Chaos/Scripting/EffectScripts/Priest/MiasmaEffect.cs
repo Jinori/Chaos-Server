@@ -63,14 +63,14 @@ public class MiasmaEffect : ContinuousAnimationEffectBase
         if (target.IsGodModeEnabled())
             return false;
 
-        if (target.Effects.Contains("poison"))
+        if (target.Effects.Contains("Poison"))
         {
-            target.Effects.Terminate("poison");
+            target.Effects.Terminate("Poison");
 
             return true;
         }
 
-        if (target.Effects.Contains("miasma"))
+        if (target.Effects.Contains("Miasma"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target has this effect already.");
 

@@ -35,7 +35,7 @@ public sealed class ServantBossRegenScript : MonsterScriptBase
 
                 var newHp = (int)MathF.Min(Subject.StatSheet.CurrentHp + hpToRegen, Subject.StatSheet.MaximumHp);
 
-                if (Subject.Effects.Contains("poison"))
+                if (Subject.Effects.Contains("Poison"))
                     return;
 
                 Subject.Animate(UpgradeAnimation);

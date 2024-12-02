@@ -23,14 +23,16 @@ public sealed class TotemDefenseScript : MonsterScriptBase
         return false;
     }
 
-    private Aisling? FindLowestAggro() =>
-        Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, AggroRange)
-               .ThatAreObservedBy(Subject)
-               .FirstOrDefault(
-                   obj => !obj.Equals(Subject)
-                          && obj.IsAlive
-                          && (obj.Id
-                              == Subject.AggroList.FirstOrDefault(a => a.Value == Subject.AggroList.Values.Min()).Key));
+    private Aisling? FindLowestAggro()
+        => Subject.MapInstance
+                  .GetEntitiesWithinRange<Aisling>(Subject, AggroRange)
+                  .ThatAreObservedBy(Subject)
+                  .FirstOrDefault(
+                      obj => !obj.Equals(Subject)
+                             && obj.IsAlive
+                             && (obj.Id
+                                 == Subject.AggroList.FirstOrDefault(a => a.Value == Subject.AggroList.Values.Min())
+                                           .Key));
 
     private void RemoveEffect(IEffect effect) => Subject.Effects.Dispel(effect.Name);
 
@@ -47,7 +49,7 @@ public sealed class TotemDefenseScript : MonsterScriptBase
         foreach (var effect in Subject.Effects)
             switch (effect.Name.ToLowerInvariant())
             {
-                case "beagpramh":
+                case "beag pramh":
                     RemoveEffectAndHeal(effect);
 
                     break;
@@ -55,7 +57,7 @@ public sealed class TotemDefenseScript : MonsterScriptBase
                     RemoveEffectAndHeal(effect);
 
                     break;
-                case "wolffangfist":
+                case "Wolf Fang Fist":
                     RemoveEffectAndHeal(effect);
 
                     break;
@@ -64,7 +66,7 @@ public sealed class TotemDefenseScript : MonsterScriptBase
 
                     break;
 
-                case "beagsuain":
+                case "Beag Suain":
                     RemoveEffectAndHeal(effect);
 
                     break;

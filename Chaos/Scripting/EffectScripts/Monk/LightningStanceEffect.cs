@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
@@ -10,7 +9,7 @@ public class LightningStanceEffect : EffectBase
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(15);
     public override byte Icon => 94;
-    public override string Name => "lightningstance";
+    public override string Name => "Lightning Stance";
 
     public override void OnApplied()
     {
@@ -30,9 +29,9 @@ public class LightningStanceEffect : EffectBase
 
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (!target.Effects.Contains("thunderstance") && !target.Effects.Contains("lightningstance"))
+        if (!target.Effects.Contains("Thunder Stance") && !target.Effects.Contains("Lightning Stance"))
             return true;
-        
+
         (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A stance has already been applied.");
 
         return false;

@@ -69,6 +69,9 @@ public class HealingAuraEffect : ContinuousAnimationEffectBase
 
         foreach (var target in targets)
         {
+            if (target.IsDead)
+                continue;
+
             // Step 1: Calculate the base heal amount using the source's WIS and 2% of the target's max HP
             var wis = SourceOfEffect.StatSheet.Wis;
             var targetMaxHp = target.StatSheet.EffectiveMaximumHp;

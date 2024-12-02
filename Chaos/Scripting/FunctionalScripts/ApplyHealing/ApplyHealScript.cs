@@ -34,6 +34,10 @@ public class ApplyHealScript : ScriptBase, IApplyHealScript
         switch (target)
         {
             case Aisling aisling:
+
+                if (aisling.IsDead)
+                    return;
+
                 aisling.StatSheet.AddHp(healing);
                 aisling.Client.SendAttributes(StatUpdateType.Vitality);
                 aisling.ShowHealth();

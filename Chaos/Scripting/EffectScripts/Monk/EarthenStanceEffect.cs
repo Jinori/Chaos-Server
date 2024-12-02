@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
@@ -10,7 +9,7 @@ public class EarthenStanceEffect : EffectBase
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(9);
     public override byte Icon => 92;
-    public override string Name => "earthenstance";
+    public override string Name => "Earthen Stance";
 
     public override void OnApplied()
     {
@@ -30,7 +29,7 @@ public class EarthenStanceEffect : EffectBase
 
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (target.Effects.Contains("earthenstance"))
+        if (target.Effects.Contains("Earthen Stance"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A stance has already been applied.");
 

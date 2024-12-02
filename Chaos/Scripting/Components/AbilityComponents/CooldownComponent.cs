@@ -22,8 +22,14 @@ public class CooldownComponent : IComponent
 
         // Get the player's cooldown reduction percentage (assuming it comes in as an integer like 10 for 10%)
         var cooldownReductionPct = aisling?.StatSheet.EffectiveCooldownReductionPct ?? 0;
+        
+        if (cooldownReductionPct > 80)
+            cooldownReductionPct = 80;
 
         var cooldownReduction = aisling?.StatSheet.EffectiveCooldownReduction ?? 0;
+        
+        if (cooldownReduction > 3)
+            cooldownReduction = 3;
 
         // Convert cooldownReductionPct to a percentage (divide by 100)
         var reductionPct = cooldownReductionPct / 100.0;

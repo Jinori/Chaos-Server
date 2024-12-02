@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -42,7 +41,7 @@ public class Cunning6Effect : EffectBase
 
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (!target.Effects.Contains("cunning6") && (target.StatSheet.CurrentMp <= 256000))
+        if (!target.Effects.Contains("Cunning6") && (target.StatSheet.CurrentMp <= 256000))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You need 256000 mana to enter Cunning 6.");
 

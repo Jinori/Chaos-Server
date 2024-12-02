@@ -42,7 +42,7 @@ public sealed class PFMantisBossDefenseScript : MonsterScriptBase
         foreach (var effect in Subject.Effects)
             switch (effect.Name.ToLowerInvariant())
             {
-                case "beagpramh":
+                case "beag pramh":
                     RemoveEffectAndHeal(effect);
                     Subject.Say("Nice try!");
 
@@ -52,7 +52,7 @@ public sealed class PFMantisBossDefenseScript : MonsterScriptBase
                     Subject.Say("Nice try!");
 
                     break;
-                case "wolffangfist":
+                case "Wolf Fang Fist":
                     RemoveEffectAndHeal(effect);
                     Subject.Say("Don't bother..");
 

@@ -15,7 +15,7 @@ public class MotivateEffect : EffectBase, HierarchicalEffectComponent.IHierarchi
     /// <inheritdoc />
     public List<string> EffectNameHierarchy { get; init; } =
         [
-            "torment",
+            "Torment",
             "Motivate"
         ];
 

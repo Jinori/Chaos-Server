@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Geometry.Abstractions;
@@ -45,7 +44,7 @@ public class BeagSalSplashEffect : ContinuousAnimationEffectBase
     public override byte Icon => 38;
 
     /// <inheritdoc />
-    public override string Name => "BeagSalSplash";
+    public override string Name => "Beag Sal Splash";
 
     public BeagSalSplashEffect() => ApplyDamageScript = ApplyAttackDamageScript.Create();
 
@@ -57,7 +56,7 @@ public class BeagSalSplashEffect : ContinuousAnimationEffectBase
     {
         if (Subject.MapInstance != SourceOfEffect.MapInstance)
         {
-            Subject.Effects.Terminate("BeagSalSplash");
+            Subject.Effects.Terminate("Beag Sal Splash");
 
             return;
         }
@@ -98,15 +97,15 @@ public class BeagSalSplashEffect : ContinuousAnimationEffectBase
     {
         SourceOfEffect = source;
 
-        if (target.IsFriendlyTo(source) || target.IsGodModeEnabled() || target.Effects.Contains("invulnerability"))
+        if (target.IsFriendlyTo(source) || target.IsGodModeEnabled() || target.Effects.Contains("Invulnerability"))
             return false;
 
         var splashEffects = new[]
         {
-            "BeagSalSplash",
-            "SalSplash",
-            "MorSalSplash",
-            "ArdSalSplash"
+            "Beag Sal Splash",
+            "Sal Splash",
+            "Mor Sal Splash",
+            "Ard Sal Splash"
         };
 
         return !splashEffects.Any(target.Effects.Contains);

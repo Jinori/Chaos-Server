@@ -132,7 +132,7 @@ public class CasinoMonsterRaceLaneGrassScript : ReactorTileScriptBase
             default:
             {
                 foreach (var aisling in AislingsAtCompletion)
-                    aisling.SendActiveMessage("Nobody guessed the right lane!");
+                    aisling.SendActiveMessage("Lane Grass won! Nobody picked Lane Grass!");
 
                 break;
             }

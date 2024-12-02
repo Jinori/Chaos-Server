@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
@@ -10,12 +9,12 @@ public class AsgallFaileasEffect : EffectBase
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(4);
     public override byte Icon => 44;
-    public override string Name => "asgallfaileas";
+    public override string Name => "Asgall Faileas";
 
     public override void OnApplied()
     {
         base.OnApplied();
-        
+
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your stance is more defensive.");
     }
@@ -37,7 +36,7 @@ public class AsgallFaileasEffect : EffectBase
             return false;
         }
 
-        if (target.Effects.Contains("asgallfaileas"))
+        if (target.Effects.Contains("Asgall Faileas"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A stance has already been applied.");
 

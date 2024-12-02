@@ -6,93 +6,93 @@ using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss
+namespace Chaos.Scripting.MonsterScripts.Boss;
+
+public sealed class DelayDefenseScript : MonsterScriptBase
 {
-    public sealed class DelayDefenseScript : MonsterScriptBase
+    private readonly Dictionary<IEffect, DateTime> AppliedEffects = new();
+    private readonly IIntervalTimer UpdateTimer = new IntervalTimer(TimeSpan.FromMilliseconds(200));
+
+    public DelayDefenseScript(Monster subject)
+        : base(subject) { }
+
+    public override bool CanSee(VisibleEntity entity)
     {
-        private readonly IIntervalTimer UpdateTimer = new IntervalTimer(TimeSpan.FromMilliseconds(200));
-        private readonly Dictionary<IEffect, DateTime> AppliedEffects = new();
+        //Can see all persons except GMs
+        if (entity.Visibility is VisibilityType.Hidden or VisibilityType.TrueHidden or VisibilityType.Normal)
+            return true;
 
-        public DelayDefenseScript(Monster subject)
-            : base(subject) { }
+        return false;
+    }
 
-        public override bool CanSee(VisibleEntity entity)
-        {
-            //Can see all persons except GMs
-            if (entity.Visibility is VisibilityType.Hidden or VisibilityType.TrueHidden or VisibilityType.Normal)
-                return true;
+    private void RemoveEffect(IEffect effect) => Subject.Effects.Dispel(effect.Name);
 
-            return false;
-        }
+    private void RemoveEffectAndHeal(IEffect effect)
+    {
+        Subject.Effects.Dispel(effect.Name);
+        Subject.StatSheet.AddHealthPct(35);
+        Subject.ShowHealth();
+    }
 
-        private void RemoveEffect(IEffect effect) => Subject.Effects.Dispel(effect.Name);
+    public override void Update(TimeSpan delta)
+    {
+        base.Update(delta);
 
-        private void RemoveEffectAndHeal(IEffect effect)
-        {
-            Subject.Effects.Dispel(effect.Name);
-            Subject.StatSheet.AddHealthPct(35);
-            Subject.ShowHealth();
-        }
+        UpdateTimer.Update(delta);
 
-        public override void Update(TimeSpan delta)
-        {
-            base.Update(delta);
-            
-            UpdateTimer.Update(delta);
+        if (!Subject.Effects.Any())
+            return;
 
-            if (!Subject.Effects.Any())
-                return;
+        if (!UpdateTimer.IntervalElapsed)
+            return;
 
-            if (!UpdateTimer.IntervalElapsed)
-                return;
+        var currentTime = DateTime.UtcNow;
+        var effectsToRemove = new List<IEffect>();
 
-            var currentTime = DateTime.UtcNow;
-            var effectsToRemove = new List<IEffect>();
+        foreach (var effect in Subject.Effects)
+            if (!AppliedEffects.ContainsKey(effect))
 
-            foreach (var effect in Subject.Effects)
+                // Add new effect with the current time
+                AppliedEffects[effect] = currentTime;
+            else
             {
-                if (!AppliedEffects.ContainsKey(effect))
+                var appliedTime = AppliedEffects[effect];
+
+                if (((currentTime - appliedTime).TotalSeconds >= 3) && ((currentTime - appliedTime).TotalSeconds <= 5))
                 {
-                    // Add new effect with the current time
-                    AppliedEffects[effect] = currentTime;
-                }
-                else
-                {
-                    var appliedTime = AppliedEffects[effect];
-                    if ((currentTime - appliedTime).TotalSeconds >= 3 && (currentTime - appliedTime).TotalSeconds <= 5)
+                    switch (effect.Name.ToLowerInvariant())
                     {
-                        switch (effect.Name.ToLowerInvariant())
-                        {
-                            case "beagpramh":
-                            case "pramh":
-                                RemoveEffectAndHeal(effect);
-                                Subject.Say("Nice try!");
-                                break;
-                            case "wolffangfist":
-                                RemoveEffectAndHeal(effect);
-                                Subject.Say("Don't bother..");
-                                break;
-                            case "suain":
-                                RemoveEffectAndHeal(effect);
-                                Subject.Say("Not a chance!");
-                                break;
-                            case "beagsuain":
-                            case "blind":
-                            case "dall":
-                                RemoveEffect(effect);
-                                Subject.Say("Not a chance!");
-                                break;
-                        }
-                        effectsToRemove.Add(effect);
+                        case "beag pramh":
+                        case "pramh":
+                            RemoveEffectAndHeal(effect);
+                            Subject.Say("Nice try!");
+
+                            break;
+                        case "Wolf Fang Fist":
+                            RemoveEffectAndHeal(effect);
+                            Subject.Say("Don't bother..");
+
+                            break;
+                        case "suain":
+                            RemoveEffectAndHeal(effect);
+                            Subject.Say("Not a chance!");
+
+                            break;
+                        case "Beag Suain":
+                        case "blind":
+                        case "dall":
+                            RemoveEffect(effect);
+                            Subject.Say("Not a chance!");
+
+                            break;
                     }
+
+                    effectsToRemove.Add(effect);
                 }
             }
 
-            // Remove effects that have been processed
-            foreach (var effect in effectsToRemove)
-            {
-                AppliedEffects.Remove(effect);
-            }
-        }
+        // Remove effects that have been processed
+        foreach (var effect in effectsToRemove)
+            AppliedEffects.Remove(effect);
     }
 }

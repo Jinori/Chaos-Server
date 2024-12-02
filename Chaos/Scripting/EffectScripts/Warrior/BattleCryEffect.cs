@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -11,12 +10,12 @@ public class BattleCryEffect : EffectBase
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(18);
     public override byte Icon => 88;
-    public override string Name => "battlecry";
+    public override string Name => "Battle Cry";
 
     public override void OnApplied()
     {
         base.OnApplied();
-        
+
         var attributes = new Attributes
         {
             AtkSpeedPct = 20
@@ -43,7 +42,7 @@ public class BattleCryEffect : EffectBase
 
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (target.Effects.Contains("battlecry"))
+        if (target.Effects.Contains("Battle Cry"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your muscles are at their maximum speed.");
 

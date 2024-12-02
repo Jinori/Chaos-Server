@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
@@ -10,7 +9,7 @@ public class RockStanceEffect : EffectBase
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(13);
     public override byte Icon => 92;
-    public override string Name => "rockstance";
+    public override string Name => "Rock Stance";
 
     public override void OnApplied()
     {
@@ -30,7 +29,7 @@ public class RockStanceEffect : EffectBase
 
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (target.Effects.Contains("rockstance"))
+        if (target.Effects.Contains("Rock Stance"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A stance has already been applied.");
 

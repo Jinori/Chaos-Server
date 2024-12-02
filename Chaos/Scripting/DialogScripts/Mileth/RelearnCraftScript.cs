@@ -28,7 +28,7 @@ public class RelearnCraftScript : DialogScriptBase
             {
                 if (source.SpellBook.ContainsByTemplateKey("morcradh")
                     && !source.SpellBook.ContainsByTemplateKey("ardcradh")
-                    && source.UserStatSheet.Master)
+                    && (source.UserStatSheet.BaseClass != BaseClass.Wizard))
                 {
                     var ardcradh = SpellFactory.Create("ardcradh");
                     source.SpellBook.TryAddToNextSlot(ardcradh);

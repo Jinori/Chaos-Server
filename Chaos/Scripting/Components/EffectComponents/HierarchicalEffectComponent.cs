@@ -1,10 +1,8 @@
-#region
 using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.EffectScripts.Abstractions;
-#endregion
 
 namespace Chaos.Scripting.Components.EffectComponents;
 
@@ -20,24 +18,31 @@ public struct HierarchicalEffectComponent : IConditionalComponent
 
         var options = vars.GetOptions<IHierarchicalEffectComponentOptions>();
 
-        var conflictingEffect = target.Effects.FirstOrDefault(e => options.EffectNameHierarchy.Contains(e.Name));
+        // Get the rank of the current effect being applied
+        var thisRank = options.EffectNameHierarchy.IndexOf(options.Name);
 
-        if (conflictingEffect is null)
-            return true;
+        // Remove all effects that have a higher rank than the new effect
+        var effectsToRemove = target.Effects
+                                    .Where(e => options.EffectNameHierarchy.ContainsI(e.Name))
+                                    .Where(e => options.EffectNameHierarchy.IndexOf(e.Name) >= thisRank)
+                                    .ToList();
 
-        var thisRank = options.EffectNameHierarchy.IndexOfI(options.Name);
-        var conflictingRank = options.EffectNameHierarchy.IndexOfI(conflictingEffect.Name);
+        foreach (var effect in effectsToRemove)
+            target.Effects.Dispel(effect.Name);
 
-        if (thisRank <= conflictingRank)
+        // Check if there's any lower-ranked effect still present
+        var lowerRankEffect = target.Effects
+                                    .Where(e => options.EffectNameHierarchy.ContainsI(e.Name))
+                                    .FirstOrDefault(e => options.EffectNameHierarchy.IndexOf(e.Name) < thisRank);
+
+        if (lowerRankEffect != null)
         {
-            target.Effects.Dispel(conflictingEffect.Name);
+            context.SourceAisling?.SendActiveMessage($"Target is already under a stronger effect. [{lowerRankEffect.Name}]");
 
-            return true;
+            return false;
         }
 
-        context.SourceAisling?.SendActiveMessage($"Target is already under a stronger effect. [{conflictingEffect.Name}]");
-
-        return false;
+        return true;
     }
 
     public interface IHierarchicalEffectComponentOptions : IEffect

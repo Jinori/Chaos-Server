@@ -88,73 +88,49 @@ public class BuyBugPointsShopScript : DialogScriptBase
             "rawmeat", (1, 5)
         },
         {
-            "EssenceofAquaedon", (1, 2)
+            "smallenchantingbox", (2, 1)
         },
         {
-            "EssenceofGeolith", (1, 2)
+            "largeenchantingbox", (5, 1)
         },
         {
-            "EssenceofIgnatar", (1, 2)
+            "smalljewelcraftingbox", (2, 1)
         },
         {
-            "EssenceofMiraelis", (1, 2)
+            "largejewelcraftingbox", (5, 1)
         },
         {
-            "EssenceofSerendael", (1, 2)
+            "basicarmorsmithingbox", (2, 1)
         },
         {
-            "EssenceofSkandara", (1, 2)
+            "initiatearmorsmithingbox", (3, 1)
         },
         {
-            "EssenceofTheselene", (1, 2)
+            "artisanarmorsmithingbox", (4, 1)
         },
         {
-            "EssenceofZephyra", (1, 2)
+            "basicweaponsmithingbox", (2, 1)
         },
         {
-            "cotton", (1, 5)
+            "initiateweaponsmithingbox", (3, 1)
         },
         {
-            "linen", (2, 3)
+            "artisanweaponsmithingbox", (4, 1)
         },
         {
-            "silk", (5, 1)
+            "basicalchemybox", (2, 1)
         },
         {
-            "wool", (4, 2)
+            "initiatealchemybox", (3, 1)
         },
         {
-            "rawberyl", (1, 3)
+            "artisanalchemybox", (4, 1)
         },
         {
-            "rawemerald", (1, 3)
+            "rawcrimsonite", (4, 2)
         },
         {
-            "rawruby", (1, 3)
-        },
-        {
-            "rawheartstone", (1, 3)
-        },
-        {
-            "rawsapphire", (1, 3)
-        },
-        {
-            "rawbronze", (1, 5)
-        },
-        {
-            "rawiron", (2, 5)
-        },
-        {
-            "rawmythril", (3, 5)
-        },
-        {
-            "rawhybrasyl", (4, 2)
-        },
-        {
-            "rawcrimsonite", (5, 2)
-        },
-        {
-            "rawazurium", (5, 2)
+            "rawazurium", (4, 2)
         },
         {
             "sweetbuns", (2, 1)
@@ -163,19 +139,7 @@ public class BuyBugPointsShopScript : DialogScriptBase
             "passport", (1, 5)
         },
         {
-            "lessermonsterextract", (1, 5)
-        },
-        {
-            "basicmonsterextract", (2, 4)
-        },
-        {
-            "greatermonsterextract", (3, 3)
-        },
-        {
-            "superiormonsterextract", (4, 2)
-        },
-        {
-            "primemonsterextract", (5, 1)
+            "primemonsterextract", (4, 2)
         }
     };
 

@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
@@ -13,18 +12,23 @@ public class FirestormEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(12);
+
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
         TargetAnimation = 60
     };
+
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000));
+
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000));
+
     /// <inheritdoc />
     public override byte Icon => 100;
+
     /// <inheritdoc />
     public override string Name => "Firestorm";
 
@@ -58,7 +62,8 @@ public class FirestormEffect : ContinuousAnimationEffectBase
     {
         if (target.Effects.Contains("Small Firestorm")
             || target.Effects.Contains("Firestorm")
-            || target.Effects.Contains("Firepunch"))
+            || target.Effects.Contains("Fire Punch")
+            || target.Effects.Contains("Burn"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is already burning.");
 

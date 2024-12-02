@@ -47,7 +47,7 @@ public class ChaosFistEffect : ContinuousAnimationEffectBase
 
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (target.Effects.Contains("chaosfist"))
+        if (target.Effects.Contains("Chaos Fist"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A stance has already been applied.");
 

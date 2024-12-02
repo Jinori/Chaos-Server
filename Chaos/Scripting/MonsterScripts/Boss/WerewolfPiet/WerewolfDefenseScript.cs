@@ -1,5 +1,4 @@
 using Chaos.Definitions;
-using Chaos.Extensions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
@@ -9,10 +8,9 @@ namespace Chaos.Scripting.MonsterScripts.Boss.WerewolfPiet;
 
 public sealed class WerewolfDefenseScript : MonsterScriptBase
 {
-
     /// <inheritdoc />
     public WerewolfDefenseScript(Monster subject)
-        : base(subject) {}
+        : base(subject) { }
 
     /// <inheritdoc />
     public override bool CanSee(VisibleEntity entity)
@@ -23,6 +21,7 @@ public sealed class WerewolfDefenseScript : MonsterScriptBase
 
         return false;
     }
+
     private void RemoveEffect(IEffect effect) => Subject.Effects.Dispel(effect.Name);
 
     private void RemoveEffectAndHeal(IEffect effect)
@@ -43,7 +42,7 @@ public sealed class WerewolfDefenseScript : MonsterScriptBase
         foreach (var effect in Subject.Effects)
             switch (effect.Name.ToLowerInvariant())
             {
-                case "beagpramh":
+                case "beag pramh":
                     RemoveEffectAndHeal(effect);
                     Subject.Say("Nice try!");
 
@@ -53,7 +52,7 @@ public sealed class WerewolfDefenseScript : MonsterScriptBase
                     Subject.Say("Nice try!");
 
                     break;
-                case "wolffangfist":
+                case "Wolf Fang Fist":
                     RemoveEffectAndHeal(effect);
                     Subject.Say("Don't bother..");
 
@@ -64,7 +63,7 @@ public sealed class WerewolfDefenseScript : MonsterScriptBase
 
                     break;
 
-                case "beagsuain":
+                case "Beag Suain":
                     RemoveEffect(effect);
                     Subject.Say("Not a chance!");
 

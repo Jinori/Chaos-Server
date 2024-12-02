@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -12,7 +11,7 @@ public class BirthdaySuitEffect : EffectBase
     protected int ArmorClassSaved;
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(12);
     public override byte Icon => 66;
-    public override string Name => "BirthdaySuit";
+    public override string Name => "Birthday Suit";
 
     public override void OnApplied()
     {
@@ -34,6 +33,7 @@ public class BirthdaySuitEffect : EffectBase
                 AislingSubject?.StatSheet.AddBonus(attributes);
             }
         }
+
         //If creature or no armor, lets pass a base value?
         else
         {
@@ -63,6 +63,7 @@ public class BirthdaySuitEffect : EffectBase
 
             AislingSubject?.StatSheet.SubtractBonus(attributes);
         }
+
         //If creature or no armor, lets pass a base value?
         else
         {
@@ -80,7 +81,7 @@ public class BirthdaySuitEffect : EffectBase
 
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (target.Effects.Contains("BirthdaySuit"))
+        if (target.Effects.Contains("Birthday Suit"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Their armor class has already been lowered.");
 

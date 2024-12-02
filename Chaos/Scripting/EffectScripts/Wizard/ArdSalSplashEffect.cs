@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Geometry.Abstractions;
@@ -45,7 +44,7 @@ public class ArdSalSplashEffect : ContinuousAnimationEffectBase
     public override byte Icon => 38;
 
     /// <inheritdoc />
-    public override string Name => "ArdSalSplash";
+    public override string Name => "Ard Sal Splash";
 
     public ArdSalSplashEffect() => ApplyDamageScript = ApplyAttackDamageScript.Create();
 
@@ -98,15 +97,15 @@ public class ArdSalSplashEffect : ContinuousAnimationEffectBase
     {
         SourceOfEffect = source;
 
-        if (target.IsFriendlyTo(source) || target.IsGodModeEnabled() || target.Effects.Contains("invulnerability"))
+        if (target.IsFriendlyTo(source) || target.IsGodModeEnabled() || target.Effects.Contains("Invulnerability"))
             return false;
 
         var splashEffects = new[]
         {
-            "BeagSalSplash",
-            "SalSplash",
-            "MorSalSplash",
-            "ArdSalSplash"
+            "Beag Sal Splash",
+            "Sal Splash",
+            "Mor Sal Splash",
+            "Ard Sal Splash"
         };
 
         return !splashEffects.Any(target.Effects.Contains);

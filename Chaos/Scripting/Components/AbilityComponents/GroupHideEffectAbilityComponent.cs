@@ -30,7 +30,7 @@ public struct GroupHideEffectAbilityComponent : IComponent
                 if (member.Name == caster.Name)
                     continue;
 
-                if (!member.MapInstance.IsWithinMap(caster) && !member.WithinRange(caster, 12))
+                if (!member.MapInstance.IsWithinMap(caster) || !member.WithinRange(caster, 12))
                     continue;
 
                 if (member.Effects.Contains("hide"))

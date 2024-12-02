@@ -17,8 +17,8 @@ public sealed class LynithBossDefenseScript : MonsterScriptBase
 
     /// <inheritdoc />
     public LynithBossDefenseScript(Monster subject)
-        : base(subject) =>
-        AvoidBashers = new RandomizedIntervalTimer(
+        : base(subject)
+        => AvoidBashers = new RandomizedIntervalTimer(
             TimeSpan.FromSeconds(30),
             20,
             RandomizationType.Positive,
@@ -34,13 +34,16 @@ public sealed class LynithBossDefenseScript : MonsterScriptBase
         return false;
     }
 
-    private Aisling? FindLowestAggro() =>
-        Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, AggroRange)
-               .ThatAreObservedBy(Subject)
-               .FirstOrDefault(
-                   obj => !obj.Equals(Subject)
-                          && obj.IsAlive
-                          && (obj.Id == Subject.AggroList.FirstOrDefault(a => a.Value == Subject.AggroList.Values.Min()).Key));
+    private Aisling? FindLowestAggro()
+        => Subject.MapInstance
+                  .GetEntitiesWithinRange<Aisling>(Subject, AggroRange)
+                  .ThatAreObservedBy(Subject)
+                  .FirstOrDefault(
+                      obj => !obj.Equals(Subject)
+                             && obj.IsAlive
+                             && (obj.Id
+                                 == Subject.AggroList.FirstOrDefault(a => a.Value == Subject.AggroList.Values.Min())
+                                           .Key));
 
     private void RemoveEffect(IEffect effect) => Subject.Effects.Dispel(effect.Name);
 
@@ -59,7 +62,9 @@ public sealed class LynithBossDefenseScript : MonsterScriptBase
 
         if (AvoidBashers.IntervalElapsed)
         {
-            var aislings = Map.GetEntitiesWithinRange<Aisling>(Subject, AggroRange).Where(x => x.ManhattanDistanceFrom(Subject) <= 1).ToList();
+            var aislings = Map.GetEntitiesWithinRange<Aisling>(Subject, AggroRange)
+                              .Where(x => x.ManhattanDistanceFrom(Subject) <= 1)
+                              .ToList();
 
             if (aislings.Count >= 2)
             {
@@ -81,7 +86,7 @@ public sealed class LynithBossDefenseScript : MonsterScriptBase
         foreach (var effect in Subject.Effects)
             switch (effect.Name.ToLowerInvariant())
             {
-                case "beagpramh":
+                case "beag pramh":
                     RemoveEffectAndHeal(effect);
                     Subject.Say("Nice try!");
 
@@ -91,7 +96,7 @@ public sealed class LynithBossDefenseScript : MonsterScriptBase
                     Subject.Say("Nice try!");
 
                     break;
-                case "wolffangfist":
+                case "Wolf Fang Fist":
                     RemoveEffectAndHeal(effect);
                     Subject.Say("Don't bother..");
 
@@ -102,7 +107,7 @@ public sealed class LynithBossDefenseScript : MonsterScriptBase
 
                     break;
 
-                case "beagsuain":
+                case "Beag Suain":
                     RemoveEffectAndHeal(effect);
                     Subject.Say("Not a chance!");
 

@@ -47,7 +47,7 @@ public class ClawFistEffect : ContinuousAnimationEffectBase
 
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (target.Effects.Contains("clawfist"))
+        if (target.Effects.Contains("Claw Fist"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A stance has already been applied.");
 

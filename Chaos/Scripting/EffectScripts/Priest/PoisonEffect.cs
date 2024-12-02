@@ -46,9 +46,9 @@ public class PoisonEffect : ContinuousAnimationEffectBase
         if (Subject.StatSheet.CurrentHp <= damage)
             return;
 
-        if (Subject.IsGodModeEnabled() || Subject.Effects.Contains("invulnerability"))
+        if (Subject.IsGodModeEnabled() || Subject.Effects.Contains("Invulnerability"))
         {
-            Subject.Effects.Terminate("poison");
+            Subject.Effects.Terminate("Poison");
 
             return;
         }
@@ -68,17 +68,17 @@ public class PoisonEffect : ContinuousAnimationEffectBase
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is currently immune to poison.");
 
-            return true;
+            return false;
         }
 
-        if (target.Effects.Contains("poison"))
+        if (target.Effects.Contains("Poison"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target has this effect already.");
 
-            return true;
+            return false;
         }
 
-        if (target.Effects.Contains("miasma"))
+        if (target.Effects.Contains("Miasma"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is currently affected by Miasma.");
 

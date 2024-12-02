@@ -23,8 +23,8 @@ public sealed class EHorseBoss3EnrageScript : MonsterScriptBase
 
     /// <inheritdoc />
     public EHorseBoss3EnrageScript(Monster subject, IMonsterFactory monsterFactory)
-        : base(subject) =>
-        MonsterFactory = monsterFactory;
+        : base(subject)
+        => MonsterFactory = monsterFactory;
 
     public override void Update(TimeSpan delta)
     {
@@ -38,9 +38,9 @@ public sealed class EHorseBoss3EnrageScript : MonsterScriptBase
 
                 var newHP = (int)MathF.Min(Subject.StatSheet.CurrentHp + hpToRegen, Subject.StatSheet.MaximumHp);
 
-                if (Subject.Effects.Contains("poison") || Subject.Effects.Contains("miasma"))
+                if (Subject.Effects.Contains("Poison") || Subject.Effects.Contains("Miasma"))
                     return;
-                
+
                 Subject.StatSheet.SetHp(newHP);
                 Subject.ShowHealth();
 
@@ -54,12 +54,17 @@ public sealed class EHorseBoss3EnrageScript : MonsterScriptBase
         if (!Bonus75Applied && (Subject.StatSheet.HealthPercent <= 75))
         {
             Bonus75Applied = true;
+
             //Give Bonuses
-            var attrib = new Attributes { AtkSpeedPct = 40 };
+            var attrib = new Attributes
+            {
+                AtkSpeedPct = 40
+            };
             Subject.StatSheet.AddBonus(attrib);
             HPRegenInterval = 18f;
             HPMultiplier = 0.01f;
             Subject.Animate(UpgradeAnimation);
+
             //Spawn Monsters
         }
 

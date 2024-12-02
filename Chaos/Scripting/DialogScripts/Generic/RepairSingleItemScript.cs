@@ -11,6 +11,29 @@ public class RepairSingleItemScript(Dialog subject, ILogger<RepairSingleItemScri
 {
     private double RepairCost { get; set; }
 
+    private int CalculateNewRepairCostForItem(Item item)
+    {
+        // Skip if item is not damaged
+        if ((item.Template.MaxDurability == null)
+            || (item.CurrentDurability == null)
+            || (item.CurrentDurability.Value == item.Template.MaxDurability.Value))
+            return 0;
+
+        double sellValue = item.Template.SellValue;
+        var damageProportion = 1 - (double)item.CurrentDurability.Value / item.Template.MaxDurability.Value;
+        const double REPAIR_FACTOR = 0.8;
+
+        var repairCost = sellValue * damageProportion * REPAIR_FACTOR;
+
+        if (item.Template.TemplateKey.StartsWith("mythic", StringComparison.OrdinalIgnoreCase))
+            repairCost *= 10;
+
+        if (item.Template.TemplateKey.EndsWith("glove", StringComparison.OrdinalIgnoreCase))
+            repairCost *= 126;
+
+        return Convert.ToInt32(repairCost);
+    }
+
     public override void OnDisplaying(Aisling source)
     {
         switch (Subject.Template.TemplateKey.ToLower())
@@ -30,28 +53,6 @@ public class RepairSingleItemScript(Dialog subject, ILogger<RepairSingleItemScri
         }
     }
 
-    private int CalculateNewRepairCostForItem(Item item)
-    {
-        // Skip if item is not damaged
-        if ((item.Template.MaxDurability == null)
-            || (item.CurrentDurability == null)
-            || (item.CurrentDurability.Value == item.Template.MaxDurability.Value))
-            return 0;
-
-        double sellValue = item.Template.SellValue;
-        var damageProportion = 1 - (double)item.CurrentDurability.Value / item.Template.MaxDurability.Value;
-        const double REPAIR_FACTOR = 0.8;
-        
-        var repairCost = sellValue * damageProportion * REPAIR_FACTOR;
-        
-        if (item.Template.TemplateKey.StartsWith("mythic", StringComparison.OrdinalIgnoreCase))
-        {
-            repairCost *= 10;
-        }
-
-        return Convert.ToInt32(repairCost);
-    }
-    
     private void OnDisplayingAccepted(Aisling source)
     {
         if (!TryFetchArgs<byte>(out var slot) || !source.Inventory.TryGetObject(slot, out var item))
@@ -73,7 +74,12 @@ public class RepairSingleItemScript(Dialog subject, ILogger<RepairSingleItemScri
                 return;
             }
 
-            logger.WithTopics([Topics.Entities.Aisling, Topics.Entities.Item, Topics.Entities.Gold])
+            logger.WithTopics(
+                      [
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Item,
+                          Topics.Entities.Gold
+                      ])
                   .WithProperty(source)
                   .WithProperty(Subject)
                   .LogInformation(
@@ -114,11 +120,11 @@ public class RepairSingleItemScript(Dialog subject, ILogger<RepairSingleItemScri
 
     private void OnDisplayingInitial(Aisling source)
     {
-        var itemsToRepair = source.Inventory.Where(
-                                      x =>
-                                          (x.Template.MaxDurability != null)
-                                          && (x.CurrentDurability != null)
-                                          && (x.CurrentDurability.Value != x.Template.MaxDurability.Value))
+        var itemsToRepair = source.Inventory
+                                  .Where(
+                                      x => (x.Template.MaxDurability != null)
+                                           && (x.CurrentDurability != null)
+                                           && (x.CurrentDurability.Value != x.Template.MaxDurability.Value))
                                   .ToList();
 
         if (itemsToRepair.Count == 0)
@@ -128,6 +134,7 @@ public class RepairSingleItemScript(Dialog subject, ILogger<RepairSingleItemScri
             return;
         }
 
-        Subject.Slots = itemsToRepair.Select(x => x.Slot).ToList();
+        Subject.Slots = itemsToRepair.Select(x => x.Slot)
+                                     .ToList();
     }
 }

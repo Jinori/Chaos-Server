@@ -53,9 +53,9 @@ public sealed class SuainEffect : ContinuousAnimationEffectBase
         if (target.IsGodModeEnabled())
             return false;
 
-        if (target.Effects.Contains("Suain") || target.Effects.Contains("wolffangfist"))
+        if (target.IsSuained())
         {
-            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is already asleep.");
+            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is already frozen.");
 
             return false;
         }
