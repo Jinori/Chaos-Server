@@ -33,6 +33,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+
+// ReSharper disable RedundantSuppressNullableWarningExpression
 #endregion
 
 namespace ChaosTool;
@@ -105,23 +107,7 @@ public class JsonContext
         JsonSerializerOptions.Converters.Add(new LocationConverter());
         JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 
-       Context = new SerializationContext
-       {
-          Options =
-          {
-             WriteIndented = true,
-             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
-             NumberHandling = JsonNumberHandling.AllowReadingFromString,
-             PropertyNameCaseInsensitive = true,
-             IgnoreReadOnlyProperties = true,
-             IgnoreReadOnlyFields = true,
-             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-             AllowTrailingCommas = true,
-             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-             RespectNullableAnnotations = true,
-             RespectRequiredConstructorParameters = true
-          }
-       };
+       Context = new SerializationContext(JsonSerializerOptions);
 
         var services = new ServiceCollection();
 

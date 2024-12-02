@@ -1,3 +1,4 @@
+#region
 using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Common;
@@ -9,6 +10,7 @@ using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
+#endregion
 
 namespace Chaos.Scripting.Components.AbilityComponents;
 
@@ -31,7 +33,8 @@ public struct GetTargetsAbilityComponent<TEntity> : IConditionalComponent where 
                                       direction,
                                       null,
                                       options.ExcludeSourcePoint)
-                                  .ToListCast<IPoint>();
+                                  .OfType<IPoint>()
+                                  .ToList();
 
         if (options.StopOnWalls)
             targetPoints = targetPoints.FilterByLineOfSight(context.TargetPoint, context.TargetMap).ToList();

@@ -1,9 +1,12 @@
+#region
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
+using Chaos.Scripting.SkillScripts.Abstractions;
+#endregion
 
 namespace Chaos.Scripting.Components.AbilityComponents;
 
@@ -29,7 +32,7 @@ public class CombatAdvantageComponent : IComponent
                 return;
 
             var entity = context.TargetMap
-                                .GetEntitiesAtPoint<Creature>(point)
+                                .GetEntitiesAtPoints<Creature>(point)
                                 .TopOrDefault();
 
             if (entity != null)

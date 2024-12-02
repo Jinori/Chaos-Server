@@ -1,7 +1,10 @@
+#region
+using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.EffectScripts.Abstractions;
+#endregion
 
 namespace Chaos.Scripting.Components.EffectComponents;
 
@@ -17,32 +20,24 @@ public struct HierarchicalEffectComponent : IConditionalComponent
 
         var options = vars.GetOptions<IHierarchicalEffectComponentOptions>();
 
-        // Get the rank of the current effect being applied
-        var thisRank = options.EffectNameHierarchy.IndexOf(options.Name);
+        var conflictingEffect = target.Effects.FirstOrDefault(e => options.EffectNameHierarchy.Contains(e.Name));
 
-        // Remove all effects that have a higher rank than the new effect
-        var effectsToRemove = target.Effects
-            .Where(e => options.EffectNameHierarchy.Contains(e.Name))
-            .Where(e => options.EffectNameHierarchy.IndexOf(e.Name) >= thisRank)
-            .ToList();
+        if (conflictingEffect is null)
+            return true;
 
-        foreach (var effect in effectsToRemove)
+        var thisRank = options.EffectNameHierarchy.IndexOfI(options.Name);
+        var conflictingRank = options.EffectNameHierarchy.IndexOfI(conflictingEffect.Name);
+
+        if (thisRank <= conflictingRank)
         {
-            target.Effects.Dispel(effect.Name);
+            target.Effects.Dispel(conflictingEffect.Name);
+
+            return true;
         }
 
-        // Check if there's any lower-ranked effect still present
-        var lowerRankEffect = target.Effects
-            .Where(e => options.EffectNameHierarchy.Contains(e.Name))
-            .FirstOrDefault(e => options.EffectNameHierarchy.IndexOf(e.Name) < thisRank);
+        context.SourceAisling?.SendActiveMessage($"Target is already under a stronger effect. [{conflictingEffect.Name}]");
 
-        if (lowerRankEffect != null)
-        {
-            context.SourceAisling?.SendActiveMessage($"Target is already under a stronger effect. [{lowerRankEffect.Name}]");
-            return false;
-        }
-
-        return true;
+        return false;
     }
 
     public interface IHierarchicalEffectComponentOptions : IEffect
