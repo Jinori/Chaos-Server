@@ -90,6 +90,9 @@ public class WWDungeonScript(
 
             case "wwdungeon_initial":
             {
+                if (source.Trackers.Enums.HasValue(WestWoodlandsDungeonQuestStage.Completed))
+                    Subject.Reply(source, "Skip", "wwdungeon_turnin");
+
                 if (!hasStage || (stage == WestWoodlandsDungeonQuestStage.None))
                 {
                     var option = new DialogOption
@@ -110,17 +113,10 @@ public class WWDungeonScript(
                 }
 
                 if (source.Trackers.TimedEvents.HasActiveEvent("wwdungeoncd", out var cdtime))
-                {
                     Subject.Reply(
                         source,
                         $"I'm sure glad you cleared those woods. That was awesome. They'll come back quickly, let's do this again tomorrow? (({cdtime.Remaining.ToReadableString()}))",
                         "maxwell_initial");
-
-                    return;
-                }
-
-                if (source.Trackers.Enums.HasValue(WestWoodlandsDungeonQuestStage.Completed))
-                    Subject.Reply(source, "Skip", "wwdungeon_turnin");
 
                 break;
             }

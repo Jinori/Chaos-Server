@@ -67,7 +67,7 @@ public sealed class ExpiringMapTemplateCache : ExpiringFileCache<MapTemplate, Ma
 
         var ret = EntityRepository.LoadAndMap<MapTemplate, MapTemplateSchema>(path);
 
-        Task.Run(() => LoadMapData(ret));
+        LoadMapData(ret);
 
         LocalLookup[key!] = ret;
 

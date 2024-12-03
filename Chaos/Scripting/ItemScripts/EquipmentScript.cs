@@ -58,6 +58,32 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
             return;
         }
 
+        if (template.Category.Contains("Staff"))
+        {
+            if (source.Equipment.Contains((byte)EquipmentSlot.Shield)
+                && source.Equipment.TryGetObject((byte)EquipmentSlot.Shield, out var shield))
+            {
+                source.SendOrangeBarMessage($"You cannot equip a staff while using {shield.DisplayName}.");
+
+                return;
+            }
+
+            // Check specific conditions for equipping a staff
+            if (!template.TemplateKey.ContainsI("magus") && !CanWieldStaff(source, "Wield Magus Staff"))
+            {
+                EquipStaff(source, template);
+
+                return;
+            }
+
+            if (template.TemplateKey.ContainsI("holy") && CanWieldStaff(source, "Wield Holy Staff"))
+            {
+                EquipStaff(source, template);
+
+                return;
+            }
+        }
+
         // Check if the item is a shield
         if (template.Category.Contains("Shield"))
 
@@ -136,32 +162,6 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
             source.SendOrangeBarMessage($"{Subject.DisplayName} requires Master to be able to be equipped.");
 
             return;
-        }
-
-        if (template.Category.Contains("Staff"))
-        {
-            if (source.Equipment.Contains((byte)EquipmentSlot.Shield)
-                && source.Equipment.TryGetObject((byte)EquipmentSlot.Shield, out var shield))
-            {
-                source.SendOrangeBarMessage($"You cannot equip a staff while using {shield.DisplayName}.");
-
-                return;
-            }
-
-            // Check specific conditions for equipping a staff
-            if (!template.TemplateKey.ContainsI("magus") && !CanWieldStaff(source, "Wield Magus Staff"))
-            {
-                EquipStaff(source, template);
-
-                return;
-            }
-
-            if (template.TemplateKey.ContainsI("holy") && CanWieldStaff(source, "Wield Holy Staff"))
-            {
-                EquipStaff(source, template);
-
-                return;
-            }
         }
 
         if (template.Category.ContainsI("2H"))
