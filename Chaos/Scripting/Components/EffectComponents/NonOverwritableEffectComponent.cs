@@ -23,11 +23,14 @@ public class NonOverwritableEffectComponent : IConditionalComponent
 
         if (conflictingEffect is null)
         {
-            context.SourceAisling?.SendActiveMessage($"You cast {options.Name}.");
-            
             if (target is Aisling aisling)
-                aisling.SendActiveMessage($"{context.Source.Name} casted {options.Name} on you.");
-            
+                if (context.SourceAisling?.Name != aisling.Name)
+                {
+                    context.SourceAisling?.SendActiveMessage($"You cast {options.Name} on {aisling.Name}.");
+                    aisling.SendActiveMessage($"{context.Source.Name} casted {options.Name} on you.");
+                } else if (options.Name != "Mount")
+                    aisling.SendActiveMessage($"You casted {options.Name} on yourself.");
+
             return true;
         }
 

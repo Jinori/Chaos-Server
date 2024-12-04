@@ -91,7 +91,11 @@ public class WWDungeonScript(
             case "wwdungeon_initial":
             {
                 if (source.Trackers.Enums.HasValue(WestWoodlandsDungeonQuestStage.Completed))
+                {
                     Subject.Reply(source, "Skip", "wwdungeon_turnin");
+
+                    return;
+                }
 
                 if (!hasStage || (stage == WestWoodlandsDungeonQuestStage.None))
                 {
@@ -103,6 +107,8 @@ public class WWDungeonScript(
 
                     if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
+
+                    return;
                 }
 
                 if (source.Trackers.Enums.HasValue(WestWoodlandsDungeonQuestStage.Started))
