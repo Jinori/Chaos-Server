@@ -47,13 +47,11 @@ public class InnerFireEffect : ContinuousAnimationEffectBase
 
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (target.Effects.Contains("Inner Fire"))
+        if (source.Effects.Contains("Inner Fire"))
         {
-            (source as Aisling)?.Client.SendServerMessage(
-                ServerMessageType.OrangeBar1,
-                "Your body is already feeling the affects of inner peace.");
+            source.Effects.Dispel("Inner Fire");
 
-            return false;
+            return true;
         }
 
         return true;
