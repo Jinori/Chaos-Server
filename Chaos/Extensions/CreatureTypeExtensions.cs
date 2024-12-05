@@ -23,6 +23,9 @@ public static class CreatureTypeExtensions
         if (creature is Aisling { IsAdmin: true, Visibility: VisibilityType.GmHidden })
             return false;
 
+        if (creature.Type == CreatureType.WhiteSquare && creature.Name == "Crazed Reindeer" || creature.Name == "Smiley Blob Bomb")
+            return false;
+        
         return type.WillCollideWith(creature.Type);
     }
 }
