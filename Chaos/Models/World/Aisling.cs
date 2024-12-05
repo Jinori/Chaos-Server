@@ -898,6 +898,11 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
 
     public bool TryPickupItem(GroundItem groundItem, byte destinationSlot)
     {
+        if (groundItem.Item.Template.TemplateKey == "mountmerrybox" && !this.WithinRange(groundItem, 0) && MapInstance.Name == "Frosty's Challenge")
+        {
+            SendActiveMessage("You must be on the same tile to pickup a Mount Merry box.");
+            return false;
+        }
         if (!groundItem.CanPickUp(this))
         {
             SendActiveMessage("You can't pick that up right now");

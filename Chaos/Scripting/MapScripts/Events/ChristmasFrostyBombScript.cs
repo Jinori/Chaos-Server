@@ -16,15 +16,18 @@ public class ChristmasFrostyBombScript : MapScriptBase
     private readonly IIntervalTimer BombSpawnTimer; // Timer for bombs
     private readonly IIntervalTimer ReindeerSpawnTimer; // Timer for reindeer
     private readonly IIntervalTimer MazeSpawnTimer; // Timer for maze
+    private readonly IIntervalTimer PrizeBoxSpawnTimer; // Timer for prize boxes
     private readonly IRectangle BombSpawnArea;
     private readonly List<Point> ReindeerSpawnPoints;
     private readonly IMonsterFactory MonsterFactory;
+    private readonly IItemFactory ItemFactory;
     private readonly Random RandomGenerator;
     private readonly HashSet<Point> UsedReindeerSpawnPoints; // Tracks used spawn points
 
-    public ChristmasFrostyBombScript(MapInstance subject, IMonsterFactory monsterFactory)
+    public ChristmasFrostyBombScript(MapInstance subject, IMonsterFactory monsterFactory, IItemFactory itemFactory)
         : base(subject)
     {
+        ItemFactory = itemFactory;
         MonsterFactory = monsterFactory;
         RandomGenerator = new Random();
 
@@ -33,10 +36,11 @@ public class ChristmasFrostyBombScript : MapScriptBase
         ReindeerSpawnPoints = GenerateReindeerSpawnPoints();
         UsedReindeerSpawnPoints = new HashSet<Point>();
 
-        // Timers for bombs, reindeer, and maze
+        // Timers for bombs, reindeer, maze, and prize boxes
         BombSpawnTimer = new RandomizedIntervalTimer(TimeSpan.FromMilliseconds(300), 85, RandomizationType.Negative, false);
         ReindeerSpawnTimer = new RandomizedIntervalTimer(TimeSpan.FromSeconds(10), 60, RandomizationType.Positive, false);
         MazeSpawnTimer = new IntervalTimer(TimeSpan.FromSeconds(30)); // Maze every 30 seconds
+        PrizeBoxSpawnTimer = new IntervalTimer(TimeSpan.FromSeconds(45)); // Prize boxes every 45 seconds
     }
 
     public override void Update(TimeSpan delta)
@@ -64,6 +68,13 @@ public class ChristmasFrostyBombScript : MapScriptBase
         if (MazeSpawnTimer.IntervalElapsed)
         {
             SpawnMaze();
+        }
+
+        // Update prize box spawn timer
+        PrizeBoxSpawnTimer.Update(delta);
+        if (PrizeBoxSpawnTimer.IntervalElapsed)
+        {
+            SpawnPrizeBoxes();
         }
     }
 
@@ -148,6 +159,29 @@ public class ChristmasFrostyBombScript : MapScriptBase
             var mazeCreature = MonsterFactory.Create("carnun_wall", Subject, spawnPoint);
 
             Subject.AddEntity(mazeCreature, mazeCreature);
+        }
+    }
+
+    private void SpawnPrizeBoxes()
+    {
+        
+        // Random number of prize boxes to spawn
+        var prizeBoxCount = RandomGenerator.Next(2, 3);
+
+        for (var i = 0; i < prizeBoxCount; i++)
+        {
+            Point spawnPoint;
+
+            do
+            {
+                spawnPoint = BombSpawnArea.GetRandomPoint();
+            } 
+            while (!Subject.IsWalkable(spawnPoint, CreatureType.Aisling) || IsCreatureAtPosition(spawnPoint));
+
+            // Spawn the prize box item
+            var prizeBox = ItemFactory.Create("mountmerrybox");
+            var groundItem = new GroundItem(prizeBox, Subject, spawnPoint);
+            Subject.AddEntity(groundItem, spawnPoint);
         }
     }
 

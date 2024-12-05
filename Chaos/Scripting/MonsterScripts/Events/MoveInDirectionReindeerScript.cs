@@ -73,7 +73,7 @@ public class MoveInDirectionReindeerScript : MonsterScriptBase
         aisling.WarpTo(new Point(4, 11));
 
         // Send feedback message to the Aisling
-        aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "The crazed reindeer trampled you!");
+        aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You got ran over by a reindeer!");
 
         // Optional: Add additional logic (e.g., stagger the reindeer, cooldown mechanics)
     }

@@ -2,7 +2,6 @@ using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
-using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
@@ -35,10 +34,11 @@ public class SmileyBombMonsterScript : MonsterScriptBase
     {
         // Update the explosion timer
         ExplosionTimer.Update(delta);
-
+        
         // Show side animations while the bomb is waiting to explode
         ShowSideAnimations();
-
+        
+        
         if (ExplosionTimer.IntervalElapsed)
         {
             Explode();
@@ -93,12 +93,12 @@ public class SmileyBombMonsterScript : MonsterScriptBase
     private IEnumerable<Point> GetAdjacentTiles(Point center)
     {
         // Return adjacent tiles (North, South, East, West)
-        return new[]
-        {
+        return
+        [
             new Point(center.X, center.Y - 1), // North
             new Point(center.X, center.Y + 1), // South
             new Point(center.X - 1, center.Y), // West
             new Point(center.X + 1, center.Y)  // East
-        };
+        ];
     }
 }

@@ -84,7 +84,4 @@
         </Content>
         <Content Remove="PersistentIdUInt64.json"/>
     </ItemGroup>
-    <ItemGroup>
-        <Folder Include="Scripting\ItemScripts\EventBoxes\"/>
-    </ItemGroup>
 </Project>
