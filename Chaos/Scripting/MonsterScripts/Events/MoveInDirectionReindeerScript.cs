@@ -19,7 +19,7 @@ public class MoveInDirectionReindeerScript : MonsterScriptBase
         : base(subject)
     {
         RandomWalkInterval = new RandomizedIntervalTimer(
-            TimeSpan.FromMilliseconds(300),
+            TimeSpan.FromMilliseconds(400),
             70,
             RandomizationType.Negative
         );
@@ -44,6 +44,9 @@ public class MoveInDirectionReindeerScript : MonsterScriptBase
             return;
         }
 
+        if (Subject.Direction != Direction.Right)
+            Subject.Turn(Direction.Right);
+        
         var targetDirection = Subject.Direction; // Reindeer's current direction
         var nextPosition = Subject.DirectionalOffset(targetDirection);
 
