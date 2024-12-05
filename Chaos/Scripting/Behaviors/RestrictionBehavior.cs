@@ -32,10 +32,10 @@ public class RestrictionBehavior
                 return false;
             }
             
-            case Aisling { IsAdmin: true } aisling when aisling.Effects.Contains("follow"):
+            case Aisling { IsAdmin: true } aisling when aisling.Effects.Contains("Follow"):
             {
                 // Terminate the follow effect if God Mode is enabled
-                aisling.Effects.Terminate("follow");
+                aisling.Effects.Terminate("Follow");
                 aisling.SendOrangeBarMessage("Follow effect has been terminated because you moved.");
             }
                 break;
@@ -125,15 +125,15 @@ public class RestrictionBehavior
             {
                 return false;
             }
-            case Aisling aisling when aisling.Effects.Contains("mount"):
+            case Aisling aisling when aisling.Effects.Contains("Mount"):
             {
-                aisling.Effects.Dispel("mount");
+                aisling.Effects.Dispel("Mount");
 
                 return true;
             }
-            case Aisling aisling when aisling.Effects.Contains("rumination"):
+            case Aisling aisling when aisling.Effects.Contains("Rumination"):
             {
-                aisling.Effects.Dispel("rumination");
+                aisling.Effects.Dispel("Rumination");
                 aisling.SendOrangeBarMessage("You ended your rumination.");
 
                 return true;
@@ -155,7 +155,7 @@ public class RestrictionBehavior
             {
                 return true;
             }
-            case not null when creature.IsPramhed() && (spell.Template.Name == "dinarcoli"):
+            case not null when creature.IsPramhed() && (spell.Template.Name == "Dinarcoli"):
             {
                 return true;
             }
@@ -173,17 +173,17 @@ public class RestrictionBehavior
             {
                 return false;
             }
-            case Aisling aisling when aisling.Effects.Contains("mount"):
+            case Aisling aisling when aisling.Effects.Contains("Mount"):
             {
-                aisling.Effects.Dispel("mount");
+                aisling.Effects.Dispel("Mount");
                 aisling.Refresh();
 
                 return true;
             }
-            case Aisling aisling when aisling.Effects.Contains("rumination"):
+            case Aisling aisling when aisling.Effects.Contains("Rumination"):
             {
-                aisling.Effects.Dispel("rumination");
-                aisling.SendOrangeBarMessage("You ended your rumination.");
+                aisling.Effects.Dispel("Rumination");
+                aisling.SendOrangeBarMessage("You ended your Rumination.");
 
                 return true;
             }

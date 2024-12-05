@@ -48,7 +48,7 @@ public class MountScript(Item subject, IEffectFactory effectFactory) : ItemScrip
 
     public override void OnUse(Aisling source)
     {
-        if (source.Effects.Contains("hide"))
+        if (source.Effects.Contains("Hide"))
         {
             source.SendOrangeBarMessage("You cannot mount while hidden.");
             return;
@@ -60,7 +60,7 @@ public class MountScript(Item subject, IEffectFactory effectFactory) : ItemScrip
             return;
         }
         
-        if (source.Trackers.TimedEvents.HasActiveEvent("mount", out var timedEvent))
+        if (source.Trackers.TimedEvents.HasActiveEvent("Mount", out var timedEvent))
         {
             source.SendOrangeBarMessage($"You can mount again in {timedEvent.Remaining.Humanize()}.");
             return;
@@ -75,10 +75,10 @@ public class MountScript(Item subject, IEffectFactory effectFactory) : ItemScrip
 
         if (source.Trackers.Enums.TryGetValue(out CurrentMount mount) && source.Trackers.Enums.TryGetValue(out CurrentCloak cloak))
         {
-            if (source.Effects.Contains("mount"))
+            if (source.Effects.Contains("Mount"))
             {
                 source.SendOrangeBarMessage("You jump off your mount.");
-                source.Effects.Dispel("mount");
+                source.Effects.Dispel("Mount");
 
                 return;
             }
@@ -87,7 +87,7 @@ public class MountScript(Item subject, IEffectFactory effectFactory) : ItemScrip
             {
                 source.SetSprite((ushort)sprite);
                 source.SendOrangeBarMessage("You jump on your mount.");
-                var effect = effectFactory.Create("mount");
+                var effect = effectFactory.Create("Mount");
                 source.Effects.Apply(source, effect);
             }
         }

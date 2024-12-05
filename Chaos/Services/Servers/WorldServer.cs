@@ -1895,9 +1895,9 @@ public sealed class WorldServer : ServerBase<IChaosWorldClient>, IWorldServer<IC
                 activeExchange?.Cancel(aisling);
                 
                            
-                if (aisling.Effects.Contains( "mount"))
+                if (aisling.Effects.Contains( "Mount"))
                 {
-                    aisling.Effects.Terminate("mount");
+                    aisling.Effects.Terminate("Mount");
                 }
 
                 try

@@ -43,10 +43,11 @@ public class RemoveAndApplyEffectComponent : IComponent
 
             if (options.EffectKeyToRemove is "cradh")
             {
-                if (target.Effects.Contains("cradh") && options.EffectKeyToAddAfterRemoval is "preventrecradh")
+                if (target.Effects.Contains("Cradh") && options.EffectKeyToAddAfterRemoval is "preventrecradh")
                 {
                     var effect = options.EffectFactory.Create(options.EffectKeyToAddAfterRemoval);
                     target.Effects.Apply(context.Source, effect);
+                    target.Effects.Dispel("Beag Cradh");
                     target.Effects.Dispel(options.EffectKeyToRemove);
                     context.SourceAisling?.SendOrangeBarMessage($"{target.Name}'s curse healed and prevent recradh is now active.");
                 } else
@@ -55,10 +56,12 @@ public class RemoveAndApplyEffectComponent : IComponent
 
             if (options.EffectKeyToRemove is "mor cradh")
             {
-                if (target.Effects.Contains("mor cradh") && options.EffectKeyToAddAfterRemoval is "preventrecradh")
+                if (target.Effects.Contains("Mor Cradh") && options.EffectKeyToAddAfterRemoval is "preventrecradh")
                 {
                     var effect = options.EffectFactory.Create(options.EffectKeyToAddAfterRemoval);
                     target.Effects.Apply(context.Source, effect);
+                    target.Effects.Dispel("Beag Cradh");
+                    target.Effects.Dispel("Cradh");
                     target.Effects.Dispel(options.EffectKeyToRemove);
                     context.SourceAisling?.SendOrangeBarMessage($"{target.Name}'s curse healed and prevent recradh is now active.");
                 } else
@@ -67,15 +70,34 @@ public class RemoveAndApplyEffectComponent : IComponent
 
             if (options.EffectKeyToRemove is "ard cradh")
             {
-                if (target.Effects.Contains("ard cradh") && options.EffectKeyToAddAfterRemoval is "preventrecradh")
+                if (target.Effects.Contains("Ard Cradh") && options.EffectKeyToAddAfterRemoval is "preventrecradh")
                 {
                     var effect = options.EffectFactory.Create(options.EffectKeyToAddAfterRemoval);
                     target.Effects.Apply(context.Source, effect);
+                    target.Effects.Dispel("Beag Cradh");
+                    target.Effects.Dispel("Cradh");
+                    target.Effects.Dispel("Mor Cradh");
                     target.Effects.Dispel(options.EffectKeyToRemove);
                     context.SourceAisling?.SendOrangeBarMessage($"{target.Name}'s curse healed and prevent recradh is now active.");
                 } else
                     return;
-            } else
+            } 
+            if (options.EffectKeyToRemove is "dia cradh")
+            {
+                if (target.Effects.Contains("Dia Cradh") && options.EffectKeyToAddAfterRemoval is "preventrecradh")
+                {
+                    var effect = options.EffectFactory.Create(options.EffectKeyToAddAfterRemoval);
+                    target.Effects.Apply(context.Source, effect);
+                    target.Effects.Dispel("Beag Cradh");
+                    target.Effects.Dispel("Cradh");
+                    target.Effects.Dispel("Mor Cradh");
+                    target.Effects.Dispel("Ard Cradh");
+                    target.Effects.Dispel(options.EffectKeyToRemove);
+                    context.SourceAisling?.SendOrangeBarMessage($"{target.Name}'s curse healed and prevent recradh is now active.");
+                } else
+                    return;
+            }
+            else
             {
                 target.Effects.Dispel(options.EffectKeyToRemove);
                 var effect = options.EffectFactory.Create(options.EffectKeyToAddAfterRemoval);

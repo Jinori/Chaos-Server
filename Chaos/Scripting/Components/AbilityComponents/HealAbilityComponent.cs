@@ -30,7 +30,7 @@ public struct HealAbilityComponent : IComponent
             if (heal <= 0)
                 continue;
 
-            if (target.Effects.Contains("prevent heal"))
+            if (target.Effects.Contains("Prevent Heal"))
             {
                 if (target.Name != context.SourceAisling?.Name)
                 {

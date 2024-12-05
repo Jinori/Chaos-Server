@@ -14,7 +14,7 @@ public struct GroupHideEffectAbilityComponent : IComponent
     {
         var options = vars.GetOptions<IApplyEffectComponentOptions>();
 
-        if (string.IsNullOrEmpty(options.EffectKey) || (options.EffectKey != "hide"))
+        if (string.IsNullOrEmpty(options.EffectKey) || (options.EffectKey != "Hide"))
             return;
 
         var caster = context.SourceAisling;
@@ -33,11 +33,11 @@ public struct GroupHideEffectAbilityComponent : IComponent
                 if (!member.MapInstance.IsWithinMap(caster) || !member.WithinRange(caster, 12))
                     continue;
 
-                if (member.Effects.Contains("hide"))
+                if (member.Effects.Contains("Hide"))
                     continue;
 
-                if (member.Effects.Contains("mount"))
-                    member.Effects.Terminate("mount");
+                if (member.Effects.Contains("Mount"))
+                    member.Effects.Terminate("Mount");
 
                 if (options.EffectApplyChance.HasValue && !IntegerRandomizer.RollChance(options.EffectApplyChance.Value))
                     continue;

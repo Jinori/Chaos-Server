@@ -69,8 +69,16 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
             }
 
             // Check specific conditions for equipping a staff
-            if (!template.TemplateKey.ContainsI("magus") && !CanWieldStaff(source, "Wield Magus Staff"))
+            if (template.TemplateKey.ContainsI("magus") && CanWieldStaff(source, "Wield Magus Staff"))
             {
+                
+                if (template.Level > source.UserStatSheet.Level)
+                {
+                    source.SendOrangeBarMessage($"You are too inexperienced to equip {Subject.Template.Name}.");
+
+                    return;
+                }
+                
                 EquipStaff(source, template);
 
                 return;
@@ -78,6 +86,13 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
 
             if (template.TemplateKey.ContainsI("holy") && CanWieldStaff(source, "Wield Holy Staff"))
             {
+                if (template.Level > source.UserStatSheet.Level)
+                {
+                    source.SendOrangeBarMessage($"You are too inexperienced to equip {Subject.Template.Name}.");
+
+                    return;
+                }
+                
                 EquipStaff(source, template);
 
                 return;

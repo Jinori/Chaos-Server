@@ -38,6 +38,13 @@ public class ApplyHealScript : ScriptBase, IApplyHealScript
                 if (aisling.IsDead)
                     return;
 
+                if (aisling.Effects.Contains("Prevent Heal"))
+                {
+                    aisling.SendOrangeBarMessage("You're currently preventing heals.");
+
+                    return;
+                }
+
                 aisling.StatSheet.AddHp(healing);
                 aisling.Client.SendAttributes(StatUpdateType.Vitality);
                 aisling.ShowHealth();

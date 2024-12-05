@@ -86,7 +86,7 @@ public class MountDialogScript : DialogScriptBase
                 break;
 
             case "mount_initial":
-                if (source.Effects.TryGetEffect("mount", out var effect) && source.Effects.Contains(effect))
+                if (source.Effects.TryGetEffect("Mount", out var effect) && source.Effects.Contains(effect))
                 {
                     Subject.Reply(source, "Please get off your mount first.");
 
