@@ -2,6 +2,7 @@ using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
@@ -11,13 +12,18 @@ namespace Chaos.Scripting.MonsterScripts.Events;
 public class SmileyBombMonsterScript : MonsterScriptBase
 {
     private readonly IIntervalTimer ExplosionTimer;
-
     private readonly Animation ExplosionAnimation = new()
     {
         TargetAnimation = 992,
         AnimationSpeed = 100
     };
     
+    private readonly Animation SideAnimation = new()
+    {
+        TargetAnimation = 408,
+        AnimationSpeed = 100
+    };
+
     public SmileyBombMonsterScript(Monster subject)
         : base(subject)
     {
@@ -29,6 +35,9 @@ public class SmileyBombMonsterScript : MonsterScriptBase
     {
         // Update the explosion timer
         ExplosionTimer.Update(delta);
+
+        // Show side animations while the bomb is waiting to explode
+        ShowSideAnimations();
 
         if (ExplosionTimer.IntervalElapsed)
         {
@@ -56,6 +65,18 @@ public class SmileyBombMonsterScript : MonsterScriptBase
         Map.RemoveEntity(Subject);
     }
 
+    private void ShowSideAnimations()
+    {
+        var center = new Point(Subject.X, Subject.Y);
+        var adjacentTiles = GetAdjacentTiles(center);
+
+        foreach (var tile in adjacentTiles)
+        {
+            if (!Subject.MapInstance.GetEntitiesAtPoints<Monster>(tile).Any() && !Map.IsWall(tile)) 
+                Subject.MapInstance.ShowAnimation(SideAnimation.GetPointAnimation(tile));
+        }
+    }
+
     private void DamageTile(Point tile)
     {
         // Get all creatures on the tile
@@ -72,12 +93,12 @@ public class SmileyBombMonsterScript : MonsterScriptBase
     private IEnumerable<Point> GetAdjacentTiles(Point center)
     {
         // Return adjacent tiles (North, South, East, West)
-        return
-        [
+        return new[]
+        {
             new Point(center.X, center.Y - 1), // North
             new Point(center.X, center.Y + 1), // South
             new Point(center.X - 1, center.Y), // West
             new Point(center.X + 1, center.Y)  // East
-        ];
+        };
     }
 }
