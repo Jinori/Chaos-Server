@@ -1,3 +1,4 @@
+#region
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
@@ -14,6 +15,7 @@ using Chaos.Scripting.ReactorTileScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
+#endregion
 
 namespace Chaos.Scripting.ReactorTileScripts;
 
@@ -118,6 +120,10 @@ public class TrapScript : ConfigurableReactorTileScriptBase,
     public bool SingleTarget { get; init; }
     public BodyAnimation BodyAnimation { get; init; }
     public int Range { get; init; }
+
+    /// <inheritdoc />
+    public int? ExclusionRange { get; init; }
+
     public TargetFilter Filter { get; init; }
     public Animation? Animation { get; init; }
     public byte? Sound { get; init; }

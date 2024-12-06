@@ -1,3 +1,4 @@
+#region
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
@@ -9,6 +10,7 @@ using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.SkillScripts.Abstractions;
+#endregion
 
 namespace Chaos.Scripting.SkillScripts;
 
@@ -37,6 +39,9 @@ public class HealScript : ConfigurableSkillScriptBase,
     public bool SingleTarget { get; init; }
 
     /// <inheritdoc />
+    public int? ExclusionRange { get; init; }
+
+    /// <inheritdoc />
     public TargetFilter Filter { get; init; }
 
     /// <inheritdoc />
@@ -44,9 +49,6 @@ public class HealScript : ConfigurableSkillScriptBase,
 
     public bool StopOnWalls { get; init; }
     public bool StopOnFirstHit { get; init; }
-
-    /// <inheritdoc />
-    public bool ExcludeSourcePoint { get; init; }
 
     /// <inheritdoc />
     public bool MustHaveTargets { get; init; }

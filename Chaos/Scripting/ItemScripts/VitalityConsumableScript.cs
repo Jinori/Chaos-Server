@@ -1,10 +1,10 @@
+#region
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Formulae;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
-using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
@@ -14,7 +14,7 @@ using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.FunctionalScripts.ApplyHealing;
 using Chaos.Scripting.ItemScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
-using NLog.Targets;
+#endregion
 
 namespace Chaos.Scripting.ItemScripts;
 
@@ -91,6 +91,9 @@ public class VitalityConsumableScript : ConfigurableItemScriptBase,
     public AoeShape Shape { get; init; }
     /// <inheritdoc />
     public bool SingleTarget { get; init; }
+
+    /// <inheritdoc />
+    public int? ExclusionRange { get; init; }
 
     /// <inheritdoc />
     public TargetFilter Filter { get; init; }

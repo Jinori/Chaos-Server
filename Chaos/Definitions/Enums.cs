@@ -7,6 +7,10 @@ public enum AoeShape
     AllAround,
     FrontalCone,
     FrontalDiamond,
+    Circle,
+    Square,
+    CircleOutline,
+    SquareOutline,
     Cleave
 }
 

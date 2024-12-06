@@ -1,14 +1,7 @@
-using Chaos.Collections;
+#region
 using Chaos.Collections.Common;
-using Chaos.Geometry.Abstractions;
-using Chaos.Models.Map;
-using Chaos.Models.Menu;
-using Chaos.Models.Panel;
-using Chaos.Models.Panel.Abstractions;
-using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Abstractions;
-using Chaos.Scripting.MonsterScripts.Abstractions;
+#endregion
 
 namespace Chaos.Scripting.Components.Execution;
 
@@ -21,13 +14,11 @@ public class ComponentVars : StaticVars
     private const string TARGETS_KEY = "targets";
     private const string SUBJECT_KEY = "subject";
 
-    public virtual List<IPoint> GetAllPoints() => GetRequired<List<IPoint>>(CASCADE_ALL_POINTS_KEY);
+    public virtual List<Point> GetAllPoints() => GetRequired<List<Point>>(CASCADE_ALL_POINTS_KEY);
 
     public virtual TOptions GetOptions<TOptions>() => GetRequired<TOptions>(OPTIONS_KEY);
 
-    public virtual T GetSubject<T>() => GetRequired<T>(SUBJECT_KEY);
-
-    public virtual IReadOnlyCollection<IPoint> GetPoints() => GetRequired<IReadOnlyCollection<IPoint>>(POINTS_KEY);
+    public virtual IReadOnlyCollection<Point> GetPoints() => GetRequired<IReadOnlyCollection<Point>>(POINTS_KEY);
 
     public virtual int GetStage() => GetRequired<int>(CASCADE_STAGE_KEY);
 
@@ -36,60 +27,9 @@ public class ComponentVars : StaticVars
            .OfType<T>()
            .ToList();
 
-    public virtual void SetAllPoints(List<IPoint> points) => Set(CASCADE_ALL_POINTS_KEY, points);
-    public virtual void SetOptions(object options)
-    {
-        switch (options)
-        {
-            case SubjectiveScriptBase<Spell> spellScript:
-                SetSubject(spellScript.Subject);
-                
-                break;
-            case SubjectiveScriptBase<Item> itemScript:
-                SetSubject(itemScript.Subject);
-                
-                break;
-            case SubjectiveScriptBase<Skill> skillScript:
-                SetSubject(skillScript.Subject);
-                
-                break;
-            case SubjectiveScriptBase<ReactorTile> reactorScript:
-                SetSubject(reactorScript.Subject);
-                
-                break;
-                
-            case SubjectiveScriptBase<MapInstance> mapInstanceScript:
-                SetSubject(mapInstanceScript.Subject);
-                
-                break;
-            
-            case SubjectiveScriptBase<BulletinBoard> bulletinScript:
-                SetSubject(bulletinScript.Subject);
-                break;
-            
-            case SubjectiveScriptBase<Monster> monsterScript:
-                SetSubject(monsterScript.Subject);
-                break;
-            
-            case SubjectiveScriptBase<Aisling> aislingScript:
-                SetSubject(aislingScript.Subject);
-                break;
-            
-            case SubjectiveScriptBase<Merchant> merchantScript:
-                SetSubject(merchantScript.Subject);
-                break;
-            
-            case SubjectiveScriptBase<Dialog> dialogScript:
-                SetSubject(dialogScript.Subject);
-                break;
-            
-            
-        }
-        
-        Set(OPTIONS_KEY, options);
-    }
-
-    public virtual void SetPoints(IReadOnlyCollection<IPoint> points) => Set(POINTS_KEY, points);
+    public virtual void SetAllPoints(List<Point> points) => Set(CASCADE_ALL_POINTS_KEY, points);
+    public virtual void SetOptions(object options) => Set(OPTIONS_KEY, options);
+    public virtual void SetPoints(IReadOnlyCollection<Point> points) => Set(POINTS_KEY, points);
 
     public virtual void SetStage(int stage) => Set(CASCADE_STAGE_KEY, stage);
 

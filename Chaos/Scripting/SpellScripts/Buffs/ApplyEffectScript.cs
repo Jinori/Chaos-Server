@@ -1,13 +1,14 @@
+#region
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
-using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.SpellScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
+#endregion
 
 namespace Chaos.Scripting.SpellScripts.Buffs;
 
@@ -18,9 +19,7 @@ public class ApplyEffectScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public ApplyEffectScript(Spell subject, IEffectFactory effectFactory)
         : base(subject)
-    {
-        EffectFactory = effectFactory;
-    }
+        => EffectFactory = effectFactory;
 
     /// <inheritdoc />
     public override void OnUse(SpellContext context) =>
@@ -37,6 +36,10 @@ public class ApplyEffectScript : ConfigurableSpellScriptBase,
     public AoeShape Shape { get; init; }
     /// <inheritdoc />
     public bool SingleTarget { get; init; }
+
+    /// <inheritdoc />
+    public int? ExclusionRange { get; init; }
+
     /// <inheritdoc />
     public TargetFilter Filter { get; init; }
     /// <inheritdoc />

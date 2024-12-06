@@ -19,20 +19,11 @@ public struct GetTargetsAbilityComponent<TEntity> : IConditionalComponent where 
     public bool Execute(ActivationContext context, ComponentVars vars)
     {
         var options = vars.GetOptions<IGetTargetsComponentOptions>();
-        var direction = context.TargetCreature?.Direction ?? context.Target.DirectionalRelationTo(context.Source);
         var map = context.TargetMap;
-
-        if (direction == Direction.Invalid)
-            direction = context.Source.Direction;
+        var aoeOptions = CreateOptions(context, options);
 
         var targetPoints = options.Shape
-                                  .ResolvePoints(
-                                      context.TargetPoint,
-                                      options.Range,
-                                      direction,
-                                      null,
-                                      options.ExcludeSourcePoint)
-                                  .OfType<IPoint>()
+                                  .ResolvePoints(aoeOptions)
                                   .ToList();
 
         if (options.StopOnWalls)
@@ -70,8 +61,25 @@ public struct GetTargetsAbilityComponent<TEntity> : IConditionalComponent where 
         return !options.MustHaveTargets || (targetEntities.Count != 0);
     }
 
+    private AoeShapeOptions CreateOptions(ActivationContext context, IGetTargetsComponentOptions options)
+    {
+        var direction = context.TargetCreature?.Direction ?? context.Target.DirectionalRelationTo(context.Source);
+
+        if (direction == Direction.Invalid)
+            direction = context.Source.Direction;
+
+        return new AoeShapeOptions
+        {
+            Direction = direction,
+            ExclusionRange = options.ExclusionRange,
+            Range = options.Range,
+            Source = context.TargetPoint
+        };
+    }
+
     public interface IGetTargetsComponentOptions
     {
+        int? ExclusionRange { get; init; }
         bool StopOnWalls { get; init; }
         bool StopOnFirstHit { get; init; }
         bool ExcludeSourcePoint { get; init; }

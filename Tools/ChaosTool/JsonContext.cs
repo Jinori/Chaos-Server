@@ -129,7 +129,7 @@ public class JsonContext
         AddStaticAutoMapper();
 
        services.AddOptions<EntityRepositoryOptions>()
-               .Configure(o => o.SafeSaves = false);
+               .PostConfigure(o => o.SafeSaves = false);
         services.AddTransient<IEntityRepository, EntityRepository>();
         services.AddLogging();
 
