@@ -7,15 +7,14 @@ using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.MonsterScripts.Boss;
 
-public sealed class BossMoveToTargetScript(Monster subject, IEffectFactory effectFactory, ISpellFactory spellFactory) : MonsterScriptBase(subject)
+public sealed class BossMoveToTargetScript(Monster subject, IEffectFactory effectFactory, ISpellFactory spellFactory)
+    : MonsterScriptBase(subject)
 {
     /// <inheritdoc />
-    ///
-    ///
-
     private readonly IEffectFactory EffectFactory = effectFactory;
+
     private readonly ISpellFactory SpellFactory = spellFactory;
-    
+
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
@@ -24,18 +23,25 @@ public sealed class BossMoveToTargetScript(Monster subject, IEffectFactory effec
         if ((Target == null) || !ShouldMove)
             return;
 
-        if (!Map.GetEntities<Aisling>().Any())
+        if (!Map.GetEntities<Aisling>()
+                .Any())
             return;
-        
+
         var distance = Subject.ManhattanDistanceFrom(Target);
 
+        var point = Target.GenerateCardinalPoints()
+                          .OfType<IPoint>()
+                          .FirstOrDefault(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
 
-        var point = Target.GenerateCardinalPoints().OfType<IPoint>().FirstOrDefault(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
         //Remove aggro if we can't get to the target so we have a chance to attack someone else
-        if (point is null && (Map.GetEntities<Aisling>().Count() > 1))
+        if (point is null
+            && (Map.GetEntities<Aisling>()
+                   .Count()
+                > 1))
         {
             AggroList.Remove(Target.Id, out _);
             Target = null;
+
             return;
         }
 
@@ -44,11 +50,14 @@ public sealed class BossMoveToTargetScript(Monster subject, IEffectFactory effec
 
         else if (distance >= 4)
         {
-            var safeSpot = Target.GenerateCardinalPoints().OfType<IPoint>().FirstOrDefault(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
+            var safeSpot = Target.GenerateCardinalPoints()
+                                 .OfType<IPoint>()
+                                 .FirstOrDefault(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
 
             if (safeSpot is null)
             {
                 AggroList.Remove(Target.Id, out _);
+
                 Target ??= Map.GetEntitiesWithinRange<Aisling>(Subject, 12)
                               .ThatAreVisibleTo(Subject)
                               .Where(
@@ -57,12 +66,12 @@ public sealed class BossMoveToTargetScript(Monster subject, IEffectFactory effec
                                          && Subject.ApproachTime.TryGetValue(obj, out var time)
                                          && ((DateTime.UtcNow - time).TotalSeconds >= 1.5))
                               .ClosestOrDefault(Subject);
+
                 return;
             }
-            
-            Subject.TraverseMap(Target.MapInstance, safeSpot);
-        }
-        else
+
+            Subject.WarpTo(safeSpot);
+        } else
         {
             var direction = Target.DirectionalRelationTo(Subject);
             Subject.Turn(direction);
