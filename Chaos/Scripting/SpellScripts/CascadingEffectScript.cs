@@ -1,10 +1,8 @@
 using Chaos.Common.Abstractions;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
-using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
@@ -20,6 +18,18 @@ public class CascadingEffectScript : ConfigurableSpellScriptBase,
                                      ApplyEffectAbilityComponent.IApplyEffectComponentOptions,
                                      CascadingComponent<CascadingEffectTileScript>.ICascadingComponentOptions
 {
+    /// <inheritdoc />
+    public int? EffectApplyChance { get; init; }
+
+    /// <inheritdoc />
+    public TimeSpan? EffectDurationOverride { get; init; }
+
+    /// <inheritdoc />
+    public IEffectFactory EffectFactory { get; init; }
+
+    /// <inheritdoc />
+    public string? EffectKey { get; init; }
+
     /// <inheritdoc />
     public CascadingEffectScript(Spell subject, IReactorTileFactory reactorTileFactory, IEffectFactory effectFactory)
         : base(subject)
@@ -58,15 +68,14 @@ public class CascadingEffectScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public int Range { get; init; }
 
+    public int? ExclusionRange { get; init; }
     public bool StopOnWalls { get; init; }
     public bool StopOnFirstHit { get; init; }
 
     /// <inheritdoc />
-    public bool ExcludeSourcePoint { get; init; }
-
     /// <inheritdoc />
     public bool MustHaveTargets { get; init; }
-    
+
     public IScript SourceScript { get; init; }
 
     /// <inheritdoc />
@@ -96,13 +105,4 @@ public class CascadingEffectScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public bool ShouldNotBreakHide { get; init; }
     #endregion
-
-    /// <inheritdoc />
-    public TimeSpan? EffectDurationOverride { get; init; }
-    /// <inheritdoc />
-    public IEffectFactory EffectFactory { get; init; }
-    /// <inheritdoc />
-    public string? EffectKey { get; init; }
-    /// <inheritdoc />
-    public int? EffectApplyChance { get; init; }
 }

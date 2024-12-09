@@ -16,24 +16,28 @@ public class ApplyEffectScript : ConfigurableSpellScriptBase,
                                  SpellComponent<Creature>.ISpellComponentOptions,
                                  ApplyEffectAbilityComponent.IApplyEffectComponentOptions
 {
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
+
     /// <inheritdoc />
     public ApplyEffectScript(Spell subject, IEffectFactory effectFactory)
         : base(subject)
         => EffectFactory = effectFactory;
 
     /// <inheritdoc />
-    public override void OnUse(SpellContext context) =>
-        new ComponentExecutor(context)
-            .WithOptions(this)
-            .ExecuteAndCheck<SpellComponent<Creature>>()
-            ?
-            .Execute<ApplyEffectAbilityComponent>();
+    public override void OnUse(SpellContext context)
+        => new ComponentExecutor(context).WithOptions(this)
+                                         .ExecuteAndCheck<SpellComponent<Creature>>()
+                                         ?.Execute<ApplyEffectAbilityComponent>();
 
     #region ScriptVars
     /// <inheritdoc />
     public bool ShouldNotBreakHide { get; init; }
+
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
+
     /// <inheritdoc />
     public bool SingleTarget { get; init; }
 
@@ -42,6 +46,7 @@ public class ApplyEffectScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public TargetFilter Filter { get; init; }
+
     /// <inheritdoc />
     public int Range { get; init; }
 
@@ -49,13 +54,15 @@ public class ApplyEffectScript : ConfigurableSpellScriptBase,
     public bool StopOnFirstHit { get; init; }
 
     /// <inheritdoc />
-    public bool ExcludeSourcePoint { get; init; }
     /// <inheritdoc />
     public bool MustHaveTargets { get; init; }
+
     /// <inheritdoc />
     public byte? Sound { get; init; }
+
     /// <inheritdoc />
     public BodyAnimation BodyAnimation { get; init; }
+
     /// <inheritdoc />
     public bool? ScaleBodyAnimationSpeedByAttackSpeed { get; init; }
 
@@ -64,8 +71,10 @@ public class ApplyEffectScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public Animation? Animation { get; init; }
+
     /// <inheritdoc />
     public bool AnimatePoints { get; init; }
+
     /// <inheritdoc />
     public string? EffectKey { get; init; }
 
@@ -73,17 +82,17 @@ public class ApplyEffectScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public TimeSpan? EffectDurationOverride { get; init; }
+
     /// <inheritdoc />
     public IEffectFactory EffectFactory { get; init; }
+
     /// <inheritdoc />
     public int? ManaCost { get; init; }
+
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }
+
     /// <inheritdoc />
     public bool IgnoreMagicResistance { get; init; }
     #endregion
-
-    public int SplashChance { get; init; }
-    public int SplashDistance { get; init; }
-    public TargetFilter SplashFilter { get; init; }
 }

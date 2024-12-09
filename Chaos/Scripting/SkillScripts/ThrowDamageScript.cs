@@ -1,9 +1,7 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
-using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
@@ -16,11 +14,21 @@ using Chaos.Services.Factories.Abstractions;
 namespace Chaos.Scripting.SkillScripts;
 
 public class ThrowDamageScript : ConfigurableSkillScriptBase,
-                            GenericAbilityComponent<Creature>.IAbilityComponentOptions,
-                            DamageAbilityComponent.IDamageComponentOptions,
-                            ThrowCreatureComponent.IDamageComponentOptions,
-                            ApplyEffectAbilityComponent.IApplyEffectComponentOptions
+                                 GenericAbilityComponent<Creature>.IAbilityComponentOptions,
+                                 DamageAbilityComponent.IDamageComponentOptions,
+                                 ThrowCreatureComponent.IDamageComponentOptions,
+                                 ApplyEffectAbilityComponent.IApplyEffectComponentOptions
 {
+    public int? EffectApplyChance { get; init; }
+    public TimeSpan? EffectDurationOverride { get; init; }
+    public IEffectFactory EffectFactory { get; init; }
+    public string? EffectKey { get; init; }
+
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
+    public int? ThrowRange { get; init; }
+
     /// <inheritdoc />
     public ThrowDamageScript(Skill subject, IEffectFactory effectFactory)
         : base(subject)
@@ -51,12 +59,11 @@ public class ThrowDamageScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public int Range { get; init; }
 
+    public int? ExclusionRange { get; init; }
     public bool StopOnWalls { get; init; }
     public bool StopOnFirstHit { get; init; }
 
     /// <inheritdoc />
-    public bool ExcludeSourcePoint { get; init; }
-
     /// <inheritdoc />
     public bool MustHaveTargets { get; init; }
 
@@ -81,8 +88,10 @@ public class ThrowDamageScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public int? BaseDamage { get; init; }
+
     /// <inheritdoc />
     public bool? MoreDmgLowTargetHp { get; init; }
+
     /// <inheritdoc />
     public Stat? DamageStat { get; init; }
 
@@ -113,13 +122,4 @@ public class ThrowDamageScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public bool ShouldNotBreakHide { get; init; }
     #endregion
-
-    public int SplashChance { get; init; }
-    public int SplashDistance { get; init; }
-    public TargetFilter SplashFilter { get; init; }
-    public int? ThrowRange { get; init; }
-    public TimeSpan? EffectDurationOverride { get; init; }
-    public IEffectFactory EffectFactory { get; init; }
-    public string? EffectKey { get; init; }
-    public int? EffectApplyChance { get; init; }
 }

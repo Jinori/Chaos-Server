@@ -60,7 +60,13 @@ public sealed class EMehadiBossThrowHazardousScript : MonsterScriptBase
 
         if (target != null)
         {
-            var points = AoeShape.AllAround.ResolvePoints(target);
+            var options = new AoeShapeOptions
+            {
+                Source = new Point(Subject.X, Subject.Y),
+                Range = 1
+            };
+
+            var points = AoeShape.AllAround.ResolvePoints(options);
 
             var enumerable = points as Point[] ?? points.ToArray();
 

@@ -3,7 +3,6 @@ using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
-using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
@@ -18,12 +17,14 @@ public class ToggleEffectScript : ConfigurableSpellScriptBase,
                                   SpellComponent<Creature>.ISpellComponentOptions,
                                   ToggleEffectAbilityComponent.IToggleEffectComponentOptions
 {
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
+
     /// <inheritdoc />
     public ToggleEffectScript(Spell subject, IEffectFactory effectFactory)
         : base(subject)
-    {
-        EffectFactory = effectFactory;
-    }
+        => EffectFactory = effectFactory;
 
     /// <inheritdoc />
     public override void OnUse(SpellContext context)
@@ -37,6 +38,7 @@ public class ToggleEffectScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
+
     /// <inheritdoc />
     public bool SingleTarget { get; init; }
 
@@ -51,8 +53,6 @@ public class ToggleEffectScript : ConfigurableSpellScriptBase,
 
     public bool StopOnWalls { get; init; }
     public bool StopOnFirstHit { get; init; }
-
-    /// <inheritdoc />
     public bool MustHaveTargets { get; init; }
 
     /// <inheritdoc />
@@ -89,11 +89,8 @@ public class ToggleEffectScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }
+
     /// <inheritdoc />
     public bool IgnoreMagicResistance { get; init; }
     #endregion
-
-    public int SplashChance { get; init; }
-    public int SplashDistance { get; init; }
-    public TargetFilter SplashFilter { get; init; }
 }

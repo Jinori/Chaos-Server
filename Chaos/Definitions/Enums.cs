@@ -1636,6 +1636,30 @@ public enum CrudeLeather
     StartedQuest = 1
 }
 
+public enum RedNose
+{
+    None,
+    StartedQuest = 1
+}
+
+public enum Rudolph
+{
+    None,
+    StartedQuest = 1
+}
+
+public enum Erbie
+{
+    None,
+    StartedQuest = 1
+}
+
+public enum DirtyErbie
+{
+    None,
+    StartedErbies = 1
+}
+
 public enum GraveSite
 {
     None,

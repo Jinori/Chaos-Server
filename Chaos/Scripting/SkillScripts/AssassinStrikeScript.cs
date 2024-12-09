@@ -9,15 +9,15 @@ using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyDamage;
-#endregion
 using Chaos.Scripting.SkillScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
+#endregion
 
 namespace Chaos.Scripting.SkillScripts;
 
 public class AssassinStrikeScript : ConfigurableSkillScriptBase,
-                            GenericAbilityComponent<Creature>.IAbilityComponentOptions,
-                            AssassinStrikeComponent.IDamageComponentOptions
+                                    GenericAbilityComponent<Creature>.IAbilityComponentOptions,
+                                    AssassinStrikeComponent.IDamageComponentOptions
 {
     /// <inheritdoc />
     public AssassinStrikeScript(Skill subject, IEffectFactory effectFactory)
@@ -32,8 +32,7 @@ public class AssassinStrikeScript : ConfigurableSkillScriptBase,
     public override void OnUse(ActivationContext context)
         => new ComponentExecutor(context).WithOptions(this)
                                          .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
-                                         ?
-                                         .Execute<AssassinStrikeComponent>();
+                                         ?.Execute<AssassinStrikeComponent>();
 
     #region ScriptVars
     /// <inheritdoc />
@@ -55,8 +54,6 @@ public class AssassinStrikeScript : ConfigurableSkillScriptBase,
     public bool StopOnFirstHit { get; init; }
 
     /// <inheritdoc />
-    public bool ExcludeSourcePoint { get; init; }
-
     /// <inheritdoc />
     public bool MustHaveTargets { get; init; }
 
@@ -82,6 +79,7 @@ public class AssassinStrikeScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public int? BaseDamage { get; init; }
+
     /// <inheritdoc />
     public Stat? DamageStat { get; init; }
 
@@ -97,6 +95,7 @@ public class AssassinStrikeScript : ConfigurableSkillScriptBase,
     public decimal? PctHpDamage { get; init; }
 
     public IScript SourceScript { get; init; }
+
     /// <inheritdoc />
     public int? ManaCost { get; init; }
 
@@ -105,10 +104,10 @@ public class AssassinStrikeScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public bool ShouldNotBreakHide { get; init; }
+
     public TimeSpan? EffectDurationOverride { get; init; }
     public IEffectFactory EffectFactory { get; init; }
     public string? EffectKey { get; init; }
     public int? EffectApplyChance { get; init; }
     #endregion
-    
 }

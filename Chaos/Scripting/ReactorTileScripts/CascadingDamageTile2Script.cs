@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
@@ -17,15 +16,20 @@ using Chaos.Time.Abstractions;
 namespace Chaos.Scripting.ReactorTileScripts;
 
 public sealed class CascadingDamageTile2Script : ConfigurableReactorTileScriptBase,
-                                                ICascadingTileScript,
-                                                GetCascadingTargetsAbilityComponent<Creature>.IGetCascadingTargetsComponentOptions,
-                                                DamageAbilityComponent.IDamageComponentOptions,
-                                                ApplyEffectAbilityComponent.IApplyEffectComponentOptions,
-                                                SoundAbilityComponent.ISoundComponentOptions,
-                                                AnimationAbilityComponent.IAnimationComponentOptions
+                                                 ICascadingTileScript,
+                                                 GetCascadingTargetsAbilityComponent<Creature>.IGetCascadingTargetsComponentOptions,
+                                                 DamageAbilityComponent.IDamageComponentOptions,
+                                                 ApplyEffectAbilityComponent.IApplyEffectComponentOptions,
+                                                 SoundAbilityComponent.ISoundComponentOptions,
+                                                 AnimationAbilityComponent.IAnimationComponentOptions
 {
     private readonly IIntervalTimer CascadeTimer;
     private readonly IIntervalTimer SoundTimer;
+    public int? EffectApplyChance { get; init; }
+
+    public TimeSpan? EffectDurationOverride { get; init; }
+    public IEffectFactory EffectFactory { get; init; }
+    public string? EffectKey { get; init; }
     public ComponentExecutor Executor { get; init; }
     private int Stages => Range;
 
@@ -105,7 +109,10 @@ public sealed class CascadingDamageTile2Script : ConfigurableReactorTileScriptBa
     /// <inheritdoc />
     public bool IgnoreWalls { get; init; }
 
+    public bool InvertShape { get; init; }
+
     public bool ExcludeSourcePoint { get; init; }
+    public int? ExclusionRange { get; init; }
 
     /// <inheritdoc />
     public TargetFilter Filter { get; init; }
@@ -127,6 +134,7 @@ public sealed class CascadingDamageTile2Script : ConfigurableReactorTileScriptBa
 
     /// <inheritdoc />
     public bool? MoreDmgLowTargetHp { get; init; }
+
     /// <inheritdoc />
     public Stat? DamageStat { get; init; }
 
@@ -159,9 +167,4 @@ public sealed class CascadingDamageTile2Script : ConfigurableReactorTileScriptBa
     /// <inheritdoc />
     public bool AnimatePoints { get; init; }
     #endregion
-
-    public TimeSpan? EffectDurationOverride { get; init; }
-    public IEffectFactory EffectFactory { get; init; }
-    public string? EffectKey { get; init; }
-    public int? EffectApplyChance { get; init; }
 }

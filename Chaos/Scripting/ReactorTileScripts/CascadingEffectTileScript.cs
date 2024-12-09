@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
@@ -25,6 +24,19 @@ public sealed class CascadingEffectTileScript : ConfigurableReactorTileScriptBas
 {
     private readonly IIntervalTimer CascadeTimer;
     private readonly IIntervalTimer SoundTimer;
+
+    /// <inheritdoc />
+    public int? EffectApplyChance { get; init; }
+
+    /// <inheritdoc />
+    public TimeSpan? EffectDurationOverride { get; init; }
+
+    /// <inheritdoc />
+    public IEffectFactory EffectFactory { get; init; }
+
+    /// <inheritdoc />
+    public string? EffectKey { get; init; }
+
     public ComponentExecutor Executor { get; init; }
     private int Stages => Range;
 
@@ -103,7 +115,9 @@ public sealed class CascadingEffectTileScript : ConfigurableReactorTileScriptBas
     /// <inheritdoc />
     public bool IgnoreWalls { get; init; }
 
-    public bool ExcludeSourcePoint { get; init; }
+    public bool InvertShape { get; init; }
+
+    public int? ExclusionRange { get; init; }
 
     /// <inheritdoc />
     public TargetFilter Filter { get; init; }
@@ -125,6 +139,7 @@ public sealed class CascadingEffectTileScript : ConfigurableReactorTileScriptBas
 
     /// <inheritdoc />
     public bool? MoreDmgLowTargetHp { get; init; }
+
     /// <inheritdoc />
     public Stat? DamageStat { get; init; }
 
@@ -149,13 +164,4 @@ public sealed class CascadingEffectTileScript : ConfigurableReactorTileScriptBas
     /// <inheritdoc />
     public bool AnimatePoints { get; init; }
     #endregion
-
-    /// <inheritdoc />
-    public TimeSpan? EffectDurationOverride { get; init; }
-    /// <inheritdoc />
-    public IEffectFactory EffectFactory { get; init; }
-    /// <inheritdoc />
-    public string? EffectKey { get; init; }
-    /// <inheritdoc />
-    public int? EffectApplyChance { get; init; }
 }

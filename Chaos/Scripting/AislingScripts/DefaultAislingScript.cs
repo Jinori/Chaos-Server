@@ -505,7 +505,13 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 source.Effects.Apply(Subject, effect);
             }
 
-            var points = AoeShape.AllAround.ResolvePoints(Subject);
+            var options = new AoeShapeOptions
+            {
+                Source = new Point(Subject.X, Subject.Y),
+                Range = 1
+            };
+
+            var points = AoeShape.AllAround.ResolvePoints(options);
 
             var targets = Subject.MapInstance
                                  .GetEntitiesAtPoints<Creature>(points.Cast<IPoint>())

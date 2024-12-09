@@ -45,6 +45,15 @@ public class ApplyHealScript : ScriptBase, IApplyHealScript
                     return;
                 }
 
+                if (source.StatSheet.EffectiveHealBonus > 0)
+                    healing += source.StatSheet.EffectiveHealBonus;
+
+                if (source.StatSheet.EffectiveHealBonus > 0)
+                {
+                    var healBonusPct = healing * (source.StatSheet.EffectiveHealBonusPct / 100);
+                    healing += healing * healBonusPct;
+                }
+
                 aisling.StatSheet.AddHp(healing);
                 aisling.Client.SendAttributes(StatUpdateType.Vitality);
                 aisling.ShowHealth();
@@ -52,12 +61,32 @@ public class ApplyHealScript : ScriptBase, IApplyHealScript
 
                 break;
             case Monster monster:
+
+                if (source.StatSheet.EffectiveHealBonus > 0)
+                    healing += source.StatSheet.EffectiveHealBonus;
+
+                if (source.StatSheet.EffectiveHealBonus > 0)
+                {
+                    var healBonusPct = healing * (source.StatSheet.EffectiveHealBonusPct / 100);
+                    healing += healing * healBonusPct;
+                }
+
                 monster.StatSheet.AddHp(healing);
                 monster.ShowHealth();
                 monster.Script.OnHealed(source, healing);
 
                 break;
             case Merchant merchant:
+
+                if (source.StatSheet.EffectiveHealBonus > 0)
+                    healing += source.StatSheet.EffectiveHealBonus;
+
+                if (source.StatSheet.EffectiveHealBonus > 0)
+                {
+                    var healBonusPct = healing * (source.StatSheet.EffectiveHealBonusPct / 100);
+                    healing += healing * healBonusPct;
+                }
+
                 merchant.Script.OnHealed(source, healing);
 
                 break;

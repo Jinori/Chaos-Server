@@ -1,10 +1,8 @@
 using Chaos.Common.Abstractions;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
-using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
@@ -18,9 +16,9 @@ using Chaos.Services.Factories.Abstractions;
 namespace Chaos.Scripting.SpellScripts;
 
 public class SacrificeBossCascadingDamageScript : ConfigurableSpellScriptBase,
-                                     GenericAbilityComponent<Creature>.IAbilityComponentOptions,
-                                     DamageAbilityComponent.IDamageComponentOptions,
-                                     CascadingComponent<CascadingDamageTileScript>.ICascadingComponentOptions
+                                                  GenericAbilityComponent<Creature>.IAbilityComponentOptions,
+                                                  DamageAbilityComponent.IDamageComponentOptions,
+                                                  CascadingComponent<CascadingDamageTileScript>.ICascadingComponentOptions
 {
     /// <inheritdoc />
     public SacrificeBossCascadingDamageScript(Spell subject, IReactorTileFactory reactorTileFactory)
@@ -35,9 +33,9 @@ public class SacrificeBossCascadingDamageScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public override void OnUse(SpellContext context)
         => new ComponentExecutor(context).WithOptions(this)
-            .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
-            ?.Execute<DamageAbilityComponent>()
-            .Execute<CascadingComponent<CascadingDamageTileScript>>();
+                                         .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
+                                         ?.Execute<DamageAbilityComponent>()
+                                         .Execute<CascadingComponent<CascadingDamageTileScript>>();
 
     #region ScriptVars
     /// <inheritdoc />
@@ -60,12 +58,11 @@ public class SacrificeBossCascadingDamageScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public int Range { get; init; }
 
+    public int? ExclusionRange { get; init; }
     public bool StopOnWalls { get; init; }
     public bool StopOnFirstHit { get; init; }
 
     /// <inheritdoc />
-    public bool ExcludeSourcePoint { get; init; }
-
     /// <inheritdoc />
     public bool MustHaveTargets { get; init; }
 
@@ -83,6 +80,7 @@ public class SacrificeBossCascadingDamageScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public Element? Element { get; init; }
+
     /// <inheritdoc />
     public bool? MoreDmgLowTargetHp { get; init; }
 

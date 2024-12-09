@@ -3,7 +3,6 @@ using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
-using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
@@ -18,6 +17,10 @@ public class HealScript : ConfigurableSkillScriptBase,
                           GenericAbilityComponent<Creature>.IAbilityComponentOptions,
                           HealAbilityComponent.IHealComponentOptions
 {
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
+
     public HealScript(Skill subject)
         : base(subject)
     {
@@ -98,8 +101,4 @@ public class HealScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public bool ShouldNotBreakHide { get; init; }
     #endregion
-
-    public int SplashChance { get; init; }
-    public int SplashDistance { get; init; }
-    public TargetFilter SplashFilter { get; init; }
 }

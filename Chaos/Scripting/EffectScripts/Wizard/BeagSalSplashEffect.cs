@@ -65,7 +65,13 @@ public class BeagSalSplashEffect : ContinuousAnimationEffectBase
         Subject.Animate(Animation);
 
         // Get the points around the subject where the effect is applied
-        var points = AoeShape.AllAround.ResolvePoints(Subject);
+        var options = new AoeShapeOptions
+            {
+                Source = new Point(Subject.X, Subject.Y),
+                Range = 1
+            };
+
+            var points = AoeShape.AllAround.ResolvePoints(options);
 
         // Retrieve the targets at those points, filtering for hostiles
         var targets = Subject.MapInstance

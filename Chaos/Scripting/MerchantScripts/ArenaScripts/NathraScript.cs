@@ -162,7 +162,14 @@ public sealed class NathraScript : MerchantScriptBase
 
         if (AnimationTimer.IntervalElapsed)
         {
-            var points = AoeShape.AllAround.ResolvePoints(Subject, 3);
+            var options = new AoeShapeOptions
+            {
+                Source = new Point(Subject.X, Subject.Y),
+                Range = 3
+            };
+
+            var points = AoeShape.AllAround.ResolvePoints(options);
+            
             var enumerable = points as Point[] ?? points.ToArray();
             
             foreach (var tile in enumerable)
@@ -171,7 +178,13 @@ public sealed class NathraScript : MerchantScriptBase
 
         if (WalkTimer.IntervalElapsed)
         {
-            var points = AoeShape.AllAround.ResolvePoints(Subject, 3);
+            var options = new AoeShapeOptions
+            {
+                Source = new Point(Subject.X, Subject.Y),
+                Range = 3
+            };
+
+            var points = AoeShape.AllAround.ResolvePoints(options);
             var playersInAoe = points.SelectMany(point => Subject.MapInstance.GetEntitiesAtPoints<Aisling>(point)).ToList();
 
             var areDefendersPresent = playersInAoe.Any(x => x.Trackers.Enums.TryGetValue(out ArenaSide side) && side == ArenaSide.Defender);

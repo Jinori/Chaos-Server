@@ -2,7 +2,6 @@
 using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
-using Chaos.Geometry.Abstractions;
 using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Geometry.EqualityComparers;
 using Chaos.Models.Data;
@@ -27,22 +26,28 @@ public struct GetTargetsAbilityComponent<TEntity> : IConditionalComponent where 
                                   .ToList();
 
         if (options.StopOnWalls)
-            targetPoints = targetPoints.FilterByLineOfSight(context.TargetPoint, context.TargetMap).ToList();
-        
+            targetPoints = targetPoints.FilterByLineOfSight(context.TargetPoint, context.TargetMap)
+                                       .ToList();
+
         var targetEntities = map.GetEntitiesAtPoints<TEntity>(targetPoints)
                                 .WithFilter(context.Source, options.Filter)
                                 .ToList();
-        
-        if (options.StopOnFirstHit)
-            targetEntities = targetEntities.Where(x =>
-            {
-                var points = context.TargetPoint.RayTraceTo(x).Skip(1).SkipLast(1);
-                var entities = targetEntities;
 
-                return points.All(point => !entities.Any(e => PointEqualityComparer.Instance.Equals(e, point)));
-            }).ToList();
-        
-        
+        if (options.StopOnFirstHit)
+            targetEntities = targetEntities.Where(
+                                               x =>
+                                               {
+                                                   var points = context.TargetPoint
+                                                                       .RayTraceTo(x)
+                                                                       .Skip(1)
+                                                                       .SkipLast(1);
+                                                   var entities = targetEntities;
+
+                                                   return points.All(
+                                                       point => !entities.Any(e => PointEqualityComparer.Instance.Equals(e, point)));
+                                               })
+                                           .ToList();
+
         if (options.SingleTarget && (targetEntities.Count > 1))
         {
             if (context.TargetCreature is TEntity entity && targetEntities.Contains(entity))
@@ -51,7 +56,7 @@ public struct GetTargetsAbilityComponent<TEntity> : IConditionalComponent where 
                 targetEntities =
                 [
                     targetEntities.OrderBy(e => e.Creation)
-                        .First()
+                                  .First()
                 ];
         }
 
@@ -80,13 +85,12 @@ public struct GetTargetsAbilityComponent<TEntity> : IConditionalComponent where 
     public interface IGetTargetsComponentOptions
     {
         int? ExclusionRange { get; init; }
-        bool StopOnWalls { get; init; }
-        bool StopOnFirstHit { get; init; }
-        bool ExcludeSourcePoint { get; init; }
         TargetFilter Filter { get; init; }
         bool MustHaveTargets { get; init; }
         int Range { get; init; }
         AoeShape Shape { get; init; }
         bool SingleTarget { get; init; }
+        bool StopOnFirstHit { get; init; }
+        bool StopOnWalls { get; init; }
     }
 }

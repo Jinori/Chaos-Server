@@ -29,6 +29,10 @@ public class VitalityConsumableScript : ConfigurableItemScriptBase,
 {
     public bool AllAggro { get; set; }
 
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
+
     /// <inheritdoc />
     public VitalityConsumableScript(Item subject, IEffectFactory effectFactory)
         : base(subject)
@@ -47,48 +51,52 @@ public class VitalityConsumableScript : ConfigurableItemScriptBase,
     {
         if (!source.UserStatSheet.Master && Subject.Template.RequiresMaster)
         {
-            source.SendOrangeBarMessage($"You must be a Master to consume this.");
-            return;
-        }
-        
-        if (source.UserStatSheet.Level < Subject.Level && !source.IsGodModeEnabled())
-        {
-            source.SendOrangeBarMessage($"You must be level {Subject.Level} to consume this.");
+            source.SendOrangeBarMessage("You must be a Master to consume this.");
+
             return;
         }
 
-        if (EffectKey != null && source.Effects.Contains(EffectKey))
+        if ((source.UserStatSheet.Level < Subject.Level) && !source.IsGodModeEnabled())
         {
-            source.SendOrangeBarMessage("You already have that effect.");
+            source.SendOrangeBarMessage($"You must be level {Subject.Level} to consume this.");
+
             return;
         }
-        
+
+        if ((EffectKey != null) && source.Effects.Contains(EffectKey))
+        {
+            source.SendOrangeBarMessage("You already have that effect.");
+
+            return;
+        }
+
         if (source.Trackers.TimedEvents.HasActiveEvent("potiontimer", out var cdtimer))
         {
             source.SendOrangeBarMessage($"You must wait {cdtimer.Remaining.Seconds} seconds before consuming something else.");
+
             return;
         }
-        
+
         source.Inventory.RemoveQuantity(ItemName, 1);
-        
-        source.Trackers.TimedEvents.AddEvent("potiontimer", TimeSpan.FromSeconds(6),true);
-        
+
+        source.Trackers.TimedEvents.AddEvent("potiontimer", TimeSpan.FromSeconds(6), true);
+
         if (Message)
             source.SendOrangeBarMessage("You consumed a " + ItemName + ".");
-        
+
         new ComponentExecutor(source, source).WithOptions(this)
-            .ExecuteAndCheck<GenericAbilityComponent<Aisling>>()
-            ?.Execute<DamageAbilityComponent>()
-            .Execute<HealAbilityComponent>()
-            .Execute<ManaDrainAbilityComponent>()
-            .Execute<ManaReplenishAbilityComponent>()
-            .Execute<ApplyEffectAbilityComponent>();
-        
+                                             .ExecuteAndCheck<GenericAbilityComponent<Aisling>>()
+                                             ?.Execute<DamageAbilityComponent>()
+                                             .Execute<HealAbilityComponent>()
+                                             .Execute<ManaDrainAbilityComponent>()
+                                             .Execute<ManaReplenishAbilityComponent>()
+                                             .Execute<ApplyEffectAbilityComponent>();
     }
 
     #region ScriptVars
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
+
     /// <inheritdoc />
     public bool SingleTarget { get; init; }
 
@@ -105,8 +113,6 @@ public class VitalityConsumableScript : ConfigurableItemScriptBase,
     public bool StopOnFirstHit { get; init; }
 
     /// <inheritdoc />
-    public bool ExcludeSourcePoint { get; init; }
-
     /// <inheritdoc />
     public bool MustHaveTargets { get; init; }
 
@@ -142,8 +148,10 @@ public class VitalityConsumableScript : ConfigurableItemScriptBase,
 
     /// <inheritdoc />
     public int? BaseDamage { get; init; }
+
     /// <inheritdoc />
     public bool? MoreDmgLowTargetHp { get; init; }
+
     /// <inheritdoc />
     public Stat? DamageStat { get; init; }
 
@@ -194,6 +202,7 @@ public class VitalityConsumableScript : ConfigurableItemScriptBase,
 
     /// <inheritdoc />
     public bool ReplenishGroup { get; init; }
+
     /// <inheritdoc />
     public string ItemName { get; init; }
 
@@ -202,16 +211,13 @@ public class VitalityConsumableScript : ConfigurableItemScriptBase,
 
     /// <inheritdoc />
     public TimeSpan? EffectDurationOverride { get; init; }
+
     /// <inheritdoc />
     public IEffectFactory EffectFactory { get; init; }
+
     /// <inheritdoc />
     public string? EffectKey { get; init; }
 
     public int? EffectApplyChance { get; init; }
-
     #endregion
-
-    public int SplashChance { get; init; }
-    public int SplashDistance { get; init; }
-    public TargetFilter SplashFilter { get; init; }
 }

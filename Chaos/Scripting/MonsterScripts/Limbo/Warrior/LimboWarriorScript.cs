@@ -86,13 +86,13 @@ public class LimboWarriorScript : MonsterScriptBase
         //consider target direction first
         foreach (var direction in initialDirection.AsEnumerable())
         {
-            var points = AoeShape.FrontalCone
-                                 .ResolvePoints(
-                                     Subject,
-                                     range,
-                                     direction,
-                                     excludeSource: true)
-                                 .OfType<IPoint>();
+            var options = new AoeShapeOptions
+            {
+                Source = new Point(Subject.X, Subject.Y),
+                Range = range
+            };
+
+            var points = AoeShape.FrontalCone.ResolvePoints(options);
 
             var numTargets = Subject.MapInstance
                                     .GetEntitiesAtPoints<Aisling>(points)

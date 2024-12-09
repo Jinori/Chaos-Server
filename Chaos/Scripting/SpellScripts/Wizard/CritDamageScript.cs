@@ -1,9 +1,7 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
-using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
@@ -15,10 +13,14 @@ using Chaos.Scripting.SpellScripts.Abstractions;
 namespace Chaos.Scripting.SpellScripts.Wizard;
 
 public class CritDamageScript : ConfigurableSpellScriptBase,
-                            SpellComponent<Creature>.ISpellComponentOptions,
-                            CritDamageComponent.IDamageComponentOptions,
-                            NotifyTargetComponent.INotifyTargetComponentOptions
+                                SpellComponent<Creature>.ISpellComponentOptions,
+                                CritDamageComponent.IDamageComponentOptions,
+                                NotifyTargetComponent.INotifyTargetComponentOptions
 {
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
+
     /// <inheritdoc />
     public CritDamageScript(Spell subject)
         : base(subject)
@@ -40,6 +42,7 @@ public class CritDamageScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
+
     /// <inheritdoc />
     public bool SingleTarget { get; init; }
 
@@ -49,12 +52,11 @@ public class CritDamageScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public int Range { get; init; }
 
+    public int? ExclusionRange { get; init; }
     public bool StopOnWalls { get; init; }
     public bool StopOnFirstHit { get; init; }
 
     /// <inheritdoc />
-    public bool ExcludeSourcePoint { get; init; }
-
     /// <inheritdoc />
     public bool MustHaveTargets { get; init; }
 
@@ -80,8 +82,10 @@ public class CritDamageScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public int? BaseDamage { get; init; }
+
     /// <inheritdoc />
     public bool? MoreDmgLowTargetHp { get; init; }
+
     /// <inheritdoc />
     public Stat? DamageStat { get; init; }
 
@@ -104,11 +108,8 @@ public class CritDamageScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }
+
     /// <inheritdoc />
     public bool IgnoreMagicResistance { get; init; }
     #endregion
-
-    public int SplashChance { get; init; }
-    public int SplashDistance { get; init; }
-    public TargetFilter SplashFilter { get; init; }
 }

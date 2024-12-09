@@ -42,8 +42,7 @@ public struct GetCascadingTargetsAbilityComponent<TEntity> : IConditionalCompone
                                          .ToList();
 
             vars.SetAllPoints(allPoints);
-        }
-        else
+        } else
             allPoints = vars.GetAllPoints();
 
         var cascadingAoeOptions = CreateOptions(
@@ -108,7 +107,6 @@ public struct GetCascadingTargetsAbilityComponent<TEntity> : IConditionalCompone
 
     public interface IGetCascadingTargetsComponentOptions
     {
-        bool ExcludeSourcePoint { get; init; }
         int? ExclusionRange { get; init; }
         TargetFilter Filter { get; init; }
         bool IgnoreWalls { get; init; }

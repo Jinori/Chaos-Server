@@ -1,10 +1,8 @@
 using Chaos.Common.Abstractions;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
-using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
@@ -18,10 +16,14 @@ using Chaos.Services.Factories.Abstractions;
 namespace Chaos.Scripting.SpellScripts;
 
 public class CritCascadingDamageScript : ConfigurableSpellScriptBase,
-                                     SpellComponent<Creature>.ISpellComponentOptions,
-                                     CritDamageComponent.IDamageComponentOptions,
-                                     CascadingComponent<CascadingDamageTileScript>.ICascadingComponentOptions
+                                         SpellComponent<Creature>.ISpellComponentOptions,
+                                         CritDamageComponent.IDamageComponentOptions,
+                                         CascadingComponent<CascadingDamageTileScript>.ICascadingComponentOptions
 {
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
+
     /// <inheritdoc />
     public CritCascadingDamageScript(Spell subject, IReactorTileFactory reactorTileFactory)
         : base(subject)
@@ -33,13 +35,11 @@ public class CritCascadingDamageScript : ConfigurableSpellScriptBase,
     }
 
     /// <inheritdoc />
-    public override void OnUse(SpellContext context) =>
-        new ComponentExecutor(context)
-            .WithOptions(this)
-            .ExecuteAndCheck<SpellComponent<Creature>>()
-            ?
-            .Execute<CritDamageComponent>()
-            .Execute<CascadingComponent<CascadingDamageTileScript>>();
+    public override void OnUse(SpellContext context)
+        => new ComponentExecutor(context).WithOptions(this)
+                                         .ExecuteAndCheck<SpellComponent<Creature>>()
+                                         ?.Execute<CritDamageComponent>()
+                                         .Execute<CascadingComponent<CascadingDamageTileScript>>();
 
     #region ScriptVars
     /// <inheritdoc />
@@ -52,28 +52,36 @@ public class CritCascadingDamageScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
+
     /// <inheritdoc />
     public bool SingleTarget { get; init; }
+
     /// <inheritdoc />
     public TargetFilter Filter { get; init; }
+
     /// <inheritdoc />
     public int Range { get; init; }
 
+    public int? ExclusionRange { get; init; }
     public bool StopOnWalls { get; init; }
     public bool StopOnFirstHit { get; init; }
 
     /// <inheritdoc />
-    public bool ExcludeSourcePoint { get; init; }
     /// <inheritdoc />
     public bool MustHaveTargets { get; init; }
+
     /// <inheritdoc />
     public IApplyDamageScript ApplyDamageScript { get; init; }
+
     /// <inheritdoc />
     public int? BaseDamage { get; init; }
+
     /// <inheritdoc />
     public bool? MoreDmgLowTargetHp { get; init; }
+
     /// <inheritdoc />
     public Stat? DamageStat { get; init; }
+
     /// <inheritdoc />
     public decimal? DamageStatMultiplier { get; init; }
 
@@ -81,33 +89,41 @@ public class CritCascadingDamageScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public Element? Element { get; init; }
+
     /// <inheritdoc />
     public decimal? PctHpDamage { get; init; }
+
     /// <inheritdoc />
     public IScript SourceScript { get; init; }
+
     /// <inheritdoc />
     public Animation? Animation { get; init; }
+
     /// <inheritdoc />
     public bool AnimatePoints { get; init; }
+
     /// <inheritdoc />
     public byte? Sound { get; init; }
+
     /// <inheritdoc />
     public bool CascadeOnlyFromEntities { get; init; }
+
     /// <inheritdoc />
     public IReactorTileFactory ReactorTileFactory { get; init; }
+
     /// <inheritdoc />
     public IDictionary<string, IScriptVars> CascadeScriptVars { get; init; }
+
     /// <inheritdoc />
     public int? ManaCost { get; init; }
+
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }
+
     /// <inheritdoc />
     public bool ShouldNotBreakHide { get; init; }
+
     /// <inheritdoc />
     public bool IgnoreMagicResistance { get; init; }
     #endregion
-
-    public int SplashChance { get; init; }
-    public int SplashDistance { get; init; }
-    public TargetFilter SplashFilter { get; init; }
 }

@@ -1,10 +1,8 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
-using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
@@ -21,65 +19,88 @@ public class ChargeScript : ConfigurableSkillScriptBase,
 {
     /// <inheritdoc />
     public bool AnimatePoints { get; init; }
+
     /// <inheritdoc />
     public Animation? Animation { get; init; }
 
     /// <inheritdoc />
+    public ushort? AnimationSpeed { get; init; }
+
+    /// <inheritdoc />
     public IApplyDamageScript ApplyDamageScript { get; init; }
+
     /// <inheritdoc />
     public int? BaseDamage { get; init; }
-    /// <inheritdoc />
-    public ushort? AnimationSpeed { get; init; }
+
     /// <inheritdoc />
     public BodyAnimation BodyAnimation { get; init; }
+
+    public decimal? DamageMultiplierPerTarget { get; init; }
+
+    /// <inheritdoc />
+    public Stat? DamageStat { get; init; }
+
+    /// <inheritdoc />
+    public decimal? DamageStatMultiplier { get; init; }
+
+    /// <inheritdoc />
+    public Element? Element { get; init; }
+
+    /// <inheritdoc />
+
+    public int? ExclusionRange { get; init; }
+
+    /// <inheritdoc />
+    public TargetFilter Filter { get; init; }
+
+    /// <inheritdoc />
+    public int? ManaCost { get; init; }
+
+    /// <inheritdoc />
+    public bool? MoreDmgLowTargetHp { get; init; }
+
+    /// <inheritdoc />
+    public bool MustHaveTargets { get; init; }
+
+    /// <inheritdoc />
+    public decimal? PctHpDamage { get; init; }
+
+    /// <inheritdoc />
+    public decimal PctManaCost { get; init; }
+
+    public decimal? PctOfHealth { get; init; }
+
+    public decimal? PctOfHealthMultiplier { get; init; }
+    public decimal? PctOfMana { get; init; }
+    public decimal? PctOfManaMultiplier { get; init; }
+
+    /// <inheritdoc />
+    public int Range { get; init; }
 
     public bool? ScaleBodyAnimationSpeedByAttackSpeed { get; init; }
 
     /// <inheritdoc />
-    public Stat? DamageStat { get; init; }
-    /// <inheritdoc />
-    public decimal? DamageStatMultiplier { get; init; }
-    /// <inheritdoc />
-    public Element? Element { get; init; }
-
-    public bool StopOnWalls { get; init; }
-    public bool StopOnFirstHit { get; init; }
-
-    /// <inheritdoc />
-    public bool ExcludeSourcePoint { get; init; }
-    /// <inheritdoc />
-    public TargetFilter Filter { get; init; }
-    /// <inheritdoc />
-    public int? ManaCost { get; init; }
-    /// <inheritdoc />
-    public bool? MoreDmgLowTargetHp { get; init; }
-    /// <inheritdoc />
-    public bool MustHaveTargets { get; init; }
-    /// <inheritdoc />
-    public decimal? PctHpDamage { get; init; }
-
-    public decimal? PctOfHealthMultiplier { get; init; }
-    public decimal? PctOfHealth { get; init; }
-
-    /// <inheritdoc />
-    public decimal PctManaCost { get; init; }
-    /// <inheritdoc />
-    public int Range { get; init; }
-    /// <inheritdoc />
     public AoeShape Shape { get; init; }
-    /// <inheritdoc />
-    public bool SingleTarget { get; init; }
+
     /// <inheritdoc />
     public bool ShouldNotBreakHide { get; init; }
+
+    /// <inheritdoc />
+    public bool SingleTarget { get; init; }
+
     /// <inheritdoc />
     public byte? Sound { get; init; }
+
     /// <inheritdoc />
     public IScript SourceScript { get; init; }
 
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
+    public bool StopOnFirstHit { get; init; }
+    public bool StopOnWalls { get; init; }
+
     public bool? SurroundingTargets { get; init; }
-    public decimal? DamageMultiplierPerTarget { get; init; }
-    public decimal? PctOfMana { get; init; }
-    public decimal? PctOfManaMultiplier { get; init; }
 
     /// <inheritdoc />
     public ChargeScript(Skill subject)
@@ -94,8 +115,11 @@ public class ChargeScript : ConfigurableSkillScriptBase,
     {
         // Get the endpoint 4 tiles away from the source in the same direction
         var endPoint = context.Source.DirectionalOffset(context.Source.Direction, 4);
+
         // Get all points between the source and the endpoint, skipping the first one
-        var points = context.Source.GetDirectPath(endPoint).Skip(1);
+        var points = context.Source
+                            .GetDirectPath(endPoint)
+                            .Skip(1);
 
         // Iterate through each point
         foreach (var point in points)
@@ -115,7 +139,8 @@ public class ChargeScript : ConfigurableSkillScriptBase,
             }
 
             // Get the closest creature to the source at this point
-            var entity = context.SourceMap.GetEntitiesAtPoints<Creature>(point)
+            var entity = context.SourceMap
+                                .GetEntitiesAtPoints<Creature>(point)
                                 .OrderBy(creature => creature.ManhattanDistanceFrom(context.Source))
                                 .FirstOrDefault(creature => context.Source.WillCollideWith(creature));
 
@@ -124,6 +149,7 @@ public class ChargeScript : ConfigurableSkillScriptBase,
             {
                 // Get the point towards the source from the creature
                 var newPoint = entity.OffsetTowards(context.Source);
+
                 // Warp the source to the new point
                 context.Source.WarpTo(newPoint);
 
@@ -139,8 +165,4 @@ public class ChargeScript : ConfigurableSkillScriptBase,
         // If no creature was found, warp the source to the endpoint
         context.Source.WarpTo(endPoint);
     }
-
-    public int SplashChance { get; init; }
-    public int SplashDistance { get; init; }
-    public TargetFilter SplashFilter { get; init; }
 }

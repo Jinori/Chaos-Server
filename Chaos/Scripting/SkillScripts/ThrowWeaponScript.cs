@@ -1,9 +1,7 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
-using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
@@ -16,11 +14,21 @@ using Chaos.Services.Factories.Abstractions;
 namespace Chaos.Scripting.SkillScripts;
 
 public class ThrowWeaponScript : ConfigurableSkillScriptBase,
-                            GenericAbilityComponent<Creature>.IAbilityComponentOptions,
-                            DamageAbilityComponent.IDamageComponentOptions,
-                            ApplyEffectAbilityComponent.IApplyEffectComponentOptions,
-                            ThrowWeaponComponent.IThrowWeaponComponentOptions
+                                 GenericAbilityComponent<Creature>.IAbilityComponentOptions,
+                                 DamageAbilityComponent.IDamageComponentOptions,
+                                 ApplyEffectAbilityComponent.IApplyEffectComponentOptions,
+                                 ThrowWeaponComponent.IThrowWeaponComponentOptions
 {
+    public int DistanceToThrow { get; init; }
+    public int? EffectApplyChance { get; init; }
+    public TimeSpan? EffectDurationOverride { get; init; }
+    public IEffectFactory EffectFactory { get; init; }
+    public string? EffectKey { get; init; }
+
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
+
     /// <inheritdoc />
     public ThrowWeaponScript(Skill subject, IEffectFactory effectFactory)
         : base(subject)
@@ -28,7 +36,7 @@ public class ThrowWeaponScript : ConfigurableSkillScriptBase,
         EffectFactory = effectFactory;
         ApplyDamageScript = ApplyAttackDamageScript.Create();
         SourceScript = this;
-        
+
         if (Subject.Template.IsAssail)
             ScaleBodyAnimationSpeedByAttackSpeed = true;
     }
@@ -37,8 +45,7 @@ public class ThrowWeaponScript : ConfigurableSkillScriptBase,
     public override void OnUse(ActivationContext context)
         => new ComponentExecutor(context).WithOptions(this)
                                          .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
-                                         ?
-                                         .Execute<DamageAbilityComponent>()
+                                         ?.Execute<DamageAbilityComponent>()
                                          .Execute<ThrowWeaponComponent>()
                                          .Execute<ApplyEffectAbilityComponent>();
 
@@ -55,12 +62,11 @@ public class ThrowWeaponScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public int Range { get; init; }
 
+    public int? ExclusionRange { get; init; }
     public bool StopOnWalls { get; init; }
     public bool StopOnFirstHit { get; init; }
 
     /// <inheritdoc />
-    public bool ExcludeSourcePoint { get; init; }
-
     /// <inheritdoc />
     public bool MustHaveTargets { get; init; }
 
@@ -86,8 +92,10 @@ public class ThrowWeaponScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public int? BaseDamage { get; init; }
+
     /// <inheritdoc />
     public bool? MoreDmgLowTargetHp { get; init; }
+
     /// <inheritdoc />
     public Stat? DamageStat { get; init; }
 
@@ -118,13 +126,4 @@ public class ThrowWeaponScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public bool ShouldNotBreakHide { get; init; }
     #endregion
-
-    public int SplashChance { get; init; }
-    public int SplashDistance { get; init; }
-    public TargetFilter SplashFilter { get; init; }
-    public TimeSpan? EffectDurationOverride { get; init; }
-    public IEffectFactory EffectFactory { get; init; }
-    public string? EffectKey { get; init; }
-    public int? EffectApplyChance { get; init; }
-    public int DistanceToThrow { get; init; }
 }

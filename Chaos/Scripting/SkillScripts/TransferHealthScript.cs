@@ -1,9 +1,7 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
-using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
@@ -14,8 +12,8 @@ using Chaos.Scripting.SkillScripts.Abstractions;
 namespace Chaos.Scripting.SkillScripts;
 
 public class TransferHealthScript : ConfigurableSkillScriptBase,
-                          GenericAbilityComponent<Creature>.IAbilityComponentOptions,
-                          TransferBloodAbilityComponent.IHealthTransferComponentOptions
+                                    GenericAbilityComponent<Creature>.IAbilityComponentOptions,
+                                    TransferBloodAbilityComponent.IHealthTransferComponentOptions
 {
     public TransferHealthScript(Skill subject)
         : base(subject)
@@ -43,12 +41,11 @@ public class TransferHealthScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public int Range { get; init; }
 
+    public int? ExclusionRange { get; init; }
     public bool StopOnWalls { get; init; }
     public bool StopOnFirstHit { get; init; }
 
     /// <inheritdoc />
-    public bool ExcludeSourcePoint { get; init; }
-
     /// <inheritdoc />
     public bool MustHaveTargets { get; init; }
 
@@ -84,5 +81,4 @@ public class TransferHealthScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public bool ShouldNotBreakHide { get; init; }
     #endregion
-    
 }

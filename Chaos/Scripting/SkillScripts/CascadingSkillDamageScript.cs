@@ -1,5 +1,4 @@
 using Chaos.Common.Abstractions;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
@@ -17,9 +16,9 @@ using Chaos.Services.Factories.Abstractions;
 namespace Chaos.Scripting.SkillScripts;
 
 public class CascadingSkillDamageScript : ConfigurableSkillScriptBase,
-                                     GenericAbilityComponent<Creature>.IAbilityComponentOptions,
-                                     DamageAbilityComponent.IDamageComponentOptions,
-                                     CascadingComponent<CascadingDamageTileScript>.ICascadingComponentOptions
+                                          GenericAbilityComponent<Creature>.IAbilityComponentOptions,
+                                          DamageAbilityComponent.IDamageComponentOptions,
+                                          CascadingComponent<CascadingDamageTileScript>.ICascadingComponentOptions
 {
     /// <inheritdoc />
     public CascadingSkillDamageScript(Skill subject, IReactorTileFactory reactorTileFactory)
@@ -32,18 +31,17 @@ public class CascadingSkillDamageScript : ConfigurableSkillScriptBase,
     }
 
     /// <inheritdoc />
-    public override void OnUse(ActivationContext context) =>
-        new ComponentExecutor(context)
-            .WithOptions(this)
-            .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
-            ?
-            .Execute<DamageAbilityComponent>()
-            .Execute<CascadingComponent<CascadingDamageTileScript>>();
+    public override void OnUse(ActivationContext context)
+        => new ComponentExecutor(context).WithOptions(this)
+                                         .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
+                                         ?.Execute<DamageAbilityComponent>()
+                                         .Execute<CascadingComponent<CascadingDamageTileScript>>();
 
     #region ScriptVars
+    public int? ExclusionRange { get; init; }
     public bool StopOnWalls { get; init; }
     public bool StopOnFirstHit { get; init; }
-    public bool ExcludeSourcePoint { get; init; }
+
     public TargetFilter Filter { get; init; }
     public bool MustHaveTargets { get; init; }
     public int Range { get; init; }

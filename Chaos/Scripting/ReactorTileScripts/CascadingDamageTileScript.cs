@@ -29,7 +29,13 @@ public sealed class CascadingDamageTileScript : ConfigurableReactorTileScriptBas
     private readonly int EndingStage;
     private readonly IIntervalTimer SoundTimer;
     private readonly int StartingStage;
+
+    public int? EffectApplyChance { get; init; }
+    public TimeSpan? EffectDurationOverride { get; init; }
+    public IEffectFactory EffectFactory { get; init; }
+    public string? EffectKey { get; init; }
     public ComponentExecutor Executor { get; init; }
+    public int? ThrowRange { get; init; }
     private int Stages => Range;
 
     /// <inheritdoc />
@@ -131,6 +137,7 @@ public sealed class CascadingDamageTileScript : ConfigurableReactorTileScriptBas
     #region ScriptVars
     public int MinSoundIntervalMs { get; init; }
     public int CascadeIntervalMs { get; init; }
+    public bool ExcludeSourcePoint { get; init; }
 
     /// <inheritdoc />
     public int? ExclusionRange { get; init; }
@@ -151,8 +158,6 @@ public sealed class CascadingDamageTileScript : ConfigurableReactorTileScriptBas
     public int Range { get; init; }
 
     /// <inheritdoc />
-    public bool ExcludeSourcePoint { get; init; }
-
     /// <inheritdoc />
     public bool MustHaveTargets { get; init; }
 
@@ -164,6 +169,7 @@ public sealed class CascadingDamageTileScript : ConfigurableReactorTileScriptBas
 
     /// <inheritdoc />
     public bool? MoreDmgLowTargetHp { get; init; }
+
     /// <inheritdoc />
     public Stat? DamageStat { get; init; }
 
@@ -196,11 +202,4 @@ public sealed class CascadingDamageTileScript : ConfigurableReactorTileScriptBas
     /// <inheritdoc />
     public bool AnimatePoints { get; init; }
     #endregion
-
-    public int? EffectApplyChance { get; init; }
-    public TimeSpan? EffectDurationOverride { get; init; }
-    public IEffectFactory EffectFactory { get; init; }
-    public string? EffectKey { get; init; }
-    public int? ThrowRange { get; init; }
-    
 }

@@ -84,6 +84,7 @@ public class CascadingDamageScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public Element? Element { get; init; }
+
     /// <inheritdoc />
     public bool? MoreDmgLowTargetHp { get; init; }
 

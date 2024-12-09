@@ -20,6 +20,15 @@ public class DamageScript : ConfigurableSkillScriptBase,
                             DamageAbilityComponent.IDamageComponentOptions,
                             ApplyEffectAbilityComponent.IApplyEffectComponentOptions
 {
+    public int? EffectApplyChance { get; init; }
+    public TimeSpan? EffectDurationOverride { get; init; }
+    public IEffectFactory EffectFactory { get; init; }
+    public string? EffectKey { get; init; }
+
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
+
     /// <inheritdoc />
     public DamageScript(Skill subject, IEffectFactory effectFactory)
         : base(subject)
@@ -27,7 +36,7 @@ public class DamageScript : ConfigurableSkillScriptBase,
         EffectFactory = effectFactory;
         ApplyDamageScript = ApplyAttackDamageScript.Create();
         SourceScript = this;
-        
+
         if (Subject.Template.IsAssail)
             ScaleBodyAnimationSpeedByAttackSpeed = true;
     }
@@ -36,8 +45,7 @@ public class DamageScript : ConfigurableSkillScriptBase,
     public override void OnUse(ActivationContext context)
         => new ComponentExecutor(context).WithOptions(this)
                                          .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
-                                         ?
-                                         .Execute<DamageAbilityComponent>()
+                                         ?.Execute<DamageAbilityComponent>()
                                          .Execute<ApplyEffectAbilityComponent>();
 
     #region ScriptVars
@@ -60,8 +68,6 @@ public class DamageScript : ConfigurableSkillScriptBase,
     public bool StopOnFirstHit { get; init; }
 
     /// <inheritdoc />
-    public bool ExcludeSourcePoint { get; init; }
-
     /// <inheritdoc />
     public bool MustHaveTargets { get; init; }
 
@@ -87,8 +93,10 @@ public class DamageScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public int? BaseDamage { get; init; }
+
     /// <inheritdoc />
     public bool? MoreDmgLowTargetHp { get; init; }
+
     /// <inheritdoc />
     public Stat? DamageStat { get; init; }
 
@@ -119,12 +127,4 @@ public class DamageScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public bool ShouldNotBreakHide { get; init; }
     #endregion
-
-    public int SplashChance { get; init; }
-    public int SplashDistance { get; init; }
-    public TargetFilter SplashFilter { get; init; }
-    public TimeSpan? EffectDurationOverride { get; init; }
-    public IEffectFactory EffectFactory { get; init; }
-    public string? EffectKey { get; init; }
-    public int? EffectApplyChance { get; init; }
 }

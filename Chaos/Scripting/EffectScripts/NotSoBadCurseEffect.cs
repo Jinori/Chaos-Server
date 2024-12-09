@@ -59,6 +59,10 @@ public class NotSoBadCurseEffect : EffectBase,
     /// <inheritdoc />
     public byte? Sound { get; init; } = 27;
 
+    public bool StopOnFirstHit { get; init; }
+
+    public bool StopOnWalls { get; init; }
+
     /// <inheritdoc />
     public override byte Icon => 5;
 

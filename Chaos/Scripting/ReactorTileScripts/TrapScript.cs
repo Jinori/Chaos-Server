@@ -31,6 +31,7 @@ public class TrapScript : ConfigurableReactorTileScriptBase,
     protected Creature Owner { get; set; }
     protected IIntervalTimer? Timer { get; set; }
     protected int TriggerCount { get; set; }
+
     protected Animation DetectTrapAnimation { get; } = new()
     {
         AnimationSpeed = 100,
@@ -66,18 +67,19 @@ public class TrapScript : ConfigurableReactorTileScriptBase,
 
         if (source.IsGodModeEnabled() || source.Effects.Contains("invulnerability"))
             return;
-        
+
         var executed = new ComponentExecutor(Owner, source).WithOptions(this)
                                                            .ExecuteAndCheck<GetTargetsAbilityComponent<Creature>>()
                                                            ?.Execute<SoundAbilityComponent>()
                                                            .Execute<AnimationAbilityComponent>()
                                                            .Execute<TrapDamageAbilityComponent>()
                                                            .Execute<ManaDrainAbilityComponent>()
-                                                           .Execute<ApplyEffectAbilityComponent>() != null;
+                                                           .Execute<ApplyEffectAbilityComponent>()
+                       != null;
 
         if (Owner is Aisling && source is Aisling aisling)
             aisling.SendOrangeBarMessage($"You stumble upon a trap, set by {Owner.Name}!");
-            
+
         if (executed && MaxTriggers.HasValue)
         {
             TriggerCount++;
@@ -99,7 +101,8 @@ public class TrapScript : ConfigurableReactorTileScriptBase,
             && AnimationTimer.IntervalElapsed
             && Subject.MapInstance.Equals(Subject.Owner.MapInstance))
             Subject.Owner.MapInstance.ShowAnimationToFriendly(
-                DetectTrapAnimation.GetPointAnimation(new Point(Subject.X, Subject.Y), Subject.Owner.Id), Subject.Owner);
+                DetectTrapAnimation.GetPointAnimation(new Point(Subject.X, Subject.Y), Subject.Owner.Id),
+                Subject.Owner);
 
         if (Timer != null)
         {
@@ -131,10 +134,12 @@ public class TrapScript : ConfigurableReactorTileScriptBase,
     public bool MustHaveTargets { get; init; } = true;
     public bool StopOnWalls { get; init; }
     public bool StopOnFirstHit { get; init; }
-    public bool ExcludeSourcePoint { get; init; }
+
     public int? BaseDamage { get; init; }
+
     /// <inheritdoc />
     public bool? MoreDmgLowTargetHp { get; init; }
+
     public Stat? DamageStat { get; init; }
     public decimal? DamageStatMultiplier { get; init; }
     public decimal? PctHpDamage { get; init; }

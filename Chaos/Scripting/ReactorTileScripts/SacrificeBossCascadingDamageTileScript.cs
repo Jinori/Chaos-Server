@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
@@ -16,11 +15,12 @@ using Chaos.Time.Abstractions;
 namespace Chaos.Scripting.ReactorTileScripts;
 
 public sealed class SacrificeBossCascadingDamageTileScript : ConfigurableReactorTileScriptBase,
-                                                ICascadingTileScript,
-                                                GetCascadingTargetsAbilityComponent<Creature>.IGetCascadingTargetsComponentOptions,
-                                                DamageAbilityComponent.IDamageComponentOptions,
-                                                SoundAbilityComponent.ISoundComponentOptions,
-                                                AnimationAbilityComponent.IAnimationComponentOptions
+                                                             ICascadingTileScript,
+                                                             GetCascadingTargetsAbilityComponent<Creature>.
+                                                             IGetCascadingTargetsComponentOptions,
+                                                             DamageAbilityComponent.IDamageComponentOptions,
+                                                             SoundAbilityComponent.ISoundComponentOptions,
+                                                             AnimationAbilityComponent.IAnimationComponentOptions
 {
     private readonly IIntervalTimer CascadeTimer;
     private readonly IIntervalTimer SoundTimer;
@@ -101,7 +101,9 @@ public sealed class SacrificeBossCascadingDamageTileScript : ConfigurableReactor
     /// <inheritdoc />
     public bool IgnoreWalls { get; init; }
 
-    public bool ExcludeSourcePoint { get; init; }
+    public bool InvertShape { get; init; }
+
+    public int? ExclusionRange { get; init; }
 
     /// <inheritdoc />
     public TargetFilter Filter { get; init; }
@@ -123,6 +125,7 @@ public sealed class SacrificeBossCascadingDamageTileScript : ConfigurableReactor
 
     /// <inheritdoc />
     public bool? MoreDmgLowTargetHp { get; init; }
+
     /// <inheritdoc />
     public Stat? DamageStat { get; init; }
 

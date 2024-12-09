@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
@@ -140,9 +139,10 @@ public class NobisMazeTrapScript : ConfigurableReactorTileScriptBase,
     public byte? Sound { get; init; }
     public bool AnimatePoints { get; init; }
     public bool MustHaveTargets { get; init; } = true;
+    public int? ExclusionRange { get; init; }
     public bool StopOnWalls { get; init; }
     public bool StopOnFirstHit { get; init; }
-    public bool ExcludeSourcePoint { get; init; }
+
     public int? BaseDamage { get; init; }
 
     /// <inheritdoc />

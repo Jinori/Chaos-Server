@@ -3,7 +3,6 @@ using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
-using Chaos.Models.Panel.Abstractions;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
@@ -18,6 +17,10 @@ public class HealScript : ConfigurableSpellScriptBase,
                           SpellComponent<Creature>.ISpellComponentOptions,
                           HealAbilityComponent.IHealComponentOptions
 {
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
+
     /// <inheritdoc />
     public HealScript(Spell subject)
         : base(subject)
@@ -38,6 +41,7 @@ public class HealScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
+
     /// <inheritdoc />
     public bool SingleTarget { get; init; }
 
@@ -101,8 +105,4 @@ public class HealScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public bool IgnoreMagicResistance { get; init; }
     #endregion
-
-    public int SplashChance { get; init; }
-    public int SplashDistance { get; init; }
-    public TargetFilter SplashFilter { get; init; }
 }
