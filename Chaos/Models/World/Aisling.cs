@@ -449,7 +449,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
     public void Equip(EquipmentType type, Item item)
     {
         var slot = item.Slot;
-
+        
         //try equip,
         if (Equipment.TryEquip(type, item, out var returnedItem))
         {
@@ -1206,9 +1206,24 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         if (Inventory.IsFull)
             return;
 
+        if (Options.LockHands && slot is EquipmentSlot.Weapon or EquipmentSlot.Shield)
+        {
+            // Try getting both weapon and shield
+            var equipped = 
+            Equipment.TryGetObject((byte)slot, out var item1);
+            
+            if (item1 != null)
+            {
+                SendOrangeBarMessage($"Lock Hands is stopping you from removing {item1.DisplayName}.");
+            }
+            
+            if (item1 != null)
+                return;
+        }
+        
         if (!Equipment.TryGetRemove((byte)slot, out var item))
             return;
-
+        
         Inventory.TryAddToNextSlot(item);
         Trackers.LastUnequip = DateTime.UtcNow;
     }

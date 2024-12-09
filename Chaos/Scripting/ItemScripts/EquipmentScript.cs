@@ -49,6 +49,19 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
 
     public override void OnUse(Aisling source)
     {
+        if (source.Options.LockHands)
+        {
+            switch (Subject.Template.EquipmentType)
+            {
+                case EquipmentType.Weapon:
+                    source.SendOrangeBarMessage($"Lock Hands is stopping you from equipping {Subject.DisplayName}.");
+                    return;
+                case EquipmentType.Shield:
+                    source.SendOrangeBarMessage($"Lock Hands is stopping you from equipping {Subject.DisplayName}.");
+                    return;
+            }
+        }
+        
         var template = Subject.Template;
 
         if (Subject.CurrentDurability is < 1)

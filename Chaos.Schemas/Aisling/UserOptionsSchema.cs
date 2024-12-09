@@ -38,7 +38,7 @@ public sealed record UserOptionsSchema
     ///     Option 4
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
-    public bool Option4 { get; set; }
+    public bool LockHands { get; set; }
 
     /// <summary>
     ///     Option 5
