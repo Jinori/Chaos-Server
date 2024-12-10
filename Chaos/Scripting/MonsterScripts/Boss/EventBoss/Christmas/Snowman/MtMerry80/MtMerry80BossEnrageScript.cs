@@ -7,9 +7,9 @@ using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.EventBoss.ForsakenRogue.Christmas.Snowman;
+namespace Chaos.Scripting.MonsterScripts.Boss.EventBoss.Christmas.Snowman.MtMerry80;
 
-public sealed class MtMerry40BossEnrageScript : MonsterScriptBase
+public sealed class MtMerry80BossEnrageScript : MonsterScriptBase
 {
     private readonly IIntervalTimer ActionTimer;
     private readonly ISpellFactory SpellFactory;
@@ -35,7 +35,7 @@ public sealed class MtMerry40BossEnrageScript : MonsterScriptBase
         TargetAnimation = 189
     };
 
-    public MtMerry40BossEnrageScript(Monster subject, ISpellFactory spellFactory)
+    public MtMerry80BossEnrageScript(Monster subject, ISpellFactory spellFactory)
         : base(subject)
     {
         SpellFactory = spellFactory;
@@ -72,6 +72,7 @@ public sealed class MtMerry40BossEnrageScript : MonsterScriptBase
                     Subject.Say("Merry? Bah! Meet my cold revenge!");
                     Subject.TryUseSpell(SpellToCast3);
                     HasCastedSpell2 = true;
+
                     return;
                 case true when !HasCastedSpell3:
                     Subject.Say("Santa is too soft, I am all freeze!");
@@ -80,7 +81,7 @@ public sealed class MtMerry40BossEnrageScript : MonsterScriptBase
                     // First cast of SpellToCast3 done, set HasCastedSpell3 and start counting
                     HasCastedSpell3 = true;
                     Spell3Casts = 1;
-                
+
                     return;
             }
         }
@@ -98,7 +99,7 @@ public sealed class MtMerry40BossEnrageScript : MonsterScriptBase
                 HasCastedSpell1 = false;
                 HasCastedSpell2 = false;
                 HasCastedSpell3 = false;
-            } 
+            }
         }
 
         if (!Bonus75Applied && (Subject.StatSheet.HealthPercent <= 75))

@@ -2,15 +2,15 @@ using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.EventBoss.ForsakenRogue.Christmas.Snowman;
+namespace Chaos.Scripting.MonsterScripts.Boss.EventBoss.Christmas.Snowman.MtMerry99;
 
-public class MtMerryBoss40 : CompositeMonsterScript
+public class MtMerryBoss99 : CompositeMonsterScript
 {
     private static readonly ICollection<string> ScriptKeys = new[]
     {
         GetScriptKey(typeof(DefaultBehaviorsScript)),
         GetScriptKey(typeof(BossMoveToTargetScript)),
-        GetScriptKey(typeof(MtMerry40BossEnrageScript)),
+        GetScriptKey(typeof(MtMerry99BossEnrageScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),
@@ -22,7 +22,7 @@ public class MtMerryBoss40 : CompositeMonsterScript
 
     //If you are not using BossMoveToTargetScript, you need: MoveToTargetScript.
     /// <inheritdoc />
-    public MtMerryBoss40(IScriptProvider scriptProvider, Monster subject)
+    public MtMerryBoss99(IScriptProvider scriptProvider, Monster subject)
     {
         if (scriptProvider.CreateScript<IMonsterScript, Monster>(ScriptKeys, subject) is not CompositeMonsterScript compositeScript)
             throw new InvalidOperationException("Unable to create componentized script");

@@ -47,7 +47,7 @@ public class dirtyErbieQuestScript(Dialog subject, ILogger<TheSacrificeQuestScri
                 {
                     Subject.Reply(
                         source,
-                        $"The dirty erbies are being taken care of for now. We may need some more help in {cdtime.Remaining.ToReadableString()}",
+                        $"The dirty erbies are being taken care of for now. We may need some more help in {cdtime.Remaining.ToReadableString()}.",
                         "elf2_initial");
 
                     return;
