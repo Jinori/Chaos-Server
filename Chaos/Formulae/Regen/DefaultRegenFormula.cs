@@ -28,7 +28,19 @@ public sealed class DefaultRegenFormula : IRegenFormula
             };
 
             return MathEx.GetPercentOf<int>((int)creature.StatSheet.EffectiveMaximumHp, percentToRegenerate);
-        } else
+        }
+
+        if (creature.IsHotChocolated())
+        {
+            var percentToRegenerate = creature switch
+            {
+                Aisling => 16,
+                Monster => 11,
+                Merchant => 100,
+                _ => throw new ArgumentOutOfRangeException(nameof(creature), creature, null)
+            };
+            return MathEx.GetPercentOf<int>((int)creature.StatSheet.EffectiveMaximumHp, percentToRegenerate);
+        }else
         {
             var percentToRegenerate = creature switch
             {
@@ -51,14 +63,27 @@ public sealed class DefaultRegenFormula : IRegenFormula
         if (creature.StatSheet.ManaPercent == 100)
             return 0;
 
-        var percentToRegenerate = creature switch
+        if (creature.IsHotChocolated())
         {
-            Aisling  => 5,
-            Monster  => 1.5m,
-            Merchant => 100,
-            _        => throw new ArgumentOutOfRangeException(nameof(creature), creature, null)
-        };
-
-        return MathEx.GetPercentOf<int>((int)creature.StatSheet.EffectiveMaximumMp, percentToRegenerate);
+            var percentToRegenerate = creature switch
+            {
+                Aisling => 8,
+                Monster => 2,
+                Merchant => 100,
+                _ => throw new ArgumentOutOfRangeException(nameof(creature), creature, null)
+            };
+            return MathEx.GetPercentOf<int>((int)creature.StatSheet.EffectiveMaximumMp, percentToRegenerate);
+        }
+        else
+        {
+            var percentToRegenerate = creature switch
+            {
+                Aisling => 5,
+                Monster => 1.5m,
+                Merchant => 100,
+                _ => throw new ArgumentOutOfRangeException(nameof(creature), creature, null)
+            };
+            return MathEx.GetPercentOf<int>((int)creature.StatSheet.EffectiveMaximumMp, percentToRegenerate);
+        }
     }
 }
