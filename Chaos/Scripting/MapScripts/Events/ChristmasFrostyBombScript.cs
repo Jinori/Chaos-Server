@@ -1,28 +1,43 @@
 using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
+using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
 using Chaos.Geometry.Abstractions;
 using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
+using Humanizer;
 
 namespace Chaos.Scripting.MapScripts.Events;
 
 public class ChristmasFrostyBombScript : MapScriptBase
 {
-    private readonly IIntervalTimer BombSpawnTimer; // Timer for bombs
-    private readonly IIntervalTimer ReindeerSpawnTimer; // Timer for reindeer
-    private readonly IIntervalTimer MazeSpawnTimer; // Timer for maze
-    private readonly IIntervalTimer PrizeBoxSpawnTimer; // Timer for prize boxes
     private readonly IRectangle BombSpawnArea;
-    private readonly List<Point> ReindeerSpawnPoints;
-    private readonly IMonsterFactory MonsterFactory;
+
+    private readonly IIntervalTimer BombSpawnTimer;
+
+    private readonly IIntervalTimer DifficultyTimer;
     private readonly IItemFactory ItemFactory;
+    private readonly IMonsterFactory MonsterFactory;
+    private readonly IIntervalTimer PrizeBoxSpawnTimer;
     private readonly Random RandomGenerator;
-    private readonly HashSet<Point> UsedReindeerSpawnPoints; // Tracks used spawn points
+    private readonly List<Point> ReindeerSpawnPoints;
+    private readonly IIntervalTimer ReindeerSpawnTimer;
+    private readonly IIntervalTimer RewardTimer;
+    private readonly TimeSpan TimerDuration = TimeSpan.FromSeconds(20);
+    private readonly HashSet<Point> UsedReindeerSpawnPoints;
+    private int BombCount = 18; // Start with 6 bomb
+
+    private ScriptStage CurrentStage;
+    private int ReindeerCount = 2; // Start with 2 reindeer
+    private DateTime TimerStart;
+    private bool Warn10Sec;
+    private bool Warn1Min;
+    private bool Warn30Sec;
+    private bool Warn3Min;
 
     public ChristmasFrostyBombScript(MapInstance subject, IMonsterFactory monsterFactory, IItemFactory itemFactory)
         : base(subject)
@@ -31,50 +46,132 @@ public class ChristmasFrostyBombScript : MapScriptBase
         MonsterFactory = monsterFactory;
         RandomGenerator = new Random();
 
-        // Define spawn areas
-        BombSpawnArea = new Rectangle(left: 8, top: 8, width: 17, height: 13);
+        BombSpawnArea = new Rectangle(
+            7,
+            7,
+            19,
+            15);
         ReindeerSpawnPoints = GenerateReindeerSpawnPoints();
         UsedReindeerSpawnPoints = new HashSet<Point>();
 
-        // Timers for bombs, reindeer, maze, and prize boxes
-        BombSpawnTimer = new RandomizedIntervalTimer(TimeSpan.FromMilliseconds(300), 85, RandomizationType.Negative, false);
-        ReindeerSpawnTimer = new RandomizedIntervalTimer(TimeSpan.FromSeconds(10), 60, RandomizationType.Positive, false);
-        MazeSpawnTimer = new IntervalTimer(TimeSpan.FromSeconds(30)); // Maze every 30 seconds
-        PrizeBoxSpawnTimer = new IntervalTimer(TimeSpan.FromSeconds(45)); // Prize boxes every 45 seconds
+        BombSpawnTimer = new IntervalTimer(TimeSpan.FromSeconds(2));
+        ReindeerSpawnTimer = new IntervalTimer(TimeSpan.FromSeconds(6));
+        PrizeBoxSpawnTimer = new IntervalTimer(TimeSpan.FromSeconds(45));
+        DifficultyTimer = new IntervalTimer(TimeSpan.FromSeconds(15)); // Adjust difficulty every 15 seconds
+        RewardTimer = new IntervalTimer(TimeSpan.FromSeconds(1)); // Adjust difficulty every 15 seconds
+        TimerStart = DateTime.UtcNow;
+
+        CurrentStage = ScriptStage.Dormant;
     }
 
-    public override void Update(TimeSpan delta)
+    private void ClearUsedSpawnPointsIfNeeded()
     {
-        // Check if there are any Aislings on the map
-        if (!Subject.GetEntities<Aisling>().Any())
+        // Check if there are any reindeer on the defined spawn points
+        var hasReindeerOnSpawnPoints = Subject.GetEntities<Monster>()
+                                              .Where(monster => monster.Template.TemplateKey == "crazed_reindeer")
+                                              .Any(monster => ReindeerSpawnPoints.Contains(new Point(monster.X, monster.Y)));
+
+        // If no reindeer are found, clear the used spawn points
+        if (!hasReindeerOnSpawnPoints)
+            UsedReindeerSpawnPoints.Clear();
+    }
+
+    private List<Point> GenerateReindeerSpawnPoints()
+    {
+        var points = new List<Point>();
+
+        for (var y = 8; y <= 20; y++)
+            points.Add(new Point(7, y));
+
+        return points;
+    }
+
+    private bool IsBombAtPosition(Point position)
+        => Subject.GetEntities<Monster>()
+                  .Any(monster => (monster.Template.TemplateKey == "smiley_blob_bomb") && (new Point(monster.X, monster.Y) == position));
+
+    private bool IsCreatureAtPosition(Point position)
+        => Subject.GetEntities<Monster>()
+                  .Any(monster => new Point(monster.X, monster.Y) == position);
+
+    public override void OnEntered(Creature creature)
+    {
+        if (creature is not Aisling aisling)
             return;
 
-        // Update bomb spawn timer
-        BombSpawnTimer.Update(delta);
-        if (BombSpawnTimer.IntervalElapsed)
+        if (ScriptStage.Dormant == CurrentStage)
         {
-            SpawnSingleBomb();
+            var currentTime = DateTime.UtcNow;
+            var elapsedTime = currentTime - TimerStart;
+            var remainingTime = TimerDuration - elapsedTime;
+            aisling.SendOrangeBarMessage($"Next round will begin in {remainingTime.Humanize()}");
         }
+    }
 
-        // Update reindeer timer
-        ReindeerSpawnTimer.Update(delta);
-        if (ReindeerSpawnTimer.IntervalElapsed)
-        {
-            SpawnCrazedReindeer();
-        }
+    private void ResetEventState()
+    {
+        Warn3Min = false;
+        Warn1Min = false;
+        Warn30Sec = false;
+        Warn10Sec = false;
 
-        // Update maze spawn timer
-        MazeSpawnTimer.Update(delta);
-        if (MazeSpawnTimer.IntervalElapsed)
-        {
-            SpawnMaze();
-        }
+        BombCount = 14; // Reset to default bomb count
+        ReindeerCount = 2; // Reset to default reindeer count
 
-        // Update prize box spawn timer
-        PrizeBoxSpawnTimer.Update(delta);
-        if (PrizeBoxSpawnTimer.IntervalElapsed)
+        var presents = Subject.GetEntities<GroundItem>()
+                              .Where(x => (x.Name == "Mount Merry Box") && BombSpawnArea.Contains(new Point(x.X, x.Y)))
+                              .ToList();
+
+        foreach (var present in presents)
+            Subject.RemoveEntity(present);
+
+        // Reset the state of the event
+        UsedReindeerSpawnPoints.Clear();
+    }
+
+    private void SpawnCrazedReindeer()
+    {
+        var availableSpawnPoints = new List<Point>(ReindeerSpawnPoints.Except(UsedReindeerSpawnPoints));
+
+        if (availableSpawnPoints.Count == 0)
+            return; // Exit if still no available points (safety check)
+
+        Point spawnPoint;
+
+        do
+            spawnPoint = availableSpawnPoints[RandomGenerator.Next(availableSpawnPoints.Count)];
+        while (!Subject.IsWalkable(spawnPoint, CreatureType.Aisling));
+
+        UsedReindeerSpawnPoints.Add(spawnPoint);
+
+        var reindeer = MonsterFactory.Create("crazed_reindeer", Subject, spawnPoint);
+        Subject.AddEntity(reindeer, reindeer);
+    }
+
+    private void SpawnPrizeBoxes()
+    {
+        var playerCount = Subject.GetEntities<Aisling>()
+                                 .Count(a => BombSpawnArea.Contains(new Point(a.X, a.Y)));
+
+        var prizeBoxCount = playerCount / 3;
+
+        if (prizeBoxCount < 1)
+            prizeBoxCount = 1;
+
+        if (prizeBoxCount > 4)
+            prizeBoxCount = 4;
+
+        for (var i = 0; i < prizeBoxCount; i++)
         {
-            SpawnPrizeBoxes();
+            Point spawnPoint;
+
+            do
+                spawnPoint = BombSpawnArea.GetRandomPoint();
+            while (!Subject.IsWalkable(spawnPoint, CreatureType.Aisling) || IsCreatureAtPosition(spawnPoint));
+
+            var prizeBox = ItemFactory.Create("mountmerrybox");
+            var groundItem = new GroundItem(prizeBox, Subject, spawnPoint);
+            Subject.AddEntity(groundItem, spawnPoint);
         }
     }
 
@@ -83,147 +180,150 @@ public class ChristmasFrostyBombScript : MapScriptBase
         Point spawnPoint;
 
         do
-        {
             spawnPoint = BombSpawnArea.GetRandomPoint();
-        } 
         while (!Subject.IsWalkable(spawnPoint, CreatureType.Aisling) || IsBombAtPosition(spawnPoint));
 
-        // Create a monster bomb
         var bomb = MonsterFactory.Create("smiley_blob_bomb", Subject, spawnPoint);
-
         Subject.AddEntity(bomb, bomb);
     }
 
-    private bool IsBombAtPosition(Point position)
+    public override void Update(TimeSpan delta)
     {
-        // Check if there is already a bomb at the position
-        return Subject.GetEntities<Monster>()
-                      .Any(monster => monster.Template.TemplateKey == "smiley_blob_bomb" && new Point(monster.X, monster.Y) == position);
-    }
+        var currentTime = DateTime.UtcNow;
+        var elapsedTime = currentTime - TimerStart;
+        var remainingTime = TimerDuration - elapsedTime;
+        BombSpawnTimer.Update(delta);
+        DifficultyTimer.Update(delta);
+        PrizeBoxSpawnTimer.Update(delta);
+        ReindeerSpawnTimer.Update(delta);
 
-    private void SpawnCrazedReindeer()
-    {
-        // Random number of reindeer to spawn
-        var reindeerCount = RandomGenerator.Next(1, 9); // Between 1 and 8 inclusive
+        var aislings = Subject.GetEntities<Aisling>()
+                              .ToList();
 
-        var availableSpawnPoints = new List<Point>(ReindeerSpawnPoints.Except(UsedReindeerSpawnPoints));
+        var npc = Subject.GetEntities<Merchant>()
+                         .FirstOrDefault(); // Replace with specific NPC if needed
 
-        for (var i = 0; i < reindeerCount; i++)
+        if (npc == null)
+            return; // Exit if no NPC is found
+
+        switch (CurrentStage)
         {
-            if (availableSpawnPoints.Count == 0)
-                break; // No more available points to spawn
+            case ScriptStage.Dormant:
+                // Check and issue warnings
+                if ((remainingTime <= TimeSpan.FromMinutes(3)) && !Warn3Min)
+                {
+                    npc.Say("Round will be starting in 3 minutes!");
+                    Warn3Min = true;
+                } else if ((remainingTime <= TimeSpan.FromMinutes(1)) && !Warn1Min)
+                {
+                    npc.Say("Round will be starting in 1 minute!");
+                    Warn1Min = true;
+                } else if ((remainingTime <= TimeSpan.FromSeconds(30)) && !Warn30Sec)
+                {
+                    npc.Say("Round will be starting in 30 seconds!");
+                    Warn30Sec = true;
+                } else if ((remainingTime <= TimeSpan.FromSeconds(10)) && !Warn10Sec)
+                {
+                    npc.Say("Round will be starting in 10 seconds!");
+                    Warn10Sec = true;
+                }
 
-            Point spawnPoint;
+                if (elapsedTime >= TimerDuration)
+                    CurrentStage = ScriptStage.Starting;
 
-            // Select a random point from available spawn points
-            do
-            {
-                spawnPoint = availableSpawnPoints[RandomGenerator.Next(availableSpawnPoints.Count)];
-            } while (!Subject.IsWalkable(spawnPoint, CreatureType.Aisling));
+                break;
 
-            // Mark the point as used
-            UsedReindeerSpawnPoints.Add(spawnPoint);
+            case ScriptStage.Starting:
 
-            // Create a crazed reindeer
-            var reindeer = MonsterFactory.Create("crazed_reindeer", Subject, spawnPoint);
+                var playersParticipating = Subject.GetEntities<Aisling>()
+                                                  .Any(a => BombSpawnArea.Contains(new Point(a.X, a.Y)));
 
-            Subject.AddEntity(reindeer, reindeer);
+                if (!playersParticipating)
+                {
+                    CurrentStage = ScriptStage.NoParticipants;
 
-            // Remove the point from the available list
-            availableSpawnPoints.Remove(spawnPoint);
+                    return;
+                }
+
+                foreach (var aisling in aislings)
+                    aisling.SendOrangeBarMessage("Round is starting! Dodge for your life!");
+
+                npc.Say("Round is starting, good luck!");
+                CurrentStage = ScriptStage.InProgress;
+
+                break;
+
+            case ScriptStage.InProgress:
+                // Check if players are still in the area
+                var playersInRectangle = Subject.GetEntities<Aisling>()
+                                                .Where(a => BombSpawnArea.Contains(new Point(a.X, a.Y)))
+                                                .ToList();
+
+                if (playersInRectangle.IsNullOrEmpty())
+                {
+                    CurrentStage = ScriptStage.Complete;
+                    TimerStart = DateTime.UtcNow; // Reset the timer
+                } else
+                {
+                    // Update difficulty timer
+                    DifficultyTimer.Update(delta);
+                    RewardTimer.Update(delta);
+
+                    if (RewardTimer.IntervalElapsed)
+                        foreach (var player in playersInRectangle)
+                            player.Trackers.Counters.AddOrIncrement("frostychallenge");
+
+                    if (DifficultyTimer.IntervalElapsed)
+                    {
+                        BombCount++; // Increase bomb count
+                        ReindeerCount++; // Increase reindeer count
+                    }
+
+                    if (BombSpawnTimer.IntervalElapsed)
+                        for (var i = 0; i < BombCount; i++)
+                            SpawnSingleBomb();
+
+                    if (ReindeerSpawnTimer.IntervalElapsed)
+                    {
+                        ClearUsedSpawnPointsIfNeeded();
+
+                        for (var i = 0; i < ReindeerCount; i++)
+                            SpawnCrazedReindeer();
+                    }
+
+                    if (PrizeBoxSpawnTimer.IntervalElapsed)
+                        SpawnPrizeBoxes();
+                }
+
+                break;
+
+            case ScriptStage.Complete:
+                CurrentStage = ScriptStage.Dormant;
+
+                foreach (var aisling in aislings)
+                    aisling.SendOrangeBarMessage("Round is over! No survivors!");
+                npc.Say("The round is over! Next round starts in 5 minutes.");
+                TimerStart = DateTime.UtcNow; // Restart timer for next round
+                ResetEventState();
+
+                break;
+
+            case ScriptStage.NoParticipants:
+                CurrentStage = ScriptStage.Dormant;
+                TimerStart = DateTime.UtcNow; // Restart timer for next round
+                ResetEventState();
+                npc.Say("There were no active participants! Next round in 5 minutes.");
+
+                break;
         }
-
-        // Clear used spawn points when all reindeer have exited
-        ClearUsedSpawnPointsIfNeeded();
     }
 
-    private void SpawnMaze()
+    private enum ScriptStage
     {
-        // Clear existing maze creatures before creating a new one
-        RemoveExistingMaze();
-
-        // Number of maze creatures
-        var mazeCreatureCount = RandomGenerator.Next(10, 25);
-
-        for (var i = 0; i < mazeCreatureCount; i++)
-        {
-            Point spawnPoint;
-
-            do
-            {
-                spawnPoint = BombSpawnArea.GetRandomPoint();
-            } 
-            while (!Subject.IsWalkable(spawnPoint, CreatureType.Aisling) || IsCreatureAtPosition(spawnPoint));
-
-            // Create a maze creature
-            var mazeCreature = MonsterFactory.Create("carnun_wall", Subject, spawnPoint);
-
-            Subject.AddEntity(mazeCreature, mazeCreature);
-        }
-    }
-
-    private void SpawnPrizeBoxes()
-    {
-        
-        // Random number of prize boxes to spawn
-        var prizeBoxCount = RandomGenerator.Next(2, 3);
-
-        for (var i = 0; i < prizeBoxCount; i++)
-        {
-            Point spawnPoint;
-
-            do
-            {
-                spawnPoint = BombSpawnArea.GetRandomPoint();
-            } 
-            while (!Subject.IsWalkable(spawnPoint, CreatureType.Aisling) || IsCreatureAtPosition(spawnPoint));
-
-            // Spawn the prize box item
-            var prizeBox = ItemFactory.Create("mountmerrybox");
-            var groundItem = new GroundItem(prizeBox, Subject, spawnPoint);
-            Subject.AddEntity(groundItem, spawnPoint);
-        }
-    }
-
-    private bool IsCreatureAtPosition(Point position)
-    {
-        // Check if there is already a creature at the position
-        return Subject.GetEntities<Monster>()
-                      .Any(monster => new Point(monster.X, monster.Y) == position);
-    }
-
-    private void RemoveExistingMaze()
-    {
-        // Remove all existing maze creatures
-        var mazeCreatures = Subject.GetEntities<Monster>()
-                                   .Where(monster => monster.Template.TemplateKey == "carnun_wall")
-                                   .ToList();
-
-        foreach (var creature in mazeCreatures)
-        {
-            Subject.RemoveEntity(creature);
-        }
-    }
-
-    private List<Point> GenerateReindeerSpawnPoints()
-    {
-        // Generate points in a vertical line from (7, 8) to (7, 20)
-        var points = new List<Point>();
-        for (var y = 8; y <= 20; y++)
-        {
-            points.Add(new Point(7, y));
-        }
-        return points;
-    }
-
-    private void ClearUsedSpawnPointsIfNeeded()
-    {
-        // Clear used points if all reindeer at the exit line (25, 8 to 25, 20) are removed
-        if (!Subject.GetEntities<Monster>()
-                   .Where(monster => monster.Template.TemplateKey == "crazed_reindeer")
-                   .Any(monster => ReindeerSpawnPoints.Contains(new Point(monster.X, monster.Y))))
-        {
-            UsedReindeerSpawnPoints.Clear();
-        }
+        Dormant,
+        Starting,
+        InProgress,
+        Complete,
+        NoParticipants
     }
 }
