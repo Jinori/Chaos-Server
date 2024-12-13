@@ -27,7 +27,7 @@ public class ChristmasFrostyBombScript : MapScriptBase
     private readonly List<Point> ReindeerSpawnPoints;
     private readonly IIntervalTimer ReindeerSpawnTimer;
     private readonly IIntervalTimer RewardTimer;
-    private readonly TimeSpan TimerDuration = TimeSpan.FromMinutes(3);
+    private readonly TimeSpan TimerDuration = TimeSpan.FromMinutes(1);
     private readonly HashSet<Point> UsedReindeerSpawnPoints;
     private int BombCount = 10; // Start with 14 bomb
 
@@ -115,7 +115,7 @@ public class ChristmasFrostyBombScript : MapScriptBase
         Warn30Sec = false;
         Warn10Sec = false;
 
-        BombCount = 14; // Reset to default bomb count
+        BombCount = 10; // Reset to default bomb count
         ReindeerCount = 2; // Reset to default reindeer count
 
         var presents = Subject.GetEntities<GroundItem>()
@@ -275,8 +275,10 @@ public class ChristmasFrostyBombScript : MapScriptBase
 
                     if (DifficultyTimer.IntervalElapsed)
                     {
-                        BombCount += 2; // Increase bomb count
-                        ReindeerCount++; // Increase reindeer count
+                        BombCount++; // Increase bomb count
+
+                        if (ReindeerCount < 8)
+                            ReindeerCount++; // Increase reindeer count
                     }
 
                     if (BombSpawnTimer.IntervalElapsed)

@@ -1,9 +1,11 @@
+using System.Text.Json;
 using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Formulae;
 using Chaos.Geometry.Abstractions.Definitions;
+using Chaos.IO.FileSystem;
 using Chaos.Models.World;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
@@ -15,6 +17,9 @@ namespace Chaos.Scripting.MonsterScripts.Events;
 
 public class MoveInDirectionReindeerScript : MonsterScriptBase
 {
+    private readonly IConfiguration Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", true, true)
+                                                                              .Build();
+
     private readonly List<Point> ExitLinePoints;
     private readonly IIntervalTimer RandomWalkInterval;
     private readonly IIntervalTimer SpawnDelayTimer;
@@ -44,7 +49,7 @@ public class MoveInDirectionReindeerScript : MonsterScriptBase
 
         // Scale experience linearly between minExperience and maxExperience
         var experience = MIN_EXPERIENCE + (MAX_EXPERIENCE - MIN_EXPERIENCE) * ((double)seconds / MAX_SECONDS);
-        
+
         if (aisling.UserStatSheet.Level < 98)
         {
             var tnl = LevelUpFormulae.Default.CalculateTnl(aisling);
@@ -55,6 +60,24 @@ public class MoveInDirectionReindeerScript : MonsterScriptBase
         }
 
         return (int)experience;
+    }
+
+    public static void FrostyChallenge(Aisling player, int seconds, IConfiguration configuration)
+    {
+        var stagingDirectory = configuration.GetSection("Options:ChaosOptions:StagingDirectory")
+                                            .Value;
+
+        var aislingDirectory = configuration.GetSection("Options:FrostyChallengeOptions:Directory")
+                                            .Value;
+
+        var directory = stagingDirectory + aislingDirectory;
+        var filePath = Path.Combine(stagingDirectory + aislingDirectory, "frostyChallenge.json");
+
+        directory.SafeExecute(
+            _ =>
+            {
+                Save(filePath, seconds, player);
+            });
     }
 
     private List<Point> GenerateExitLinePoints()
@@ -73,6 +96,10 @@ public class MoveInDirectionReindeerScript : MonsterScriptBase
         if (aisling.IsGodModeEnabled())
             return;
 
+        var npc = Subject.MapInstance
+                         .GetEntities<Merchant>()
+                         .FirstOrDefault();
+
         aisling.Trackers.Counters.TryGetValue("frostychallenge", out var seconds);
 
         if (seconds > 120)
@@ -88,6 +115,10 @@ public class MoveInDirectionReindeerScript : MonsterScriptBase
             aisling.Trackers.Counters.Remove("frostychallenge", out _);
         }
 
+        npc?.Say($"{aisling.Name} lasted {seconds} seconds that round!");
+
+        FrostyChallenge(aisling, seconds, Configuration);
+
         // Warp the Aisling to the designated point
         aisling.WarpTo(new Point(4, 11));
 
@@ -95,6 +126,44 @@ public class MoveInDirectionReindeerScript : MonsterScriptBase
         aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You got ran over by a reindeer!");
 
         // Optional: Add additional logic (e.g., stagger the reindeer, cooldown mechanics)
+    }
+
+    public static void Save(string filePath, int newseconds, Aisling player)
+    {
+        Dictionary<string, int>? secondsData;
+
+        if (File.Exists(filePath))
+        {
+            var existingJson = File.ReadAllText(filePath);
+            secondsData = JsonSerializer.Deserialize<Dictionary<string, int>>(existingJson);
+        } else
+            secondsData = new Dictionary<string, int>();
+
+        if (secondsData != null)
+        {
+            // Update the damageDone for the player if it's higher than the previous value
+            var playerName = player.Name;
+
+            if (secondsData.TryGetValue(playerName, out var oldseconds))
+            {
+                if (newseconds > oldseconds)
+                {
+                    player.SendServerMessage(
+                        ServerMessageType.Whisper,
+                        $"New Record: {newseconds} seconds! Your last one was {oldseconds} seconds!");
+
+                    secondsData[playerName] = newseconds;
+                }
+            } else
+            {
+                player.SendServerMessage(ServerMessageType.Whisper, $"New score of {newseconds} recorded!");
+                secondsData.Add(playerName, newseconds);
+            }
+
+            // Serialize the updated dictionary and write it to the JSON file
+            var updatedJson = JsonSerializer.Serialize(secondsData);
+            FileEx.SafeWriteAllText(filePath, updatedJson);
+        }
     }
 
     public override void Update(TimeSpan delta)

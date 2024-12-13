@@ -1,6 +1,5 @@
 using System.Text.Json;
 using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.IO.FileSystem;
 using Chaos.Models.World;
@@ -14,7 +13,9 @@ namespace Chaos.Scripting.MonsterScripts;
 
 public class DamageGameScript(Monster subject, ISimpleCache simpleCache) : MonsterScriptBase(subject)
 {
-    private readonly IConfiguration Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", true, true).Build();
+    private readonly IConfiguration Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", true, true)
+                                                                              .Build();
+
     private readonly IIntervalTimer CountDownTimer = new PeriodicMessageTimer(
         TimeSpan.FromMinutes(1),
         TimeSpan.FromSeconds(15),
@@ -22,13 +23,17 @@ public class DamageGameScript(Monster subject, ISimpleCache simpleCache) : Monst
         TimeSpan.FromSeconds(1),
         "{Time}",
         subject.Say);
+
     private int DamageDone;
     private bool GameStarted;
 
     public static void DamageGame(Aisling player, int damage, IConfiguration configuration)
     {
-        var stagingDirectory = configuration.GetSection("Options:ChaosOptions:StagingDirectory").Value;
-        var aislingDirectory = configuration.GetSection("Options:DamageGameOptions:Directory").Value;
+        var stagingDirectory = configuration.GetSection("Options:ChaosOptions:StagingDirectory")
+                                            .Value;
+
+        var aislingDirectory = configuration.GetSection("Options:DamageGameOptions:Directory")
+                                            .Value;
 
         var directory = stagingDirectory + aislingDirectory;
         var filePath = Path.Combine(stagingDirectory + aislingDirectory, "soloDamageGame.json");
@@ -56,8 +61,7 @@ public class DamageGameScript(Monster subject, ISimpleCache simpleCache) : Monst
         {
             var existingJson = File.ReadAllText(filePath);
             damageData = JsonSerializer.Deserialize<Dictionary<string, int>>(existingJson);
-        }
-        else
+        } else
             damageData = new Dictionary<string, int>();
 
         if (damageData != null)
@@ -78,8 +82,7 @@ public class DamageGameScript(Monster subject, ISimpleCache simpleCache) : Monst
 
                 if (damage < previousDamageDone)
                     player.SendServerMessage(ServerMessageType.Whisper, $"No new record. You only did {damage}.");
-            }
-            else
+            } else
             {
                 player.SendServerMessage(ServerMessageType.Whisper, $"New score of {damage} recorded!");
                 damageData.Add(playerName, damage);
@@ -99,7 +102,9 @@ public class DamageGameScript(Monster subject, ISimpleCache simpleCache) : Monst
 
             if (CountDownTimer.IntervalElapsed)
             {
-                var player = Subject.MapInstance.GetEntities<Aisling>().FirstOrDefault();
+                var player = Subject.MapInstance
+                                    .GetEntities<Aisling>()
+                                    .FirstOrDefault();
 
                 if (player != null)
                 {

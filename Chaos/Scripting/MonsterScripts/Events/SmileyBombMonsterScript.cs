@@ -1,7 +1,9 @@
+using System.Text.Json;
 using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
 using Chaos.Formulae;
+using Chaos.IO.FileSystem;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -14,6 +16,9 @@ namespace Chaos.Scripting.MonsterScripts.Events;
 
 public class SmileyBombMonsterScript : MonsterScriptBase
 {
+    private readonly IConfiguration Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", true, true)
+                                                                              .Build();
+
     private readonly Animation ExplosionAnimation = new()
     {
         TargetAnimation = 992,
@@ -67,6 +72,10 @@ public class SmileyBombMonsterScript : MonsterScriptBase
                               .GetEntitiesAtPoints<Aisling>(tile)
                               .Where(x => !x.IsGodModeEnabled());
 
+        var npc = Subject.MapInstance
+                         .GetEntities<Merchant>()
+                         .FirstOrDefault();
+
         // Deal damage to all creatures on the tile
         foreach (var entity in entities)
         {
@@ -86,6 +95,10 @@ public class SmileyBombMonsterScript : MonsterScriptBase
                 ExperienceDistributionScript.GiveExp(entity, expReward);
                 entity.Trackers.Counters.Remove("frostychallenge", out _);
             }
+
+            FrostyChallenge(entity, seconds, Configuration);
+
+            npc?.Say($"{entity.Name} lasted {seconds} seconds that round!");
 
             // Warp the entity and send a message
             entity.WarpTo(new Point(4, 10));
@@ -114,6 +127,24 @@ public class SmileyBombMonsterScript : MonsterScriptBase
         Map.RemoveEntity(Subject);
     }
 
+    public static void FrostyChallenge(Aisling player, int seconds, IConfiguration configuration)
+    {
+        var stagingDirectory = configuration.GetSection("Options:ChaosOptions:StagingDirectory")
+                                            .Value;
+
+        var aislingDirectory = configuration.GetSection("Options:FrostyChallengeOptions:Directory")
+                                            .Value;
+
+        var directory = stagingDirectory + aislingDirectory;
+        var filePath = Path.Combine(stagingDirectory + aislingDirectory, "frostyChallenge.json");
+
+        directory.SafeExecute(
+            _ =>
+            {
+                Save(filePath, seconds, player);
+            });
+    }
+
     private IEnumerable<Point> GetAdjacentTiles(Point center)
         =>
 
@@ -124,6 +155,44 @@ public class SmileyBombMonsterScript : MonsterScriptBase
                 new(center.X - 1, center.Y), // West
                 new(center.X + 1, center.Y) // East
             ];
+
+    public static void Save(string filePath, int newseconds, Aisling player)
+    {
+        Dictionary<string, int>? secondsData;
+
+        if (File.Exists(filePath))
+        {
+            var existingJson = File.ReadAllText(filePath);
+            secondsData = JsonSerializer.Deserialize<Dictionary<string, int>>(existingJson);
+        } else
+            secondsData = new Dictionary<string, int>();
+
+        if (secondsData != null)
+        {
+            // Update the damageDone for the player if it's higher than the previous value
+            var playerName = player.Name;
+
+            if (secondsData.TryGetValue(playerName, out var oldseconds))
+            {
+                if (newseconds > oldseconds)
+                {
+                    player.SendServerMessage(
+                        ServerMessageType.Whisper,
+                        $"New Record: {newseconds} seconds! Your last one was {oldseconds} seconds!");
+
+                    secondsData[playerName] = newseconds;
+                }
+            } else
+            {
+                player.SendServerMessage(ServerMessageType.Whisper, $"New score of {newseconds} recorded!");
+                secondsData.Add(playerName, newseconds);
+            }
+
+            // Serialize the updated dictionary and write it to the JSON file
+            var updatedJson = JsonSerializer.Serialize(secondsData);
+            FileEx.SafeWriteAllText(filePath, updatedJson);
+        }
+    }
 
     public override void Update(TimeSpan delta)
     {
