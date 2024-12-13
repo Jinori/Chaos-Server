@@ -33,6 +33,7 @@ public static class StatusExtensions
 
     public static bool IsInLastStand(this Creature creature) => creature.Effects.Contains("Last Stand");
     public static bool IsInnerFired(this Creature creature) => creature.Effects.Contains("Inner Fire");
+    public static bool IsHotChocolated(this Creature creature) => creature.Effects.Contains("Hot Chocolate");
     public static bool IsLightningStanced(this Creature creature) => creature.Effects.Contains("Lightning Stance");
     public static bool IsMistStanced(this Creature creature) => creature.Effects.Contains("Mist Stance");
     public static bool IsMorAited(this Creature creature) => creature.Effects.Contains("Mor Naomh Aite");

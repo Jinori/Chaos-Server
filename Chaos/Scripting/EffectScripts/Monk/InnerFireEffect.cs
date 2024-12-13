@@ -5,6 +5,7 @@ using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
+using NLog.Targets;
 
 namespace Chaos.Scripting.EffectScripts.Monk;
 
@@ -52,6 +53,11 @@ public class InnerFireEffect : ContinuousAnimationEffectBase
             source.Effects.Dispel("Inner Fire");
 
             return true;
+        }
+        if (source.Effects.Contains("Hot Chocolate"))
+        {
+            AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your body is already to warm.");
+            return false;
         }
 
         return true;
