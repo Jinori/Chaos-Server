@@ -9,11 +9,14 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.DialogScripts.Quests.Astrid;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
+using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Events.Christmas;
 
-public class dirtyErbieQuestScript(Dialog subject, ILogger<TheSacrificeQuestScript> logger) : DialogScriptBase(subject)
+public class dirtyErbieQuestScript(Dialog subject, ILogger<TheSacrificeQuestScript> logger, IItemFactory itemFactory)
+    : DialogScriptBase(subject)
 {
+    private readonly IItemFactory ItemFactory = itemFactory;
     private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
 
     public override void OnDisplaying(Aisling source)
@@ -95,7 +98,9 @@ public class dirtyErbieQuestScript(Dialog subject, ILogger<TheSacrificeQuestScri
                         "You definitely knocked them down! They must be scattering now. Thank you Aisling for your dedication to the elves.",
                         "elf2_initial");
                     source.TryGiveGamePoints(15);
-                    source.Trackers.TimedEvents.AddEvent("dirtyerbiecd", TimeSpan.FromHours(22), true);
+                    var stockingstuffer = ItemFactory.Create("stockingstuffer");
+                    source.GiveItemOrSendToBank(stockingstuffer);
+                    source.Trackers.TimedEvents.AddEvent("dirtyerbiecd", TimeSpan.FromHours(6), true);
                     source.Trackers.Counters.Remove("dirtyerbie", out _);
                     source.Trackers.Enums.Set(DirtyErbie.None);
                 }

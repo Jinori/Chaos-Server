@@ -1,5 +1,6 @@
 ﻿using Chaos.Common.Utilities;
 using Chaos.Definitions;
+using Chaos.Extensions.Common;
 using Chaos.Formulae;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
@@ -8,11 +9,13 @@ using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
+using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Events.Christmas;
 
-public class ErbieQuestScript(Dialog subject, ILogger<Erbie> logger) : DialogScriptBase(subject)
+public class ErbieQuestScript(Dialog subject, ILogger<Erbie> logger, IItemFactory itemFactory) : DialogScriptBase(subject)
 {
+    private readonly IItemFactory ItemFactory = itemFactory;
     private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
 
     public override void OnDisplaying(Aisling source)
@@ -39,6 +42,15 @@ public class ErbieQuestScript(Dialog subject, ILogger<Erbie> logger) : DialogScr
 
             case "erbie_initial":
             {
+                if (source.Trackers.TimedEvents.HasActiveEvent("babyerbiecd", out var cdtime))
+                {
+                    Subject.Reply(
+                        source,
+                        $"Oh I know, All my babies are home down, resting safely. Check back in {cdtime.Remaining.ToReadableString()}.");
+
+                    return;
+                }
+
                 if (hasStage && (stage == Erbie.StartedQuest))
                     Subject.Reply(source, "Skip", "erbie_return1");
 
@@ -78,11 +90,13 @@ public class ErbieQuestScript(Dialog subject, ILogger<Erbie> logger) : DialogScr
                             // Reset the counter and reward the player
                             source.Trackers.Enums.Set(Erbie.None);
                             source.Trackers.Counters.Remove("BabyErbieCount", out _); // Remove counter after completion
-                            source.Trackers.TimedEvents.AddEvent("babyerbiecd", TimeSpan.FromHours(22), true);
+                            source.Trackers.TimedEvents.AddEvent("babyerbiecd", TimeSpan.FromHours(6), true);
 
                             var expRewarded = source.UserStatSheet.Level == 99 ? 10000000 : twentyFivePercent;
                             ExperienceDistributionScript.GiveExp(source, expRewarded);
                             source.TryGiveGamePoints(5);
+                            var erbiegiftbox = ItemFactory.Create("erbiegiftbox");
+                            source.GiveItemOrSendToBank(erbiegiftbox);
 
                             source.SendOrangeBarMessage("You have found all the Baby Erbies! Thank you for your help.");
 

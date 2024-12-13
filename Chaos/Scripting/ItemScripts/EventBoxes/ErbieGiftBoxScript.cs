@@ -5,7 +5,7 @@ using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.EventBoxes;
 
-public class MountMerryBoxScript : ItemScriptBase
+public class ErbieGiftBoxScript : ItemScriptBase
 {
     // Define a random number generator
     private static readonly Random Random = new();
@@ -14,58 +14,52 @@ public class MountMerryBoxScript : ItemScriptBase
     private readonly Dictionary<string, double> ItemChances = new()
     {
         {
-            "coldstreamdress", 0.15
+            "angrysnowman", 0.15
         },
         {
-            "coldstreamsuit", 0.15
+            "erbiebackpack", 0.05
         },
         {
-            "mcoldstreamhat", 0.15
+            "erbiehat", 0.08
         },
         {
-            "fcoldstreamhat", 0.15
+            "snowmanbuddy", 0.08
         },
         {
-            "reindeercostume", 0.15
+            "peterbie", 0.03
         },
         {
-            "reindeerhat", 0.15
+            "petholidayerbie", 0.03
         },
         {
-            "santahead", 0.05
+            "ranchdress", 0.10
         },
         {
-            "snowbeastbuddy", 0.03
+            "ranchsuit", 0.10
         },
         {
-            "holidaybow", 0.10
+            "ranchhat", 0.10
         },
         {
-            "holidaydress", 0.10
+            "ranchbow", 0.10
         },
         {
-            "holidaypartyhat", 0.15
+            "redantlers", 0.15
         },
         {
-            "holidayrobe", 0.08
+            "fskisuit", 0.05
         },
         {
-            "holidayscarf", 0.05
+            "mskisuit", 0.05
         },
         {
-            "holidayspecs", 0.05
-        },
-        {
-            "mholidayband", 0.08
-        },
-        {
-            "fholidayband", 0.15
+            "winterscarf", 0.05
         }
     };
 
     private readonly IItemFactory ItemFactory;
 
-    public MountMerryBoxScript(Item subject, IItemFactory itemFactory)
+    public ErbieGiftBoxScript(Item subject, IItemFactory itemFactory)
         : base(subject)
         => ItemFactory = itemFactory;
 
@@ -93,7 +87,7 @@ public class MountMerryBoxScript : ItemScriptBase
                 source.GiveItemOrSendToBank(item);
 
                 // Send a message to the player
-                source.SendOrangeBarMessage($"You received {item.DisplayName} from the Mount Merry Box!");
+                source.SendOrangeBarMessage($"You received {item.DisplayName} from the Erbie Gift Box!");
 
                 break;
             }

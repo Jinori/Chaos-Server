@@ -11,12 +11,15 @@ using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
+using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Events.Christmas;
 
-public class RecoverRudolphQuestScript(Dialog subject, ILogger<RecoverRudolphQuestScript> logger) : DialogScriptBase(subject)
+public class RecoverRudolphQuestScript(Dialog subject, ILogger<RecoverRudolphQuestScript> logger, IItemFactory itemFactory)
+    : DialogScriptBase(subject)
 {
+    private readonly IItemFactory ItemFactory = itemFactory;
     private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
 
     public override void OnDisplaying(Aisling source)
@@ -75,7 +78,7 @@ public class RecoverRudolphQuestScript(Dialog subject, ILogger<RecoverRudolphQue
                         {
                             source.Inventory.RemoveQuantity("Rudolph", 1, out _);
                             source.Trackers.Enums.Set(Rudolph.None);
-                            source.Trackers.TimedEvents.AddEvent("rudolphcd", TimeSpan.FromHours(22), true);
+                            source.Trackers.TimedEvents.AddEvent("rudolphcd", TimeSpan.FromHours(6), true);
 
                             var expRewarded = 0;
 
@@ -103,6 +106,8 @@ public class RecoverRudolphQuestScript(Dialog subject, ILogger<RecoverRudolphQue
                                       expRewarded);
 
                             source.TryGiveGamePoints(10);
+                            var present = ItemFactory.Create("present");
+                            source.GiveItemOrSendToBank(present);
 
                             if (IntegerRandomizer.RollChance(5))
                             {

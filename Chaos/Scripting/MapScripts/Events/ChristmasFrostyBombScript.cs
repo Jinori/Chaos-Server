@@ -27,17 +27,17 @@ public class ChristmasFrostyBombScript : MapScriptBase
     private readonly List<Point> ReindeerSpawnPoints;
     private readonly IIntervalTimer ReindeerSpawnTimer;
     private readonly IIntervalTimer RewardTimer;
-    private readonly TimeSpan TimerDuration = TimeSpan.FromSeconds(20);
+    private readonly TimeSpan TimerDuration = TimeSpan.FromMinutes(3);
     private readonly HashSet<Point> UsedReindeerSpawnPoints;
-    private int BombCount = 18; // Start with 6 bomb
+    private int BombCount = 10; // Start with 14 bomb
 
     private ScriptStage CurrentStage;
     private int ReindeerCount = 2; // Start with 2 reindeer
     private DateTime TimerStart;
     private bool Warn10Sec;
     private bool Warn1Min;
+    private bool Warn2Min;
     private bool Warn30Sec;
-    private bool Warn3Min;
 
     public ChristmasFrostyBombScript(MapInstance subject, IMonsterFactory monsterFactory, IItemFactory itemFactory)
         : base(subject)
@@ -110,7 +110,7 @@ public class ChristmasFrostyBombScript : MapScriptBase
 
     private void ResetEventState()
     {
-        Warn3Min = false;
+        Warn2Min = false;
         Warn1Min = false;
         Warn30Sec = false;
         Warn10Sec = false;
@@ -210,10 +210,10 @@ public class ChristmasFrostyBombScript : MapScriptBase
         {
             case ScriptStage.Dormant:
                 // Check and issue warnings
-                if ((remainingTime <= TimeSpan.FromMinutes(3)) && !Warn3Min)
+                if ((remainingTime <= TimeSpan.FromMinutes(2)) && !Warn2Min)
                 {
-                    npc.Say("Round will be starting in 3 minutes!");
-                    Warn3Min = true;
+                    npc.Say("Round will be starting in 2 minutes!");
+                    Warn2Min = true;
                 } else if ((remainingTime <= TimeSpan.FromMinutes(1)) && !Warn1Min)
                 {
                     npc.Say("Round will be starting in 1 minute!");
@@ -275,20 +275,36 @@ public class ChristmasFrostyBombScript : MapScriptBase
 
                     if (DifficultyTimer.IntervalElapsed)
                     {
-                        BombCount++; // Increase bomb count
+                        BombCount += 2; // Increase bomb count
                         ReindeerCount++; // Increase reindeer count
                     }
 
                     if (BombSpawnTimer.IntervalElapsed)
-                        for (var i = 0; i < BombCount; i++)
-                            SpawnSingleBomb();
+                    {
+                        if (playersInRectangle.Count > 3)
+                        {
+                            var adjustedBombCount = Math.Max(12, BombCount - playersInRectangle.Count);
+
+                            for (var i = 0; i < adjustedBombCount; i++)
+                                SpawnSingleBomb();
+                        } else
+                            for (var i = 0; i < BombCount; i++)
+                                SpawnSingleBomb();
+                    }
 
                     if (ReindeerSpawnTimer.IntervalElapsed)
                     {
                         ClearUsedSpawnPointsIfNeeded();
 
-                        for (var i = 0; i < ReindeerCount; i++)
-                            SpawnCrazedReindeer();
+                        if (playersInRectangle.Count > 3)
+                        {
+                            var adjustedReindeerCount = Math.Max(2, ReindeerCount - playersInRectangle.Count / 3);
+
+                            for (var i = 0; i < adjustedReindeerCount; i++)
+                                SpawnCrazedReindeer();
+                        } else
+                            for (var i = 0; i < ReindeerCount; i++)
+                                SpawnCrazedReindeer();
                     }
 
                     if (PrizeBoxSpawnTimer.IntervalElapsed)
@@ -302,7 +318,7 @@ public class ChristmasFrostyBombScript : MapScriptBase
 
                 foreach (var aisling in aislings)
                     aisling.SendOrangeBarMessage("Round is over! No survivors!");
-                npc.Say("The round is over! Next round starts in 5 minutes.");
+                npc.Say("The round is over! Next round starts in 3 minutes.");
                 TimerStart = DateTime.UtcNow; // Restart timer for next round
                 ResetEventState();
 
@@ -312,7 +328,7 @@ public class ChristmasFrostyBombScript : MapScriptBase
                 CurrentStage = ScriptStage.Dormant;
                 TimerStart = DateTime.UtcNow; // Restart timer for next round
                 ResetEventState();
-                npc.Say("There were no active participants! Next round in 5 minutes.");
+                npc.Say("There were no active participants! Next round in 3 minutes.");
 
                 break;
         }

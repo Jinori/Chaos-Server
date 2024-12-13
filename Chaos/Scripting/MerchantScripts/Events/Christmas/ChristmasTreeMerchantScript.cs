@@ -35,9 +35,10 @@ public class ChristmasTreeMerchant : MerchantScriptBase
                     return;
                 }
 
-                var gift = ItemFactory.Create("christmasbox");
-                aisling.GiveItemOrSendToBank(gift);
-                aisling.SendOrangeBarMessage("You've gotten a gift from the tree!");
+                aisling.Trackers.TimedEvents.AddEvent("christmastree", TimeSpan.FromHours(3), true);
+                var present = ItemFactory.Create("present");
+                aisling.GiveItemOrSendToBank(present);
+                aisling.SendOrangeBarMessage("You've gotten a present from the tree!");
             }
 
                 break;

@@ -2,6 +2,7 @@ using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
+using Chaos.Formulae;
 using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Models.World;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -32,15 +33,28 @@ public class MoveInDirectionReindeerScript : MonsterScriptBase
         ExitLinePoints = GenerateExitLinePoints();
     }
 
-    public int CalculateExperience(int seconds)
+    public int CalculateExperience(int seconds, Aisling aisling)
     {
-        const double A = 1388.89;
-        const int BASE_EXPERIENCE = 25000;
+        const int MIN_EXPERIENCE = 10000;
+        const int MAX_EXPERIENCE = 7500000;
+        const int MAX_SECONDS = 120;
 
-        // Cap seconds at 120 to avoid exceeding max experience
-        seconds = Math.Min(seconds, 120);
+        // Cap seconds at the maximum allowed
+        seconds = Math.Min(seconds, MAX_SECONDS);
 
-        return (int)(A * Math.Pow(seconds, 2) + BASE_EXPERIENCE);
+        // Scale experience linearly between minExperience and maxExperience
+        var experience = MIN_EXPERIENCE + (MAX_EXPERIENCE - MIN_EXPERIENCE) * ((double)seconds / MAX_SECONDS);
+        
+        if (aisling.UserStatSheet.Level < 98)
+        {
+            var tnl = LevelUpFormulae.Default.CalculateTnl(aisling);
+            var percentage = seconds / 6;
+            var expReward = Convert.ToInt32(percentage * tnl);
+
+            return expReward;
+        }
+
+        return (int)experience;
     }
 
     private List<Point> GenerateExitLinePoints()
@@ -69,7 +83,7 @@ public class MoveInDirectionReindeerScript : MonsterScriptBase
 
         if (seconds > 0)
         {
-            var expReward = CalculateExperience(seconds);
+            var expReward = CalculateExperience(seconds, aisling);
             ExperienceDistributionScript.GiveExp(aisling, expReward);
             aisling.Trackers.Counters.Remove("frostychallenge", out _);
         }
