@@ -42,6 +42,11 @@ public class TeleportToFrostyChallenge : DialogScriptBase
 
                 break;
 
+            case "elf4_frostychallenge":
+                TeleportPlayerToFrostyChallengeMap(source);
+
+                break;
+
             // Add more cases as needed
             default:
                 source.SendOrangeBarMessage("Invalid option. Please try again.");
@@ -68,6 +73,9 @@ public class TeleportToFrostyChallenge : DialogScriptBase
                     MarkColor.Pink,
                     1,
                     GameTime.Now));
+            
+            var reindeerbuddy = ItemFactory.Create("reindeerbuddy");
+            source.GiveItemOrSendToBank(reindeerbuddy);
 
             source.SendOrangeBarMessage("You received a Reindeer Buddy and a unique Legend Mark!");
 
@@ -103,7 +111,28 @@ public class TeleportToFrostyChallenge : DialogScriptBase
 
         var point = rectangle.GetRandomPoint();
 
+        if (source.Effects.Contains("Mount"))
+            source.Effects.Dispel("Mount");
+
         source.WarpTo(point);
+    }
+
+    private void TeleportPlayerToFrostyChallengeMap(Aisling source)
+    {
+        var rectangle = new Rectangle(
+            2,
+            7,
+            3,
+            3);
+        Subject.Close(source);
+
+        if (source.Effects.Contains("Mount"))
+            source.Effects.Dispel("Mount");
+
+        var mapInstance = SimpleCache.Get<MapInstance>("mtmerry_frostychallenge");
+        var point = rectangle.GetRandomPoint();
+
+        source.TraverseMap(mapInstance, point);
     }
 
     private void TeleportPlayerToNorthPole(Aisling source)

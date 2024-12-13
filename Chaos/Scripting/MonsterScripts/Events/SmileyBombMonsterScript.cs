@@ -1,6 +1,7 @@
 using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
+using Chaos.Formulae;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -33,15 +34,30 @@ public class SmileyBombMonsterScript : MonsterScriptBase
             RandomizationType.Balanced,
             false);
 
-    public int CalculateExperience(int seconds)
+    public int CalculateExperience(int seconds, Aisling entity)
     {
-        const double a = 1388.89;
-        const int baseExperience = 25000;
+        const int MIN_EXPERIENCE = 10000;
+        const int MAX_EXPERIENCE = 7500000;
+        const int MAX_SECONDS = 120;
 
-        // Cap seconds at 120 to avoid exceeding max experience
-        seconds = Math.Min(seconds, 120);
+        // Cap seconds at the maximum allowed
+        seconds = Math.Min(seconds, MAX_SECONDS);
 
-        return (int)(a * Math.Pow(seconds, 2) + baseExperience);
+        // Scale experience linearly between minExperience and maxExperience
+        var experience = MIN_EXPERIENCE + (MAX_EXPERIENCE - MIN_EXPERIENCE) * ((double)seconds / MAX_SECONDS);
+
+        // Handle experience differently for players under level 98
+        if (entity.UserStatSheet.Level < 98)
+        {
+            // Use TNL for under level 98 players
+            var tnl = LevelUpFormulae.Default.CalculateTnl(entity);
+            var percentage = seconds / 6.0; // Adjust scaling logic as needed
+            var expReward = Convert.ToInt32(percentage * tnl);
+
+            return expReward;
+        }
+
+        return (int)experience;
     }
 
     private void DamageTile(Point tile)
@@ -54,6 +70,7 @@ public class SmileyBombMonsterScript : MonsterScriptBase
         // Deal damage to all creatures on the tile
         foreach (var entity in entities)
         {
+            // Track survived seconds
             var survivedSeconds = entity.Trackers.Counters.TryGetValue("frostychallenge", out var seconds);
 
             if (seconds > 120)
@@ -64,11 +81,13 @@ public class SmileyBombMonsterScript : MonsterScriptBase
 
             if (seconds > 0)
             {
-                var expReward = CalculateExperience(seconds);
+                // Use the updated CalculateExperience method
+                var expReward = CalculateExperience(seconds, entity);
                 ExperienceDistributionScript.GiveExp(entity, expReward);
                 entity.Trackers.Counters.Remove("frostychallenge", out _);
             }
 
+            // Warp the entity and send a message
             entity.WarpTo(new Point(4, 10));
             entity.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You got blown up by a smiley bomb!");
         }

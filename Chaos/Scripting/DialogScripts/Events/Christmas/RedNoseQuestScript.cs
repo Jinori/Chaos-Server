@@ -11,12 +11,14 @@ using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
+using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Events.Christmas;
 
-public class RedNoseQuestScript(Dialog subject, ILogger<RedNose> logger) : DialogScriptBase(subject)
+public class RedNoseQuestScript(Dialog subject, ILogger<RedNose> logger, IItemFactory itemFactory) : DialogScriptBase(subject)
 {
+    private readonly IItemFactory ItemFactory = itemFactory;
     private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
 
     public override void OnDisplaying(Aisling source)
@@ -77,7 +79,7 @@ public class RedNoseQuestScript(Dialog subject, ILogger<RedNose> logger) : Dialo
                         {
                             source.Inventory.RemoveQuantity("Red Nose", 10, out _);
                             source.Trackers.Enums.Set(RedNose.None);
-                            source.Trackers.TimedEvents.AddEvent("rednosecd", TimeSpan.FromHours(22), true);
+                            source.Trackers.TimedEvents.AddEvent("rednosecd", TimeSpan.FromHours(6), true);
 
                             var expRewarded = 0;
 
@@ -105,6 +107,8 @@ public class RedNoseQuestScript(Dialog subject, ILogger<RedNose> logger) : Dialo
                                       expRewarded);
 
                             source.TryGiveGamePoints(10);
+                            var present = ItemFactory.Create("present");
+                            source.GiveItemOrSendToBank(present);
 
                             if (IntegerRandomizer.RollChance(10))
                             {
