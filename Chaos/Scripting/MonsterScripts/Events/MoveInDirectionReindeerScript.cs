@@ -199,6 +199,13 @@ public class MoveInDirectionReindeerScript : MonsterScriptBase
             return;
         }
 
+        var aislingsOnTop = Subject.MapInstance.GetEntitiesAtPoints<Aisling>(Subject).TopOrDefault();
+
+        if (aislingsOnTop != null)
+        {
+            HandleTrample(aislingsOnTop);
+        }
+        
         var targetDirection = Subject.Direction; // Reindeer's current direction
         var nextPosition = Subject.DirectionalOffset(targetDirection);
 
@@ -210,11 +217,11 @@ public class MoveInDirectionReindeerScript : MonsterScriptBase
         var aislingInFront = Subject.MapInstance
                                     .GetEntitiesAtPoints<Aisling>(nextPosition)
                                     .TopOrDefault();
-
+        
+        
         if ((aislingInFront != null) && !aislingInFront.IsGodModeEnabled())
         {
             HandleTrample(aislingInFront);
-
             return;
         }
 

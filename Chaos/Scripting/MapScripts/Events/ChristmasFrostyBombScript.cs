@@ -140,7 +140,7 @@ public class ChristmasFrostyBombScript : MapScriptBase
 
         do
             spawnPoint = availableSpawnPoints[RandomGenerator.Next(availableSpawnPoints.Count)];
-        while (!Subject.IsWalkable(spawnPoint, CreatureType.Aisling));
+        while (!Subject.IsWalkable(spawnPoint, CreatureType.WalkThrough));
 
         UsedReindeerSpawnPoints.Add(spawnPoint);
 
