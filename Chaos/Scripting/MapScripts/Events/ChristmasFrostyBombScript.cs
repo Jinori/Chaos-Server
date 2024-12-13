@@ -27,9 +27,9 @@ public class ChristmasFrostyBombScript : MapScriptBase
     private readonly List<Point> ReindeerSpawnPoints;
     private readonly IIntervalTimer ReindeerSpawnTimer;
     private readonly IIntervalTimer RewardTimer;
-    private readonly TimeSpan TimerDuration = TimeSpan.FromMinutes(1);
+    private readonly TimeSpan TimerDuration = TimeSpan.FromMinutes(3);
     private readonly HashSet<Point> UsedReindeerSpawnPoints;
-    private int BombCount = 10; // Start with 14 bomb
+    private int BombCount = 10; // Start with 10 bomb
 
     private ScriptStage CurrentStage;
     private int ReindeerCount = 2; // Start with 2 reindeer

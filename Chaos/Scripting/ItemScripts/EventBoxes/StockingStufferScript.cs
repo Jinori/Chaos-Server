@@ -14,16 +14,16 @@ public class StockingStufferScript : ItemScriptBase
     private readonly Dictionary<string, double> ItemChances = new()
     {
         {
+            "hotchocolate", 0.20
+        },
+        {
             "babyboypenguin", 0.10
         },
         {
             "babygirlpenguin", 0.10
         },
         {
-            "fsnowpombeanie", 0.03
-        },
-        {
-            "msnowpombeanie", 0.03
+            "snowpombeanie", 0.03
         },
         {
             "snowmanbody1", 0.15
