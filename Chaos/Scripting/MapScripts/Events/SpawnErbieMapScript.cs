@@ -34,7 +34,7 @@ public class SpawnErbieMapScript : MapScriptBase
     {
         // Count existing "Lost Erbie" monsters on the map
         var existingErbies = Subject.GetEntities<Monster>()
-                                    .Count(x => x.Name == "Lost Erbie");
+                                    .Count(x => x.Name == "Baby Erbie");
 
         // Calculate how many more need to be spawned to reach 8
         var amountToSpawn = 6 - existingErbies;

@@ -25,7 +25,9 @@ public sealed class ThrowCascadingDamageTileScript : ConfigurableReactorTileScri
                                                      AnimationAbilityComponent.IAnimationComponentOptions
 {
     private readonly IIntervalTimer CascadeTimer;
+    private readonly int EndingStage;
     private readonly IIntervalTimer SoundTimer;
+    private readonly int StartingStage;
     public int? EffectApplyChance { get; init; }
 
     public TimeSpan? EffectDurationOverride { get; init; }
@@ -47,23 +49,54 @@ public sealed class ThrowCascadingDamageTileScript : ConfigurableReactorTileScri
 
         var context = new ActivationContext(Subject.Owner!, Subject);
         var vars = new ComponentVars();
-        vars.SetStage(0);
+
+        if (InvertShape)
+            StartingStage = Stages;
+        else if (ExclusionRange.HasValue)
+            StartingStage = ExclusionRange.Value + 1;
+        else
+            StartingStage = 0;
+
+        vars.SetStage(StartingStage);
+
+        // ReSharper disable once ConvertIfStatementToSwitchStatement
+        if (InvertShape && ExclusionRange.HasValue)
+            EndingStage = ExclusionRange.Value;
+        else if (InvertShape)
+            EndingStage = 0;
+        else
+            EndingStage = Stages;
 
         Executor = new ComponentExecutor(context, vars).WithOptions(this);
     }
 
     public bool HandleStage(ComponentVars vars)
     {
-        var stage = vars.GetStage() + 1;
-
-        if (stage >= Stages)
+        if (InvertShape)
         {
-            Subject.MapInstance.RemoveEntity(Subject);
+            var stage = vars.GetStage() - 1;
 
-            return false;
+            if (stage < EndingStage)
+            {
+                Subject.MapInstance.RemoveEntity(Subject);
+
+                return false;
+            }
+
+            vars.SetStage(stage);
+        } else
+        {
+            var stage = vars.GetStage() + 1;
+
+            if (stage > EndingStage)
+            {
+                Subject.MapInstance.RemoveEntity(Subject);
+
+                return false;
+            }
+
+            vars.SetStage(stage);
         }
-
-        vars.SetStage(stage);
 
         return true;
     }
@@ -121,9 +154,6 @@ public sealed class ThrowCascadingDamageTileScript : ConfigurableReactorTileScri
 
     /// <inheritdoc />
     public int Range { get; init; }
-
-    /// <inheritdoc />
-    public bool IncludeSourcePoint { get; init; }
 
     /// <inheritdoc />
     public bool MustHaveTargets { get; init; }

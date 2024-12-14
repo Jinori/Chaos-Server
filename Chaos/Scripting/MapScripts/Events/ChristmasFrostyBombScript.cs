@@ -9,7 +9,6 @@ using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
-using Humanizer;
 
 namespace Chaos.Scripting.MapScripts.Events;
 
@@ -105,7 +104,7 @@ public class ChristmasFrostyBombScript : MapScriptBase
             var currentTime = DateTime.UtcNow;
             var elapsedTime = currentTime - TimerStart;
             var remainingTime = TimerDuration - elapsedTime;
-            aisling.SendOrangeBarMessage($"Next round will begin in {remainingTime.Humanize()}");
+            aisling.SendOrangeBarMessage($"Next round will begin in {remainingTime.ToReadableString()}");
         }
     }
 

@@ -29,9 +29,6 @@ public class dirtyErbieQuestScript(Dialog subject, ILogger<TheSacrificeQuestScri
         {
             case "elf2_initial":
             {
-                if (!source.UserStatSheet.Master)
-                    return;
-
                 var option = new DialogOption
                 {
                     DialogKey = "mtmerrybattle_initial",

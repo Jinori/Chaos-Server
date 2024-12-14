@@ -2,7 +2,7 @@ using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.EventBoss.Boss.Christmas.DirtyErbie;
+namespace Chaos.Scripting.MonsterScripts.Boss.EventBoss.Christmas.DirtyErbie;
 
 public class DirtyErbieVit : CompositeMonsterScript
 {
