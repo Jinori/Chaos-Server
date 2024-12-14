@@ -80,7 +80,8 @@ public class ChristmasFrostyBombScript : MapScriptBase
     {
         var points = new List<Point>();
 
-        for (var y = 8; y <= 20; y++)
+        //fix for corners
+        for (var y = 8; y <= 21; y++)
             points.Add(new Point(7, y));
 
         return points;
@@ -277,7 +278,7 @@ public class ChristmasFrostyBombScript : MapScriptBase
                     {
                         BombCount++; // Increase bomb count
 
-                        if (ReindeerCount < 8)
+                        if (ReindeerCount < 9)
                             ReindeerCount++; // Increase reindeer count
                     }
 
