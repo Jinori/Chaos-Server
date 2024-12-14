@@ -10,7 +10,7 @@ namespace Chaos.Scripting.MapScripts.Events;
 
 public class SpawnErbieMapScript : MapScriptBase
 {
-    private const int SPAWN_INTERVAL_MINUTES = 1;
+    private const int SPAWN_INTERVAL_MINUTES = 6;
     public const int UPDATE_INTERVAL_MS = 1000; // Increased for realistic update intervals
 
     private readonly IMonsterFactory MonsterFactory;

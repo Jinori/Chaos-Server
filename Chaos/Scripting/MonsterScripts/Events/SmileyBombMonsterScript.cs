@@ -51,12 +51,16 @@ public class SmileyBombMonsterScript : MonsterScriptBase
         // Scale experience linearly between minExperience and maxExperience
         var experience = MIN_EXPERIENCE + (MAX_EXPERIENCE - MIN_EXPERIENCE) * ((double)seconds / MAX_SECONDS);
 
-        // Handle experience differently for players under level 98
-        if (entity.UserStatSheet.Level < 98)
+        // Handle experience differently for players under level 99
+        if (entity.UserStatSheet.Level < 99)
         {
-            // Use TNL for under level 98 players
+            // Get TNL for the entity
             var tnl = LevelUpFormulae.Default.CalculateTnl(entity);
-            var percentage = seconds / 6.0; // Adjust scaling logic as needed
+
+            // Scale the percentage based on seconds survived (max 20%)
+            var percentage = Math.Min(0.20, (double)seconds / MAX_SECONDS); // Max 20% based on seconds
+
+            // Calculate the experience reward based on scaled percentage
             var expReward = Convert.ToInt32(percentage * tnl);
 
             return expReward;

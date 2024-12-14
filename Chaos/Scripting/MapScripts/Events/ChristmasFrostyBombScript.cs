@@ -80,7 +80,7 @@ public class ChristmasFrostyBombScript : MapScriptBase
         var points = new List<Point>();
 
         //fix for corners
-        for (var y = 8; y <= 21; y++)
+        for (var y = 7; y <= 21; y++)
             points.Add(new Point(7, y));
 
         return points;

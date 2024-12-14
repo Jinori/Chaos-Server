@@ -50,10 +50,15 @@ public class MoveInDirectionReindeerScript : MonsterScriptBase
         // Scale experience linearly between minExperience and maxExperience
         var experience = MIN_EXPERIENCE + (MAX_EXPERIENCE - MIN_EXPERIENCE) * ((double)seconds / MAX_SECONDS);
 
-        if (aisling.UserStatSheet.Level < 98)
+        if (aisling.UserStatSheet.Level < 99)
         {
+            // Get TNL for the Aisling
             var tnl = LevelUpFormulae.Default.CalculateTnl(aisling);
-            var percentage = seconds / 6;
+
+            // Scale the percentage based on seconds survived (max 20%)
+            var percentage = Math.Min(0.20, (double)seconds / MAX_SECONDS);
+
+            // Calculate the experience reward based on scaled percentage
             var expReward = Convert.ToInt32(percentage * tnl);
 
             return expReward;
@@ -199,13 +204,13 @@ public class MoveInDirectionReindeerScript : MonsterScriptBase
             return;
         }
 
-        var aislingsOnTop = Subject.MapInstance.GetEntitiesAtPoints<Aisling>(Subject).TopOrDefault();
+        var aislingsOnTop = Subject.MapInstance
+                                   .GetEntitiesAtPoints<Aisling>(Subject)
+                                   .TopOrDefault();
 
         if (aislingsOnTop != null)
-        {
             HandleTrample(aislingsOnTop);
-        }
-        
+
         var targetDirection = Subject.Direction; // Reindeer's current direction
         var nextPosition = Subject.DirectionalOffset(targetDirection);
 
@@ -217,11 +222,11 @@ public class MoveInDirectionReindeerScript : MonsterScriptBase
         var aislingInFront = Subject.MapInstance
                                     .GetEntitiesAtPoints<Aisling>(nextPosition)
                                     .TopOrDefault();
-        
-        
+
         if ((aislingInFront != null) && !aislingInFront.IsGodModeEnabled())
         {
             HandleTrample(aislingInFront);
+
             return;
         }
 
