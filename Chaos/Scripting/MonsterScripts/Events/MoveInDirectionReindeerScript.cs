@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Chaos.Common.Definitions;
+using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
@@ -41,30 +42,44 @@ public class MoveInDirectionReindeerScript : MonsterScriptBase
     public int CalculateExperience(int seconds, Aisling aisling)
     {
         const int MIN_EXPERIENCE = 10000;
-        const int MAX_EXPERIENCE = 7500000;
-        const int MAX_SECONDS = 120;
+        const int MAX_EXPERIENCE = 15000000;
+        const int MAX_SECONDS = 300;
 
-        // Cap seconds at the maximum allowed
         seconds = Math.Min(seconds, MAX_SECONDS);
-
-        // Scale experience linearly between minExperience and maxExperience
-        var experience = MIN_EXPERIENCE + (MAX_EXPERIENCE - MIN_EXPERIENCE) * ((double)seconds / MAX_SECONDS);
 
         if (aisling.UserStatSheet.Level < 99)
         {
-            // Get TNL for the Aisling
             var tnl = LevelUpFormulae.Default.CalculateTnl(aisling);
+            var minExperience2 = MathEx.GetPercentOf<decimal>(tnl, 2);
+            var maxExperience2 = MathEx.GetPercentOf<decimal>(tnl, 50);
 
-            // Scale the percentage based on seconds survived (max 20%)
-            var percentage = Math.Min(0.20, (double)seconds / MAX_SECONDS);
+            var bonusExperience = MathEx.GetPercentOf<decimal>(tnl, 50);
 
-            // Calculate the experience reward based on scaled percentage
-            var expReward = Convert.ToInt32(percentage * tnl);
+            var reward = MathEx.ScaleRange(
+                seconds,
+                0,
+                MAX_SECONDS,
+                minExperience2,
+                maxExperience2);
 
-            return expReward;
+            if (seconds >= 300)
+                reward += bonusExperience;
+
+            return (int)reward;
         }
 
-        return (int)experience;
+        var xpReward = MathEx.ScaleRange(
+            seconds,
+            0,
+            MAX_SECONDS,
+            MIN_EXPERIENCE,
+            MAX_EXPERIENCE);
+
+        if (seconds >= 300)
+            xpReward += 40000000;
+
+        // Get TNL for the Aisling
+        return xpReward;
     }
 
     public static void FrostyChallenge(Aisling player, int seconds, IConfiguration configuration)
@@ -119,9 +134,7 @@ public class MoveInDirectionReindeerScript : MonsterScriptBase
             ExperienceDistributionScript.GiveExp(aisling, expReward);
             aisling.Trackers.Counters.Remove("frostychallenge", out _);
         }
-
-        npc?.Say($"{aisling.Name} lasted {seconds} seconds that round!");
-
+        
         FrostyChallenge(aisling, seconds, Configuration);
 
         // Warp the Aisling to the designated point
@@ -129,8 +142,7 @@ public class MoveInDirectionReindeerScript : MonsterScriptBase
 
         // Send feedback message to the Aisling
         aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You got ran over by a reindeer!");
-
-        // Optional: Add additional logic (e.g., stagger the reindeer, cooldown mechanics)
+        npc?.Say($"{aisling.Name} lasted {seconds} seconds that round!");
     }
 
     public static void Save(string filePath, int newseconds, Aisling player)

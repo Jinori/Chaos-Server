@@ -77,7 +77,7 @@ public class RedNoseQuestScript(Dialog subject, ILogger<RedNose> logger, IItemFa
                     {
                         case true:
                         {
-                            source.Inventory.RemoveQuantity("Red Nose", 10, out _);
+                            source.Inventory.RemoveQuantity("Red Nose", 20, out _);
                             source.Trackers.Enums.Set(RedNose.None);
                             source.Trackers.TimedEvents.AddEvent("rednosecd", TimeSpan.FromHours(6), true);
 

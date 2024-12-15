@@ -73,9 +73,6 @@ public class TeleportToFrostyChallenge : DialogScriptBase
                     MarkColor.Pink,
                     1,
                     GameTime.Now));
-            
-            var reindeerbuddy = ItemFactory.Create("reindeerbuddy");
-            source.GiveItemOrSendToBank(reindeerbuddy);
 
             source.SendOrangeBarMessage("You received a Reindeer Buddy and a unique Legend Mark!");
 

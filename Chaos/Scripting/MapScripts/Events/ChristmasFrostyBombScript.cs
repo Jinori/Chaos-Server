@@ -1,5 +1,6 @@
 using Chaos.Collections;
 using Chaos.DarkAges.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
 using Chaos.Geometry.Abstractions;
@@ -105,6 +106,7 @@ public class ChristmasFrostyBombScript : MapScriptBase
             var elapsedTime = currentTime - TimerStart;
             var remainingTime = TimerDuration - elapsedTime;
             aisling.SendOrangeBarMessage($"Next round will begin in {remainingTime.ToReadableString()}");
+            aisling.Trackers.Counters.Remove("frostychallenge", out _);
         }
     }
 
@@ -251,12 +253,23 @@ public class ChristmasFrostyBombScript : MapScriptBase
                 npc.Say("Round is starting, good luck!");
                 CurrentStage = ScriptStage.InProgress;
 
+                var playersInRectangleStart = Subject.GetEntities<Aisling>()
+                                                     .Where(a => BombSpawnArea.Contains(new Point(a.X, a.Y)) && !a.IsGodModeEnabled())
+                                                     .ToList();
+
+                foreach (var player in playersInRectangleStart)
+                {
+                    var point = new Point(player.X, player.Y - 1);
+                    var bomb = MonsterFactory.Create("smiley_blob_bomb", Subject, point);
+                    Subject.AddEntity(bomb, bomb);
+                }
+
                 break;
 
             case ScriptStage.InProgress:
                 // Check if players are still in the area
                 var playersInRectangle = Subject.GetEntities<Aisling>()
-                                                .Where(a => BombSpawnArea.Contains(new Point(a.X, a.Y)))
+                                                .Where(a => BombSpawnArea.Contains(new Point(a.X, a.Y)) && !a.IsGodModeEnabled())
                                                 .ToList();
 
                 if (playersInRectangle.IsNullOrEmpty())
@@ -271,7 +284,14 @@ public class ChristmasFrostyBombScript : MapScriptBase
 
                     if (RewardTimer.IntervalElapsed)
                         foreach (var player in playersInRectangle)
+                        {
                             player.Trackers.Counters.AddOrIncrement("frostychallenge");
+                            
+                            var seconds = player.Trackers.Counters.TryGetValue("frostychallenge", out var counter) ? counter : 0;
+
+                            player.Client.SendServerMessage(ServerMessageType.PersistentMessage, $"Survived {seconds} seconds!");
+
+                        }
 
                     if (DifficultyTimer.IntervalElapsed)
                     {
