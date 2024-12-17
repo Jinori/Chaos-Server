@@ -7,6 +7,7 @@ using Chaos.Geometry.Abstractions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MapScripts.Abstractions;
+using Chaos.Scripting.MonsterScripts.Pet;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
@@ -26,6 +27,7 @@ public class ChristmasFrostyBombScript : MapScriptBase
     private readonly Random RandomGenerator;
     private readonly List<Point> ReindeerSpawnPoints;
     private readonly IIntervalTimer ReindeerSpawnTimer;
+    private readonly IIntervalTimer PriestPetRemoveTimer;
     private readonly IIntervalTimer RewardTimer;
     private readonly TimeSpan TimerDuration = TimeSpan.FromMinutes(3);
     private readonly HashSet<Point> UsedReindeerSpawnPoints;
@@ -54,6 +56,7 @@ public class ChristmasFrostyBombScript : MapScriptBase
         ReindeerSpawnPoints = GenerateReindeerSpawnPoints();
         UsedReindeerSpawnPoints = new HashSet<Point>();
 
+        PriestPetRemoveTimer = new IntervalTimer(TimeSpan.FromSeconds(1));
         BombSpawnTimer = new IntervalTimer(TimeSpan.FromSeconds(2));
         ReindeerSpawnTimer = new IntervalTimer(TimeSpan.FromSeconds(6));
         PrizeBoxSpawnTimer = new IntervalTimer(TimeSpan.FromSeconds(45));
@@ -198,6 +201,18 @@ public class ChristmasFrostyBombScript : MapScriptBase
         DifficultyTimer.Update(delta);
         PrizeBoxSpawnTimer.Update(delta);
         ReindeerSpawnTimer.Update(delta);
+        PriestPetRemoveTimer.Update(delta);
+
+        if (PriestPetRemoveTimer.IntervalElapsed)
+        {
+            var pets = Subject.GetEntities<Monster>().Where(x => x.Script.Is<PetScript>());
+
+
+            foreach (var pet in pets)
+            {
+                pet.MapInstance.RemoveEntity(pet);
+            }
+        }
 
         var aislings = Subject.GetEntities<Aisling>()
                               .ToList();

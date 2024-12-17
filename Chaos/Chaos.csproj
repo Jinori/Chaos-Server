@@ -53,10 +53,10 @@
         <ProjectReference Include="..\Chaos.TypeMapper\Chaos.TypeMapper.csproj"/>
     </ItemGroup>
     <ItemGroup>
+        <PackageReference Include="Cronos" />
         <PackageReference Include="FluentAssertions"/>
         <PackageReference Include="Humanizer"/>
         <PackageReference Include="Humanizer.Core"/>
-        <PackageReference Include="NCrontab" />
         <PackageReference Include="Newtonsoft.Json"/>
         <PackageReference Include="NLog.Web.AspNetCore"/>
         <PackageReference Include="AutoMapper.Collection"/>

@@ -22,7 +22,7 @@ public class PetCollarScript(
     : DialogScriptBase(subject)
 {
     
-    private readonly HashSet<string> ArenaKeys = new(StringComparer.OrdinalIgnoreCase) { "arena_battle_ring", "arena_lava", "arena_lavateams", "arena_colorclash", "arena_escort"};
+    private readonly HashSet<string> DisablePetsOnTheseInstanceIDs = new(StringComparer.OrdinalIgnoreCase) { "arena_battle_ring", "arena_lava", "arena_lavateams", "arena_colorclash", "arena_escort", "mtmerry_frostychallenge"};
     
     
     public override void OnDisplaying(Aisling source)
@@ -114,7 +114,7 @@ public class PetCollarScript(
 
     private void SummonPet(Aisling source, SummonChosenPet petKey)
     {        
-        if (ArenaKeys.Contains(source.MapInstance.LoadedFromInstanceId))
+        if (DisablePetsOnTheseInstanceIDs.Contains(source.MapInstance.LoadedFromInstanceId))
         {
             source.SendOrangeBarMessage("You cannot summon pets on an arena map.");
             return;
