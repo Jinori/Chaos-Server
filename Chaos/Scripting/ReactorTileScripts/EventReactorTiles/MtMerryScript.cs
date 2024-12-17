@@ -14,10 +14,10 @@ namespace Chaos.Scripting.ReactorTileScripts.EventReactorTiles
                 return;
 
             var currentDate = DateTime.UtcNow;
-            var currentMapInstanceId = Subject.MapInstance.InstanceId;
+            var destinationMapInstanceId = "mtmerry_northpole";
 
             // Check if the current map is part of an active event
-            if (!EventPeriod.IsEventActive(currentDate, currentMapInstanceId))
+            if (!EventPeriod.IsEventActive(currentDate, destinationMapInstanceId))
             {
                 return;
             }
