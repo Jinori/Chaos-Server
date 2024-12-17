@@ -17,7 +17,7 @@ public class ExpTrinketScript : DialogScriptBase
             ["exptrinket_starttimer"] = StartExpTimer,
             ["exptrinket_checkexprates"] = CheckExpRates,
             ["exptrinket_resetexptimer"] = ResetExpValues,
-            ["exptrinket_sharerate"] = ShareExpRates
+            ["exptrinket_sharerates"] = ShareExpRates
         };
 
     public override void OnDisplaying(Aisling source)
@@ -51,6 +51,7 @@ public class ExpTrinketScript : DialogScriptBase
         source.SavedExpBoxed = (uint)exp;
         source.ExpTrinketStartTime = time;
     }
+    
     private void CheckExpRates(Aisling source)
     {
         if (source.Trackers.Enums.TryGetValue(out ExpTimerStage stage) && stage == ExpTimerStage.Tracking)

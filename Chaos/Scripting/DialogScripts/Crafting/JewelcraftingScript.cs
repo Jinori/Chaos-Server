@@ -402,10 +402,10 @@ public class JewelcraftingScript : DialogScriptBase
             Subject.Reply(source, "You do not have any recipes to craft. Check your recipe book (F1 Menu) to see your recipes and their requirements.", "jewelcrafting_initial");
         }
     }
-
-    private void UpdateLegendmark(Aisling source, int legendMarkCount)
+        private void UpdateLegendmark(Aisling source, int legendMarkCount)
     {
         if (!source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark))
+        {
             source.Legend.AddOrAccumulate(
                 new LegendMark(
                     RANK_ONE_TITLE,
@@ -414,21 +414,17 @@ public class JewelcraftingScript : DialogScriptBase
                     MarkColor.White,
                     1,
                     GameTime.Now));
+        }
         else
         {
-            var rankThresholds = new[]
-            {
-                25, 75, 150, 300, 500, 1000, 1500
-            };
-
+            var rankThresholds = new[] { 25, 75, 150, 300, 500, 1000, 1500 };
             var rankTitles = new[]
             {
-                RANK_TWO_TITLE, RANK_THREE_TITLE, RANK_FOUR_TITLE, RANK_FIVE_TITLE, RANK_SIX_TITLE,
-                RANK_SEVEN_TITLE, RANK_EIGHT_TITLE
+                RANK_TWO_TITLE, RANK_THREE_TITLE, RANK_FOUR_TITLE,
+                RANK_FIVE_TITLE, RANK_SIX_TITLE, RANK_SEVEN_TITLE, RANK_EIGHT_TITLE
             };
 
             var currentRankIndex = Array.IndexOf(rankTitles, existingMark.Text);
-
             existingMark.Count++;
 
             for (var i = currentRankIndex + 1; i < rankThresholds.Length; i++)
@@ -436,37 +432,67 @@ public class JewelcraftingScript : DialogScriptBase
                 if (legendMarkCount >= rankThresholds[i])
                 {
                     var newTitle = rankTitles[i];
-        
-                    // Remove the previous title of the rank
-                    if (source.Titles.Contains(existingMark.Text))
-                    {
-                        source.Titles.Remove(existingMark.Text);
-                    }
-        
-                    // Add the new title
-                    source.Titles.Add(newTitle);
 
-                    existingMark.Text = newTitle;
-                    source.SendOrangeBarMessage($"You have reached the rank of {newTitle}");
+                    // Update Titles
+                    UpdatePlayerTitle(source, existingMark, newTitle);
 
-                    // Ensure the new title is at the front of the titles list
-                    if (source.Titles.Any())
+                    // Grant reward if the player reaches Rank 7 or higher
+                    if (i >= 5) // Rank 7 starts at index 5
                     {
-                        var firstTitle = source.Titles.First();
-                        if (firstTitle != newTitle)
-                        {
-                            source.Titles.Remove(newTitle);
-                            source.Titles.Insert(0, newTitle);
-                        }
+                        GiveRankReward(source, newTitle);
                     }
 
-                    // Send the updated profile to the client
-                    source.Client.SendSelfProfile();
-        
                     break;
                 }
             }
+        }
+    }
+    
+    /// <summary>
+    /// Updates the player's title and sends a profile update.
+    /// </summary>
+    private void UpdatePlayerTitle(Aisling source, LegendMark existingMark, string newTitle)
+    {
+        if (source.Titles.Contains(existingMark.Text))
+            source.Titles.Remove(existingMark.Text);
 
+        source.Titles.Add(newTitle);
+        existingMark.Text = newTitle;
+
+        source.SendOrangeBarMessage($"You have reached the rank of {newTitle}");
+
+        // Move the new title to the front
+        if (source.Titles.Any())
+        {
+            source.Titles.Remove(newTitle);
+            source.Titles.Insert(0, newTitle);
+        }
+
+        source.Client.SendSelfProfile();
+    }
+    
+    /// <summary>
+    /// Gives the player a reward when reaching Rank 7 or above.
+    /// </summary>
+    private void GiveRankReward(Aisling source, string title)
+    {
+        const string ITEM_KEY = "exptrinket";
+        const string REWARD_LEGEND_KEY = "jewelcrafttrinket";
+
+        if (!source.Legend.ContainsKey(REWARD_LEGEND_KEY))
+        {
+            var rewardLegendMark = new LegendMark(
+                "Obtained the legendary Sceallog Thaithi",
+                REWARD_LEGEND_KEY,
+                MarkIcon.Victory,
+                MarkColor.Yellow,
+                1,
+                GameTime.Now);
+
+            source.Legend.AddOrAccumulate(rewardLegendMark);
+            var trinket = ItemFactory.Create(ITEM_KEY);
+            source.GiveItemOrSendToBank(trinket);
+            source.SendOrangeBarMessage($"You have received Sceallog Thaithi for reaching {title}!");
         }
     }
 }
