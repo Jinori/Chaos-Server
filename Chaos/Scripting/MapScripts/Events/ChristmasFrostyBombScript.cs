@@ -128,6 +128,15 @@ public class ChristmasFrostyBombScript : MapScriptBase
 
         foreach (var present in presents)
             Subject.RemoveEntity(present);
+        
+        var reindeers = Subject.GetEntities<Monster>()
+                              .Where(x => x.Name == "Reindeer")
+                              .ToList();
+        
+        foreach (var reindeer in reindeers)
+            Subject.RemoveEntity(reindeer);
+        
+        
 
         // Reset the state of the event
         UsedReindeerSpawnPoints.Clear();

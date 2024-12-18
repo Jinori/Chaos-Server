@@ -423,29 +423,7 @@ public class ArmorsmithingArmorScript : DialogScriptBase
             if (existingMark != null)
             {
                 var playerRank = GetRankAsInt(existingMark.Text);
-
-                if (source.Trackers.Flags.TryGetFlag(out ArmorsmithingRecipes recipes))
-
-                    // Show items from WeaponsmithingCraftRequirements
-                    foreach (var recipe in CraftingRequirements.ArmorSmithingGearRequirements)
-                    {
-                        if (source.IsGodModeEnabled() && recipes.HasFlag(recipe.Key))
-                        {
-                            var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
-
-                            if (source.UserStatSheet.Level >= item.Level)
-                                Subject.Items.Add(ItemDetails.DisplayRecipe(item));
-                        }
-
-                        if (recipes.HasFlag(recipe.Key) && (playerRank >= GetStatusAsInt(recipe.Value.Rank)))
-                        {
-                            var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
-
-                            if (source.UserStatSheet.Level >= item.Level)
-                                Subject.Items.Add(ItemDetails.DisplayRecipe(item));
-                        }
-                    }
-
+                
                 if (source.Trackers.Flags.TryGetFlag(out CraftedArmors recipes2))
 
                     // Show items from WeaponsmithingCraftRequirements

@@ -85,6 +85,13 @@ public class TeleportToFrostyChallenge : DialogScriptBase
             return;
         }
 
+        if (source.Legend.ContainsKey("frostysurvivor"))
+        {
+            Subject.Reply(source, "You have really proven yourself Aisling. You are a true survivor!");
+
+            return;
+        }
+
         Subject.Reply(source, "You're not a true survivor yet, you'll need to complete your training!");
     }
 
