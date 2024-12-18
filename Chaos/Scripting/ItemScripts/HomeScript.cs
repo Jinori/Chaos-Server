@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Scripting.Components.AbilityComponents;
@@ -13,6 +12,7 @@ public class HomeScript : ConfigurableItemScriptBase, TeleportComponent.ITelepor
 {
     /// <inheritdoc />
     public string DestinationMapKey { get; set; } = null!;
+
     /// <inheritdoc />
     public Point OriginPoint { get; set; }
 
@@ -21,20 +21,20 @@ public class HomeScript : ConfigurableItemScriptBase, TeleportComponent.ITelepor
 
     /// <inheritdoc />
     public HomeScript(Item subject, ISimpleCache simpleCache)
-        : base(subject) =>
-        SimpleCache = simpleCache;
+        : base(subject)
+        => SimpleCache = simpleCache;
 
     public override void OnUse(Aisling source)
     {
         switch (source.Nation)
         {
             case Nation.Exile:
-                OriginPoint = new Point(8, 5);
+                OriginPoint = new Point(7, 5);
                 DestinationMapKey = "toc";
 
                 break;
             case Nation.Suomi:
-                OriginPoint = new Point(9, 5);
+                OriginPoint = new Point(5, 8);
                 DestinationMapKey = "suomi_inn";
 
                 break;
@@ -43,22 +43,22 @@ public class HomeScript : ConfigurableItemScriptBase, TeleportComponent.ITelepor
 
                 break;
             case Nation.Loures:
-                OriginPoint = new Point(5, 6);
-                DestinationMapKey = "loures_2_floor_empty_room_1";
+                OriginPoint = new Point(21, 16);
+                DestinationMapKey = "loures_castle";
 
                 break;
             case Nation.Mileth:
-                OriginPoint = new Point(4, 8);
+                OriginPoint = new Point(5, 8);
                 DestinationMapKey = "mileth_inn";
 
                 break;
             case Nation.Tagor:
-                OriginPoint = new Point(4, 8);
+                OriginPoint = new Point(5, 8);
                 DestinationMapKey = "tagor_inn";
 
                 break;
             case Nation.Rucesion:
-                OriginPoint = new Point(7, 5);
+                OriginPoint = new Point(7, 3);
                 DestinationMapKey = "rucesion_inn";
 
                 break;
@@ -80,24 +80,26 @@ public class HomeScript : ConfigurableItemScriptBase, TeleportComponent.ITelepor
 
                 break;
             case Nation.Abel:
-                OriginPoint = new Point(4, 7);
+                OriginPoint = new Point(5, 8);
                 DestinationMapKey = "abel_inn";
 
                 break;
             case Nation.Undine:
-                OriginPoint = new Point(12, 4);
-                DestinationMapKey = "undine_tavern";
+                OriginPoint = new Point(5, 11);
+                DestinationMapKey = "undine_village_way";
 
                 break;
             case Nation.Void:
-                OriginPoint = new Point(12, 16);
+                OriginPoint = new Point(12, 15);
                 DestinationMapKey = "arena_entrance";
+
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
 
-        new ComponentExecutor(source, source).WithOptions(this).Execute<TeleportComponent>();
+        new ComponentExecutor(source, source).WithOptions(this)
+                                             .Execute<TeleportComponent>();
         source.Inventory.RemoveQuantity(Subject.Slot, 1);
     }
 }

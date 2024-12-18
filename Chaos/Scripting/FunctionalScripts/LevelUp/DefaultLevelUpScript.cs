@@ -32,9 +32,7 @@ public class DefaultLevelUpScript : ScriptBase, ILevelUpScript
         aisling.UserStatSheet.AddLevel();
         aisling.SendOrangeBarMessage("You level up!");
 
-        var unspentPoints = aisling.UserStatSheet.UnspentPoints;
-
-        var pointsToGive = unspentPoints <= 24 ? 2 : 1;
+        var pointsToGive = 2;
         aisling.UserStatSheet.GivePoints(pointsToGive);
 
         if (aisling.UserStatSheet.Level < WorldOptions.Instance.MaxLevel)

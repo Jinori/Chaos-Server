@@ -13,6 +13,7 @@ public class DirtyErbieVit : CompositeMonsterScript
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),
+        GetScriptKey(typeof(WanderingScript)),
         GetScriptKey(typeof(AttackingScript)),
         GetScriptKey(typeof(DeathScript)),
         GetScriptKey(typeof(DisplayNameScript)),

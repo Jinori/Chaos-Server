@@ -24,71 +24,71 @@ public class TeleportToHome : DialogScriptBase
         {
             case Nation.Rucesion:
             {
-                var point = new Point(25, 36);
-                var mapInstance = SimpleCache.Get<MapInstance>("rucesion");
+                var point = new Point(7, 3);
+                var mapInstance = SimpleCache.Get<MapInstance>("rucesion_inn");
                 source.TraverseMap(mapInstance, point, true);
 
                 break;
             }
             case Nation.Mileth:
             {
-                var point = new Point(23, 18);
-                var mapInstance = SimpleCache.Get<MapInstance>("mileth");
+                var point = new Point(5, 8);
+                var mapInstance = SimpleCache.Get<MapInstance>("mileth_inn");
                 source.TraverseMap(mapInstance, point, true);
 
                 break;
             }
             case Nation.Exile:
             {
-                var point = new Point(3, 13);
-                var mapInstance = SimpleCache.Get<MapInstance>("mileth_village_way");
+                var point = new Point(7, 5);
+                var mapInstance = SimpleCache.Get<MapInstance>("toc");
                 source.TraverseMap(mapInstance, point, true);
 
                 break;
             }
             case Nation.Suomi:
             {
-                var point = new Point(16, 8);
-                var mapInstance = SimpleCache.Get<MapInstance>("suomi_village_way");
+                var point = new Point(5, 8);
+                var mapInstance = SimpleCache.Get<MapInstance>("suomi_inn");
                 source.TraverseMap(mapInstance, point, true);
 
                 break;
             }
             case Nation.Loures:
             {
-                var point = new Point(10, 6);
-                var mapInstance = SimpleCache.Get<MapInstance>("mileth_village_way");
+                var point = new Point(21, 16);
+                var mapInstance = SimpleCache.Get<MapInstance>("loures_castle");
                 source.TraverseMap(mapInstance, point, true);
 
                 break;
             }
             case Nation.Tagor:
             {
-                var point = new Point(22, 94);
-                var mapInstance = SimpleCache.Get<MapInstance>("tagor");
+                var point = new Point(5, 8);
+                var mapInstance = SimpleCache.Get<MapInstance>("tagor_inn");
                 source.TraverseMap(mapInstance, point, true);
 
                 break;
             }
             case Nation.Piet:
             {
-                var point = new Point(16, 8);
-                var mapInstance = SimpleCache.Get<MapInstance>("piet_village_way");
+                var point = new Point(5, 8);
+                var mapInstance = SimpleCache.Get<MapInstance>("piet_inn");
                 source.TraverseMap(mapInstance, point, true);
 
                 break;
             }
             case Nation.Abel:
             {
-                var point = new Point(11, 13);
-                var mapInstance = SimpleCache.Get<MapInstance>("abel_port_way");
+                var point = new Point(5, 8);
+                var mapInstance = SimpleCache.Get<MapInstance>("abel_inn");
                 source.TraverseMap(mapInstance, point, true);
 
                 break;
             }
             case Nation.Void:
             {
-                var point = new Point(12, 16);
+                var point = new Point(12, 15);
                 var mapInstance = SimpleCache.Get<MapInstance>("arena_entrance");
                 source.TraverseMap(mapInstance, point, true);
 
@@ -96,7 +96,7 @@ public class TeleportToHome : DialogScriptBase
             }
             case Nation.Undine:
             {
-                var point = new Point(11, 12);
+                var point = new Point(5, 11);
                 var mapInstance = SimpleCache.Get<MapInstance>("undine_village_way");
                 source.TraverseMap(mapInstance, point, true);
 

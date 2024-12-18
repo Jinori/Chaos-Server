@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
@@ -187,6 +186,31 @@ public class WeaponSmithingCraftScript : DialogScriptBase
             return i;
 
         return 0;
+    }
+
+    /// <summary>
+    ///     Gives the player a reward when reaching Rank 7 or above.
+    /// </summary>
+    private void GiveRankReward(Aisling source, string title)
+    {
+        const string ITEM_KEY = "dmgtrinket";
+        const string REWARD_LEGEND_KEY = "weaponsmithtrinket";
+
+        if (!source.Legend.ContainsKey(REWARD_LEGEND_KEY))
+        {
+            var rewardLegendMark = new LegendMark(
+                "Obtained the legendary Claíomh Thugann Anam",
+                REWARD_LEGEND_KEY,
+                MarkIcon.Victory,
+                MarkColor.Yellow,
+                1,
+                GameTime.Now);
+
+            source.Legend.AddOrAccumulate(rewardLegendMark);
+            var trinket = ItemFactory.Create(ITEM_KEY);
+            source.GiveItemOrSendToBank(trinket);
+            source.SendOrangeBarMessage($"You have received Claíomh Thugann Anam for reaching {title}!");
+        }
     }
 
     /// <inheritdoc />
@@ -419,10 +443,9 @@ public class WeaponSmithingCraftScript : DialogScriptBase
         }
     }
 
-        private void UpdateLegendmark(Aisling source, int legendMarkCount)
+    private void UpdateLegendmark(Aisling source, int legendMarkCount)
     {
         if (!source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark))
-        {
             source.Legend.AddOrAccumulate(
                 new LegendMark(
                     RANK_ONE_TITLE,
@@ -431,22 +454,44 @@ public class WeaponSmithingCraftScript : DialogScriptBase
                     MarkColor.White,
                     1,
                     GameTime.Now));
-        }
         else
         {
-            var rankThresholds = new[] { 25, 75, 150, 300, 500, 1000, 1500 };
-            var rankTitles = new[]
+            var rankThresholds = new[]
             {
-                RANK_TWO_TITLE, RANK_THREE_TITLE, RANK_FOUR_TITLE,
-                RANK_FIVE_TITLE, RANK_SIX_TITLE, RANK_SEVEN_TITLE, RANK_EIGHT_TITLE
+                25,
+                75,
+                150,
+                300,
+                500,
+                1000,
+                1500
             };
 
-            var currentRankIndex = Array.IndexOf(rankTitles, existingMark.Text);
+            var rankTitles = new[]
+            {
+                RANK_TWO_TITLE,
+                RANK_THREE_TITLE,
+                RANK_FOUR_TITLE,
+                RANK_FIVE_TITLE,
+                RANK_SIX_TITLE,
+                RANK_SEVEN_TITLE,
+                RANK_EIGHT_TITLE
+            };
+
+            // Ensure existingMark.Text aligns with rankTitles
+            var currentRankIndex = Array.IndexOf(rankTitles, existingMark.Text.Trim());
+
+            if (currentRankIndex == -1)
+                currentRankIndex = 0; // Default to the first rank if the title is not found
+
+            var previousRank = currentRankIndex >= 0 ? rankThresholds[currentRankIndex] : 0;
             existingMark.Count++;
 
+            var newLegendMarkCount = existingMark.Count;
+
+            // Check all thresholds beyond the current rank
             for (var i = currentRankIndex + 1; i < rankThresholds.Length; i++)
-            {
-                if (legendMarkCount >= rankThresholds[i])
+                if ((newLegendMarkCount >= rankThresholds[i]) && (previousRank < rankThresholds[i]))
                 {
                     var newTitle = rankTitles[i];
 
@@ -455,18 +500,15 @@ public class WeaponSmithingCraftScript : DialogScriptBase
 
                     // Grant reward if the player reaches Rank 7 or higher
                     if (i >= 5) // Rank 7 starts at index 5
-                    {
                         GiveRankReward(source, newTitle);
-                    }
 
-                    break;
+                    previousRank = rankThresholds[i]; // Update previous rank to the current threshold
                 }
-            }
         }
     }
-    
+
     /// <summary>
-    /// Updates the player's title and sends a profile update.
+    ///     Updates the player's title and sends a profile update.
     /// </summary>
     private void UpdatePlayerTitle(Aisling source, LegendMark existingMark, string newTitle)
     {
@@ -486,30 +528,5 @@ public class WeaponSmithingCraftScript : DialogScriptBase
         }
 
         source.Client.SendSelfProfile();
-    }
-    
-    /// <summary>
-    /// Gives the player a reward when reaching Rank 7 or above.
-    /// </summary>
-    private void GiveRankReward(Aisling source, string title)
-    {
-        const string ITEM_KEY = "dmgtrinket";
-        const string REWARD_LEGEND_KEY = "weaponsmithtrinket";
-
-        if (!source.Legend.ContainsKey(REWARD_LEGEND_KEY))
-        {
-            var rewardLegendMark = new LegendMark(
-                "Obtained the legendary Claíomh Thugann Anam",
-                REWARD_LEGEND_KEY,
-                MarkIcon.Victory,
-                MarkColor.Yellow,
-                1,
-                GameTime.Now);
-
-            source.Legend.AddOrAccumulate(rewardLegendMark);
-            var trinket = ItemFactory.Create(ITEM_KEY);
-            source.GiveItemOrSendToBank(trinket);
-            source.SendOrangeBarMessage($"You have received Claíomh Thugann Anam for reaching {title}!");
-        }
     }
 }

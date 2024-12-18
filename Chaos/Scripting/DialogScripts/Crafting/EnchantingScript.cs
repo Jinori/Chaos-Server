@@ -1,5 +1,4 @@
 using System.Text.RegularExpressions;
-using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
@@ -11,7 +10,6 @@ using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
-using Chaos.TypeMapper.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Crafting;
 
@@ -21,7 +19,9 @@ public class EnchantingScript : DialogScriptBase
     private const string ITEM_COUNTER_PREFIX = "[Enchant]";
     private const string LEGENDMARK_KEY = "ench";
     private const double BASE_SUCCESS_RATE = 60;
+
     private const double SUCCESSRATEMAX = 95;
+
     //Ranks from lowest to highest
     private const string RANK_ONE_TITLE = "Beginner Enchanter";
     private const string RANK_TWO_TITLE = "Novice Enchanter";
@@ -41,7 +41,6 @@ public class EnchantingScript : DialogScriptBase
     private const string RECIPE_EIGHT_RANK = "Master";
     private readonly IDialogFactory DialogFactory;
     private readonly IItemFactory ItemFactory;
-    private readonly ITypeMapper Mapper;
 
     private readonly string[] Prefix =
     {
@@ -88,17 +87,11 @@ public class EnchantingScript : DialogScriptBase
     };
 
     /// <inheritdoc />
-    public EnchantingScript(
-        Dialog subject,
-        IItemFactory itemFactory,
-        IDialogFactory dialogFactory,
-        ITypeMapper mapper
-    )
+    public EnchantingScript(Dialog subject, IItemFactory itemFactory, IDialogFactory dialogFactory)
         : base(subject)
     {
         ItemFactory = itemFactory;
         DialogFactory = dialogFactory;
-        Mapper = mapper;
     }
 
     /// <inheritdoc />
@@ -175,8 +168,7 @@ public class EnchantingScript : DialogScriptBase
         var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
         var legendMarkCount = existingMark?.Count ?? 0;
 
-        var timesCraftedThisItem =
-            source.Trackers.Counters.TryGetValue(ITEM_COUNTER_PREFIX + recipe.Name, out var value) ? value : 0;
+        var timesCraftedThisItem = source.Trackers.Counters.TryGetValue(ITEM_COUNTER_PREFIX + recipe.Name, out var value) ? value : 0;
 
         foreach (var removeRegant in recipe.Ingredients)
             source.Inventory.RemoveQuantity(removeRegant.DisplayName, removeRegant.Amount);
@@ -196,8 +188,10 @@ public class EnchantingScript : DialogScriptBase
             dialog.InjectTextParameters(recipe.Name, item.DisplayName);
             dialog.Display(source);
             source.Animate(FailAnimation);
+
             //Give item counter exp even if failure
             source.Trackers.Counters.AddOrIncrement(ITEM_COUNTER_PREFIX + recipe.Name);
+
             return;
         }
 
@@ -211,10 +205,10 @@ public class EnchantingScript : DialogScriptBase
             var recipeStatus = GetStatusAsInt(recipe.Rank);
             var playerRank = GetRankAsInt(existingMark.Text);
 
-            if ((playerRank >= 2) && (playerRank - 1 > recipeStatus))
+            if ((playerRank >= 2) && ((playerRank - 1) > recipeStatus))
                 source.SendOrangeBarMessage("You can no longer gain rank experience from this recipe.");
 
-            if ((playerRank >= recipeStatus) && (playerRank <= recipeStatus + 1))
+            if ((playerRank >= recipeStatus) && (playerRank <= (recipeStatus + 1)))
             {
                 UpdateLegendmark(source, legendMarkCount);
 
@@ -283,20 +277,21 @@ public class EnchantingScript : DialogScriptBase
             return;
         }
 
-        if (Subject.Context is not CraftingRequirements.Recipe recipe)
+        if (Subject.Context is not CraftingRequirements.Recipe)
         {
-            Subject.Reply(source, "Something went wrong with the recipe.");
+            Subject.Reply(source, "Something went wrong with the recipe. Notify a GM.");
 
             return;
         }
-        
+
         //Create new item based on the old one
         var newItem = ItemFactory.Create(item.Template.TemplateKey);
+
         //Remove Old Item
         source.Inventory.Remove(item.DisplayName);
 
         source.GiveItemOrSendToBank(newItem);
-        
+
         Subject.InjectTextParameters(item.DisplayName);
     }
 
@@ -357,8 +352,7 @@ public class EnchantingScript : DialogScriptBase
             return;
         }
 
-        var selectedRecipe = CraftingRequirements.EnchantingRequirements
-                                                 .FirstOrDefault(x => x.Key == selectedRecipeEnum)
+        var selectedRecipe = CraftingRequirements.EnchantingRequirements.FirstOrDefault(x => x.Key == selectedRecipeEnum)
                                                  .Value;
 
         if (selectedRecipe == null)
@@ -371,7 +365,9 @@ public class EnchantingScript : DialogScriptBase
         Subject.Context = selectedRecipe;
         Subject.InjectTextParameters(selectedRecipe.Name);
 
-        var modifiableItems = source.Inventory.Where(x => x.Template.IsModifiable).ToList();
+        var modifiableItems = source.Inventory
+                                    .Where(x => x.Template.IsModifiable)
+                                    .ToList();
 
         if (modifiableItems.Count == 0)
         {
@@ -380,7 +376,8 @@ public class EnchantingScript : DialogScriptBase
             return;
         }
 
-        Subject.Slots = modifiableItems.Select(x => x.Slot).ToList();
+        Subject.Slots = modifiableItems.Select(x => x.Slot)
+                                       .ToList();
     }
 
     #region Methods
@@ -389,6 +386,7 @@ public class EnchantingScript : DialogScriptBase
         AnimationSpeed = 100,
         TargetAnimation = 59
     };
+
     private Animation SuccessAnimation { get; } = new()
     {
         AnimationSpeed = 100,
@@ -400,14 +398,30 @@ public class EnchantingScript : DialogScriptBase
     {
         var rankMappings = new Dictionary<string, int>
         {
-            { RANK_EIGHT_TITLE, 8 },
-            { RANK_SEVEN_TITLE, 7 },
-            { RANK_SIX_TITLE, 6 },
-            { RANK_FIVE_TITLE, 5 },
-            { RANK_FOUR_TITLE, 4 },
-            { RANK_THREE_TITLE, 3 },
-            { RANK_TWO_TITLE, 2 },
-            { RANK_ONE_TITLE, 1 }
+            {
+                RANK_EIGHT_TITLE, 8
+            },
+            {
+                RANK_SEVEN_TITLE, 7
+            },
+            {
+                RANK_SIX_TITLE, 6
+            },
+            {
+                RANK_FIVE_TITLE, 5
+            },
+            {
+                RANK_FOUR_TITLE, 4
+            },
+            {
+                RANK_THREE_TITLE, 3
+            },
+            {
+                RANK_TWO_TITLE, 2
+            },
+            {
+                RANK_ONE_TITLE, 1
+            }
         };
 
         if (rankMappings.TryGetValue(rank, out var i))
@@ -421,14 +435,30 @@ public class EnchantingScript : DialogScriptBase
     {
         var statusMappings = new Dictionary<string, int>
         {
-            { RECIPE_ONE_RANK, 1 },
-            { RECIPE_TWO_RANK, 2 },
-            { RECIPE_THREE_RANK, 3 },
-            { RECIPE_FOUR_RANK, 4 },
-            { RECIPE_FIVE_RANK, 5 },
-            { RECIPE_SIX_RANK, 6 },
-            { RECIPE_SEVEN_RANK, 7 },
-            { RECIPE_EIGHT_RANK, 8 }
+            {
+                RECIPE_ONE_RANK, 1
+            },
+            {
+                RECIPE_TWO_RANK, 2
+            },
+            {
+                RECIPE_THREE_RANK, 3
+            },
+            {
+                RECIPE_FOUR_RANK, 4
+            },
+            {
+                RECIPE_FIVE_RANK, 5
+            },
+            {
+                RECIPE_SIX_RANK, 6
+            },
+            {
+                RECIPE_SEVEN_RANK, 7
+            },
+            {
+                RECIPE_EIGHT_RANK, 8
+            }
         };
 
         if (statusMappings.TryGetValue(status, out var i))
@@ -437,8 +467,8 @@ public class EnchantingScript : DialogScriptBase
         return 0;
     }
 
-    private double GetMultiplier(int totalTimesCrafted) =>
-        totalTimesCrafted switch
+    private double GetMultiplier(int totalTimesCrafted)
+        => totalTimesCrafted switch
         {
             <= 25   => 1.0,
             <= 75   => 1.05,
@@ -456,8 +486,7 @@ public class EnchantingScript : DialogScriptBase
         int timesCraftedThisItem,
         double baseSuccessRate,
         int recipeRank,
-        int difficulty
-    )
+        int difficulty)
     {
         var rankDifficultyReduction = recipeRank switch
         {
@@ -474,17 +503,17 @@ public class EnchantingScript : DialogScriptBase
 
         // Get the multiplier based on total times crafted
         var multiplier = GetMultiplier(totalTimesCrafted);
+
         // Calculate the success rate with all the factors
         var successRate = (baseSuccessRate - rankDifficultyReduction - difficulty + timesCraftedThisItem / 5.0) * multiplier;
 
         // Ensure the success rate does not exceed the maximum allowed value
         return Math.Min(successRate, SUCCESSRATEMAX);
     }
-    
-        private void UpdateLegendmark(Aisling source, int legendMarkCount)
+
+    private void UpdateLegendmark(Aisling source, int legendMarkCount)
     {
         if (!source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark))
-        {
             source.Legend.AddOrAccumulate(
                 new LegendMark(
                     RANK_ONE_TITLE,
@@ -493,22 +522,44 @@ public class EnchantingScript : DialogScriptBase
                     MarkColor.White,
                     1,
                     GameTime.Now));
-        }
         else
         {
-            var rankThresholds = new[] { 25, 75, 150, 300, 500, 1000, 1500 };
-            var rankTitles = new[]
+            var rankThresholds = new[]
             {
-                RANK_TWO_TITLE, RANK_THREE_TITLE, RANK_FOUR_TITLE,
-                RANK_FIVE_TITLE, RANK_SIX_TITLE, RANK_SEVEN_TITLE, RANK_EIGHT_TITLE
+                25,
+                75,
+                150,
+                300,
+                500,
+                1000,
+                1500
             };
 
-            var currentRankIndex = Array.IndexOf(rankTitles, existingMark.Text);
+            var rankTitles = new[]
+            {
+                RANK_TWO_TITLE,
+                RANK_THREE_TITLE,
+                RANK_FOUR_TITLE,
+                RANK_FIVE_TITLE,
+                RANK_SIX_TITLE,
+                RANK_SEVEN_TITLE,
+                RANK_EIGHT_TITLE
+            };
+
+            // Ensure existingMark.Text aligns with rankTitles
+            var currentRankIndex = Array.IndexOf(rankTitles, existingMark.Text.Trim());
+
+            if (currentRankIndex == -1)
+                currentRankIndex = 0; // Default to the first rank if the title is not found
+
+            var previousRank = currentRankIndex >= 0 ? rankThresholds[currentRankIndex] : 0;
             existingMark.Count++;
 
+            var newLegendMarkCount = existingMark.Count;
+
+            // Check all thresholds beyond the current rank
             for (var i = currentRankIndex + 1; i < rankThresholds.Length; i++)
-            {
-                if (legendMarkCount >= rankThresholds[i])
+                if ((newLegendMarkCount >= rankThresholds[i]) && (previousRank < rankThresholds[i]))
                 {
                     var newTitle = rankTitles[i];
 
@@ -517,18 +568,15 @@ public class EnchantingScript : DialogScriptBase
 
                     // Grant reward if the player reaches Rank 7 or higher
                     if (i >= 5) // Rank 7 starts at index 5
-                    {
                         GiveRankReward(source, newTitle);
-                    }
 
-                    break;
+                    previousRank = rankThresholds[i]; // Update previous rank to the current threshold
                 }
-            }
         }
     }
-    
+
     /// <summary>
-    /// Updates the player's title and sends a profile update.
+    ///     Updates the player's title and sends a profile update.
     /// </summary>
     private void UpdatePlayerTitle(Aisling source, LegendMark existingMark, string newTitle)
     {
@@ -549,9 +597,9 @@ public class EnchantingScript : DialogScriptBase
 
         source.Client.SendSelfProfile();
     }
-    
+
     /// <summary>
-    /// Gives the player a reward when reaching Rank 7 or above.
+    ///     Gives the player a reward when reaching Rank 7 or above.
     /// </summary>
     private void GiveRankReward(Aisling source, string title)
     {
@@ -561,7 +609,7 @@ public class EnchantingScript : DialogScriptBase
         if (!source.Legend.ContainsKey(REWARD_LEGEND_KEY))
         {
             var rewardLegendMark = new LegendMark(
-                "Obtained the legendary Geata Chugam",
+                "Obtained the Legendary Geata Chugam",
                 REWARD_LEGEND_KEY,
                 MarkIcon.Victory,
                 MarkColor.Yellow,

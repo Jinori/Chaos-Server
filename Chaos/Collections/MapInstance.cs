@@ -153,12 +153,20 @@ public sealed class MapInstance : IScripted<IMapScript>, IDeltaUpdatable
                     action();
                 } catch (Exception e)
                 {
-                    Logger.WithTopics(Topics.Entities.MapInstance, Topics.Actions.Update)
+                    Logger.WithTopics(
+                              [
+                                  Topics.Entities.MapInstance,
+                                  Topics.Actions.Update
+                              ])
                           .LogError(e, "Failed to process action in map {@MapInstance}", this);
                 }
         } catch (Exception e)
         {
-            Logger.WithTopics(Topics.Entities.MapInstance, Topics.Actions.Update)
+            Logger.WithTopics(
+                      [
+                          Topics.Entities.MapInstance,
+                          Topics.Actions.Update
+                      ])
                   .LogError(e, "Failed to update map {@MapInstance}", this);
         }
     }
@@ -273,7 +281,11 @@ public sealed class MapInstance : IScripted<IMapScript>, IDeltaUpdatable
 
     public void Destroy()
     {
-        Logger.WithTopics(Topics.Entities.MapInstance, Topics.Actions.Delete)
+        Logger.WithTopics(
+                  [
+                      Topics.Entities.MapInstance,
+                      Topics.Actions.Delete
+                  ])
               .WithProperty(this)
               .LogInformation("Shutting down map instance {@MapInstanceId}", InstanceId);
 
@@ -842,7 +854,7 @@ public sealed class MapInstance : IScripted<IMapScript>, IDeltaUpdatable
                                                .ThatCanObserve(target))
                     aisling.Client.SendAnimation(animation);
     }
-    
+
     public void ShowAnimationToFriendly(Animation animation, Creature owner)
     {
         //if both target point and target id are set, prefer the point animation.
@@ -852,17 +864,15 @@ public sealed class MapInstance : IScripted<IMapScript>, IDeltaUpdatable
         if (animation.TargetPoint.HasValue)
             foreach (var aisling in Objects.WithinRange<Aisling>(animation.TargetPoint))
             {
-                if (aisling.IsFriendlyTo(owner)) 
-                    aisling.Client.SendAnimation(animation);   
+                if (aisling.IsFriendlyTo(owner))
+                    aisling.Client.SendAnimation(animation);
             }
         else if (animation.TargetId.HasValue)
             if (TryGetEntity<Creature>(animation.TargetId.Value, out var target))
                 foreach (var aisling in Objects.WithinRange<Aisling>(target)
                                                .ThatCanObserve(target))
-                {
-                    if (aisling.IsFriendlyTo(owner)) 
-                        aisling.Client.SendAnimation(animation);   
-                }
+                    if (aisling.IsFriendlyTo(owner))
+                        aisling.Client.SendAnimation(animation);
     }
 
     public void SimpleAdd(MapEntity mapEntity)
@@ -895,7 +905,11 @@ public sealed class MapInstance : IScripted<IMapScript>, IDeltaUpdatable
                         await UpdateMapAsync(DeltaTime.GetDelta);
                     } catch (Exception e)
                     {
-                        Logger.WithTopics(Topics.Entities.MapInstance, Topics.Actions.Update)
+                        Logger.WithTopics(
+                                  [
+                                      Topics.Entities.MapInstance,
+                                      Topics.Actions.Update
+                                  ])
                               .LogError(e, "Update succeeded, but some other error occurred for map {@MapInstance}", this);
                     }
                 }

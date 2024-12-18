@@ -14,7 +14,7 @@ public class RegenerationEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(30);
 
-    private Creature SourceOfEffect { get; set; } = null!;
+    private Creature? SourceOfEffect { get; set; }
 
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()
@@ -42,6 +42,13 @@ public class RegenerationEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
     {
+        if (SourceOfEffect == null)
+        {
+            Subject.Effects.Terminate(Name);
+
+            return;
+        }
+
         // Step 1: Calculate the base heal amount using the source's WIS and 1% of the target's max HP
         var wis = SourceOfEffect.StatSheet.Wis;
         var targetMaxHp = Subject.StatSheet.EffectiveMaximumHp;

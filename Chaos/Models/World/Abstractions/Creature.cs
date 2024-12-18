@@ -6,7 +6,6 @@ using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
-using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
 using Chaos.Formulae;
 using Chaos.Geometry.Abstractions;
@@ -36,13 +35,14 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
     public virtual bool IsDead { get; set; }
     public Trackers Trackers { get; set; }
 
+    public string TypingWord { get; set; }
+
     public VisionType Vision { get; protected set; }
     public Dictionary<VisibleEntity, DateTime> ApproachTime { get; }
     public abstract int AssailIntervalMs { get; }
     public abstract ILogger Logger { get; }
     public IIntervalTimer RegenTimer { get; }
 
-    public string TypingWord { get; set; }
     /// <inheritdoc />
     public abstract ICreatureScript Script { get; }
 
@@ -210,37 +210,6 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
             pathOptions);
     }
 
-    private void HandleAdminVerbalCommand(Aisling source, string message)
-    {
-        if (message.EqualsI("show ids"))
-        {
-            foreach (var creature in MapInstance.GetEntitiesWithinRange<Creature>(this))
-                if (!creature.Equals(this))
-                    source.Client.SendDisplayPublicMessage(creature.Id, PublicMessageType.Normal, creature.Name);
-
-            foreach (var groundItem in MapInstance.GetEntitiesWithinRange<GroundItem>(this))
-                source.Client.SendDisplayPublicMessage(groundItem.Id, PublicMessageType.Normal, groundItem.Name);
-        } else if (message.EqualsI("show keys"))
-        {
-            foreach (var creature in MapInstance.GetEntitiesWithinRange<Creature>(this))
-                if (!creature.Equals(this))
-                    switch (creature)
-                    {
-                        case Merchant merchant:
-                            source.Client.SendDisplayPublicMessage(creature.Id, PublicMessageType.Normal, merchant.Template.TemplateKey);
-
-                            break;
-                        case Monster monster:
-                            source.Client.SendDisplayPublicMessage(creature.Id, PublicMessageType.Normal, monster.Template.TemplateKey);
-
-                            break;
-                    }
-
-            foreach (var groundItem in MapInstance.GetEntitiesWithinRange<GroundItem>(this))
-                source.Client.SendDisplayPublicMessage(groundItem.Id, PublicMessageType.Normal, groundItem.Item.Template.TemplateKey);
-        }
-    }
-
     public virtual void HandleMapDeparture()
     {
         foreach (var entity in ApproachTime.Keys)
@@ -290,7 +259,12 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
             source.Client.SendAttributes(StatUpdateType.ExpGold);
             Script.OnGoldDroppedOn(source, amount);
 
-            Logger.WithTopics(Topics.Entities.Creature, Topics.Entities.Gold, Topics.Actions.Drop)
+            Logger.WithTopics(
+                      [
+                          Topics.Entities.Creature,
+                          Topics.Entities.Gold,
+                          Topics.Actions.Drop
+                      ])
                   .WithProperty(source)
                   .LogInformation(
                       "Aisling {@AislingName} dropped {Amount} gold on creature {@CreatureName}",
@@ -316,7 +290,12 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
         if (source.Inventory.RemoveQuantity(slot, count, out var items))
             foreach (var item in items)
             {
-                Logger.WithTopics(Topics.Entities.Creature, Topics.Entities.Item, Topics.Actions.Drop)
+                Logger.WithTopics(
+                          [
+                              Topics.Entities.Creature,
+                              Topics.Entities.Item,
+                              Topics.Actions.Drop
+                          ])
                       .WithProperty(source)
                       .WithProperty(item)
                       .WithProperty(this)
@@ -472,10 +451,14 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
 
                     if (onTraverse is not null)
                         await onTraverse();
-                } 
-                    catch (Exception e)
+                } catch (Exception e)
                 {
-                    Logger.WithTopics(Topics.Entities.MapInstance, Topics.Entities.Creature, Topics.Actions.Traverse)
+                    Logger.WithTopics(
+                              [
+                                  Topics.Entities.MapInstance,
+                                  Topics.Entities.Creature,
+                                  Topics.Actions.Traverse
+                              ])
                           .WithProperty(this)
                           .WithProperty(currentMap)
                           .WithProperty(destinationMap)
@@ -506,7 +489,12 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
 
         foreach (var groundItem in groundItems)
         {
-            Logger.WithTopics(Topics.Entities.Creature, Topics.Entities.Item, Topics.Actions.Drop)
+            Logger.WithTopics(
+                      [
+                          Topics.Entities.Creature,
+                          Topics.Entities.Item,
+                          Topics.Actions.Drop
+                      ])
                   .WithProperty(this)
                   .WithProperty(groundItem)
                   .LogInformation(
@@ -542,7 +530,12 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
 
         MapInstance.AddEntity(money, point);
 
-        Logger.WithTopics(Topics.Entities.Creature, Topics.Entities.Gold, Topics.Actions.Drop)
+        Logger.WithTopics(
+                  [
+                      Topics.Entities.Creature,
+                      Topics.Entities.Gold,
+                      Topics.Actions.Drop
+                  ])
               .WithProperty(this)
               .WithProperty(money)
               .LogInformation(

@@ -20,7 +20,7 @@ public class VortexEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(20);
 
-    private Creature SourceOfEffect { get; set; } = null!;
+    private Creature? SourceOfEffect { get; set; }
 
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()
@@ -54,6 +54,13 @@ public class VortexEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
     {
+        if (SourceOfEffect == null)
+        {
+            AislingSubject?.Effects.Terminate(Name);
+
+            return;
+        }
+
         if ((AislingSubject == null) && !Subject.Script.Is<PetScript>())
         {
             Subject.Effects.Terminate("Vortex");
@@ -69,12 +76,12 @@ public class VortexEffect : ContinuousAnimationEffectBase
         }
 
         var options = new AoeShapeOptions
-            {
-                Source = new Point(Subject.X, Subject.Y),
-                Range = 1
-            };
+        {
+            Source = new Point(Subject.X, Subject.Y),
+            Range = 1
+        };
 
-            var points = AoeShape.AllAround.ResolvePoints(options);
+        var points = AoeShape.AllAround.ResolvePoints(options);
 
         var targets = Subject.MapInstance
                              .GetEntitiesAtPoints<Creature>(points.Cast<IPoint>())

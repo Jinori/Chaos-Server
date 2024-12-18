@@ -2,7 +2,7 @@ using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.EventBoss.Boss.Christmas.DirtyErbie;
+namespace Chaos.Scripting.MonsterScripts.Boss.EventBoss.Christmas.DirtyErbie;
 
 public class DirtyErbie98 : CompositeMonsterScript
 {
@@ -12,6 +12,7 @@ public class DirtyErbie98 : CompositeMonsterScript
         GetScriptKey(typeof(MoveToTargetScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),
+        GetScriptKey(typeof(WanderingScript)),
         GetScriptKey(typeof(CastingScript)),
         GetScriptKey(typeof(AttackingScript)),
         GetScriptKey(typeof(DeathScript)),

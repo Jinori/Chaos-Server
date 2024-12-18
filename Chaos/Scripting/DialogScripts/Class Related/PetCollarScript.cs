@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
@@ -17,139 +16,25 @@ public class PetCollarScript(
     Dialog subject,
     IMonsterFactory monsterFactory,
     ISkillFactory skillFactory,
-    ISpellFactory spellFactory
-)
-    : DialogScriptBase(subject)
+    ISpellFactory spellFactory) : DialogScriptBase(subject)
 {
-    
-    private readonly HashSet<string> DisablePetsOnTheseInstanceIDs = new(StringComparer.OrdinalIgnoreCase) { "arena_battle_ring", "arena_lava", "arena_lavateams", "arena_colorclash", "arena_escort", "mtmerry_frostychallenge"};
-    
-    
-    public override void OnDisplaying(Aisling source)
+    private readonly HashSet<string> DisablePetsOnTheseInstanceIDs = new(StringComparer.OrdinalIgnoreCase)
     {
-        if (source.UserStatSheet.BaseClass is not BaseClass.Priest)
-        {
-            Subject.Reply(source, "You attempt to use the collar but it burns your hands, forcing you to drop it.");
-            source.Inventory.RemoveQuantity("Pet Collar", 1);
-            var pets = source.MapInstance.GetEntities<Monster>().Where(x => x.Script.Is<PetScript>() && x.Name.Contains(source.Name));
+        "arena_battle_ring",
+        "arena_lava",
+        "arena_lavateams",
+        "arena_colorclash",
+        "arena_escort",
+        "mtmerry_frostychallenge"
+    };
 
-            foreach (var pet in pets)
-            {
-                pet.MapInstance.RemoveEntity(pet);
-            }
-
-            return;
-        }
-        
-        switch (Subject.Template.TemplateKey.ToLower())
-        {
-            case "petcollar_home":
-                RemoveExistingPets(source);
-                break;
-            case "petcollar_summonpet":
-                HandleSummonPet(source);
-                break;
-        }
-    }
-
-    private void RemoveExistingPets(Aisling source)
-    {
-        var pets = source.MapInstance.GetEntities<Monster>().Where(x => x.Script.Is<PetScript>() && x.Name.Contains(source.Name));
-
-        var nopetSummoned = !source.MapInstance.GetEntities<Monster>().Any(x => x.Script.Is<PetScript>() && x.Name.Contains(source.Name));
-
-        if (nopetSummoned)
-        {
-            Subject.Reply(source, "Your pet is not currently summoned");
-            source.SendOrangeBarMessage("Your pet is not currently summoned.");
-            return;
-        }
-        
-        foreach (var pet in pets)
-        {
-            pet.MapInstance.RemoveEntity(pet);
-            source.Trackers.TimedEvents.AddEvent("PetReturn", TimeSpan.FromMinutes(5), true);
-        }
-    }
-
-    private void HandleSummonPet(Aisling source)
-    {
-        var petSummoned = source.MapInstance.GetEntities<Monster>().Any(x => x.Script.Is<PetScript>() && x.Name.Contains(source.Name));
-
-        if (petSummoned)
-        {
-            source.SendOrangeBarMessage($"Your pet is currently summoned.");
-            return;
-        }
-
-        if (source.Group is { Count: > 2 })
-        {
-            source.SendOrangeBarMessage("You cannot summon a pet with more than two group members.");
-            source.Trackers.TimedEvents.AddEvent("PetReturn", TimeSpan.FromMinutes(5), true);
-            return;
-        }
-        
-        if (source.Trackers.TimedEvents.HasActiveEvent("PetDeath", out var timedEvent))
-        {
-            source.SendActiveMessage($"Your pet was killed recently. Please wait {timedEvent.Remaining.ToReadableString()}.");
-            return;
-        }
-        
-        if (source.Trackers.TimedEvents.HasActiveEvent("PetReturn", out var timedEvent2))
-        {
-            source.SendActiveMessage($"Your pet recently came home. Please wait {timedEvent2.Remaining.ToReadableString()}.");
-            return;
-        }
-        
-        source.Trackers.Enums.TryGetValue(out SummonChosenPet petKey);
-
-        if (petKey == SummonChosenPet.None)
-        {
-            source.SendActiveMessage("You have not selected a pet type with Areini!");
-            return;
-        }
-
-        SummonPet(source, petKey);
-    }
-
-    private void SummonPet(Aisling source, SummonChosenPet petKey)
-    {        
-        if (DisablePetsOnTheseInstanceIDs.Contains(source.MapInstance.LoadedFromInstanceId))
-        {
-            source.SendOrangeBarMessage("You cannot summon pets on an arena map.");
-            return;
-        }
-        var newMonster = monsterFactory.Create(petKey + "pet", source.MapInstance, source);
-        InitializeNewPet(source, newMonster);
-        source.MapInstance.AddEntity(newMonster, source);
-    }
-
-    private void InitializeNewPet(Aisling source, Monster newMonster)
-    {
-        newMonster.Name = $"{source.Name}'s {newMonster.Name}";
-        newMonster.PetOwner = source;
-        var attributes = new Attributes
-        {
-            Ac = 100 - source.StatSheet.Level,
-            Con = source.StatSheet.EffectiveCon + source.StatSheet.Level,
-            Dex = source.StatSheet.EffectiveDex + source.StatSheet.Level,
-            Int = source.StatSheet.EffectiveInt + source.StatSheet.Level,
-            Str = source.StatSheet.EffectiveStr + source.StatSheet.Level,
-            Wis = source.StatSheet.EffectiveWis + source.StatSheet.Level,
-            AtkSpeedPct = source.StatSheet.Level / 2,
-            MaximumHp = source.StatSheet.Level * 1000 / 7 + 1000,
-            MaximumMp = source.StatSheet.Level * 500 / 7 + 1000
-        };
-
-        newMonster.StatSheet.SetOffenseElement(Elements.PickRandom());
-        newMonster.StatSheet.SetDefenseElement(source.UserStatSheet.DefenseElement);
-        newMonster.StatSheet.SetLevel(source.StatSheet.Level);
-        newMonster.StatSheet.AddBonus(attributes);
-        newMonster.StatSheet.SetHealthPct(100);
-        newMonster.StatSheet.SetManaPct(100);
-
-        AssignPetSkillsAndSpells(source, newMonster);
-    }
+    private Element[] Elements { get; } =
+        [
+            Element.Fire,
+            Element.Water,
+            Element.Wind,
+            Element.Earth
+        ];
 
     private void AssignPetSkillsAndSpells(Aisling source, Monster newMonster)
     {
@@ -220,7 +105,7 @@ public class PetCollarScript(
 
                     break;
             }
-        
+
         if (source.Trackers.Enums.TryGetValue(out Level80PetSkills level80Skills))
             switch (level80Skills)
             {
@@ -238,6 +123,171 @@ public class PetCollarScript(
                     break;
             }
     }
+
+    private string GetFollowModeDescription(PetFollowMode mode)
+        => mode switch
+        {
+            PetFollowMode.AtFeet           => "stay close to you",
+            PetFollowMode.Wander           => "wander freely",
+            PetFollowMode.DontMove         => "remain stationary",
+            PetFollowMode.FollowAtDistance => "follow you at a distance",
+            _                              => "have an unknown behavior"
+        };
+
+    private void HandleChangeAppearance(Aisling source, string? optionText)
+    {
+        if (Enum.TryParse(optionText?.Replace(" ", ""), true, out SummonChosenPet petType))
+        {
+            source.Trackers.Enums.Set(petType);
+            source.SendActiveMessage($"You've chosen {petType} as your pet's appearance!");
+        } else
+            source.SendActiveMessage("Invalid pet type selected!");
+    }
+
+    private void HandleCombatStance(Aisling source, string? optionText)
+    {
+        if (Enum.TryParse(optionText?.Replace(" ", ""), true, out PetMode petMode))
+        {
+            source.Trackers.Enums.Set(petMode);
+            source.SendActiveMessage($"Pet combat stance set to {petMode}.");
+        } else
+            source.SendActiveMessage("Invalid combat stance selected!");
+    }
+
+    private void HandlePetFollow(Aisling source, string? optionText)
+    {
+        var cleanedOptionText = NormalizeFollowModeText(optionText);
+
+        if (Enum.TryParse(cleanedOptionText, out PetFollowMode followMode))
+        {
+            source.Trackers.Enums.Set(followMode);
+            source.SendActiveMessage($"Your pet will now {GetFollowModeDescription(followMode)}.");
+        } else
+            source.SendActiveMessage("Invalid follow mode selected!");
+    }
+
+    private void HandleSummonPet(Aisling source)
+    {
+        var petSummoned = source.MapInstance
+                                .GetEntities<Monster>()
+                                .Any(x => x.Script.Is<PetScript>() && x.Name.Contains(source.Name));
+
+        if (petSummoned)
+        {
+            source.SendOrangeBarMessage("Your pet is currently summoned.");
+
+            return;
+        }
+
+        if (source.Group is { Count: > 2 })
+        {
+            source.SendOrangeBarMessage("You cannot summon a pet with more than two group members.");
+            source.Trackers.TimedEvents.AddEvent("PetReturn", TimeSpan.FromMinutes(5), true);
+
+            return;
+        }
+
+        if (source.Trackers.TimedEvents.HasActiveEvent("PetDeath", out var timedEvent))
+        {
+            source.SendActiveMessage($"Your pet was killed recently. Please wait {timedEvent.Remaining.ToReadableString()}.");
+
+            return;
+        }
+
+        if (source.Trackers.TimedEvents.HasActiveEvent("PetReturn", out var timedEvent2))
+        {
+            source.SendActiveMessage($"Your pet recently came home. Please wait {timedEvent2.Remaining.ToReadableString()}.");
+
+            return;
+        }
+
+        source.Trackers.Enums.TryGetValue(out SummonChosenPet petKey);
+
+        if (petKey == SummonChosenPet.None)
+        {
+            source.SendActiveMessage("You have not selected a pet type with Areini!");
+
+            return;
+        }
+
+        SummonPet(source, petKey);
+    }
+
+    private void InitializeNewPet(Aisling source, Monster newMonster)
+    {
+        newMonster.Name = $"{source.Name}'s {newMonster.Name}";
+        newMonster.PetOwner = source;
+
+        var attributes = new Attributes
+        {
+            Ac = 100 - source.StatSheet.Level,
+            Con = source.StatSheet.EffectiveCon + source.StatSheet.Level,
+            Dex = source.StatSheet.EffectiveDex + source.StatSheet.Level,
+            Int = source.StatSheet.EffectiveInt + source.StatSheet.Level,
+            Str = source.StatSheet.EffectiveStr + source.StatSheet.Level,
+            Wis = source.StatSheet.EffectiveWis + source.StatSheet.Level,
+            AtkSpeedPct = source.StatSheet.Level / 2,
+            MaximumHp = source.StatSheet.Level * 1000 / 7 + 1000,
+            MaximumMp = source.StatSheet.Level * 500 / 7 + 1000
+        };
+
+        newMonster.StatSheet.SetOffenseElement(Elements.PickRandom());
+        newMonster.StatSheet.SetDefenseElement(source.UserStatSheet.DefenseElement);
+        newMonster.StatSheet.SetLevel(source.StatSheet.Level);
+        newMonster.StatSheet.AddBonus(attributes);
+        newMonster.StatSheet.SetHealthPct(100);
+        newMonster.StatSheet.SetManaPct(100);
+
+        AssignPetSkillsAndSpells(source, newMonster);
+    }
+
+    private string? NormalizeFollowModeText(string? optionText)
+        => optionText switch
+        {
+            "At Feet"       => "AtFeet",
+            "Follow Behind" => "FollowAtDistance",
+            "Stay"          => "DontMove",
+            "Wander"        => "Wander",
+            _               => optionText?.Replace(" ", "")
+        };
+
+    public override void OnDisplaying(Aisling source)
+    {
+        if (source.UserStatSheet.BaseClass is not BaseClass.Priest)
+        {
+            Subject.Reply(source, "You attempt to use the collar but it burns your hands, forcing you to drop it.");
+            source.Inventory.RemoveQuantity("Pet Collar", 1);
+
+            var pets = source.MapInstance
+                             .GetEntities<Monster>()
+                             .Where(x => x.Script.Is<PetScript>() && x.Name.Contains(source.Name));
+
+            foreach (var pet in pets)
+                pet.MapInstance.RemoveEntity(pet);
+
+            return;
+        }
+
+        if (source.MapInstance.Template.TemplateKey.Equals("7049"))
+        {
+            Subject.Reply(source, "You cannot summon pets here.");
+
+            return;
+        }
+
+        switch (Subject.Template.TemplateKey.ToLower())
+        {
+            case "petcollar_home":
+                RemoveExistingPets(source);
+
+                break;
+            case "petcollar_summonpet":
+                HandleSummonPet(source);
+
+                break;
+        }
+    }
+
     public override void OnNext(Aisling source, byte? optionIndex = null)
     {
         if (!optionIndex.HasValue)
@@ -250,80 +300,55 @@ public class PetCollarScript(
         {
             case "petcollar_changeappearance":
                 HandleChangeAppearance(source, optionText);
+
                 break;
             case "petcollar_combatstance":
                 HandleCombatStance(source, optionText);
+
                 break;
             case "petcollar_petfollow":
                 HandlePetFollow(source, optionText);
+
                 break;
         }
     }
 
-    private void HandleChangeAppearance(Aisling source, string? optionText)
+    private void RemoveExistingPets(Aisling source)
     {
-        if (Enum.TryParse(optionText?.Replace(" ", ""), true, out SummonChosenPet petType))
-        {
-            source.Trackers.Enums.Set(petType);
-            source.SendActiveMessage($"You've chosen {petType} as your pet's appearance!");
-        }
-        else
-            source.SendActiveMessage("Invalid pet type selected!");
-    }
+        var pets = source.MapInstance
+                         .GetEntities<Monster>()
+                         .Where(x => x.Script.Is<PetScript>() && x.Name.Contains(source.Name));
 
-    private void HandleCombatStance(Aisling source, string? optionText)
-    {
-        if (Enum.TryParse(optionText?.Replace(" ", ""), true, out PetMode petMode))
-        {
-            source.Trackers.Enums.Set(petMode);
-            source.SendActiveMessage($"Pet combat stance set to {petMode}.");
-        }
-        else
-        {
-            source.SendActiveMessage("Invalid combat stance selected!");
-        }
-    }
+        var nopetSummoned = !source.MapInstance
+                                   .GetEntities<Monster>()
+                                   .Any(x => x.Script.Is<PetScript>() && x.Name.Contains(source.Name));
 
-    private void HandlePetFollow(Aisling source, string? optionText)
-    {
-        var cleanedOptionText = NormalizeFollowModeText(optionText);
+        if (nopetSummoned)
+        {
+            Subject.Reply(source, "Your pet is not currently summoned");
+            source.SendOrangeBarMessage("Your pet is not currently summoned.");
 
-        if (Enum.TryParse(cleanedOptionText, out PetFollowMode followMode))
-        {
-            source.Trackers.Enums.Set(followMode);
-            source.SendActiveMessage($"Your pet will now {GetFollowModeDescription(followMode)}.");
+            return;
         }
-        else
+
+        foreach (var pet in pets)
         {
-            source.SendActiveMessage("Invalid follow mode selected!");
+            pet.MapInstance.RemoveEntity(pet);
+            source.Trackers.TimedEvents.AddEvent("PetReturn", TimeSpan.FromMinutes(5), true);
         }
     }
 
-    private string? NormalizeFollowModeText(string? optionText) =>
-        optionText switch
+    private void SummonPet(Aisling source, SummonChosenPet petKey)
+    {
+        if (DisablePetsOnTheseInstanceIDs.Contains(source.MapInstance.LoadedFromInstanceId))
         {
-            "At Feet"       => "AtFeet",
-            "Follow Behind" => "FollowAtDistance",
-            "Stay"    => "DontMove",
-            "Wander"        => "Wander",
-            _               => optionText?.Replace(" ", "") 
-        };
+            source.SendOrangeBarMessage("You cannot summon pets on an arena map.");
 
-    private string GetFollowModeDescription(PetFollowMode mode) =>
-        mode switch
-        {
-            PetFollowMode.AtFeet           => "stay close to you",
-            PetFollowMode.Wander           => "wander freely",
-            PetFollowMode.DontMove         => "remain stationary",
-            PetFollowMode.FollowAtDistance => "follow you at a distance",
-            _                              => "have an unknown behavior"
-        };
+            return;
+        }
 
-    private Element[] Elements { get; } =
-    [
-        Element.Fire,
-        Element.Water,
-        Element.Wind,
-        Element.Earth
-    ];
+        var newMonster = monsterFactory.Create(petKey + "pet", source.MapInstance, source);
+        InitializeNewPet(source, newMonster);
+        source.MapInstance.AddEntity(newMonster, source);
+    }
 }

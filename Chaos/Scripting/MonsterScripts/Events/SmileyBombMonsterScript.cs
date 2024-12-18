@@ -52,7 +52,7 @@ public class SmileyBombMonsterScript : MonsterScriptBase
         {
             var tnl = LevelUpFormulae.Default.CalculateTnl(entity);
             var minExperience2 = MathEx.GetPercentOf<decimal>(tnl, 2);
-            var maxExperience2 = MathEx.GetPercentOf<decimal>(tnl, 30);
+            var maxExperience2 = MathEx.GetPercentOf<decimal>(tnl, 50);
             var bonusExperience = MathEx.GetPercentOf<decimal>(tnl, 50);
 
             var reward = MathEx.ScaleRange(
@@ -76,7 +76,7 @@ public class SmileyBombMonsterScript : MonsterScriptBase
             MAX_EXPERIENCE);
 
         if (seconds >= 300)
-            xpReward += 40000000;
+            xpReward += 20000000;
 
         // Get TNL for the Aisling
         return xpReward;

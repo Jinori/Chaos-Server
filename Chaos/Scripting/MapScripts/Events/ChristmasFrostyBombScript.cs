@@ -1,5 +1,7 @@
 using Chaos.Collections;
+using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
+using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
@@ -7,7 +9,6 @@ using Chaos.Geometry.Abstractions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MapScripts.Abstractions;
-using Chaos.Scripting.MonsterScripts.Pet;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
@@ -27,7 +28,6 @@ public class ChristmasFrostyBombScript : MapScriptBase
     private readonly Random RandomGenerator;
     private readonly List<Point> ReindeerSpawnPoints;
     private readonly IIntervalTimer ReindeerSpawnTimer;
-    private readonly IIntervalTimer PriestPetRemoveTimer;
     private readonly IIntervalTimer RewardTimer;
     private readonly TimeSpan TimerDuration = TimeSpan.FromMinutes(3);
     private readonly HashSet<Point> UsedReindeerSpawnPoints;
@@ -56,12 +56,11 @@ public class ChristmasFrostyBombScript : MapScriptBase
         ReindeerSpawnPoints = GenerateReindeerSpawnPoints();
         UsedReindeerSpawnPoints = new HashSet<Point>();
 
-        PriestPetRemoveTimer = new IntervalTimer(TimeSpan.FromSeconds(1));
         BombSpawnTimer = new IntervalTimer(TimeSpan.FromSeconds(2));
         ReindeerSpawnTimer = new IntervalTimer(TimeSpan.FromSeconds(6));
         PrizeBoxSpawnTimer = new IntervalTimer(TimeSpan.FromSeconds(45));
         DifficultyTimer = new IntervalTimer(TimeSpan.FromSeconds(15)); // Adjust difficulty every 15 seconds
-        RewardTimer = new IntervalTimer(TimeSpan.FromSeconds(1)); // Adjust difficulty every 15 seconds
+        RewardTimer = new IntervalTimer(TimeSpan.FromSeconds(1));
         TimerStart = DateTime.UtcNow;
 
         CurrentStage = ScriptStage.Dormant;
@@ -201,18 +200,6 @@ public class ChristmasFrostyBombScript : MapScriptBase
         DifficultyTimer.Update(delta);
         PrizeBoxSpawnTimer.Update(delta);
         ReindeerSpawnTimer.Update(delta);
-        PriestPetRemoveTimer.Update(delta);
-
-        if (PriestPetRemoveTimer.IntervalElapsed)
-        {
-            var pets = Subject.GetEntities<Monster>().Where(x => x.Script.Is<PetScript>());
-
-
-            foreach (var pet in pets)
-            {
-                pet.MapInstance.RemoveEntity(pet);
-            }
-        }
 
         var aislings = Subject.GetEntities<Aisling>()
                               .ToList();
@@ -274,7 +261,17 @@ public class ChristmasFrostyBombScript : MapScriptBase
 
                 foreach (var player in playersInRectangleStart)
                 {
-                    var point = new Point(player.X, player.Y - 1);
+                    var options = new AoeShapeOptions
+                    {
+                        Source = new Point(player.X, player.Y),
+                        Range = 1
+                    };
+
+                    var points = AoeShape.AllAround.ResolvePoints(options);
+
+                    var validPoint = points.Where(point => Subject.IsWalkable(point, CreatureType.Aisling))
+                                           .ToList();
+                    var point = validPoint.PickRandom();
                     var bomb = MonsterFactory.Create("smiley_blob_bomb", Subject, point);
                     Subject.AddEntity(bomb, bomb);
                 }
@@ -301,11 +298,10 @@ public class ChristmasFrostyBombScript : MapScriptBase
                         foreach (var player in playersInRectangle)
                         {
                             player.Trackers.Counters.AddOrIncrement("frostychallenge");
-                            
+
                             var seconds = player.Trackers.Counters.TryGetValue("frostychallenge", out var counter) ? counter : 0;
 
                             player.Client.SendServerMessage(ServerMessageType.PersistentMessage, $"Survived {seconds} seconds!");
-
                         }
 
                     if (DifficultyTimer.IntervalElapsed)

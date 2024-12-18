@@ -1,10 +1,12 @@
 ﻿using Chaos.Collections;
 using Chaos.DarkAges.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
+using Chaos.Scripting.MonsterScripts.Pet;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
@@ -123,11 +125,19 @@ public class TeleportToFrostyChallenge : DialogScriptBase
             3);
         Subject.Close(source);
 
-        if (source.Effects.Contains("Mount"))
-            source.Effects.Dispel("Mount");
+        if (source.Effects.Any())
+            foreach (var effect in source.Effects.ToList())
+                source.Effects.Dispel(effect.Name);
 
         var mapInstance = SimpleCache.Get<MapInstance>("mtmerry_frostychallenge");
         var point = rectangle.GetRandomPoint();
+
+        var pets = source.MapInstance
+                         .GetEntities<Monster>()
+                         .Where(x => x.Script.Is<PetScript>() && x.Name.Contains(source.Name));
+
+        foreach (var pet in pets)
+            pet.MapInstance.RemoveEntity(pet);
 
         source.TraverseMap(mapInstance, point);
     }
