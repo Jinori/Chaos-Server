@@ -43,6 +43,8 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
     public bool BetOnMonsterRaceOption { get; set; }
     public BodyColor BodyColor { get; set; }
     public BodySprite BodySprite { get; set; }
+    public IPoint SummonTrinketLocation { get; set; }
+    public MapInstance SummonTrinketMapInstance { get; set; }
     public SynchronizedHashSet<ChannelSettings> ChannelSettings { get; init; }
     public IChaosWorldClient Client { get; set; }
     public int CurrentDiceScore { get; set; }

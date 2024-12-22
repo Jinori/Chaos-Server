@@ -17,8 +17,8 @@ public class SummonPortalScript : ReactorTileScriptBase
     protected IIntervalTimer? Timer { get; set; }
     protected IIntervalTimer AnimationTimer { get; set; }
     public IEffectFactory EffectFactory { get; init; }
-    
-    protected Animation PortalAnimation { get; } = new()
+
+    private Animation PortalAnimation { get; } = new()
     {
         AnimationSpeed = 145,
         TargetAnimation = 410
@@ -40,7 +40,7 @@ public class SummonPortalScript : ReactorTileScriptBase
     {
         if (Subject.Owner is Aisling owner)
         {
-            var targetMap = SimpleCache.Get<MapInstance>(owner.MapInstance.InstanceId);
+            var targetMap = SimpleCache.Get<MapInstance>(owner.SummonTrinketMapInstance.InstanceId);
             var aisling = source as Aisling;
         
             if ((aisling?.Group != null) && !aisling.Group.Contains(owner))
@@ -61,7 +61,7 @@ public class SummonPortalScript : ReactorTileScriptBase
                 return;
             }
             
-            aisling.TraverseMap(targetMap, owner);
+            aisling.TraverseMap(targetMap, new Point(owner.SummonTrinketLocation.X, owner.SummonTrinketLocation.Y));
             owner.SendActiveMessage($"{aisling.Name} has entered your portal.");
             Map.RemoveEntity(Subject);            
         }

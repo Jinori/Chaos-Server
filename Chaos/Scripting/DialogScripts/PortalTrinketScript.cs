@@ -7,7 +7,6 @@ using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
-using FluentAssertions.Execution;
 
 namespace Chaos.Scripting.DialogScripts;
 
@@ -195,7 +194,7 @@ public class PortalTrinketScript : DialogScriptBase
                     return;
                 }
 
-                if (!MapsTrinketCanBeUsed.Contains(source.MapInstance.Name))
+                if (!MapsTrinketCanBeUsed.Contains(source.MapInstance.Name) || source.MapInstance.IsShard)
                 {
                     Subject.Reply(source, "The mystical energies of this trinket cannot be used in this location.");
 
@@ -231,15 +230,9 @@ public class PortalTrinketScript : DialogScriptBase
                     return;
                 }
 
-                if (source.MapInstance.IsShard)
-                {
-                    Subject.Reply(
-                        source,
-                        "The mystical nature of this location prevents any external interference. You are unable to summon your group members to this place.");
-
-                    return;
-                }
-
+                source.SummonTrinketMapInstance = source.MapInstance;
+                source.SummonTrinketLocation = new Point(source.X, source.Y);
+                
                 foreach (var member in source.Group)
                     if (!member.Equals(source))
                     {
@@ -287,7 +280,8 @@ public class PortalTrinketScript : DialogScriptBase
                                 source);
                             member.MapInstance.SimpleAdd(tile);
                             member.SendActiveMessage($"{source.Name} has created a group portal for you to enter.");
-                        } else
+                        } 
+                        else
                             Task.Run(
                                 async () =>
                                 {
@@ -302,12 +296,12 @@ public class PortalTrinketScript : DialogScriptBase
                                         member.Y - 2,
                                         4,
                                         4);
+                                    
                                     rectangle.TryGetRandomPoint(x => member.MapInstance.IsWalkable(x, member.Type), out var point);
 
                                     if (point == null)
                                     {
                                         member.SendOrangeBarMessage($"{source.Name} tried to summon portal but there's no space.");
-
                                         return;
                                     }
 
