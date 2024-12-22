@@ -484,14 +484,21 @@ public class WeaponSmithingCraftScript : DialogScriptBase
             if (currentRankIndex == -1)
                 currentRankIndex = 0; // Default to the first rank if the title is not found
 
-            var previousRank = currentRankIndex >= 0 ? rankThresholds[currentRankIndex] : 0;
             existingMark.Count++;
 
             var newLegendMarkCount = existingMark.Count;
 
             // Check all thresholds beyond the current rank
+            // Check all thresholds beyond the current rank
             for (var i = currentRankIndex + 1; i < rankThresholds.Length; i++)
-                if ((newLegendMarkCount >= rankThresholds[i]) && (previousRank < rankThresholds[i]))
+            {
+                if ((i >= 5) && !source.Legend.ContainsKey("weaponsmithtrinket"))
+                {
+                    var newTitle = rankTitles[i];
+                    GiveRankReward(source, newTitle);
+                }
+
+                if (newLegendMarkCount >= rankThresholds[i])
                 {
                     var newTitle = rankTitles[i];
 
@@ -501,9 +508,8 @@ public class WeaponSmithingCraftScript : DialogScriptBase
                     // Grant reward if the player reaches Rank 7 or higher
                     if (i >= 5) // Rank 7 starts at index 5
                         GiveRankReward(source, newTitle);
-
-                    previousRank = rankThresholds[i]; // Update previous rank to the current threshold
                 }
+            }
         }
     }
 

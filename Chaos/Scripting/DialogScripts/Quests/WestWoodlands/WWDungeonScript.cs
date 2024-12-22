@@ -97,7 +97,17 @@ public class WWDungeonScript(
                     return;
                 }
 
-                if (!hasStage || (stage == WestWoodlandsDungeonQuestStage.None))
+                if ((stage == WestWoodlandsDungeonQuestStage.Failed)
+                    && source.Trackers.TimedEvents.HasActiveEvent("wwdungeoncd", out var cdtime2))
+                {
+                    Subject.Reply(
+                        source,
+                        $"Sorry bud, I told you there's no re-entry. You can try again in {cdtime2.Remaining.ToReadableString()}.");
+
+                    return;
+                }
+
+                if (!hasStage || (stage == WestWoodlandsDungeonQuestStage.None) || (stage == WestWoodlandsDungeonQuestStage.Failed))
                 {
                     var option = new DialogOption
                     {
@@ -191,7 +201,7 @@ public class WWDungeonScript(
 
             case "wwdungeon_return":
             {
-                source.Trackers.Enums.Set(WestWoodlandsDungeonQuestStage.None);
+                source.Trackers.Enums.Set(WestWoodlandsDungeonQuestStage.Failed);
                 Subject.Reply(source, "Looks like you weren't able to clear the Lost Woods. That's okay.", "wwdungeon_initial");
 
                 break;

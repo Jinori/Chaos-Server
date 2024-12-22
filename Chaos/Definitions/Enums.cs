@@ -1541,7 +1541,8 @@ public enum WestWoodlandsDungeonQuestStage
 {
     None,
     Started = 1,
-    Completed = 2
+    Failed = 2,
+    Completed = 3
 }
 
 public enum KarloposKillQuestStage

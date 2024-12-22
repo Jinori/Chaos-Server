@@ -26,6 +26,12 @@ public class RelearnCraftScript : DialogScriptBase
         {
             case "riona_relearnrecipes":
             {
+                if (source.Legend.ContainsKey("darkpriest") && !source.SpellBook.ContainsByTemplateKey("auraoftorment"))
+                {
+                    var auraoftorment = SpellFactory.Create("auraoftorment");
+                    source.SpellBook.TryAddToNextSlot(auraoftorment);
+                }
+                
                 if (source.SpellBook.ContainsByTemplateKey("morcradh")
                     && !source.SpellBook.ContainsByTemplateKey("ardcradh")
                     && (source.UserStatSheet.BaseClass != BaseClass.Wizard))
