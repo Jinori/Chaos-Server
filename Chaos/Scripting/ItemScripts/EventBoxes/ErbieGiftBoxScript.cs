@@ -50,7 +50,7 @@ public class ErbieGiftBoxScript : ItemScriptBase
             "fskioutfit", 0.05
         },
         {
-            "mskisuit", 0.05
+            "mskioutfit", 0.05
         },
         {
             "winterscarf", 0.05
