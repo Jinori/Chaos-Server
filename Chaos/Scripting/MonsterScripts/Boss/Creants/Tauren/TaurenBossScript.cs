@@ -2,31 +2,28 @@ using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.EventBoss.Boss.ServantBoss;
+namespace Chaos.Scripting.MonsterScripts.Boss.Creants.Tauren;
 
-public class EServantBossScript : CompositeMonsterScript
+public class TaurenBossScript : CompositeMonsterScript
 {
     private static readonly ICollection<string> ScriptKeys = new[]
     {
         GetScriptKey(typeof(DefaultBehaviorsScript)),
-        GetScriptKey(typeof(MoveToTargetScript)),
-        GetScriptKey(typeof(EServantDefenseScript)),
-        GetScriptKey(typeof(EventMonsterScalingScript)),
-        GetScriptKey(typeof(EServantBossRegenScript)),
-        GetScriptKey(typeof(EServantBossEnrageScript)),
+        GetScriptKey(typeof(TaurenMoveToTargetScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),
-        GetScriptKey(typeof(CastingScript)),
-        GetScriptKey(typeof(AttackingScript)),
+        GetScriptKey(typeof(TaurenCastingScript)),
+        GetScriptKey(typeof(TaurenAttackingScript)),
         GetScriptKey(typeof(WanderingScript)),
-        GetScriptKey(typeof(ArenaDeathScript)),
         GetScriptKey(typeof(DisplayNameScript)),
-        GetScriptKey(typeof(ThisIsABossScript))
+        GetScriptKey(typeof(BossDefenseScript)),
+        GetScriptKey(typeof(ThisIsABossScript)),
+        GetScriptKey(typeof(CreantDeathScript)),
+        GetScriptKey(typeof(TaurenPhaseScript))
     };
 
-    //If you are not using BossMoveToTargetScript, you need: MoveToTargetScript.
     /// <inheritdoc />
-    public EServantBossScript(IScriptProvider scriptProvider, Monster subject)
+    public TaurenBossScript(IScriptProvider scriptProvider, Monster subject)
     {
         if (scriptProvider.CreateScript<IMonsterScript, Monster>(ScriptKeys, subject) is not CompositeMonsterScript compositeScript)
             throw new InvalidOperationException("Unable to create componentized script");

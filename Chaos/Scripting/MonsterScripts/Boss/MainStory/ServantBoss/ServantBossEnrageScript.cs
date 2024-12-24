@@ -9,18 +9,18 @@ using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.ServantBoss;
+namespace Chaos.Scripting.MonsterScripts.Boss.MainStory.ServantBoss;
 
 public sealed class ServantBossEnrageScript : MonsterScriptBase
 {
-    private bool Bonus30Applied;
-    private bool Bonus50Applied;
-    private bool Bonus75Applied;
-    private readonly IIntervalTimer SpellCastTimer;
     private readonly IIntervalTimer ActionTimer;
+    private readonly IIntervalTimer SpellCastTimer;
     private readonly Spell SpellToCast;
     private readonly Spell SpellToCast2;
     private readonly Spell SpellToCast3;
+    private bool Bonus30Applied;
+    private bool Bonus50Applied;
+    private bool Bonus75Applied;
 
     private Animation UpgradeAnimation { get; } = new()
     {
@@ -37,7 +37,12 @@ public sealed class ServantBossEnrageScript : MonsterScriptBase
         SpellToCast2 = spellFactory1.Create("ardcradh");
         SpellToCast3 = spellFactory1.Create("MorrocSpell2");
         ActionTimer = new IntervalTimer(TimeSpan.FromMilliseconds(300), false);
-        SpellCastTimer = new RandomizedIntervalTimer(TimeSpan.FromSeconds(8), 10, RandomizationType.Balanced, false);
+
+        SpellCastTimer = new RandomizedIntervalTimer(
+            TimeSpan.FromSeconds(8),
+            10,
+            RandomizationType.Balanced,
+            false);
     }
 
     public override void Update(TimeSpan delta)
@@ -47,39 +52,44 @@ public sealed class ServantBossEnrageScript : MonsterScriptBase
 
         if (SpellCastTimer.IntervalElapsed)
         {
-                var roll = IntegerRandomizer.RollSingle(100);
+            var roll = IntegerRandomizer.RollSingle(100);
 
-                switch (roll)
-                {
-                    case < 30:
-                        Subject.Say("Master is going to Cthonic Remains!");
-                        Subject.TryUseSpell(SpellToCast);
+            switch (roll)
+            {
+                case < 30:
+                    Subject.Say("Master is going to Cthonic Remains!");
+                    Subject.TryUseSpell(SpellToCast);
 
-                        break;
-                    case < 60:
-                        Subject.Say("He will rule the world with the creants!");
-                        Subject.TryUseSpell(SpellToCast3);
+                    break;
+                case < 60:
+                    Subject.Say("He will rule the world with the creants!");
+                    Subject.TryUseSpell(SpellToCast3);
 
-                        break;
-                    case < 101:
-                        Subject.Say("Nothing will stop master from summoning them!");
+                    break;
+                case < 101:
+                    Subject.Say("Nothing will stop master from summoning them!");
 
-                        foreach (var aisling in Subject.MapInstance.GetEntities<Aisling>()
-                                     .Where(x => x.WithinRange(Subject, 10) && !x.IsGodModeEnabled() && !x.IsDead))
-                        {
-                            Subject.TryUseSpell(SpellToCast2, aisling.Id);
-                        }
-                        break;
-                }
+                    foreach (var aisling in Subject.MapInstance
+                                                   .GetEntities<Aisling>()
+                                                   .Where(x => x.WithinRange(Subject, 10) && !x.IsGodModeEnabled() && !x.IsDead))
+                        Subject.TryUseSpell(SpellToCast2, aisling.Id);
+
+                    break;
+            }
         }
 
         if (!Bonus75Applied && (Subject.StatSheet.HealthPercent <= 75))
         {
             Bonus75Applied = true;
+
             //Give Bonuses
-            var attrib = new Attributes { AtkSpeedPct = 10 };
+            var attrib = new Attributes
+            {
+                AtkSpeedPct = 10
+            };
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
+
             //Spawn Monsters
         }
 

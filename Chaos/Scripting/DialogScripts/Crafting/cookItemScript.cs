@@ -14,12 +14,9 @@ public class CookItemScript : DialogScriptBase
     public int BuyCost { get; init; }
     protected HashSet<string>? ItemTemplateKeys { get; init; }
 
-    public CookItemScript(
-        Dialog subject,
-        IItemFactory itemFactory
-    )
-        : base(subject) =>
-        ItemFactory = itemFactory;
+    public CookItemScript(Dialog subject, IItemFactory itemFactory)
+        : base(subject)
+        => ItemFactory = itemFactory;
 
     public override void OnDisplaying(Aisling source)
     {
@@ -2754,7 +2751,7 @@ public class CookItemScript : DialogScriptBase
                         if (!source.Inventory.HasCountByTemplateKey("tomato", 5))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
-                    if (extraIngredients && (eStage == ExtraIngredientsStage.flour))
+                    if (extraIngredients && (eStage == ExtraIngredientsStage.marinade))
                         if (!source.Inventory.HasCountByTemplateKey("marinade", 1))
                             source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
 
@@ -2811,7 +2808,7 @@ public class CookItemScript : DialogScriptBase
                     if (vegetableStage && (vStage == VegetableStage.tomato))
                         source.Inventory.RemoveQuantityByTemplateKey("tomato", 5);
 
-                    if (extraIngredients && (eStage == ExtraIngredientsStage.salt))
+                    if (extraIngredients && (eStage == ExtraIngredientsStage.marinade))
                         source.Inventory.RemoveQuantityByTemplateKey("marinade", 1);
                     #endregion
 
@@ -2959,6 +2956,91 @@ public class CookItemScript : DialogScriptBase
                         source.GiveItemOrSendToBank(ItemFactory.Create("orangepopsicle"));
 
                     source.SendOrangeBarMessage("You have made a Popsicle!");
+                    Subject.Reply(source, "Skip", "cook_itemrepeat");
+                }
+
+                    break;
+                #endregion
+            }
+
+        if (foodSelected && (foodStage == CookFoodStage.hotchocolate))
+            switch (Subject.Template.TemplateKey.ToLower())
+            {
+                #region addextraingredients
+                case "extraingredients_initial":
+                {
+                    if (source.Inventory.HasCountByTemplateKey("sugar", 1))
+                    {
+                        var item = ItemFactory.CreateFaux("sugar");
+                        Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                    }
+
+                    if (source.Inventory.HasCountByTemplateKey("ice", 5))
+                    {
+                        var item = ItemFactory.CreateFaux("ice");
+                        Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                    }
+
+                    if (Subject.Items.Count == 0)
+                        Subject.Reply(source, "You do not have the required extra ingredients.", "cooking_initial");
+                }
+
+                    break;
+                #endregion
+
+                #region cookhotchocolate
+                case "cook_item":
+                {
+                    #region CheckItems
+                    if (extraIngredients && (eStage == ExtraIngredientsStage.sugar))
+                        if (!source.Inventory.HasCountByTemplateKey("sugar", 1))
+                            source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
+
+                    if (extraIngredients && (eStage == ExtraIngredientsStage.ice))
+                        if (!source.Inventory.HasCountByTemplateKey("ice", 1))
+                            source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
+
+                    if (extraIngredients && (eStage2 == ExtraIngredientsStage2.sugar))
+                        if (!source.Inventory.HasCountByTemplateKey("sugar", 1))
+                            source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
+
+                    if (extraIngredients && (eStage2 == ExtraIngredientsStage2.ice))
+                        if (!source.Inventory.HasCountByTemplateKey("ice", 1))
+                            source.Trackers.Flags.AddFlag(CookFoodProgression.NotenoughIngredients);
+
+                    if (source.Trackers.Flags.HasFlag(CookFoodProgression.NotenoughIngredients))
+                    {
+                        Subject.Reply(source, "You don't have enough ingredients to cook this again.", "cooking_initial");
+                        source.Trackers.Flags.RemoveFlag(CookFoodProgression.NotenoughIngredients);
+
+                        return;
+                    }
+                    #endregion
+
+                    #region RemoveItems
+                    if (extraIngredients && (eStage == ExtraIngredientsStage.ice))
+                        source.Inventory.RemoveQuantityByTemplateKey("ice", 5);
+
+                    if (extraIngredients && (eStage == ExtraIngredientsStage.sugar))
+                        source.Inventory.RemoveQuantityByTemplateKey("sugar", 1);
+
+                    if (extraIngredients && (eStage2 == ExtraIngredientsStage2.ice))
+                        source.Inventory.RemoveQuantityByTemplateKey("ice", 5);
+
+                    if (extraIngredients && (eStage2 == ExtraIngredientsStage2.sugar))
+                        source.Inventory.RemoveQuantityByTemplateKey("sugar", 1);
+                    #endregion
+
+                    if (IntegerRandomizer.RollChance(20))
+                    {
+                        Subject.Reply(source, "Skip", "cookfailed_itemrepeat");
+                        source.SendOrangeBarMessage("The ingredients you used were rotten.");
+
+                        return;
+                    }
+
+                    source.GiveItemOrSendToBank(ItemFactory.Create("hotchocolate"));
+                    source.SendOrangeBarMessage("You have made Hot Chocolate!");
                     Subject.Reply(source, "Skip", "cook_itemrepeat");
                 }
 

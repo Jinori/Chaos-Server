@@ -1,5 +1,4 @@
 using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions.Common;
@@ -13,7 +12,7 @@ using Chaos.Scripting.MerchantScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 
-namespace Chaos.Scripting.MerchantScripts;
+namespace Chaos.Scripting.MerchantScripts.Events.Halloween;
 
 public class TrickOrTreatMerchantScript : MerchantScriptBase
 {

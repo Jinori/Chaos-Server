@@ -7,9 +7,9 @@ namespace Chaos.Time;
 /// </summary>
 public sealed class ResettingCounter : IDeltaUpdatable
 {
-    private readonly int MaxCount;
     private readonly IIntervalTimer Timer;
     private int Counter;
+    public int MaxCount { get; private set; }
 
     /// <summary>
     ///     Gets whether or not the counter can be incremented
@@ -55,6 +55,10 @@ public sealed class ResettingCounter : IDeltaUpdatable
         if (Timer.IntervalElapsed)
             Counter = 0;
     }
+
+    public void Reset() => Counter = 0;
+
+    public void SetMaxCount(int count) => MaxCount = count;
 
     /// <summary>
     ///     Attempts to increment the counter

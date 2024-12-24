@@ -18,11 +18,7 @@ public class CookingScript : ConfigurableDialogScriptBase
     protected HashSet<string>? ItemTemplateKeys { get; init; }
     private Item? FauxItem => ItemDetails?.Item;
 
-    public CookingScript(
-        Dialog subject,
-        ICloningService<Item> itemCloner,
-        IItemFactory itemFactory
-    )
+    public CookingScript(Dialog subject, ICloningService<Item> itemCloner, IItemFactory itemFactory)
         : base(subject)
     {
         ItemCloner = itemCloner;
@@ -106,6 +102,12 @@ public class CookingScript : ConfigurableDialogScriptBase
                 if (source.Trackers.Flags.HasFlag(CookingRecipes.Popsicle))
                 {
                     var item = ItemFactory.CreateFaux("popsicle");
+                    Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                }
+
+                if (source.Trackers.Flags.HasFlag(CookingRecipes.HotChocolate))
+                {
+                    var item = ItemFactory.CreateFaux("hotchocolate");
                     Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                 }
 
@@ -229,6 +231,13 @@ public class CookingScript : ConfigurableDialogScriptBase
                     case "popsicle":
                     {
                         source.Trackers.Enums.Set(CookFoodStage.popsicle);
+                        Subject.Reply(source, "Skip", "cooking_directory");
+
+                        return;
+                    }
+                    case "hotchocolate":
+                    {
+                        source.Trackers.Enums.Set(CookFoodStage.hotchocolate);
                         Subject.Reply(source, "Skip", "cooking_directory");
 
                         return;

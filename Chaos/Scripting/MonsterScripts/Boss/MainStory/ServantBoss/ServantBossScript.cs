@@ -1,9 +1,8 @@
 using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using Chaos.Scripting.MonsterScripts.Boss.PentagramBoss;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.ServantBoss;
+namespace Chaos.Scripting.MonsterScripts.Boss.MainStory.ServantBoss;
 
 public class ServantBossScript : CompositeMonsterScript
 {

@@ -140,6 +140,18 @@ public class RecipeLibraryScript : DialogScriptBase
                     Subject.Items.Add(ItemDetails.DisplayRecipe(item));
                 }
 
+                if (source.Trackers.Flags.HasFlag(CookingRecipes.Popsicle))
+                {
+                    var item = ItemFactory.CreateFaux("popsicle");
+                    Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                }
+
+                if (source.Trackers.Flags.HasFlag(CookingRecipes.HotChocolate))
+                {
+                    var item = ItemFactory.CreateFaux("hotchocolate");
+                    Subject.Items.Add(ItemDetails.DisplayRecipe(item));
+                }
+
                 break;
             }
             #endregion
@@ -457,6 +469,27 @@ public class RecipeLibraryScript : DialogScriptBase
                             source,
                             $"{FauxItem.Template.Name
                             } requires 1 raw meat, 10 fruit of any type, 5 vegetable of any type, and 1 marinade.",
+                            "cookbook");
+
+                        return;
+                    }
+                    case "popsicle":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 100 of any of these three fruits: Green Grapes, Strawberries, or Tangerines (this affects the type of popsicle made), 3 Sugar and 10 Ice.",
+                            "cookbook");
+
+                        return;
+                    }
+
+                    case "hotchocolate":
+                    {
+                        Subject.Reply(
+                            source,
+                            $"{FauxItem.Template.Name
+                            } requires 1 Sugar and 5 Ice.",
                             "cookbook");
 
                         return;

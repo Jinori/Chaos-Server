@@ -275,6 +275,23 @@ public class CookingDirectoryScript : DialogScriptBase
                             return;
                     }
 
+                if (foodSelected && (foodStage == CookFoodStage.hotchocolate))
+                    switch (foodSelected)
+                    {
+                        case true when !extraIngredients:
+                            Subject.Reply(source, "Skip", "extraingredients_initial");
+
+                            return;
+                        case true when extraIngredients && !extraIngredients2:
+                            Subject.Reply(source, "Skip", "extraingredients_initial");
+
+                            return;
+                        case true when extraIngredients && extraIngredients2:
+                            Subject.Reply(source, "Skip", "cook_item");
+
+                            return;
+                    }
+
                 break;
         }
     }

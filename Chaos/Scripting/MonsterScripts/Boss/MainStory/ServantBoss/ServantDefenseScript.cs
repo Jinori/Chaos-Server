@@ -9,7 +9,7 @@ using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.ServantBoss;
+namespace Chaos.Scripting.MonsterScripts.Boss.MainStory.ServantBoss;
 
 public sealed class ServantDefenseScript : MonsterScriptBase
 {

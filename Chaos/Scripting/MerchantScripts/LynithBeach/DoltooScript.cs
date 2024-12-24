@@ -137,7 +137,7 @@ public sealed class DoltooScript : MerchantScriptBase
                     var options = new AoeShapeOptions
                     {
                         Source = new Point(Subject.X, Subject.Y),
-                        Range = 1
+                        Range = 4
                     };
 
                     var points = AoeShape.AllAround.ResolvePoints(options);

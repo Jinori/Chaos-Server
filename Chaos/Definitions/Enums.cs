@@ -501,7 +501,8 @@ public enum CookFoodStage
     soup = 7,
     steakmeal = 8,
     sweetbuns = 9,
-    popsicle = 10
+    popsicle = 10,
+    hotchocolate = 11
 }
 
 [Flags]
@@ -662,7 +663,8 @@ public enum CookingRecipes
     Soup = 1 << 6,
     SteakMeal = 1 << 7,
     SweetBuns = 1 << 8,
-    Popsicle = 1 << 9
+    Popsicle = 1 << 9,
+    HotChocolate = 1 << 10
 }
 #endregion
 
@@ -1892,6 +1894,12 @@ public enum CreantEnums
     StartedSham = 10,
     KilledSham = 11,
     CompletedSham = 12
+}
+
+public enum CreantPhases
+{
+    None,
+    InPhase = 1
 }
 
 public enum SummonerBossFight

@@ -126,6 +126,7 @@ public class RecipeItemScript : ItemScriptBase
                 source.Trackers.Flags.AddFlag(CookingRecipes.SteakMeal);
                 source.Trackers.Flags.AddFlag(CookingRecipes.SweetBuns);
                 source.Trackers.Flags.AddFlag(CookingRecipes.Popsicle);
+                source.Trackers.Flags.AddFlag(CookingRecipes.HotChocolate);
                 source.Trackers.Flags.AddFlag(CraftedArmors.RefinedDwarvishLeather);
                 source.Trackers.Flags.AddFlag(CraftedArmors.RefinedJourneyman);
                 source.Trackers.Flags.AddFlag(CraftedArmors.RefinedGaluchatCoat);
@@ -699,6 +700,24 @@ public class RecipeItemScript : ItemScriptBase
                         ani,
                         CookingRecipes.Popsicle,
                         "Popsicle",
+                        $"{Subject.Template.TemplateKey}");
+
+                    return;
+                }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
+
+                return;
+            }
+            case "recipe_hotchocolate":
+            {
+                if (!source.Trackers.Flags.HasFlag(CookingRecipes.HotChocolate))
+                {
+                    CookingRecipeLearn(
+                        source,
+                        ani,
+                        CookingRecipes.HotChocolate,
+                        "Hot Chocolate",
                         $"{Subject.Template.TemplateKey}");
 
                     return;

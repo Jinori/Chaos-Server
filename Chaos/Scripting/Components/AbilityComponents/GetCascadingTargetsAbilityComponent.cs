@@ -70,17 +70,17 @@ public struct GetCascadingTargetsAbilityComponent<TEntity> : IConditionalCompone
 
     private AoeShapeOptions CreateOptions(ActivationContext context, IGetCascadingTargetsComponentOptions options)
     {
-        var direction = context.TargetCreature?.Direction ?? context.Target.DirectionalRelationTo(context.Source);
+        var direction = context.SnapshotTargetDirection ?? context.SnapshotTargetPoint.DirectionalRelationTo(context.SnapshotSourcePoint);
 
         if (direction == Direction.Invalid)
-            direction = context.Source.Direction;
+            direction = context.SnapshotSourceDirection;
 
         return new AoeShapeOptions
         {
             Direction = direction,
             ExclusionRange = options.ExclusionRange,
             Range = options.Range,
-            Source = context.TargetPoint
+            Source = context.SnapshotTargetPoint
         };
     }
 
@@ -90,17 +90,17 @@ public struct GetCascadingTargetsAbilityComponent<TEntity> : IConditionalCompone
         int stage,
         List<Point> allPoints)
     {
-        var direction = context.TargetCreature?.Direction ?? context.Target.DirectionalRelationTo(context.Source);
+        var direction = context.SnapshotTargetDirection ?? context.SnapshotTargetPoint.DirectionalRelationTo(context.SnapshotSourcePoint);
 
         if (direction == Direction.Invalid)
-            direction = context.Source.Direction;
+            direction = context.SnapshotSourceDirection;
 
         return new CascadingAoeShapeOptions
         {
             Direction = direction,
             ExclusionRange = options.ExclusionRange,
             Range = stage,
-            Source = context.TargetPoint,
+            Source = context.SnapshotTargetPoint,
             AllPossiblePoints = allPoints
         };
     }

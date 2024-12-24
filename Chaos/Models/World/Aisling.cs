@@ -43,8 +43,6 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
     public bool BetOnMonsterRaceOption { get; set; }
     public BodyColor BodyColor { get; set; }
     public BodySprite BodySprite { get; set; }
-    public IPoint SummonTrinketLocation { get; set; }
-    public MapInstance SummonTrinketMapInstance { get; set; }
     public SynchronizedHashSet<ChannelSettings> ChannelSettings { get; init; }
     public IChaosWorldClient Client { get; set; }
     public int CurrentDiceScore { get; set; }
@@ -76,6 +74,8 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
     public uint SavedExpBoxed { get; set; }
     public IKnowledgeBook<Skill> SkillBook { get; private set; }
     public IKnowledgeBook<Spell> SpellBook { get; private set; }
+    public IPoint SummonTrinketLocation { get; set; }
+    public MapInstance SummonTrinketMapInstance { get; set; }
     public TitleList Titles { get; init; }
 
     public new AislingTrackers Trackers
@@ -128,14 +128,9 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
                     < 150))
                 return false;
 
-            if ((Sprite == 0) && WorldOptions.Instance.ProhibitSpeedWalk && !WalkCounter.TryIncrement())
+            if (WorldOptions.Instance.ProhibitSpeedWalk && !WalkCounter.TryIncrement())
             {
-                Logger.WithTopics(
-                          [
-                              Topics.Entities.Aisling,
-                              Topics.Qualifiers.Cheating,
-                              Topics.Actions.Walk
-                          ])
+                Logger.WithTopics(Topics.Entities.Aisling, Topics.Qualifiers.Cheating, Topics.Actions.Walk)
                       .WithProperty(this)
                       .LogWarning("Aisling {@AislingName} is probably speed walking", Name);
 
@@ -239,8 +234,8 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         SpellThrottle = new ResettingCounter(WorldOptions.Instance.MaxSpellsPerSecond);
         SkillThrottle = new ResettingCounter(WorldOptions.Instance.MaxSkillsPerSecond);
         ItemThrottle = new ResettingCounter(WorldOptions.Instance.MaxItemsPerSecond);
-        WalkCounter = new ResettingCounter(3, 2);
-        TurnThrottle = new ResettingCounter(3);
+        WalkCounter = new ResettingCounter(4, 2);
+        TurnThrottle = new ResettingCounter(5);
         AssailIntervalMs = WorldOptions.Instance.AislingAssailIntervalMs;
         ChannelSettings = [];
         DialogHistory = new Stack<Dialog>();
@@ -451,7 +446,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
     public void Equip(EquipmentType type, Item item)
     {
         var slot = item.Slot;
-        
+
         //try equip,
         if (Equipment.TryEquip(type, item, out var returnedItem))
         {
@@ -482,10 +477,10 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
             Bank.AddGold((uint)gold);
 
             Logger.WithTopics(
-                      [Topics.Entities.Aisling,
+                      Topics.Entities.Aisling,
                       Topics.Actions.Deposit,
                       Topics.Entities.Gold,
-                      Topics.Actions.Reward])
+                      Topics.Actions.Reward)
                   .WithProperty(Gold)
                   .WithProperty(this)
                   .LogInformation("{@Amount} gold was sent to {@AislingName}'s bank", gold, Name);
@@ -504,10 +499,10 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
                 Bank.Deposit(single);
 
                 Logger.WithTopics(
-                          [Topics.Entities.Aisling,
+                          Topics.Entities.Aisling,
                           Topics.Actions.Deposit,
                           Topics.Entities.Item,
-                          Topics.Actions.Reward])
+                          Topics.Actions.Reward)
                       .WithProperty(single)
                       .WithProperty(this)
                       .LogInformation(
@@ -707,12 +702,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         if (!Script.CanTalk())
             return;
 
-        Logger.WithTopics(
-                  [
-                      Topics.Entities.Aisling,
-                      Topics.Entities.Message,
-                      Topics.Actions.Send
-                  ])
+        Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Message, Topics.Actions.Send)
               .WithProperty(this)
               .LogInformation(
                   "Aisling {@AislingName} sent {@Type} message {@Message}",
@@ -788,12 +778,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         money = new Money(amount, MapInstance, point);
         MapInstance.AddEntity(money, point);
 
-        Logger.WithTopics(
-                  [
-                      Topics.Entities.Aisling,
-                      Topics.Entities.Gold,
-                      Topics.Actions.Drop
-                  ])
+        Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Gold, Topics.Actions.Drop)
               .WithProperty(this)
               .WithProperty(money)
               .LogInformation(
@@ -900,11 +885,15 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
 
     public bool TryPickupItem(GroundItem groundItem, byte destinationSlot)
     {
-        if (groundItem.Item.Template.TemplateKey == "mountmerrybox" && !this.WithinRange(groundItem, 0) && MapInstance.Name == "Frosty's Challenge")
+        if ((groundItem.Item.Template.TemplateKey == "mountmerrybox")
+            && !this.WithinRange(groundItem, 0)
+            && (MapInstance.Name == "Frosty's Challenge"))
         {
             SendActiveMessage("You must be on the same tile to pickup a Mount Merry box.");
+
             return false;
         }
+
         if (!groundItem.CanPickUp(this))
         {
             SendActiveMessage("You can't pick that up right now");
@@ -918,12 +907,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
 
         if (TryGiveItem(ref item, destinationSlot))
         {
-            Logger.WithTopics(
-                      [
-                          Topics.Entities.Aisling,
-                          Topics.Entities.Item,
-                          Topics.Actions.Pickup
-                      ])
+            Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Item, Topics.Actions.Pickup)
                   .WithProperty(this)
                   .WithProperty(groundItem)
                   .LogInformation(
@@ -956,12 +940,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
 
         if (TryGiveGold(money.Amount))
         {
-            Logger.WithTopics(
-                      [
-                          Topics.Entities.Aisling,
-                          Topics.Entities.Gold,
-                          Topics.Actions.Pickup
-                      ])
+            Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Gold, Topics.Actions.Pickup)
                   .WithProperty(this)
                   .WithProperty(money)
                   .LogInformation("Aisling {@AislingName} picked up {Amount} gold", Name, money.Amount);
@@ -992,12 +971,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         {
             source.SendActiveMessage($"{Name} has disabled exchanging");
 
-            Logger.WithTopics(
-                      [
-                          Topics.Entities.Aisling,
-                          Topics.Entities.Exchange,
-                          Topics.Qualifiers.Harassment
-                      ])
+            Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Exchange, Topics.Qualifiers.Harassment)
                   .WithProperty(this)
                   .WithProperty(source)
                   .LogWarning(
@@ -1211,21 +1185,18 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         if (Options.LockHands && slot is EquipmentSlot.Weapon or EquipmentSlot.Shield)
         {
             // Try getting both weapon and shield
-            var equipped = 
-            Equipment.TryGetObject((byte)slot, out var item1);
-            
+            var equipped = Equipment.TryGetObject((byte)slot, out var item1);
+
             if (item1 != null)
-            {
                 SendOrangeBarMessage($"Lock Hands is stopping you from removing {item1.DisplayName}.");
-            }
-            
+
             if (item1 != null)
                 return;
         }
-        
+
         if (!Equipment.TryGetRemove((byte)slot, out var item))
             return;
-        
+
         Inventory.TryAddToNextSlot(item);
         Trackers.LastUnequip = DateTime.UtcNow;
     }

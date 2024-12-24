@@ -39,6 +39,9 @@ public class MountEffect : EffectBase, NonOverwritableEffectComponent.INonOverwr
 
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
+
+        var stepCount = GetStepsPerSecond(Subject.Sprite);
+        AislingSubject?.WalkCounter.SetMaxCount(stepCount);
     }
 
     public override void OnTerminated()
@@ -47,6 +50,12 @@ public class MountEffect : EffectBase, NonOverwritableEffectComponent.INonOverwr
         {
             AislingSubject.Sprite = 0;
             AislingSubject.Display();
+
+            var stepCount = GetStepsPerSecond(Subject.Sprite);
+            AislingSubject?.WalkCounter.SetMaxCount(stepCount);
+
+            //reset so that dismounting doesnt lock them in place until the counter resets
+            AislingSubject?.WalkCounter.Reset();
 
             var attributes = new Attributes
             {
@@ -67,4 +76,16 @@ public class MountEffect : EffectBase, NonOverwritableEffectComponent.INonOverwr
 
         return execution is not null;
     }
+
+    private int GetStepsPerSecond(int spriteId)
+        => spriteId switch
+        {
+            1296 or (>= 1331 and <= 1334) => 7,
+            1297 or (>= 1323 and <= 1326) => 9,
+            1312 or (>= 1327 and <= 1330) => 9,
+            >= 1335 and <= 1339           => 13,
+            >= 1318 and <= 1322           => 13,
+            >= 1313 and <= 1317           => 13,
+            _                             => 4
+        };
 }

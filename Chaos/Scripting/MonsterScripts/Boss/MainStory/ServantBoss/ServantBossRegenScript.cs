@@ -2,7 +2,7 @@ using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.ServantBoss;
+namespace Chaos.Scripting.MonsterScripts.Boss.MainStory.ServantBoss;
 
 public sealed class ServantBossRegenScript : MonsterScriptBase
 {
