@@ -174,7 +174,8 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         "Nobis Storage",
         "Nobis Weapon Shop",
         "Mileth Tailor",
-        "Thanksgiving Challenge"
+        "Thanksgiving Challenge",
+        "Santa's Challenge"
     ];
 
     private readonly IMerchantFactory MerchantFactory;
@@ -372,20 +373,19 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     /// <inheritdoc />
     public override bool IsHostileTo(Creature creature) => RelationshipBehavior.IsHostileTo(Subject, creature);
 
-    private void NotifyPlayerSpells(string keyToRemove, string keyToKeep)
-    {
-        var nameToKeep = SpellFactory.Create(keyToKeep);
-        var nameToRemove = SpellFactory.Create(keyToRemove);
-        Subject.SendOrangeBarMessage("Ability " + nameToKeep.Template.Name + " removed old ability " + nameToRemove.Template.Name + ".");
-    }
-    
     private void NotifyPlayerSkills(string keyToRemove, string keyToKeep)
     {
         var nameToKeep = SkillFactory.Create(keyToKeep);
         var nameToRemove = SkillFactory.Create(keyToRemove);
         Subject.SendOrangeBarMessage("Ability " + nameToKeep.Template.Name + " removed old ability " + nameToRemove.Template.Name + ".");
     }
-    
+
+    private void NotifyPlayerSpells(string keyToRemove, string keyToKeep)
+    {
+        var nameToKeep = SpellFactory.Create(keyToKeep);
+        var nameToRemove = SpellFactory.Create(keyToRemove);
+        Subject.SendOrangeBarMessage("Ability " + nameToKeep.Template.Name + " removed old ability " + nameToRemove.Template.Name + ".");
+    }
 
     public override void OnAttacked(Creature source, int damage)
     {
@@ -456,7 +456,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
                     // Check if an entity is standing on the point and apply damage
                     var target = Subject.MapInstance
-                        .GetEntitiesAtPoints<Creature>(point)
+                                        .GetEntitiesAtPoints<Creature>(point)
                                         .FirstOrDefault(x => x.IsAlive && x.IsHostileTo(Subject));
 
                     if (target != null)
@@ -841,12 +841,10 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 {
                     // Notify player that Mithril Dice saved their item
                     Logger.WithTopics(
-                              [
-                                  Topics.Entities.Aisling,
-                                  Topics.Entities.Item,
-                                  Topics.Actions.Death,
-                                  Topics.Actions.Penalty
-                              ])
+                              Topics.Entities.Aisling,
+                              Topics.Entities.Item,
+                              Topics.Actions.Death,
+                              Topics.Actions.Penalty)
                           .WithProperty(Subject)
                           .WithProperty(item)
                           .LogInformation("{@AislingName}'s {@ItemName} was saved by Mithril Dice", Subject.Name, item.DisplayName);
@@ -864,12 +862,10 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 {
                     // Log and notify the player that they lost an item
                     Logger.WithTopics(
-                              [
-                                  Topics.Entities.Aisling,
-                                  Topics.Entities.Item,
-                                  Topics.Actions.Death,
-                                  Topics.Actions.Penalty
-                              ])
+                              Topics.Entities.Aisling,
+                              Topics.Entities.Item,
+                              Topics.Actions.Death,
+                              Topics.Actions.Penalty)
                           .WithProperty(Subject)
                           .WithProperty(item)
                           .LogInformation("{@AislingName} has lost {@ItemName} to death", Subject.Name, item.DisplayName);
@@ -886,12 +882,10 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         if (ExperienceDistributionScript.TryTakeExp(Subject, tenPercent))
         {
             Logger.WithTopics(
-                      [
-                          Topics.Entities.Aisling,
-                          Topics.Actions.Death,
-                          Topics.Actions.Penalty,
-                          Topics.Entities.Experience
-                      ])
+                      Topics.Entities.Aisling,
+                      Topics.Actions.Death,
+                      Topics.Actions.Penalty,
+                      Topics.Entities.Experience)
                   .WithProperty(Subject)
                   .LogInformation("{@AislingName} has lost {@ExperienceAmount} experience to death", Subject.Name, tenPercent);
 
@@ -971,18 +965,13 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     {
         if (Subject.IsGodModeEnabled())
             return;
-        
+
         if (Subject.SpellBook.ContainsByTemplateKey(keyToKeep) && Subject.SpellBook.ContainsByTemplateKey(keyToRemove))
         {
             Subject.SpellBook.RemoveByTemplateKey(keyToRemove);
             NotifyPlayerSpells(keyToRemove, keyToKeep);
 
-            Logger.WithTopics(
-                      [
-                          Topics.Entities.Creature,
-                          Topics.Entities.Skill,
-                          Topics.Actions.Update
-                      ])
+            Logger.WithTopics(Topics.Entities.Creature, Topics.Entities.Skill, Topics.Actions.Update)
                   .WithProperty(Subject)
                   .LogInformation(
                       "Aisling {@AislingName}'s ability {keyToKeep} removed an old ability {@keyToRemove}",
@@ -994,12 +983,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             Subject.SkillBook.RemoveByTemplateKey(keyToRemove);
             NotifyPlayerSkills(keyToRemove, keyToKeep);
 
-            Logger.WithTopics(
-                      [
-                          Topics.Entities.Creature,
-                          Topics.Entities.Skill,
-                          Topics.Actions.Update
-                      ])
+            Logger.WithTopics(Topics.Entities.Creature, Topics.Entities.Skill, Topics.Actions.Update)
                   .WithProperty(Subject)
                   .LogInformation(
                       "Aisling {@AislingName}'s ability {keyToKeep} removed an old ability {@keyToRemove}",
@@ -1069,19 +1053,14 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     {
         if (Subject.IsGodModeEnabled())
             return;
-        
+
         if (Subject.SkillBook.ContainsByTemplateKey(keyToRemove) && Subject.Legend.ContainsKey("dedicated"))
         {
             Subject.SkillBook.RemoveByTemplateKey(keyToRemove);
             var skill = SkillFactory.Create(keyToRemove);
             Subject.SendOrangeBarMessage($"{skill.Template.Name} has been removed.");
 
-            Logger.WithTopics(
-                      [
-                          Topics.Entities.Creature,
-                          Topics.Entities.Skill,
-                          Topics.Actions.Update
-                      ])
+            Logger.WithTopics(Topics.Entities.Creature, Topics.Entities.Skill, Topics.Actions.Update)
                   .WithProperty(Subject)
                   .LogInformation("Aisling {@AislingName}'s ability {keyToKeep} removed.", Subject.Name, keyToRemove);
         }
@@ -1091,19 +1070,14 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     {
         if (Subject.IsGodModeEnabled())
             return;
-        
+
         if (Subject.SpellBook.ContainsByTemplateKey(keyToRemove) && Subject.Legend.ContainsKey("dedicated"))
         {
             Subject.SpellBook.RemoveByTemplateKey(keyToRemove);
             var spell = SpellFactory.Create(keyToRemove);
             Subject.SendOrangeBarMessage($"{spell.Template.Name} has been removed.");
 
-            Logger.WithTopics(
-                      [
-                          Topics.Entities.Creature,
-                          Topics.Entities.Skill,
-                          Topics.Actions.Update
-                      ])
+            Logger.WithTopics(Topics.Entities.Creature, Topics.Entities.Skill, Topics.Actions.Update)
                   .WithProperty(Subject)
                   .LogInformation("Aisling {@AislingName}'s ability {keyToKeep} removed.", Subject.Name, keyToRemove);
         }
