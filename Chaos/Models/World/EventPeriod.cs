@@ -4,29 +4,30 @@ namespace Chaos.Models.World
 {
     public class EventPeriod
     {
-        public DateTime StartDate { get; }
-        public DateTime EndDate { get; }
-        public List<string> AssociatedMaps { get; }
+        private DateTime StartDate { get; }
+        private DateTime EndDate { get; }
+        private List<string> AssociatedMaps { get; }
 
-        public EventPeriod(string startCronExpression, string endCronExpression, List<string> associatedMaps)
+        private EventPeriod(string startCronExpression, string endCronExpression, List<string> associatedMaps)
         {
             var currentYear = DateTime.UtcNow.Year;
 
-            StartDate = CronExpression.Parse(startCronExpression)
-                          .GetNextOccurrence(new DateTime(currentYear, 1, 1, 0, 0, 0, DateTimeKind.Utc))
-                          ?? throw new InvalidOperationException("Failed to parse start cron expression.");
+            StartDate = CronExpression.Parse(startCronExpression)?
+                            .GetNextOccurrence(new DateTime(currentYear, 1, 1, 0, 0, 0, DateTimeKind.Utc)) 
+                        ?? throw new InvalidOperationException($"Failed to parse start cron expression: {startCronExpression}");
 
-            EndDate = CronExpression.Parse(endCronExpression)
-                          .GetNextOccurrence(new DateTime(currentYear + 1, 1, 1, 0, 0, 0, DateTimeKind.Utc))
-                          ?? throw new InvalidOperationException("Failed to parse end cron expression.");
+            EndDate = CronExpression.Parse(endCronExpression)?
+                          .GetNextOccurrence(new DateTime(currentYear, 1, 1, 0, 0, 0, DateTimeKind.Utc)) 
+                      ?? throw new InvalidOperationException($"Failed to parse end cron expression: {endCronExpression}");
 
-            AssociatedMaps = associatedMaps;
+            AssociatedMaps = associatedMaps ?? throw new ArgumentNullException(nameof(associatedMaps));
         }
+
 
         /// <summary>
         /// Checks if the current date falls within the event period.
         /// </summary>
-        public bool IsActive(DateTime currentDate)
+        private bool IsActive(DateTime currentDate)
         {
             return currentDate >= StartDate && currentDate <= EndDate;
         }
@@ -34,10 +35,11 @@ namespace Chaos.Models.World
         /// <summary>
         /// Retrieves all events with their cron expressions.
         /// </summary>
-        public static List<EventPeriod> GetAllEvents()
+        private static List<EventPeriod> GetAllEvents()
         {
             return
             [
+                //Mt Merry Events
                 new EventPeriod(
                     "0 17 * 12 5#2", // Second Friday of December at 5 PM
                     "0 5 * 1 1#1", // First Monday of January at 5 AM
@@ -49,6 +51,12 @@ namespace Chaos.Models.World
                         "mtmerry3-1", "mtmerry3-2", "mtmerry3-3", "mtmerry4-1", "mtmerry4-2",
                         "mtmerry4-3", "mtmerry5-1", "mtmerry5-2", "mtmerry5-3"
                     ]
+                ),
+                //Valentines
+                new EventPeriod(
+                    "0 0 * 2 3#2", // Second Wednesday of February at 12 AM
+                    "0 6 * 2 4#3", // Thursday after the third Wednesday of February at 6 AM
+                    ["loures_castle_way"]
                 )
             ];
         }
@@ -58,9 +66,10 @@ namespace Chaos.Models.World
         /// </summary>
         public static bool IsEventActive(DateTime currentDate, string currentMapInstanceId)
         {
-            return GetAllEvents().Any(eventPeriod =>
-                eventPeriod.IsActive(currentDate) &&
-                eventPeriod.AssociatedMaps.Contains(currentMapInstanceId));
+            return GetAllEvents()
+                .Where(eventPeriod => eventPeriod.AssociatedMaps.Contains(currentMapInstanceId))
+                .Any(eventPeriod => eventPeriod.IsActive(currentDate));
         }
+
     }
 }

@@ -47,6 +47,9 @@ public class DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistri
         if (HasGMKnowledgeEffect(aislings))
             totalBonus += 0.25m;
 
+        if (HasValentinesCandyEffect(aislings))
+            totalBonus += 0.4m;
+
         // Apply an additional 5% bonus for mythic completion
         if (HasCompletedMythic(aislings))
             totalBonus += 0.05m;
@@ -181,6 +184,16 @@ public class DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistri
         // Check if any of the Aislings have the "Strong Knowledge" effect
         foreach (var aisling in aislings)
             if (aisling.Effects.Contains("Strong Knowledge"))
+                return true;
+
+        return false;
+    }
+    
+    private bool HasValentinesCandyEffect(ICollection<Aisling> aislings)
+    {
+        // Check if any of the Aislings have the "Valentines Candy" effect
+        foreach (var aisling in aislings)
+            if (aisling.Effects.Contains("ValentinesCandy"))
                 return true;
 
         return false;
