@@ -80,12 +80,12 @@ public class MountEffect : EffectBase, NonOverwritableEffectComponent.INonOverwr
     private int GetStepsPerSecond(int spriteId)
         => spriteId switch
         {
-            1296 or (>= 1331 and <= 1334) => 7,
-            1297 or (>= 1323 and <= 1326) => 9,
-            1312 or (>= 1327 and <= 1330) => 9,
-            >= 1335 and <= 1339           => 13,
-            >= 1318 and <= 1322           => 13,
-            >= 1313 and <= 1317           => 13,
+            1296 or (>= 1331 and <= 1334) => 5,
+            1297 or (>= 1323 and <= 1326) => 6,
+            1312 or (>= 1327 and <= 1330) => 6,
+            >= 1335 and <= 1339           => 7,
+            >= 1318 and <= 1322           => 7,
+            >= 1313 and <= 1317           => 7,
             _                             => 4
         };
 }

@@ -9,6 +9,7 @@ public sealed class ResettingCounter : IDeltaUpdatable
 {
     private readonly IIntervalTimer Timer;
     private int Counter;
+    private readonly int UpdateIntervalSecs;
     public int MaxCount { get; private set; }
 
     /// <summary>
@@ -29,6 +30,7 @@ public sealed class ResettingCounter : IDeltaUpdatable
     {
         Timer = timer;
         MaxCount = maxCount;
+        UpdateIntervalSecs = 1;
     }
 
     /// <summary>
@@ -45,6 +47,7 @@ public sealed class ResettingCounter : IDeltaUpdatable
     {
         Timer = new IntervalTimer(TimeSpan.FromSeconds(updateIntervalSecs));
         MaxCount = maxPerSecond * updateIntervalSecs;
+        UpdateIntervalSecs = updateIntervalSecs;
     }
 
     /// <inheritdoc />
@@ -58,7 +61,7 @@ public sealed class ResettingCounter : IDeltaUpdatable
 
     public void Reset() => Counter = 0;
 
-    public void SetMaxCount(int count) => MaxCount = count;
+    public void SetMaxCount(int count) => MaxCount = count * UpdateIntervalSecs;
 
     /// <summary>
     ///     Attempts to increment the counter

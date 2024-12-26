@@ -1,4 +1,5 @@
-﻿using Chaos.Models.Panel;
+﻿using Chaos.Definitions;
+using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Scripting.ItemScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
@@ -94,26 +95,33 @@ public class SantaGift : ItemScriptBase
         // Total sum of all item chances
         var totalChance = ItemChances.Values.Sum();
 
-        // Roll a random number between 0 and totalChance
-        var roll = Random.NextDouble() * totalChance;
-
-        // Determine which item the player receives based on the roll
-        double cumulativeChance = 0;
-
-        foreach (var entry in ItemChances)
+        while (true)
         {
-            cumulativeChance += entry.Value;
+            // Roll a random number between 0 and totalChance
+            var roll = Random.NextDouble() * totalChance;
 
-            if (roll <= cumulativeChance)
+            // Determine which item the player receives based on the roll
+            double cumulativeChance = 0;
+
+            foreach (var entry in ItemChances)
             {
-                // Give the selected item to the player
-                var item = ItemFactory.Create(entry.Key);
-                source.GiveItemOrSendToBank(item);
+                cumulativeChance += entry.Value;
 
-                // Send a message to the player
-                source.SendOrangeBarMessage($"You received {item.DisplayName} from Santa's Gift!");
+                if (roll <= cumulativeChance)
+                {
+                    // If the item is "dunanmount" and the player already owns it, reroll
+                    if ((entry.Key == "dunanmount") && source.Trackers.Flags.HasFlag(AvailableMounts.Dunan))
+                        break;
 
-                break;
+                    // Give the selected item to the player
+                    var item = ItemFactory.Create(entry.Key);
+                    source.GiveItemOrSendToBank(item);
+
+                    // Send a message to the player
+                    source.SendOrangeBarMessage($"You received {item.DisplayName} from Santa's Gift!");
+
+                    return; // Exit the method after successfully giving an item
+                }
             }
         }
     }

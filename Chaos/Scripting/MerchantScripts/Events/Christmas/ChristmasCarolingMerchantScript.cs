@@ -214,6 +214,7 @@ public class ChristmasCarolingMerchantScript : MerchantScriptBase
 
             case "givegamepoints":
                 aisling.TryGiveGamePoints(2);
+                aisling.SendOrangeBarMessage("You received 2 Game Points!");
 
                 break;
 

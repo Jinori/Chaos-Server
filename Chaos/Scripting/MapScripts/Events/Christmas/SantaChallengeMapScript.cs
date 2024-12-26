@@ -20,7 +20,7 @@ namespace Chaos.Scripting.MapScripts.Events.Christmas;
 
 public class SantaChallengeMapScript : MapScriptBase
 {
-    public const int UPDATE_INTERVAL_MS = 2000;
+    public const int UPDATE_INTERVAL_MS = 1000;
     public const int COMBAT_INTERVAL = 30;
 
     private readonly List<string> BaseMonsters = new()
