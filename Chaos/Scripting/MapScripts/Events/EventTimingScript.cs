@@ -1,4 +1,4 @@
-/*using Chaos.Collections;
+using Chaos.Collections;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MapScripts.Abstractions;
@@ -34,4 +34,4 @@ namespace Chaos.Scripting.MapScripts.Events
             aisling.TraverseMap(defaultMapInstance, new Point(8, 5));
         }
     }
-}*/
+}
