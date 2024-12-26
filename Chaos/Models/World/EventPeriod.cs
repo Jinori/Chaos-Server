@@ -1,6 +1,6 @@
-using Cronos;
+/*using Cronos;
 
-namespace Chaos.Models.World
+*namespace Chaos.Models.World
 {
     public class EventPeriod
     {
@@ -72,4 +72,4 @@ namespace Chaos.Models.World
         }
 
     }
-}
+}*/

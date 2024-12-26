@@ -1,4 +1,4 @@
-using Chaos.Models.World;
+/*using Chaos.Models.World;
 using Chaos.Scripting.MerchantScripts.Abstractions;
 
 namespace Chaos.Scripting.MerchantScripts.Events;
@@ -19,4 +19,4 @@ public class EventTimingScript(Merchant subject) : MerchantScriptBase(subject)
             Subject.MapInstance.RemoveEntity(Subject);
         }
     }
-}
+}*/
