@@ -128,7 +128,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
                     < 150))
                 return false;
 
-            if (WorldOptions.Instance.ProhibitSpeedWalk && !WalkCounter.TryIncrement())
+            if (!IsAdmin && WorldOptions.Instance.ProhibitSpeedWalk && !WalkCounter.TryIncrement())
             {
                 Logger.WithTopics(Topics.Entities.Aisling, Topics.Qualifiers.Cheating, Topics.Actions.Walk)
                       .WithProperty(this)
