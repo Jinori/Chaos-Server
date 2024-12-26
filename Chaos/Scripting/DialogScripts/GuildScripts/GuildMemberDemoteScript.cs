@@ -118,11 +118,7 @@ public class GuildMemberDemoteScript : GuildScriptBase
         
         GuildStore.Save(guild);
 
-        Logger.WithTopics(
-                  [
-                      Topics.Entities.Guild,
-                      Topics.Actions.Demote
-                  ])
+        Logger.WithTopics(Topics.Entities.Guild, Topics.Actions.Demote)
               .WithProperty(Subject)
               .WithProperty(Subject.DialogSource)
               .WithProperty(source)

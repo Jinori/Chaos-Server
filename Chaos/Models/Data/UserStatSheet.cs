@@ -1,8 +1,11 @@
 // ReSharper disable InconsistentNaming
 
+#region
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.World;
+using Chaos.Services.Servers.Options;
+#endregion
 
 namespace Chaos.Models.Data;
 
@@ -80,6 +83,9 @@ public sealed record UserStatSheet : StatSheet
         get => _unspentPoints;
         set => _unspentPoints = value;
     }
+
+    public override sbyte EffectiveAc
+        => (sbyte)Math.Clamp(Ac + AcMod, WorldOptions.Instance.MinimumAislingAc, WorldOptions.Instance.MaximumAislingAc);
 
     public static UserStatSheet NewCharacter
         => new()
@@ -242,6 +248,7 @@ public sealed record UserStatSheet : StatSheet
         if (!overrideUnspentStatCheck && Interlocked.Decrement(ref _unspentPoints) < 0)
         {
             _unspentPoints = 0;
+
             return false;
         }
 
@@ -249,18 +256,23 @@ public sealed record UserStatSheet : StatSheet
         {
             case Stat.STR:
                 Interlocked.Increment(ref _str);
+
                 break;
             case Stat.INT:
                 Interlocked.Increment(ref _int);
+
                 break;
             case Stat.WIS:
                 Interlocked.Increment(ref _wis);
+
                 break;
             case Stat.CON:
                 Interlocked.Increment(ref _con);
+
                 break;
             case Stat.DEX:
                 Interlocked.Increment(ref _dex);
+
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(stat), stat, null);

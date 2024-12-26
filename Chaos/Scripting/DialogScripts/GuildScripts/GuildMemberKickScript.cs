@@ -94,11 +94,7 @@ public class GuildMemberKickScript : GuildScriptBase
         
         GuildStore.Save(guild);
 
-        Logger.WithTopics(
-                  [
-                      Topics.Entities.Guild,
-                      Topics.Actions.Kick
-                  ])
+        Logger.WithTopics(Topics.Entities.Guild, Topics.Actions.Kick)
               .WithProperty(Subject)
               .WithProperty(Subject.DialogSource)
               .WithProperty(source)

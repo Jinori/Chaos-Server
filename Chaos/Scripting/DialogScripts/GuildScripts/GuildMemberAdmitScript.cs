@@ -119,11 +119,9 @@ public class GuildMemberAdmitScript : GuildScriptBase
             return;
         }
 
-        Logger.WithTopics(
-                  [
-                      Topics.Entities.Guild,
-                      Topics.Actions.Join
-                  ])
+        guild.AddMember(aislingToAdmit, source);
+
+        Logger.WithTopics(Topics.Entities.Guild, Topics.Actions.Join)
               .WithProperty(Subject)
               .WithProperty(Subject.DialogSource)
               .WithProperty(source)

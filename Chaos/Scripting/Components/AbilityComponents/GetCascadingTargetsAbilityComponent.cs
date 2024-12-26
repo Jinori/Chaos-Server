@@ -38,7 +38,7 @@ public struct GetCascadingTargetsAbilityComponent<TEntity> : IConditionalCompone
             if (options.IgnoreWalls)
                 allPoints = tempAllPoints.ToList();
             else
-                allPoints = tempAllPoints.FilterByLineOfSight(context.SnapshotSourcePoint, context.TargetMap)
+                allPoints = tempAllPoints.FilterByLineOfSight(context.SnapshotSourcePoint, context.TargetMap, options.InvertShape)
                                          .ToList();
 
             vars.SetAllPoints(allPoints);

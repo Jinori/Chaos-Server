@@ -439,12 +439,7 @@ public class LearnSkillScript : DialogScriptBase
         switch (learnSkillResult)
         {
             case ComplexActionHelper.LearnSkillResult.Success:
-                Logger.WithTopics(
-                          [
-                              Topics.Entities.Aisling,
-                              Topics.Entities.Skill,
-                              Topics.Actions.Learn
-                          ])
+                Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Skill, Topics.Actions.Learn)
                       .WithProperty(Subject)
                       .WithProperty(Subject.DialogSource)
                       .WithProperty(source)
@@ -579,6 +574,21 @@ public class LearnSkillScript : DialogScriptBase
 
         if (template.Class.HasValue && !source.HasClass(template.Class.Value))
         {
+            dialog.ReplyToUnknownInput(source);
+
+            Logger.WithTopics(
+                      Topics.Entities.Aisling,
+                      Topics.Entities.Skill,
+                      Topics.Actions.Learn,
+                      Topics.Qualifiers.Cheating)
+                  .WithProperty(Subject)
+                  .WithProperty(Subject.DialogSource)
+                  .WithProperty(source)
+                  .WithProperty(skillToLearn)
+                  .LogWarning(
+                      "Aisling {@AislingName} tried to learn skill {@SkillName} but is not the correct class (possibly packeting)",
+                      source.Name,
+                      template.Name);
             HandleInvalidLearningAttempt(
                 dialog,
                 source,
@@ -595,6 +605,21 @@ public class LearnSkillScript : DialogScriptBase
                 source,
                 skillToLearn,
                 "not the correct adv class (possibly packeting)");
+            dialog.ReplyToUnknownInput(source);
+
+            Logger.WithTopics(
+                      Topics.Entities.Aisling,
+                      Topics.Entities.Skill,
+                      Topics.Actions.Learn,
+                      Topics.Qualifiers.Cheating)
+                  .WithProperty(Subject)
+                  .WithProperty(Subject.DialogSource)
+                  .WithProperty(source)
+                  .WithProperty(skillToLearn)
+                  .LogWarning(
+                      "Aisling {@AislingName} tried to learn skill {@SkillName} but is not the correct adv class (possibly packeting)",
+                      source.Name,
+                      template.Name);
 
             return false;
         }
