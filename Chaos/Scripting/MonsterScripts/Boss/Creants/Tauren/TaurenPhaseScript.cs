@@ -21,8 +21,11 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
     private readonly IntervalTimer ChannelIntervalTimer;
     private readonly IntervalTimer DelayTimer;
     private readonly IMonsterFactory MonsterFactory;
-    private readonly IIntervalTimer PhaseProcessTimer;
-    private readonly IIntervalTimer PhaseTimer;
+    private readonly IIntervalTimer SplitPhaseTimer1;
+    private readonly IIntervalTimer SpellPhaseTimer4;
+    private readonly IIntervalTimer RoomNukePhaseTimer2;
+    private readonly IIntervalTimer SkillPhaseTimer3;
+    private readonly IIntervalTimer TimeBetweenPhases;
     private readonly IntervalTimer SafePointAnimationTimer;
     private readonly List<Point> SafePoints;
     private readonly ISkillFactory SkillFactory;
@@ -30,6 +33,7 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
     private readonly IntervalTimer SpellDelay;
     private readonly ISpellFactory SpellFactory;
     private readonly IntervalTimer SpellTimer;
+    private readonly IntervalTimer PhaseDelay;
 
     private readonly IIntervalTimer SplitPhaseTimer;
     private bool IsChanneling;
@@ -42,6 +46,10 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
     private bool SplitPhase1;
     private int SummonedTaurens;
     private bool TurnedClockwise;
+    private bool StartSkillPhase;
+    private bool StartSpellPhase;
+    private bool StartSplitPhase;
+    private bool StartRoomNukePhase;
 
     private int CurrentPhase { get; set; } // Tracks the current phase
 
@@ -53,15 +61,19 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
         ISpellFactory spellFactory)
         : base(subject)
     {
-        ChannelIntervalTimer = new IntervalTimer(TimeSpan.FromSeconds(15));
+        ChannelIntervalTimer = new IntervalTimer(TimeSpan.FromSeconds(10));
         SkillTimer = new IntervalTimer(TimeSpan.FromMilliseconds(500));
-        SpellTimer = new IntervalTimer(TimeSpan.FromSeconds(20));
+        SpellTimer = new IntervalTimer(TimeSpan.FromSeconds(8), false);
+        PhaseDelay = new IntervalTimer(TimeSpan.FromSeconds(2), false);
+        TimeBetweenPhases = new IntervalTimer(TimeSpan.FromSeconds(30), false);
         SpellDelay = new IntervalTimer(TimeSpan.FromMilliseconds(200));
-        PhaseTimer = new IntervalTimer(TimeSpan.FromSeconds(20));
-        ChannelDurationTimer = new IntervalTimer(TimeSpan.FromSeconds(10));
+        SplitPhaseTimer1 = new IntervalTimer(TimeSpan.FromSeconds(45), false);
+        SpellPhaseTimer4 = new IntervalTimer(TimeSpan.FromSeconds(20), false);
+        RoomNukePhaseTimer2 = new IntervalTimer(TimeSpan.FromSeconds(12), false);
+        SkillPhaseTimer3 = new IntervalTimer(TimeSpan.FromSeconds(30), false);
+        ChannelDurationTimer = new IntervalTimer(TimeSpan.FromSeconds(3));
         SafePointAnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(1));
         DelayTimer = new IntervalTimer(TimeSpan.FromMilliseconds(1250), false);
-        PhaseProcessTimer = new IntervalTimer(TimeSpan.FromMinutes(1), false);
         SafePoints = new List<Point>();
         ApplyDamageScript = ApplyAttackDamageScript.Create();
         MonsterFactory = monsterFactory;
@@ -75,14 +87,17 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
     {
         SkillTimer.Update(delta);
         DelayTimer.Update(delta);
-        PhaseProcessTimer.Update(delta);
+        SkillPhaseTimer3.Update(delta);
 
         var skill1 = SkillFactory.Create("tauren_coneattack");
 
-        if (PhaseProcessTimer.IntervalElapsed)
+        if (SkillPhaseTimer3.IntervalElapsed)
             ResetPhase();
 
-        if ((Spin >= 1) && DelayTimer.IntervalElapsed)
+        if (PhaseDelay.IntervalElapsed)
+            StartSkillPhase = true;
+
+        if ((Spin >= 1) && DelayTimer.IntervalElapsed && StartSkillPhase)
         {
             Spin = 0;
 
@@ -119,7 +134,7 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
             }
         }
 
-        if (DelayTimer.IntervalElapsed && TurnedClockwise)
+        if (DelayTimer.IntervalElapsed && TurnedClockwise && StartSkillPhase)
         {
             TurnedClockwise = false;
             Spin++;
@@ -157,7 +172,7 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
             }
         }
 
-        if (DelayTimer.IntervalElapsed && !TurnedClockwise)
+        if (DelayTimer.IntervalElapsed && !TurnedClockwise && StartSkillPhase)
         {
             TurnedClockwise = true;
 
@@ -199,25 +214,10 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
     {
         SpellTimer.Update(delta);
         SpellDelay.Update(delta);
-        PhaseProcessTimer.Update(delta);
+        SpellPhaseTimer4.Update(delta);
 
-        if (SpellTimer.IntervalElapsed)
-        {
-            if (!Spell1)
-            {
-                var spell1 = SpellFactory.Create("tauren_freezespell1");
-                Subject.TryUseSpell(spell1);
-                Subject.TryUseSpell(spell1);
-                Spell1 = true;
-            }
-
-            if (!Spell2 && Spell1)
-            {
-                var spell2 = SpellFactory.Create("tauren_freezespell2");
-                Subject.TryUseSpell(spell2);
-                Spell2 = true;
-            }
-        }
+        if (PhaseDelay.IntervalElapsed)
+            StartSpellPhase = true;
 
         if (Spell1 && !Spell2 && SpellDelay.IntervalElapsed)
         {
@@ -229,7 +229,27 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
                 Subject.TryUseSpell(spell1);
         }
 
-        if (PhaseProcessTimer.IntervalElapsed)
+        if (SpellTimer.IntervalElapsed && StartSpellPhase)
+        {
+            if (!Spell1)
+            {
+                var spell1 = SpellFactory.Create("tauren_freezespell1");
+                Subject.TryUseSpell(spell1);
+                Subject.TryUseSpell(spell1);
+                Spell1 = true;
+
+                return;
+            }
+
+            if (!Spell2 && Spell1)
+            {
+                var spell2 = SpellFactory.Create("tauren_freezespell2");
+                Subject.TryUseSpell(spell2);
+                Spell2 = true;
+            }
+        }
+
+        if (SpellPhaseTimer4.IntervalElapsed)
             ResetPhase();
     }
     #endregion
@@ -238,9 +258,12 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
     private void SplitPhase(TimeSpan delta)
     {
         SplitPhaseTimer.Update(delta);
-        PhaseProcessTimer.Update(delta);
+        SplitPhaseTimer1.Update(delta);
+        
+        if (PhaseDelay.IntervalElapsed)
+            StartSplitPhase = true;
 
-        if (!SplitPhase1)
+        if (!SplitPhase1 && StartSplitPhase)
         {
             SplitPhase1 = true;
 
@@ -303,7 +326,7 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
             switchSummon.Turn(taurenDirectionFacing);
         }
 
-        if (PhaseProcessTimer.IntervalElapsed)
+        if (SplitPhaseTimer1.IntervalElapsed)
         {
             var spawnedTaurens = Subject.MapInstance
                                         .GetEntities<Monster>()
@@ -331,15 +354,15 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
-        PhaseTimer.Update(delta);
-
-        // Change phases every minute
-        if (PhaseTimer.IntervalElapsed && (CurrentPhase == 0))
+        PhaseDelay.Update(delta);
+        TimeBetweenPhases.Update(delta);
+        
+        if (TimeBetweenPhases.IntervalElapsed && (CurrentPhase == 0))
         {
-            var roll = IntegerRandomizer.RollSingle(1);
-            CurrentPhase = 3;
+            var roll = IntegerRandomizer.RollSingle(4);
+            CurrentPhase = roll;
 
-            HandlePhaseChange();
+            StartPhase();
         }
 
         // Execute mechanics based on the current phase
@@ -453,9 +476,12 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
     {
         ChannelIntervalTimer.Update(delta);
         SafePointAnimationTimer.Update(delta);
-        PhaseProcessTimer.Update(delta);
+        RoomNukePhaseTimer2.Update(delta);
 
-        if (IsChanneling)
+        if (PhaseDelay.IntervalElapsed)
+            StartRoomNukePhase = true;
+
+        if (IsChanneling && StartRoomNukePhase)
         {
             ChannelDurationTimer.Update(delta);
 
@@ -464,10 +490,10 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
 
             if (ChannelDurationTimer.IntervalElapsed)
                 EndChanneling();
-        } else if (ChannelIntervalTimer.IntervalElapsed)
+        } else if (ChannelIntervalTimer.IntervalElapsed && StartRoomNukePhase)
             StartChanneling();
 
-        if (PhaseProcessTimer.IntervalElapsed)
+        if (RoomNukePhaseTimer2.IntervalElapsed)
             ResetPhase();
     }
 
@@ -503,32 +529,6 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
     #endregion
 
     #region PhaseHandling
-    private void HandlePhaseChange()
-    {
-        // Add phase-specific effects or animations here
-        switch (CurrentPhase)
-        {
-            case 1:
-                StartPhase();
-
-                break;
-            case 2:
-                StartPhase();
-
-                // Add a new effect or animation for Phase 2
-                break;
-            case 3:
-                StartPhase();
-
-                // Add a new effect or animation for Phase 3
-                break;
-            case 4:
-                StartPhase();
-
-                // Add a new effect or animation for Phase 4
-                break;
-        }
-    }
 
     private void StartPhase()
     {
@@ -561,6 +561,7 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
 
                 break;
         }
+        PhaseDelay.Reset();
     }
 
     private void ResetPhase()
@@ -574,6 +575,11 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
         SummonedTaurens = 0;
         CurrentPhase = 0;
         Spin = 0;
+        StartSkillPhase = false;
+        StartSpellPhase = false;
+        StartRoomNukePhase = false;
+        StartSplitPhase = false;
+        TimeBetweenPhases.Reset();
 
         var aislings = Subject.MapInstance.GetEntities<Aisling>();
 
