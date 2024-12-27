@@ -1,6 +1,6 @@
-/*using Cronos;
+using Cronos;
 
-*namespace Chaos.Models.World
+namespace Chaos.Models.World
 {
     public class EventPeriod
     {
@@ -12,17 +12,18 @@
         {
             var currentYear = DateTime.UtcNow.Year;
 
+            // Get StartDate based on the current year
             StartDate = CronExpression.Parse(startCronExpression)?
                             .GetNextOccurrence(new DateTime(currentYear, 1, 1, 0, 0, 0, DateTimeKind.Utc)) 
                         ?? throw new InvalidOperationException($"Failed to parse start cron expression: {startCronExpression}");
 
+            // Get EndDate, account for crossing into the next year
             EndDate = CronExpression.Parse(endCronExpression)?
-                          .GetNextOccurrence(new DateTime(currentYear, 1, 1, 0, 0, 0, DateTimeKind.Utc)) 
+                          .GetNextOccurrence(StartDate) // Ensure EndDate is after StartDate
                       ?? throw new InvalidOperationException($"Failed to parse end cron expression: {endCronExpression}");
 
             AssociatedMaps = associatedMaps ?? throw new ArgumentNullException(nameof(associatedMaps));
         }
-
 
         /// <summary>
         /// Checks if the current date falls within the event period.
@@ -39,7 +40,6 @@
         {
             return
             [
-                //Mt Merry Events
                 new EventPeriod(
                     "0 17 * 12 5#2", // Second Friday of December at 5 PM
                     "0 5 * 1 1#1", // First Monday of January at 5 AM
@@ -52,7 +52,8 @@
                         "mtmerry4-3", "mtmerry5-1", "mtmerry5-2", "mtmerry5-3"
                     ]
                 ),
-                //Valentines
+                // Valentines
+
                 new EventPeriod(
                     "0 0 * 2 3#2", // Second Wednesday of February at 12 AM
                     "0 6 * 2 4#3", // Thursday after the third Wednesday of February at 6 AM
@@ -70,6 +71,5 @@
                 .Where(eventPeriod => eventPeriod.AssociatedMaps.Contains(currentMapInstanceId))
                 .Any(eventPeriod => eventPeriod.IsActive(currentDate));
         }
-
     }
-}*/
+}

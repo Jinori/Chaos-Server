@@ -11,13 +11,13 @@ public class Valentines(Dialog subject, IEffectFactory effectFactory) : DialogSc
     {
         if (Subject.DialogSource is Merchant merchant)
         {
-          //  var isEventActive = EventPeriod.IsEventActive(DateTime.UtcNow, merchant.MapInstance.InstanceId);
+            var isEventActive = EventPeriod.IsEventActive(DateTime.UtcNow, merchant.MapInstance.InstanceId);
 
-          //  if (!isEventActive)
-         //   {
-          //      Subject.Reply(source, "Looks like I'm all out of candies..");
-          //      return;
-          //  }
+            if (!isEventActive)
+            {
+                Subject.Reply(source, "Looks like I'm all out of candies..");
+                return;
+            }
 
             switch (Subject.Template.TemplateKey.ToLower())
             {

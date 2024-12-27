@@ -17,10 +17,10 @@ namespace Chaos.Scripting.ReactorTileScripts.EventReactorTiles
             var destinationMapInstanceId = "mtmerry_northpole";
 
             // Check if the current map is part of an active event
-       //     if (!EventPeriod.IsEventActive(currentDate, destinationMapInstanceId))
-        //    {
-        //        return;
-        //    }
+            if (!EventPeriod.IsEventActive(currentDate, destinationMapInstanceId))
+            {
+                return;
+            }
 
             if (source.StatSheet.Level < 11)
             {
