@@ -1,5 +1,6 @@
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
@@ -16,11 +17,12 @@ public class TaurenAttackingScript : MonsterScriptBase
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
-        if (Subject.MapInstance
-                   .GetEntities<Aisling>()
-                   .Any(x => x.Trackers.Enums.HasValue(CreantPhases.InPhase)))
-            return;
+        var script = Subject.Script.As<TaurenPhaseScript>();
 
+        if (script is { InPhase: true })
+            return;
+            
+            
         if (Target is not { IsAlive: true } || (Subject.ManhattanDistanceFrom(Target) != 1))
             return;
 

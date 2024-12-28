@@ -12,8 +12,8 @@ namespace Chaos.Scripting.MonsterScripts.Boss.Creants;
 // ReSharper disable once ClassCanBeSealed.Global
 public class CreantDeathScript : MonsterScriptBase
 {
-    protected IExperienceDistributionScript ExperienceDistributionScript { get; set; }
     private readonly IItemFactory ItemFactory;
+    protected IExperienceDistributionScript ExperienceDistributionScript { get; set; }
 
     /// <inheritdoc />
     public CreantDeathScript(Monster subject, IItemFactory itemFactory)
@@ -38,16 +38,19 @@ public class CreantDeathScript : MonsterScriptBase
         //get the highest contributor
         //if there are no contributor, try getting the highest aggro
         var rewardTarget = Subject.Contribution
-            .OrderByDescending(kvp => kvp.Value)
-            .Select(kvp => Map.TryGetEntity<Aisling>(kvp.Key, out var a) ? a : null)
-            .FirstOrDefault(a => a is not null);
+                                  .OrderByDescending(kvp => kvp.Value)
+                                  .Select(kvp => Map.TryGetEntity<Aisling>(kvp.Key, out var a) ? a : null)
+                                  .FirstOrDefault(a => a is not null);
 
         Aisling[]? rewardTargets = null;
 
         if (rewardTarget != null)
-            rewardTargets = (rewardTarget.Group ?? (IEnumerable<Aisling>)new[] { rewardTarget })
-                .ThatAreWithinRange(rewardTarget)
-                .ToArray();
+            rewardTargets = (rewardTarget.Group
+                             ?? (IEnumerable<Aisling>)new[]
+                             {
+                                 rewardTarget
+                             }).ThatAreWithinRange(rewardTarget)
+                               .ToArray();
 
         Subject.Items.AddRange(Subject.LootTable.GenerateLoot());
 
@@ -69,77 +72,74 @@ public class CreantDeathScript : MonsterScriptBase
             }
 
             ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
-            
-            if (Subject.Template.TemplateKey == "PhoenixCreant")
-            {
-                var nearbyAislingsStartedPhoenix = Map
-                    .GetEntitiesWithinRange<Aisling>(Subject, 13)
-                    .FirstOrDefault(x => x.Trackers.Enums.TryGetValue(out MainstoryMasterEnums stage) && stage == MainstoryMasterEnums.StartedCreants && x.Trackers.Flags.HasFlag(CreantEnums.StartedPhoenix));
 
-                
-                if (nearbyAislingsStartedPhoenix != null)
+            if (Subject.Template.TemplateKey == "Phoenix")
+            {
+                var startedPhoenix = Map.GetEntitiesWithinRange<Aisling>(Subject, 13)
+                                        .Where(
+                                            x => x.Trackers.Enums.TryGetValue(out MainstoryMasterEnums stage)
+                                                 && (stage == MainstoryMasterEnums.StartedCreants)
+                                                 && x.Trackers.Flags.HasFlag(CreantEnums.StartedPhoenix))
+                                        .ToList();
+
+                foreach (var player in startedPhoenix)
                 {
-                    nearbyAislingsStartedPhoenix.Trackers.Flags.AddFlag(CreantEnums.KilledPhoenix); 
-                    nearbyAislingsStartedPhoenix.SendOrangeBarMessage("You've slain Lady Phoenix, step to the altar again.");
+                    player.Trackers.Flags.RemoveFlag(CreantEnums.StartedPhoenix);
+                    player.Trackers.Flags.AddFlag(CreantEnums.KilledPhoenix);
+                    player.SendOrangeBarMessage("Lady Phoenix is ready to be sealed away, use the altar.");
                 }
             }
-            
-            if (Subject.Template.TemplateKey == "MedusaCreant")
-            {
-                var nearbyAislingsStartedPhoenix = Map
-                    .GetEntitiesWithinRange<Aisling>(Subject, 13)
-                    .FirstOrDefault(x => x.Trackers.Enums.TryGetValue(out MainstoryMasterEnums stage) && stage == MainstoryMasterEnums.StartedCreants && x.Trackers.Flags.HasFlag(CreantEnums.StartedMedusa));
 
-                
-                if (nearbyAislingsStartedPhoenix != null)
+            if (Subject.Template.TemplateKey == "Medusa")
+            {
+                var startedMedusa = Map.GetEntitiesWithinRange<Aisling>(Subject, 13)
+                                       .Where(
+                                           x => x.Trackers.Enums.TryGetValue(out MainstoryMasterEnums stage)
+                                                && (stage == MainstoryMasterEnums.StartedCreants)
+                                                && x.Trackers.Flags.HasFlag(CreantEnums.StartedMedusa))
+                                       .ToList();
+
+                foreach (var player in startedMedusa)
                 {
-                    nearbyAislingsStartedPhoenix.Trackers.Flags.AddFlag(CreantEnums.KilledMedusa); 
-                    nearbyAislingsStartedPhoenix.SendOrangeBarMessage("You've slain Medusa, step to the altar again.");
+                    player.Trackers.Flags.RemoveFlag(CreantEnums.StartedMedusa);
+                    player.Trackers.Flags.AddFlag(CreantEnums.KilledMedusa);
+                    player.SendOrangeBarMessage("Medusa is ready to be sealed away, use the altar.");
                 }
             }
-            
-            if (Subject.Template.TemplateKey == "TaurenCreant")
-            {
-                var nearbyAislingsStartedPhoenix = Map
-                    .GetEntitiesWithinRange<Aisling>(Subject, 13)
-                    .FirstOrDefault(x => x.Trackers.Enums.TryGetValue(out MainstoryMasterEnums stage) && stage == MainstoryMasterEnums.StartedCreants && x.Trackers.Flags.HasFlag(CreantEnums.StartedTauren));
 
-                
-                if (nearbyAislingsStartedPhoenix != null)
+            if (Subject.Template.TemplateKey == "Tauren")
+            {
+                var startedTauren = Map.GetEntitiesWithinRange<Aisling>(Subject, 13)
+                                       .Where(
+                                           x => x.Trackers.Enums.TryGetValue(out MainstoryMasterEnums stage)
+                                                && (stage == MainstoryMasterEnums.StartedCreants)
+                                                && x.Trackers.Flags.HasFlag(CreantEnums.StartedTauren))
+                                       .ToList();
+
+                foreach (var player in startedTauren)
                 {
-                    nearbyAislingsStartedPhoenix.Trackers.Flags.AddFlag(CreantEnums.StartedTauren); 
-                    nearbyAislingsStartedPhoenix.SendOrangeBarMessage("You've slain Tauren, step to the altar again.");
+                    player.Trackers.Flags.RemoveFlag(CreantEnums.StartedTauren);
+                    player.Trackers.Flags.AddFlag(CreantEnums.KilledTauren);
+                    player.SendOrangeBarMessage("Tauren is ready to be sealed away, use the altar.");
                 }
             }
-            
-            if (Subject.Template.TemplateKey == "TaurenCreant")
-            {
-                var nearbyAislingsStartedPhoenix = Map
-                    .GetEntitiesWithinRange<Aisling>(Subject, 13)
-                    .FirstOrDefault(x => x.Trackers.Enums.TryGetValue(out MainstoryMasterEnums stage) && stage == MainstoryMasterEnums.StartedCreants && x.Trackers.Flags.HasFlag(CreantEnums.StartedTauren));
 
-                
-                if (nearbyAislingsStartedPhoenix != null)
+            if (Subject.Template.TemplateKey == "Shamensyth")
+            {
+                var startedTauren = Map.GetEntitiesWithinRange<Aisling>(Subject, 13)
+                                       .Where(
+                                           x => x.Trackers.Enums.TryGetValue(out MainstoryMasterEnums stage)
+                                                && (stage == MainstoryMasterEnums.StartedCreants)
+                                                && x.Trackers.Flags.HasFlag(CreantEnums.StartedSham))
+                                       .ToList();
+
+                foreach (var player in startedTauren)
                 {
-                    nearbyAislingsStartedPhoenix.Trackers.Flags.AddFlag(CreantEnums.KilledTauren); 
-                    nearbyAislingsStartedPhoenix.SendOrangeBarMessage("You've slain Tauren, step to the altar again.");
+                    player.Trackers.Flags.RemoveFlag(CreantEnums.StartedSham);
+                    player.Trackers.Flags.AddFlag(CreantEnums.KilledSham);
+                    player.SendOrangeBarMessage("Shamensyth is ready to be sealed away, use the altar.");
                 }
             }
-            
-            if (Subject.Template.TemplateKey == "ShamCreant")
-            {
-                var nearbyAislingsStartedPhoenix = Map
-                    .GetEntitiesWithinRange<Aisling>(Subject, 13)
-                    .FirstOrDefault(x => x.Trackers.Enums.TryGetValue(out MainstoryMasterEnums stage) && stage == MainstoryMasterEnums.StartedCreants && x.Trackers.Flags.HasFlag(CreantEnums.StartedSham));
-
-                
-                if (nearbyAislingsStartedPhoenix != null)
-                {
-                    nearbyAislingsStartedPhoenix.Trackers.Flags.AddFlag(CreantEnums.KilledSham);
-                    nearbyAislingsStartedPhoenix.SendOrangeBarMessage("You've slain Shamensyth, step to the altar again.");
-                }
-            }
-            
         }
     }
 }

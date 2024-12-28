@@ -1,7 +1,9 @@
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
+using FluentAssertions;
 
 namespace Chaos.Scripting.MonsterScripts.Boss.Creants.Tauren;
 
@@ -23,9 +25,9 @@ public class TaurenMoveToTargetScript : MonsterScriptBase
                 .Any())
             return;
 
-        if (Subject.MapInstance
-                   .GetEntities<Aisling>()
-                   .Any(x => x.Trackers.Enums.HasValue(CreantPhases.InPhase)))
+        var script = Subject.Script.As<TaurenPhaseScript>();
+
+        if (script!.InPhase)
             return;
 
         var distance = Subject.ManhattanDistanceFrom(Target);
