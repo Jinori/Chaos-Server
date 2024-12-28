@@ -1,7 +1,9 @@
 #region
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Models.Data;
+using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
@@ -10,6 +12,7 @@ using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
+using Chaos.Scripting.ReactorTileScripts.Creants.Shamensyth;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
@@ -104,6 +107,26 @@ public sealed class CascadingDamageTileScript : ConfigurableReactorTileScriptBas
 
     public bool ShouldPlaySound(ComponentVars _) => SoundTimer.IntervalElapsed;
 
+    private bool RemoveShamBurningGround(ComponentVars vars)
+    {
+        if (SourceScript is SubjectiveScriptBase<Spell> spellScript
+            && (spellScript.Subject.Template.TemplateKey.Equals("tidalbreeze")
+                || spellScript.Subject.Template.TemplateKey.Equals("morsallamh")))
+            return false;
+        
+        var pointsForStage = vars.GetPoints();
+
+        var shamBurningGrounds = Subject.MapInstance
+                                       .GetEntitiesAtPoints<ReactorTile>(pointsForStage)
+                                       .Where(rt => rt.Script.Is<BurningGroundScript>())
+                                       .ToList();
+
+        foreach (var bg in shamBurningGrounds)
+            Subject.MapInstance.RemoveEntity(bg);
+        
+        return true;
+    }
+
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
@@ -121,8 +144,10 @@ public sealed class CascadingDamageTileScript : ConfigurableReactorTileScriptBas
             Executor.ExecuteAndCheck<GetCascadingTargetsAbilityComponent<Creature>>()
                     ?.Execute<DamageAbilityComponent>()
                     .Execute<AnimationAbilityComponent>()
-                    .Check(ShouldPlaySound)
+                    .Check(RemoveShamBurningGround)
+                    ?.Check(ShouldPlaySound)
                     ?.Execute<SoundAbilityComponent>();
+            
 
             //if the sound timer is elapsed, the predicate above will play the sound
             //however, we still need to reset it
