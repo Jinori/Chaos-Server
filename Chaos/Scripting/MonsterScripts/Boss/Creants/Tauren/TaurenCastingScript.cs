@@ -22,9 +22,9 @@ public class TaurenCastingScript : MonsterScriptBase
         if (Target is not { IsAlive: true } || !ShouldUseSpell || !Target.WithinRange(Subject))
             return;
 
-        if (Subject.MapInstance
-                   .GetEntities<Aisling>()
-                   .Any(x => x.Trackers.Enums.HasValue(CreantPhases.InPhase)))
+        var script = Subject.Script.As<TaurenPhaseScript>();
+
+        if (script is { InPhase: true })
             return;
 
         Spells.ShuffleInPlace();

@@ -42,6 +42,9 @@ public class TpToCreantScript : DialogScriptBase
         {
             if (source.MapInstance.Template.TemplateKey == "989")
             {
+                if (source.Trackers.Enums.HasValue(MainstoryMasterEnums.StartedCreants))
+                    source.Trackers.Flags.AddFlag(CreantEnums.StartedPhoenix);
+                
                 var mapInstance = SimpleCache.Get<MapInstance>("phoenixbossroom");
 
                 var point = new Point(source.X, source.Y);
@@ -56,6 +59,9 @@ public class TpToCreantScript : DialogScriptBase
 
             if (source.MapInstance.Template.TemplateKey == "31010")
             {
+                if (source.Trackers.Enums.HasValue(MainstoryMasterEnums.StartedCreants))
+                    source.Trackers.Flags.AddFlag(CreantEnums.StartedSham);
+                
                 var mapInstance = SimpleCache.Get<MapInstance>("shamensythbossroom");
 
                 var point = new Point(source.X, source.Y);
@@ -70,6 +76,9 @@ public class TpToCreantScript : DialogScriptBase
 
             if (source.MapInstance.Template.TemplateKey == "19522")
             {
+                if (source.Trackers.Enums.HasValue(MainstoryMasterEnums.StartedCreants))
+                    source.Trackers.Flags.AddFlag(CreantEnums.StartedTauren);
+                
                 var mapInstance = SimpleCache.Get<MapInstance>("taurenbossroom");
 
                 var point = new Point(source.X, source.Y);
@@ -84,6 +93,8 @@ public class TpToCreantScript : DialogScriptBase
 
             if (source.MapInstance.Template.TemplateKey == "6599")
             {
+                if (source.Trackers.Enums.HasValue(MainstoryMasterEnums.StartedCreants))
+                    source.Trackers.Flags.AddFlag(CreantEnums.StartedMedusa);
                 var mapInstance = SimpleCache.Get<MapInstance>("medusabossroom");
 
                 var point = new Point(source.X, source.Y);
@@ -165,6 +176,9 @@ public class TpToCreantScript : DialogScriptBase
 
             foreach (var member in group)
             {
+                if (member.Trackers.Enums.HasValue(MainstoryMasterEnums.StartedCreants))
+                    member.Trackers.Flags.AddFlag(CreantEnums.StartedPhoenix);
+
                 var point = new Point(member.X, member.Y);
 
                 var dialog = member.ActiveDialog.Get();
@@ -181,6 +195,9 @@ public class TpToCreantScript : DialogScriptBase
 
             foreach (var member in group)
             {
+                if (member.Trackers.Enums.HasValue(MainstoryMasterEnums.StartedCreants))
+                    member.Trackers.Flags.AddFlag(CreantEnums.StartedSham);
+                
                 var point = new Point(member.X, member.Y);
 
                 var dialog = member.ActiveDialog.Get();
@@ -197,6 +214,9 @@ public class TpToCreantScript : DialogScriptBase
 
             foreach (var member in group)
             {
+                if (member.Trackers.Enums.HasValue(MainstoryMasterEnums.StartedCreants))
+                    member.Trackers.Flags.AddFlag(CreantEnums.StartedTauren);
+                
                 var point = new Point(member.X, member.Y);
 
                 var dialog = member.ActiveDialog.Get();
@@ -213,6 +233,9 @@ public class TpToCreantScript : DialogScriptBase
 
             foreach (var member in group)
             {
+                if (member.Trackers.Enums.HasValue(MainstoryMasterEnums.StartedCreants))
+                    member.Trackers.Flags.AddFlag(CreantEnums.StartedMedusa);
+                
                 var point = new Point(member.X, member.Y);
 
                 var dialog = member.ActiveDialog.Get();

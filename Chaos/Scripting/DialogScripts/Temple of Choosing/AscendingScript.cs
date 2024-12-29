@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Menu;
@@ -35,8 +34,7 @@ public class AscendingScript(Dialog subject, ILogger<AscendingScript> logger) : 
         Aisling source,
         string attributeType,
         int timesToAscend,
-        int gain
-    )
+        int gain)
     {
         var statBeforeStarting = attributeType == "HP" ? source.StatSheet.MaximumHp : source.StatSheet.MaximumMp;
         var totalExpSpent = 0f;
@@ -61,10 +59,9 @@ public class AscendingScript(Dialog subject, ILogger<AscendingScript> logger) : 
 
                     source.StatSheet.Add(hp);
 
-                    logger.WithTopics(
-                            [Topics.Entities.Aisling, Topics.Entities.Dialog, Topics.Actions.Reward])
-                        .WithProperty(Subject)
-                        .LogInformation("{@AislingName} has bought {@Attribute} health", source.Name, hp);
+                    logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Dialog, Topics.Actions.Reward)
+                          .WithProperty(Subject)
+                          .LogInformation("{@AislingName} has bought {@Attribute} health", source.Name, hp);
 
                     break;
                 }
@@ -77,10 +74,9 @@ public class AscendingScript(Dialog subject, ILogger<AscendingScript> logger) : 
 
                     source.StatSheet.Add(mp);
 
-                    logger.WithTopics(
-                            [Topics.Entities.Aisling, Topics.Entities.Dialog, Topics.Actions.Reward])
-                        .WithProperty(Subject)
-                        .LogInformation("{@AislingName} has bought {@Attribute} mana", source.Name, mp);
+                    logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Dialog, Topics.Actions.Reward)
+                          .WithProperty(Subject)
+                          .LogInformation("{@AislingName} has bought {@Attribute} mana", source.Name, mp);
 
                     break;
                 }
@@ -89,9 +85,10 @@ public class AscendingScript(Dialog subject, ILogger<AscendingScript> logger) : 
 
         var newBaseValue = statBeforeStarting + timesToAscend * gain;
         source.Client.SendAttributes(StatUpdateType.Full);
-        source.SendOrangeBarMessage($"Your {attributeType.ToLower()} is now {newBaseValue} base from {statBeforeStarting}, spending {totalExpSpent} Exp.");
-    }
 
+        source.SendOrangeBarMessage(
+            $"Your {attributeType.ToLower()} is now {newBaseValue} base from {statBeforeStarting}, spending {totalExpSpent} Exp.");
+    }
 
     public override void OnDisplaying(Aisling source)
     {
@@ -102,19 +99,28 @@ public class AscendingScript(Dialog subject, ILogger<AscendingScript> logger) : 
 
             return;
         }
-        
+
+        if (source.HasClass(BaseClass.Priest) && source.UserStatSheet.Master)
+        {
+            Subject.Reply(source, "You haven't picked a priest path yet Aisling. To ascend any further, you must pick Dark or Light path.");
+            source.SendOrangeBarMessage("You must pick Dark or Light path.");
+
+            return;
+        }
+
         int timesToAscend;
-        
+
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "skandaragod_buyhealthforallexp":
-                if (source.UserStatSheet.TotalExp < source.StatSheet.MaximumHp * 500)
+                if (source.UserStatSheet.TotalExp < (source.StatSheet.MaximumHp * 500))
                 {
                     source.SendOrangeBarMessage("You do not have enough experience to buy health.");
                     Subject.Reply(source, "You do not have enough experience to buy vitality. Go increase your knowledge.");
 
                     return;
                 }
+
                 timesToAscend = CalculateAscensionsCount(source, "HP");
 
                 IncreaseAttribute(
@@ -126,14 +132,17 @@ public class AscendingScript(Dialog subject, ILogger<AscendingScript> logger) : 
                 break;
 
             case "theselenegod_buymanaforallexp":
-                if (source.UserStatSheet.TotalExp < source.StatSheet.MaximumMp * 500)
+                if (source.UserStatSheet.TotalExp < (source.StatSheet.MaximumMp * 500))
                 {
                     source.SendOrangeBarMessage("You do not have enough experience to buy mana.");
-                    Subject.Reply(source, "Your journey through the veiled paths of experience is yet incomplete, seeker. Wander further into the realm of shadows, gather your tales and trials, then return when you are ready to trade them for the whispers of power.");
+
+                    Subject.Reply(
+                        source,
+                        "Your journey through the veiled paths of experience is yet incomplete, seeker. Wander further into the realm of shadows, gather your tales and trials, then return when you are ready to trade them for the whispers of power.");
 
                     return;
                 }
-                
+
                 timesToAscend = CalculateAscensionsCount(source, "MP");
 
                 IncreaseAttribute(
@@ -145,13 +154,14 @@ public class AscendingScript(Dialog subject, ILogger<AscendingScript> logger) : 
                 break;
 
             case "skandaragod_buyhealthonce":
-                if (source.UserStatSheet.TotalExp < source.StatSheet.MaximumHp * 500)
+                if (source.UserStatSheet.TotalExp < (source.StatSheet.MaximumHp * 500))
                 {
                     source.SendOrangeBarMessage("You do not have enough experience to buy health.");
                     Subject.Reply(source, "You do not have enough experience to buy vitality. Go increase your knowledge.");
 
                     return;
                 }
+
                 IncreaseAttribute(
                     source,
                     "HP",
@@ -161,13 +171,17 @@ public class AscendingScript(Dialog subject, ILogger<AscendingScript> logger) : 
                 break;
 
             case "theselenegod_buymanaonce":
-                if (source.UserStatSheet.TotalExp < source.StatSheet.MaximumMp * 500)
+                if (source.UserStatSheet.TotalExp < (source.StatSheet.MaximumMp * 500))
                 {
                     source.SendOrangeBarMessage("You do not have enough experience to buy mana.");
-                    Subject.Reply(source, "Your journey through the veiled paths of experience is yet incomplete, seeker. Wander further into the realm of shadows, gather your tales and trials, then return when you are ready to trade them for the whispers of power.");
+
+                    Subject.Reply(
+                        source,
+                        "Your journey through the veiled paths of experience is yet incomplete, seeker. Wander further into the realm of shadows, gather your tales and trials, then return when you are ready to trade them for the whispers of power.");
 
                     return;
                 }
+
                 IncreaseAttribute(
                     source,
                     "MP",

@@ -2,6 +2,7 @@ using Chaos.Collections;
 using Chaos.Geometry.Abstractions;
 using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
+using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 
 namespace Chaos.Scripting.Components.Execution;
@@ -10,6 +11,7 @@ public sealed class ComponentExecutor(ActivationContext context, ComponentVars v
 {
     private readonly ComponentVars Vars = vars;
     private ActivationContext Context = context;
+    private IScript SourceScript;
 
     public ComponentExecutor(ComponentVars vars)
         : this(new ActivationContext(null!, null!), vars) { }
@@ -60,6 +62,9 @@ public sealed class ComponentExecutor(ActivationContext context, ComponentVars v
     {
         Vars.SetOptions(options);
 
+        if (options is IScript sourceScript)
+            Vars.SetSourceScript(sourceScript);
+
         return this;
     }
 
@@ -70,6 +75,13 @@ public sealed class ComponentExecutor(ActivationContext context, ComponentVars v
         return this;
     }
 
+    public ComponentExecutor WithSourceScript(IScript sourceScript)
+    {
+        SourceScript = sourceScript;
+
+        return this;
+    }
+    
     public ComponentExecutor WithTarget(Creature target)
     {
         Context = new ActivationContext(Context.Source, target);

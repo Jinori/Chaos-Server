@@ -1882,18 +1882,18 @@ public enum CdDungeonBoss
 [Flags]
 public enum CreantEnums
 {
-    StartedMedusa = 1,
-    KilledMedusa = 2,
-    CompletedMedusa = 3,
-    StartedPhoenix = 4,
-    KilledPhoenix = 5,
-    CompletedPhoenix = 6,
-    StartedTauren = 7,
-    KilledTauren = 8,
-    CompletedTauren = 9,
-    StartedSham = 10,
-    KilledSham = 11,
-    CompletedSham = 12
+    StartedMedusa = 1 << 1,
+    KilledMedusa = 1 << 2,
+    CompletedMedusa = 1 << 3,
+    StartedPhoenix = 1 << 4,
+    KilledPhoenix = 1 << 5,
+    CompletedPhoenix = 1 << 6,
+    StartedTauren = 1 << 7,
+    KilledTauren = 1 << 8,
+    CompletedTauren = 1 << 9,
+    StartedSham = 1 << 10,
+    KilledSham = 1 << 11,
+    CompletedSham = 1 << 12
 }
 
 public enum CreantPhases

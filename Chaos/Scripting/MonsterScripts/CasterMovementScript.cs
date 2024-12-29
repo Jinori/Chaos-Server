@@ -1,16 +1,13 @@
-using Chaos.Definitions;
-using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using FluentAssertions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.Creants.Tauren;
+namespace Chaos.Scripting.MonsterScripts;
 
-public class TaurenMoveToTargetScript : MonsterScriptBase
+public class CasterMovementScript : MonsterScriptBase
 {
     /// <inheritdoc />
-    public TaurenMoveToTargetScript(Monster subject)
+    public CasterMovementScript(Monster subject)
         : base(subject) { }
 
     /// <inheritdoc />
@@ -23,22 +20,20 @@ public class TaurenMoveToTargetScript : MonsterScriptBase
 
         if (!Map.GetEntities<Aisling>()
                 .Any())
-            return;
 
-        var script = Subject.Script.As<TaurenPhaseScript>();
-
-        if (script!.InPhase)
             return;
 
         var distance = Subject.ManhattanDistanceFrom(Target);
 
-        if (distance != 1)
-            Subject.Pathfind(Target);
-        else
+        if (distance <= 5)
         {
-            var direction = Target.DirectionalRelationTo(Subject);
-            Subject.Turn(direction);
-        }
+            var pathtopoint = Subject.SpiralSearch(3)
+                                     .OrderByDescending(point => point.ManhattanDistanceFrom(Target))
+                                     .FirstOrDefault(point => Subject.MapInstance.IsWalkable(point, Subject.Type));
+
+            Subject.Pathfind(pathtopoint);
+        } else
+            Subject.Pathfind(Target);
 
         Subject.WanderTimer.Reset();
         Subject.SkillTimer.Reset();
