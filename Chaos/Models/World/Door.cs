@@ -62,10 +62,27 @@ public sealed class Door(
             door.LastClicked[source.Id] = DateTime.UtcNow;
         }
 
+        if (doorCluster.All(x => x.Closed))
+        {
+            foreach (var aisling in MapInstance.GetEntitiesWithinRange<Aisling>(this))
+            {
+                aisling.Client.SendSound(166, false);
+            }
+        }
+        if (doorCluster.All(x => !x.Closed))
+        {
+            foreach (var aisling in MapInstance.GetEntitiesWithinRange<Aisling>(this))
+            {
+                aisling.Client.SendSound(165, false);
+            }
+        }
+        
         foreach (var aisling in MapInstance.GetEntitiesWithinRange<Aisling>(this))
+        {
             aisling.Client.SendDoors(doorCluster);
+        }
     }
-
+    
     public override bool ShouldRegisterClick(uint fromId)
         => LastClicked.IsEmpty
            || (DateTime.UtcNow.Subtract(LastClicked.Values.Max())
