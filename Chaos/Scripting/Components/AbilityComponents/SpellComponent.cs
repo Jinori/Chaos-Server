@@ -22,11 +22,12 @@ public class SpellComponent<TEntity> : IConditionalComponent where TEntity: MapE
             .Execute<BodyAnimationAbilityComponent>()
             .Execute<AnimationAbilityComponent>()
             .Execute<SoundAbilityComponent>()
+            .Execute<RemoveShamBurningGroundComponent>()
         != null;
 
     // ReSharper disable once PossibleInterfaceMemberAmbiguity
     public interface ISpellComponentOptions : GetTargetsAbilityComponent<TEntity>.IGetTargetsComponentOptions,
-                                                SplashComponent<TEntity>.ISplashComponentOptions,
+                                              SplashComponent<TEntity>.ISplashComponentOptions,
                                               MagicResistanceComponent.IMagicResistanceComponentOptions,
                                               SoundAbilityComponent.ISoundComponentOptions,
                                               BodyAnimationAbilityComponent.IBodyAnimationComponentOptions,

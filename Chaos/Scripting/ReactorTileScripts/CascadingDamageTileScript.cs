@@ -2,6 +2,7 @@
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
+using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
@@ -107,26 +108,6 @@ public sealed class CascadingDamageTileScript : ConfigurableReactorTileScriptBas
 
     public bool ShouldPlaySound(ComponentVars _) => SoundTimer.IntervalElapsed;
 
-    private bool RemoveShamBurningGround(ComponentVars vars)
-    {
-        if (SourceScript is SubjectiveScriptBase<Spell> spellScript
-            && (spellScript.Subject.Template.TemplateKey.Equals("tidalbreeze")
-                || spellScript.Subject.Template.TemplateKey.Equals("morsallamh")))
-            return false;
-        
-        var pointsForStage = vars.GetPoints();
-
-        var shamBurningGrounds = Subject.MapInstance
-                                       .GetEntitiesAtPoints<ReactorTile>(pointsForStage)
-                                       .Where(rt => rt.Script.Is<BurningGroundScript>())
-                                       .ToList();
-
-        foreach (var bg in shamBurningGrounds)
-            Subject.MapInstance.RemoveEntity(bg);
-        
-        return true;
-    }
-
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
@@ -144,8 +125,8 @@ public sealed class CascadingDamageTileScript : ConfigurableReactorTileScriptBas
             Executor.ExecuteAndCheck<GetCascadingTargetsAbilityComponent<Creature>>()
                     ?.Execute<DamageAbilityComponent>()
                     .Execute<AnimationAbilityComponent>()
-                    .Check(RemoveShamBurningGround)
-                    ?.Check(ShouldPlaySound)
+                    .Execute<RemoveShamBurningGroundComponent>()
+                    .Check(ShouldPlaySound)
                     ?.Execute<SoundAbilityComponent>();
             
 

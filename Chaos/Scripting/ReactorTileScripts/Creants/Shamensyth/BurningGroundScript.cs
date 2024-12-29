@@ -1,5 +1,6 @@
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
+using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -12,23 +13,30 @@ namespace Chaos.Scripting.ReactorTileScripts.Creants.Shamensyth;
 
 public class BurningGroundScript : ReactorTileScriptBase
 {
+    //burning ground for shamensyth creant fight
+    //will damage aislings by 20% hp and 10% mp per second
+    //will heal shamensyth by 2% per second
+    //will heal shamensythFireElemental by 5% per second
+    //removable via strong water spells (tidalbreeze, ardsal, morsal, aoe versions of ard/mor sal)
+    
     private readonly IIntervalTimer ApplicationTimer;
     private readonly IIntervalTimer Animationtimer;
     private readonly IApplyDamageScript ApplyDamageScript;
     private readonly Animation Animation;
+    private const string BURNING_GROUND_REMINDER_EVENT_ID = nameof(BURNING_GROUND_REMINDER_EVENT_ID);
     
     /// <inheritdoc />
     public BurningGroundScript(ReactorTile subject)
         : base(subject)
     {
         ApplicationTimer = new IntervalTimer(TimeSpan.FromSeconds(1));
-        Animationtimer = new IntervalTimer(TimeSpan.FromSeconds(1));
+        Animationtimer = new IntervalTimer(TimeSpan.FromMilliseconds(500));
         ApplyDamageScript = ApplyNonAttackDamageScript.Create();
 
         Animation = new Animation
         {
             TargetAnimation = 211,
-            AnimationSpeed = 500
+            AnimationSpeed = 600
         };
     }
 
@@ -37,7 +45,7 @@ public class BurningGroundScript : ReactorTileScriptBase
     {
         ApplicationTimer.Update(delta);
         Animationtimer.Update(delta);
-
+        
         if (ApplicationTimer.IntervalElapsed)
         {
 
@@ -49,16 +57,43 @@ public class BurningGroundScript : ReactorTileScriptBase
             {
                 var healthDamage = MathEx.GetPercentOf<int>((int)aisling.UserStatSheet.EffectiveMaximumHp, 20);
 
-                aisling.UserStatSheet.SubtractManaPct(20);
-                
+                aisling.UserStatSheet.SubtractManaPct(10);
+
                 ApplyDamageScript.ApplyDamage(
                     Subject.Owner!,
                     aisling,
                     this,
                     healthDamage,
                     Element.Fire);
-                
+
                 aisling.SendActiveMessage("You are standing on burning ground!");
+            }
+
+            var monstersStandingOnTile = Subject.MapInstance
+                                                .GetEntitiesAtPoints<Monster>(Subject)
+                                                .ToList();
+
+            foreach (var monster in monstersStandingOnTile)
+            {
+                var templateKey = monster.Template.TemplateKey;
+                
+                if(!templateKey.EqualsI("shamensyth") && !templateKey.EqualsI("shamensythFireElemental"))
+                    continue;
+                
+                var healPct = templateKey switch
+                {
+                    "shamensyth" => 2,
+                    "shamensythFireElemental" => 5,
+                    _ => 0
+                };
+                
+                monster.StatSheet.AddHealthPct(healPct);
+
+                if (!monster.Trackers.TimedEvents.HasActiveEvent(BURNING_GROUND_REMINDER_EVENT_ID, out _))
+                {
+                    monster.Trackers.TimedEvents.AddEvent(BURNING_GROUND_REMINDER_EVENT_ID, TimeSpan.FromSeconds(20), true);
+                    monster.Say("Ahhh, flames of renewal!");
+                }
             }
         }
 

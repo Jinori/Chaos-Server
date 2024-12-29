@@ -1,11 +1,12 @@
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
+using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
-using Chaos.Geometry.Abstractions;
 using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Geometry.EqualityComparers;
+using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
@@ -48,10 +49,10 @@ public class ShamensythScript : MonsterScriptBase
     
     private readonly List<Point> TeleportPoints =
     [
-        new(8, 8),
-        new(15, 8),
-        new(15, 15),
-        new(8, 15)
+        new(11, 11),
+        new(18, 11),
+        new(18, 18),
+        new(11, 18)
     ];
 
     private readonly List<Point> AddSpawnPoints =
@@ -61,6 +62,9 @@ public class ShamensythScript : MonsterScriptBase
         new(13, 10),
         new(13, 13)
     ];
+
+    private readonly List<Point> SafePoints;
+    private readonly List<Point> InvertedSafePoints;
 
     private readonly List<string> ChantLines =
     [
@@ -72,7 +76,13 @@ public class ShamensythScript : MonsterScriptBase
         "Cremate"
     ];
 
-    private readonly Point RoomAoePoint = new(12, 12);
+    private readonly Animation SafePointAnimation = new()
+    {
+        TargetAnimation = 214,
+        AnimationSpeed = 200
+    };
+
+    private readonly Point RoomAoePoint = new(15, 15);
     private bool GaveUninterruptedCastWarning;
     private int ChantLineIndex;
     private int SpawnAddsCount;
@@ -91,8 +101,9 @@ public class ShamensythScript : MonsterScriptBase
     private readonly IIntervalTimer ChantTimer = new IntervalTimer(TimeSpan.FromMilliseconds(2000), false);
     private readonly IIntervalTimer AfterChantTimer = new IntervalTimer(TimeSpan.FromSeconds(10), false);
     private readonly IIntervalTimer SpawnAddsTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
-    private readonly IIntervalTimer BurningGroundTimer = new IntervalTimer(TimeSpan.FromSeconds(10), false);
+    private readonly IIntervalTimer BurningGroundTimer = new IntervalTimer(TimeSpan.FromSeconds(20), false);
     private readonly IIntervalTimer TurnTimer = new IntervalTimer(TimeSpan.FromSeconds(3), false);
+    private readonly IIntervalTimer SafePointTimer = new IntervalTimer(TimeSpan.FromSeconds(1));
     private readonly SequentialEventTimer RoomeAoePhaseTimer;
     #endregion
     
@@ -124,6 +135,25 @@ public class ShamensythScript : MonsterScriptBase
             Enumerable.Repeat(ChantTimer, ChantLines.Count)
                       .Append(AfterChantTimer)
                       .ToList());
+
+        var roomPoints = Subject.MapInstance
+                                .Template
+                                .Bounds
+                                .GetPoints()
+                                .ToList();
+
+        var unsafePoints = roomPoints.FilterByLineOfSight(RoomAoePoint, Subject.MapInstance);
+
+        SafePoints = roomPoints.Except(unsafePoints)
+                               .Where(pt => !Subject.MapInstance.IsWall(pt))
+                               .ToList();
+
+        var wallsInAoeRange = roomPoints.Where(pt => pt.WithinRange(RoomAoePoint, 12))
+                                        .Where(pt => Subject.MapInstance.IsWall(pt));
+
+        InvertedSafePoints = wallsInAoeRange.SelectMany(pt => pt.RayTraceTo(RoomAoePoint))
+                                            .Where(pt => !Subject.MapInstance.IsWall(pt))
+                                            .ToList();
     }
 
     private void SpawnAdds(int count)
@@ -145,7 +175,7 @@ public class ShamensythScript : MonsterScriptBase
                                                .Where(rt => rt.Script.Is<BurningGroundScript>())
                                                .ToHashSet(PointEqualityComparer.Instance);
 
-            //add 20 burning ground tiles on spots not already occupied by burning ground
+            //add 10 burning ground tiles on spots not already occupied by burning ground
             for (var i = 0; i < 20; i++)
                 if (Subject.MapInstance.Template.Bounds.TryGetRandomPoint(IsValidBurningGroundPoint, out var pt))
                 {
@@ -249,6 +279,10 @@ public class ShamensythScript : MonsterScriptBase
     {
         if (!InvertedRoomAoe)
         {
+            if (SafePointTimer.IntervalElapsed)
+                foreach (var point in SafePoints)
+                    Subject.MapInstance.ShowAnimation(SafePointAnimation.GetPointAnimation(point));
+
             if (RoomeAoePhaseTimer.IntervalElapsed)
                 if (RoomeAoePhaseTimer.CurrentTimer == ChantTimer)
                 {
@@ -258,7 +292,8 @@ public class ShamensythScript : MonsterScriptBase
                         ChantLineIndex++;
 
                         if (ChantLineIndex == ChantLines.Count)
-                            Subject.TryUseSpell(Cataclysm);
+                            if(Subject.TryUseSpell(Cataclysm))
+                                Subject.AnimateBody(BodyAnimation.Assail, 80);
                     }
                 } else if (RoomeAoePhaseTimer.CurrentTimer == AfterChantTimer)
                 {
@@ -268,6 +303,10 @@ public class ShamensythScript : MonsterScriptBase
                 }
         } else
         {
+            if (SafePointTimer.IntervalElapsed)
+                foreach (var point in InvertedSafePoints)
+                    Subject.MapInstance.ShowAnimation(SafePointAnimation.GetPointAnimation(point));
+            
             if (RoomeAoePhaseTimer.IntervalElapsed)
                 if (RoomeAoePhaseTimer.CurrentTimer == ChantTimer)
                 {
@@ -277,7 +316,8 @@ public class ShamensythScript : MonsterScriptBase
                         ChantLineIndex++;
 
                         if (ChantLineIndex == ChantLines.Count)
-                            Subject.TryUseSpell(ReverseCataclysm);
+                            if(Subject.TryUseSpell(ReverseCataclysm))
+                                Subject.AnimateBody(BodyAnimation.Assail, 50);
                     }
                 } else if (RoomeAoePhaseTimer.CurrentTimer == AfterChantTimer)
                 {
@@ -302,7 +342,8 @@ public class ShamensythScript : MonsterScriptBase
                 GaveUninterruptedCastWarning = true;
             }
 
-            Subject.TryUseSpell(ReignOfFire);
+            if (Subject.TryUseSpell(ReignOfFire))
+                Subject.AnimateBody(BodyAnimation.Assail, 50);
         }
     }
 
@@ -333,17 +374,22 @@ public class ShamensythScript : MonsterScriptBase
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
+        //timer updates
         SpawnAddsTimer.Update(delta);
         BurningGroundTimer.Update(delta);
         TurnTimer.Update(delta);
+        SafePointTimer.Update(delta);
         
+        //spell updates
         ArdSradMeall.Update(delta);
         ArdSrad.Update(delta);
         
+        //do things independent of phase
         HandleFacing();
         HandleAdds();
         HandleBurningGround();
         
+        //handle phases
         switch (CurrentPhase)
         {
             case Phase.Teleport:
@@ -359,8 +405,8 @@ public class ShamensythScript : MonsterScriptBase
                 //basically his autoattack
                 if (Subject.SpellTimer.IntervalElapsed)
                     if (Subject.Target is not null)
-                        if (!Subject.TryUseSpell(ArdSrad, Subject.Target.Id))
-                            Subject.TryUseSpell(ArdSradMeall, Subject.Target.Id);
+                        if (Subject.TryUseSpell(ArdSrad, Subject.Target.Id) || Subject.TryUseSpell(ArdSradMeall, Subject.Target.Id))
+                            Subject.AnimateBody(BodyAnimation.Assail);
 
                 if (ReignOfFireTimer.IntervalElapsed)
                     HandleReignOfFire();
