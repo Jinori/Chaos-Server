@@ -34,7 +34,7 @@ public class HealthBasedDamageComponent : IComponent
             options.ApplyDamageScript.ApplyDamage(
                 context.Source,
                 target,
-                options.SourceScript,
+                vars.GetSourceScript(),
                 damage,
                 options.Element);
         }
@@ -64,7 +64,6 @@ public class HealthBasedDamageComponent : IComponent
         Element? Element { get; init; }
         int? HealthCostPct { get; init; }
         decimal? HealthMultiplier { get; init; }
-        IScript SourceScript { get; init; }
         bool TrueDamage { get; init; }
     }
 }

@@ -25,7 +25,7 @@ public class ExecuteComponent : IComponent
     {
         var options = vars.GetOptions<IExecuteComponentOptions>();
         var subject = vars.GetSubject<PanelEntityBase>();
-        var script = (options.SourceScript as SubjectiveScriptBase<PanelEntityBase>)!;
+        var script = (vars.GetSourceScript() as SubjectiveScriptBase<PanelEntityBase>)!;
         var targets = vars.GetTargets<Creature>();
         var hasKilled = false;
 
@@ -35,7 +35,7 @@ public class ExecuteComponent : IComponent
                 options.ApplyDamageScript.ApplyDamage(
                     context.Source,
                     target,
-                    options.SourceScript,
+                    vars.GetSourceScript(),
                     99999999);
 
                 var healAmount = MathEx.GetPercentOf<int>((int)context.Source.StatSheet.EffectiveMaximumHp, options.HealAmountIfExecuted);
@@ -45,7 +45,7 @@ public class ExecuteComponent : IComponent
                     options.ApplyHealScript.ApplyHeal(
                         target,
                         context.Source,
-                        options.SourceScript,
+                        vars.GetSourceScript(),
                         healAmount);
                 
                     context.SourceAisling?.SendActiveMessage($"You've been healed by {healAmount}!"); 
@@ -64,7 +64,7 @@ public class ExecuteComponent : IComponent
                     options.ApplyDamageScript.ApplyDamage(
                         context.Source,
                         target,
-                        options.SourceScript,
+                        vars.GetSourceScript(),
                         tenPercent);
                 }
                 else
@@ -74,7 +74,7 @@ public class ExecuteComponent : IComponent
                     options.ApplyDamageScript.ApplyDamage(
                         context.Source,
                         target,
-                        options.SourceScript,
+                        vars.GetSourceScript(),
                         onepercent);
                 }
             }
@@ -90,6 +90,5 @@ public class ExecuteComponent : IComponent
         decimal DmgHealthPct { get; init; }
         decimal HealAmountIfExecuted { get; init; }
         int? KillTargetAtHealthPct { get; init; }
-        IScript SourceScript { get; init; }
     }
 }

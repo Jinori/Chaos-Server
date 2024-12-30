@@ -4,7 +4,6 @@ using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -25,7 +24,6 @@ public class CascadingSkillDamageScript : ConfigurableSkillScriptBase,
         : base(subject)
     {
         ApplyDamageScript = ApplyAttackDamageScript.Create();
-        SourceScript = this;
         ReactorTileFactory = reactorTileFactory;
         CascadeScriptVars ??= Subject.Template.ScriptVars;
     }
@@ -71,7 +69,6 @@ public class CascadingSkillDamageScript : ConfigurableSkillScriptBase,
     public bool CascadeOnlyFromEntities { get; init; }
     public IDictionary<string, IScriptVars> CascadeScriptVars { get; init; }
     public IReactorTileFactory ReactorTileFactory { get; init; }
-    public IScript SourceScript { get; init; }
     public bool? SurroundingTargets { get; init; }
     #endregion
 }

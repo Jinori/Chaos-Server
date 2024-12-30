@@ -3,7 +3,6 @@ using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.SpellScripts.Abstractions;
@@ -18,7 +17,8 @@ public class PullScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public PullScript(Spell subject)
         : base(subject)
-        => SourceScript = this;
+    {
+    }
 
     /// <inheritdoc />
     public override void OnUse(SpellContext context)
@@ -52,6 +52,6 @@ public class PullScript : ConfigurableSpellScriptBase,
     public bool ShouldNotBreakHide { get; init; }
     public int? AggroAmount { get; init; }
     public Stat? AggroMultiplier { get; init; }
-    public IScript SourceScript { get; init; }
+
     #endregion
 }

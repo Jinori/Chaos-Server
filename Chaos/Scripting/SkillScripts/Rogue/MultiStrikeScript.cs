@@ -4,7 +4,6 @@ using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -15,15 +14,15 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.SkillScripts.Rogue;
 
-public class MultiStrikeScript : ConfigurableSkillScriptBase,
-                                 GenericAbilityComponent<Creature>.IAbilityComponentOptions,
-                                 DamageAbilityComponent.IDamageComponentOptions,
-                                 AssassinStrikeComponent.IDamageComponentOptions
+public class MultiStrikeScript(Skill subject) : ConfigurableSkillScriptBase(subject),
+    GenericAbilityComponent<Creature>.IAbilityComponentOptions,
+    DamageAbilityComponent.IDamageComponentOptions,
+    AssassinStrikeComponent.IDamageComponentOptions
 {
     public bool AnimatePoints { get; init; }
     public Animation? Animation { get; init; }
     public ushort? AnimationSpeed { get; init; }
-    public IApplyDamageScript ApplyDamageScript { get; init; }
+    public IApplyDamageScript ApplyDamageScript { get; init; } = ApplyAttackDamageScript.Create();
     public int? BaseDamage { get; init; }
     public BodyAnimation BodyAnimation { get; init; }
 
@@ -50,21 +49,12 @@ public class MultiStrikeScript : ConfigurableSkillScriptBase,
     public bool ShouldNotBreakHide { get; init; }
     public bool SingleTarget { get; init; }
     public byte? Sound { get; init; }
-    public IScript SourceScript { get; init; }
     public bool StopOnFirstHit { get; init; }
     public bool StopOnWalls { get; init; }
     public bool? SurroundingTargets { get; init; }
 
     private List<Creature>? Targets { get; set; }
-    private IIntervalTimer StrikeTimer { get; }
-
-    public MultiStrikeScript(Skill subject)
-        : base(subject)
-    {
-        SourceScript = this;
-        ApplyDamageScript = ApplyAttackDamageScript.Create();
-        StrikeTimer = new IntervalTimer(TimeSpan.FromMilliseconds(310), false);
-    }
+    private IIntervalTimer StrikeTimer { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(310), false);
 
     private bool IsSameSideOrNoWallBetween(Creature source, Creature target)
     {

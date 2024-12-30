@@ -43,7 +43,7 @@ public struct AssassinStrikeComponent : IComponent
                 options.ApplyDamageScript.ApplyDamage(
                     context.Source,
                     target,
-                    options.SourceScript,
+                    vars.GetSourceScript(),
                     damage,
                     options.Element);
         }
@@ -92,6 +92,5 @@ public struct AssassinStrikeComponent : IComponent
         decimal? DamageStatMultiplier { get; init; }
         Element? Element { get; init; }
         decimal? PctHpDamage { get; init; }
-        IScript SourceScript { get; init; }
     }
 }

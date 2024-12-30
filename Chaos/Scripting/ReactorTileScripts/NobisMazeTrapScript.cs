@@ -58,7 +58,6 @@ public class NobisMazeTrapScript : ConfigurableReactorTileScriptBase,
         AnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
         ApplyDamageScript = ApplyAttackDamageScript.Create();
         ApplyDamageScript.DamageFormula = DamageFormulae.PureDamage;
-        SourceScript = this;
     }
 
     /// <inheritdoc />
@@ -153,7 +152,6 @@ public class NobisMazeTrapScript : ConfigurableReactorTileScriptBase,
     public decimal? PctHpDamage { get; init; }
     public decimal? PctOfHealthMultiplier { get; init; }
     public decimal? PctOfHealth { get; init; }
-    public IScript SourceScript { get; init; }
     public bool? SurroundingTargets { get; init; }
     public decimal? DamageMultiplierPerTarget { get; init; }
     public decimal? PctOfMana { get; init; }

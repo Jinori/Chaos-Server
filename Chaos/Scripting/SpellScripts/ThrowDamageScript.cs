@@ -58,7 +58,6 @@ public class ThrowDamageScript : ConfigurableSpellScriptBase,
     public bool ShouldNotBreakHide { get; init; }
     public bool SingleTarget { get; init; }
     public byte? Sound { get; init; }
-    public IScript SourceScript { get; init; }
     public bool StopOnFirstHit { get; init; }
     public bool StopOnWalls { get; init; }
     public bool? SurroundingTargets { get; init; }
@@ -68,7 +67,6 @@ public class ThrowDamageScript : ConfigurableSpellScriptBase,
         : base(subject)
     {
         ApplyDamageScript = ApplyAttackDamageScript.Create();
-        SourceScript = this;
         ReactorTileFactory = reactorTileFactory;
         EffectFactory = effectFactory;
         CascadeScriptVars ??= Subject.Template.ScriptVars;

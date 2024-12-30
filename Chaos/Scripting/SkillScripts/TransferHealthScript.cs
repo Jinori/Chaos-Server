@@ -3,7 +3,6 @@ using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -11,17 +10,10 @@ using Chaos.Scripting.SkillScripts.Abstractions;
 
 namespace Chaos.Scripting.SkillScripts;
 
-public class TransferHealthScript : ConfigurableSkillScriptBase,
-                                    GenericAbilityComponent<Creature>.IAbilityComponentOptions,
-                                    TransferBloodAbilityComponent.IHealthTransferComponentOptions
+public class TransferHealthScript(Skill subject) : ConfigurableSkillScriptBase(subject),
+    GenericAbilityComponent<Creature>.IAbilityComponentOptions,
+    TransferBloodAbilityComponent.IHealthTransferComponentOptions
 {
-    public TransferHealthScript(Skill subject)
-        : base(subject)
-    {
-        ApplyHealScript = FunctionalScripts.ApplyHealing.ApplyHealScript.Create();
-        SourceScript = this;
-    }
-
     /// <inheritdoc />
     public override void OnUse(ActivationContext context)
         => new ComponentExecutor(context).WithOptions(this)
@@ -67,10 +59,7 @@ public class TransferHealthScript : ConfigurableSkillScriptBase,
     public bool AnimatePoints { get; init; }
 
     /// <inheritdoc />
-    public IApplyHealScript ApplyHealScript { get; init; }
-
-    /// <inheritdoc />
-    public IScript SourceScript { get; init; }
+    public IApplyHealScript ApplyHealScript { get; init; } = FunctionalScripts.ApplyHealing.ApplyHealScript.Create();
 
     /// <inheritdoc />
     public int? ManaCost { get; init; }

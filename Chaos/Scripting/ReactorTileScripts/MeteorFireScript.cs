@@ -51,7 +51,6 @@ public class MeteorFireScript : ConfigurableReactorTileScriptBase,
         DamageTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
         ApplyDamageScript = ApplyNonAttackDamageScript.Create();
         ApplyDamageScript.DamageFormula = DamageFormulae.PureDamage;
-        SourceScript = this;
     }
 
     private void ApplyTrapEffects(Creature target)
@@ -140,7 +139,6 @@ public class MeteorFireScript : ConfigurableReactorTileScriptBase,
     public Stat? DamageStat { get; init; }
     public decimal? DamageStatMultiplier { get; init; }
     public decimal? PctHpDamage { get; init; }
-    public IScript SourceScript { get; init; }
     public Element? Element { get; init; }
     public int? DurationSecs { get; init; }
     public int? MaxTriggers { get; init; }

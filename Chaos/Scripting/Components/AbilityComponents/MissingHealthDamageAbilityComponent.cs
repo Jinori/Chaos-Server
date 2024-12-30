@@ -25,13 +25,13 @@ public struct MissingHealthDamageAbilityComponent : IComponent
                 options.DamageStat,
                 options.DamageStatMultiplier,
                 options.Element,
-                options.SourceScript);
+                vars.GetSourceScript());
 
             if (damage > 0)
                 options.ApplyDamageScript.ApplyDamage(
                     context.Source,
                     target,
-                    options.SourceScript,
+                    vars.GetSourceScript(),
                     damage,
                     options.Element);
         }
@@ -102,6 +102,5 @@ public struct MissingHealthDamageAbilityComponent : IComponent
         Stat? DamageStat { get; init; }
         decimal? DamageStatMultiplier { get; init; }
         Element? Element { get; init; }
-        IScript SourceScript { get; init; }
     }
 }

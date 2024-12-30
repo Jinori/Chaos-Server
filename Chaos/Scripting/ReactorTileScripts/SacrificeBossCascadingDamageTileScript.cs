@@ -32,7 +32,6 @@ public sealed class SacrificeBossCascadingDamageTileScript : ConfigurableReactor
         : base(subject)
     {
         ApplyDamageScript = ApplyAttackDamageScript.Create();
-        SourceScript = this;
         CascadeTimer = new IntervalTimer(TimeSpan.FromMilliseconds(CascadeIntervalMs));
         SoundTimer = new IntervalTimer(TimeSpan.FromMilliseconds(MinSoundIntervalMs));
 
@@ -141,8 +140,6 @@ public sealed class SacrificeBossCascadingDamageTileScript : ConfigurableReactor
     public decimal? PctOfHealthMultiplier { get; init; }
     public decimal? PctOfHealth { get; init; }
 
-    /// <inheritdoc />
-    public IScript SourceScript { get; init; }
 
     public bool? SurroundingTargets { get; init; }
     public decimal? DamageMultiplierPerTarget { get; init; }

@@ -16,7 +16,6 @@ using Chaos.Models.World.Abstractions;
 using Chaos.Networking.Abstractions;
 using Chaos.NLog.Logging.Definitions;
 using Chaos.NLog.Logging.Extensions;
-using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.AislingScripts.Abstractions;
 using Chaos.Scripting.Behaviors;
 using Chaos.Scripting.Components.AbilityComponents;
@@ -203,9 +202,6 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
     private SocialStatus PreAfkSocialStatus { get; set; }
 
-    /// <inheritdoc />
-    public IScript SourceScript { get; init; }
-
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     private Animation FlameHit { get; } = new()
@@ -275,7 +271,6 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         EffectFactory = effectFactory;
         MerchantFactory = merchantFactory;
         SimpleCache = simpleCache;
-        SourceScript = this;
         ApplyHealScript = ApplyNonAlertingHealScript.Create();
         ApplyDamageScript = ApplyAttackDamageScript.Create();
         ApplyDamageScript.DamageFormula = DamageFormulae.Default;
@@ -417,17 +412,8 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             if (source is Monster monster)
                 monster.AggroList.AddOrUpdate(Subject.Id, _ => result, (_, currentAggro) => currentAggro + result);
 
-            // Get all non-wall points on the map within 4 spaces of the subject
-            var nonWallPoints = Enumerable.Range(0, Subject.MapInstance.Template.Width)
-                                          .SelectMany(
-                                              x => Enumerable.Range(0, Subject.MapInstance.Template.Height)
-                                                             .Where(
-                                                                 y => !Subject.MapInstance.IsWall(new Point(x, y))
-                                                                      && (Math.Sqrt(Math.Pow(x - Subject.X, 2) + Math.Pow(y - Subject.Y, 2))
-                                                                          <= 4))
-                                                             .Select(y => new Point(x, y)))
-                                          .ToList();
-
+            var nonWallPoints = Subject.SpiralSearch(4).Where(x => !Subject.MapInstance.IsWall(x)).ToList();
+            
             if (nonWallPoints.Count <= 0)
                 return;
 

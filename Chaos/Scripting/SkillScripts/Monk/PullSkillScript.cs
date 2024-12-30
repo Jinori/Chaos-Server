@@ -3,7 +3,6 @@ using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -54,7 +53,6 @@ public class PullSkillScript : ConfigurableSkillScriptBase,
     public bool ShouldNotBreakHide { get; init; }
     public bool SingleTarget { get; init; }
     public byte? Sound { get; init; }
-    public IScript SourceScript { get; init; }
 
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
@@ -69,7 +67,6 @@ public class PullSkillScript : ConfigurableSkillScriptBase,
     {
         EffectFactory = effectFactory;
         ApplyDamageScript = ApplyAttackDamageScript.Create();
-        SourceScript = this;
     }
 
     public override void OnUse(ActivationContext context)

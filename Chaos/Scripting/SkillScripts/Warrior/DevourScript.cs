@@ -81,9 +81,7 @@ public class DevourScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public byte? Sound { get; init; }
-
-    /// <inheritdoc />
-    public IScript SourceScript { get; init; }
+    
 
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
@@ -97,7 +95,6 @@ public class DevourScript : ConfigurableSkillScriptBase,
     {
         ApplyHealScript = ApplyNonAlertingHealScript.Create();
         ApplyDamageScript = ApplyAttackDamageScript.Create();
-        SourceScript = this;
     }
 
     /// <inheritdoc />

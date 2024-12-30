@@ -38,7 +38,6 @@ public class DamageScript : ConfigurableSpellScriptBase,
     {
         ApplyDamageScript = ApplyAttackDamageScript.Create();
         EffectFactory = effectFactory;
-        SourceScript = this;
     }
 
     /// <inheritdoc />
@@ -113,10 +112,7 @@ public class DamageScript : ConfigurableSpellScriptBase,
 
     public decimal? PctOfHealthMultiplier { get; init; }
     public decimal? PctOfHealth { get; init; }
-
-    /// <inheritdoc />
-    public IScript SourceScript { get; init; }
-
+    
     public bool? SurroundingTargets { get; init; }
     public decimal? DamageMultiplierPerTarget { get; init; }
     public decimal? PctOfMana { get; init; }

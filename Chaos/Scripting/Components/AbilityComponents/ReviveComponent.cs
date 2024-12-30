@@ -55,7 +55,7 @@ public class ReviveComponent : IComponent
                     return;
                 }
                 
-                var reviveScript = options.SourceScript.As<SubjectiveScriptBase<Spell>>();
+                var reviveScript = vars.GetSourceScript().As<SubjectiveScriptBase<Spell>>();
                 
                 switch (reviveScript?.Subject.Template.TemplateKey)
                 {
@@ -85,7 +85,6 @@ public class ReviveComponent : IComponent
 
     public interface IReviveComponentOptions
     {
-        IScript SourceScript { get; init; }
         public bool ReviveSelf { get; init; }
     }
 }

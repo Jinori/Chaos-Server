@@ -82,10 +82,7 @@ public class ExecuteScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public byte? Sound { get; init; }
-
-    /// <inheritdoc />
-    public IScript SourceScript { get; init; }
-
+    
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
@@ -98,7 +95,6 @@ public class ExecuteScript : ConfigurableSkillScriptBase,
     {
         ApplyHealScript = ApplyNonAlertingHealScript.Create();
         ApplyDamageScript = ApplyAttackDamageScript.Create();
-        SourceScript = this;
     }
 
     /// <inheritdoc />

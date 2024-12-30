@@ -91,9 +91,6 @@ public class BullRushScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public byte? Sound { get; init; }
 
-    /// <inheritdoc />
-    public IScript SourceScript { get; init; }
-
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
@@ -106,7 +103,6 @@ public class BullRushScript : ConfigurableSkillScriptBase,
     public BullRushScript(Skill subject)
         : base(subject)
     {
-        SourceScript = this;
         ApplyDamageScript = ApplyAttackDamageScript.Create();
     }
 

@@ -29,7 +29,6 @@ public class CritCascadingDamageScript : ConfigurableSpellScriptBase,
         : base(subject)
     {
         ApplyDamageScript = ApplyAttackDamageScript.Create();
-        SourceScript = this;
         ReactorTileFactory = reactorTileFactory;
         CascadeScriptVars ??= Subject.Template.ScriptVars;
     }
@@ -92,10 +91,7 @@ public class CritCascadingDamageScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public decimal? PctHpDamage { get; init; }
-
-    /// <inheritdoc />
-    public IScript SourceScript { get; init; }
-
+    
     /// <inheritdoc />
     public Animation? Animation { get; init; }
 

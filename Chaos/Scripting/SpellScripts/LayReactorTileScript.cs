@@ -20,13 +20,11 @@ public class LayReactorTileScript : ConfigurableSpellScriptBase,
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
-
-    // Constructor where we set PanelEntityBase
+    
     public LayReactorTileScript(Spell subject, IReactorTileFactory reactorTileFactory)
         : base(subject)
     {
         ReactorTileFactory = reactorTileFactory;
-        SourceScript = this; // Optional, set the source script
     }
 
     /// <inheritdoc />
@@ -81,9 +79,7 @@ public class LayReactorTileScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public string? ReactorTileTemplateKey { get; init; }
 
-    /// <inheritdoc />
-    public IScript? SourceScript { get; init; }
-
+    
     /// <inheritdoc />
     public IReactorTileFactory ReactorTileFactory { get; init; }
 

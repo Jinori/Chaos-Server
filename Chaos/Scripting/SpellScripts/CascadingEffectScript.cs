@@ -34,7 +34,6 @@ public class CascadingEffectScript : ConfigurableSpellScriptBase,
     public CascadingEffectScript(Spell subject, IReactorTileFactory reactorTileFactory, IEffectFactory effectFactory)
         : base(subject)
     {
-        SourceScript = this;
         ReactorTileFactory = reactorTileFactory;
         EffectFactory = effectFactory;
         CascadeScriptVars ??= Subject.Template.ScriptVars;
@@ -75,9 +74,7 @@ public class CascadingEffectScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     /// <inheritdoc />
     public bool MustHaveTargets { get; init; }
-
-    public IScript SourceScript { get; init; }
-
+    
     /// <inheritdoc />
     public Animation? Animation { get; init; }
 

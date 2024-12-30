@@ -36,7 +36,7 @@ public class CritDamageComponent : IComponent
             options.ApplyDamageScript.ApplyDamage(
                 context.Source,
                 target,
-                options.SourceScript,
+                vars.GetSourceScript(),
                 damage,
                 options.Element);
         }
@@ -95,6 +95,5 @@ public class CritDamageComponent : IComponent
         Element? Element { get; init; }
         bool? MoreDmgLowTargetHp { get; init; }
         decimal? PctHpDamage { get; init; }
-        IScript SourceScript { get; init; }
     }
 }

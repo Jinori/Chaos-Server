@@ -16,7 +16,7 @@ public class NotifyTargetComponent : IComponent
         var options = vars.GetOptions<INotifyTargetComponentOptions>();
         var targets = vars.GetTargets<Creature>();
 
-        if (options.SourceScript is not SubjectiveScriptBase<Spell> spellScript)
+        if (vars.GetSourceScript() is not SubjectiveScriptBase<Spell> spellScript)
             return;
         
         foreach (var target in targets)
@@ -28,6 +28,5 @@ public class NotifyTargetComponent : IComponent
     
     public interface INotifyTargetComponentOptions
     {
-        IScript SourceScript { get; init; }
     }
 }

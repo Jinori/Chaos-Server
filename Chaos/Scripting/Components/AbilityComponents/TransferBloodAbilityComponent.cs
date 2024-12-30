@@ -46,7 +46,7 @@ public struct TransferBloodAbilityComponent : IComponent
             options.ApplyHealScript.ApplyHeal(
                 context.Source,
                 target,
-                options.SourceScript,
+                vars.GetSourceScript(),
                 healthToTransfer);
         }
     }
@@ -54,6 +54,5 @@ public struct TransferBloodAbilityComponent : IComponent
     public interface IHealthTransferComponentOptions
     {
         IApplyHealScript ApplyHealScript { get; init; }
-        IScript SourceScript { get; init; }
     }
 }

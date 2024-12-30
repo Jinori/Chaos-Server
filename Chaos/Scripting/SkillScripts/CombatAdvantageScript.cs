@@ -3,7 +3,6 @@ using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -94,9 +93,6 @@ public class CombatAdvantageScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public byte? Sound { get; init; }
 
-    /// <inheritdoc />
-    public IScript SourceScript { get; init; }
-
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
@@ -110,7 +106,6 @@ public class CombatAdvantageScript : ConfigurableSkillScriptBase,
         : base(subject)
     {
         ApplyDamageScript = ApplyAttackDamageScript.Create();
-        SourceScript = this;
     }
 
     /// <inheritdoc />

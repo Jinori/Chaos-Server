@@ -37,7 +37,7 @@ public class CleaveHealComponent : IComponent
 
         if (healAmount >= 1)
         {
-            options.ApplyHealScript.ApplyHeal(context.Source, context.Source, options.SourceScript, healAmount);
+            options.ApplyHealScript.ApplyHeal(context.Source, context.Source, vars.GetSourceScript(), healAmount);
             context.SourceAisling?.SendActiveMessage($"You've been healed by {healAmount} from {targetsHit.ToWords()} targets!");
         }
 
@@ -50,6 +50,5 @@ public class CleaveHealComponent : IComponent
         IApplyHealScript ApplyHealScript { get; init; }
         decimal DmgHealthPct { get; init; }
         decimal HealPercentMissingHealth { get; init; }
-        IScript SourceScript { get; init; }
     }
 }

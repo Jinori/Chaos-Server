@@ -44,7 +44,6 @@ public sealed class CascadingEffectTileScript : ConfigurableReactorTileScriptBas
         : base(subject)
     {
         EffectFactory = effectFactory;
-        SourceScript = this;
         CascadeTimer = new IntervalTimer(TimeSpan.FromMilliseconds(CascadeIntervalMs));
         SoundTimer = new IntervalTimer(TimeSpan.FromMilliseconds(MinSoundIntervalMs));
 
@@ -155,7 +154,6 @@ public sealed class CascadingEffectTileScript : ConfigurableReactorTileScriptBas
     public int Range { get; init; }
     /// <inheritdoc />
     public bool MustHaveTargets { get; init; } 
-    public IScript SourceScript { get; init; }
     public byte? Sound { get; init; }
 
     /// <inheritdoc />

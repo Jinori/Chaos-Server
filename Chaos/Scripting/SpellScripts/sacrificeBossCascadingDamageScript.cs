@@ -25,7 +25,6 @@ public class SacrificeBossCascadingDamageScript : ConfigurableSpellScriptBase,
         : base(subject)
     {
         ApplyDamageScript = ApplyAttackDamageScript.Create();
-        SourceScript = this;
         ReactorTileFactory = reactorTileFactory;
         CascadeScriptVars ??= Subject.Template.ScriptVars;
     }
@@ -89,9 +88,6 @@ public class SacrificeBossCascadingDamageScript : ConfigurableSpellScriptBase,
 
     public decimal? PctOfHealthMultiplier { get; init; }
     public decimal? PctOfHealth { get; init; }
-
-    /// <inheritdoc />
-    public IScript SourceScript { get; init; }
 
     public bool? SurroundingTargets { get; init; }
     public decimal? DamageMultiplierPerTarget { get; init; }

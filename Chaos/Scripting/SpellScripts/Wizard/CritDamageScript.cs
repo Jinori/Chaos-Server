@@ -3,7 +3,6 @@ using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -26,7 +25,6 @@ public class CritDamageScript : ConfigurableSpellScriptBase,
         : base(subject)
     {
         ApplyDamageScript = ApplyAttackDamageScript.Create();
-        SourceScript = this;
     }
 
     /// <inheritdoc />
@@ -99,10 +97,7 @@ public class CritDamageScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public decimal? PctHpDamage { get; init; }
-
-    /// <inheritdoc />
-    public IScript SourceScript { get; init; }
-
+    
     /// <inheritdoc />
     public int? ManaCost { get; init; }
 

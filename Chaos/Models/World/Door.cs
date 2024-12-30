@@ -64,17 +64,11 @@ public sealed class Door(
 
         if (doorCluster.All(x => x.Closed))
         {
-            foreach (var aisling in MapInstance.GetEntitiesWithinRange<Aisling>(this))
-            {
-                aisling.Client.SendSound(166, false);
-            }
+            MapInstance.PlaySound(166, doorCluster);
         }
         if (doorCluster.All(x => !x.Closed))
         {
-            foreach (var aisling in MapInstance.GetEntitiesWithinRange<Aisling>(this))
-            {
-                aisling.Client.SendSound(165, false);
-            }
+            MapInstance.PlaySound(165, doorCluster);
         }
         
         foreach (var aisling in MapInstance.GetEntitiesWithinRange<Aisling>(this))

@@ -49,7 +49,6 @@ public class HealZoneScript : ConfigurableReactorTileScriptBase,
 
         AnimationTimer = new IntervalTimer(TimeSpan.FromMilliseconds(1500), false);
         HealTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
-        SourceScript = this;
     }
 
     private void ApplyTrapEffects(Creature target)
@@ -133,7 +132,6 @@ public class HealZoneScript : ConfigurableReactorTileScriptBase,
     public decimal? HealStatMultiplier { get; init; }
     public bool? MoreHealLowTargetHp { get; init; }
     public decimal? PctHpHeal { get; init; }
-    public IScript SourceScript { get; init; }
     public int? ManaDrain { get; init; }
     public decimal PctManaDrain { get; init; }
     public TimeSpan? EffectDurationOverride { get; init; }

@@ -39,7 +39,7 @@ public struct TargetDamageAndHealComponent : IComponent
                 options.ApplyDamageScript.ApplyDamage(
                     context.Source,
                     target,
-                    options.SourceScript,
+                    vars.GetSourceScript(),
                     damage,
                     options.Element);
             }
@@ -114,7 +114,6 @@ public interface IDamageComponentOptions
         Element? Element { get; init; }
         bool? MoreDmgLowTargetHp { get; init; }
         decimal? PctHpDamage { get; init; }
-        IScript SourceScript { get; init; }
         bool? SurroundingTargets { get; init; }
         decimal? DamageMultiplierPerTarget { get; init; }
         bool? HealUser { get; init; }  // New option to toggle healing

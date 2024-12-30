@@ -63,8 +63,7 @@ public class ReviveScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public byte? Sound { get; init; }
 
-    /// <inheritdoc />
-    public IScript SourceScript { get; init; }
+
 
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
@@ -74,8 +73,7 @@ public class ReviveScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public ReviveScript(Spell subject)
-        : base(subject)
-        => SourceScript = this;
+        : base(subject){}
 
     /// <inheritdoc />
     public override void OnUse(SpellContext context)
