@@ -57,10 +57,10 @@ public class ShamensythScript : MonsterScriptBase
 
     private readonly List<Point> AddSpawnPoints =
     [
-        new(10, 13),
-        new(10, 10),
-        new(13, 10),
-        new(13, 13)
+        new(13, 16),
+        new(13, 13),
+        new(16, 13),
+        new(16, 16)
     ];
 
     private readonly List<Point> SafePoints;
@@ -76,11 +76,31 @@ public class ShamensythScript : MonsterScriptBase
         "Cremate"
     ];
 
+    #region Animations
     private readonly Animation SafePointAnimation = new()
     {
         TargetAnimation = 214,
         AnimationSpeed = 200
     };
+    
+    private readonly Animation RoomAoeAnimation1 = new()
+    {
+        TargetAnimation = 90,
+        AnimationSpeed = 750
+    };
+
+    private readonly Animation RoomAoeAnimation2 = new()
+    {
+        TargetAnimation = 52,
+        AnimationSpeed = 850
+    };
+
+    private readonly Animation RoomAoeAnimation3 = new()
+    {
+        TargetAnimation = 223,
+        AnimationSpeed = 50
+    };
+    #endregion
 
     private readonly Point RoomAoePoint = new(15, 15);
     private bool GaveUninterruptedCastWarning;
@@ -89,6 +109,10 @@ public class ShamensythScript : MonsterScriptBase
     private readonly IMonsterFactory MonsterFactory;
     private readonly IReactorTileFactory ReactorTileFactory;
     private bool InvertedRoomAoe;
+    private bool ShowedSlowRoomAoeAnimation;
+    private int RoomAoeAnimationIndex1;
+    private int RoomAoeAnimationIndex2;
+    private List<Point> RoomAoeAnimationPoints;
     
     #region Timers
     private readonly IIntervalTimer TeleportTimer = new RandomizedIntervalTimer(
@@ -104,6 +128,7 @@ public class ShamensythScript : MonsterScriptBase
     private readonly IIntervalTimer BurningGroundTimer = new IntervalTimer(TimeSpan.FromSeconds(20), false);
     private readonly IIntervalTimer TurnTimer = new IntervalTimer(TimeSpan.FromSeconds(3), false);
     private readonly IIntervalTimer SafePointTimer = new IntervalTimer(TimeSpan.FromSeconds(1));
+    private readonly IIntervalTimer RoomAoeAnimationTimer = new IntervalTimer(TimeSpan.FromMilliseconds(200));
     private readonly SequentialEventTimer RoomeAoePhaseTimer;
     #endregion
     
@@ -135,6 +160,9 @@ public class ShamensythScript : MonsterScriptBase
             Enumerable.Repeat(ChantTimer, ChantLines.Count)
                       .Append(AfterChantTimer)
                       .ToList());
+        
+        RoomAoeAnimationPoints = new Circle(RoomAoePoint, 3).GetOrderedOutline()
+                                                            .ToList();
 
         var roomPoints = Subject.MapInstance
                                 .Template
@@ -153,7 +181,16 @@ public class ShamensythScript : MonsterScriptBase
 
         InvertedSafePoints = wallsInAoeRange.SelectMany(pt => pt.RayTraceTo(RoomAoePoint))
                                             .Where(pt => !Subject.MapInstance.IsWall(pt))
+                                            .Where(pt => !RoomAoePoint.WithinRange(pt, 1))
                                             .ToList();
+        
+        SetRoomAoeAnimationPoints();
+    }
+    
+    private void SetRoomAoeAnimationPoints()
+    {
+        RoomAoeAnimationIndex1 = 0;
+        RoomAoeAnimationIndex2 = RoomAoeAnimationPoints.Count / 2;
     }
 
     private void SpawnAdds(int count)
@@ -277,6 +314,9 @@ public class ShamensythScript : MonsterScriptBase
 
     private void HandleRoomAoe()
     {
+        if (RoomeAoePhaseTimer.CurrentTimer == ChantTimer)
+            HandleRoomAoeAnimation();
+        
         if (!InvertedRoomAoe)
         {
             if (SafePointTimer.IntervalElapsed)
@@ -286,6 +326,14 @@ public class ShamensythScript : MonsterScriptBase
             if (RoomeAoePhaseTimer.IntervalElapsed)
                 if (RoomeAoePhaseTimer.CurrentTimer == ChantTimer)
                 {
+                    if (!ShowedSlowRoomAoeAnimation)
+                    {
+                        //slow animation plays once
+                        Subject.MapInstance.ShowAnimation(RoomAoeAnimation1.GetPointAnimation(Subject));
+                        Subject.MapInstance.ShowAnimation(RoomAoeAnimation2.GetPointAnimation(Subject));
+                        ShowedSlowRoomAoeAnimation = true;
+                    }
+                    
                     if (ChantLineIndex < ChantLines.Count)
                     {
                         Subject.Shout(ChantLines[ChantLineIndex]);
@@ -293,12 +341,14 @@ public class ShamensythScript : MonsterScriptBase
 
                         if (ChantLineIndex == ChantLines.Count)
                             if(Subject.TryUseSpell(Cataclysm))
-                                Subject.AnimateBody(BodyAnimation.Assail, 80);
+                                Subject.AnimateBody(BodyAnimation.Assail, 70);
                     }
                 } else if (RoomeAoePhaseTimer.CurrentTimer == AfterChantTimer)
                 {
                     CurrentPhase = Phase.Teleport;
                     ChantLineIndex = 0;
+                    SetRoomAoeAnimationPoints();
+                    ShowedSlowRoomAoeAnimation = false;
                     RoomeAoePhaseTimer.Reset();
                 }
         } else
@@ -310,6 +360,14 @@ public class ShamensythScript : MonsterScriptBase
             if (RoomeAoePhaseTimer.IntervalElapsed)
                 if (RoomeAoePhaseTimer.CurrentTimer == ChantTimer)
                 {
+                    if (!ShowedSlowRoomAoeAnimation)
+                    {
+                        //slow animation plays once
+                        Subject.MapInstance.ShowAnimation(RoomAoeAnimation1.GetPointAnimation(Subject));
+                        Subject.MapInstance.ShowAnimation(RoomAoeAnimation2.GetPointAnimation(Subject));
+                        ShowedSlowRoomAoeAnimation = true;
+                    }
+                    
                     if (ChantLineIndex < ChantLines.Count)
                     {
                         Subject.Shout(new string(ChantLines[ChantLines.Count - ChantLineIndex - 1]));
@@ -323,6 +381,8 @@ public class ShamensythScript : MonsterScriptBase
                 {
                     CurrentPhase = Phase.Teleport;
                     ChantLineIndex = 0;
+                    SetRoomAoeAnimationPoints();
+                    ShowedSlowRoomAoeAnimation = false;
                     RoomeAoePhaseTimer.Reset();
                 }
         }
@@ -354,7 +414,9 @@ public class ShamensythScript : MonsterScriptBase
             if (TurnTimer.IntervalElapsed && Subject.Target is not null)
             {
                 var direction = Subject.Target.DirectionalRelationTo(Subject);
-                Subject.Turn(direction);
+                
+                if (direction != Direction.Invalid)
+                    Subject.Turn(direction);
             }
         } else if (Subject.Direction != Direction.Down)
             Subject.Turn(Direction.Down);
@@ -368,6 +430,15 @@ public class ShamensythScript : MonsterScriptBase
         var targetPoint = possiblePoints.PickRandom();
 
         Subject.WarpTo(targetPoint);
+
+        if (Subject.Target is not null)
+        {
+            var direction = Subject.Target.DirectionalRelationTo(Subject);
+
+            if (direction != Direction.Invalid)
+                Subject.Turn(direction);
+        }
+
         ReignOfFireTimer.Reset();
     }
     
@@ -422,14 +493,34 @@ public class ShamensythScript : MonsterScriptBase
             }
             case Phase.RoomAoe:
             {
+                RoomAoeAnimationTimer.Update(delta);
+
                 if (!RoomAoePoint.Equals(Subject))
                     Subject.WarpTo(RoomAoePoint);
-                
+
                 RoomeAoePhaseTimer.Update(delta);
                 HandleRoomAoe();
                 
                 break;
             }
+        }
+    }
+
+    private void HandleRoomAoeAnimation()
+    {
+        if (RoomAoeAnimationTimer.IntervalElapsed)
+        {
+            if (RoomAoeAnimationIndex1 >= RoomAoeAnimationPoints.Count)
+                RoomAoeAnimationIndex1 = 0;
+
+            if (RoomAoeAnimationIndex2 >= RoomAoeAnimationPoints.Count)
+                RoomAoeAnimationIndex2 = 0;
+
+            var point1 = RoomAoeAnimationPoints[RoomAoeAnimationIndex1++];
+            var point2 = RoomAoeAnimationPoints[RoomAoeAnimationIndex2++];
+
+            Subject.MapInstance.ShowAnimation(RoomAoeAnimation3.GetPointAnimation(point1));
+            Subject.MapInstance.ShowAnimation(RoomAoeAnimation3.GetPointAnimation(point2));
         }
     }
 }

@@ -239,13 +239,13 @@ public static class CircleExtensions
     }
 
     /// <summary>
-    ///     Generates a sequence of point along the circumference of this circle
+    ///     Generates a sequence of points along the circumference of this circle
     /// </summary>
     /// <param name="circle">
     ///     This circle.
     /// </param>
     /// <returns>
-    ///     A sequence of point along the circumfnerence of the circle
+    ///     A sequence of point along the circumference of the circle
     /// </returns>
     /// <exception cref="System.ArgumentNullException">
     ///     circle
@@ -307,6 +307,22 @@ public static class CircleExtensions
             }
         }
     }
+
+    /// <summary>
+    ///     Generates a sequence of points along the circumference of this circle in order of angle
+    /// </summary>
+    /// <param name="circle">
+    ///     This circle.
+    /// </param>
+    /// <returns>
+    ///     A sequence of point along the circumference of the circle
+    /// </returns>
+    /// <exception cref="System.ArgumentNullException">
+    ///     circle
+    /// </exception>
+    public static IEnumerable<Point> GetOrderedOutline(this ICircle circle)
+        => GetOutline(circle)
+            .OrderBy(p => Math.Atan2(p.Y - circle.Center.Y, p.X - circle.Center.X));
 
     /// <summary>
     ///     Lazily generates all points within this circle.
