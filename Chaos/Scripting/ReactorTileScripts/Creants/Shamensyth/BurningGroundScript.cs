@@ -13,18 +13,20 @@ namespace Chaos.Scripting.ReactorTileScripts.Creants.Shamensyth;
 
 public class BurningGroundScript : ReactorTileScriptBase
 {
+    private const string BURNING_GROUND_REMINDER_EVENT_ID = nameof(BURNING_GROUND_REMINDER_EVENT_ID);
+    private readonly Animation Animation;
+
+    private readonly IIntervalTimer Animationtimer;
+
     //burning ground for shamensyth creant fight
     //will damage aislings by 20% hp and 10% mp per second
     //will heal shamensyth by 2% per second
     //will heal shamensythFireElemental by 5% per second
     //removable via strong water spells (tidalbreeze, ardsal, morsal, aoe versions of ard/mor sal)
-    
+
     private readonly IIntervalTimer ApplicationTimer;
-    private readonly IIntervalTimer Animationtimer;
     private readonly IApplyDamageScript ApplyDamageScript;
-    private readonly Animation Animation;
-    private const string BURNING_GROUND_REMINDER_EVENT_ID = nameof(BURNING_GROUND_REMINDER_EVENT_ID);
-    
+
     /// <inheritdoc />
     public BurningGroundScript(ReactorTile subject)
         : base(subject)
@@ -45,16 +47,18 @@ public class BurningGroundScript : ReactorTileScriptBase
     {
         ApplicationTimer.Update(delta);
         Animationtimer.Update(delta);
-        
+
         if (ApplicationTimer.IntervalElapsed)
         {
-
             var aislingsStandingOnTile = Subject.MapInstance
                                                 .GetEntitiesAtPoints<Aisling>(Subject)
                                                 .ToList();
 
             foreach (var aisling in aislingsStandingOnTile)
             {
+                if (aisling.IsDead)
+                    continue;
+
                 var healthDamage = MathEx.GetPercentOf<int>((int)aisling.UserStatSheet.EffectiveMaximumHp, 20);
 
                 aisling.UserStatSheet.SubtractManaPct(10);
@@ -76,17 +80,17 @@ public class BurningGroundScript : ReactorTileScriptBase
             foreach (var monster in monstersStandingOnTile)
             {
                 var templateKey = monster.Template.TemplateKey;
-                
-                if(!templateKey.EqualsI("shamensyth") && !templateKey.EqualsI("shamensythFireElemental"))
+
+                if (!templateKey.EqualsI("shamensyth") && !templateKey.EqualsI("shamensythFireElemental"))
                     continue;
-                
+
                 var healPct = templateKey switch
                 {
-                    "shamensyth" => 2,
+                    "shamensyth"              => 2,
                     "shamensythFireElemental" => 5,
-                    _ => 0
+                    _                         => 0
                 };
-                
+
                 monster.StatSheet.AddHealthPct(healPct);
 
                 if (!monster.Trackers.TimedEvents.HasActiveEvent(BURNING_GROUND_REMINDER_EVENT_ID, out _))

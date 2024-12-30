@@ -22,7 +22,7 @@ public sealed class OptionsConfigurer(IStagingDirectory stagingDirectory, IChann
       IPostConfigureOptions<LoginOptions>,
       IPostConfigureOptions<WorldOptions>,
       IPostConfigureOptions<MetaDataStoreOptions>,
-                                        IPostConfigureOptions<ItemTemplate>
+      IPostConfigureOptions<ItemTemplate>
 
 {
     private readonly IChannelService ChannelService = channelService;
@@ -83,7 +83,6 @@ public sealed class OptionsConfigurer(IStagingDirectory stagingDirectory, IChann
                 }));
 
         //add more mutators here
-        options.PrefixMutators.Add(ItemMetaNodeMutator.Create(SwiftPrefixScript.Mutate));
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(AiryPrefixScript.Mutate));
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(AncientPrefixScript.Mutate));
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(BlazingPrefixScript.Mutate));
@@ -94,10 +93,15 @@ public sealed class OptionsConfigurer(IStagingDirectory stagingDirectory, IChann
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(CursedPrefixScript.Mutate));
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(DarkenedPrefixScript.Mutate));
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(EternalPrefixScript.Mutate));
+        options.PrefixMutators.Add(ItemMetaNodeMutator.Create(FocusedPrefixScript.Mutate));
+        options.PrefixMutators.Add(ItemMetaNodeMutator.Create(FuryPrefixScript.Mutate));
+        options.PrefixMutators.Add(ItemMetaNodeMutator.Create(GleamingPrefixScript.Mutate));
+        options.PrefixMutators.Add(ItemMetaNodeMutator.Create(HalePrefixScript.Mutate));
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(HastyPrefixScript.Mutate));
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(HazyPrefixScript.Mutate));
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(HowlingPrefixScript.Mutate));
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(LuckyPrefixScript.Mutate));
+        options.PrefixMutators.Add(ItemMetaNodeMutator.Create(MagicPrefixScript.Mutate));
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(MeagerPrefixScript.Mutate));
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(MightyPrefixScript.Mutate));
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(MinorPrefixScript.Mutate));
@@ -108,13 +112,21 @@ public sealed class OptionsConfigurer(IStagingDirectory stagingDirectory, IChann
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(PotentPrefixScript.Mutate));
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(PowerfulPrefixScript.Mutate));
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(PrecisionPrefixScript.Mutate));
+        options.PrefixMutators.Add(ItemMetaNodeMutator.Create(PrimalPrefixScript.Mutate));
+        options.PrefixMutators.Add(ItemMetaNodeMutator.Create(PristinePrefixScript.Mutate));
+        options.PrefixMutators.Add(ItemMetaNodeMutator.Create(ResilientPrefixScript.Mutate));
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(RuthlessPrefixScript.Mutate));
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(SavagePrefixScript.Mutate));
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(SerenePrefixScript.Mutate));
+        options.PrefixMutators.Add(ItemMetaNodeMutator.Create(ShadedPrefixScript.Mutate));
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(ShroudedPrefixScript.Mutate));
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(SkillfulPrefixScript.Mutate));
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(SoftPrefixScript.Mutate));
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(SoothingPrefixScript.Mutate));
+        options.PrefixMutators.Add(ItemMetaNodeMutator.Create(SpiritedPrefixScript.Mutate));
+        options.PrefixMutators.Add(ItemMetaNodeMutator.Create(SturdyPrefixScript.Mutate));
+        options.PrefixMutators.Add(ItemMetaNodeMutator.Create(SwiftPrefixScript.Mutate));
+        options.PrefixMutators.Add(ItemMetaNodeMutator.Create(ThickPrefixScript.Mutate));
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(TightPrefixScript.Mutate));
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(TinyPrefixScript.Mutate));
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(ToughPrefixScript.Mutate));
@@ -122,7 +134,6 @@ public sealed class OptionsConfigurer(IStagingDirectory stagingDirectory, IChann
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(WhirlingPrefixScript.Mutate));
         options.PrefixMutators.Add(ItemMetaNodeMutator.Create(WisePrefixScript.Mutate));
     }
-    
 
     /// <inheritdoc />
     public void PostConfigure(string? name, WorldOptions options)

@@ -16,45 +16,46 @@ namespace Chaos.Scripting.MonsterScripts.Boss.Creants.Tauren;
 
 public sealed class TaurenPhaseScript : MonsterScriptBase
 {
+    private const int MAX_ROOM_NUKE_REPETITIONS = 3;
     private readonly IApplyDamageScript ApplyDamageScript;
     private readonly IntervalTimer ChannelDurationTimer;
     private readonly IntervalTimer ChannelIntervalTimer;
     private readonly IntervalTimer DelayTimer;
     private readonly IMonsterFactory MonsterFactory;
-    private readonly IIntervalTimer SplitPhaseTimer1;
-    private readonly IIntervalTimer SpellPhaseTimer4;
+    private readonly IntervalTimer NukeRoomTimer;
+    private readonly IntervalTimer PhaseDelay;
     private readonly IIntervalTimer RoomNukePhaseTimer2;
-    private readonly IIntervalTimer SkillPhaseTimer3;
-    private readonly IIntervalTimer TimeBetweenPhases;
     private readonly IntervalTimer SafePointAnimationTimer;
     private readonly List<Point> SafePoints;
     private readonly ISkillFactory SkillFactory;
+    private readonly IIntervalTimer SkillPhaseTimer3;
     private readonly IntervalTimer SkillTimer;
     private readonly IntervalTimer SpellDelay;
     private readonly ISpellFactory SpellFactory;
+    private readonly IIntervalTimer SpellPhaseTimer4;
     private readonly IntervalTimer SpellTimer;
     private readonly IntervalTimer SpellTimer2;
-    private readonly IntervalTimer PhaseDelay;
 
     private readonly IIntervalTimer SplitPhaseTimer;
+    private readonly IIntervalTimer SplitPhaseTimer1;
+    private readonly IIntervalTimer TimeBetweenPhases;
+    public bool InPhase;
     private bool IsChanneling;
+
+    private int RoomNukeRepetitions;
     private bool Spell1;
     private bool Spell2;
 
     private int SpellCasts1;
     private int Spin;
-    
-    private int RoomNukeRepetitions;
-    private const int MAX_ROOM_NUKE_REPETITIONS = 3;
 
     private bool SplitPhase1;
-    private int SummonedTaurens;
-    private bool TurnedClockwise;
+    private bool StartRoomNukePhase;
     private bool StartSkillPhase;
     private bool StartSpellPhase;
     private bool StartSplitPhase;
-    private bool StartRoomNukePhase;
-    public bool InPhase;
+    private int SummonedTaurens;
+    private bool TurnedClockwise;
 
     private int CurrentPhase { get; set; } // Tracks the current phase
 
@@ -66,7 +67,8 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
         ISpellFactory spellFactory)
         : base(subject)
     {
-        ChannelIntervalTimer = new IntervalTimer(TimeSpan.FromSeconds(3));
+        ChannelIntervalTimer = new IntervalTimer(TimeSpan.FromSeconds(4));
+        NukeRoomTimer = new IntervalTimer(TimeSpan.FromSeconds(1));
         SkillTimer = new IntervalTimer(TimeSpan.FromMilliseconds(500));
         SpellTimer = new IntervalTimer(TimeSpan.FromSeconds(5), false);
         SpellTimer2 = new IntervalTimer(TimeSpan.FromSeconds(6), false);
@@ -237,7 +239,6 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
         }
 
         if (SpellTimer.IntervalElapsed && StartSpellPhase)
-        {
             if (!Spell1)
             {
                 var spell1 = SpellFactory.Create("tauren_freezespell1");
@@ -248,8 +249,7 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
 
                 return;
             }
-        }
-        
+
         if (!Spell2 && Spell1 && SpellTimer2.IntervalElapsed)
         {
             var spell2 = SpellFactory.Create("tauren_freezespell2");
@@ -368,7 +368,7 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
         if (TimeBetweenPhases.IntervalElapsed && (CurrentPhase == 0))
         {
             var roll = IntegerRandomizer.RollSingle(4);
-            CurrentPhase = 4;
+            CurrentPhase = 2;
 
             StartPhase();
         }
@@ -407,7 +407,6 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
             });
 
         foreach (var point in SafePoints)
-        {
             Subject.MapInstance.ShowAnimation(
                 new Animation
                 {
@@ -415,7 +414,6 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
                     TargetAnimation = 214,
                     TargetPoint = point
                 });
-        }
     }
 
     private void DamagePlayersNotOnSafePoints()
@@ -449,31 +447,36 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
     {
         ChannelIntervalTimer.Update(delta);
         SafePointAnimationTimer.Update(delta);
+        RoomNukePhaseTimer2.Update(delta);
+
+        if (RoomNukePhaseTimer2.IntervalElapsed)
+        {
+            ResetPhase();
+
+            return;
+        }
 
         if (PhaseDelay.IntervalElapsed)
             StartRoomNukePhase = true;
 
+        if (SafePointAnimationTimer.IntervalElapsed)
+            AnimateSafePoints();
+
         if (IsChanneling && StartRoomNukePhase)
         {
-            SafePointAnimationTimer.Update(delta);
+            NukeRoomTimer.Update(delta);
 
-            if (SafePointAnimationTimer.IntervalElapsed)
+            if (NukeRoomTimer.IntervalElapsed)
             {
-                AnimateSafePoints();
-                DamagePlayersNotOnSafePoints();
-
                 RoomNukeRepetitions++;
-
-                if (RoomNukeRepetitions >= MAX_ROOM_NUKE_REPETITIONS)
-                    EndChanneling();
+                DamagePlayersNotOnSafePoints();
+                ShowFinalAnimations();
             }
-        } else if (ChannelIntervalTimer.IntervalElapsed && StartRoomNukePhase)
-        {
-            StartChanneling();
-        }
 
-        if (RoomNukePhaseTimer2.IntervalElapsed)
-            ResetPhase();
+            if (RoomNukeRepetitions >= MAX_ROOM_NUKE_REPETITIONS)
+                EndChanneling();
+        } else if (ChannelIntervalTimer.IntervalElapsed && StartRoomNukePhase)
+            StartChanneling();
     }
 
     private void StartChanneling()
@@ -485,7 +488,6 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
         RoomNukeRepetitions = 0; // Initialize repetitions
         CreateSafePoints();
     }
-
 
     private void CreateSafePoints()
     {
@@ -547,7 +549,6 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
     #endregion
 
     #region PhaseHandling
-
     private void StartPhase()
     {
         if (CurrentPhase != 1)
@@ -558,7 +559,6 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
             Subject.WarpTo(point);
             Subject.Turn(direction);
         }
-
 
         switch (CurrentPhase)
         {

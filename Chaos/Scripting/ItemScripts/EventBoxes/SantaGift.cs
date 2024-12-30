@@ -79,6 +79,9 @@ public class SantaGift : ItemScriptBase
         },
         {
             "koboldwhacker", 0.02
+        },
+        {
+            "stripedscarf", 0.04
         }
     };
 

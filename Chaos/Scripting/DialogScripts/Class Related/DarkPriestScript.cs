@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Legend;
@@ -12,7 +11,8 @@ using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Class_Related;
 
-public class DarkPriestScript (Dialog subject, ILogger<CrudeLeatherQuestScript> logger, ISpellFactory spellFactory) : DialogScriptBase(subject)
+public class DarkPriestScript(Dialog subject, ILogger<CrudeLeatherQuestScript> logger, ISpellFactory spellFactory)
+    : DialogScriptBase(subject)
 {
     public override void OnDisplaying(Aisling source)
     {
@@ -25,18 +25,23 @@ public class DarkPriestScript (Dialog subject, ILogger<CrudeLeatherQuestScript> 
                 if (source.UserStatSheet.Level < 99)
                 {
                     Subject.Reply(source, "You are a little young to be here, there's nothing I can do for you. Get out.");
+
                     return;
                 }
 
                 if (source.UserStatSheet.BaseClass != BaseClass.Priest)
                 {
                     Subject.Reply(source, "Only priest are welcome here, there's nothing I can do for someone like you.");
+
                     return;
                 }
 
                 if (!source.UserStatSheet.Master)
                 {
-                    Subject.Reply(source, "You must master your class before I could possibly teach you the dark ways. Return to me once you master, we have much to learn.");
+                    Subject.Reply(
+                        source,
+                        "You must master your class before I could possibly teach you the dark ways. Return to me once you master, we have much to learn.");
+
                     return;
                 }
 
@@ -52,7 +57,7 @@ public class DarkPriestScript (Dialog subject, ILogger<CrudeLeatherQuestScript> 
                         Subject.Options.Insert(0, option);
                 }
 
-                if (hasStage && stage == MasterPriestPath.Dark)
+                if (hasStage && (stage == MasterPriestPath.Dark))
                 {
                     var option1 = new DialogOption
                     {
@@ -62,7 +67,7 @@ public class DarkPriestScript (Dialog subject, ILogger<CrudeLeatherQuestScript> 
 
                     if (!Subject.HasOption(option1.OptionText))
                         Subject.Options.Insert(0, option1);
-                    
+
                     var option = new DialogOption
                     {
                         DialogKey = "generic_learnspell_initial",
@@ -72,10 +77,10 @@ public class DarkPriestScript (Dialog subject, ILogger<CrudeLeatherQuestScript> 
                     if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
                 }
-                
-                if (hasStage && stage == MasterPriestPath.Light)
+
+                if (hasStage && (stage == MasterPriestPath.Light))
                     Subject.Reply(source, "The Light has already shown through you, you are no use to me, get lost.");
-                
+
                 break;
             }
 
@@ -86,8 +91,9 @@ public class DarkPriestScript (Dialog subject, ILogger<CrudeLeatherQuestScript> 
                     TargetAnimation = 104,
                     AnimationSpeed = 100
                 };
-                
+
                 source.Trackers.Enums.Set(MasterPriestPath.Dark);
+
                 source.Legend.AddUnique(
                     new LegendMark(
                         "Walked the path of Dark Priest",
@@ -96,6 +102,13 @@ public class DarkPriestScript (Dialog subject, ILogger<CrudeLeatherQuestScript> 
                         MarkColor.DarkPurple,
                         1,
                         GameTime.Now));
+
+                if (source.Bank.Contains("Pet Collar"))
+                    source.Bank.TryWithdraw("Pet Collar", 1, out _);
+
+                if (source.Inventory.Contains("Pet Collar"))
+                    source.Inventory.Remove("Pet Collar");
+
                 source.SpellBook.Remove("zap");
                 var spell = spellFactory.Create("voidjolt");
                 source.SpellBook.TryAddToNextSlot(spell);
@@ -103,8 +116,9 @@ public class DarkPriestScript (Dialog subject, ILogger<CrudeLeatherQuestScript> 
                 source.UserStatSheet.SetHp(1);
                 source.UserStatSheet.SetMp(1);
                 source.Animate(animation);
+
                 return;
             }
         }
-    } 
+    }
 }
