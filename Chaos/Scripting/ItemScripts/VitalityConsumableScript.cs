@@ -6,7 +6,6 @@ using Chaos.Formulae;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
-using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -42,7 +41,6 @@ public class VitalityConsumableScript : ConfigurableItemScriptBase,
         ApplyDamageScript.DamageFormula = DamageFormulae.PureDamage;
         ApplyHealScript = ApplyNonAlertingHealScript.Create();
         ApplyHealScript.HealFormula = HealFormulae.Default;
-        SourceScript = this;
         ItemName = Subject.DisplayName;
     }
 
@@ -181,8 +179,6 @@ public class VitalityConsumableScript : ConfigurableItemScriptBase,
 
     /// <inheritdoc />
     public decimal? PctHpHeal { get; init; }
-
-    public IScript SourceScript { get; init; }
     public bool? SurroundingTargets { get; init; }
     public decimal? DamageMultiplierPerTarget { get; init; }
     public decimal? PctOfMana { get; init; }

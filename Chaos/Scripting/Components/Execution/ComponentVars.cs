@@ -17,15 +17,15 @@ public class ComponentVars : StaticVars
     private const string OPTIONS_KEY = "options";
     private const string POINTS_KEY = "points";
     private const string TARGETS_KEY = "targets";
-    private const string SUBJECT_KEY = "subject";
     private const string SOURCE_SCRIPT_KEY = "source_script";
+    private const string SUBJECT_KEY = "subject";
 
     public virtual List<Point> GetAllPoints() => GetRequired<List<Point>>(CASCADE_ALL_POINTS_KEY);
 
     public virtual TOptions GetOptions<TOptions>() => GetRequired<TOptions>(OPTIONS_KEY);
 
     public virtual IReadOnlyCollection<Point> GetPoints() => GetRequired<IReadOnlyCollection<Point>>(POINTS_KEY);
-
+    
     public virtual int GetStage() => GetRequired<int>(CASCADE_STAGE_KEY);
 
     public virtual T GetSubject<T>() => GetRequired<T>(SUBJECT_KEY);

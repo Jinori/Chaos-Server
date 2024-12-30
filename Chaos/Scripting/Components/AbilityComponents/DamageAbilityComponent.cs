@@ -1,13 +1,14 @@
+#region
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
 using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.MonsterScripts.Boss;
+#endregion
 
 namespace Chaos.Scripting.Components.AbilityComponents;
 
@@ -18,6 +19,7 @@ public struct DamageAbilityComponent : IComponent
     {
         var options = vars.GetOptions<IDamageComponentOptions>();
         var targets = vars.GetTargets<Creature>();
+        var sourceScript = vars.GetSourceScript();
 
         var surroundingTargets = options.SurroundingTargets ?? false;
         var numberOfTargets = surroundingTargets ? targets.Count() : 1;
@@ -43,7 +45,7 @@ public struct DamageAbilityComponent : IComponent
                 options.ApplyDamageScript.ApplyDamage(
                     context.Source,
                     target,
-                    options.SourceScript,
+                    sourceScript,
                     damage,
                     options.Element);
         }
@@ -196,7 +198,6 @@ public struct DamageAbilityComponent : IComponent
         // Mana-based damage fields
         decimal? PctOfMana { get; init; }
         decimal? PctOfManaMultiplier { get; init; }
-        IScript SourceScript { get; init; }
         bool? SurroundingTargets { get; init; } // New option to check for surrounding targets
     }
 }
