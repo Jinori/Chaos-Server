@@ -1,4 +1,5 @@
 using Chaos.DarkAges.Definitions;
+using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
@@ -100,7 +101,8 @@ public class AscendingScript(Dialog subject, ILogger<AscendingScript> logger) : 
             return;
         }
 
-        if (source.HasClass(BaseClass.Priest) && source.UserStatSheet.Master)
+
+        if (source.HasClass(BaseClass.Priest) && source.UserStatSheet.Master && (!source.Trackers.Enums.HasValue(MasterPriestPath.Light) || !source.Trackers.Enums.HasValue(MasterPriestPath.Dark)))
         {
             Subject.Reply(source, "You haven't picked a priest path yet Aisling. To ascend any further, you must pick Dark or Light path.");
             source.SendOrangeBarMessage("You must pick Dark or Light path.");

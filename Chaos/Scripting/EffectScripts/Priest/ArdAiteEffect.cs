@@ -17,7 +17,7 @@ public class ArdAiteEffect : EffectBase, HierarchicalEffectComponent.IHierarchic
             "Blessing",
             "Torment",
             "Ard Naomh Aite",
-            "Mor naomh Aite",
+            "Mor Naomh Aite",
             "Naomh Aite",
             "Beag Naomh Aite"
         ];
