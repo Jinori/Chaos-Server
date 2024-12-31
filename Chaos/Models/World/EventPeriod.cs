@@ -52,6 +52,13 @@ namespace Chaos.Models.World
                         "mtmerry4-3", "mtmerry5-1", "mtmerry5-2", "mtmerry5-3"
                     ]
                 ),
+                //New Years
+                new EventPeriod(
+                    "0 12 31 12 *", // December 31st at 12:00 PM
+                    "0 12 2 1 *",   // January 2st at 12:00 AM
+                    new List<string> {"rucesion" } // Replace with your actual map identifiers
+                ),
+                
                 // Valentines
 
                 new EventPeriod(

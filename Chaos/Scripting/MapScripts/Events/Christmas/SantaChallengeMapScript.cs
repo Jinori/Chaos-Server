@@ -110,7 +110,7 @@ public class SantaChallengeMapScript : MapScriptBase
 
         CurrentWave++;
 
-        if (CurrentWave > 20) // Assuming 20 is the final wave
+        if (CurrentWave > 15) // Assuming 20 is the final wave
             return ScriptState.CompletedTrial;
 
         return ScriptState.SpawningWave;

@@ -226,10 +226,10 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
     {
         if (banked)
             logger.WithTopics(
-                      [Topics.Entities.Aisling,
+                      Topics.Entities.Aisling,
                       Topics.Entities.Item,
                       Topics.Actions.Deposit,
-                      Topics.Actions.Penalty])
+                      Topics.Actions.Penalty)
                   .WithProperty(aisling)
                   .WithProperty(item)
                   .LogInformation(
@@ -239,10 +239,10 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
                       source.Name);
         else
             logger.WithTopics(
-                      [Topics.Entities.Aisling,
+                      Topics.Entities.Aisling,
                       Topics.Entities.Item,
                       Topics.Actions.Remove,
-                      Topics.Actions.Penalty])
+                      Topics.Actions.Penalty)
                   .WithProperty(aisling)
                   .WithProperty(item)
                   .LogInformation(
@@ -254,6 +254,19 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
 
     private bool ReflectDamage(Creature source, Creature target, int damage)
     {
+        if (source.IsConfused() && IntegerRandomizer.RollChance(100) && !source.IsGodModeEnabled())
+            switch (source)
+            {
+                case Aisling sourceAisling:
+                    ApplyDamageAndTriggerEvents(sourceAisling, damage, target);
+
+                    break;
+                case Monster monster:
+                    ApplyDamageAndTriggerEvents(monster, damage, monster);
+
+                    break;
+            }
+
         if ((target.IsAsgalled() && IntegerRandomizer.RollChance(50))
             || (target.IsEarthenStanced() && IntegerRandomizer.RollChance(30))
             || (target.IsRockStanced() && IntegerRandomizer.RollChance(70)))

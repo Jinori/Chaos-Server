@@ -34,6 +34,8 @@ public sealed class Merchant : Creature,
     public bool CurrentlyHosting21Game { get; set; }
 
     public bool CurrentlyHostingMass { get; set; }
+    
+    public bool CurrentlyShootingFireworks { get; set; }
 
     public VillagerScript.VillagerState VillagerState { get; set; }
     

@@ -4,6 +4,7 @@ using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
+using Chaos.Scripting.MonsterScripts.Boss.MainStory.TrialOfSacrifice.zoe;
 using Chaos.Scripting.MonsterScripts.Nightmare.PriestNightmare;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
@@ -18,11 +19,11 @@ public sealed class PetAggroTargetingScript(Monster subject) : MonsterScriptBase
 
     private Monster? FindAggroedMonster(Aisling owner) =>
         owner.MapInstance.GetEntitiesWithinRange<Monster>(owner, 9)
-             .FirstOrDefault(x => x.IsAlive && x.AggroList.ContainsKey(owner.Id) && !x.Name.Contains("Teammate") && !x.Name.Contains("Wind Wall") && !x.Script.Is<PetScript>());
+             .FirstOrDefault(x => x.IsAlive && x.AggroList.ContainsKey(owner.Id) && !x.Name.Contains("Teammate") && !x.Name.Contains("Wind Wall") && !x.Script.Is<PetScript>() && !x.Name.Contains("Helpless Zoe"));
 
     private Monster? FindClosestMonster(Aisling owner) =>
         owner.MapInstance.GetEntitiesWithinRange<Monster>(owner, 9)
-             .Where(x => x.IsAlive && !x.Equals(Subject) && !x.Script.Is<PetScript>() && !x.Script.Is<NightmareTeammateScript>() && !x.Script.Is<NightmareWindWallScript>())
+             .Where(x => x.IsAlive && !x.Equals(Subject) && !x.Script.Is<PetScript>() && !x.Script.Is<NightmareTeammateScript>() && !x.Script.Is<NightmareWindWallScript>() && !x.Script.Is<SacrificeZoe>())
              .MinBy(x => x.ManhattanDistanceFrom(owner));
 
     private Monster? FindGroupAggroTarget(Aisling owner)

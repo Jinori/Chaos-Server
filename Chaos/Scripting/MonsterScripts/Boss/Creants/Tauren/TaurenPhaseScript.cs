@@ -18,13 +18,11 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
 {
     private const int MAX_ROOM_NUKE_REPETITIONS = 3;
     private readonly IApplyDamageScript ApplyDamageScript;
-    private readonly IntervalTimer ChannelDurationTimer;
     private readonly IntervalTimer ChannelIntervalTimer;
     private readonly IntervalTimer DelayTimer;
     private readonly IMonsterFactory MonsterFactory;
     private readonly IntervalTimer NukeRoomTimer;
     private readonly IntervalTimer PhaseDelay;
-    private readonly IIntervalTimer RoomNukePhaseTimer2;
     private readonly IntervalTimer SafePointAnimationTimer;
     private readonly List<Point> SafePoints;
     private readonly ISkillFactory SkillFactory;
@@ -39,6 +37,7 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
     private readonly IIntervalTimer SplitPhaseTimer;
     private readonly IIntervalTimer SplitPhaseTimer1;
     private readonly IIntervalTimer TimeBetweenPhases;
+    private bool CreatedSafePoints;
     public bool InPhase;
     private bool IsChanneling;
 
@@ -50,7 +49,6 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
     private int Spin;
 
     private bool SplitPhase1;
-    private bool StartRoomNukePhase;
     private bool StartSkillPhase;
     private bool StartSpellPhase;
     private bool StartSplitPhase;
@@ -67,19 +65,18 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
         ISpellFactory spellFactory)
         : base(subject)
     {
-        ChannelIntervalTimer = new IntervalTimer(TimeSpan.FromSeconds(4));
-        NukeRoomTimer = new IntervalTimer(TimeSpan.FromSeconds(1));
+        ChannelIntervalTimer = new IntervalTimer(TimeSpan.FromSeconds(6), false);
+        NukeRoomTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
+
         SkillTimer = new IntervalTimer(TimeSpan.FromMilliseconds(500));
         SpellTimer = new IntervalTimer(TimeSpan.FromSeconds(5), false);
         SpellTimer2 = new IntervalTimer(TimeSpan.FromSeconds(6), false);
-        PhaseDelay = new IntervalTimer(TimeSpan.FromSeconds(2), false);
+        PhaseDelay = new IntervalTimer(TimeSpan.FromSeconds(4), false);
         TimeBetweenPhases = new IntervalTimer(TimeSpan.FromSeconds(30), false);
         SpellDelay = new IntervalTimer(TimeSpan.FromMilliseconds(200));
         SplitPhaseTimer1 = new IntervalTimer(TimeSpan.FromSeconds(45), false);
-        SpellPhaseTimer4 = new IntervalTimer(TimeSpan.FromSeconds(20), false);
-        RoomNukePhaseTimer2 = new IntervalTimer(TimeSpan.FromSeconds(8), false);
+        SpellPhaseTimer4 = new IntervalTimer(TimeSpan.FromSeconds(16), false);
         SkillPhaseTimer3 = new IntervalTimer(TimeSpan.FromSeconds(30), false);
-        ChannelDurationTimer = new IntervalTimer(TimeSpan.FromSeconds(3));
         SafePointAnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(1));
         DelayTimer = new IntervalTimer(TimeSpan.FromMilliseconds(1250), false);
         SafePoints = new List<Point>();
@@ -368,7 +365,7 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
         if (TimeBetweenPhases.IntervalElapsed && (CurrentPhase == 0))
         {
             var roll = IntegerRandomizer.RollSingle(4);
-            CurrentPhase = 2;
+            CurrentPhase = roll;
 
             StartPhase();
         }
@@ -433,60 +430,42 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
         }
     }
 
-    private void EndChanneling()
-    {
-        IsChanneling = false;
-        SafePointAnimationTimer.Reset();
-        RoomNukeRepetitions = 0; // Reset repetitions for the next phase
-        DamagePlayersNotOnSafePoints();
-        ShowFinalAnimations();
-        SafePoints.Clear();
-    }
-
     private void RoomNukePhase(TimeSpan delta)
     {
+        // Update timers for phase control
         ChannelIntervalTimer.Update(delta);
         SafePointAnimationTimer.Update(delta);
-        RoomNukePhaseTimer2.Update(delta);
+        NukeRoomTimer.Update(delta);
 
-        if (RoomNukePhaseTimer2.IntervalElapsed)
+        // Start the channeling phase when the interval elapses
+        if (ChannelIntervalTimer.IntervalElapsed && !IsChanneling)
+            IsChanneling = true;
+
+        // Ensure safe points are created during the first pass
+        if (!CreatedSafePoints)
         {
-            ResetPhase();
-
-            return;
+            CreateSafePoints();
+            CreatedSafePoints = true;
         }
 
-        if (PhaseDelay.IntervalElapsed)
-            StartRoomNukePhase = true;
-
-        if (SafePointAnimationTimer.IntervalElapsed)
-            AnimateSafePoints();
-
-        if (IsChanneling && StartRoomNukePhase)
-        {
-            NukeRoomTimer.Update(delta);
-
+        // Handle Room Nuke repetitions
+        if (IsChanneling)
             if (NukeRoomTimer.IntervalElapsed)
             {
                 RoomNukeRepetitions++;
-                DamagePlayersNotOnSafePoints();
+
+                // Apply damage and show animations for the nuke
                 ShowFinalAnimations();
+                DamagePlayersNotOnSafePoints();
+
+                // End the channeling if max repetitions are reached
+                if (RoomNukeRepetitions >= MAX_ROOM_NUKE_REPETITIONS)
+                    ResetPhase();
             }
 
-            if (RoomNukeRepetitions >= MAX_ROOM_NUKE_REPETITIONS)
-                EndChanneling();
-        } else if (ChannelIntervalTimer.IntervalElapsed && StartRoomNukePhase)
-            StartChanneling();
-    }
-
-    private void StartChanneling()
-    {
-        IsChanneling = true;
-        ChannelDurationTimer.Reset();
-        ChannelIntervalTimer.Reset();
-        SafePointAnimationTimer.Reset();
-        RoomNukeRepetitions = 0; // Initialize repetitions
-        CreateSafePoints();
+        // Show safe point animations periodically
+        if (SafePointAnimationTimer.IntervalElapsed)
+            AnimateSafePoints();
     }
 
     private void CreateSafePoints()
@@ -585,7 +564,6 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
 
     private void ResetPhase()
     {
-        IsChanneling = false;
         SplitPhase1 = false;
         Spell1 = false;
         Spell2 = false;
@@ -596,10 +574,17 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
         Spin = 0;
         StartSkillPhase = false;
         StartSpellPhase = false;
-        StartRoomNukePhase = false;
         StartSplitPhase = false;
         TimeBetweenPhases.Reset();
         InPhase = false;
+
+        IsChanneling = false;
+        CreatedSafePoints = false;
+        RoomNukeRepetitions = 0;
+        PhaseDelay.Reset();
+        ChannelIntervalTimer.Reset();
+        SafePointAnimationTimer.Reset();
+        NukeRoomTimer.Reset();
     }
     #endregion
 }

@@ -86,6 +86,7 @@ public class VortexEffect : ContinuousAnimationEffectBase
         var targets = Subject.MapInstance
                              .GetEntitiesAtPoints<Creature>(points.Cast<IPoint>())
                              .WithFilter(Subject, TargetFilter.HostileOnly)
+                             .WithFilter(Subject, TargetFilter.AliveOnly)
                              .Where(x => !x.MapInstance.IsWall(Subject))
                              .ToList();
 

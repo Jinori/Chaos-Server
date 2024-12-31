@@ -801,7 +801,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
 
         var @new = GamePoints + amount;
 
-        if (@new > 500)
+        if (@new > 1000)
         {
             SendOrangeBarMessage("You cannot have any more GamePoints. Please spend them.");
 

@@ -19,6 +19,8 @@ public static class StatusExtensions
 
     public static bool IsBlessed(this Creature creature) => creature.Effects.Contains("Blessing");
     public static bool IsClawFisted(this Creature creature) => creature.Effects.Contains("Claw Fist");
+
+    public static bool IsConfused(this Creature creature) => creature.Effects.Contains("bewilderment");
     public static bool IsCradhLocked(this Creature creature) => creature.Effects.Contains("Prevent Affliction");
     public static bool IsCradhPrevented(this Creature creature) => creature.Effects.Contains("Prevent Recradh");
     public static bool IsDetectingTraps(this Creature creature) => creature.Effects.Contains("Detect Traps");
@@ -31,9 +33,10 @@ public static class StatusExtensions
     public static bool IsHidden(this Creature creature)
         => creature.Effects.Contains("hide") || creature.Effects.Contains("gm hide") || creature.Effects.Contains("true hide");
 
+    public static bool IsHotChocolated(this Creature creature) => creature.Effects.Contains("Hot Chocolate");
+
     public static bool IsInLastStand(this Creature creature) => creature.Effects.Contains("Last Stand");
     public static bool IsInnerFired(this Creature creature) => creature.Effects.Contains("Inner Fire");
-    public static bool IsHotChocolated(this Creature creature) => creature.Effects.Contains("Hot Chocolate");
     public static bool IsLightningStanced(this Creature creature) => creature.Effects.Contains("Lightning Stance");
     public static bool IsMistStanced(this Creature creature) => creature.Effects.Contains("Mist Stance");
     public static bool IsMorAited(this Creature creature) => creature.Effects.Contains("Mor Naomh Aite");
