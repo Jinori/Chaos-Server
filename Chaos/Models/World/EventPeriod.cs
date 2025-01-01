@@ -36,7 +36,6 @@ namespace Chaos.Models.World
         /// </summary>
         private bool IsActive(DateTime currentDate)
         {
-            Console.WriteLine($"Checking activity: Current Date = {currentDate}, Start Date = {StartDate}, End Date = {EndDate}");
             return currentDate >= StartDate && currentDate <= EndDate;
         }
 
