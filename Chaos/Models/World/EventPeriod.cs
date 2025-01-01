@@ -11,25 +11,32 @@ namespace Chaos.Models.World
         private EventPeriod(string startCronExpression, string endCronExpression, List<string> associatedMaps)
         {
             var currentYear = DateTime.UtcNow.Year;
+            var nextYear = new DateTime(currentYear + 1, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-            // Get StartDate based on the current year
-            StartDate = CronExpression.Parse(startCronExpression)?
-                            .GetNextOccurrence(new DateTime(currentYear, 1, 1, 0, 0, 0, DateTimeKind.Utc)) 
-                        ?? throw new InvalidOperationException($"Failed to parse start cron expression: {startCronExpression}");
+            // Try to get the start date for the current year and the previous year, select the latest occurrence that's not in the future
+            var startDateThisYear = CronExpression.Parse(startCronExpression)?.GetNextOccurrence(new DateTime(currentYear, 1, 1, 0, 0, 0, DateTimeKind.Utc));
+            var startDateLastYear = CronExpression.Parse(startCronExpression)?.GetNextOccurrence(new DateTime(currentYear - 1, 1, 1, 0, 0, 0, DateTimeKind.Utc));
 
-            // Get EndDate, account for crossing into the next year
-            EndDate = CronExpression.Parse(endCronExpression)?
-                          .GetNextOccurrence(StartDate) // Ensure EndDate is after StartDate
-                      ?? throw new InvalidOperationException($"Failed to parse end cron expression: {endCronExpression}");
+            StartDate = (startDateThisYear.HasValue && startDateThisYear.Value <= DateTime.UtcNow) ? startDateThisYear.Value
+                : startDateLastYear.HasValue ? startDateLastYear.Value
+                : throw new InvalidOperationException($"Failed to parse start cron expression: {startCronExpression}");
+
+            // Calculate end date based on the start date
+            var potentialEndDate = CronExpression.Parse(endCronExpression)?.GetNextOccurrence(StartDate)
+                                   ?? throw new InvalidOperationException($"Failed to parse end cron expression: {endCronExpression}");
+
+            EndDate = potentialEndDate < StartDate ? potentialEndDate.AddYears(1) : potentialEndDate;
 
             AssociatedMaps = associatedMaps ?? throw new ArgumentNullException(nameof(associatedMaps));
         }
+
 
         /// <summary>
         /// Checks if the current date falls within the event period.
         /// </summary>
         private bool IsActive(DateTime currentDate)
         {
+            Console.WriteLine($"Checking activity: Current Date = {currentDate}, Start Date = {StartDate}, End Date = {EndDate}");
             return currentDate >= StartDate && currentDate <= EndDate;
         }
 
@@ -74,9 +81,18 @@ namespace Chaos.Models.World
         /// </summary>
         public static bool IsEventActive(DateTime currentDate, string currentMapInstanceId)
         {
-            return GetAllEvents()
-                .Where(eventPeriod => eventPeriod.AssociatedMaps.Contains(currentMapInstanceId))
-                .Any(eventPeriod => eventPeriod.IsActive(currentDate));
+            var events = GetAllEvents();
+            foreach (var eventPeriod in events.Where(eventPeriod => eventPeriod.AssociatedMaps.Contains(currentMapInstanceId)))
+            {
+                Console.WriteLine($"Event active check for Map: {currentMapInstanceId} on Date: {currentDate}");
+                if (!eventPeriod.IsActive(currentDate)) 
+                    continue;
+                
+                Console.WriteLine("Event is active.");
+                return true;
+            }
+            Console.WriteLine("No active event found.");
+            return false;
         }
     }
 }

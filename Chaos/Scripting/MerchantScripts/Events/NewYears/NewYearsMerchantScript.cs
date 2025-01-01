@@ -54,6 +54,7 @@ public class NewYearsMerchantScript : MerchantScriptBase
         FireworkDelay = new IntervalTimer(TimeSpan.FromMilliseconds(100));
         FireworkDelay2 = new IntervalTimer(TimeSpan.FromSeconds(3));
         FireworkTimer = new IntervalTimer(TimeSpan.FromMinutes(1), false);
+        CheckEventActive = new IntervalTimer(TimeSpan.FromSeconds(1), false);
     }
 
     #endregion MassMessages
@@ -62,6 +63,8 @@ public class NewYearsMerchantScript : MerchantScriptBase
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     private readonly IIntervalTimer SayTimer;
+
+    private readonly IIntervalTimer CheckEventActive;
     
     private readonly IIntervalTimer FireworkTimer;
     
@@ -236,13 +239,18 @@ public class NewYearsMerchantScript : MerchantScriptBase
 
     public override void Update(TimeSpan delta)
     {
-        var isEventActive = EventPeriod.IsEventActive(DateTime.UtcNow, Subject.MapInstance.InstanceId);
-
-        if (!isEventActive)
+        CheckEventActive.Update(delta);
+        
+        if (CheckEventActive.IntervalElapsed)
         {
-            Subject.MapInstance.RemoveEntity(Subject);
+            var isEventActive = EventPeriod.IsEventActive(DateTime.UtcNow, Subject.MapInstance.InstanceId);
 
-            return;
+            if (!isEventActive)
+            {
+                Subject.MapInstance.RemoveEntity(Subject);
+
+                return;
+            }
         }
 
         if ((DateTime.UtcNow.Minute == 55) && !Subject.CurrentlyShootingFireworks) 

@@ -1,5 +1,3 @@
-using Chaos.Extensions;
-using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
@@ -9,6 +7,23 @@ namespace Chaos.Scripting.Components.AbilityComponents;
 
 public class ThrowWeaponComponent : IComponent
 {
+    
+    
+    //Animations
+    //10000 - Single Wooden Arrow
+    //10001 - Double Crystal Arrow
+    //10002 - Triple Wooden Arrow
+    //10003 - Single Fire Arrow
+    //10004 - Double Fire Arrow
+    //10005 - Triple Fire Arrow
+    //10006 - Single Crystal Arrow
+    //10007 - Double Wooden Arrow
+    //10008 - Triple Crystal Arrow
+    //10009 - Daggers
+    //10010 - Apples
+    //10011 - Surigum   
+    //10012 - Big Surigum
+    //10013 - Rock    
     
     public void Execute(ActivationContext context, ComponentVars vars)
     {
@@ -70,7 +85,6 @@ public class ThrowWeaponComponent : IComponent
             return;
         }
     }
-
     
     public interface IThrowWeaponComponentOptions
     {
