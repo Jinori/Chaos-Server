@@ -31,6 +31,7 @@ namespace Chaos.Models.World
         }
 
 
+
         /// <summary>
         /// Checks if the current date falls within the event period.
         /// </summary>
