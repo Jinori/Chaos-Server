@@ -11,7 +11,6 @@ namespace Chaos.Models.World
         private EventPeriod(string startCronExpression, string endCronExpression, List<string> associatedMaps)
         {
             var currentYear = DateTime.UtcNow.Year;
-            var nextYear = new DateTime(currentYear + 1, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
             // Try to get the start date for the current year and the previous year, select the latest occurrence that's not in the future
             var startDateThisYear = CronExpression.Parse(startCronExpression)?.GetNextOccurrence(new DateTime(currentYear, 1, 1, 0, 0, 0, DateTimeKind.Utc));
@@ -85,14 +84,11 @@ namespace Chaos.Models.World
             var events = GetAllEvents();
             foreach (var eventPeriod in events.Where(eventPeriod => eventPeriod.AssociatedMaps.Contains(currentMapInstanceId)))
             {
-                Console.WriteLine($"Event active check for Map: {currentMapInstanceId} on Date: {currentDate}");
                 if (!eventPeriod.IsActive(currentDate)) 
                     continue;
                 
-                Console.WriteLine("Event is active.");
                 return true;
             }
-            Console.WriteLine("No active event found.");
             return false;
         }
     }
