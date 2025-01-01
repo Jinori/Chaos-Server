@@ -10,16 +10,31 @@ namespace Chaos.Models.World
 
         private EventPeriod(string startCronExpression, string endCronExpression, List<string> associatedMaps)
         {
-            var currentYear = DateTime.UtcNow.Year;
+            var currentDate = DateTime.UtcNow;
 
-            // Get StartDate based on the current year
-            StartDate = CronExpression.Parse(startCronExpression)?
-                            .GetNextOccurrence(new DateTime(currentYear, 1, 1, 0, 0, 0, DateTimeKind.Utc)) 
-                        ?? throw new InvalidOperationException($"Failed to parse start cron expression: {startCronExpression}");
+            // Calculate StartDate
+            var currentYear = currentDate.Year;
+            var startDateCurrentYear = CronExpression.Parse(startCronExpression)?
+                                           .GetNextOccurrence(new DateTime(currentYear, 1, 1, 0, 0, 0, DateTimeKind.Utc))
+                                       ?? throw new InvalidOperationException($"Failed to parse start cron expression: {startCronExpression}");
 
-            // Get EndDate, account for crossing into the next year
+            if (startDateCurrentYear > currentDate)
+            {
+                // If StartDate in current year is in the future, use the previous year for the StartDate
+                StartDate = CronExpression.Parse(startCronExpression)?
+                                .GetNextOccurrence(new DateTime(currentYear - 1, 1, 1, 0, 0, 0, DateTimeKind.Utc))
+                            ?? throw new InvalidOperationException($"Failed to calculate StartDate for the previous year.");
+            }
+            else
+            {
+                // Otherwise, use the calculated StartDate for the current year
+                StartDate = startDateCurrentYear;
+            }
+
+            // Calculate EndDate
+            var endYear = StartDate.Month == 12 ? StartDate.Year + 1 : StartDate.Year;
             EndDate = CronExpression.Parse(endCronExpression)?
-                          .GetNextOccurrence(StartDate) // Ensure EndDate is after StartDate
+                          .GetNextOccurrence(new DateTime(endYear, 1, 1, 0, 0, 0, DateTimeKind.Utc))
                       ?? throw new InvalidOperationException($"Failed to parse end cron expression: {endCronExpression}");
 
             AssociatedMaps = associatedMaps ?? throw new ArgumentNullException(nameof(associatedMaps));
