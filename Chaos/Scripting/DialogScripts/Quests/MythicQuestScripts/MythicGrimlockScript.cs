@@ -252,8 +252,8 @@ public class MythicGrimlockScript : DialogScriptBase
             case "grimlock_item2":
             {
                 if (!source.Inventory.RemoveQuantity("Brown Kobold Tail", 10)
-                    && !source.Inventory.RemoveQuantity("Black Kobold Tail", 10)
-                    && !source.Inventory.RemoveQuantity("Silver Kobold Tail", 10))
+                    || !source.Inventory.RemoveQuantity("Black Kobold Tail", 10)
+                    || !source.Inventory.RemoveQuantity("Silver Kobold Tail", 10))
                 {
                     Subject.Reply(
                         source,

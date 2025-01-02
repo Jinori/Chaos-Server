@@ -56,7 +56,7 @@ public class NobisMazeTrapScript : ConfigurableReactorTileScriptBase,
             Timer = new IntervalTimer(TimeSpan.FromSeconds(DurationSecs.Value), false);
 
         AnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
-        ApplyDamageScript = ApplyAttackDamageScript.Create();
+        ApplyDamageScript = ApplyNonAttackDamageScript.Create();
         ApplyDamageScript.DamageFormula = DamageFormulae.PureDamage;
     }
 

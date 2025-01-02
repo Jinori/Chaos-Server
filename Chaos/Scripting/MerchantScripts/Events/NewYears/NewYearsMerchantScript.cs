@@ -207,6 +207,9 @@ public class NewYearsMerchantScript : MerchantScriptBase
         {
             player.Animate(Ani);
 
+            player.TryGiveGamePoints(50);
+            player.Trackers.TimedEvents.AddEvent("newyear", TimeSpan.FromDays(14), true);
+
             if (player.UserStatSheet.Level < 99)
             {
                 var tnl = LevelUpFormulae.Default.CalculateTnl(player);
@@ -223,6 +226,7 @@ public class NewYearsMerchantScript : MerchantScriptBase
                     1,
                     GameTime.Now));
         }
+        
         Subject.CurrentlyShootingFireworks = false;
     }
 

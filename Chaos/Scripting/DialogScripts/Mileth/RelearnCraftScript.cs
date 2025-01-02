@@ -26,6 +26,13 @@ public class RelearnCraftScript : DialogScriptBase
         {
             case "riona_relearnrecipes":
             {
+                if (!source.Trackers.TimedEvents.HasActiveEvent("newyear", out _))
+                {
+                    source.TryGiveGamePoints(50);
+                    source.Trackers.TimedEvents.AddEvent("newyear", TimeSpan.FromDays(14), true);
+                    source.SendOrangeBarMessage("You received 50 Gamepoints for New Year!");
+                }
+                
                 if (source.Legend.ContainsKey("darkpriest") && !source.SpellBook.ContainsByTemplateKey("auraoftorment"))
                 {
                     var auraoftorment = SpellFactory.Create("auraoftorment");

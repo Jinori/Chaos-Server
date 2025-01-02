@@ -49,26 +49,23 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
 
                 var relation = source.DirectionalRelationTo(target);
 
-                if (aisling.Effects.Contains("Dodge"))
+                if (aisling.Effects.Contains("Dodge") || aisling.Effects.Contains("Evasion"))
                 {
-                    if (relation == target.Direction.Reverse())
-                        damage = (int)(damage * 1.4);
-                    else if (relation != target.Direction)
-                        damage = (int)(damage * 1.2);
-                } else
-                {
-                    if (relation == target.Direction.Reverse())
-                        damage = (int)(damage * 1.5);
-                    else if (relation != target.Direction)
-                        damage = (int)(damage * 1.25);
-                }
+                    if (aisling.Effects.Contains("Dodge"))
+                    {
+                        if (relation == target.Direction.Reverse())
+                            damage = (int)(damage * 1.4);
+                        else if (relation != target.Direction)
+                            damage = (int)(damage * 1.2);
+                    }
 
-                if (aisling.Effects.Contains("Evasion"))
-                {
-                    if (relation == target.Direction.Reverse())
-                        damage = (int)(damage * 1.3);
-                    else if (relation != target.Direction)
-                        damage = (int)(damage * 1.1);
+                    if (aisling.Effects.Contains("Evasion"))
+                    {
+                        if (relation == target.Direction.Reverse())
+                            damage = (int)(damage * 1.3);
+                        else if (relation != target.Direction)
+                            damage = (int)(damage * 1.1);
+                    }
                 } else
                 {
                     if (relation == target.Direction.Reverse())
