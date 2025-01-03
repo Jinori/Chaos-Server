@@ -89,7 +89,8 @@ public class LimboWarriorScript : MonsterScriptBase
             var options = new AoeShapeOptions
             {
                 Source = new Point(Subject.X, Subject.Y),
-                Range = range
+                Range = range,
+                Direction = direction
             };
 
             var points = AoeShape.FrontalCone.ResolvePoints(options);

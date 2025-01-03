@@ -78,6 +78,14 @@ public class DiaCradhEffect : EffectBase, NonOverwritableEffectComponent.INonOve
 
             return false;
         }
+        
+        if (target.Effects.Contains("beag cradh") || target.Effects.Contains("cradh") || target.Effects.Contains("Mor Cradh") || target.Effects.Contains("Ard Cradh"))
+        {
+            target.Effects.Dispel("beag cradh");
+            target.Effects.Dispel("cradh");
+            target.Effects.Dispel("mor cradh");
+            target.Effects.Dispel("ard cradh");
+        }
 
         var execution = new ComponentExecutor(source, target).WithOptions(this)
                                                              .ExecuteAndCheck<NonOverwritableEffectComponent>();

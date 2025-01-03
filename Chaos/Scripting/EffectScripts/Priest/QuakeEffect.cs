@@ -2,6 +2,7 @@
 using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Geometry.Abstractions;
+using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -71,7 +72,8 @@ public class QuakeEffect : ContinuousAnimationEffectBase
         var options = new AoeShapeOptions
             {
                 Source = new Point(Subject.X, Subject.Y),
-                Range = 1
+                Range = 1,
+                Direction = Direction.All
             };
 
             var points = AoeShape.AllAround.ResolvePoints(options);
