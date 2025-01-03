@@ -14,17 +14,19 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
 
     private bool CanWieldStaff(Aisling source, string skillName)
     {
-        if (source.UserStatSheet.BaseClass == BaseClass.Priest)
+        // Check if the character's base class and skill match the traditional rules.
+        var isPriestWithHolyStaff = source.UserStatSheet.BaseClass == BaseClass.Priest && skillName == "Wield Holy Staff";
+        var isWizardWithMagusStaff = source.UserStatSheet.BaseClass == BaseClass.Wizard && skillName == "Wield Magus Staff";
+
+        // Check if the character has the skill, even if it's not typical for their class.
+        var hasSkill = source.SkillBook.Contains(skillName);
+
+        if (isPriestWithHolyStaff || isWizardWithMagusStaff || hasSkill)
+        {
             return true;
-
-        if (source.UserStatSheet.BaseClass == BaseClass.Wizard)
-            return true;
-
-        if (source.SkillBook.Contains(skillName))
-            return true;
-
-        source.SendOrangeBarMessage("You do not have the skill to wield it.");
-
+        }
+    
+        source.SendOrangeBarMessage("You do not have the skill to wield this staff.");
         return false;
     }
 
@@ -73,42 +75,50 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
 
         if (template.Category.Contains("Staff"))
         {
-            if (source.Equipment.Contains((byte)EquipmentSlot.Shield)
-                && source.Equipment.TryGetObject((byte)EquipmentSlot.Shield, out var shield))
+            // Check for shield usage which prevents staff wielding
+            if (source.Equipment.Contains((byte)EquipmentSlot.Shield) &&
+                source.Equipment.TryGetObject((byte)EquipmentSlot.Shield, out var shield))
             {
                 source.SendOrangeBarMessage($"You cannot equip a staff while using {shield.DisplayName}.");
-
                 return;
             }
 
-            // Check specific conditions for equipping a staff
-            if (template.TemplateKey.ContainsI("magus") && CanWieldStaff(source, "Wield Magus Staff"))
+            switch (template.Class)
             {
-                
-                if (template.Level > source.UserStatSheet.Level)
+                // Handle equipping a Magus Staff
+                case BaseClass.Wizard:
                 {
-                    source.SendOrangeBarMessage($"You are too inexperienced to equip {Subject.Template.Name}.");
+                    if (!CanWieldStaff(source, "Wield Magus Staff"))
+                    {
+                        return;
+                    }
 
+                    if (template.Level > source.UserStatSheet.Level)
+                    {
+                        source.SendOrangeBarMessage($"You are too inexperienced to equip {template.Name}.");
+                        return;
+                    }
+
+                    EquipStaff(source, template);
                     return;
                 }
-                
-                EquipStaff(source, template);
-
-                return;
-            }
-
-            if (template.TemplateKey.ContainsI("holy") && CanWieldStaff(source, "Wield Holy Staff"))
-            {
-                if (template.Level > source.UserStatSheet.Level)
+                // Handle equipping a Holy Staff
+                case BaseClass.Priest:
                 {
-                    source.SendOrangeBarMessage($"You are too inexperienced to equip {Subject.Template.Name}.");
+                    if (!CanWieldStaff(source, "Wield Holy Staff"))
+                    {
+                        return;
+                    }
 
+                    if (template.Level > source.UserStatSheet.Level)
+                    {
+                        source.SendOrangeBarMessage($"You are too inexperienced to equip {template.Name}.");
+                        return;
+                    }
+
+                    EquipStaff(source, template);
                     return;
                 }
-                
-                EquipStaff(source, template);
-
-                return;
             }
         }
 
