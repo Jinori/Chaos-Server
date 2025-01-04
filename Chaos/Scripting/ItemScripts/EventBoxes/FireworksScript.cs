@@ -14,7 +14,6 @@ public class FireworksScript : ItemScriptBase
 
     private readonly IIntervalTimer FireworkDelay;
     private int AnimationCount;
-    private bool FireworksBigBang;
     private bool FireworksBigBoom;
     private bool FireworksBigBurst;
     private bool FireworksBigSwirl;

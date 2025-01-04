@@ -33,8 +33,13 @@ public class PietWoodQuestScript : DialogScriptBase
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
+            
             case "saskia_initial":
             {
+                
+                if (source.UserStatSheet.Level < 11)
+                    return;
+                
                 var option = new DialogOption
                 {
                     DialogKey = "pietwood_initial",

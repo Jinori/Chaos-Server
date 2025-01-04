@@ -21,6 +21,7 @@ public sealed class HowlingPrefixScript : ItemScriptBase, IEnchantmentScript
             SpellDamagePct = 5
         };
 
+        Subject.Template.RequiresMaster.Equals(true);
         subject.Modifiers.Add(attributes);
     }
 
