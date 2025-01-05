@@ -93,8 +93,8 @@ public class HomeScript(Spell subject, ISimpleCache simpleCache) : ConfigurableS
                 DestinationMapKey = "undine_tavern";
 
                 break;
-            case Nation.Void:
-                OriginPoint = new Point(12, 16);
+            case Nation.Labyrinth:
+                OriginPoint = new Point(6, 7);
                 DestinationMapKey = "arena_entrance";
                 break;
             default:

@@ -17,6 +17,17 @@ namespace Chaos.Scripting.FunctionalScripts.ApplyDamage;
 
 public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<ApplyAttackDamageScript> logger) : ScriptBase, IApplyDamageScript
 {
+
+    private readonly List<string> MapsToNotPunishDurability =
+    [
+        "Labyrinth Battle Ring",
+        "Lava Arena",
+        "Lava Arena - Teams",
+        "Color Clash - Teams",
+        "Hidden Havoc",
+        "Escort - Teams"
+    ];
+    
     protected readonly IEffectFactory EffectFactory = effectFactory;
     public IDamageFormula DamageFormula { get; set; } = DamageFormulae.Default;
     public static string Key { get; } = GetScriptKey(typeof(ApplyAttackDamageScript));
@@ -140,22 +151,24 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
         if (skillSource is not SubjectiveScriptBase<Skill> skillScript)
             return;
 
-        if (skillScript.Subject.Template.IsAssail)
-            foreach (var item in aisling.Equipment)
+        if (MapsToNotPunishDurability.Contains(aisling.MapInstance.Name) || aisling.IsGodModeEnabled())
+            return;
+
+        if (!skillScript.Subject.Template.IsAssail) 
+            return;
+        
+        foreach (var item in aisling.Equipment)
+        {
+            if (item.Slot is > 0 and < 14)
             {
-                if (aisling.IsGodModeEnabled())
-                    continue;
+                if (item.CurrentDurability >= 1)
+                    item.CurrentDurability--;
 
-                if (item.Slot is > 0 and < 14)
-                {
-                    if (item.CurrentDurability >= 1)
-                        item.CurrentDurability--;
-
-                    var dura = GetCurrentDurabilityPercentage(item);
-                    HandleDurabilityWarning(aisling, item, dura);
-                    HandleBreakingItem(aisling, source, item);
-                }
+                var dura = GetCurrentDurabilityPercentage(item);
+                HandleDurabilityWarning(aisling, item, dura);
+                HandleBreakingItem(aisling, source, item);
             }
+        }
     }
 
     private int? GetCurrentDurabilityPercentage(Item item)

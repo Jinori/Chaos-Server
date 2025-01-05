@@ -61,7 +61,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         "Mythic",
         "Nightmare",
         "Cain's Farm",
-        "Arena Battle Ring",
+        "Labyrinth Battle Ring",
         "Lava Arena",
         "Lava Arena - Teams",
         "Color Clash - Teams",

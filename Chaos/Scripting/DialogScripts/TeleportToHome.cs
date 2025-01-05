@@ -86,9 +86,9 @@ public class TeleportToHome : DialogScriptBase
 
                 break;
             }
-            case Nation.Void:
+            case Nation.Labyrinth:
             {
-                var point = new Point(12, 15);
+                var point = new Point(6, 7);
                 var mapInstance = SimpleCache.Get<MapInstance>("arena_entrance");
                 source.TraverseMap(mapInstance, point, true);
 

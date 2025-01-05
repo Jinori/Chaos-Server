@@ -7,6 +7,7 @@ using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.MapScripts.Abstractions;
+using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Arena;
@@ -14,12 +15,14 @@ namespace Chaos.Scripting.DialogScripts.Arena;
 public class ArenaBattleRingScript : DialogScriptBase
 {
     private readonly IScriptFactory<IMapScript, MapInstance> ScriptFactory;
+    private readonly IEffectFactory EffectFactory;
     private readonly ISimpleCache SimpleCache;
 
     /// <inheritdoc />
-    public ArenaBattleRingScript(Dialog subject, IScriptFactory<IMapScript, MapInstance> scriptFactory, ISimpleCache simpleCache)
+    public ArenaBattleRingScript(Dialog subject, IScriptFactory<IMapScript, MapInstance> scriptFactory, ISimpleCache simpleCache, IEffectFactory effectFactory)
         : base(subject)
     {
+        EffectFactory = effectFactory;
         ScriptFactory = scriptFactory;
         SimpleCache = simpleCache;
     }
@@ -40,6 +43,12 @@ public class ArenaBattleRingScript : DialogScriptBase
             {
                 Subject.Close(source);
 
+                if (source.Effects.Contains("Arena Revive"))
+                {
+                    source.SendActiveMessage("You must wait to be revived.");
+                    return;
+                }
+                
                 if (!source.IsAlive)
                 {
                     source.IsDead = false;
@@ -56,28 +65,60 @@ public class ArenaBattleRingScript : DialogScriptBase
             case "alex_north":
             {
                 Subject.Close(source);
-                source.WarpTo(new Point(5, 5));
+
+                if (source.Effects.Contains("Arena Revive"))
+                {
+                    source.SendActiveMessage("You must wait to enter the Battle Ring.");
+                    return;
+                }
+                
+                var mapInstance = SimpleCache.Get<MapInstance>("arena_battle_ring");
+                source.TraverseMap(mapInstance, new Point(3, 3));
 
                 break;
             }
             case "alex_east":
             {
                 Subject.Close(source);
-                source.WarpTo(new Point(20, 5));
+                
+                if (source.Effects.Contains("Arena Revive"))
+                {
+                    source.SendActiveMessage("You must wait to enter the Battle Ring.");
+                    return;
+                }
+                
+                var mapInstance = SimpleCache.Get<MapInstance>("arena_battle_ring");
+                source.TraverseMap(mapInstance, new Point(53, 3));
 
                 break;
             }
             case "alex_south":
             {
                 Subject.Close(source);
-                source.WarpTo(new Point(20, 20));
+                
+                if (source.Effects.Contains("Arena Revive"))
+                {
+                    source.SendActiveMessage("You must wait to enter the Battle Ring.");
+                    return;
+                }
+                
+                var mapInstance = SimpleCache.Get<MapInstance>("arena_battle_ring");
+                source.TraverseMap(mapInstance, new Point(53, 53));
 
                 break;
             }
             case "alex_west":
             {
                 Subject.Close(source);
-                source.WarpTo(new Point(5, 20));
+                
+                if (source.Effects.Contains("Arena Revive"))
+                {
+                    source.SendActiveMessage("You must wait to enter the Battle Ring.");
+                    return;
+                }
+                
+                var mapInstance = SimpleCache.Get<MapInstance>("arena_battle_ring");
+                source.TraverseMap(mapInstance, new Point(3, 53));
 
                 break;
             }
@@ -114,7 +155,13 @@ public class ArenaBattleRingScript : DialogScriptBase
                 source.Trackers.Enums.Remove<ArenaTeam>();
                 source.MapInstance.RemoveEntity(source);
                 source.Client.SendWorldMap(worldMap);
-
+                
+                if (!source.Effects.Contains("Arena Revive"))
+                {
+                    var effect = EffectFactory.Create("ArenaRevive");
+                    source.Effects.Apply(source, effect);
+                }
+                
                 break;
             }
         }

@@ -10,7 +10,7 @@ public class RestrictionBehavior
 {
     private readonly List<string> MapsGhostsCanMoveOn =
     [
-        "Arena Battle Ring",
+        "Labyrinth Battle Ring",
         "The Afterlife"
     ];
 

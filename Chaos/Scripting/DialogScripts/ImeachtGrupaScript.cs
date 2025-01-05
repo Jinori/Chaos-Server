@@ -157,8 +157,8 @@ public class ImeachtGrupaScript : DialogScriptBase
                         DestinationMapKey = "undine_village_way";
 
                         break;
-                    case Nation.Void:
-                        OriginPoint = new Point(12, 15);
+                    case Nation.Labyrinth:
+                        OriginPoint = new Point(6, 7);
                         DestinationMapKey = "arena_entrance";
 
                         break;

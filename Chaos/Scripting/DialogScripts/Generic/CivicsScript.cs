@@ -15,9 +15,9 @@ public class CivicsScript : DialogScriptBase
         TemplateActions = new Dictionary<string, Action<Aisling>>(StringComparer.OrdinalIgnoreCase)
         {
             // Void / Arena
-            {"rlyeh_civics", source => HandleCivicOptions(source, "Become Void Citizen")},
-            {"rlyeh_renounceyes", source => HandleRenounceCitizenship(source, Nation.Void)},
-            {"rlyeh_becomecitizenyes", source => HandleBecomeCitizen(source, Nation.Void)},
+            {"rlyeh_civics", source => HandleCivicOptions(source, "Become Drowned Labyrinth Citizen")},
+            {"rlyeh_renounceyes", source => HandleRenounceCitizenship(source, Nation.Labyrinth)},
+            {"rlyeh_becomecitizenyes", source => HandleBecomeCitizen(source, Nation.Labyrinth)},
             
             // Undine
             {"ayumi_civics", source => HandleCivicOptions(source, "Become Undine Citizen")},
