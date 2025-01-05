@@ -154,7 +154,7 @@ public class RestrictionBehavior
             {
                 return true;
             }
-            case not null when creature.IsPramhed() && (spell.Template.Name == "Dinarcoli"):
+            case not null when creature.IsPramhed() && (spell.Template.Name == "dinarcoli"):
             {
                 return true;
             }

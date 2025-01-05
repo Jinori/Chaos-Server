@@ -66,11 +66,6 @@ public class MainStory2Script(
 
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.CompletedServant))
                 {
-                    if (source.Trackers.TimedEvents.HasActiveEvent("servantwait", out var cdtime))
-                    {
-                        Subject.Reply(source, $"We are still gathering information about what the Summoner is doing in the Cthonic Remains, please wait {cdtime.Remaining.Humanize()}.");
-                    }
-                    
                     Subject.Reply(source, "Skip", "summoner_initial6");
                 }
                   
@@ -88,12 +83,6 @@ public class MainStory2Script(
                 
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.CompletedTrials))
                 {
-                    if (source.Trackers.TimedEvents.HasActiveEvent("mainstorycd1", out var cdtime))
-                    {
-                        Subject.Reply(source,$"We are still gathering information regarding the Summoner's whereabouts. We should be finished in {cdtime.Remaining.Humanize()}. Please return then.");
-                        return;
-                    }
-
                     if (source.UserStatSheet.Level < 97)
                     {
                         Subject.Reply(source, "We finished gathering the information and the task we must ask of you Aisling may be a bit too strong. Please return to us when you are stronger.");
@@ -159,12 +148,10 @@ public class MainStory2Script(
                     }
                 }
                 
-                source.Trackers.TimedEvents.AddEvent("servantwait", TimeSpan.FromHours(3), true);
                 source.Trackers.Enums.Set(MainStoryEnums.CompletedServant);
                 ExperienceDistributionScript.GiveExp(source, 750000);
                 source.TryGiveGamePoints(10);
                 source.TryGiveGold(125000);
-                source.SendOrangeBarMessage("Wait for Miraelis to gather intel. ((3 Hours)).");
                 return;
             }
 

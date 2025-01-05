@@ -111,7 +111,7 @@ public class LimboPriestScript : MonsterScriptBase
         }
 
         //ao self curse
-        if (Subject.Effects.Contains("ard cradh"))
+        if (Subject.Effects.Contains("ard cradh") || Subject.Effects.Contains("Mor Cradh") || Subject.Effects.Contains("Cradh") || Subject.Effects.Contains("Beag Cradh"))
         {
             Subject.TryUseSpell(AoArdCradh, Subject.Id);
 

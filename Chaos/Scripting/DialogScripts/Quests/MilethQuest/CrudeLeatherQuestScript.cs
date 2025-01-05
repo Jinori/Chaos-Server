@@ -27,6 +27,9 @@ public class CrudeLeatherQuestScript (Dialog subject, ILogger<CrudeLeatherQuestS
         {
             case "eiganjo_initial":
             {
+                
+                if (source.UserStatSheet.Level < 11)
+                    return;
 
                 var option = new DialogOption
                 {

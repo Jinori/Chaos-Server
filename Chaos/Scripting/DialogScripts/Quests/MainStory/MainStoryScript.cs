@@ -320,8 +320,6 @@ public class MainStoryScript(
             case "mainstory_miraelis_summonerinitial1":
             {
                 source.Trackers.Enums.Set(MainStoryEnums.CompletedTrials);
-                source.Trackers.TimedEvents.AddEvent("mainstorycd1", TimeSpan.FromHours(1), true);
-
                 return;
             }
 

@@ -29,6 +29,9 @@ public class FishOilQuestScript(Dialog subject, IItemFactory itemFactory, ILogge
         {
             case "antonio_initial":
             {
+
+                if (source.UserStatSheet.Level < 11)
+                    return;
                 
                 var option = new DialogOption
                 {

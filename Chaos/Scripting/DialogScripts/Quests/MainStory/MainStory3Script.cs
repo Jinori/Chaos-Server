@@ -1,12 +1,10 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.Definitions;
+﻿using Chaos.Definitions;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
-using Humanizer;
 
 namespace Chaos.Scripting.DialogScripts.Quests.MainStory;
 
@@ -21,7 +19,7 @@ public class MainStory3Script(
 
     public override void OnDisplaying(Aisling source)
     {
-        var hasStage = source.Trackers.Enums.TryGetValue(out MainstoryMasterEnums stage);
+        var hasStage = source.Trackers.Enums.TryGetValue(out MainstoryMasterEnums _);
         
         switch (Subject.Template.TemplateKey.ToLower())
         {

@@ -53,7 +53,7 @@ public class NewYearsMerchantScript : MerchantScriptBase
         SayTimer = new IntervalTimer(TimeSpan.FromSeconds(3));
         FireworkDelay = new IntervalTimer(TimeSpan.FromMilliseconds(100));
         FireworkDelay2 = new IntervalTimer(TimeSpan.FromSeconds(3));
-        FireworkTimer = new IntervalTimer(TimeSpan.FromMinutes(1), false);
+        FireworkTimer = new IntervalTimer(TimeSpan.FromMinutes(3), false);
         CheckEventActive = new IntervalTimer(TimeSpan.FromSeconds(1), false);
     }
 

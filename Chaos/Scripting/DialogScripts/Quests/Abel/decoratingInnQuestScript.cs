@@ -35,6 +35,8 @@ public class DecoratingInnQuestScript : DialogScriptBase
         {
             case "runa_initial":
             {
+                if (source.UserStatSheet.Level < 11)
+                    return;
                 
                 var option = new DialogOption
                 {

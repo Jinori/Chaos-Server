@@ -52,6 +52,9 @@ public sealed class DallEffect : ContinuousAnimationEffectBase
         if (target.Script.Is<ThisIsABossScript>())
             return false;
         
+        if (target.IsGodModeEnabled())
+            return false;
+        
         if (target.Effects.Contains("Blind"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "That target is already blinded.");

@@ -29,6 +29,9 @@ public class PurpleWhopperQuestScript(Dialog subject, ILogger<PurpleWhopperQuest
             case "ayumi_initial":
             {
                 
+                if (source.UserStatSheet.Level < 11)
+                    return;
+                
                 var option = new DialogOption
                 {
                     DialogKey = "purplewhopper_initial",

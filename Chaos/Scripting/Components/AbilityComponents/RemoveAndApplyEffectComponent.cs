@@ -29,8 +29,36 @@ public class RemoveAndApplyEffectComponent : IComponent
 
         foreach (var target in targets)
         {
-            if (options.EffectKeyToRemove is "beagcradh")
+            if (options.EffectKeyToRemove is "beag cradh")
             {
+                if (target.Effects.Contains("cradh"))
+                {
+                    context.SourceAisling?.SendOrangeBarMessage($"Target is already under another effect. [Cradh]");
+
+                    return;
+                }
+                
+                if (target.Effects.Contains("Mor Cradh"))
+                {
+                    context.SourceAisling?.SendOrangeBarMessage($"Target is already under another effect. [Mor Cradh]");
+
+                    return;
+                }
+                
+                if (target.Effects.Contains("Ard Cradh"))
+                {
+                    context.SourceAisling?.SendOrangeBarMessage($"Target is already under another effect. [Ard Cradh]");
+
+                    return;
+                }
+                
+                if (target.Effects.Contains("Dia Cradh"))
+                {
+                    context.SourceAisling?.SendOrangeBarMessage($"Target is already under another effect. [Dia Cradh]");
+
+                    return;
+                }
+                
                 if (target.Effects.Contains("Beag Cradh") && options.EffectKeyToAddAfterRemoval is "preventrecradh")
                 {
                     var effect = options.EffectFactory.Create(options.EffectKeyToAddAfterRemoval);
@@ -43,7 +71,28 @@ public class RemoveAndApplyEffectComponent : IComponent
 
             if (options.EffectKeyToRemove is "cradh")
             {
-                if (target.Effects.Contains("Cradh") && options.EffectKeyToAddAfterRemoval is "preventrecradh")
+                if (target.Effects.Contains("Mor Cradh"))
+                {
+                    context.SourceAisling?.SendOrangeBarMessage($"Target is already under another effect. [Mor Cradh]");
+
+                    return;
+                }
+                
+                if (target.Effects.Contains("Ard Cradh"))
+                {
+                    context.SourceAisling?.SendOrangeBarMessage($"Target is already under another effect. [Ard Cradh]");
+
+                    return;
+                }
+                
+                if (target.Effects.Contains("Dia Cradh"))
+                {
+                    context.SourceAisling?.SendOrangeBarMessage($"Target is already under another effect. [Dia Cradh]");
+
+                    return;
+                }
+                
+                if ((target.Effects.Contains("Cradh") || target.Effects.Contains("Beag Cradh") && options.EffectKeyToAddAfterRemoval is "preventrecradh"))
                 {
                     var effect = options.EffectFactory.Create(options.EffectKeyToAddAfterRemoval);
                     target.Effects.Apply(context.Source, effect);
@@ -56,7 +105,21 @@ public class RemoveAndApplyEffectComponent : IComponent
 
             if (options.EffectKeyToRemove is "mor cradh")
             {
-                if (target.Effects.Contains("Mor Cradh") && options.EffectKeyToAddAfterRemoval is "preventrecradh")
+                if (target.Effects.Contains("Ard Cradh"))
+                {
+                    context.SourceAisling?.SendOrangeBarMessage($"Target is already under another effect. [Ard Cradh]");
+
+                    return;
+                }
+                
+                if (target.Effects.Contains("Dia Cradh"))
+                {
+                    context.SourceAisling?.SendOrangeBarMessage($"Target is already under another effect. [Dia Cradh]");
+
+                    return;
+                }
+                
+                if (target.Effects.Contains("Mor Cradh") || target.Effects.Contains("Cradh") || (target.Effects.Contains("Beag Cradh") && options.EffectKeyToAddAfterRemoval is "preventrecradh"))
                 {
                     var effect = options.EffectFactory.Create(options.EffectKeyToAddAfterRemoval);
                     target.Effects.Apply(context.Source, effect);
@@ -70,7 +133,14 @@ public class RemoveAndApplyEffectComponent : IComponent
 
             if (options.EffectKeyToRemove is "ard cradh")
             {
-                if (target.Effects.Contains("Ard Cradh") && options.EffectKeyToAddAfterRemoval is "preventrecradh")
+                if (target.Effects.Contains("Dia Cradh"))
+                {
+                    context.SourceAisling?.SendOrangeBarMessage($"Target is already under another effect. [Dia Cradh]");
+
+                    return;
+                }
+                
+                if (target.Effects.Contains("Ard Cradh") || target.Effects.Contains("Mor Cradh") || target.Effects.Contains("Cradh") || (target.Effects.Contains("Beag Cradh") && options.EffectKeyToAddAfterRemoval is "preventrecradh"))
                 {
                     var effect = options.EffectFactory.Create(options.EffectKeyToAddAfterRemoval);
                     target.Effects.Apply(context.Source, effect);
