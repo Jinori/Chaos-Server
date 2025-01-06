@@ -3,6 +3,7 @@ using Chaos.Extensions;
 using Chaos.Models.World;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
+using Chaos.Scripting.MapScripts.MainStoryLine;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Services.Servers.Options;
@@ -72,6 +73,10 @@ public class CreantDeathScript : MonsterScriptBase
             }
 
             ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
+            
+            var mapScript = Subject.MapInstance.Script.As<CreantBossMapScript>();
+            if (mapScript != null)
+                mapScript.State = CreantBossMapScript.ScriptState.CreantKilled;
 
             if (Subject.Template.TemplateKey == "Phoenix")
             {

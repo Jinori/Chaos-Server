@@ -13,7 +13,7 @@ using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
-namespace Chaos.Scripting.MapScripts.Events;
+namespace Chaos.Scripting.MapScripts.Events.Christmas;
 
 public class ChristmasFrostyBombScript : MapScriptBase
 {
@@ -259,7 +259,11 @@ public class ChristmasFrostyBombScript : MapScriptBase
                 }
 
                 foreach (var aisling in aislings)
+                {
                     aisling.SendOrangeBarMessage("Round is starting! Dodge for your life!");
+                    aisling.Trackers.Counters.Remove("frostychallenge", out _);
+                }
+                    
 
                 npc.Say("Round is starting, good luck!");
                 CurrentStage = ScriptStage.InProgress;

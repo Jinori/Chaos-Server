@@ -2,8 +2,10 @@
 using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Models.World;
 using Chaos.Scripting.MapScripts.Abstractions;
+using Chaos.Scripting.MonsterScripts.Pet;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
@@ -15,7 +17,7 @@ public class CreantBossMapScript : MapScriptBase
     private readonly IMonsterFactory MonsterFactory;
     private readonly TimeSpan StartDelay;
     private DateTime? StartTime;
-    private ScriptState State;
+    public ScriptState State;
     private readonly IIntervalTimer? UpdateTimer;
     public const int UPDATE_INTERVAL_MS = 1;
 
@@ -43,37 +45,41 @@ public class CreantBossMapScript : MapScriptBase
                         if (Subject.GetEntities<Aisling>()
                                    .Any(
                                        a => a.Trackers.Enums.TryGetValue(out MainstoryMasterEnums stage)
-                                            && stage is MainstoryMasterEnums.StartedCreants && a.Trackers.Flags.HasFlag(CreantEnums.StartedSham)))
+                                            && stage is MainstoryMasterEnums.StartedCreants
+                                            && a.Trackers.Flags.HasFlag(CreantEnums.StartedSham)))
                             State = ScriptState.DelayedStart;
                     }
-                    
+
                     if (Subject.Template.TemplateKey == "19522")
                     {
                         if (Subject.GetEntities<Aisling>()
                                    .Any(
                                        a => a.Trackers.Enums.TryGetValue(out MainstoryMasterEnums stage)
-                                            && stage is MainstoryMasterEnums.StartedCreants && a.Trackers.Flags.HasFlag(CreantEnums.StartedTauren)))
+                                            && stage is MainstoryMasterEnums.StartedCreants
+                                            && a.Trackers.Flags.HasFlag(CreantEnums.StartedTauren)))
                             State = ScriptState.DelayedStart;
                     }
-                    
+
                     if (Subject.Template.TemplateKey == "989")
                     {
                         if (Subject.GetEntities<Aisling>()
                                    .Any(
                                        a => a.Trackers.Enums.TryGetValue(out MainstoryMasterEnums stage)
-                                            && stage is MainstoryMasterEnums.StartedCreants && a.Trackers.Flags.HasFlag(CreantEnums.StartedPhoenix)))
+                                            && stage is MainstoryMasterEnums.StartedCreants
+                                            && a.Trackers.Flags.HasFlag(CreantEnums.StartedPhoenix)))
                             State = ScriptState.DelayedStart;
                     }
-                    
+
                     if (Subject.Template.TemplateKey == "6599")
                     {
                         if (Subject.GetEntities<Aisling>()
                                    .Any(
                                        a => a.Trackers.Enums.TryGetValue(out MainstoryMasterEnums stage)
-                                            && stage is MainstoryMasterEnums.StartedCreants && a.Trackers.Flags.HasFlag(CreantEnums.StartedMedusa)))
+                                            && stage is MainstoryMasterEnums.StartedCreants
+                                            && a.Trackers.Flags.HasFlag(CreantEnums.StartedMedusa)))
                             State = ScriptState.DelayedStart;
                     }
-                    
+
                     if (Subject.GetEntities<Aisling>()
                                .Any(
                                    a => a.Trackers.Enums.TryGetValue(out MainstoryMasterEnums stage)
@@ -82,6 +88,7 @@ public class CreantBossMapScript : MapScriptBase
                 }
 
                     break;
+
                 // Delayed start state
                 case ScriptState.DelayedStart:
                     // Set the start time if it is not already set
@@ -92,18 +99,19 @@ public class CreantBossMapScript : MapScriptBase
                     {
                         // Reset the start time
                         StartTime = null;
+
                         // Set the state to spawning
                         State = ScriptState.Spawning;
 
                         // Get all Aislings in the subject
                         foreach (var aisling in Subject.GetEntities<Aisling>())
+
                             // Send an orange bar message to the Aisling
-                            aisling.Client.SendServerMessage(
-                                ServerMessageType.OrangeBar1,
-                                "The Creant appears...");
+                            aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "The Creant appears...");
                     }
 
                     break;
+
                 // Spawning state
                 case ScriptState.Spawning:
                 {
@@ -112,41 +120,61 @@ public class CreantBossMapScript : MapScriptBase
                         var monster = MonsterFactory.Create("shamensyth", Subject, new Point(14, 14));
                         Subject.AddEntity(monster, monster);
                     }
-                    
+
                     if (Subject.Template.TemplateKey == "19522")
                     {
                         var monster = MonsterFactory.Create("tauren", Subject, new Point(9, 10));
                         Subject.AddEntity(monster, monster);
                     }
-                    
+
                     if (Subject.Template.TemplateKey == "989")
                     {
                         var monster = MonsterFactory.Create("ladyphoenix", Subject, new Point(36, 38));
                         Subject.AddEntity(monster, monster);
                     }
-                    
+
                     if (Subject.Template.TemplateKey == "6599")
                     {
                         var monster = MonsterFactory.Create("medusa", Subject, new Point(10, 11));
                         Subject.AddEntity(monster, monster);
                     }
-                    
+
                     State = ScriptState.Spawned;
 
                 }
+
                     break;
+
                 // Spawned state
                 case ScriptState.Spawned:
                     // Check if there are any Aislings in the subject
-                    if (!Subject.GetEntities<Aisling>().Any())
+                    if (!Subject.GetEntities<Aisling>()
+                                .Any())
                     {
                         // Get all monsters in the subject
-                        var monsters = Subject.GetEntities<Monster>().ToList();
+                        var monsters = Subject.GetEntities<Monster>()
+                                              .ToList();
 
                         // Remove all monsters from the subject
                         foreach (var monster in monsters)
                             Subject.RemoveEntity(monster);
                     }
+
+                    break;
+
+                case ScriptState.CreantKilled:
+                {
+                    if (Subject.GetEntities<Monster>()
+                               .Any())
+                    {
+                        var monsters = Subject.GetEntities<Monster>()
+                                              .ToList();
+
+                        // Remove all monsters from the subject
+                        foreach (var monster in monsters)
+                            Subject.RemoveEntity(monster);
+                    }
+                }
 
                     break;
                 default:
@@ -155,11 +183,12 @@ public class CreantBossMapScript : MapScriptBase
         }
     }
 
-    private enum ScriptState
+    public enum ScriptState
     {
         Dormant,
         DelayedStart,
         Spawning,
-        Spawned
+        Spawned,
+        CreantKilled
     }
 }

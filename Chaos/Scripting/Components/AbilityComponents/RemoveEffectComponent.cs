@@ -53,6 +53,12 @@ public class RemoveEffectComponent : IComponent
                     if (effect.Name == "Werewolf")
                         continue;
 
+                    if (effect.Name == "Fishing")
+                        continue;
+
+                    if (effect.Name == "Foraging")
+                        continue;
+
                     target.Effects.Dispel(effect.Name);
                 }
             }

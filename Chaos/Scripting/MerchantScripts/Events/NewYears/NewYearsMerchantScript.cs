@@ -57,7 +57,7 @@ public class NewYearsMerchantScript : MerchantScriptBase
         CheckEventActive = new IntervalTimer(TimeSpan.FromSeconds(1), false);
     }
 
-    #endregion MassMessages
+    #endregion FireworksMessages
 
     private IEnumerable<Aisling>? AislingsAtStart { get; set; }
     private IExperienceDistributionScript ExperienceDistributionScript { get; }

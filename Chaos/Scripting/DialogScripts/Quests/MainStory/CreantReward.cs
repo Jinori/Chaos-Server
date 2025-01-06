@@ -133,13 +133,13 @@ public class CreantReward : DialogScriptBase
                     {
                         ("19522", BaseClass.Warrior, Gender.Male), new[]
                         {
-                            "SubGMBattleAxe"
+                            "dawnreaverbattleaxe"
                         }
                     },
                     {
                         ("19522", BaseClass.Warrior, Gender.Female), new[]
                         {
-                            "SubGMBattleAxe"
+                            "dawnreaverbattleaxe"
                         }
                     },
                     {
@@ -231,13 +231,13 @@ public class CreantReward : DialogScriptBase
                     {
                         ("6599", BaseClass.Wizard, Gender.Male), new[]
                         {
-                            "wizardgreaves"
+                            "mysticgreaves"
                         }
                     },
                     {
                         ("6599", BaseClass.Wizard, Gender.Female), new[]
                         {
-                            "wizardgreaves"
+                            "mysticgreaves"
                         }
                     },
                     {
@@ -255,13 +255,13 @@ public class CreantReward : DialogScriptBase
                     {
                         ("6599", BaseClass.Rogue, Gender.Male), new[]
                         {
-                            "rogueweapon"
+                            "skean"
                         }
                     },
                     {
                         ("6599", BaseClass.Rogue, Gender.Female), new[]
                         {
-                            "rogueweapon"
+                            "skean"
                         }
                     },
 
@@ -292,13 +292,13 @@ public class CreantReward : DialogScriptBase
                     {
                         ("31010", BaseClass.Monk, Gender.Male), new[]
                         {
-                            "monkweapon"
+                            "tilianclaws"
                         }
                     },
                     {
                         ("31010", BaseClass.Monk, Gender.Female), new[]
                         {
-                            "monkweapon"
+                            "tilianclaws"
                         }
                     },
                     {

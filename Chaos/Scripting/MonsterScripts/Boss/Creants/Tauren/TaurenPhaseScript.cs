@@ -519,7 +519,7 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
                         new Animation
                         {
                             AnimationSpeed = 100,
-                            TargetAnimation = 990,
+                            TargetAnimation = 275,
                             TargetPoint = point
                         });
             }

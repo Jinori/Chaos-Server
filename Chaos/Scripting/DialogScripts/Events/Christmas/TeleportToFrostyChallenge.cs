@@ -17,13 +17,19 @@ public class TeleportToFrostyChallenge : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
     private readonly ISimpleCache SimpleCache;
+    private readonly ISpellFactory SpellFactory;
 
     /// <inheritdoc />
-    public TeleportToFrostyChallenge(Dialog subject, ISimpleCache simpleCache, IItemFactory itemFactory)
+    public TeleportToFrostyChallenge(
+        Dialog subject,
+        ISimpleCache simpleCache,
+        IItemFactory itemFactory,
+        ISpellFactory spellFactory)
         : base(subject)
     {
         SimpleCache = simpleCache;
         ItemFactory = itemFactory;
+        SpellFactory = spellFactory;
     }
 
     public override void OnDisplaying(Aisling source)
@@ -133,8 +139,13 @@ public class TeleportToFrostyChallenge : DialogScriptBase
         Subject.Close(source);
 
         if (source.Effects.Any())
-            foreach (var effect in source.Effects.ToList())
-                source.Effects.Dispel(effect.Name);
+        {
+            var npc = source.MapInstance
+                            .GetEntities<Merchant>()
+                            .FirstOrDefault(x => x.Name.Contains("Elf"));
+            var aosith = SpellFactory.Create("aosith");
+            npc?.TryUseSpell(aosith, source.Id);
+        }
 
         var mapInstance = SimpleCache.Get<MapInstance>("mtmerry_frostychallenge");
         var point = rectangle.GetRandomPoint();

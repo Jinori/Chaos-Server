@@ -18,7 +18,11 @@ public class RestrictionBehavior
     {
         switch (creature)
         {
-            case Aisling aisling when aisling.IsSuained() || aisling.IsBeagSuained() || aisling.IsPramhed() || aisling.IsRooted():
+            case Aisling aisling when aisling.IsSuained()
+                                      || aisling.IsBeagSuained()
+                                      || aisling.IsPramhed()
+                                      || aisling.IsRooted()
+                                      || aisling.IsStoned():
             {
                 aisling.SendOrangeBarMessage("You cannot move.");
 
@@ -59,7 +63,7 @@ public class RestrictionBehavior
     {
         switch (creature)
         {
-            case Aisling aisling when aisling.IsSuained() || aisling.IsPramhed():
+            case Aisling aisling when aisling.IsSuained() || aisling.IsPramhed() || aisling.IsStoned():
             {
                 aisling.SendOrangeBarMessage("You cannot turn.");
 
@@ -96,6 +100,9 @@ public class RestrictionBehavior
                 return false;
             }
 
+            if (aisling.IsStoned() && !item.Template.TemplateKey.EqualsI("lightPotion"))
+                return false;
+
             return true;
         }
 
@@ -113,6 +120,7 @@ public class RestrictionBehavior
         {
             case Aisling aisling when aisling.IsSuained()
                                       || aisling.IsPramhed()
+                                      || aisling.IsStoned()
                                       || aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out _)
                                       || (aisling.MapInstance.Name.EqualsI("Frosty's Challenge") && !aisling.IsGodModeEnabled()):
             {
@@ -161,6 +169,7 @@ public class RestrictionBehavior
 
             case Aisling aisling when aisling.IsSuained()
                                       || aisling.IsPramhed()
+                                      || aisling.IsStoned()
                                       || aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out _)
                                       || (aisling.MapInstance.Name.EqualsI("Frosty's Challenge") && !aisling.IsGodModeEnabled()):
             {

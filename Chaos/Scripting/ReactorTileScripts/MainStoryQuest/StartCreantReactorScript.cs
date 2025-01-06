@@ -34,9 +34,6 @@ public class StartCreantReactorScript : ReactorTileScriptBase
         if (source is not Aisling aisling)
             return;
 
-        if (!aisling.IsGodModeEnabled())
-            return;
-
         if (aisling.Trackers.Flags.HasFlag(CreantEnums.KilledMedusa)
             || aisling.Trackers.Flags.HasFlag(CreantEnums.KilledPhoenix)
             || aisling.Trackers.Flags.HasFlag(CreantEnums.KilledTauren)
