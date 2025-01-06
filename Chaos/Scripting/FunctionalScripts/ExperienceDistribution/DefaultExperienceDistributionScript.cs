@@ -19,7 +19,7 @@ namespace Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 public class DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistributionScript> logger)
     : ScriptBase, IExperienceDistributionScript
 {
-    private const double EXPERIENCE_MULTIPLIER = 2.0; // Default is 1.0, can be lowered or raised as needed
+    private const double EXPERIENCE_MULTIPLIER = 1.0; // Default is 1.0, can be lowered or raised as needed
     public IExperienceFormula ExperienceFormula { get; set; } = ExperienceFormulae.Default;
     public ILevelUpScript LevelUpScript { get; set; } = DefaultLevelUpScript.Create();
     public ILogger<DefaultExperienceDistributionScript> Logger { get; set; } = logger;
@@ -188,7 +188,7 @@ public class DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistri
 
         return false;
     }
-    
+
     private bool HasValentinesCandyEffect(ICollection<Aisling> aislings)
     {
         // Check if any of the Aislings have the "Valentines Candy" effect

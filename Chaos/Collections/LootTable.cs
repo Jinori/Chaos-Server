@@ -9,7 +9,7 @@ namespace Chaos.Collections;
 
 public sealed class LootTable(IItemFactory itemFactory) : ILootTable
 {
-    private const double DROPCHANCE_MULTIPLIER = 2.0;
+    private const double DROPCHANCE_MULTIPLIER = 1.0;
     private readonly IItemFactory ItemFactory = itemFactory;
     public required string Key { get; init; }
     public required ICollection<LootDrop> LootDrops { get; init; } = Array.Empty<LootDrop>();
