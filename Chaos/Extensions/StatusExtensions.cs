@@ -63,6 +63,8 @@ public static class StatusExtensions
     public static bool IsRuminating(this Creature creature) => creature.Effects.Contains("Rumination");
     public static bool IsSmokeStanced(this Creature creature) => creature.Effects.Contains("Smoke Stance");
 
+    public static bool IsStoned(this Creature creature) => creature.Effects.Contains("Stoned");
+
     public static bool IsSuained(this Creature creature)
         => creature.Effects.Contains("Suain") || creature.Effects.Contains("Wolf Fang Fist");
 
