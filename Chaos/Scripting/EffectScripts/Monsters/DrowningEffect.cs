@@ -13,7 +13,7 @@ namespace Chaos.Scripting.EffectScripts.Monsters;
 public class DrowningEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(10);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(45);
 
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()
@@ -58,8 +58,8 @@ public class DrowningEffect : ContinuousAnimationEffectBase
             return;
         }
 
-        double maxHp = Subject.StatSheet.MaximumHp;
-        const double DAMAGE_PERCENTAGE = 0.2;
+        double maxHp = Subject.StatSheet.EffectiveMaximumHp;
+        const double DAMAGE_PERCENTAGE = 0.3;
         const int DAMAGE_CAP = 100000;
 
         var damage = (int)Math.Min(maxHp * DAMAGE_PERCENTAGE, DAMAGE_CAP);
@@ -72,6 +72,8 @@ public class DrowningEffect : ContinuousAnimationEffectBase
 
         if (Subject.StatSheet.CurrentHp <= damage)
         {
+            Subject.StatSheet.SetHealthPct(0);
+            AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
             Subject.Script.OnDeath();
 
             return;

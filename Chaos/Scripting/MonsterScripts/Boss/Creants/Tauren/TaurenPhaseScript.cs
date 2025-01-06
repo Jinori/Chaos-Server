@@ -2,12 +2,14 @@ using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
+using Chaos.Extensions.Geometry;
 using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.MonsterScripts.Abstractions;
+using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
@@ -16,6 +18,7 @@ namespace Chaos.Scripting.MonsterScripts.Boss.Creants.Tauren;
 
 public sealed class TaurenPhaseScript : MonsterScriptBase
 {
+    private readonly IReactorTileFactory reactorTileFactory;
     private const int MAX_ROOM_NUKE_REPETITIONS = 3;
     private readonly IApplyDamageScript ApplyDamageScript;
     private readonly IntervalTimer ChannelIntervalTimer;
@@ -37,6 +40,7 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
     private readonly IIntervalTimer SplitPhaseTimer;
     private readonly IIntervalTimer SplitPhaseTimer1;
     private readonly IIntervalTimer TimeBetweenPhases;
+    private readonly IIntervalTimer RockFallTimer;
     private bool CreatedSafePoints;
     public bool InPhase;
     private bool IsChanneling;
@@ -62,7 +66,8 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
         Monster subject,
         IMonsterFactory monsterFactory,
         ISkillFactory skillFactory,
-        ISpellFactory spellFactory)
+        ISpellFactory spellFactory,
+        IReactorTileFactory reactorTileFactory)
         : base(subject)
     {
         ChannelIntervalTimer = new IntervalTimer(TimeSpan.FromSeconds(6), false);
@@ -79,11 +84,13 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
         SkillPhaseTimer3 = new IntervalTimer(TimeSpan.FromSeconds(30), false);
         SafePointAnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(1));
         DelayTimer = new IntervalTimer(TimeSpan.FromMilliseconds(1250), false);
+        RockFallTimer = new IntervalTimer(TimeSpan.FromSeconds(3), false);
         SafePoints = new List<Point>();
         ApplyDamageScript = ApplyAttackDamageScript.Create();
         MonsterFactory = monsterFactory;
         SkillFactory = skillFactory;
         SpellFactory = spellFactory;
+        this.reactorTileFactory = reactorTileFactory;
         SplitPhaseTimer = new IntervalTimer(TimeSpan.FromSeconds(10), false);
     }
 
@@ -361,6 +368,11 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
     {
         PhaseDelay.Update(delta);
         TimeBetweenPhases.Update(delta);
+        
+        if (!InPhase)
+        {
+            RockFall(delta);
+        }
 
         if (TimeBetweenPhases.IntervalElapsed && (CurrentPhase == 0))
         {
@@ -527,6 +539,33 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
     }
     #endregion
 
+    private void RockFall(TimeSpan delta)
+    {
+        RockFallTimer.Update(delta);
+
+        if (RockFallTimer.IntervalElapsed)
+        {
+            var aislings = Subject.MapInstance.GetEntities<Aisling>().ToList();
+
+            if (aislings.Any()) // Ensure there are Aislings on the map
+            {
+                // Find the Aisling furthest from the subject
+                var furthestAisling = aislings
+                                      .OrderByDescending(a => a.ManhattanDistanceFrom(Subject))
+                                      .FirstOrDefault();
+
+                if (furthestAisling != null)
+                {
+                    // Get the position of the furthest Aisling
+
+                    // Create and spawn the reactor tile
+                    var rockFallTile = reactorTileFactory.Create("rockfall", Subject.MapInstance, furthestAisling, null, Subject);
+                    Subject.MapInstance.SimpleAdd(rockFallTile);
+                }
+            }
+        }
+    }
+    
     #region PhaseHandling
     private void StartPhase()
     {

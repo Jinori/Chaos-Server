@@ -1,8 +1,8 @@
+using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MapScripts.MainStoryLine;
-using Chaos.Scripting.MonsterScripts.Pet;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
@@ -27,19 +27,22 @@ public class FinishCreantReactorScript : ReactorTileScriptBase
         if (source is not Aisling aisling)
             return;
 
-
         var mapScript = Subject.MapInstance.Script.As<CreantBossMapScript>();
 
         if (mapScript == null)
             return;
 
-        if (mapScript.State != CreantBossMapScript.ScriptState.CreantKilled)
+        if ((mapScript.State != CreantBossMapScript.ScriptState.CreantKilled)
+            && (!source.Trackers.Flags.HasFlag(CreantEnums.KilledMedusa)
+                || !source.Trackers.Flags.HasFlag(CreantEnums.KilledTauren)
+                || !source.Trackers.Flags.HasFlag(CreantEnums.KilledPhoenix)
+                || !source.Trackers.Flags.HasFlag(CreantEnums.KilledSham)))
         {
             aisling.SendOrangeBarMessage("The Creant is not ready to be sealed.");
 
             return;
         }
-        
+
         var point1 = new Point(source.X, source.Y);
         var blankmerchant1 = MerchantFactory.Create("blank_merchant", Subject.MapInstance, point1);
         var dialog1 = DialogFactory.Create("creant_reward_initial", blankmerchant1);

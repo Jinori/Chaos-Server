@@ -49,6 +49,9 @@ public sealed class Bewilderment : ContinuousAnimationEffectBase, HierarchicalEf
         if (target.Script.Is<ThisIsABossScript>())
             return false;
 
+        if (target.IsGodModeEnabled())
+            return false;
+
         var execution = new ComponentExecutor(source, target).WithOptions(this)
                                                              .ExecuteAndCheck<HierarchicalEffectComponent>();
 

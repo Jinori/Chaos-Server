@@ -1,11 +1,8 @@
 ﻿using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
-using Chaos.Extensions;
 using Chaos.Models.World;
 using Chaos.Scripting.MapScripts.Abstractions;
-using Chaos.Scripting.MonsterScripts.Pet;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
@@ -14,12 +11,21 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine;
 
 public class CreantBossMapScript : MapScriptBase
 {
+    public enum ScriptState
+    {
+        Dormant,
+        DelayedStart,
+        Spawning,
+        Spawned,
+        CreantKilled
+    }
+
+    public const int UPDATE_INTERVAL_MS = 1;
     private readonly IMonsterFactory MonsterFactory;
     private readonly TimeSpan StartDelay;
+    private readonly IIntervalTimer? UpdateTimer;
     private DateTime? StartTime;
     public ScriptState State;
-    private readonly IIntervalTimer? UpdateTimer;
-    public const int UPDATE_INTERVAL_MS = 1;
 
     public CreantBossMapScript(MapInstance subject, IMonsterFactory monsterFactory)
         : base(subject)
@@ -34,51 +40,51 @@ public class CreantBossMapScript : MapScriptBase
         UpdateTimer?.Update(delta);
 
         if (UpdateTimer!.IntervalElapsed)
-        {
+
             // Switch statement to determine the current state of the script
             switch (State)
             {
                 case ScriptState.Dormant:
                 {
+                    if (Subject.GetEntities<Aisling>()
+                               .Any(
+                                   x => x.Trackers.Flags.HasFlag(CreantEnums.KilledMedusa)
+                                        || x.Trackers.Flags.HasFlag(CreantEnums.KilledPhoenix)
+                                        || x.Trackers.Flags.HasFlag(CreantEnums.KilledSham)
+                                        || x.Trackers.Flags.HasFlag(CreantEnums.KilledTauren)))
+                        State = ScriptState.CreantKilled;
+
                     if (Subject.Template.TemplateKey == "31010")
-                    {
                         if (Subject.GetEntities<Aisling>()
                                    .Any(
                                        a => a.Trackers.Enums.TryGetValue(out MainstoryMasterEnums stage)
                                             && stage is MainstoryMasterEnums.StartedCreants
                                             && a.Trackers.Flags.HasFlag(CreantEnums.StartedSham)))
                             State = ScriptState.DelayedStart;
-                    }
 
                     if (Subject.Template.TemplateKey == "19522")
-                    {
                         if (Subject.GetEntities<Aisling>()
                                    .Any(
                                        a => a.Trackers.Enums.TryGetValue(out MainstoryMasterEnums stage)
                                             && stage is MainstoryMasterEnums.StartedCreants
                                             && a.Trackers.Flags.HasFlag(CreantEnums.StartedTauren)))
                             State = ScriptState.DelayedStart;
-                    }
 
                     if (Subject.Template.TemplateKey == "989")
-                    {
                         if (Subject.GetEntities<Aisling>()
                                    .Any(
                                        a => a.Trackers.Enums.TryGetValue(out MainstoryMasterEnums stage)
                                             && stage is MainstoryMasterEnums.StartedCreants
                                             && a.Trackers.Flags.HasFlag(CreantEnums.StartedPhoenix)))
                             State = ScriptState.DelayedStart;
-                    }
 
                     if (Subject.Template.TemplateKey == "6599")
-                    {
                         if (Subject.GetEntities<Aisling>()
                                    .Any(
                                        a => a.Trackers.Enums.TryGetValue(out MainstoryMasterEnums stage)
                                             && stage is MainstoryMasterEnums.StartedCreants
                                             && a.Trackers.Flags.HasFlag(CreantEnums.StartedMedusa)))
                             State = ScriptState.DelayedStart;
-                    }
 
                     if (Subject.GetEntities<Aisling>()
                                .Any(
@@ -95,7 +101,7 @@ public class CreantBossMapScript : MapScriptBase
                     StartTime ??= DateTime.UtcNow;
 
                     // Check if the start delay has been exceeded
-                    if (DateTime.UtcNow - StartTime > StartDelay)
+                    if ((DateTime.UtcNow - StartTime) > StartDelay)
                     {
                         // Reset the start time
                         StartTime = null;
@@ -140,7 +146,6 @@ public class CreantBossMapScript : MapScriptBase
                     }
 
                     State = ScriptState.Spawned;
-
                 }
 
                     break;
@@ -180,15 +185,5 @@ public class CreantBossMapScript : MapScriptBase
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-        }
-    }
-
-    public enum ScriptState
-    {
-        Dormant,
-        DelayedStart,
-        Spawning,
-        Spawned,
-        CreantKilled
     }
 }

@@ -1,6 +1,5 @@
 using Chaos.Collections;
 using Chaos.Definitions;
-using Chaos.Extensions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
@@ -34,42 +33,36 @@ public class StartCreantReactorScript : ReactorTileScriptBase
         if (source is not Aisling aisling)
             return;
 
-        if (aisling.Trackers.Flags.HasFlag(CreantEnums.KilledMedusa)
-            || aisling.Trackers.Flags.HasFlag(CreantEnums.KilledPhoenix)
-            || aisling.Trackers.Flags.HasFlag(CreantEnums.KilledTauren)
-            || aisling.Trackers.Flags.HasFlag(CreantEnums.KilledSham))
+        if (aisling.Trackers.Flags.HasFlag(CreantEnums.KilledMedusa) && (aisling.MapInstance.Template.TemplateKey == "6599"))
         {
-            if (aisling.MapInstance.Template.TemplateKey == "19522")
-            {
-                var mapInstance = SimpleCache.Get<MapInstance>("taurenbossroom");
-                var placePoint = new Point(3, 11);
-                aisling.TraverseMap(mapInstance, placePoint);
-                aisling.SendOrangeBarMessage("The altar knocks you back.");
-            }
+            var mapInstance = SimpleCache.Get<MapInstance>("medusabossroom");
+            var placePoint = new Point(11, 10);
+            aisling.TraverseMap(mapInstance, placePoint);
+            aisling.SendOrangeBarMessage("The altar knocks you back.");
+        }
 
-            if (aisling.MapInstance.Template.TemplateKey == "31010")
-            {
-                var mapInstance = SimpleCache.Get<MapInstance>("shamensythbossroom");
-                var placePoint = new Point(11, 14);
-                aisling.TraverseMap(mapInstance, placePoint);
-                aisling.SendOrangeBarMessage("The altar knocks you back.");
-            }
+        if (aisling.Trackers.Flags.HasFlag(CreantEnums.KilledSham) && (aisling.MapInstance.Template.TemplateKey == "31010"))
+        {
+            var mapInstance = SimpleCache.Get<MapInstance>("shamensythbossroom");
+            var placePoint = new Point(11, 14);
+            aisling.TraverseMap(mapInstance, placePoint);
+            aisling.SendOrangeBarMessage("The altar knocks you back.");
+        }
 
-            if (aisling.MapInstance.Template.TemplateKey == "6599")
-            {
-                var mapInstance = SimpleCache.Get<MapInstance>("medusabossroom");
-                var placePoint = new Point(11, 10);
-                aisling.TraverseMap(mapInstance, placePoint);
-                aisling.SendOrangeBarMessage("The altar knocks you back.");
-            }
+        if (aisling.Trackers.Flags.HasFlag(CreantEnums.KilledTauren) && (aisling.MapInstance.Template.TemplateKey == "19522"))
+        {
+            var mapInstance = SimpleCache.Get<MapInstance>("taurenbossroom");
+            var placePoint = new Point(3, 11);
+            aisling.TraverseMap(mapInstance, placePoint);
+            aisling.SendOrangeBarMessage("The altar knocks you back.");
+        }
 
-            if (aisling.MapInstance.Template.TemplateKey == "989")
-            {
-                var mapInstance = SimpleCache.Get<MapInstance>("phoenixbossroom");
-                var placePoint = new Point(36, 39);
-                aisling.TraverseMap(mapInstance, placePoint);
-                aisling.SendOrangeBarMessage("The altar knocks you back.");
-            }
+        if (aisling.Trackers.Flags.HasFlag(CreantEnums.KilledPhoenix) && (aisling.MapInstance.Template.TemplateKey == "989"))
+        {
+            var mapInstance = SimpleCache.Get<MapInstance>("phoenixbossroom");
+            var placePoint = new Point(36, 39);
+            aisling.TraverseMap(mapInstance, placePoint);
+            aisling.SendOrangeBarMessage("The altar knocks you back.");
         }
 
         if (aisling.Trackers.Enums.HasValue(MainstoryMasterEnums.CompletedCreants))

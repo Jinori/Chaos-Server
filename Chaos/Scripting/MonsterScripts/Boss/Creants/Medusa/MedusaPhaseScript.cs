@@ -21,8 +21,8 @@ public sealed class MedusaPhaseScript : MonsterScriptBase
     private readonly IntervalTimer SafePointAnimationTimer;
 
     private readonly List<Point> SafePoints;
-    private readonly IntervalTimer SpawnSnakePitsTimer;
     private readonly IntervalTimer SpawnPhaseTimer;
+    private readonly IntervalTimer SpawnSnakePitsTimer;
     private readonly ISpellFactory SpellFactory;
     private readonly IIntervalTimer SpellPhaseTimer4;
     private readonly IntervalTimer SpellTimer;
@@ -51,7 +51,7 @@ public sealed class MedusaPhaseScript : MonsterScriptBase
         IEffectFactory effectFactory)
         : base(subject)
     {
-        StoneChannelingTimer = new IntervalTimer(TimeSpan.FromSeconds(12), false);
+        StoneChannelingTimer = new IntervalTimer(TimeSpan.FromSeconds(15), false);
         SpawnPhaseTimer = new IntervalTimer(TimeSpan.FromSeconds(45), false);
         SpellTimer = new IntervalTimer(TimeSpan.FromMilliseconds(1500), false);
         PhaseDelay = new IntervalTimer(TimeSpan.FromSeconds(2), false);
@@ -81,7 +81,10 @@ public sealed class MedusaPhaseScript : MonsterScriptBase
 
         if (SpawnSnakePitsTimer.IntervalElapsed)
         {
-            var snakepits = Subject.MapInstance.GetEntities<Monster>().Where(x => x.Name == "Snake Pit").ToList();
+            var snakepits = Subject.MapInstance
+                                   .GetEntities<Monster>()
+                                   .Where(x => x.Name == "Snake Pit")
+                                   .ToList();
 
             if (snakepits.Count > 7)
             {
@@ -95,7 +98,7 @@ public sealed class MedusaPhaseScript : MonsterScriptBase
                 Subject.Y - 6,
                 15,
                 15);
-            
+
             const int MAX_RETRIES = 20; // Limit retries to prevent infinite loop
             Point? spawnPoint = null;
 
@@ -106,6 +109,7 @@ public sealed class MedusaPhaseScript : MonsterScriptBase
                 if (Subject.MapInstance.IsWalkable(candidatePoint, CreatureType.Normal))
                 {
                     spawnPoint = candidatePoint;
+
                     break;
                 }
             }
@@ -116,7 +120,6 @@ public sealed class MedusaPhaseScript : MonsterScriptBase
                 Subject.MapInstance.AddEntity(snakepit, spawnPoint.Value);
             }
         }
-            
     }
     #endregion
 
@@ -127,7 +130,7 @@ public sealed class MedusaPhaseScript : MonsterScriptBase
         SpellPhaseTimer4.Update(delta);
 
         var spell1 = SpellFactory.Create("medusa_wave1");
-        
+
         if (SpellPhaseTimer4.IntervalElapsed)
         {
             var point = new Point(11, 22);
@@ -199,7 +202,7 @@ public sealed class MedusaPhaseScript : MonsterScriptBase
                 AnimationSpeed = 200,
                 TargetAnimation = 483
             };
-            Subject.Animate(ani2);
+            Subject.MapInstance.ShowAnimation(ani2);
             StoneReady = true;
         }
 
@@ -211,7 +214,7 @@ public sealed class MedusaPhaseScript : MonsterScriptBase
                 TargetAnimation = 490
             };
 
-            Subject.Animate(ani);
+            Subject.MapInstance.ShowAnimation(ani);
         }
 
         if (DelayTimer.IntervalElapsed && StoneReady)
@@ -265,6 +268,7 @@ public sealed class MedusaPhaseScript : MonsterScriptBase
                 }
             }
 
+            Subject.Say("May stone will fill your mortal body.");
             StoneReady = false;
         }
     }
@@ -283,7 +287,7 @@ public sealed class MedusaPhaseScript : MonsterScriptBase
         {
             CurrentPhase++;
             InPhase = true;
-            
+
             if (CurrentPhase > 3)
                 CurrentPhase = 1;
 
@@ -295,20 +299,19 @@ public sealed class MedusaPhaseScript : MonsterScriptBase
             {
                 case 1:
                     SpellPhase(delta);
-            
+
                     break;
                 case 2:
                     FloodRoom(delta);
-            
+
                     break;
                 case 3:
                     SpawnSnakePits(delta);
-            
+
                     break;
             }
 
         // Execute mechanics based on the current phase
-        
     }
 
     #region NukeRoomPhase
