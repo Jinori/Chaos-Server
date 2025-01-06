@@ -1,3 +1,4 @@
+using Chaos.Collections;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -11,6 +12,22 @@ namespace Chaos.Scripting.MonsterScripts.Abstractions;
 /// </summary>
 public abstract class ConfigurableMonsterScriptBase : ConfigurableScriptBase<Monster>, IMonsterScript
 {
+    protected Creature? Target
+    {
+        get => Subject.Target;
+        set => Subject.Target = value;
+    }
+
+    protected virtual ConcurrentDictionary<uint, int> AggroList => Subject.AggroList;
+    protected virtual int AggroRange => Subject.AggroRange;
+    protected virtual MapInstance Map => Subject.MapInstance;
+    protected virtual bool ShouldMove => Subject.MoveTimer.IntervalElapsed;
+    protected virtual bool ShouldUseSkill => Subject.SkillTimer.IntervalElapsed;
+    protected virtual bool ShouldUseSpell => Subject.SpellTimer.IntervalElapsed;
+    protected virtual bool ShouldWander => Subject.WanderTimer.IntervalElapsed;
+    protected virtual IList<Skill> Skills => Subject.Skills;
+    protected virtual IList<Spell> Spells => Subject.Spells;
+    
     /// <inheritdoc />
     protected ConfigurableMonsterScriptBase(Monster subject)
         : base(subject, scriptKey => subject.Template.ScriptVars[scriptKey]) { }

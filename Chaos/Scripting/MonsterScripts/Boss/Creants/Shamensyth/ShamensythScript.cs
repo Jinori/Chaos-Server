@@ -106,13 +106,17 @@ public class ShamensythScript : MonsterScriptBase
     private bool GaveUninterruptedCastWarning;
     private int ChantLineIndex;
     private int SpawnAddsCount;
-    private readonly IMonsterFactory MonsterFactory;
-    private readonly IReactorTileFactory ReactorTileFactory;
     private bool InvertedRoomAoe;
     private bool ShowedSlowRoomAoeAnimation;
     private int RoomAoeAnimationIndex1;
     private int RoomAoeAnimationIndex2;
     private List<Point> RoomAoeAnimationPoints;
+    
+    #region Services
+    private readonly IMonsterFactory MonsterFactory;
+    private readonly IReactorTileFactory ReactorTileFactory;
+    private readonly IEffectFactory EffectFactory;
+    #endregion
     
     #region Timers
     private readonly IIntervalTimer TeleportTimer = new RandomizedIntervalTimer(
@@ -123,7 +127,8 @@ public class ShamensythScript : MonsterScriptBase
     private readonly IIntervalTimer ReignOfFireTimer = new IntervalTimer(TimeSpan.FromSeconds(3), false);
     private readonly IIntervalTimer TeleportPhaseTimer = new IntervalTimer(TimeSpan.FromMinutes(1), false);
     private readonly IIntervalTimer ChantTimer = new IntervalTimer(TimeSpan.FromMilliseconds(2000), false);
-    private readonly IIntervalTimer AfterChantTimer = new IntervalTimer(TimeSpan.FromSeconds(10), false);
+    private readonly IIntervalTimer AfterChantTimer1 = new IntervalTimer(TimeSpan.FromSeconds(5), false);
+    private readonly IIntervalTimer AfterChantTimer2 = new IntervalTimer(TimeSpan.FromSeconds(5), false);
     private readonly IIntervalTimer SpawnAddsTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
     private readonly IIntervalTimer BurningGroundTimer = new IntervalTimer(TimeSpan.FromSeconds(20), false);
     private readonly IIntervalTimer TurnTimer = new IntervalTimer(TimeSpan.FromSeconds(3), false);
@@ -145,11 +150,13 @@ public class ShamensythScript : MonsterScriptBase
         Monster subject,
         ISpellFactory spellFactory,
         IMonsterFactory monsterFactory,
-        IReactorTileFactory reactorTileFactory)
+        IReactorTileFactory reactorTileFactory,
+        IEffectFactory effectFactory)
         : base(subject)
     {
         MonsterFactory = monsterFactory;
         ReactorTileFactory = reactorTileFactory;
+        EffectFactory = effectFactory;
         ArdSrad = spellFactory.Create("ardsrad");
         ArdSradMeall = spellFactory.Create("ardsradmeall");
         ReignOfFire = spellFactory.Create("sham_reignoffire");
@@ -158,7 +165,8 @@ public class ShamensythScript : MonsterScriptBase
 
         RoomeAoePhaseTimer = new SequentialEventTimer(
             Enumerable.Repeat(ChantTimer, ChantLines.Count)
-                      .Append(AfterChantTimer)
+                      .Append(AfterChantTimer1)
+                      .Append(AfterChantTimer2)
                       .ToList());
         
         RoomAoeAnimationPoints = new Circle(RoomAoePoint, 3).GetOrderedOutline()
@@ -312,17 +320,36 @@ public class ShamensythScript : MonsterScriptBase
             }
     }
 
+    private void ApplyInvulnerability()
+    {
+        if (!Subject.Effects.Contains("invulnerability"))
+        {
+            var effect = EffectFactory.Create("invulnerability");
+            Subject.Effects.Apply(Subject, effect);
+        }
+    }
+
+    private void RemoveInvulnerability() => Subject.Effects.Dispel("invulnerability");
+
+    private void AnimateSafePoints()
+    {
+        //only animate safe points during chant timer and AfterChantTimer1
+        if ((RoomeAoePhaseTimer.CurrentTimer != AfterChantTimer2) && SafePointTimer.IntervalElapsed)
+            foreach (var point in SafePoints)
+                Subject.MapInstance.ShowAnimation(SafePointAnimation.GetPointAnimation(point));
+    }
+    
     private void HandleRoomAoe()
     {
+        ApplyInvulnerability();
+        
         if (RoomeAoePhaseTimer.CurrentTimer == ChantTimer)
             HandleRoomAoeAnimation();
         
         if (!InvertedRoomAoe)
         {
-            if (SafePointTimer.IntervalElapsed)
-                foreach (var point in SafePoints)
-                    Subject.MapInstance.ShowAnimation(SafePointAnimation.GetPointAnimation(point));
-
+            AnimateSafePoints();
+            
             if (RoomeAoePhaseTimer.IntervalElapsed)
                 if (RoomeAoePhaseTimer.CurrentTimer == ChantTimer)
                 {
@@ -343,7 +370,11 @@ public class ShamensythScript : MonsterScriptBase
                             if(Subject.TryUseSpell(Cataclysm))
                                 Subject.AnimateBody(BodyAnimation.Assail, 70);
                     }
-                } else if (RoomeAoePhaseTimer.CurrentTimer == AfterChantTimer)
+                } else if (RoomeAoePhaseTimer.CurrentTimer == AfterChantTimer1)
+                {
+                    
+                }
+                else if (RoomeAoePhaseTimer.CurrentTimer == AfterChantTimer2)
                 {
                     CurrentPhase = Phase.Teleport;
                     ChantLineIndex = 0;
@@ -353,9 +384,7 @@ public class ShamensythScript : MonsterScriptBase
                 }
         } else
         {
-            if (SafePointTimer.IntervalElapsed)
-                foreach (var point in InvertedSafePoints)
-                    Subject.MapInstance.ShowAnimation(SafePointAnimation.GetPointAnimation(point));
+            AnimateSafePoints();
             
             if (RoomeAoePhaseTimer.IntervalElapsed)
                 if (RoomeAoePhaseTimer.CurrentTimer == ChantTimer)
@@ -377,7 +406,7 @@ public class ShamensythScript : MonsterScriptBase
                             if(Subject.TryUseSpell(ReverseCataclysm))
                                 Subject.AnimateBody(BodyAnimation.Assail, 50);
                     }
-                } else if (RoomeAoePhaseTimer.CurrentTimer == AfterChantTimer)
+                } else if (RoomeAoePhaseTimer.CurrentTimer == AfterChantTimer1)
                 {
                     CurrentPhase = Phase.Teleport;
                     ChantLineIndex = 0;
@@ -471,7 +500,10 @@ public class ShamensythScript : MonsterScriptBase
                 Subject.SpellTimer.Update(delta);
 
                 if (TeleportTimer.IntervalElapsed)
+                {
+                    RemoveInvulnerability();
                     HandleTeleport();
+                }
 
                 //basically his autoattack
                 if (Subject.SpellTimer.IntervalElapsed)

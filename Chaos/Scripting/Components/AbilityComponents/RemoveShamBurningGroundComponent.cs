@@ -47,6 +47,7 @@ public sealed class RemoveShamBurningGroundComponent : IComponent
             case SubjectiveScriptBase<Spell> spellScript:
                 var templateKey = spellScript.Subject.Template.TemplateKey;
                 if (templateKey.EqualsI("tidalbreeze")
+                    || templateKey.EqualsI("tidalwave")
                     || templateKey.ContainsI("ardsal")
                     || templateKey.ContainsI("morsal"))
                     return true;
