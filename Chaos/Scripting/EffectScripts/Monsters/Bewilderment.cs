@@ -17,7 +17,7 @@ public sealed class Bewilderment : ContinuousAnimationEffectBase, HierarchicalEf
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(12);
 
     /// <inheritdoc />
-    public List<string> EffectNameHierarchy { get; init; } = ["bewilderment"];
+    public List<string> EffectNameHierarchy { get; init; } = ["Bewilderment"];
 
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()

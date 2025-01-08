@@ -52,7 +52,12 @@ public class CreantBossMapScript : MapScriptBase
                                         || x.Trackers.Flags.HasFlag(CreantEnums.KilledPhoenix)
                                         || x.Trackers.Flags.HasFlag(CreantEnums.KilledSham)
                                         || x.Trackers.Flags.HasFlag(CreantEnums.KilledTauren)))
+                    {
                         State = ScriptState.CreantKilled;
+
+                        return;
+                    }
+                        
 
                     if (Subject.Template.TemplateKey == "31010")
                         if (Subject.GetEntities<Aisling>()

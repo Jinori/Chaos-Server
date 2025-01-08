@@ -16,6 +16,14 @@ public class Valentines(Dialog subject, IEffectFactory effectFactory) : DialogSc
             if (!isEventActive)
             {
                 Subject.Reply(source, "Looks like I'm all out of candies..");
+
+                return;
+            }
+
+            if (source.Effects.Contains("ValentinesCandy"))
+            {
+                Subject.Reply(source, "You already got some candy!");
+
                 return;
             }
 
@@ -25,9 +33,9 @@ public class Valentines(Dialog subject, IEffectFactory effectFactory) : DialogSc
                     var effect = effectFactory.Create("ValentinesCandy");
                     source.SendOrangeBarMessage("Nadia stuffs a chocolate in your face. Knowledge rates increased!");
                     source.Effects.Apply(source, effect);
+
                     break;
             }
         }
     }
-
 }

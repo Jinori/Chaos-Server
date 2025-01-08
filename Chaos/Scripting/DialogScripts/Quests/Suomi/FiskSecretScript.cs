@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
@@ -102,7 +101,7 @@ public class FiskSecretScript : DialogScriptBase
                 if ((hasStage && (stage == FiskSecretStage.Started4))
                     || (stage == FiskSecretStage.StartedBouquet)
                     || (stage == FiskSecretStage.StartedBouquet1)
-                || (stage == FiskSecretStage.CollectedBouquet))
+                    || (stage == FiskSecretStage.CollectedBouquet))
                 {
                     Subject.Reply(source, "Skip", "FiskSecret_startedreturn4");
 
@@ -144,15 +143,17 @@ public class FiskSecretScript : DialogScriptBase
                     return;
                 }
 
-                if (hasStage && stage == FiskSecretStage.WontTell2)
+                if (hasStage && (stage == FiskSecretStage.WontTell2))
                 {
                     Subject.Reply(source, "Go try speaking to her again. I have faith in you.");
+
                     return;
                 }
-                
-                if (hasStage && stage == FiskSecretStage.MushroomStart)
+
+                if (hasStage && (stage == FiskSecretStage.MushroomStart))
                 {
                     Subject.Reply(source, "She wants you to collect mushrooms? Well, I guess go collect mushrooms, we need that flower.");
+
                     return;
                 }
 
@@ -185,7 +186,7 @@ public class FiskSecretScript : DialogScriptBase
                 }
 
                 break;
-        }
+            }
             case "petunia_start3":
             {
                 source.SendOrangeBarMessage("Go talk to Eeva at the Inn to get Petunias.");
@@ -453,7 +454,7 @@ public class FiskSecretScript : DialogScriptBase
                 var waterlily = ItemFactory.Create("waterlily");
                 waterlily.Count = 5;
                 source.GiveItemOrSendToBank(waterlily);
-                Subject.Reply(source, "I knew I can count on you. I wish I knew the secret, but this will do. Thank you and Good luck!");
+                Subject.Reply(source, "I knew I could count on you. I wish I knew the secret, but this will do. Thank you and Good luck!");
 
                 return;
             }
@@ -577,6 +578,7 @@ public class FiskSecretScript : DialogScriptBase
             case "pinkrose_start3":
             {
                 source.SendOrangeBarMessage("Speak to Vivianne to get a Pink Rose from her garden.");
+
                 break;
             }
             case "pinkrose_end":
@@ -607,9 +609,7 @@ public class FiskSecretScript : DialogScriptBase
                 pinkrose.Count = 1;
                 source.GiveItemOrSendToBank(pinkrose);
 
-                Subject.Reply(
-                    source,
-                    "That will do. Here's your pink rose. Thank you, tell Fisk I said hi.");
+                Subject.Reply(source, "That will do. Here's your pink rose. Thank you, tell Fisk I said hi.");
 
                 return;
             }
@@ -638,9 +638,7 @@ public class FiskSecretScript : DialogScriptBase
                 pinkrose.Count = 1;
                 source.GiveItemOrSendToBank(pinkrose);
 
-                Subject.Reply(
-                    source,
-                    "That will do. Here's your pink rose. Thank you, tell Fisk I said hi.");
+                Subject.Reply(source, "That will do. Here's your pink rose. Thank you, tell Fisk I said hi.");
 
                 return;
             }
@@ -666,9 +664,7 @@ public class FiskSecretScript : DialogScriptBase
                 pinkrose.Count = 1;
                 source.GiveItemOrSendToBank(pinkrose);
 
-                Subject.Reply(
-                    source,
-                    "That will do. Here's your pink rose. Thank you, tell Fisk I said hi.");
+                Subject.Reply(source, "That will do. Here's your pink rose. Thank you, tell Fisk I said hi.");
 
                 break;
             }
@@ -677,12 +673,12 @@ public class FiskSecretScript : DialogScriptBase
             #region VivekaBouquet
             case "viveka_initial":
             {
-                if (hasStage && stage == FiskSecretStage.Started4 || 
-                    stage == FiskSecretStage.StartedBouquet || 
-                    stage == FiskSecretStage.StartedBouquet1 || 
-                    stage == FiskSecretStage.CollectedBouquet || 
-                    hasStage2 && stage2 == FiskRemakeBouquet.BouquetWait || 
-                    stage2 == FiskRemakeBouquet.RemadeBouquet)
+                if ((hasStage && (stage == FiskSecretStage.Started4))
+                    || (stage == FiskSecretStage.StartedBouquet)
+                    || (stage == FiskSecretStage.StartedBouquet1)
+                    || (stage == FiskSecretStage.CollectedBouquet)
+                    || (hasStage2 && (stage2 == FiskRemakeBouquet.BouquetWait))
+                    || (stage2 == FiskRemakeBouquet.RemadeBouquet))
                 {
                     var option = new DialogOption
                     {

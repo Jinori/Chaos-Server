@@ -23,6 +23,7 @@ public class SplashComponent<TEntity> : IConditionalComponent where TEntity : Ma
         foreach (var target in targets.ToList())
         {
             var localSplashTargets = context.TargetMap.GetEntitiesWithinRange<TEntity>(target, options.SplashDistance)
+                                            .Where(x => !x.Equals(context.TargetCreature))
                 .WithFilter(context.Source, options.SplashFilter);
 
             foreach(var localSplashTarget in localSplashTargets)

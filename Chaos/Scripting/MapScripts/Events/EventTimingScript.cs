@@ -1,37 +1,37 @@
 using Chaos.Collections;
+using Chaos.Extensions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Storage.Abstractions;
 
-namespace Chaos.Scripting.MapScripts.Events
+namespace Chaos.Scripting.MapScripts.Events;
+
+public class EventTimingScript(MapInstance subject, ISimpleCache simpleCache) : MapScriptBase(subject)
 {
-    public class EventTimingScript(MapInstance subject, ISimpleCache simpleCache) : MapScriptBase(subject)
+    public override void OnEntered(Creature creature)
     {
-        public override void OnEntered(Creature creature)
-        {
-            if (creature is not Aisling aisling)
-                return;
+        if (creature is not Aisling aisling)
+            return;
 
-            // Check if the current map has any active events
-            var isEventActive = EventPeriod.IsEventActive(DateTime.UtcNow, Subject.InstanceId);
+        // Check if the current map has any active events
+        var isEventActive = EventPeriod.IsEventActive(DateTime.UtcNow, Subject.InstanceId);
 
-            // Send the player home if no events are active for the current map and the player is not an admin
-            if (!isEventActive && !aisling.IsAdmin)
-            {
-                SendToTemple(aisling);
-            }
-        }
+        // Send the player home if no events are active for the current map and the player is not an admin
+        if (!isEventActive && !aisling.IsGodModeEnabled())
+            SendToTemple(aisling);
+    }
 
-        /// <summary>
-        /// Sends the specified aisling home.
-        /// </summary>
-        /// <param name="aisling">The aisling to send home.</param>
-        private void SendToTemple(Aisling aisling)
-        {
-            aisling.SendOrangeBarMessage("This area is only accessible during specific event periods.");
-            var defaultMapInstance = simpleCache.Get<MapInstance>("toc");
-            aisling.TraverseMap(defaultMapInstance, new Point(8, 5));
-        }
+    /// <summary>
+    ///     Sends the specified aisling home.
+    /// </summary>
+    /// <param name="aisling">
+    ///     The aisling to send home.
+    /// </param>
+    private void SendToTemple(Aisling aisling)
+    {
+        aisling.SendOrangeBarMessage("This area is only accessible during specific event periods.");
+        var defaultMapInstance = simpleCache.Get<MapInstance>("toc");
+        aisling.TraverseMap(defaultMapInstance, new Point(8, 5));
     }
 }

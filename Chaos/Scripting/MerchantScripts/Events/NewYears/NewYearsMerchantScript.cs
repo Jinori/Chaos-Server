@@ -17,6 +17,231 @@ namespace Chaos.Scripting.MerchantScripts.Events.NewYears;
 
 public class NewYearsMerchantScript : MerchantScriptBase
 {
+    private readonly IIntervalTimer CheckEventActive;
+
+    private readonly IIntervalTimer FireworkDelay;
+
+    private readonly IIntervalTimer FireworkDelay2;
+
+    private readonly IIntervalTimer FireworkTimer;
+
+    private readonly IIntervalTimer SayTimer;
+
+    private IEnumerable<Aisling>? AislingsAtStart { get; set; }
+    private bool AnnouncedFireworksBegin { get; set; }
+
+    private bool AnnouncedFireWorksFiveMinutes { get; set; }
+    private bool AnnouncedFireworksOneMinute { get; set; }
+
+    private int CurrentMessageIndex { get; set; }
+    private DateTime? FireworkAnnouncementTime { get; set; }
+    private bool FireworksCompleted { get; set; }
+
+    private bool GMThankYouComplete { get; set; }
+
+    protected Animation Ani { get; } = new()
+    {
+        AnimationSpeed = 200,
+        TargetAnimation = 359
+    };
+
+    protected IClientRegistry<IChaosWorldClient> ClientRegistry { get; }
+    private IExperienceDistributionScript ExperienceDistributionScript { get; }
+
+    protected Animation Firework1 { get; } = new()
+    {
+        AnimationSpeed = 200,
+        TargetAnimation = 289
+    };
+
+    protected Animation Firework2 { get; } = new()
+    {
+        AnimationSpeed = 200,
+        TargetAnimation = 294
+    };
+
+    protected Animation Firework3 { get; } = new()
+    {
+        AnimationSpeed = 200,
+        TargetAnimation = 304
+    };
+
+    protected Animation Firework4 { get; } = new()
+    {
+        AnimationSpeed = 100,
+        TargetAnimation = 359
+    };
+
+    protected IItemFactory ItemFactory { get; }
+
+    private void AnnounceFireworkBeginning()
+    {
+        foreach (var client in ClientRegistry)
+            client.Aisling.SendActiveMessage("Fireworks show will begin in five minutes in Rucesion.");
+
+        AislingsAtStart = Subject.MapInstance
+                                 .GetEntities<Aisling>()
+                                 .Where(x => !x.Legend.ContainsKey("2025"))
+                                 .ToList();
+    }
+
+    public void AnnounceFireworkFiveMinuteStart()
+    {
+        foreach (var client in ClientRegistry)
+            client.Aisling.SendActiveMessage("Firework show will begin in five minutes in Rucesion.");
+    }
+
+    public void AnnounceFireworkOneMinuteStart()
+    {
+        foreach (var client in ClientRegistry)
+            client.Aisling.SendActiveMessage("Firework show will begin in one minute in Rucesion.");
+    }
+
+    private void ConductFireworks(TimeSpan delta)
+    {
+        FireworkTimer.Update(delta);
+        FireworkDelay.Update(delta);
+        FireworkDelay2.Update(delta);
+
+        if (FireworkTimer.IntervalElapsed)
+            FireworksCompleted = true;
+
+        if (FireworkDelay.IntervalElapsed)
+        {
+            var roll = IntegerRandomizer.RollSingle(3);
+
+            var rectangle = new Rectangle(
+                Subject.X - 12,
+                Subject.Y - 12,
+                13,
+                13);
+
+            var randomPoint = rectangle.GetRandomPoint();
+
+            if (FireworkDelay2.IntervalElapsed)
+                Subject.MapInstance.ShowAnimation(Firework4.GetPointAnimation(randomPoint));
+
+            switch (roll)
+            {
+                case 1:
+                    Subject.MapInstance.ShowAnimation(Firework1.GetPointAnimation(randomPoint));
+
+                    break;
+                case 2:
+                    Subject.MapInstance.ShowAnimation(Firework2.GetPointAnimation(randomPoint));
+
+                    break;
+                case 3:
+                    Subject.MapInstance.ShowAnimation(Firework3.GetPointAnimation(randomPoint));
+
+                    break;
+            }
+        }
+    }
+
+    private void ConductGMThankYou(TimeSpan delta)
+    {
+        SayTimer.Update(delta);
+
+        if (SayTimer.IntervalElapsed && (CurrentMessageIndex < NewYearMessage.Count))
+        {
+            Subject.Say(NewYearMessage[CurrentMessageIndex]);
+            CurrentMessageIndex++;
+
+            if (CurrentMessageIndex >= NewYearMessage.Count)
+                GMThankYouComplete = true;
+        }
+    }
+
+    private void PostFireworkReward()
+    {
+        Subject.Say("Firework show is over!");
+
+        var aislingsAtEnd = Subject.MapInstance
+                                   .GetEntities<Aisling>()
+                                   .ToList();
+
+        var aislingsStillHere = AislingsAtStart!.Intersect(aislingsAtEnd)
+                                                .Where(x => !x.Legend.ContainsKey("2025"))
+                                                .ToList();
+
+        foreach (var player in aislingsStillHere)
+        {
+            player.Animate(Ani);
+
+            player.TryGiveGamePoints(50);
+            player.Trackers.TimedEvents.AddEvent("newyear", TimeSpan.FromDays(14), true);
+
+            if (player.UserStatSheet.Level < 99)
+            {
+                var tnl = LevelUpFormulae.Default.CalculateTnl(player);
+                ExperienceDistributionScript.GiveExp(player, tnl);
+            } else
+                ExperienceDistributionScript.GiveExp(player, 100000000);
+
+            player.Legend.AddUnique(
+                new LegendMark(
+                    "Celebrated the New Year (2025)",
+                    "2025",
+                    MarkIcon.Heart,
+                    MarkColor.Yellow,
+                    1,
+                    GameTime.Now));
+        }
+
+        Subject.CurrentlyShootingFireworks = false;
+    }
+
+    private void ResetScript()
+    {
+        Subject.CurrentlyShootingFireworks = true;
+        AnnouncedFireworksBegin = false;
+        CurrentMessageIndex = 0;
+        AnnouncedFireWorksFiveMinutes = false;
+        AnnouncedFireworksOneMinute = false;
+        GMThankYouComplete = false;
+        FireworksCompleted = false;
+    }
+
+    public override void Update(TimeSpan delta)
+    {
+        if ((DateTime.UtcNow.Minute == 55) && !Subject.CurrentlyShootingFireworks)
+            ResetScript();
+
+        if (Subject.CurrentlyShootingFireworks)
+        {
+            if (!AnnouncedFireWorksFiveMinutes)
+            {
+                AnnounceFireworkFiveMinuteStart();
+                FireworkAnnouncementTime = DateTime.UtcNow;
+                AnnouncedFireWorksFiveMinutes = true;
+            } else if (FireworkAnnouncementTime.HasValue
+                       && (DateTime.UtcNow.Subtract(FireworkAnnouncementTime.Value)
+                                   .TotalMinutes
+                           >= 4)
+                       && !AnnouncedFireworksOneMinute)
+            {
+                AnnounceFireworkOneMinuteStart();
+                AnnouncedFireworksOneMinute = true;
+            } else if (AnnouncedFireworksOneMinute && !GMThankYouComplete)
+                ConductGMThankYou(delta);
+            else if (FireworkAnnouncementTime.HasValue
+                     && (DateTime.UtcNow.Subtract(FireworkAnnouncementTime.Value)
+                                 .TotalMinutes
+                         >= 5)
+                     && !AnnouncedFireworksBegin
+                     && GMThankYouComplete)
+            {
+                AnnounceFireworkBeginning();
+                AnnouncedFireworksBegin = true;
+                FireworkAnnouncementTime = null; // Resetting the timer
+            } else if (AnnouncedFireworksBegin && !FireworksCompleted)
+                ConductFireworks(delta);
+            else if (FireworksCompleted)
+                PostFireworkReward();
+        }
+    }
+
     #region MassMessages
     private readonly List<string> NewYearMessage =
     [
@@ -43,9 +268,8 @@ public class NewYearsMerchantScript : MerchantScriptBase
         "Let the Fireworks Begin!"
     ];
 
-    public NewYearsMerchantScript(Merchant subject,
-        IClientRegistry<IChaosWorldClient> clientRegistry,
-        IItemFactory itemFactory) : base(subject)
+    public NewYearsMerchantScript(Merchant subject, IClientRegistry<IChaosWorldClient> clientRegistry, IItemFactory itemFactory)
+        : base(subject)
     {
         ClientRegistry = clientRegistry;
         ItemFactory = itemFactory;
@@ -56,245 +280,5 @@ public class NewYearsMerchantScript : MerchantScriptBase
         FireworkTimer = new IntervalTimer(TimeSpan.FromMinutes(3), false);
         CheckEventActive = new IntervalTimer(TimeSpan.FromSeconds(1), false);
     }
-
     #endregion FireworksMessages
-
-    private IEnumerable<Aisling>? AislingsAtStart { get; set; }
-    private IExperienceDistributionScript ExperienceDistributionScript { get; }
-
-    private readonly IIntervalTimer SayTimer;
-
-    private readonly IIntervalTimer CheckEventActive;
-    
-    private readonly IIntervalTimer FireworkTimer;
-    
-    private readonly IIntervalTimer FireworkDelay;
-    
-    private readonly IIntervalTimer FireworkDelay2;
-    private bool AnnouncedFireworksBegin { get; set; }
-    
-    private int CurrentMessageIndex { get; set; }
-
-    private bool AnnouncedFireWorksFiveMinutes { get; set; }
-    private bool AnnouncedFireworksOneMinute { get; set; }
-    
-    private bool GMThankYouComplete { get; set; }
-    private DateTime? FireworkAnnouncementTime { get; set; }
-    private bool FireworksCompleted { get; set; }
-    protected IClientRegistry<IChaosWorldClient> ClientRegistry { get; }
-
-    protected IItemFactory ItemFactory { get; }
-
-    protected Animation Firework1 { get; } = new()
-    {
-        AnimationSpeed = 200,
-        TargetAnimation = 289
-    };
-    
-    protected Animation Firework2 { get; } = new()
-    {
-        AnimationSpeed = 200,
-        TargetAnimation = 294
-    };
-    
-    protected Animation Firework3 { get; } = new()
-    {
-        AnimationSpeed = 200,
-        TargetAnimation = 304
-    };
-    
-    protected Animation Firework4 { get; } = new()
-         {
-        AnimationSpeed = 100,
-        TargetAnimation = 359
-    };
-    
-    protected Animation Ani { get; } = new()
-    {
-        AnimationSpeed = 200,
-        TargetAnimation = 359
-    };
-
-    private void AnnounceFireworkBeginning()
-    {
-        foreach (var client in ClientRegistry)
-            client.Aisling.SendActiveMessage("Fireworks show will begin in five minutes in Rucesion.");
-
-        AislingsAtStart = Subject.MapInstance.GetEntities<Aisling>().Where(x => !x.Legend.ContainsKey("2025")).ToList();
-    }
-
-    private void ConductGMThankYou(TimeSpan delta)
-    {
-        SayTimer.Update(delta);
-        
-        if (SayTimer.IntervalElapsed && (CurrentMessageIndex < NewYearMessage.Count))
-        {
-            Subject.Say(NewYearMessage[CurrentMessageIndex]);
-            CurrentMessageIndex++;
-
-            if (CurrentMessageIndex >= NewYearMessage.Count)
-            {
-                GMThankYouComplete = true;
-            }
-        }
-    }
-
-    public void AnnounceFireworkFiveMinuteStart()
-    {
-        foreach (var client in ClientRegistry)
-            client.Aisling.SendActiveMessage("Firework show will begin in five minutes in Rucesion.");
-    }
-
-    public void AnnounceFireworkOneMinuteStart()
-    {
-        foreach (var client in ClientRegistry)
-            client.Aisling.SendActiveMessage("Firework show will begin in one minute in Rucesion.");
-    }
-
-    private void ConductFireworks(TimeSpan delta)
-    {
-        FireworkTimer.Update(delta);
-        FireworkDelay.Update(delta);
-        FireworkDelay2.Update(delta);
-        
-        if (FireworkTimer.IntervalElapsed)
-        {
-            FireworksCompleted = true;
-        }
-
-        if (FireworkDelay.IntervalElapsed)
-        {
-            var roll = IntegerRandomizer.RollSingle(3);
-
-            var rectangle = new Rectangle(
-                Subject.X - 12,
-                Subject.Y - 12,
-                13,
-                13);
-
-            var randomPoint = rectangle.GetRandomPoint();
-            
-            if (FireworkDelay2.IntervalElapsed)
-            {
-                Subject.MapInstance.ShowAnimation(Firework4.GetPointAnimation(randomPoint));
-            }
-
-            switch (roll)
-            {
-                case 1:
-                    Subject.MapInstance.ShowAnimation(Firework1.GetPointAnimation(randomPoint));
-
-                    break;
-                case 2:
-                    Subject.MapInstance.ShowAnimation(Firework2.GetPointAnimation(randomPoint));
-
-                    break;
-                case 3:
-                    Subject.MapInstance.ShowAnimation(Firework3.GetPointAnimation(randomPoint));
-
-                    break;
-            }
-        }
-    }
-
-    private void PostFireworkReward()
-    {
-        Subject.Say("Firework show is over!");
-        var aislingsAtEnd = Subject.MapInstance.GetEntities<Aisling>().ToList();
-        var aislingsStillHere = AislingsAtStart!.Intersect(aislingsAtEnd).Where(x => !x.Legend.ContainsKey("2025")).ToList();
-
-        foreach (var player in aislingsStillHere)
-        {
-            player.Animate(Ani);
-
-            player.TryGiveGamePoints(50);
-            player.Trackers.TimedEvents.AddEvent("newyear", TimeSpan.FromDays(14), true);
-
-            if (player.UserStatSheet.Level < 99)
-            {
-                var tnl = LevelUpFormulae.Default.CalculateTnl(player);
-                ExperienceDistributionScript.GiveExp(player, tnl);
-            } else
-                ExperienceDistributionScript.GiveExp(player, 100000000);
-            
-            player.Legend.AddUnique(
-                new LegendMark(
-                    "Celebrated the New Year (2025)",
-                    "2025",
-                    MarkIcon.Heart,
-                    MarkColor.Yellow,
-                    1,
-                    GameTime.Now));
-        }
-        
-        Subject.CurrentlyShootingFireworks = false;
-    }
-
-    private void ResetScript()
-    {
-        Subject.CurrentlyShootingFireworks = true;
-        AnnouncedFireworksBegin = false;
-        CurrentMessageIndex = 0;
-        AnnouncedFireWorksFiveMinutes = false;
-        AnnouncedFireworksOneMinute = false;
-        GMThankYouComplete = false;
-        FireworksCompleted = false;
-    }
-
-    public override void Update(TimeSpan delta)
-    {
-        CheckEventActive.Update(delta);
-        
-        if (CheckEventActive.IntervalElapsed)
-        {
-            var isEventActive = EventPeriod.IsEventActive(DateTime.UtcNow, Subject.MapInstance.InstanceId);
-
-            if (!isEventActive)
-            {
-                Subject.MapInstance.RemoveEntity(Subject);
-
-                return;
-            }
-        }
-
-        if ((DateTime.UtcNow.Minute == 55) && !Subject.CurrentlyShootingFireworks) 
-            ResetScript();
-
-        if (Subject.CurrentlyShootingFireworks)
-        {
-            if (!AnnouncedFireWorksFiveMinutes)
-            {
-                AnnounceFireworkFiveMinuteStart();
-                FireworkAnnouncementTime = DateTime.UtcNow;
-                AnnouncedFireWorksFiveMinutes = true;
-            }
-            else if (FireworkAnnouncementTime.HasValue
-                     && (DateTime.UtcNow.Subtract(FireworkAnnouncementTime.Value).TotalMinutes >= 4)
-                     && !AnnouncedFireworksOneMinute)
-            {
-                AnnounceFireworkOneMinuteStart();
-                AnnouncedFireworksOneMinute = true;
-            }
-            else if (AnnouncedFireworksOneMinute && !GMThankYouComplete)
-            {
-                ConductGMThankYou(delta);
-            }
-            else if (FireworkAnnouncementTime.HasValue
-                     && (DateTime.UtcNow.Subtract(FireworkAnnouncementTime.Value).TotalMinutes >= 5)
-                     && !AnnouncedFireworksBegin
-                     && GMThankYouComplete)
-            {
-                AnnounceFireworkBeginning();
-                AnnouncedFireworksBegin = true;
-                FireworkAnnouncementTime = null; // Resetting the timer
-            }
-            else if (AnnouncedFireworksBegin && !FireworksCompleted)
-                ConductFireworks(delta);
-            else if (FireworksCompleted)
-            {
-                PostFireworkReward();
-            }
-            
-        }
-    }
 }

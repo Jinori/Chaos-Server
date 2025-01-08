@@ -84,7 +84,7 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
         SkillPhaseTimer3 = new IntervalTimer(TimeSpan.FromSeconds(30), false);
         SafePointAnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(1));
         DelayTimer = new IntervalTimer(TimeSpan.FromMilliseconds(1250), false);
-        RockFallTimer = new IntervalTimer(TimeSpan.FromSeconds(3), false);
+        RockFallTimer = new IntervalTimer(TimeSpan.FromSeconds(5), false);
         SafePoints = new List<Point>();
         ApplyDamageScript = ApplyAttackDamageScript.Create();
         MonsterFactory = monsterFactory;
@@ -551,8 +551,9 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
             {
                 // Find the Aisling furthest from the subject
                 var furthestAisling = aislings
-                                      .OrderByDescending(a => a.ManhattanDistanceFrom(Subject))
-                                      .FirstOrDefault();
+                                      .Where(a => a.IsAlive && !a.IsGodModeEnabled()) // Filter out non-alive and God mode Aislings
+                                      .OrderByDescending(a => a.ManhattanDistanceFrom(Subject)) // Order by distance
+                                      .FirstOrDefault(); 
 
                 if (furthestAisling != null)
                 {
