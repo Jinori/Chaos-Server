@@ -1022,6 +1022,8 @@ public sealed class MapInstance : IScripted<IMapScript>, IDeltaUpdatable
             });
 
     public void Stop() => MapInstanceCtx.Cancel();
+    
+    public bool IsRunning => !MapInstanceCtx.IsCancellationRequested;
 
     public bool TryGetEntity<T>(uint id, [MaybeNullWhen(false)] out T obj) => Objects.TryGetValue(id, out obj);
 
