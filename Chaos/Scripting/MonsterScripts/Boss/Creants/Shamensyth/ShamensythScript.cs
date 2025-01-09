@@ -414,6 +414,8 @@ public class ShamensythScript : MonsterScriptBase
                                 Subject.AnimateBody(BodyAnimation.Assail, 50);
                     }
                 } else if (RoomeAoePhaseTimer.CurrentTimer == AfterChantTimer1)
+                    RemoveInvulnerability();
+                else if (RoomeAoePhaseTimer.CurrentTimer == AfterChantTimer2)
                 {
                     CurrentPhase = Phase.Teleport;
                     ChantLineIndex = 0;
