@@ -79,10 +79,16 @@ public class PhoenixMovementScript : MonsterScriptBase
                 
                 break;
             }
-            default:
+            case 1:
             {
                 var direction = Target.DirectionalRelationTo(Subject);
                 Subject.Turn(direction);
+                
+                break;
+            }
+            case 0:
+            {
+                Subject.Wander();
                 
                 break;
             }

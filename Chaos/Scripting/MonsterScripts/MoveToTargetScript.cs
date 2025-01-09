@@ -24,12 +24,25 @@ public class MoveToTargetScript : MonsterScriptBase
 
         var distance = Subject.ManhattanDistanceFrom(Target);
 
-        if (distance != 1)
-            Subject.Pathfind(Target);
-        else
+        switch (distance)
         {
-            var direction = Target.DirectionalRelationTo(Subject);
-            Subject.Turn(direction);
+            case > 1:
+                Subject.Pathfind(Target);
+
+                break;
+            case 1:
+            {
+                var direction = Target.DirectionalRelationTo(Subject);
+                Subject.Turn(direction);
+
+                break;
+            }
+            case 0:
+            {
+                Subject.Wander();
+
+                break;
+            }
         }
 
         Subject.WanderTimer.Reset();

@@ -47,25 +47,38 @@ public sealed class WerewolfBossMoveToTargetScript(Monster subject) : MonsterScr
             return;
         }
 
-        if (distance != 1 && distance <= 4)
+        switch (distance)
         {
-            var point1 = new Point(Subject.X, Subject.Y);
-            
-            Subject.Pathfind(Target);
-
-            if (point1 == Subject)
+            case > 1 and <= 4:
             {
-                Subject.TraverseMap(Target.MapInstance, safeSpot);
+                var point1 = new Point(Subject.X, Subject.Y);
+            
+                Subject.Pathfind(Target);
+
+                if (point1 == Subject)
+                {
+                    Subject.TraverseMap(Target.MapInstance, safeSpot);
+                }
+
+                break;
             }
-        }
-        else if (distance >= 4)
-        {
-            Subject.TraverseMap(Target.MapInstance, safeSpot);
-        }
-        else
-        {
-            var direction = Target.DirectionalRelationTo(Subject);
-            Subject.Turn(direction);
+            case > 4:
+                Subject.TraverseMap(Target.MapInstance, safeSpot);
+
+                break;
+            case 1:
+            {
+                var direction = Target.DirectionalRelationTo(Subject);
+                Subject.Turn(direction);
+
+                break;
+            }
+            case 0:
+            {
+                Subject.Wander();
+
+                break;
+            }
         }
 
         Subject.WanderTimer.Reset();

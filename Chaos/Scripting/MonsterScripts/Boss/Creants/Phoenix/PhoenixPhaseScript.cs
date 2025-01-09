@@ -20,14 +20,14 @@ namespace Chaos.Scripting.MonsterScripts.Boss.Creants.Phoenix;
 
 public class PhoenixPhaseScript : MonsterScriptBase
 {
-    private enum Phase
+    public enum Phase
     {
         Normal,
         Abduct,
         Drop
     }
     
-    private Phase CurrentPhase = Phase.Normal;
+    public Phase CurrentPhase { get; set; } = Phase.Normal;
     private Aisling? AislingToDrop;
     private MapInstance? SkyShard;
     private readonly IApplyDamageScript ApplyDamageScript = ApplyNonAttackDamageScript.Create();

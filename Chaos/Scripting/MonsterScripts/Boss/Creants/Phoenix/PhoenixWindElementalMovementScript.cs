@@ -1,4 +1,5 @@
 using Chaos.Common.Utilities;
+using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
@@ -17,6 +18,9 @@ public class PhoenixWindElementalMovementScript : MonsterScriptBase
         if (Subject.WanderTimer.IntervalElapsed)
         {
             var nearestAislingDistance = Map.GetEntitiesWithinRange<Aisling>(Subject, 9)
+                                            .ThatAreObservedBy(Subject)
+                                            .ThatAreVisibleTo(Subject)
+                                            .ThatAreNotInGodMode()
                                             .Select(aisling => (int?)Subject.ManhattanDistanceFrom(aisling))
                                             .Min();
             

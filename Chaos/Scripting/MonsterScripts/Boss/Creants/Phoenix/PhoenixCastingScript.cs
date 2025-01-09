@@ -23,14 +23,24 @@ public class PhoenixCastingScript : MonsterScriptBase
     {
         HailOfFeathers.Update(delta);
         
+        if (!ShouldUseSpell)
+            return;
+        
         if (Map.LoadedFromInstanceId.ContainsI("sky"))
             return;
 
-        if (!ShouldUseSpell)
+        //do not use spells while in abduct or drop phase
+        var currentPhase = Subject.Script.As<PhoenixPhaseScript>()!
+                                  .CurrentPhase;
+
+        if (currentPhase != PhoenixPhaseScript.Phase.Normal)
             return;
         
         //get nearby aislings
         var nearbyAislings = Map.GetEntitiesWithinRange<Aisling>(Subject)
+                                .ThatAreObservedBy(Subject)
+                                .ThatAreVisibleTo(Subject)
+                                .ThatAreNotInGodMode()
                                 .ToList();
 
         //group by cluster size

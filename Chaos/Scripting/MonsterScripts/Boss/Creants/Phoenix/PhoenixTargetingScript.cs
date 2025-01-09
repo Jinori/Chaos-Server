@@ -17,7 +17,7 @@ public class PhoenixTargetingScript : MonsterScriptBase
 {
     private readonly IIntervalTimer TargetUpdateTimer = new IntervalTimer(TimeSpan.FromMilliseconds(250));
     private readonly IIntervalTimer TargetChangeTimer = new IntervalTimer(TimeSpan.FromSeconds(5));
-    
+
     /// <inheritdoc />
     public PhoenixTargetingScript(Monster subject)
         : base(subject) { }
@@ -27,17 +27,25 @@ public class PhoenixTargetingScript : MonsterScriptBase
     {
         if (Map.LoadedFromInstanceId.ContainsI("sky"))
             return;
-        
+
         TargetUpdateTimer.Update(delta);
         TargetChangeTimer.Update(delta);
 
         if ((Target != null)
-            && (!Target.IsAlive || !Target.OnSameMapAs(Subject) || Target.MapInstance.IsWalkable(Target, CreatureType.Normal)))
+            && (!Target.IsAlive
+                || !Target.OnSameMapAs(Subject)
+                || Target.MapInstance.IsWalkable(Target, CreatureType.Normal)
+                || !Subject.CanObserve(Target)
+                || !Subject.CanSee(Target)
+                || Subject.IsGodModeEnabled()))
             Target = null;
 
         if (TargetUpdateTimer.IntervalElapsed)
-            if(Target is null || Target.IsDead)
+            if (Target is null || Target.IsDead)
                 Target = Map.GetEntitiesWithinRange<Aisling>(Subject)
+                            .ThatAreObservedBy(Subject)
+                            .ThatAreVisibleTo(Subject)
+                            .ThatAreNotInGodMode()
                             .Shuffle()
                             .FirstOrDefault();
 
@@ -45,6 +53,9 @@ public class PhoenixTargetingScript : MonsterScriptBase
         {
             //get nearby aislings
             var nearbyAislings = Map.GetEntitiesWithinRange<Aisling>(Subject)
+                                    .ThatAreObservedBy(Subject)
+                                    .ThatAreVisibleTo(Subject)
+                                    .ThatAreNotInGodMode()
                                     .ToList();
 
             //group by cluster size

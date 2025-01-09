@@ -1,4 +1,5 @@
 using Chaos.Common.Utilities;
+using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
@@ -15,12 +16,12 @@ public class PhoenixSkillScript : MonsterScriptBase
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
-        if (Map.LoadedFromInstanceId.ContainsI("sky"))
-            return;
-        
         if (Target is not { IsAlive: true } || (Subject.ManhattanDistanceFrom(Target) != 1))
             return;
 
+        if (Map.LoadedFromInstanceId.ContainsI("sky"))
+            return;
+        
         var direction = Target.DirectionalRelationTo(Subject);
 
         if (Subject.Direction != direction)
@@ -35,6 +36,12 @@ public class PhoenixSkillScript : MonsterScriptBase
 
         var attacked = false;
 
+        //do not use skills while in abduct or drop phase
+        var currentPhase = Subject.Script.As<PhoenixPhaseScript>()!.CurrentPhase;
+
+        if (currentPhase != PhoenixPhaseScript.Phase.Normal)
+            return;
+        
         foreach (var skill in Skills)
             if (skill.Template.IsAssail)
                 attacked |= Subject.TryUseSkill(skill);

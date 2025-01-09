@@ -45,36 +45,51 @@ public sealed class BossMoveToTargetScript(Monster subject, IEffectFactory effec
             return;
         }
 
-        if ((distance != 1) && (distance <= 4))
-            Subject.Pathfind(Target);
-
-        else if (distance >= 4)
+        switch (distance)
         {
-            var safeSpot = Target.GenerateCardinalPoints()
-                                 .OfType<IPoint>()
-                                 .FirstOrDefault(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
+            case > 1 and <= 4:
+                Subject.Pathfind(Target);
 
-            if (safeSpot is null)
+                break;
+            case > 4:
             {
-                AggroList.Remove(Target.Id, out _);
+                var safeSpot = Target.GenerateCardinalPoints()
+                                     .OfType<IPoint>()
+                                     .FirstOrDefault(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
 
-                Target ??= Map.GetEntitiesWithinRange<Aisling>(Subject, 12)
-                              .ThatAreVisibleTo(Subject)
-                              .Where(
-                                  obj => !obj.Equals(Subject)
-                                         && obj.IsAlive
-                                         && Subject.ApproachTime.TryGetValue(obj, out var time)
-                                         && ((DateTime.UtcNow - time).TotalSeconds >= 1.5))
-                              .ClosestOrDefault(Subject);
+                if (safeSpot is null)
+                {
+                    AggroList.Remove(Target.Id, out _);
 
-                return;
+                    Target ??= Map.GetEntitiesWithinRange<Aisling>(Subject, 12)
+                                  .ThatAreVisibleTo(Subject)
+                                  .Where(
+                                      obj => !obj.Equals(Subject)
+                                             && obj.IsAlive
+                                             && Subject.ApproachTime.TryGetValue(obj, out var time)
+                                             && ((DateTime.UtcNow - time).TotalSeconds >= 1.5))
+                                  .ClosestOrDefault(Subject);
+
+                    return;
+                }
+
+                Subject.WarpTo(safeSpot);
+
+                break;
             }
+            case 1:
+            {
+                var direction = Target.DirectionalRelationTo(Subject);
+                Subject.Turn(direction);
 
-            Subject.WarpTo(safeSpot);
-        } else
-        {
-            var direction = Target.DirectionalRelationTo(Subject);
-            Subject.Turn(direction);
+                break;
+            }
+            case 0:
+            {
+                Subject.Wander();
+
+                break;
+            }
         }
 
         Subject.WanderTimer.Reset();
