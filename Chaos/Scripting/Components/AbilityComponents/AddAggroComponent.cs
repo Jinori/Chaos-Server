@@ -27,7 +27,7 @@ public class AddAggroComponent : IComponent
 
             monster?.AggroList.AddOrUpdate(
                 context.Source.Id,
-                _ => aggroAmount * (int)aggroMultiplier,
+                _ => aggroAmount * aggroMultiplier,
                 (_, currentAggro) => currentAggro + aggroAmount * aggroMultiplier);
         }
     }

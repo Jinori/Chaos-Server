@@ -19,7 +19,7 @@ public class PullAggroComponent : IComponent
         var options = vars.GetOptions<IAddAggroComponentOptions>();
         var targets = vars.GetTargets<Creature>();
         var aggroAmount = options.AggroAmount ?? 0;
-        var aggroMultiplier = options.AggroMultiplier ?? Stat.STR;
+        var aggroMultiplier = context.Source.StatSheet.GetEffectiveStat(options.AggroMultiplier ?? Stat.STR);
 
         foreach (var target in targets)
         {
@@ -34,8 +34,8 @@ public class PullAggroComponent : IComponent
             // Add or update aggro
             monster?.AggroList.AddOrUpdate(
                 context.Source.Id,
-                _ => aggroAmount * (int)aggroMultiplier,
-                (_, currentAggro) => currentAggro + aggroAmount * (int)aggroMultiplier);
+                _ => aggroAmount * aggroMultiplier,
+                (_, currentAggro) => currentAggro + aggroAmount * aggroMultiplier);
 
             // Pull the target to the user
             PullTargetToUser(target, context.Source);
