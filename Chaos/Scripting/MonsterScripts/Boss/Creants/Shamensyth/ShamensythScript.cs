@@ -124,7 +124,7 @@ public class ShamensythScript : MonsterScriptBase
         15,
         RandomizationType.Positive,
         false);
-    private readonly IIntervalTimer ReignOfFireTimer = new IntervalTimer(TimeSpan.FromSeconds(3), false);
+    private readonly IIntervalTimer ReignOfFireTimer = new IntervalTimer(TimeSpan.FromSeconds(2), false);
     private readonly IIntervalTimer TeleportPhaseTimer = new IntervalTimer(TimeSpan.FromMinutes(1), false);
     private readonly IIntervalTimer ChantTimer = new IntervalTimer(TimeSpan.FromMilliseconds(2000), false);
     private readonly IIntervalTimer AfterChantTimer1 = new IntervalTimer(TimeSpan.FromSeconds(5), false);
@@ -138,8 +138,8 @@ public class ShamensythScript : MonsterScriptBase
     #endregion
     
     #region Spells
-    private readonly Spell ArdSradMeall;
-    private readonly Spell ArdSrad;
+    private readonly Spell BlazingNova;
+    private readonly Spell FocusedDestruction;
     private readonly Spell ReignOfFire;
     private readonly Spell Cataclysm;
     private readonly Spell ReverseCataclysm;
@@ -157,8 +157,8 @@ public class ShamensythScript : MonsterScriptBase
         MonsterFactory = monsterFactory;
         ReactorTileFactory = reactorTileFactory;
         EffectFactory = effectFactory;
-        ArdSrad = spellFactory.Create("ardsrad");
-        ArdSradMeall = spellFactory.Create("ardsradmeall");
+        FocusedDestruction = spellFactory.Create("sham_focusedDestruction");
+        BlazingNova = spellFactory.Create("sham_blazingNova");
         ReignOfFire = spellFactory.Create("sham_reignoffire");
         Cataclysm = spellFactory.Create("sham_cataclysm");
         ReverseCataclysm = spellFactory.Create("sham_reverseCataclysm");
@@ -338,6 +338,14 @@ public class ShamensythScript : MonsterScriptBase
             foreach (var point in SafePoints)
                 Subject.MapInstance.ShowAnimation(SafePointAnimation.GetPointAnimation(point));
     }
+
+    private void AnimateInvertedSafePoints()
+    {
+        //only animate safe points during chant timer and AfterChantTimer1
+        if ((RoomeAoePhaseTimer.CurrentTimer != AfterChantTimer2) && SafePointTimer.IntervalElapsed)
+            foreach (var point in InvertedSafePoints)
+                Subject.MapInstance.ShowAnimation(SafePointAnimation.GetPointAnimation(point));
+    }
     
     private void HandleRoomAoe()
     {
@@ -371,9 +379,7 @@ public class ShamensythScript : MonsterScriptBase
                                 Subject.AnimateBody(BodyAnimation.Assail, 70);
                     }
                 } else if (RoomeAoePhaseTimer.CurrentTimer == AfterChantTimer1)
-                {
-                    
-                }
+                    RemoveInvulnerability();
                 else if (RoomeAoePhaseTimer.CurrentTimer == AfterChantTimer2)
                 {
                     CurrentPhase = Phase.Teleport;
@@ -384,7 +390,7 @@ public class ShamensythScript : MonsterScriptBase
                 }
         } else
         {
-            AnimateSafePoints();
+            AnimateInvertedSafePoints();
             
             if (RoomeAoePhaseTimer.IntervalElapsed)
                 if (RoomeAoePhaseTimer.CurrentTimer == ChantTimer)
@@ -481,8 +487,8 @@ public class ShamensythScript : MonsterScriptBase
         SafePointTimer.Update(delta);
         
         //spell updates
-        ArdSradMeall.Update(delta);
-        ArdSrad.Update(delta);
+        BlazingNova.Update(delta);
+        FocusedDestruction.Update(delta);
         
         //do things independent of phase
         HandleFacing();
@@ -500,16 +506,21 @@ public class ShamensythScript : MonsterScriptBase
                 Subject.SpellTimer.Update(delta);
 
                 if (TeleportTimer.IntervalElapsed)
-                {
-                    RemoveInvulnerability();
                     HandleTeleport();
-                }
 
-                //basically his autoattack
+                //basically his autoattacks
                 if (Subject.SpellTimer.IntervalElapsed)
+                {
                     if (Subject.Target is not null)
-                        if (Subject.TryUseSpell(ArdSrad, Subject.Target.Id) || Subject.TryUseSpell(ArdSradMeall, Subject.Target.Id))
-                            Subject.AnimateBody(BodyAnimation.Assail);
+                        Subject.TryUseSpell(FocusedDestruction, Subject.Target.Id);
+
+                    var surroundingPoints = Subject.SpiralSearch(2);
+                    var aislingIsNearby = Map.GetEntitiesAtPoints<Aisling>(surroundingPoints)
+                                             .Any();
+
+                    if (aislingIsNearby)
+                        Subject.TryUseSpell(BlazingNova);
+                }
 
                 if (ReignOfFireTimer.IntervalElapsed)
                     HandleReignOfFire();
