@@ -349,11 +349,12 @@ public class ShamensythScript : MonsterScriptBase
     
     private void HandleRoomAoe()
     {
-        ApplyInvulnerability();
-        
         if (RoomeAoePhaseTimer.CurrentTimer == ChantTimer)
+        {
+            ApplyInvulnerability();
             HandleRoomAoeAnimation();
-        
+        }
+
         if (!InvertedRoomAoe)
         {
             AnimateSafePoints();

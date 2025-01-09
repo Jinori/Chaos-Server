@@ -37,7 +37,8 @@ public class PhoenixTargetingScript : MonsterScriptBase
                 || Target.MapInstance.IsWalkable(Target, CreatureType.Normal)
                 || !Subject.CanObserve(Target)
                 || !Subject.CanSee(Target)
-                || Subject.IsGodModeEnabled()))
+                || Subject.IsGodModeEnabled()
+                || !Subject.IsAlive))
             Target = null;
 
         if (TargetUpdateTimer.IntervalElapsed)
@@ -46,6 +47,7 @@ public class PhoenixTargetingScript : MonsterScriptBase
                             .ThatAreObservedBy(Subject)
                             .ThatAreVisibleTo(Subject)
                             .ThatAreNotInGodMode()
+                            .ThatAreAlive()
                             .Shuffle()
                             .FirstOrDefault();
 
@@ -56,6 +58,7 @@ public class PhoenixTargetingScript : MonsterScriptBase
                                     .ThatAreObservedBy(Subject)
                                     .ThatAreVisibleTo(Subject)
                                     .ThatAreNotInGodMode()
+                                    .ThatAreAlive()
                                     .ToList();
 
             //group by cluster size
