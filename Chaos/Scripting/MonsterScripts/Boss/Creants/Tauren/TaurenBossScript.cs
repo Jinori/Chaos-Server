@@ -11,14 +11,14 @@ public class TaurenBossScript : CompositeMonsterScript
         GetScriptKey(typeof(DefaultBehaviorsScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),
-        GetScriptKey(typeof(WanderingScript)),
+        GetScriptKey(typeof(TaurenWanderingScript)),
         GetScriptKey(typeof(DisplayNameScript)),
         GetScriptKey(typeof(ThisIsABossScript)),
         GetScriptKey(typeof(CreantDeathScript)),
         GetScriptKey(typeof(TaurenPhaseScript)),
         GetScriptKey(typeof(TaurenMoveToTargetScript)),
         GetScriptKey(typeof(TaurenCastingScript)),
-        GetScriptKey(typeof(TaurenAttackingScript)),
+        GetScriptKey(typeof(TaurenAttackingScript))
     };
 
     /// <inheritdoc />

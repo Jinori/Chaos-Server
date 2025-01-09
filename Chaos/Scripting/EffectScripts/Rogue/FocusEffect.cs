@@ -15,10 +15,11 @@ public class FocusEffect : EffectBase, NonOverwritableEffectComponent.INonOverwr
 
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(25);
 
-    protected Animation? Animation { get; } = new()
+    protected Animation Animation { get; } = new()
     {
         TargetAnimation = 88,
-        AnimationSpeed = 100
+        AnimationSpeed = 200,
+        Priority = 5
     };
 
     public override byte Icon => 100;
@@ -40,6 +41,7 @@ public class FocusEffect : EffectBase, NonOverwritableEffectComponent.INonOverwr
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are now focused.");
+        Subject.Animate(Animation);
     }
 
     public override void OnDispelled() => OnTerminated();

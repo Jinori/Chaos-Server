@@ -1,3 +1,4 @@
+using Chaos.Models.Data;
 using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.HideEffects;
@@ -6,14 +7,24 @@ public sealed class SeeHideEffect : EffectBase
 {
     /// <inheritdoc />
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(30);
-    /// <inheritdoc />
+
     public override byte Icon => 6;
+
     /// <inheritdoc />
     public override string Name => "See Hide";
 
     /// <inheritdoc />
     public override void OnApplied()
     {
+        var ani = new Animation
+        {
+            TargetAnimation = 1,
+            AnimationSpeed = 200,
+            Priority = 5
+        };
+
+        Subject.Animate(ani);
+
         AislingSubject?.SendOrangeBarMessage("You can now detect hidden things");
         AislingSubject?.Refresh(true);
     }

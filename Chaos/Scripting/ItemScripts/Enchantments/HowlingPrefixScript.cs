@@ -21,7 +21,6 @@ public sealed class HowlingPrefixScript : ItemScriptBase, IEnchantmentScript
             SpellDamagePct = 5
         };
 
-        Subject.Template.RequiresMaster.Equals(true);
         subject.Modifiers.Add(attributes);
     }
 
@@ -29,6 +28,9 @@ public sealed class HowlingPrefixScript : ItemScriptBase, IEnchantmentScript
     public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
     {
         if (!node.Name.StartsWithI("Howling"))
-            yield return node with { Name = $"Howling {node.Name}" };
+            yield return node with
+            {
+                Name = $"Howling {node.Name}"
+            };
     }
 }

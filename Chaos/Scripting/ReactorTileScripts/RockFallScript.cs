@@ -7,7 +7,6 @@ using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -20,12 +19,12 @@ using Chaos.Time.Abstractions;
 namespace Chaos.Scripting.ReactorTileScripts;
 
 public class RockFallScript : ConfigurableReactorTileScriptBase,
-                                GetTargetsAbilityComponent<Creature>.IGetTargetsComponentOptions,
-                                SoundAbilityComponent.ISoundComponentOptions,
-                                AnimationAbilityComponent.IAnimationComponentOptions,
-                                TrapDamageAbilityComponent.ITrapDamageComponentOptions,
-                                ManaDrainAbilityComponent.IManaDrainComponentOptions,
-                                ApplyEffectAbilityComponent.IApplyEffectComponentOptions
+                              GetTargetsAbilityComponent<Creature>.IGetTargetsComponentOptions,
+                              SoundAbilityComponent.ISoundComponentOptions,
+                              AnimationAbilityComponent.IAnimationComponentOptions,
+                              TrapDamageAbilityComponent.ITrapDamageComponentOptions,
+                              ManaDrainAbilityComponent.IManaDrainComponentOptions,
+                              ApplyEffectAbilityComponent.IApplyEffectComponentOptions
 {
     protected IIntervalTimer AnimationTimer { get; set; }
 
@@ -73,7 +72,7 @@ public class RockFallScript : ConfigurableReactorTileScriptBase,
                        != null;
 
         if (Owner is Aisling && target is Aisling aisling)
-            aisling.SendOrangeBarMessage("You're burned by fire from Meteor!");
+            aisling.SendOrangeBarMessage("You've been crushed by a falling ice boulder!");
 
         if (executed && MaxTriggers.HasValue)
         {
@@ -89,10 +88,10 @@ public class RockFallScript : ConfigurableReactorTileScriptBase,
     {
         if (source is not Aisling aisling)
             return;
-        
+
         var point = source.DirectionalOffset(source.Direction.Reverse());
         source.WarpTo(point);
-        aisling.SendOrangeBarMessage("A big rock is in your way.");
+        aisling.SendOrangeBarMessage("A big ice boulder is in your way.");
     }
 
     /// <inheritdoc />
@@ -115,19 +114,18 @@ public class RockFallScript : ConfigurableReactorTileScriptBase,
 
                 if (creaturepoint == trappoint)
                 {
+                    if (creature is not Aisling)
+                        return;
+
                     ApplyTrapEffects(creature);
-                    
+
                     // Move the creature to a random direction
                     var randomDirection = (Direction)new Random().Next(0, 4); // Assuming 8 directions
                     var randomOffset = creature.DirectionalOffset(randomDirection);
 
                     if (Subject.MapInstance.IsWalkable(randomOffset, CreatureType.Normal)) // Ensure the point is walkable
-                    {
                         creature.WarpTo(randomOffset);
-                    }
                 }
-                    
-                
             }
 
         if (Timer != null)

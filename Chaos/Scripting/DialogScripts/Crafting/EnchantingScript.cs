@@ -365,8 +365,13 @@ public class EnchantingScript : DialogScriptBase
         Subject.Context = selectedRecipe;
         Subject.InjectTextParameters(selectedRecipe.Name);
 
+        var selectedRecipeItem = ItemFactory.Create(selectedRecipe.TemplateKey);
+
         var modifiableItems = source.Inventory
-                                    .Where(x => x.Template.IsModifiable)
+                                    .Where(
+                                        x => x.Template.IsModifiable
+                                             && (x.Level >= selectedRecipe.Level)
+                                             && (selectedRecipeItem.Template.RequiresMaster || x.Template.RequiresMaster))
                                     .ToList();
 
         if (modifiableItems.Count == 0)

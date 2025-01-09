@@ -1,4 +1,5 @@
 ﻿using Chaos.DarkAges.Definitions;
+using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
@@ -14,6 +15,15 @@ public class DetectTrapsEffect : EffectBase
     public override void OnApplied()
     {
         base.OnApplied();
+
+        var ani = new Animation
+        {
+            TargetAnimation = 1,
+            AnimationSpeed = 200,
+            Priority = 5
+        };
+
+        Subject.Animate(ani);
 
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your sense of survival peaks.");
