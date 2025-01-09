@@ -48,6 +48,9 @@ public static class EnumerableExtensions
     public static IEnumerable<Aisling> ThatAreNotInGodMode(this IEnumerable<Aisling> objs) => objs.Where(obj => !obj.IsGodModeEnabled());
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IEnumerable<Creature> ThatAreAlive(this IEnumerable<Creature> objs) => objs.Where(obj => obj.IsAlive);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IEnumerable<T> ThatAreWithinRange<T>(this IEnumerable<T> objs, ILocation location, int range = 15) where T: MapEntity
         => objs.Where(obj => obj.WithinRange(location, range));
 

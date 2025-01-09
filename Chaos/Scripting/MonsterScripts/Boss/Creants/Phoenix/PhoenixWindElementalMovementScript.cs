@@ -21,6 +21,7 @@ public class PhoenixWindElementalMovementScript : MonsterScriptBase
                                             .ThatAreObservedBy(Subject)
                                             .ThatAreVisibleTo(Subject)
                                             .ThatAreNotInGodMode()
+                                            .ThatAreAlive()
                                             .Select(aisling => (int?)Subject.ManhattanDistanceFrom(aisling))
                                             .Min();
             

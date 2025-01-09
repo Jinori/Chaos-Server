@@ -44,6 +44,12 @@ public class RestrictionBehavior
 
                 break;
 
+            case Aisling { IsAdmin: false } aisling when aisling.MapInstance.LoadedFromInstanceId.StartsWithI("phoenix_sky"):
+            {
+                aisling.SendOrangeBarMessage("You are in Lady Phoenix's clutches");
+
+                return false;
+            }
             case Monster monster when monster.IsSuained()
                                       || monster.IsBlind
                                       || monster.IsPramhed()
@@ -71,6 +77,12 @@ public class RestrictionBehavior
             }
             case Aisling { OnTwentyOneTile: true }:
             {
+                return false;
+            }
+            case Aisling { IsAdmin: false } aisling when aisling.MapInstance.LoadedFromInstanceId.StartsWithI("phoenix_sky"):
+            {
+                aisling.SendOrangeBarMessage("You are in Lady Phoenix's clutches");
+
                 return false;
             }
             case Monster monster when monster.IsSuained() || monster.IsPramhed() || monster.IsBeagSuained():
@@ -102,6 +114,13 @@ public class RestrictionBehavior
 
             if (aisling.IsStoned() && !item.Template.TemplateKey.EqualsI("lightPotion"))
                 return false;
+            
+            if(aisling.MapInstance.LoadedFromInstanceId.StartsWithI("phoenix_sky"))
+            {
+                aisling.SendOrangeBarMessage("You are in Lady Phoenix's clutches");
+
+                return false;
+            }
 
             return true;
         }
@@ -125,6 +144,12 @@ public class RestrictionBehavior
                                       || (aisling.MapInstance.Name.EqualsI("Frosty's Challenge") && !aisling.IsGodModeEnabled()):
             {
                 aisling.SendOrangeBarMessage("You cannot use skills.");
+
+                return false;
+            }
+            case Aisling { IsAdmin: false } aisling when aisling.MapInstance.LoadedFromInstanceId.StartsWithI("phoenix_sky"):
+            {
+                aisling.SendOrangeBarMessage("You are in Lady Phoenix's clutches");
 
                 return false;
             }
@@ -174,6 +199,12 @@ public class RestrictionBehavior
                                       || (aisling.MapInstance.Name.EqualsI("Frosty's Challenge") && !aisling.IsGodModeEnabled()):
             {
                 aisling.SendOrangeBarMessage("You cannot use spells.");
+
+                return false;
+            }
+            case Aisling { IsAdmin: false } aisling when aisling.MapInstance.LoadedFromInstanceId.StartsWithI("phoenix_sky"):
+            {
+                aisling.SendOrangeBarMessage("You are in Lady Phoenix's clutches");
 
                 return false;
             }

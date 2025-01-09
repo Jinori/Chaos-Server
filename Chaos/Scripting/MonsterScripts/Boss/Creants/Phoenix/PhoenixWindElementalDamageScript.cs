@@ -1,4 +1,5 @@
 using Chaos.Common.Utilities;
+using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -11,7 +12,7 @@ namespace Chaos.Scripting.MonsterScripts.Boss.Creants.Phoenix;
 
 public class PhoenixWindElementalDamageScript : MonsterScriptBase
 {
-    private readonly IApplyDamageScript ApplyDamageScript = ApplyAttackDamageScript.Create();
+    private readonly IApplyDamageScript ApplyDamageScript = ApplyNonAttackDamageScript.Create();
     private readonly IIntervalTimer DamageTimer = new IntervalTimer(TimeSpan.FromMilliseconds(100));
     
     /// <inheritdoc />
@@ -26,6 +27,7 @@ public class PhoenixWindElementalDamageScript : MonsterScriptBase
         if (DamageTimer.IntervalElapsed)
         {
             var nearbyAislings = Map.GetEntitiesWithinRange<Aisling>(Subject, 2)
+                                    .ThatAreAlive()
                                     .ToList();
 
             foreach (var aisling in nearbyAislings)
