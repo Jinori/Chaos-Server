@@ -11,6 +11,9 @@ using Chaos.Services.Servers.Options;
 
 namespace Chaos.Collections;
 
+/// <summary>
+///     Represents a group of players
+/// </summary>
 public sealed class Group : IEnumerable<Aisling>, IDedicatedChannel
 {
     public enum GroupLootOption
@@ -28,6 +31,9 @@ public sealed class Group : IEnumerable<Aisling>, IDedicatedChannel
     public GroupLootOption LootOption { get; set; } = GroupLootOption.Default;
     public string ChannelName { get; }
 
+    /// <summary>
+    ///     The leader of the group
+    /// </summary>
     public Aisling Leader
     {
         get
@@ -38,8 +44,23 @@ public sealed class Group : IEnumerable<Aisling>, IDedicatedChannel
         }
     }
 
+    /// <summary>
+    ///     The number of members in the group
+    /// </summary>
     public int Count => Members.Count;
 
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="Group" /> class.
+    /// </summary>
+    /// <param name="sender">
+    ///     The aisling who started the group
+    /// </param>
+    /// <param name="receiver">
+    ///     The first aisling to join the group (besides the sender/leader)
+    /// </param>
+    /// <param name="channelService">
+    ///     A channel service for the group to communicate through
+    /// </param>
     public Group(Aisling sender, Aisling receiver, IChannelService channelService)
     {
         ChannelName = $"!group-{Guid.NewGuid()}";
@@ -93,8 +114,15 @@ public sealed class Group : IEnumerable<Aisling>, IDedicatedChannel
     /// <inheritdoc />
     public void LeaveChannel(IChannelSubscriber subscriber) => ChannelService.LeaveChannel(subscriber, ChannelName);
 
+    /// <inheritdoc />
     public void SendMessage(IChannelSubscriber from, string message) => ChannelService.SendMessage(from, ChannelName, message);
 
+    /// <summary>
+    ///     Adds an aisling to the group
+    /// </summary>
+    /// <param name="aisling">
+    ///     The aisling to add to the group
+    /// </param>
     public void Add(Aisling aisling)
     {
         using var @lock = Sync.EnterScope();
@@ -113,6 +141,21 @@ public sealed class Group : IEnumerable<Aisling>, IDedicatedChannel
         aisling.Client.SendSelfProfile();
     }
 
+    /// <summary>
+    ///     Determines whether the group contains the specified aisling
+    /// </summary>
+    /// <param name="aisling">
+    ///     The aisling to check for
+    /// </param>
+    /// <returns>
+    ///     <c>
+    ///         true
+    ///     </c>
+    ///     if the group contains the specified aisling, otherwise
+    ///     <c>
+    ///         false
+    ///     </c>
+    /// </returns>
     public bool Contains(Aisling aisling)
     {
         using var @lock = Sync.EnterScope();
@@ -207,6 +250,14 @@ public sealed class Group : IEnumerable<Aisling>, IDedicatedChannel
             return;
         }
 
+        //leader is kicking himself
+        if (aisling.Equals(Leader))
+        {
+            Leave(aisling);
+
+            return;
+        }
+
         if (!Remove(aisling))
             return;
 
@@ -216,6 +267,16 @@ public sealed class Group : IEnumerable<Aisling>, IDedicatedChannel
             member.SendActiveMessage($"{aisling.Name} has been kicked from the group");
     }
 
+    /// <summary>
+    ///     Leaves the group
+    /// </summary>
+    /// <param name="aisling">
+    ///     The aisling leaving the group
+    /// </param>
+    /// <remarks>
+    ///     This handles if the group has only 2 members (disbands), or if the aisling leaving is the leader. The new leader
+    ///     will be the member who has been in the group longest
+    /// </remarks>
     public void Leave(Aisling aisling)
     {
         using var @lock = Sync.EnterScope();
@@ -263,6 +324,7 @@ public sealed class Group : IEnumerable<Aisling>, IDedicatedChannel
         return true;
     }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         using var @lock = Sync.EnterScope();
