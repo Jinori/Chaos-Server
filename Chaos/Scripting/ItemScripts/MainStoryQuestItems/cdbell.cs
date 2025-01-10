@@ -1,6 +1,7 @@
 ﻿using Chaos.Collections;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Panel;
@@ -9,7 +10,6 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 using Chaos.Scripting.MapScripts.CthonicDemise;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
-using FluentAssertions;
 
 namespace Chaos.Scripting.ItemScripts.MainStoryQuestItems;
 
@@ -89,7 +89,7 @@ public class Cdbell : ItemScriptBase
     private void Bell(Aisling source)
     {
         var sourcePoint = new Point(source.X, source.Y);
-        var script = source.MapInstance.Script.As<CthonicDemiseScript>();
+        var script = source.MapInstance.Script.As<CthonicDemiseScript>()!;
 
         // Check which rectangle the player is in and spawn the corresponding monster
         if (RayRectangle.Contains(sourcePoint))

@@ -1,6 +1,6 @@
+using Chaos.Extensions;
 using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using FluentAssertions;
 
 namespace Chaos.Scripting.MonsterScripts.Boss.Creants.Medusa;
 
@@ -23,9 +23,9 @@ public class MedusaWanderingScript : MonsterScriptBase
                 .Any())
             return;
 
-        var script = Subject.Script.As<MedusaPhaseScript>();
+        var script = Subject.Script.As<MedusaPhaseScript>()!;
 
-        if (script!.InPhase)
+        if (script.InPhase)
             return;
 
         Subject.Wander();

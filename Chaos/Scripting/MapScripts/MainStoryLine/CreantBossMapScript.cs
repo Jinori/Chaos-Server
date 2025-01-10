@@ -47,18 +47,41 @@ public class CreantBossMapScript : MapScriptBase
                 case ScriptState.Dormant:
                 {
                     if (Subject.GetEntities<Aisling>()
-                               .Any(
-                                   x => x.Trackers.Flags.HasFlag(CreantEnums.KilledMedusa)
-                                        || x.Trackers.Flags.HasFlag(CreantEnums.KilledPhoenix)
-                                        || x.Trackers.Flags.HasFlag(CreantEnums.KilledSham)
-                                        || x.Trackers.Flags.HasFlag(CreantEnums.KilledTauren)))
+                               .Any(x => x.Trackers.Flags.HasFlag(CreantEnums.KilledMedusa))
+                        && (Subject.Template.TemplateKey == "6599"))
                     {
                         State = ScriptState.CreantKilled;
 
                         return;
                     }
-                        
+                    
+                    if (Subject.GetEntities<Aisling>()
+                               .Any(x => x.Trackers.Flags.HasFlag(CreantEnums.KilledSham))
+                        && (Subject.Template.TemplateKey == "31010"))
+                    {
+                        State = ScriptState.CreantKilled;
 
+                        return;
+                    }
+                    
+                    if (Subject.GetEntities<Aisling>()
+                               .Any(x => x.Trackers.Flags.HasFlag(CreantEnums.KilledPhoenix))
+                        && (Subject.Template.TemplateKey == "989"))
+                    {
+                        State = ScriptState.CreantKilled;
+
+                        return;
+                    }
+                    
+                    if (Subject.GetEntities<Aisling>()
+                               .Any(x => x.Trackers.Flags.HasFlag(CreantEnums.KilledTauren))
+                        && (Subject.Template.TemplateKey == "19522"))
+                    {
+                        State = ScriptState.CreantKilled;
+
+                        return;
+                    }
+                    
                     if (Subject.Template.TemplateKey == "31010")
                         if (Subject.GetEntities<Aisling>()
                                    .Any(
@@ -140,7 +163,7 @@ public class CreantBossMapScript : MapScriptBase
 
                     if (Subject.Template.TemplateKey == "989")
                     {
-                        var monster = MonsterFactory.Create("ladyphoenix", Subject, new Point(36, 38));
+                        var monster = MonsterFactory.Create("phoenix", Subject, new Point(5, 5));
                         Subject.AddEntity(monster, monster);
                     }
 

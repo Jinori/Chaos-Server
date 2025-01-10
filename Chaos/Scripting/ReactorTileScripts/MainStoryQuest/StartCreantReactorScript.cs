@@ -34,9 +34,6 @@ public class StartCreantReactorScript : ReactorTileScriptBase
         if (source is not Aisling aisling)
             return;
 
-        if (!source.IsGodModeEnabled())
-            return;
-
         if (aisling.Trackers.Flags.HasFlag(CreantEnums.KilledMedusa) && (aisling.MapInstance.Template.TemplateKey == "6599"))
         {
             var mapInstance = SimpleCache.Get<MapInstance>("medusabossroom");
