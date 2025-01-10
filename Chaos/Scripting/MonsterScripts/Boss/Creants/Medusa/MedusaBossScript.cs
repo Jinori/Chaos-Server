@@ -11,11 +11,11 @@ public class MedusaBossScript : CompositeMonsterScript
         GetScriptKey(typeof(DefaultBehaviorsScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),
-        GetScriptKey(typeof(MedusaWanderingScript)),
         GetScriptKey(typeof(DisplayNameScript)),
         GetScriptKey(typeof(ThisIsABossScript)),
         GetScriptKey(typeof(CreantDeathScript)),
         GetScriptKey(typeof(MedusaPhaseScript)),
+        GetScriptKey(typeof(MedusaWanderingScript)),
         GetScriptKey(typeof(MedusaMoveToTargetScript)),
         GetScriptKey(typeof(MedusaCastingScript)),
         GetScriptKey(typeof(MedusaAttackingScript))

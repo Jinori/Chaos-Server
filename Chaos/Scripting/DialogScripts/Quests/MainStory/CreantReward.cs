@@ -292,13 +292,13 @@ public class CreantReward : DialogScriptBase
                     {
                         ("31010", BaseClass.Monk, Gender.Male), new[]
                         {
-                            "tilianclaws"
+                            "tilianclaw"
                         }
                     },
                     {
                         ("31010", BaseClass.Monk, Gender.Female), new[]
                         {
-                            "tilianclaws"
+                            "tilianclaw"
                         }
                     },
                     {
@@ -310,7 +310,7 @@ public class CreantReward : DialogScriptBase
                     {
                         ("31010", BaseClass.Rogue, Gender.Female), new[]
                         {
-                            "SubFemaleGMArmor"
+                            "SubFemaleGMRogueArmor"
                         }
                     }
                 };

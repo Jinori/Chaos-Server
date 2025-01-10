@@ -3,19 +3,11 @@ using Chaos.Extensions.Geometry;
 using Chaos.Geometry.Abstractions;
 using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.MonsterScripts.Boss;
 
-public sealed class BossMoveToTargetScript(Monster subject, IEffectFactory effectFactory, ISpellFactory spellFactory)
-    : MonsterScriptBase(subject)
+public sealed class BossMoveToTargetScript(Monster subject) : MonsterScriptBase(subject)
 {
-    /// <inheritdoc />
-    private readonly IEffectFactory EffectFactory = effectFactory;
-
-    private readonly ISpellFactory SpellFactory = spellFactory;
-
-    /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
         base.Update(delta);

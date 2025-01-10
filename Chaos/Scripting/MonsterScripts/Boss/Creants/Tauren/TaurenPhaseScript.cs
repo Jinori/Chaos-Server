@@ -81,14 +81,14 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
         SkillTimer = new IntervalTimer(TimeSpan.FromMilliseconds(500));
         SpellTimer = new IntervalTimer(TimeSpan.FromSeconds(5), false);
         SpellTimer2 = new IntervalTimer(TimeSpan.FromSeconds(6), false);
-        PhaseDelay = new IntervalTimer(TimeSpan.FromSeconds(6), false);
+        PhaseDelay = new IntervalTimer(TimeSpan.FromSeconds(5), false);
         TimeBetweenPhases = new IntervalTimer(TimeSpan.FromSeconds(30), false);
         SpellDelay = new IntervalTimer(TimeSpan.FromMilliseconds(200));
         SplitPhaseTimer1 = new IntervalTimer(TimeSpan.FromSeconds(45), false);
         SpellPhaseTimer4 = new IntervalTimer(TimeSpan.FromSeconds(16), false);
         SkillPhaseTimer3 = new IntervalTimer(TimeSpan.FromSeconds(30), false);
         SafePointAnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(1));
-        DelayTimer = new IntervalTimer(TimeSpan.FromMilliseconds(1600), false);
+        DelayTimer = new IntervalTimer(TimeSpan.FromMilliseconds(1000), false);
         RockFallTimer = new IntervalTimer(TimeSpan.FromSeconds(5), false);
         SafePoints = new List<Point>();
         ApplyDamageScript = ApplyAttackDamageScript.Create();

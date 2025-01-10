@@ -1,6 +1,6 @@
+using Chaos.Extensions;
 using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using FluentAssertions;
 
 namespace Chaos.Scripting.MonsterScripts.Boss.Creants.Tauren;
 
@@ -23,9 +23,9 @@ public class TaurenWanderingScript : MonsterScriptBase
                 .Any())
             return;
 
-        var script = Subject.Script.As<TaurenPhaseScript>();
+        var script = Subject.Script.As<TaurenPhaseScript>()!;
 
-        if (script!.InPhase)
+        if (script.InPhase)
             return;
 
         Subject.Wander();
