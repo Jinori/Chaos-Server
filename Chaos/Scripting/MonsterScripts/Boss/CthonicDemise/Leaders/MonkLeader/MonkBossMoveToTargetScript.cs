@@ -31,36 +31,63 @@ public sealed class MonkBossMoveToTargetScript(Monster subject) : MonsterScriptB
             return;
         }
 
-        if ((distance != 1) && (distance <= 4))
-            Subject.Pathfind(Target);
-
-        else if (distance >= 4)
+        switch (distance)
         {
-            var safeSpot = Target.GenerateCardinalPoints().OfType<IPoint>().FirstOrDefault(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
+            case >= 4:
+                var safeSpot = Target.GenerateCardinalPoints().OfType<IPoint>().FirstOrDefault(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
 
-            if (safeSpot is null)
-            {
-                AggroList.Remove(Target.Id, out _);
-                Target ??= Map.GetEntitiesWithinRange<Aisling>(Subject, 12)
-                              .ThatAreVisibleTo(Subject)
-                              .Where(
-                                  obj => !obj.Equals(Subject)
-                                         && obj.IsAlive
-                                         && Subject.ApproachTime.TryGetValue(obj, out var time)
-                                         && ((DateTime.UtcNow - time).TotalSeconds >= 1.5))
-                              .ClosestOrDefault(Subject);
-                return;
-            }
+                if (safeSpot is null)
+                {
+                    AggroList.Remove(Target.Id, out _);
+                    Target ??= Map.GetEntitiesWithinRange<Aisling>(Subject, 12)
+                                  .ThatAreVisibleTo(Subject)
+                                  .Where(
+                                      obj => !obj.Equals(Subject)
+                                             && obj.IsAlive
+                                             && Subject.ApproachTime.TryGetValue(obj, out var time)
+                                             && ((DateTime.UtcNow - time).TotalSeconds >= 1.5))
+                                  .ClosestOrDefault(Subject);
+                    return;
+                }
             
-            Subject.TraverseMap(Target.MapInstance, safeSpot);
-        }
-        else
-        {
-            var direction = Target.DirectionalRelationTo(Subject);
-            Subject.Turn(direction);
-        }
+                Subject.TraverseMap(Target.MapInstance, safeSpot);
 
-        Subject.WanderTimer.Reset();
-        Subject.SkillTimer.Reset();
+                break;
+            
+            case > 1:
+                Subject.Pathfind(Target);
+
+                break;
+            case 1:
+            {
+                var direction = Target.DirectionalRelationTo(Subject);
+                Subject.Turn(direction);
+
+                break;
+            }
+            case 0:
+            {
+                Subject.Wander();
+
+                break;
+            }
+        }
+        
+        ResetAttackTimerIfMoved();
+    }
+    
+    private void ResetAttackTimerIfMoved()
+    {
+        var now = DateTime.UtcNow;
+        var lastWalk = Subject.Trackers.LastWalk;
+        var lastTurn = Subject.Trackers.LastTurn;
+        var walkedRecently = lastWalk.HasValue && (now.Subtract(lastWalk.Value).TotalMilliseconds < Subject.Template.MoveIntervalMs);
+        var turnedRecently = lastTurn.HasValue && (now.Subtract(lastTurn.Value).TotalMilliseconds < Subject.Template.MoveIntervalMs);
+
+        if (walkedRecently || turnedRecently)
+        {
+            Subject.WanderTimer.Reset();
+            Subject.SkillTimer.Reset();
+        }
     }
 }

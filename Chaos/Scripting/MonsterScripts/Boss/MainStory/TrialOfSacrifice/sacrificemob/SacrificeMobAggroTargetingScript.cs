@@ -29,7 +29,7 @@ public class SacrificeMobAggroTargetingScript : MonsterScriptBase
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
-        var zoeaggro = 1000; // Set a fixed aggro value for the Totem
+        var zoeaggro = 100000000; // Set a fixed aggro value for the Totem
         var helplesszoe = Map.GetEntitiesWithinRange<Monster>(Subject, 20)
                        .ThatAreVisibleTo(Subject)
                        .Where(obj => obj.Template.Name == "Helpless Zoe")

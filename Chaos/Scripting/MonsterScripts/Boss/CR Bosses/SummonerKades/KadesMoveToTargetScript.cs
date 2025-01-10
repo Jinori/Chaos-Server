@@ -32,15 +32,42 @@ public class KadesMoveToTargetScript : MonsterScriptBase
 
         var distance = Subject.ManhattanDistanceFrom(Target);
 
-        if (distance != 1)
-            Subject.Pathfind(Target);
-        else
+        switch (distance)
         {
-            var direction = Target.DirectionalRelationTo(Subject);
-            Subject.Turn(direction);
-        }
+            case > 1:
+                Subject.Pathfind(Target);
 
-        Subject.WanderTimer.Reset();
-        Subject.SkillTimer.Reset();
+                break;
+            case 1:
+            {
+                var direction = Target.DirectionalRelationTo(Subject);
+                Subject.Turn(direction);
+
+                break;
+            }
+            case 0:
+            {
+                Subject.Wander();
+
+                break;
+            }
+        }
+        
+        ResetAttackTimerIfMoved();
+    }
+    
+    private void ResetAttackTimerIfMoved()
+    {
+        var now = DateTime.UtcNow;
+        var lastWalk = Subject.Trackers.LastWalk;
+        var lastTurn = Subject.Trackers.LastTurn;
+        var walkedRecently = lastWalk.HasValue && (now.Subtract(lastWalk.Value).TotalMilliseconds < Subject.Template.MoveIntervalMs);
+        var turnedRecently = lastTurn.HasValue && (now.Subtract(lastTurn.Value).TotalMilliseconds < Subject.Template.MoveIntervalMs);
+
+        if (walkedRecently || turnedRecently)
+        {
+            Subject.WanderTimer.Reset();
+            Subject.SkillTimer.Reset();
+        }
     }
 }

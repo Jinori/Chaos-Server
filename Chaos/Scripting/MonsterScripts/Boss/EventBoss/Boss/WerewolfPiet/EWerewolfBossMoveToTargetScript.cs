@@ -16,59 +16,90 @@ public sealed class EWerewolfBossMoveToTargetScript(Monster subject) : MonsterSc
         if ((Target == null) || !ShouldMove)
             return;
 
-        if (!Map.GetEntities<Aisling>().Any())
+        if (!Map.GetEntities<Aisling>()
+                .Any())
             return;
-        
+
         var distance = Subject.ManhattanDistanceFrom(Target);
 
+        var point = Target.GenerateCardinalPoints()
+                          .OfType<IPoint>()
+                          .FirstOrDefault(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
 
-        var point = Target.GenerateCardinalPoints().OfType<IPoint>().FirstOrDefault(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
         //Remove aggro if we can't get to the target so we have a chance to attack someone else
-        if (point is null && (Map.GetEntities<Aisling>().Count() > 1))
+        if (point is null
+            && (Map.GetEntities<Aisling>()
+                   .Count()
+                > 1))
         {
             AggroList.Remove(Target.Id, out _);
             Target = null;
-            return;
-        }
-        
-        var safeSpot = Target.GenerateCardinalPoints().OfType<IPoint>().FirstOrDefault(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
 
-        if (safeSpot is null)
-        {
-            AggroList.Remove(Target.Id, out _);
-            Target ??= Map.GetEntitiesWithinRange<Aisling>(Subject, 12)
-                .ThatAreVisibleTo(Subject)
-                .Where(
-                    obj => !obj.Equals(Subject)
-                           && obj.IsAlive
-                           && Subject.ApproachTime.TryGetValue(obj, out var time)
-                           && ((DateTime.UtcNow - time).TotalSeconds >= 1.5))
-                .ClosestOrDefault(Subject);
             return;
         }
 
-        if (distance != 1 && distance <= 4)
+        switch (distance)
         {
-            var point1 = new Point(Subject.X, Subject.Y);
-            
-            Subject.Pathfind(Target);
+            case > 1 and <= 4:
+                Subject.Pathfind(Target);
 
-            if (point1 == Subject)
+                break;
+            case > 4:
             {
-                Subject.TraverseMap(Target.MapInstance, safeSpot);
+                var safeSpot = Target.GenerateCardinalPoints()
+                                     .OfType<IPoint>()
+                                     .FirstOrDefault(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
+
+                if (safeSpot is null)
+                {
+                    AggroList.Remove(Target.Id, out _);
+
+                    Target ??= Map.GetEntitiesWithinRange<Aisling>(Subject, 12)
+                                  .ThatAreVisibleTo(Subject)
+                                  .Where(
+                                      obj => !obj.Equals(Subject)
+                                             && obj.IsAlive
+                                             && Subject.ApproachTime.TryGetValue(obj, out var time)
+                                             && ((DateTime.UtcNow - time).TotalSeconds >= 1.5))
+                                  .ClosestOrDefault(Subject);
+
+                    return;
+                }
+
+                Subject.WarpTo(safeSpot);
+
+                break;
+            }
+            case 1:
+            {
+                var direction = Target.DirectionalRelationTo(Subject);
+                Subject.Turn(direction);
+
+                break;
+            }
+            case 0:
+            {
+                Subject.Wander();
+
+                break;
             }
         }
-        else if (distance >= 4)
-        {
-            Subject.TraverseMap(Target.MapInstance, safeSpot);
-        }
-        else
-        {
-            var direction = Target.DirectionalRelationTo(Subject);
-            Subject.Turn(direction);
-        }
 
-        Subject.WanderTimer.Reset();
-        Subject.SkillTimer.Reset();
+        ResetAttackTimerIfMoved();
+    }
+    
+    private void ResetAttackTimerIfMoved()
+    {
+        var now = DateTime.UtcNow;
+        var lastWalk = Subject.Trackers.LastWalk;
+        var lastTurn = Subject.Trackers.LastTurn;
+        var walkedRecently = lastWalk.HasValue && (now.Subtract(lastWalk.Value).TotalMilliseconds < Subject.Template.MoveIntervalMs);
+        var turnedRecently = lastTurn.HasValue && (now.Subtract(lastTurn.Value).TotalMilliseconds < Subject.Template.MoveIntervalMs);
+
+        if (walkedRecently || turnedRecently)
+        {
+            Subject.WanderTimer.Reset();
+            Subject.SkillTimer.Reset();
+        }
     }
 }
