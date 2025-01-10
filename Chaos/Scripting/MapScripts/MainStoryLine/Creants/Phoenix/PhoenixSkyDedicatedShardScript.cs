@@ -24,7 +24,7 @@ public class PhoenixSkyDedicatedShardScript : MapScriptBase
     public Location FromLocation { get; set; } = null!;
     public List<string> WhiteList { get; set; } = [];
     public Monster Phoenix { get; set; } = null!;
-    private readonly IIntervalTimer CheckTimer = new IntervalTimer(TimeSpan.FromSeconds(5));
+    private readonly IIntervalTimer CheckTimer = new IntervalTimer(TimeSpan.FromSeconds(5), false);
     private readonly ISimpleCache SimpleCache;
     private readonly IApplyDamageScript ApplyDamageScript;
 
