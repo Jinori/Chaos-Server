@@ -181,7 +181,7 @@ public sealed class AislingMapperProfile(
 
     DisplayAislingArgs IMapperProfile<Aisling, DisplayAislingArgs>.Map(Aisling obj)
     {
-        var hasArenaTeam = obj.Trackers.Enums.TryGetValue(out ArenaTeam value);
+        var hasArenaTeam = obj.Trackers.Enums.TryGetValue(out ArenaTeam arenaTeam);
         var weapon = obj.Equipment[EquipmentSlot.Weapon];
         var armor = obj.Equipment[EquipmentSlot.Armor];
         var shield = obj.Equipment[EquipmentSlot.Shield];
@@ -230,11 +230,12 @@ public sealed class AislingMapperProfile(
                          && helmet.Template.OverridesBootsSprite
                          && !overHelm.Template.OverridesBootsSprite)
                     shouldOverrideBootsSprite = false;
-
             //determine which head sprite we should use
             // this value is shared amongst helmet, overhelm, and hair
             if (shouldOverrideHeadSprite)
                 headSprite = 0;
+            else if (overHelm?.ItemSprite.DisplaySprite is not null && overHelm?.Template.TemplateKey is "invisiblehelmet")
+                headSprite = (ushort)obj.HairStyle;
             else if (overHelm?.ItemSprite.DisplaySprite is not null)
                 headSprite = overHelm.ItemSprite.DisplaySprite;
             else if (helmet?.ItemSprite.DisplaySprite is not null)
@@ -273,6 +274,31 @@ public sealed class AislingMapperProfile(
             else
                 bootsColor = DisplayColor.Default;
 
+            if (hasArenaTeam)
+            {
+                headSprite = (ushort)obj.HairStyle;
+                switch (arenaTeam)
+                {
+                    case ArenaTeam.Blue:
+                        headColor = DisplayColor.Cyan;
+                        break;
+                    case ArenaTeam.Green:
+                        headColor = DisplayColor.Lime;
+                        break;
+                    case ArenaTeam.Gold:
+                        headColor = DisplayColor.NeonYellow;
+                        break;
+                    case ArenaTeam.Red:
+                        headColor = DisplayColor.Fire;
+                        break;
+                }
+
+                overcoat = null;
+                acc1 = null;
+                acc2 = null;
+                acc3 = null;
+            }
+            
         return new DisplayAislingArgs
         {
             AccessoryColor1 = acc1?.Color ?? DisplayColor.Default,
