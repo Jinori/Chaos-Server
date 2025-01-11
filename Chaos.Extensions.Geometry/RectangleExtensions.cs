@@ -306,8 +306,8 @@ public static class RectangleExtensions
 
         return distanceType switch
         {
-            DistanceType.Manhattan => new Point(closestX, closestY).ManhattanDistanceFrom(Point.From(circle.Center)) < circle.Radius,
-            DistanceType.Euclidean => new Point(closestX, closestY).EuclideanDistanceFrom(Point.From(circle.Center)) < circle.Radius,
+            DistanceType.Manhattan => new Point(closestX, closestY).ManhattanDistanceFrom(Point.From(circle.Center)) <= circle.Radius,
+            DistanceType.Euclidean => new Point(closestX, closestY).EuclideanDistanceFrom(Point.From(circle.Center)) <= circle.Radius,
             _                      => throw new ArgumentOutOfRangeException(nameof(distanceType), distanceType, null)
         };
     }

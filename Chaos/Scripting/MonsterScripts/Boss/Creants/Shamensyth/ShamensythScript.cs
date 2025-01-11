@@ -313,8 +313,19 @@ public class ShamensythScript : MonsterScriptBase
                     {
                         SpawnAdds(4);
                         SpawnAddsCount++;
+                        ApplyInvulnerability();
                     }
 
+                    break;
+                }
+                case 6:
+                {
+                    var addsAlive = Map.GetEntities<Monster>()
+                                       .Any(monster => monster.Template.TemplateKey.EqualsI("shamensythFireElemental"));
+                    
+                    if(!addsAlive)
+                        RemoveInvulnerability();
+                    
                     break;
                 }
             }
