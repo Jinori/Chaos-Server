@@ -32,12 +32,13 @@ public class BurningGroundScript : ReactorTileScriptBase
         : base(subject)
     {
         ApplicationTimer = new IntervalTimer(TimeSpan.FromSeconds(100));
-        Animationtimer = new IntervalTimer(TimeSpan.FromMilliseconds(500));
+        Animationtimer = new IntervalTimer(TimeSpan.FromMilliseconds(700));
         ApplyDamageScript = ApplyNonAttackDamageScript.Create();
 
         Animation = new Animation
         {
-            TargetAnimation = 994
+            TargetAnimation = 994,
+            AnimationSpeed = 250
         };
     }
 
