@@ -160,15 +160,20 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
         
         foreach (var item in aisling.Equipment)
         {
-            if (item.Slot is > 0 and < 14)
+            if (item.Slot is <= 0 or >= 14) 
+                continue;
+            
+            if (item.CurrentDurability is >= 1)
             {
-                if (item.CurrentDurability >= 1)
-                    item.CurrentDurability--;
-
-                var dura = GetCurrentDurabilityPercentage(item);
-                HandleDurabilityWarning(aisling, item, dura);
-                HandleBreakingItem(aisling, source, item);
+                item.CurrentDurability--;
             }
+
+            if (!item.CurrentDurability.HasValue) 
+                continue;
+                
+            var dura = GetCurrentDurabilityPercentage(item);
+            HandleDurabilityWarning(aisling, item, dura);
+            HandleBreakingItem(aisling, source, item);
         }
     }
 

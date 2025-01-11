@@ -28,39 +28,34 @@ public class MainStoryScript(
         var masterWeapon = new Dictionary<string, List<string>>
         {
             {
-                "kalkuri", new List<string>
-                {
+                "kalkuri", [
                     "enchantedkalkuri",
                     "empoweredkalkuri"
-                }
+                ]
             },
             {
-                "holyhybrasylgnarl", new List<string>
-                {
+                "holyhybrasylgnarl", [
                     "enchantedholygnarl",
                     "empoweredholygnarl"
-                }
+                ]
             },
             {
-                "hybrasylazoth", new List<string>
-                {
+                "hybrasylazoth", [
                     "enchantedhybrasylazoth",
                     "empoweredhybrasylazoth"
-                }
+                ]
             },
             {
-                "magusorb", new List<string>
-                {
+                "magusorb", [
                     "enchantedmagusorb",
                     "empoweredmagusorb"
-                }
+                ]
             },
             {
-                "hybrasylescalon", new List<string>
-                {
-                    "enchantedescalon",
-                    "empoweredescalon"
-                }
+                "hybrasylescalon", [
+                    "enchantedhybrasylescalon",
+                    "empoweredhybrasylescalon"
+                ]
             }
         };
 

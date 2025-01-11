@@ -19,11 +19,11 @@ public sealed class PetFollowScript : MonsterScriptBase
     /// <inheritdoc />
     public override void OnItemDroppedOn(Aisling source, Item item)
     {
-        if ((Subject.PetOwner != null) && (Subject.PetOwner.Equals(source)))
-        {
-            source.SendMessage("You dropped an item on your pet but they returned it.");
-            source.Inventory.TryAddToNextSlot(item);
-        }
+        if (Subject.PetOwner == null)
+            return;
+        
+        source.SendMessage("You dropped an item on a pet but they returned it.");
+        source.Inventory.TryAddToNextSlot(item);
     }
     
     /// <inheritdoc />
