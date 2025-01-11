@@ -56,7 +56,7 @@ public class PitFightLeaderboardScript : ReactorTileScriptBase
 
     public sealed class PitFightLeaderboardObj
     {
-        public Dictionary<string, PlayerStats> Entries { get; } = new(StringComparer.OrdinalIgnoreCase);
+        public Dictionary<string, PlayerStats> Entries { get; set; } = new(StringComparer.OrdinalIgnoreCase);
 
         public class PlayerStats
         {

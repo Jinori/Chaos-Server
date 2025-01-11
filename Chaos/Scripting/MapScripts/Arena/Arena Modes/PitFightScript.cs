@@ -121,7 +121,7 @@ namespace Chaos.Scripting.MapScripts.Arena.Arena_Modes
             if (alivePlayer != null && deadPlayer != null)
             {
                 AwardWin(alivePlayer, deadPlayer);
-                AnnounceLoser(deadPlayer);
+                AnnounceLoser(deadPlayer, alivePlayer);
                 return;
             }
 
@@ -136,10 +136,11 @@ namespace Chaos.Scripting.MapScripts.Arena.Arena_Modes
             MissingPlayer = true;
         }
 
-        private void AnnounceLoser(Aisling loser)
+        private void AnnounceLoser(Aisling loser, Aisling winner)
         {
             RecordLoss(loser);
             loser.SendMessage("You lost the pit fight. Better luck next time!");
+            loser.Trackers.TimedEvents.AddEvent($"{winner.Name}_pitfight", TimeSpan.FromDays(1), true);
             MovePlayerToEntrance(loser, new Point(6, 10));
             RevivePlayer(loser);
         }
@@ -148,6 +149,8 @@ namespace Chaos.Scripting.MapScripts.Arena.Arena_Modes
         {
             RecordVictory(winner);
 
+            winner.Trackers.TimedEvents.AddEvent($"{loser.Name}_pitfight", TimeSpan.FromDays(1), true);
+            
             winner.Legend.AddOrAccumulate(
                 new LegendMark(
                     "Pit Fight Victory",

@@ -159,7 +159,7 @@ public sealed class UserOptions
     ///     Unused option 4
     /// </summary>
     [Description("Lock Hands")]
-    public bool LockHands { get; set; } = true;
+    public bool LockHands { get; set; }
 
     /// <summary>
     ///     Unused option 5

@@ -95,12 +95,12 @@ public class ArenaEntranceScript : DialogScriptBase
                     return;
                 }
                 
-                /*if (Equals(aislingToChallenge?.Client.RemoteIp, source.Client.RemoteIp))
+                if (Equals(aislingToChallenge?.Client.RemoteIp, source.Client.RemoteIp))
                 {
                     source.SendOrangeBarMessage($"You cannot challenge yourself to a pit fight. (( Same IP ))");
                     Subject.Close(source);
                     return;
-                }*/
+                }
                 
                 if ((aislingToChallenge == null) || !aislingToChallenge.OnSameMapAs(source))
                 {
@@ -109,8 +109,13 @@ public class ArenaEntranceScript : DialogScriptBase
                     return;
                 }
 
+                if (source.Trackers.TimedEvents.HasActiveEvent($"{aislingToChallenge.Name.ToLower()}_pitfight", out var @pitfight))
+                {
+                    Subject.Reply(source, $"You can challenge {aislingToChallenge.Name} in {@pitfight.Remaining.Humanize()}. You previously fought them in a pit fight.");
+                    return;
+                }
+                
                 if (source.Trackers.TimedEvents.HasActiveEvent($"{aislingToChallenge.Name.ToLower()}denyPitFight", out var @event))
-
                 {
                    Subject.Reply(source, $"You can challenge {aislingToChallenge.Name} in {@event.Remaining.Humanize()}. They denied you previously.");
                    return;
