@@ -31,14 +31,13 @@ public class BurningGroundScript : ReactorTileScriptBase
     public BurningGroundScript(ReactorTile subject)
         : base(subject)
     {
-        ApplicationTimer = new IntervalTimer(TimeSpan.FromSeconds(1));
+        ApplicationTimer = new IntervalTimer(TimeSpan.FromSeconds(100));
         Animationtimer = new IntervalTimer(TimeSpan.FromMilliseconds(500));
         ApplyDamageScript = ApplyNonAttackDamageScript.Create();
 
         Animation = new Animation
         {
-            TargetAnimation = 211,
-            AnimationSpeed = 600
+            TargetAnimation = 994
         };
     }
 
@@ -59,9 +58,9 @@ public class BurningGroundScript : ReactorTileScriptBase
                 if (aisling.IsDead)
                     continue;
 
-                var healthDamage = MathEx.GetPercentOf<int>((int)aisling.UserStatSheet.EffectiveMaximumHp, 20);
+                var healthDamage = MathEx.GetPercentOf<int>((int)aisling.UserStatSheet.EffectiveMaximumHp, 2);
 
-                aisling.UserStatSheet.SubtractManaPct(10);
+                aisling.UserStatSheet.SubtractManaPct(1);
 
                 ApplyDamageScript.ApplyDamage(
                     Subject.Owner!,
