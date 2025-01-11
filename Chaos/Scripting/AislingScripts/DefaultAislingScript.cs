@@ -43,7 +43,8 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         "arena_lavateams",
         "arena_colorclash",
         "arena_escort",
-        "arena_hidden_havoc"
+        "arena_hidden_havoc",
+        "arena_pitfight"
     };
 
     private readonly IStore<BulletinBoard> BoardStore;
@@ -62,6 +63,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         "Nightmare",
         "Cain's Farm",
         "Labyrinth Battle Ring",
+        "Drowned Labyrith - Pit",
         "Lava Arena",
         "Lava Arena - Teams",
         "Color Clash - Teams",
@@ -797,7 +799,9 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             var aislings = Subject.MapInstance.GetEntities<Aisling>();
 
             foreach (var aisling in aislings)
-                aisling.SendServerMessage(ServerMessageType.OrangeBar1, $"{Subject.Name} was killed by {source?.Name}.");
+            {
+                aisling.SendServerMessage(ServerMessageType.OrangeBar1, $"{Subject.Name} was killed by {source?.Name}.");   
+            }
         }
 
         if (MapsToNotPunishDeathOn.Contains(Subject.MapInstance.Name))
@@ -844,7 +848,8 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
                     // Decrease the available Mithril Dice count
                     mithrilDiceCount--;
-                } else
+                } 
+                else
                 {
                     // Log and notify the player that they lost an item
                     Logger.WithTopics(

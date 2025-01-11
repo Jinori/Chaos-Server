@@ -21,6 +21,7 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
     private readonly List<string> MapsToNotPunishDurability =
     [
         "Labyrinth Battle Ring",
+        "Drowned Labyrith - Pit",
         "Lava Arena",
         "Lava Arena - Teams",
         "Color Clash - Teams",

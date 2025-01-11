@@ -40,7 +40,7 @@ public class RelationshipBehavior
             _ => throw new ArgumentOutOfRangeException(nameof(source))
         };
 
-    private readonly HashSet<string> ArenaKeys = new(StringComparer.OrdinalIgnoreCase) { "arena_battle_ring", "arena_lava", "arena_lavateams", "arena_colorclash", "arena_escort"};
+    private readonly HashSet<string> ArenaKeys = new(StringComparer.OrdinalIgnoreCase) { "arena_battle_ring", "arena_lava", "arena_lavateams", "arena_colorclash", "arena_escort", "arena_pitfight"};
     
     protected virtual bool IsFriendlyTo(Aisling source, Merchant target) => true;
 
