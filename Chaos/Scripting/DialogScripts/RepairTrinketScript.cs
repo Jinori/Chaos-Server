@@ -1,16 +1,23 @@
+using Chaos.Collections;
 using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
+using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts;
 
 internal class RepairTrinketScript : DialogScriptBase
 {
+    private readonly ISimpleCache SimpleCache;
+
     /// <inheritdoc />
-    public RepairTrinketScript(Dialog subject)
-        : base(subject) { }
+    public RepairTrinketScript(Dialog subject, ISimpleCache simpleCache)
+        : base(subject)
+    {
+        SimpleCache = simpleCache;
+    }
 
     private Animation RepairAnimation { get; } = new()
     {
@@ -31,6 +38,15 @@ internal class RepairTrinketScript : DialogScriptBase
                     return;
                 }
                 RepairItems(source, source);
+                break;
+            }
+            
+                    
+            case "repairtrinket_portalascent":
+            {
+                var targetMap = SimpleCache.Get<MapInstance>("wilderness_armorsmithing");
+                source.TraverseMap(targetMap, new Point(8, 6));
+                source.SendActiveMessage("The Deisui Earrai gleams with mystical energy.");
                 break;
             }
         }

@@ -1,20 +1,27 @@
+using Chaos.Collections;
 using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
+using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts;
 
 internal class DmgTrinketScript : DialogScriptBase
 {
+    
     /// <inheritdoc />
-    public DmgTrinketScript(Dialog subject, IEffectFactory effectFactory)
-        : base(subject) =>
+    public DmgTrinketScript(Dialog subject, IEffectFactory effectFactory, ISimpleCache simpleCache)
+        : base(subject)
+    {
         EffectFactory = effectFactory;
+        SimpleCache = simpleCache;
+    }
 
-    public readonly IEffectFactory EffectFactory;
+    private readonly ISimpleCache SimpleCache;
+    private readonly IEffectFactory EffectFactory;
     private Animation DmgAnimation { get; } = new()
     {
         TargetAnimation = 967,
@@ -34,6 +41,15 @@ internal class DmgTrinketScript : DialogScriptBase
                     return;
                 }
                 DamageBoost(source, source);
+                break;
+            }
+            
+            case "dmgtrinket_portalforge":
+            {
+                var targetMap = SimpleCache.Get<MapInstance>("tagor_forge");
+                source.TraverseMap(targetMap, new Point(6, 6));
+                source.SendActiveMessage("Claiomh Thugann Anam's blade beams with energy.");
+
                 break;
             }
         }
@@ -65,7 +81,7 @@ internal class DmgTrinketScript : DialogScriptBase
         }
     }
 
-    public void DamageBoost(Aisling source, Aisling target)
+    private void DamageBoost(Aisling source, Aisling target)
     {
         source.Trackers.TimedEvents.AddEvent("dmgTrinket", TimeSpan.FromHours(3), true);
 

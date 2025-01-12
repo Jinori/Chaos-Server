@@ -1,24 +1,32 @@
+using Chaos.Collections;
 using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
+using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts;
 
 public class ExpTrinketScript : DialogScriptBase
 {
+    private readonly ISimpleCache SimpleCache;
     private readonly Dictionary<string, Action<Aisling>> Actions;
 
-    public ExpTrinketScript(Dialog subject) : base(subject) =>
+    
+    public ExpTrinketScript(Dialog subject, ISimpleCache simpleCache) : base(subject)
+    {
+        SimpleCache = simpleCache;
         Actions = new Dictionary<string, Action<Aisling>>
         {
             ["exptrinket_starttimer"] = StartExpTimer,
             ["exptrinket_checkexprates"] = CheckExpRates,
             ["exptrinket_resetexptimer"] = ResetExpValues,
-            ["exptrinket_sharerates"] = ShareExpRates
+            ["exptrinket_sharerates"] = ShareExpRates,
+            ["exptrinket_portaljeweler"] = PortalJeweler
         };
+    }
 
     public override void OnDisplaying(Aisling source)
     {
@@ -26,6 +34,13 @@ public class ExpTrinketScript : DialogScriptBase
             action(source);
     }
 
+    private void PortalJeweler(Aisling source)
+    {
+        var targetMap = SimpleCache.Get<MapInstance>("rucesion_jeweler");
+        source.TraverseMap(targetMap, new Point(5, 10));
+        source.SendActiveMessage("Sceallog Taithi's sand flows in the direction of home.");
+    }
+    
     private void StartExpTimer(Aisling source)
     {
         source.Trackers.Enums.TryGetValue(out ExpTimerStage stage);
