@@ -21,9 +21,9 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.Creants.Phoenix;
 
 public class PhoenixSkyDedicatedShardScript : MapScriptBase
 {
-    public Location FromLocation { get; set; } = null!;
+    public Location? FromLocation { get; set; }
     public List<string> WhiteList { get; set; } = [];
-    public Monster Phoenix { get; set; } = null!;
+    public Monster? Phoenix { get; set; }
     private readonly IIntervalTimer CheckTimer = new IntervalTimer(TimeSpan.FromSeconds(5), false);
     private readonly ISimpleCache SimpleCache;
     private readonly IApplyDamageScript ApplyDamageScript;
@@ -41,7 +41,7 @@ public class PhoenixSkyDedicatedShardScript : MapScriptBase
     {
         CheckTimer.Update(delta);
 
-        if (CheckTimer.IntervalElapsed)
+        if (CheckTimer.IntervalElapsed && FromLocation is not null && Phoenix is not null)
         {
             var aislings = Subject.GetEntities<Aisling>()
                                   .ExceptBy(WhiteList, aisling => aisling.Name);
