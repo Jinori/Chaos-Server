@@ -10,6 +10,7 @@ namespace Chaos.Scripting.ItemScripts;
 
 public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
 {
+    private readonly Item Subject1 = subject;
     private Attributes? MysticAttributes { get; set; }
 
     private bool CanWieldStaff(Aisling source, string skillName)
@@ -23,6 +24,13 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
 
         if (isPriestWithHolyStaff || isWizardWithMagusStaff || hasSkill)
         {
+            if (Subject.Template.RequiresMaster && !source.UserStatSheet.Master)
+            {
+                source.SendOrangeBarMessage($"{Subject.DisplayName} requires Master to wear.");
+                return false;
+            }
+               
+
             return true;
         }
     
@@ -235,7 +243,7 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
                 };
 
                 MysticAttributes = attributes;
-                subject.Modifiers.Add(MysticAttributes);
+                Subject1.Modifiers.Add(MysticAttributes);
             }
 
             if (Subject.Template.TemplateKey.EqualsI("mysticknife"))
@@ -248,7 +256,7 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
                 };
 
                 MysticAttributes = attributes;
-                subject.Modifiers.Add(MysticAttributes);
+                Subject1.Modifiers.Add(MysticAttributes);
             }
 
             if (Subject.Template.TemplateKey.EqualsI("mysticsword"))
@@ -261,7 +269,7 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
                 };
 
                 MysticAttributes = attributes;
-                subject.Modifiers.Add(MysticAttributes);
+                Subject1.Modifiers.Add(MysticAttributes);
             }
         }
 

@@ -31,6 +31,9 @@ public class FollowPlayerCommand(IClientRegistry<IChaosWorldClient> clientRegist
             adminSource.Effects.Terminate("follow");
             return default;
         }
+        
+        if (adminSource.Effects.Contains("follow"))
+            adminSource.Effects.Dispel("follow");
 
         adminSource.StatSheet.SetHealthPct(100);
         adminSource.Client.SendAttributes(StatUpdateType.Vitality);

@@ -310,6 +310,10 @@ public record StatSheet : Attributes
             () => Convert.ToInt32(Math.Clamp(EffectiveMaximumHp * pct / 100m, 0, EffectiveMaximumHp)));
 
     public void SetHp(int amount) => Interlocked.Exchange(ref _currentHp, amount);
+    
+    public void SetMaxHp(int amount) => Interlocked.Exchange(ref _maximumHp, amount);
+    
+    public void SetMaxMp(int amount) => Interlocked.Exchange(ref _maximumMp, amount);
 
     public void SetLevel(int level) => Interlocked.Exchange(ref _level, level);
 
