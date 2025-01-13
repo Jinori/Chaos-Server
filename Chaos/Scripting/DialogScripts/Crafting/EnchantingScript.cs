@@ -399,7 +399,7 @@ public class EnchantingScript : DialogScriptBase
     };
 
     // Converts the rank string to an integer value
-    private int GetRankAsInt(string rank)
+    public int GetRankAsInt(string rank)
     {
         var rankMappings = new Dictionary<string, int>
         {
@@ -627,5 +627,6 @@ public class EnchantingScript : DialogScriptBase
             source.SendOrangeBarMessage($"You have received Geata Chugam for reaching {title}!");
         }
     }
+    
     #endregion Methods
 }

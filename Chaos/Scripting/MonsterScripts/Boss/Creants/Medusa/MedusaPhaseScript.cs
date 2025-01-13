@@ -58,7 +58,7 @@ public sealed class MedusaPhaseScript : MonsterScriptBase
         TimeBetweenPhases = new IntervalTimer(TimeSpan.FromSeconds(60), false);
         SpellPhaseTimer4 = new IntervalTimer(TimeSpan.FromSeconds(12), false);
         DelayTimer = new IntervalTimer(TimeSpan.FromMilliseconds(1250), false);
-        SpawnSnakePitsTimer = new IntervalTimer(TimeSpan.FromSeconds(12), false);
+        SpawnSnakePitsTimer = new IntervalTimer(TimeSpan.FromSeconds(10), false);
         MonsterFactory = monsterFactory;
         SpellFactory = spellFactory;
         EffectFactory = effectFactory;
@@ -291,6 +291,7 @@ public sealed class MedusaPhaseScript : MonsterScriptBase
             if (CurrentPhase > 3)
                 CurrentPhase = 1;
 
+            CurrentPhase = 2;
             StartPhase();
         }
 

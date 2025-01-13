@@ -447,7 +447,7 @@ public class CreantReward : DialogScriptBase
                         source.Legend.AddUnique(
                             new LegendMark(
                                 "Sealed away the Lady Phoenix Creant",
-                                "medusa",
+                                "phoenix",
                                 MarkIcon.Heart,
                                 MarkColor.Blue,
                                 1,

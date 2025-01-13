@@ -94,7 +94,7 @@ public static class RectangleExtensions
     [OverloadResolutionPriority(1)]
     public static IEnumerable<Point> GenerateMaze(this IRectangle rect, Point start, Point end)
     {
-         //neighbor pattern
+        //neighbor pattern
         List<(int, int)> pattern =
         [
             (0, 1),
@@ -109,7 +109,12 @@ public static class RectangleExtensions
         var endNode = UnOffsetCoordinates(rect, end);
         var maze = new bool[width, height];
         var discoveryQueue = new Stack<Point>();
-        var mazeRect = new Rectangle(0, 0, width, height);
+
+        var mazeRect = new Rectangle(
+            0,
+            0,
+            width,
+            height);
 
         //initialize maze full of walls
         for (var x = 0; x < maze.GetLength(0); x++)

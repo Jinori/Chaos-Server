@@ -2,6 +2,7 @@ using Chaos.Collections;
 using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
@@ -30,6 +31,13 @@ public class ExpTrinketScript : DialogScriptBase
 
     public override void OnDisplaying(Aisling source)
     {
+        if (!source.Legend.ContainsKey("jwlcrfting") && !source.IsGodModeEnabled())
+        {
+                source.Inventory.RemoveQuantityByTemplateKey("exptrinket", 1);
+                source.SendOrangeBarMessage("The Sceallog Taithi breaks in your undefined hands.");
+                Subject.Close(source);
+        }
+        
         if (Actions.TryGetValue(Subject.Template.TemplateKey.ToLower(), out var action))
             action(source);
     }

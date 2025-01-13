@@ -1,5 +1,6 @@
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
+using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -26,7 +27,7 @@ public class DrowningEffect : ContinuousAnimationEffectBase
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1500), false);
 
     /// <inheritdoc />
-    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(2000), false);
+    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000), false);
 
     /// <inheritdoc />
     public override byte Icon => 66;
@@ -44,13 +45,15 @@ public class DrowningEffect : ContinuousAnimationEffectBase
             return;
         }
 
-        var rectangle = new Rectangle(
+        var safeRectangle = new Rectangle(
             9,
             7,
             7,
             7);
+        
+        var subjectPoint = new Point(Subject.X, Subject.Y);
 
-        if (rectangle.Contains(Subject))
+        if (safeRectangle.Contains(subjectPoint))
         {
             AislingSubject?.SendOrangeBarMessage("You are no longer drowning!");
             Subject.Effects.Dispel(Name);
@@ -60,7 +63,7 @@ public class DrowningEffect : ContinuousAnimationEffectBase
 
         double maxHp = Subject.StatSheet.EffectiveMaximumHp;
         const double DAMAGE_PERCENTAGE = 0.3;
-        const int DAMAGE_CAP = 100000;
+        const int DAMAGE_CAP = 1000000;
 
         var damage = (int)Math.Min(maxHp * DAMAGE_PERCENTAGE, DAMAGE_CAP);
 
@@ -89,6 +92,9 @@ public class DrowningEffect : ContinuousAnimationEffectBase
 
     public override bool ShouldApply(Creature source, Creature target)
     {
+        if (target is not Aisling)
+            return false;
+        
         if (target.Script.Is<ThisIsABossScript>())
             return false;
 
