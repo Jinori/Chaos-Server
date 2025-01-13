@@ -370,9 +370,16 @@ public class EnchantingScript : DialogScriptBase
         var modifiableItems = source.Inventory
                                     .Where(
                                         x => x.Template.IsModifiable
-                                             && (x.Level >= selectedRecipe.Level)
-                                             && (selectedRecipeItem.Template.RequiresMaster || x.Template.RequiresMaster))
+                                             && (x.Template.Level >= selectedRecipe.Level))
                                     .ToList();
+
+        foreach (var item in modifiableItems.ToList())
+        {
+            if (!item.Template.RequiresMaster && selectedRecipeItem.Template.RequiresMaster)
+            {
+                modifiableItems.Remove(item);
+            }
+        }
 
         if (modifiableItems.Count == 0)
         {

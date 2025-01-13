@@ -127,8 +127,196 @@ public class CreantReward : DialogScriptBase
             }
 
             case "creant_reward_final":
+                
+                var pureGmGearDictionary = new Dictionary<(string mapTemplateKey, BaseClass baseClass, Gender gender), string[]>
+                {
+                    {
+                        ("19522", BaseClass.Warrior, Gender.Male), new[]
+                        {
+                            "duskrenderbattleaxe"
+                        }
+                    },
+                    {
+                        ("19522", BaseClass.Warrior, Gender.Female), new[]
+                        {
+                            "duskrenderbattleaxe"
+                        }
+                    },
+                    {
+                        ("19522", BaseClass.Priest, Gender.Male), new[]
+                        {
+                            "PureMaleGMPriestArmor"
+                        }
+                    },
+                    {
+                        ("19522", BaseClass.Priest, Gender.Female), new[]
+                        {
+                            "PureFemaleGMPriestArmor"
+                        }
+                    },
+                    {
+                        ("19522", BaseClass.Wizard, Gender.Male), new[]
+                        {
+                            "PureMaleGMWizardArmor"
+                        }
+                    },
+                    {
+                        ("19522", BaseClass.Wizard, Gender.Female), new[]
+                        {
+                            "PureFemaleGMWizardArmor"
+                        }
+                    },
 
-                var gmGearDictionary = new Dictionary<(string mapTemplateKey, BaseClass baseClass, Gender gender), string[]>
+                    {
+                        ("989", BaseClass.Warrior, Gender.Male), new[]
+                        {
+                            "PureMaleWarriorGMHelm"
+                        }
+                    },
+                    {
+                        ("989", BaseClass.Warrior, Gender.Female), new[]
+                        {
+                            "PureFemaleWarriorGMHelm"
+                        }
+                    },
+                    {
+                        ("989", BaseClass.Priest, Gender.Male), new[]
+                        {
+                            "DivineStaff"
+                        }
+                    },
+                    {
+                        ("989", BaseClass.Priest, Gender.Female), new[]
+                        {
+                            "DivineStaff"
+                        }
+                    },
+                    {
+                        ("989", BaseClass.Monk, Gender.Male), new[]
+                        {
+                            "PureMaleGMMonkArmor"
+                        }
+                    },
+                    {
+                        ("989", BaseClass.Monk, Gender.Female), new[]
+                        {
+                            "PureFemaleGMMonkArmor"
+                        }
+                    },
+                    {
+                        ("989", BaseClass.Rogue, Gender.Male), new[]
+                        {
+                            "PureGMShadowMask"
+                        }
+                    },
+                    {
+                        ("989", BaseClass.Rogue, Gender.Female), new[]
+                        {
+                            "PureGMShadowHood"
+                        }
+                    },
+
+                    {
+                        ("6599", BaseClass.Warrior, Gender.Male), new[]
+                        {
+                            "PureMaleGMWarArmor"
+                        }
+                    },
+                    {
+                        ("6599", BaseClass.Warrior, Gender.Female), new[]
+                        {
+                            "PureFemaleGMWarArmor"
+                        }
+                    },
+                    {
+                        ("6599", BaseClass.Wizard, Gender.Male), new[]
+                        {
+                            "mysticgreaves"
+                        }
+                    },
+                    {
+                        ("6599", BaseClass.Wizard, Gender.Female), new[]
+                        {
+                            "mysticgreaves"
+                        }
+                    },
+                    {
+                        ("6599", BaseClass.Monk, Gender.Male), new[]
+                        {
+                            "PureMaleGMDugon"
+                        }
+                    },
+                    {
+                        ("6599", BaseClass.Monk, Gender.Female), new[]
+                        {
+                            "PureFemaleGMDugon"
+                        }
+                    },
+                    {
+                        ("6599", BaseClass.Rogue, Gender.Male), new[]
+                        {
+                            "skean"
+                        }
+                    },
+                    {
+                        ("6599", BaseClass.Rogue, Gender.Female), new[]
+                        {
+                            "skean"
+                        }
+                    },
+
+                    {
+                        ("31010", BaseClass.Priest, Gender.Male), new[]
+                        {
+                            "PureGMDivineMitre"
+                        }
+                    },
+                    {
+                        ("31010", BaseClass.Priest, Gender.Female), new[]
+                        {
+                            "PureGMDivineBand"
+                        }
+                    },
+                    {
+                        ("31010", BaseClass.Wizard, Gender.Male), new[]
+                        {
+                            "PureMaleGMWizardHelm"
+                        }
+                    },
+                    {
+                        ("31010", BaseClass.Wizard, Gender.Female), new[]
+                        {
+                            "PureFemaleGMWizardHelm"
+                        }
+                    },
+                    {
+                        ("31010", BaseClass.Monk, Gender.Male), new[]
+                        {
+                            "obsidian"
+                        }
+                    },
+                    {
+                        ("31010", BaseClass.Monk, Gender.Female), new[]
+                        {
+                            "obsidian"
+                        }
+                    },
+                    {
+                        ("31010", BaseClass.Rogue, Gender.Male), new[]
+                        {
+                            "PureMaleGMRogueArmor"
+                        }
+                    },
+                    {
+                        ("31010", BaseClass.Rogue, Gender.Female), new[]
+                        {
+                            "PureFemaleGMRogueArmor"
+                        }
+                    }
+                };
+                
+
+                var subGmGearDictionary = new Dictionary<(string mapTemplateKey, BaseClass baseClass, Gender gender), string[]>
                 {
                     {
                         ("19522", BaseClass.Warrior, Gender.Male), new[]
@@ -320,8 +508,21 @@ public class CreantReward : DialogScriptBase
                 var baseClass = source.UserStatSheet.BaseClass;
                 var gender = source.Gender;
 
-                // Check if the dictionary contains a matching entry
-                if (gmGearDictionary.TryGetValue((mapTemplateKey, baseClass, gender), out var rewards))
+                if (source.IsPureMonkMaster()
+                    || source.IsPurePriestMaster()
+                    || source.IsPureWizardMaster()
+                    || source.IsPureRogueMaster()
+                    || source.IsPureWarriorMaster())
+                {
+                    if (pureGmGearDictionary.TryGetValue((mapTemplateKey, baseClass, gender), out var purerewards))
+                    // Grant rewards to the player
+                    foreach (var reward in purerewards)
+                    {
+                        var item = ItemFactory.Create(reward);
+                        source.GiveItemOrSendToBank(item);
+                        source.SendOrangeBarMessage($"You received the {item.DisplayName}!");
+                    }
+                } else if (subGmGearDictionary.TryGetValue((mapTemplateKey, baseClass, gender), out var rewards))
 
                     // Grant rewards to the player
                     foreach (var reward in rewards)
