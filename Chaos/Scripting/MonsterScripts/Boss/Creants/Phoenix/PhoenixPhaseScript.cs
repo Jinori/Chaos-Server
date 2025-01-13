@@ -55,7 +55,7 @@ public class PhoenixPhaseScript : MonsterScriptBase
     #endregion
     
     #region Points
-    private Location SkyLocation = new("phoenix_sky", 7, 7);
+    private readonly Location SkyLocation = new("phoenix_sky", 7, 7);
     #endregion
 
     private void SpawnAdds()
@@ -137,7 +137,7 @@ public class PhoenixPhaseScript : MonsterScriptBase
                     if (DropPhaseTimer.CurrentTimer == DropTimer)
                     {
                         var script = SkyShard!.Script.As<PhoenixSkyDedicatedShardScript>()!;
-                        var originalMap = SimpleCache.Get<MapInstance>(script.FromLocation.Map);
+                        var originalMap = SimpleCache.Get<MapInstance>(script.FromLocation!.Map);
                         originalMap.TryGetRandomWalkablePoint(out var randomPoint, CreatureType.Aisling);
                         
                         AislingToDrop?.TraverseMap(originalMap, randomPoint!, true, onTraverse: () =>
@@ -159,7 +159,7 @@ public class PhoenixPhaseScript : MonsterScriptBase
                     else if (DropPhaseTimer.CurrentTimer == FlyDownTimer)
                     {
                         var script = SkyShard!.Script.As<PhoenixSkyDedicatedShardScript>()!;
-                        var originalMap = SimpleCache.Get<MapInstance>(script.FromLocation.Map);
+                        var originalMap = SimpleCache.Get<MapInstance>(script.FromLocation!.Map);
                         Subject.TraverseMap(originalMap, script.FromLocation, true);
                         
                         CurrentPhase = Phase.Normal;

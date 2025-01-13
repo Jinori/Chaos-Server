@@ -1,4 +1,5 @@
 using Chaos.Collections;
+using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.Menu;
@@ -30,6 +31,18 @@ internal class RepairTrinketScript : DialogScriptBase
     {
         switch (Subject.Template.TemplateKey.ToLower())
         {
+            case "repairtrinket_initial":
+            {
+                if (!source.Legend.ContainsKey("armsmith") && !source.IsGodModeEnabled())
+                {
+                    source.Inventory.RemoveQuantityByTemplateKey("repairtrinket", 1);
+                    source.SendOrangeBarMessage("The Deisiu Earrai breaks in your undefined hands.");
+                    Subject.Close(source);
+                }
+
+                break;
+            }
+            
             case "repairtrinket_repairowngearyes":
             {
                 if (source.Trackers.TimedEvents.HasActiveEvent("repairTrinket", out var repairTime))

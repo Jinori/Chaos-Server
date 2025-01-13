@@ -1,6 +1,5 @@
 using Chaos.Collections;
 using Chaos.Definitions;
-using Chaos.Extensions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
@@ -32,9 +31,6 @@ public class StartCreantReactorScript : ReactorTileScriptBase
     public override void OnWalkedOn(Creature source)
     {
         if (source is not Aisling aisling)
-            return;
-
-        if (!source.IsGodModeEnabled())
             return;
 
         if (aisling.Trackers.Flags.HasFlag(CreantEnums.KilledMedusa) && (aisling.MapInstance.Template.TemplateKey == "6599"))

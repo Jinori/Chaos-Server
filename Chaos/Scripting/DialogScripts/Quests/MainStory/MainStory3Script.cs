@@ -106,6 +106,15 @@ public class MainStory3Script(Dialog subject, IItemFactory itemFactory) : Dialog
 
                 if (source.Trackers.Enums.HasValue(MainstoryMasterEnums.CompletedDungeon))
                 {
+                    var vitality = source.UserStatSheet.MaximumHp + source.UserStatSheet.MaximumMp * 2;
+
+                    if (vitality < 60000)
+                    {
+                        Subject.Reply(source, "Skip", "mainstory_miraelis_creantvitality");
+
+                        return;
+                    }
+
                     Subject.Reply(source, "Skip", "mainstory_miraelis_creantinitial");
 
                     return;
@@ -163,6 +172,7 @@ public class MainStory3Script(Dialog subject, IItemFactory itemFactory) : Dialog
             case "finishedcreants4":
             {
                 source.Trackers.Enums.Set(MainstoryMasterEnums.CompletedCreants);
+                source.Trackers.Flags.AddFlag(MainstoryFlags.FinishedCreants);
                 ExperienceDistributionScript.GiveExp(source, 100000000);
                 source.TryGiveGamePoints(25);
 

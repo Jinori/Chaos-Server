@@ -118,19 +118,7 @@ public class GuildMemberAdmitScript : GuildScriptBase
             Subject.Reply(source, $"{name} is already in a guild", "generic_guild_members_initial");
             return;
         }
-
-        Logger.WithTopics(Topics.Entities.Guild, Topics.Actions.Join)
-              .WithProperty(Subject)
-              .WithProperty(Subject.DialogSource)
-              .WithProperty(source)
-              .WithProperty(guild)
-              .WithProperty(aislingToAdmit)
-              .LogInformation(
-                  "Aisling {@AislingName} admitted {@TargetAislingName} to {@GuildName}",
-                  source.Name,
-                  aislingToAdmit.Name,
-                  guild.Name);
-
+        
         // Pass the inviting player's name as an argument
         var dialog = DialogFactory.Create("generic_guild_members_player_confirmation", Subject.DialogSource);
         dialog.MenuArgs = Subject.MenuArgs;
@@ -216,6 +204,18 @@ public class GuildMemberAdmitScript : GuildScriptBase
 
         if (optionIndex is 1)
         {
+            Logger.WithTopics(Topics.Entities.Guild, Topics.Actions.Join)
+                  .WithProperty(Subject)
+                  .WithProperty(Subject.DialogSource)
+                  .WithProperty(invitingPlayer.Aisling.Name)
+                  .WithProperty(guild)
+                  .WithProperty(playerInvited.Aisling.Name)
+                  .LogInformation(
+                      "Aisling {@AislingName} admitted {@TargetAislingName} to {@GuildName}",
+                      invitingPlayer.Aisling.Name,
+                      playerInvited.Aisling.Name,
+                      guild.Name);
+            
             invitingPlayer.Aisling.SendOrangeBarMessage($"{playerInvited.Aisling.Name} has joined {guild.Name}!");
             playerInvited.Aisling.SendOrangeBarMessage($"You joined {guild.Name}!");
             guild.AddMember(playerInvited.Aisling, invitingPlayer.Aisling);

@@ -370,9 +370,16 @@ public class EnchantingScript : DialogScriptBase
         var modifiableItems = source.Inventory
                                     .Where(
                                         x => x.Template.IsModifiable
-                                             && (x.Level >= selectedRecipe.Level)
-                                             && (selectedRecipeItem.Template.RequiresMaster || x.Template.RequiresMaster))
+                                             && (x.Template.Level >= selectedRecipe.Level))
                                     .ToList();
+
+        foreach (var item in modifiableItems.ToList())
+        {
+            if (!item.Template.RequiresMaster && selectedRecipeItem.Template.RequiresMaster)
+            {
+                modifiableItems.Remove(item);
+            }
+        }
 
         if (modifiableItems.Count == 0)
         {
@@ -399,7 +406,7 @@ public class EnchantingScript : DialogScriptBase
     };
 
     // Converts the rank string to an integer value
-    private int GetRankAsInt(string rank)
+    public int GetRankAsInt(string rank)
     {
         var rankMappings = new Dictionary<string, int>
         {
@@ -627,5 +634,6 @@ public class EnchantingScript : DialogScriptBase
             source.SendOrangeBarMessage($"You have received Geata Chugam for reaching {title}!");
         }
     }
+    
     #endregion Methods
 }

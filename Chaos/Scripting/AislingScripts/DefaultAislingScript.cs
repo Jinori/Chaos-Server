@@ -5,6 +5,7 @@ using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
+using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
 using Chaos.Formulae;
 using Chaos.Geometry.Abstractions;
@@ -1142,6 +1143,18 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 // Send full attribute update
                 Subject.Client.SendAttributes(StatUpdateType.Full);
             }
+
+            if (!Subject.Titles.ContainsI("Expert Enchanter") && !Subject.IsAdmin)
+                Subject.Inventory.RemoveQuantityByTemplateKey("portaltrinket", 1);
+
+            if (!Subject.Titles.ContainsI("Expert Weaponsmith") && !Subject.IsAdmin)
+                Subject.Inventory.RemoveQuantityByTemplateKey("dmgtrinket", 1);
+
+            if (!Subject.Titles.ContainsI("Expert Armorsmith") && !Subject.IsAdmin)
+                Subject.Inventory.RemoveQuantityByTemplateKey("repairtrinket", 1);
+
+            if (!Subject.Titles.ContainsI("Expert Jewelcrafter") && !Subject.IsAdmin)
+                Subject.Inventory.RemoveQuantityByTemplateKey("exptrinket", 1);
 
             RemovePureOnlySpells("magmasurge");
             RemovePureOnlySpells("tidalbreeze");

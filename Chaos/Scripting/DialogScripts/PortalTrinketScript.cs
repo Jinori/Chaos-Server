@@ -1,5 +1,6 @@
 using Chaos.Collections;
 using Chaos.Common.Utilities;
+using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Menu;
@@ -183,6 +184,18 @@ public class PortalTrinketScript : DialogScriptBase
     {
         switch (Subject.Template.TemplateKey.ToLower())
         {
+            case "portaltrinket_initial":
+            {
+                if (!source.Legend.ContainsKey("ench") && !source.IsGodModeEnabled())
+                {
+                    source.Inventory.RemoveQuantityByTemplateKey("portaltrinket", 1);
+                    source.SendOrangeBarMessage("The Geata Chagum breaks in your undefined hands.");
+                    Subject.Close(source);
+                }
+
+                break;
+            }
+
             case "portaltrinket_summongroup":
             {
                 if (source.Trackers.TimedEvents.HasActiveEvent("portalTrinket", out var repairTime))
@@ -232,7 +245,7 @@ public class PortalTrinketScript : DialogScriptBase
 
                 source.SummonTrinketMapInstance = source.MapInstance;
                 source.SummonTrinketLocation = new Point(source.X, source.Y);
-                
+
                 foreach (var member in source.Group)
                     if (!member.Equals(source))
                     {
@@ -280,8 +293,7 @@ public class PortalTrinketScript : DialogScriptBase
                                 source);
                             member.MapInstance.SimpleAdd(tile);
                             member.SendActiveMessage($"{source.Name} has created a group portal for you to enter.");
-                        } 
-                        else
+                        } else
                             Task.Run(
                                 async () =>
                                 {
@@ -296,12 +308,13 @@ public class PortalTrinketScript : DialogScriptBase
                                         member.Y - 2,
                                         4,
                                         4);
-                                    
+
                                     rectangle.TryGetRandomPoint(x => member.MapInstance.IsWalkable(x, member.Type), out var point);
 
                                     if (point == null)
                                     {
                                         member.SendOrangeBarMessage($"{source.Name} tried to summon portal but there's no space.");
+
                                         return;
                                     }
 

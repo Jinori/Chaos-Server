@@ -23,6 +23,17 @@ public struct BodyAnimationAbilityComponent : IComponent
                 animationSpeed = (ushort)(animationSpeed / (1 + modifier));
         }
 
+        var aisling = context.SourceAisling;
+        if ((aisling != null) && aisling.Equipment.TryGetObject((byte)EquipmentSlot.Weapon, out var item))
+        {
+            if (item.Template.Category == "2H")
+            {
+                context.Source.AnimateBody(BodyAnimation.TwoHandAtk, animationSpeed);
+
+                return;
+            }
+        }
+        
         context.Source.AnimateBody(options.BodyAnimation, animationSpeed);
     }
 

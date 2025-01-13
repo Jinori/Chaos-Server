@@ -61,6 +61,7 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
     private bool StartSplitPhase;
     private int SummonedTaurens;
     private bool TurnedClockwise;
+    private bool CreatedSkillSafePoints;
 
     private bool UpSafePoint;
 
@@ -331,10 +332,10 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
         if (SkillPhaseTimer3.IntervalElapsed)
             ResetPhase();
 
-        if (!CreatedSafePoints)
+        if (!CreatedSkillSafePoints)
         {
             CreateSafePointsSkillPhase();
-            CreatedSafePoints = true;
+            CreatedSkillSafePoints = true;
         }
 
         if (SafePointAnimationTimer.IntervalElapsed)
@@ -1037,6 +1038,7 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
         StartSplitPhase = false;
         TimeBetweenPhases.Reset();
         InPhase = false;
+        CreatedSkillSafePoints = false;
         SafePoints.Clear();
         UpSafePoint = false;
         DownSafePoint = false;

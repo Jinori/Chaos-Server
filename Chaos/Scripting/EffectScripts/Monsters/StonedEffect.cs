@@ -43,12 +43,12 @@ public sealed class StonedEffect : ContinuousAnimationEffectBase
         Subject.Animate(Animation);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your body is turning to stone.");
         AislingSubject?.Client.SendCancelCasting();
+        
+        if (Subject.IsGodModeEnabled())
+            Subject.Effects.Dispel(Name);
 
         if (DeathInterval.IntervalElapsed)
         {
-            if (Subject.IsGodModeEnabled())
-                return;
-            
             Subject.StatSheet.SetHealthPct(0);
             Subject.Script.OnDeath();
 
