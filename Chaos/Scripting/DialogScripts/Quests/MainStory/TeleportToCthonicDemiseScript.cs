@@ -20,9 +20,8 @@ public class TeleportToCthonicDemiseScript : DialogScriptBase
         : base(subject)
         => SimpleCache = simpleCache;
 
-    private List<Aisling>? GetNearbyGroupMembers(Aisling source)
-        => source.Group
-                 ?.Where(x => x.WithinRange(new Point(source.X, source.Y)))
+    private List<Aisling>? GetGroupMembers(Aisling source)
+        => source.Group?
                  .ToList();
 
     private bool HasGroupDoneRecently(Aisling source)
@@ -35,10 +34,10 @@ public class TeleportToCthonicDemiseScript : DialogScriptBase
                     || x.Trackers.Flags.HasFlag(MainstoryFlags.FinishedDungeon));
 
     private bool IsGroupValid(Aisling source)
-        => (source.Group != null) && !source.Group.Any(x => !x.OnSameMapAs(source) || !x.WithinRange(source));
+        => (source.Group != null) && source.Group.All(x => x.OnSameMapAs(source));
 
     private bool IsGroupWithinLevelRange(Aisling source, List<Aisling> group)
-        => group.All(member => member.WithinLevelRange(source) && (member.UserStatSheet.Level > 96));
+        => group.All(member => member.WithinLevelRange(source) && (member.UserStatSheet.Level > 98));
 
     public override void OnDisplaying(Aisling source)
     {
@@ -84,7 +83,7 @@ public class TeleportToCthonicDemiseScript : DialogScriptBase
             return;
         }
 
-        var group = GetNearbyGroupMembers(source);
+        var group = GetGroupMembers(source);
 
         if ((group == null) || (group.Count <= 3))
         {
@@ -133,7 +132,7 @@ public class TeleportToCthonicDemiseScript : DialogScriptBase
     private void SendGroupInvalidMessage(Aisling source)
     {
         source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Facing the army alone is suicide.");
-        Subject.Reply(source, "You have no group members nearby.");
+        Subject.Reply(source, "All of your group members must be nearby.");
     }
 
     private void SendGroupRecentMessage(Aisling source)
