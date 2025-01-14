@@ -41,8 +41,10 @@ public class TerminusShowRawStatsScript : DialogScriptBase
             case "terminus_checkrawstats":
             {
                 var sb = new StringBuilder();
-
+                var vitality = source.UserStatSheet.MaximumHp + source.UserStatSheet.MaximumMp * 2;
+                
                 sb.AppendLineFColored(MessageColor.Yellow, "Base Vitality", MessageColor.Gray);
+                sb.Append($"Vitality: {vitality} ");
                 sb.Append($"HP: {source.StatSheet.MaximumHp} ");
                 sb.AppendLine($"MP: {source.StatSheet.MaximumMp} ");
 
@@ -78,8 +80,10 @@ public class TerminusShowRawStatsScript : DialogScriptBase
             case "terminus_checkgearedstats":
             {
                 var sb = new StringBuilder();
+                var vitality = source.UserStatSheet.EffectiveMaximumHp + source.UserStatSheet.EffectiveMaximumMp * 2;
 
                 sb.AppendLineFColored(MessageColor.Yellow, "Geared Vitality", MessageColor.Gray);
+                sb.Append($"Vitality: {vitality} ");
                 sb.Append($"HP: {source.StatSheet.EffectiveMaximumHp} ");
                 sb.AppendLine($"MP: {source.StatSheet.EffectiveMaximumMp} ");
 

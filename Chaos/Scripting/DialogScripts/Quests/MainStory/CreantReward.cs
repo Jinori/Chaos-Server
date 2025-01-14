@@ -255,13 +255,13 @@ public class CreantReward : DialogScriptBase
                     {
                         ("6599", BaseClass.Rogue, Gender.Male), new[]
                         {
-                            "skean"
+                            "dragonfang"
                         }
                     },
                     {
                         ("6599", BaseClass.Rogue, Gender.Female), new[]
                         {
-                            "skean"
+                            "dragonfang"
                         }
                     },
 
