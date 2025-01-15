@@ -27,7 +27,9 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
     private readonly IReactorTileFactory reactorTileFactory;
     private readonly IIntervalTimer RockFallTimer;
     private readonly IntervalTimer SafePointAnimationTimer;
+    private readonly IntervalTimer SkillSafePointAnimationTimer;
     private readonly List<Point> SafePoints;
+    private readonly List<Point> SkillSafePoints;
     private readonly ISkillFactory SkillFactory;
     private readonly IIntervalTimer SkillPhaseTimer3;
     private readonly IntervalTimer SkillTimer;
@@ -89,9 +91,11 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
         SpellPhaseTimer4 = new IntervalTimer(TimeSpan.FromSeconds(16), false);
         SkillPhaseTimer3 = new IntervalTimer(TimeSpan.FromSeconds(30), false);
         SafePointAnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(1));
+        SkillSafePointAnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(1));
         DelayTimer = new IntervalTimer(TimeSpan.FromMilliseconds(1000), false);
         RockFallTimer = new IntervalTimer(TimeSpan.FromSeconds(5), false);
         SafePoints = new List<Point>();
+        SkillSafePoints = new List<Point>();
         ApplyDamageScript = ApplyAttackDamageScript.Create();
         MonsterFactory = monsterFactory;
         SkillFactory = skillFactory;
@@ -325,7 +329,7 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
         SkillTimer.Update(delta);
         DelayTimer.Update(delta);
         SkillPhaseTimer3.Update(delta);
-        SafePointAnimationTimer.Update(delta);
+        SkillSafePointAnimationTimer.Update(delta);
 
         var skill1 = SkillFactory.Create("tauren_coneattack");
 
@@ -338,8 +342,8 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
             CreatedSkillSafePoints = true;
         }
 
-        if (SafePointAnimationTimer.IntervalElapsed)
-            AnimateSafePoints();
+        if (SkillSafePointAnimationTimer.IntervalElapsed)
+            SkillAnimateSafePoints();
 
         if (PhaseDelay.IntervalElapsed)
             StartSkillPhase = true;
@@ -426,7 +430,7 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
             if (Subject.Direction == Direction.Up)
             {
                 LeftSafePoint = true;
-                SafePoints.Clear();
+                SkillSafePoints.Clear();
                 CreateSafePointsSkillPhase();
                 Subject.Turn(Direction.Right);
                 Subject.TryUseSkill(skill1);
@@ -437,7 +441,7 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
             if (Subject.Direction == Direction.Right)
             {
                 UpSafePoint = true;
-                SafePoints.Clear();
+                SkillSafePoints.Clear();
                 CreateSafePointsSkillPhase();
                 Subject.Turn(Direction.Down);
                 Subject.TryUseSkill(skill1);
@@ -448,7 +452,7 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
             if (Subject.Direction == Direction.Down)
             {
                 RightSafePoint = true;
-                SafePoints.Clear();
+                SkillSafePoints.Clear();
                 CreateSafePointsSkillPhase();
                 Subject.Turn(Direction.Left);
                 Subject.TryUseSkill(skill1);
@@ -459,7 +463,7 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
             if (Subject.Direction == Direction.Left)
             {
                 DownSafePoint = true;
-                SafePoints.Clear();
+                SkillSafePoints.Clear();
                 CreateSafePointsSkillPhase();
                 Subject.Turn(Direction.Up);
                 Subject.TryUseSkill(skill1);
@@ -467,6 +471,18 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
         }
     }
 
+    private void SkillAnimateSafePoints()
+    {
+        foreach (var point in SkillSafePoints)
+            Subject.MapInstance.ShowAnimation(
+                new Animation
+                {
+                    AnimationSpeed = 100,
+                    TargetAnimation = 214,
+                    TargetPoint = point
+                });
+    }
+    
     private void CreateSafePointsSkillPhase()
     {
         var safePointsLeft = new[]
@@ -814,7 +830,7 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
             StartSafePoint = true;
 
             foreach (var point in safePointsRight)
-                SafePoints.Add(point);
+                SkillSafePoints.Add(point);
         }
 
         if (UpSafePoint)
@@ -822,7 +838,7 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
             UpSafePoint = false;
 
             foreach (var point in safePointsUp)
-                SafePoints.Add(point);
+                SkillSafePoints.Add(point);
         }
 
         if (DownSafePoint)
@@ -830,7 +846,7 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
             DownSafePoint = false;
 
             foreach (var point in safePointsDown)
-                SafePoints.Add(point);
+                SkillSafePoints.Add(point);
         }
 
         if (RightSafePoint)
@@ -838,7 +854,7 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
             RightSafePoint = false;
 
             foreach (var point in safePointsRight)
-                SafePoints.Add(point);
+                SkillSafePoints.Add(point);
         }
 
         if (LeftSafePoint)
@@ -846,7 +862,7 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
             LeftSafePoint = false;
 
             foreach (var point in safePointsLeft)
-                SafePoints.Add(point);
+                SkillSafePoints.Add(point);
         }
     }
     #endregion
@@ -1040,6 +1056,7 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
         InPhase = false;
         CreatedSkillSafePoints = false;
         SafePoints.Clear();
+        SkillSafePoints.Clear();
         UpSafePoint = false;
         DownSafePoint = false;
         LeftSafePoint = false;

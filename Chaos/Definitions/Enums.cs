@@ -1986,7 +1986,8 @@ public enum MainstoryFlags
     CompletedArtifact4 = 1 << 6,
     CompletedFloor3 = 1 << 7,
     FinishedDungeon = 1 << 8,
-    FinishedCreants = 1 << 9
+    FinishedCreants = 1 << 9,
+    ReceivedRewards = 1 << 10
 }
 
 [Flags]

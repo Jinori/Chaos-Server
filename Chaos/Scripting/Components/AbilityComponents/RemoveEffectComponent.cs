@@ -47,6 +47,9 @@ public class RemoveEffectComponent : IComponent
                     if (effect.Name == "Strong Knowledge")
                         continue;
 
+                    if (effect.Name == "Stoned")
+                        continue;
+
                     if (effect.Name == "Knowledge")
                         continue;
 

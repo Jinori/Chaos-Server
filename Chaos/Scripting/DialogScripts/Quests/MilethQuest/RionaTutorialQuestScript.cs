@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
@@ -40,9 +39,7 @@ public class RionaTutorialQuestScript : DialogScriptBase
         var fiftypercent = MathEx.GetPercentOf<int>(tnl, 50);
 
         if (fiftypercent > 25000)
-        {
             fiftypercent = 25000;
-        }
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
@@ -61,6 +58,15 @@ public class RionaTutorialQuestScript : DialogScriptBase
 
                     if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Add(option);
+                }
+
+                if (source.Trackers.Enums.HasValue(MainstoryMasterEnums.CompletedCreants)
+                    && !source.Trackers.Flags.HasFlag(MainstoryFlags.ReceivedRewards))
+                {
+                    source.Trackers.Flags.AddFlag(MainstoryFlags.ReceivedRewards);
+                    source.Trackers.Enums.Set(ClassStatBracket.Grandmaster);
+                    ExperienceDistributionScript.GiveExp(source, 100000000);
+                    source.TryGiveGamePoints(25);
                 }
 
                 if (source.Trackers.Enums.HasValue(Crafts.Armorsmithing)
@@ -309,17 +315,14 @@ public class RionaTutorialQuestScript : DialogScriptBase
                     }
 
                     Logger.WithTopics(
-                              [Topics.Entities.Aisling,
+                              Topics.Entities.Aisling,
                               Topics.Entities.Experience,
                               Topics.Entities.Item,
                               Topics.Entities.Dialog,
-                              Topics.Entities.Quest])
+                              Topics.Entities.Quest)
                           .WithProperty(source)
                           .WithProperty(Subject)
-                          .LogInformation(
-                              "{@AislingName} has received {@ExpAmount} exp from a quest",
-                              source.Name,
-                              1000);
+                          .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, 1000);
 
                     ExperienceDistributionScript.GiveExp(source, 1000);
                     source.Trackers.Enums.Set(RionaTutorialQuestStage.CompletedRatQuest);
@@ -370,10 +373,7 @@ public class RionaTutorialQuestScript : DialogScriptBase
                 {
                     source.Trackers.Enums.Set(RionaTutorialQuestStage.CompletedSpareAStick);
 
-                    Subject.Reply(
-                        source,
-                        "Well done! You handled that quickly. Our next focus is picking a class.",
-                        "riona_getguided");
+                    Subject.Reply(source, "Well done! You handled that quickly. Our next focus is picking a class.", "riona_getguided");
                 }
             }
 
@@ -381,15 +381,15 @@ public class RionaTutorialQuestScript : DialogScriptBase
 
             case "riona_getguided":
             {
-                if (source.UserStatSheet.BaseClass is BaseClass.Monk or BaseClass.Warrior or BaseClass.Wizard
-                                                      or BaseClass.Rogue or BaseClass.Priest)
+                if (source.UserStatSheet.BaseClass is BaseClass.Monk
+                                                      or BaseClass.Warrior
+                                                      or BaseClass.Wizard
+                                                      or BaseClass.Rogue
+                                                      or BaseClass.Priest)
                 {
                     source.Trackers.Enums.Set(RionaTutorialQuestStage.CompletedGetGuided);
 
-                    Subject.Reply(
-                        source,
-                        "Oh, you already picked a class! Well, now I have a big ask of you...",
-                        "riona_helpskarn");
+                    Subject.Reply(source, "Oh, you already picked a class! Well, now I have a big ask of you...", "riona_helpskarn");
 
                     return;
                 }
@@ -412,8 +412,11 @@ public class RionaTutorialQuestScript : DialogScriptBase
 
             case "riona_getguidedreturn":
             {
-                if (source.UserStatSheet.BaseClass is BaseClass.Monk or BaseClass.Warrior or BaseClass.Wizard
-                                                      or BaseClass.Rogue or BaseClass.Priest)
+                if (source.UserStatSheet.BaseClass is BaseClass.Monk
+                                                      or BaseClass.Warrior
+                                                      or BaseClass.Wizard
+                                                      or BaseClass.Rogue
+                                                      or BaseClass.Priest)
                 {
                     source.Trackers.Enums.Set(RionaTutorialQuestStage.CompletedGetGuided);
                     Subject.Reply(source, "Skip", "riona_helpskarn");
@@ -494,10 +497,7 @@ public class RionaTutorialQuestScript : DialogScriptBase
             case "riona_beautyshopreturn":
             {
                 if (stage == RionaTutorialQuestStage.CompletedBeautyShop)
-                    Subject.Reply(
-                        source,
-                        "Oh joy! My dye is there! I will pick it up this afternoon. Thank you.",
-                        "riona_crafting");
+                    Subject.Reply(source, "Oh joy! My dye is there! I will pick it up this afternoon. Thank you.", "riona_crafting");
             }
 
                 break;
@@ -517,11 +517,7 @@ public class RionaTutorialQuestScript : DialogScriptBase
                 }
 
                 if (stage == RionaTutorialQuestStage.StartedCrafting)
-                {
-                    Subject.Reply(
-                        source,
-                        "Ask me questions about crafting, I'll tell you where to go and explain each craft in detail.");
-                }
+                    Subject.Reply(source, "Ask me questions about crafting, I'll tell you where to go and explain each craft in detail.");
             }
 
                 break;
@@ -559,9 +555,7 @@ public class RionaTutorialQuestScript : DialogScriptBase
                 }
 
                 if (stage == RionaTutorialQuestStage.StartedLeveling)
-                    Subject.Reply(
-                        source,
-                        "Once you've reached level 11, come back and talk to me, I might have a gift for you.");
+                    Subject.Reply(source, "Once you've reached level 11, come back and talk to me, I might have a gift for you.");
             }
 
                 break;
@@ -575,6 +569,7 @@ public class RionaTutorialQuestScript : DialogScriptBase
                 source.Trackers.Flags.RemoveFlag(RionaTutorialQuestFlags.Skarn);
                 source.Trackers.Flags.RemoveFlag(RionaTutorialQuestFlags.None);
                 source.Trackers.Enums.Set(RionaTutorialQuestStage.CompletedTutorialQuest);
+
                 source.Legend.AddOrAccumulate(
                     new LegendMark(
                         "Completed Tutorial",
@@ -583,7 +578,6 @@ public class RionaTutorialQuestScript : DialogScriptBase
                         MarkColor.White,
                         1,
                         GameTime.Now));
-
 
                 if (source.HasClass(BaseClass.Wizard))
                 {
@@ -596,9 +590,7 @@ public class RionaTutorialQuestScript : DialogScriptBase
 
                 if (source.HasClass(BaseClass.Warrior))
                 {
-                    var armor = source.Gender == Gender.Female
-                        ? ItemFactory.Create("milethcuirass")
-                        : ItemFactory.Create("milethjupe");
+                    var armor = source.Gender == Gender.Female ? ItemFactory.Create("milethcuirass") : ItemFactory.Create("milethjupe");
 
                     source.GiveItemOrSendToBank(armor);
                 }
