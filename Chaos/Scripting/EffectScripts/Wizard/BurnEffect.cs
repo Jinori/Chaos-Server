@@ -57,6 +57,9 @@ public class BurnEffect : ContinuousAnimationEffectBase, HierarchicalEffectCompo
 
     public override bool ShouldApply(Creature source, Creature target)
     {
+        if (target.Name == "Shamensyth")
+            return false;
+
         var execution = new ComponentExecutor(source, target).WithOptions(this)
                                                              .ExecuteAndCheck<HierarchicalEffectComponent>();
 

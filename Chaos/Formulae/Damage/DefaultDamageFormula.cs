@@ -47,6 +47,15 @@ public class DefaultDamageFormula : IDamageFormula
         if (target.IsGodModeEnabled() || target.Effects.Contains("Invulnerability"))
             return 0;
 
+        if (target.Name == "Shamensyth")
+            if ((elementOverride ?? source.StatSheet.OffenseElement) == Element.Fire)
+            {
+                if (source is Aisling aisling)
+                    aisling.SendOrangeBarMessage("Shamensyth is immune to the fire!");
+
+                return 0;
+            }
+
         ApplySkillSpellModifier(ref damage, script, source);
 
         var defenderAc = GetDefenderAc(target);

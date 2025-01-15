@@ -53,6 +53,13 @@ public class FirePunchEffect : ContinuousAnimationEffectBase
 
     public override bool ShouldApply(Creature source, Creature target)
     {
+        if (target.Name == "Shamensyth")
+        {
+            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Shamensyth is immune to fire.");
+
+            return false;
+        }
+
         if (!target.Effects.Contains("Small Firestorm")
             && !target.Effects.Contains("Firestorm")
             && !target.Effects.Contains("Firepunch")

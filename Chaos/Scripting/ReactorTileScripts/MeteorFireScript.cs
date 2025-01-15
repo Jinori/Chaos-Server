@@ -1,11 +1,9 @@
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
-using Chaos.Formulae;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -50,7 +48,6 @@ public class MeteorFireScript : ConfigurableReactorTileScriptBase,
         AnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
         DamageTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
         ApplyDamageScript = ApplyNonAttackDamageScript.Create();
-        ApplyDamageScript.DamageFormula = DamageFormulae.PureDamage;
     }
 
     private void ApplyTrapEffects(Creature target)

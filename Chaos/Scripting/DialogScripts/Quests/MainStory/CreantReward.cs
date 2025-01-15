@@ -127,7 +127,7 @@ public class CreantReward : DialogScriptBase
             }
 
             case "creant_reward_final":
-                
+
                 var pureGmGearDictionary = new Dictionary<(string mapTemplateKey, BaseClass baseClass, Gender gender), string[]>
                 {
                     {
@@ -314,7 +314,6 @@ public class CreantReward : DialogScriptBase
                         }
                     }
                 };
-                
 
                 var subGmGearDictionary = new Dictionary<(string mapTemplateKey, BaseClass baseClass, Gender gender), string[]>
                 {
@@ -515,13 +514,14 @@ public class CreantReward : DialogScriptBase
                     || source.IsPureWarriorMaster())
                 {
                     if (pureGmGearDictionary.TryGetValue((mapTemplateKey, baseClass, gender), out var purerewards))
-                    // Grant rewards to the player
-                    foreach (var reward in purerewards)
-                    {
-                        var item = ItemFactory.Create(reward);
-                        source.GiveItemOrSendToBank(item);
-                        source.SendOrangeBarMessage($"You received the {item.DisplayName}!");
-                    }
+
+                        // Grant rewards to the player
+                        foreach (var reward in purerewards)
+                        {
+                            var item = ItemFactory.Create(reward);
+                            source.GiveItemOrSendToBank(item);
+                            source.SendOrangeBarMessage($"You received the {item.DisplayName}!");
+                        }
                 } else if (subGmGearDictionary.TryGetValue((mapTemplateKey, baseClass, gender), out var rewards))
 
                     // Grant rewards to the player
@@ -750,7 +750,7 @@ public class CreantReward : DialogScriptBase
 
                         break;
                     case "989":
-                        var point3 = new Point(42, 44);
+                        var point3 = new Point(5, 5);
                         var phoenixMapInstance = SimpleCache.Get<MapInstance>("shinewood_forest18");
                         source.TraverseMap(phoenixMapInstance, point3);
                         Subject.Close(source);

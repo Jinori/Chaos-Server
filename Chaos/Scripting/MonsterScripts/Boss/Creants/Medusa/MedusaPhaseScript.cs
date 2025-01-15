@@ -33,6 +33,7 @@ public sealed class MedusaPhaseScript : MonsterScriptBase
 
     public bool InPhase;
     private bool IsChanneling;
+    private bool IsInvulnerable;
 
     private bool Spell1;
     private bool Spell2;
@@ -78,6 +79,13 @@ public sealed class MedusaPhaseScript : MonsterScriptBase
 
         if (SpawnPhaseTimer.IntervalElapsed)
             ResetPhase();
+
+        if (!IsInvulnerable)
+        {
+            var invulnerable = EffectFactory.Create("Invulnerability");
+            Subject.Effects.Apply(Subject, invulnerable);
+            IsInvulnerable = true;
+        }
 
         if (SpawnSnakePitsTimer.IntervalElapsed)
         {
@@ -463,10 +471,14 @@ public sealed class MedusaPhaseScript : MonsterScriptBase
         StartSpellPhase = false;
         CreatedSafePoints = false;
         IsChanneling = false;
+        IsInvulnerable = false;
         TimeBetweenPhases.Reset();
         InPhase = false;
         PhaseDelay.Reset();
         SafePoints.Clear();
+
+        if (Subject.Effects.Contains("Invulnerability"))
+            Subject.Effects.Dispel("Invulnerability");
     }
     #endregion
 }
