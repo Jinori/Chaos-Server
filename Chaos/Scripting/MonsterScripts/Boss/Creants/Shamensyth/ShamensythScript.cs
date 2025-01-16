@@ -313,7 +313,6 @@ public class ShamensythScript : MonsterScriptBase
                     {
                         SpawnAdds(4);
                         SpawnAddsCount++;
-                        ApplyInvulnerability();
                     }
 
                     break;
@@ -323,7 +322,9 @@ public class ShamensythScript : MonsterScriptBase
                     var addsAlive = Map.GetEntities<Monster>()
                                        .Any(monster => monster.Template.TemplateKey.EqualsI("shamensythFireElemental"));
                     
-                    if(!addsAlive)
+                    if(addsAlive)
+                        ApplyInvulnerability();
+                    else
                         RemoveInvulnerability();
                     
                     break;
@@ -439,7 +440,10 @@ public class ShamensythScript : MonsterScriptBase
 
     private void HandleReignOfFire()
     {
-        var nearbyAisling = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 1);
+        var nearbyAisling = Subject.MapInstance
+                                   .GetEntitiesWithinRange<Aisling>(Subject, 1)
+                                   .ThatAreAlive()
+                                   .ThatAreNotInGodMode();
 
         if (!nearbyAisling.Any())
         {
