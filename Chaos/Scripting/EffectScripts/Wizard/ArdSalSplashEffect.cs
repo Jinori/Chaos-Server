@@ -29,7 +29,7 @@ public class ArdSalSplashEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(20000), false);
 
-    protected IApplyDamageScript ApplyDamageScript { get; }
+    protected IApplyDamageScript ApplyDamageScript { get; } = ApplyAttackDamageScript.Create();
 
     protected Animation CreatureAnimation { get; } = new()
     {
@@ -45,8 +45,6 @@ public class ArdSalSplashEffect : ContinuousAnimationEffectBase
 
     /// <inheritdoc />
     public override string Name => "Ard Sal Splash";
-
-    public ArdSalSplashEffect() => ApplyDamageScript = ApplyAttackDamageScript.Create();
 
     public override void OnApplied()
         => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Powerful water surrounds you.");
@@ -66,12 +64,12 @@ public class ArdSalSplashEffect : ContinuousAnimationEffectBase
 
         // Get the points around the subject where the effect is applied
         var options = new AoeShapeOptions
-            {
-                Source = new Point(Subject.X, Subject.Y),
-                Range = 1
-            };
+        {
+            Source = new Point(Subject.X, Subject.Y),
+            Range = 1
+        };
 
-            var points = AoeShape.AllAround.ResolvePoints(options);
+        var points = AoeShape.AllAround.ResolvePoints(options);
 
         // Retrieve and filter targets at those points
         var targets = Subject.MapInstance

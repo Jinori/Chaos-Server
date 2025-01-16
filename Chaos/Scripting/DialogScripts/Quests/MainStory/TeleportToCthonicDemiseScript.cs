@@ -1,5 +1,4 @@
 ﻿using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
@@ -20,12 +19,10 @@ public class TeleportToCthonicDemiseScript : DialogScriptBase
         : base(subject)
         => SimpleCache = simpleCache;
 
-    private List<Aisling>? GetGroupMembers(Aisling source)
-        => source.Group?
-                 .ToList();
+    private List<Aisling>? GetGroupMembers(Aisling source) => source.Group?.ToList();
 
     private bool HasGroupDoneRecently(Aisling source)
-        => (source.Group != null) && source.Group.All(x => x.Trackers.TimedEvents.HasActiveEvent("cthonicdemise", out _));
+        => (source.Group != null) && source.Group.Any(x => x.Trackers.TimedEvents.HasActiveEvent("cthonicdemise", out _));
 
     private bool IsGroupEligible(Aisling source)
         => (source.Group != null)
@@ -33,8 +30,7 @@ public class TeleportToCthonicDemiseScript : DialogScriptBase
                x => x.Trackers.Enums.HasValue(MainstoryMasterEnums.StartedDungeon)
                     || x.Trackers.Flags.HasFlag(MainstoryFlags.FinishedDungeon));
 
-    private bool IsGroupValid(Aisling source)
-        => (source.Group != null) && source.Group.All(x => x.OnSameMapAs(source));
+    private bool IsGroupValid(Aisling source) => (source.Group != null) && source.Group.All(x => x.OnSameMapAs(source));
 
     private bool IsGroupWithinLevelRange(Aisling source, List<Aisling> group)
         => group.All(member => member.WithinLevelRange(source) && (member.UserStatSheet.Level > 98));
@@ -186,7 +182,7 @@ public class TeleportToCthonicDemiseScript : DialogScriptBase
             Subject.Close(source);
 
             member.Inventory.Remove("Cthonic Bell");
-            member.Trackers.TimedEvents.AddEvent("cthonic_demise", TimeSpan.FromHours(4), true);
+            member.Trackers.TimedEvents.AddEvent("cthonicdemise", TimeSpan.FromHours(4), true);
 
             member.TraverseMap(mapInstance, point);
         }

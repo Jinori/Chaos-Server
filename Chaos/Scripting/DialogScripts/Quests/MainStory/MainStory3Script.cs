@@ -34,6 +34,9 @@ public class MainStory3Script(Dialog subject, IItemFactory itemFactory) : Dialog
                     return;
                 }
 
+                if (source.Trackers.Flags.HasFlag(MainstoryFlags.FinishedCreants))
+                    source.Trackers.Enums.Set(MainstoryMasterEnums.CompletedCreants);
+
                 if (source.Trackers.Enums.HasValue(MainstoryMasterEnums.StartedDungeon))
                 {
                     // List of boss flags

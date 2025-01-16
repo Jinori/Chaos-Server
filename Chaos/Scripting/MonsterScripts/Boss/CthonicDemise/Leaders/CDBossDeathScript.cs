@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
@@ -17,6 +16,8 @@ public class CdBossDeathScript : MonsterScriptBase
 
     private readonly ISpellFactory SpellFactory;
 
+    protected IExperienceDistributionScript ExperienceDistributionScript { get; set; }
+
     public CdBossDeathScript(Monster subject, ISkillFactory skillFactory, ISpellFactory spellFactory)
         : base(subject)
     {
@@ -25,32 +26,43 @@ public class CdBossDeathScript : MonsterScriptBase
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
     }
 
-    protected IExperienceDistributionScript ExperienceDistributionScript { get; set; }
+    private bool CheckAllBossesDefeated(Aisling target)
+        => target.Trackers.Flags.HasFlag(CthonicDemiseBoss.John)
+           && target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Jane)
+           && target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Mike)
+           && target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Mary)
+           && target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Phil)
+           && target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Pam)
+           && target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Roy)
+           && target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Ray)
+           && target.Trackers.Flags.HasFlag(CthonicDemiseBoss.William)
+           && target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Wanda);
 
-    public override void OnDeath()
+    private void DropLootAndGold(Aisling[]? rewardTargets)
     {
-        if (!Map.RemoveEntity(Subject))
-            return;
+        Subject.Items.AddRange(Subject.LootTable.GenerateLoot());
 
-        var rewardTarget = GetRewardTarget();
-        var rewardTargets = rewardTarget != null ? GetRewardTargets(rewardTarget) : null;
+        var droppedGold = Subject.TryDropGold(Subject, Subject.Gold, out var money);
+        var droppedItems = Subject.TryDrop(Subject, Subject.Items, out var groundItems);
 
-        DropLootAndGold(rewardTargets);
-
-        if (rewardTargets != null)
+        if ((rewardTargets != null) && WorldOptions.Instance.LootDropsLockToRewardTargetSecs.HasValue)
         {
-            ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
-            HandleMainStoryProgress(rewardTargets);
+            var lockSecs = WorldOptions.Instance.LootDropsLockToRewardTargetSecs.Value;
+
+            if (droppedGold)
+                money!.LockToAislings(lockSecs, rewardTargets);
+
+            if (droppedItems)
+                foreach (var groundItem in groundItems!)
+                    groundItem.LockToAislings(lockSecs, rewardTargets);
         }
     }
 
     private Aisling? GetRewardTarget()
-    {
-        return Subject.Contribution
-            .OrderByDescending(kvp => kvp.Value)
-            .Select(kvp => Map.TryGetEntity<Aisling>(kvp.Key, out var aisling) ? aisling : null)
-            .FirstOrDefault(a => a != null);
-    }
+        => Subject.Contribution
+                  .OrderByDescending(kvp => kvp.Value)
+                  .Select(kvp => Map.TryGetEntity<Aisling>(kvp.Key, out var aisling) ? aisling : null)
+                  .FirstOrDefault(a => a != null);
 
     private Aisling[] GetRewardTargets(Aisling rewardTarget)
     {
@@ -64,58 +76,54 @@ public class CdBossDeathScript : MonsterScriptBase
             foreach (var member in rewardTarget.Group)
                 if (member.WithinRange(rewardTarget))
                     targets.Add(member);
-        }
-        else
-        {
+        } else
+
             // If not in a group, just add the rewardTarget itself
             targets.Add(rewardTarget);
-        }
 
         // Return the list as an array
         return targets.ToArray();
-    }
-
-
-    private void DropLootAndGold(Aisling[]? rewardTargets)
-    {
-        Subject.Items.AddRange(Subject.LootTable.GenerateLoot());
-
-        var droppedGold = Subject.TryDropGold(Subject, Subject.Gold, out var money);
-        var droppedItems = Subject.TryDrop(Subject, Subject.Items, out var groundItems);
-
-        if (rewardTargets != null && WorldOptions.Instance.LootDropsLockToRewardTargetSecs.HasValue)
-        {
-            var lockSecs = WorldOptions.Instance.LootDropsLockToRewardTargetSecs.Value;
-
-            if (droppedGold)
-                money!.LockToAislings(lockSecs, rewardTargets);
-
-            if (droppedItems)
-                foreach (var groundItem in groundItems!)
-                    groundItem.LockToAislings(lockSecs, rewardTargets);
-        }
     }
 
     private void HandleMainStoryProgress(Aisling[] rewardTargets)
     {
         var bossProgressions = new Dictionary<string, CthonicDemiseBoss>
         {
-            { "darkmasterjohn", CthonicDemiseBoss.John },
-            { "darkmasterjane", CthonicDemiseBoss.Jane },
-            { "darkmasterroy", CthonicDemiseBoss.Roy },
-            { "darkmasterray", CthonicDemiseBoss.Ray },
-            { "darkmastermike", CthonicDemiseBoss.Mike },
-            { "darkmastermary", CthonicDemiseBoss.Mary },
-            { "darkmasterphil", CthonicDemiseBoss.Phil },
-            { "darkmasterpam", CthonicDemiseBoss.Pam },
-            { "darkmasterwilliam", CthonicDemiseBoss.William },
-            { "darkmasterwanda", CthonicDemiseBoss.Wanda }
+            {
+                "darkmasterjohn", CthonicDemiseBoss.John
+            },
+            {
+                "darkmasterjane", CthonicDemiseBoss.Jane
+            },
+            {
+                "darkmasterroy", CthonicDemiseBoss.Roy
+            },
+            {
+                "darkmasterray", CthonicDemiseBoss.Ray
+            },
+            {
+                "darkmastermike", CthonicDemiseBoss.Mike
+            },
+            {
+                "darkmastermary", CthonicDemiseBoss.Mary
+            },
+            {
+                "darkmasterphil", CthonicDemiseBoss.Phil
+            },
+            {
+                "darkmasterpam", CthonicDemiseBoss.Pam
+            },
+            {
+                "darkmasterwilliam", CthonicDemiseBoss.William
+            },
+            {
+                "darkmasterwanda", CthonicDemiseBoss.Wanda
+            }
         };
 
         if (bossProgressions.TryGetValue(Subject.Template.TemplateKey, out var bossFlag))
         {
-            var nearbyAislings = Map
-                .GetEntitiesWithinRange<Aisling>(Subject, 13);
+            var nearbyAislings = Map.GetEntitiesWithinRange<Aisling>(Subject, 13);
 
             foreach (var target in rewardTargets)
                 if (nearbyAislings != null)
@@ -136,7 +144,6 @@ public class CdBossDeathScript : MonsterScriptBase
 
                     if (Subject.Template.TemplateKey == "darkmasterjane")
                         if (target.UserStatSheet.BaseClass == BaseClass.Warrior)
-                        {
                             if (!target.SpellBook.ContainsByTemplateKey("fury"))
                             {
                                 target.SpellBook.Remove("berserk");
@@ -145,7 +152,6 @@ public class CdBossDeathScript : MonsterScriptBase
                                 target.SpellBook.TryAddToNextSlot(spell);
                                 target.SendOrangeBarMessage("You've learned a new ability that replaced Berserk!");
                             }
-                        }
 
                     if (Subject.Template.TemplateKey == "darkmasterroy")
                         if (target.UserStatSheet.BaseClass == BaseClass.Rogue)
@@ -185,8 +191,7 @@ public class CdBossDeathScript : MonsterScriptBase
 
                     if (Subject.Template.TemplateKey == "darkmasterphil")
                     {
-                        if (target.UserStatSheet.BaseClass == BaseClass.Priest &&
-                            target.Trackers.Enums.HasValue(MasterPriestPath.Dark))
+                        if ((target.UserStatSheet.BaseClass == BaseClass.Priest) && target.Trackers.Enums.HasValue(MasterPriestPath.Dark))
                             if (!target.SpellBook.ContainsByTemplateKey("miasma"))
                             {
                                 var spell = SpellFactory.Create("miasma");
@@ -194,8 +199,7 @@ public class CdBossDeathScript : MonsterScriptBase
                                 target.SendOrangeBarMessage("You've learned a new ability!");
                             }
 
-                        if (target.UserStatSheet.BaseClass == BaseClass.Priest &&
-                            target.Trackers.Enums.HasValue(MasterPriestPath.Light))
+                        if ((target.UserStatSheet.BaseClass == BaseClass.Priest) && target.Trackers.Enums.HasValue(MasterPriestPath.Light))
                             if (!target.SpellBook.ContainsByTemplateKey("deolamh"))
                             {
                                 var spell = SpellFactory.Create("deolamh");
@@ -206,8 +210,7 @@ public class CdBossDeathScript : MonsterScriptBase
 
                     if (Subject.Template.TemplateKey == "darkmasterpam")
                     {
-                        if (target.UserStatSheet.BaseClass == BaseClass.Priest &&
-                            target.Trackers.Enums.HasValue(MasterPriestPath.Dark))
+                        if ((target.UserStatSheet.BaseClass == BaseClass.Priest) && target.Trackers.Enums.HasValue(MasterPriestPath.Dark))
                             if (!target.SpellBook.ContainsByTemplateKey("bind"))
                             {
                                 var spell = SpellFactory.Create("bind");
@@ -215,8 +218,7 @@ public class CdBossDeathScript : MonsterScriptBase
                                 target.SendOrangeBarMessage("You've learned a new ability!");
                             }
 
-                        if (target.UserStatSheet.BaseClass == BaseClass.Priest &&
-                            target.Trackers.Enums.HasValue(MasterPriestPath.Light))
+                        if ((target.UserStatSheet.BaseClass == BaseClass.Priest) && target.Trackers.Enums.HasValue(MasterPriestPath.Light))
                             if (!target.SpellBook.ContainsByTemplateKey("regeneration"))
                             {
                                 var spell = SpellFactory.Create("regeneration");
@@ -247,27 +249,33 @@ public class CdBossDeathScript : MonsterScriptBase
                         target.Trackers.Flags.AddFlag(bossFlag);
 
                     if (CheckAllBossesDefeated(target))
-                    {
-                        target.Trackers.Flags.AddFlag(MainstoryFlags.FinishedDungeon);
-                        target.Trackers.Enums.Set(MainstoryMasterEnums.FinishedDungeon);
-                        target.SendOrangeBarMessage(
-                            "You've defeated Summoner Kades's army, visit Goddess Miraelis.");
-                    }
+                        if (!target.Trackers.Flags.HasFlag(MainstoryFlags.FinishedDungeon))
+                        {
+                            target.Trackers.Flags.AddFlag(MainstoryFlags.FinishedDungeon);
+
+                            if (target.Trackers.Enums.HasValue(MainstoryMasterEnums.StartedDungeon))
+                                target.Trackers.Enums.Set(MainstoryMasterEnums.FinishedDungeon);
+
+                            target.SendOrangeBarMessage("You've defeated Summoner Kades's army, visit Goddess Miraelis.");
+                        }
                 }
         }
     }
 
-    private bool CheckAllBossesDefeated(Aisling target)
+    public override void OnDeath()
     {
-        return target.Trackers.Flags.HasFlag(CthonicDemiseBoss.John) &&
-               target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Jane) &&
-               target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Mike) &&
-               target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Mary) &&
-               target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Phil) &&
-               target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Pam) &&
-               target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Roy) &&
-               target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Ray) &&
-               target.Trackers.Flags.HasFlag(CthonicDemiseBoss.William) &&
-               target.Trackers.Flags.HasFlag(CthonicDemiseBoss.Wanda);
+        if (!Map.RemoveEntity(Subject))
+            return;
+
+        var rewardTarget = GetRewardTarget();
+        var rewardTargets = rewardTarget != null ? GetRewardTargets(rewardTarget) : null;
+
+        DropLootAndGold(rewardTargets);
+
+        if (rewardTargets != null)
+        {
+            ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
+            HandleMainStoryProgress(rewardTargets);
+        }
     }
 }
