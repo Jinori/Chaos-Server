@@ -36,7 +36,7 @@ internal class DmgTrinketScript : DialogScriptBase
         {
             case "dmgtrinket_initial":
             {
-                if (!source.Legend.ContainsKey("wpnsmith") && !source.IsGodModeEnabled())
+                if (!source.Legend.ContainsKey("wpnsmth") && !source.IsGodModeEnabled())
                 {
                     source.Inventory.RemoveQuantityByTemplateKey("dmgtrinket", 1);
                     source.SendOrangeBarMessage("The Claiomh Thugann Anam breaks in your undefined hands.");

@@ -25,10 +25,50 @@ public class TpToCreantScript : DialogScriptBase
                  .ToList();
 
     private bool IsGroupEligible(Aisling source)
-        => (source.Group != null)
-           && source.Group.All(
-               x => x.Trackers.Enums.HasValue(MainstoryMasterEnums.StartedCreants)
-                    || x.Trackers.Flags.HasFlag(MainstoryFlags.FinishedCreants));
+    {
+        if (source.MapInstance.Template.TemplateKey == "6599")
+        {
+            if ((source.Group != null)
+                && source.Group.Any(
+                    x => (x.Trackers.Flags.HasFlag(CreantEnums.KilledMedusa)
+                          || x.Trackers.Flags.HasFlag(CreantEnums.CompletedMedusa))
+                         && !x.Trackers.Flags.HasFlag(MainstoryFlags.FinishedCreants)))
+                return false;
+        }
+
+        if (source.MapInstance.Template.TemplateKey == "989")
+        {
+            if ((source.Group != null)
+                && source.Group.Any(
+                    x => (x.Trackers.Flags.HasFlag(CreantEnums.KilledPhoenix)
+                          || x.Trackers.Flags.HasFlag(CreantEnums.CompletedPhoenix))
+                         && !x.Trackers.Flags.HasFlag(MainstoryFlags.FinishedCreants)))
+                return false;
+        }
+
+        if (source.MapInstance.Template.TemplateKey == "31010")
+        {
+            if ((source.Group != null)
+                && source.Group.Any(
+                    x => (x.Trackers.Flags.HasFlag(CreantEnums.KilledSham)
+                          || x.Trackers.Flags.HasFlag(CreantEnums.CompletedSham))
+                         && !x.Trackers.Flags.HasFlag(MainstoryFlags.FinishedCreants)))
+                return false;
+        }
+
+        if (source.MapInstance.Template.TemplateKey == "19522")
+        {
+            if ((source.Group != null)
+                && source.Group.Any(
+                    x => (x.Trackers.Flags.HasFlag(CreantEnums.KilledTauren)
+                          || x.Trackers.Flags.HasFlag(CreantEnums.CompletedTauren))
+                         && !x.Trackers.Flags.HasFlag(MainstoryFlags.FinishedCreants)))
+                return false;
+        }
+
+        return true;
+    }
+
 
     private bool IsGroupValid(Aisling source)
         => (source.Group != null) && !source.Group.Any(x => !x.OnSameMapAs(source) || !x.WithinRange(source));

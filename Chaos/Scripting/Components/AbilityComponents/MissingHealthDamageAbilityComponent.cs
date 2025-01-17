@@ -48,6 +48,10 @@ public struct MissingHealthDamageAbilityComponent : IComponent
     {
         // Calculate damage based on the source's missing health
         var missingHealth = source.StatSheet.EffectiveMaximumHp - source.StatSheet.CurrentHp;
+
+        if (missingHealth < 0)
+            missingHealth = 0;
+        
         var damage = Convert.ToInt32(missingHealth * 0.6m); // Full missing health as damage
 
         // If there's a base damage, add it
