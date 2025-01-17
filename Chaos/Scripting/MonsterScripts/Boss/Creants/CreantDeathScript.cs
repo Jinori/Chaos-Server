@@ -80,7 +80,7 @@ public class CreantDeathScript : MonsterScriptBase
 
             if (Subject.Template.TemplateKey == "Phoenix")
             {
-                var startedPhoenix = Map.GetEntitiesWithinRange<Aisling>(Subject, 13)
+                var startedPhoenix = Map.GetEntities<Aisling>()
                                         .Where(
                                             x => x.Trackers.Enums.TryGetValue(out MainstoryMasterEnums stage)
                                                  && (stage == MainstoryMasterEnums.StartedCreants)
@@ -97,7 +97,7 @@ public class CreantDeathScript : MonsterScriptBase
 
             if (Subject.Template.TemplateKey == "Medusa")
             {
-                var startedMedusa = Map.GetEntitiesWithinRange<Aisling>(Subject, 13)
+                var startedMedusa = Map.GetEntities<Aisling>()
                                        .Where(
                                            x => x.Trackers.Enums.TryGetValue(out MainstoryMasterEnums stage)
                                                 && (stage == MainstoryMasterEnums.StartedCreants)
@@ -114,7 +114,7 @@ public class CreantDeathScript : MonsterScriptBase
 
             if (Subject.Template.TemplateKey == "Tauren")
             {
-                var startedTauren = Map.GetEntitiesWithinRange<Aisling>(Subject, 13)
+                var startedTauren = Map.GetEntities<Aisling>()
                                        .Where(
                                            x => x.Trackers.Enums.TryGetValue(out MainstoryMasterEnums stage)
                                                 && (stage == MainstoryMasterEnums.StartedCreants)
@@ -131,7 +131,7 @@ public class CreantDeathScript : MonsterScriptBase
 
             if (Subject.Template.TemplateKey == "Shamensyth")
             {
-                var startedTauren = Map.GetEntitiesWithinRange<Aisling>(Subject, 13)
+                var startedTauren = Map.GetEntities<Aisling>()
                                        .Where(
                                            x => x.Trackers.Enums.TryGetValue(out MainstoryMasterEnums stage)
                                                 && (stage == MainstoryMasterEnums.StartedCreants)

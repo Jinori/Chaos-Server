@@ -37,8 +37,29 @@ public class RemoveEffectComponent : IComponent
 
                     if (effect.Name == "Fury6")
                         continue;
+                    
+                    if (effect.Name == "Cunning1")
+                        continue;
+
+                    if (effect.Name == "Cunning2")
+                        continue;
+
+                    if (effect.Name == "Cunning3")
+                        continue;
+
+                    if (effect.Name == "Cunning4")
+                        continue;
+
+                    if (effect.Name == "Cunning5")
+                        continue;
+
+                    if (effect.Name == "Cunning6")
+                        continue;
 
                     if (effect.Name == "Invulnerability")
+                        continue;
+
+                    if (effect.Name == "mount")
                         continue;
 
                     if (effect.Name == "GM Knowledge")

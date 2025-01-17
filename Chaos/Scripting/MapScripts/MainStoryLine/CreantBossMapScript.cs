@@ -182,7 +182,7 @@ public class CreantBossMapScript : MapScriptBase
                 case ScriptState.Spawned:
                     // Check if there are any Aislings in the subject
                     if (!Subject.GetEntities<Aisling>()
-                                .Any())
+                                .Any(aisling => aisling.IsAlive))
                     {
                         // Get all monsters in the subject
                         var monsters = Subject.GetEntities<Monster>()
@@ -206,6 +206,12 @@ public class CreantBossMapScript : MapScriptBase
                         // Remove all monsters from the subject
                         foreach (var monster in monsters)
                             Subject.RemoveEntity(monster);
+
+                        var reactors = Subject.GetEntities<ReactorTile>()
+                                              .Where(x => !x.ScriptKeys.Contains("finishcreantreactor")).ToList();
+
+                        foreach (var reactor in reactors)
+                            Subject.RemoveEntity(reactor);
                     }
                 }
 

@@ -1,3 +1,5 @@
+using Chaos.Common.Utilities;
+using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
@@ -5,8 +7,10 @@ using Chaos.Scripting.MonsterScripts.Abstractions;
 
 namespace Chaos.Scripting.MonsterScripts.Boss.Creants.Medusa;
 
-public class MedusaMoveToTargetScript : MonsterScriptBase
+public sealed class MedusaMoveToTargetScript : MonsterScriptBase
 {
+    private DateTime _lastTargetInteractionTime = DateTime.UtcNow;
+
     /// <inheritdoc />
     public MedusaMoveToTargetScript(Monster subject)
         : base(subject) { }
@@ -19,8 +23,7 @@ public class MedusaMoveToTargetScript : MonsterScriptBase
         if ((Target == null) || !ShouldMove)
             return;
 
-        if (!Map.GetEntities<Aisling>()
-                .Any())
+        if (!Map.GetEntities<Aisling>().Any())
             return;
 
         var script = Subject.Script.As<MedusaPhaseScript>();
@@ -30,30 +33,58 @@ public class MedusaMoveToTargetScript : MonsterScriptBase
 
         var distance = Subject.ManhattanDistanceFrom(Target);
 
-        switch (distance)
+        if (distance > 1)
         {
-            case > 1:
-                Subject.Pathfind(Target);
+            Subject.Pathfind(Target);
+        }
+        else if (distance == 1)
+        {
+            var direction = Target.DirectionalRelationTo(Subject);
+            Subject.Turn(direction);
+        }
+        else
+        {
+            Subject.Wander();
+        }
 
-                break;
-            case 1:
+        // Check if Medusa has been unable to reach the target for 10 seconds
+        if (DateTime.UtcNow.Subtract(_lastTargetInteractionTime).TotalSeconds >= 10)
+        {
+            if (distance > 1)
             {
-                var direction = Target.DirectionalRelationTo(Subject);
-                Subject.Turn(direction);
+                var options = new AoeShapeOptions
+                {
+                    Source = new Point(Target.X, Target.Y),
+                    Range = 1
+                };
 
-                break;
+                var points = AoeShape.AllAround.ResolvePoints(options).ToList();
+                var randomPoint = points.PickRandom();
+                if (Map.IsWalkable(randomPoint, Subject.Type))
+                    Subject.WarpTo(randomPoint);
             }
-            case 0:
+            else
             {
-                Subject.Wander();
+                // Choose a new target
+                Target = Map.GetEntities<Aisling>()
+                    .OrderBy(x => x.ManhattanDistanceFrom(Subject))
+                    .FirstOrDefault();
+            }
 
-                break;
+            // Reset the timer after warping or selecting a new target
+            _lastTargetInteractionTime = DateTime.UtcNow;
+        }
+        else
+        {
+            // Reset the timer if Medusa moved
+            ResetAttackTimerIfMoved();
+            if (distance <= 1)
+            {
+                _lastTargetInteractionTime = DateTime.UtcNow;
             }
         }
-        
-        ResetAttackTimerIfMoved();
     }
-    
+
     private void ResetAttackTimerIfMoved()
     {
         var now = DateTime.UtcNow;

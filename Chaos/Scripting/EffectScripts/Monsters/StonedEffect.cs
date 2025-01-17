@@ -4,7 +4,10 @@ using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
+using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.MonsterScripts.Boss;
+using Chaos.Services.Factories;
+using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
@@ -14,6 +17,9 @@ public sealed class StonedEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromHours(3);
+    
+    private readonly IMonsterFactory MonsterFactory;
+    public StonedEffect(IMonsterFactory monsterFactory) => MonsterFactory = monsterFactory;
 
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()
@@ -49,8 +55,17 @@ public sealed class StonedEffect : ContinuousAnimationEffectBase
 
         if (DeathInterval.IntervalElapsed)
         {
-            Subject.StatSheet.SetHealthPct(0);
-            Subject.Script.OnDeath();
+            var point = new Point(Subject.X, Subject.Y);
+            var medusa = MonsterFactory.Create("Medusa", Subject.MapInstance, point);
+            
+            var dmgScript = ApplyNonAttackDamageScript.Create();
+
+            dmgScript.ApplyDamage(
+                medusa,
+                Subject,
+                Subject.Script,
+                500000000,
+                Element.Water);
 
             Subject.Animate(Animation);
         }

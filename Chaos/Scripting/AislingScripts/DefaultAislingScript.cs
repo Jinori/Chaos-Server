@@ -33,6 +33,7 @@ using Chaos.Storage.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 using Humanizer;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Chaos.Scripting.AislingScripts;
 
@@ -1091,6 +1092,43 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
         if (CleanupSkillsSpellsTimer.IntervalElapsed && !Subject.IsDiacht())
         {
+            var equipment = Subject.Equipment.ToList();
+            var inventory = Subject.Inventory.ToList();
+
+            foreach (var item in equipment)
+            {
+                if (item.ScriptKeys.Count > 1)
+                {
+                    // Find the script key that starts with the item's prefix
+                    var validKey = item.ScriptKeys.FirstOrDefault(key => (item.Prefix != null) && key.StartsWith(item.Prefix, StringComparison.OrdinalIgnoreCase));
+
+                    if (validKey != null)
+                    {
+                        // Clear all script keys and keep only the valid one
+                        item.ScriptKeys.Clear();
+                        item.ScriptKeys.Add(validKey);
+                        Subject.Client.SendAttributes(StatUpdateType.Vitality);
+                    }
+                }
+            }
+
+            foreach (var inventoryItem in inventory)
+            {
+                if (inventoryItem.ScriptKeys.Count > 1)
+                {
+                    // Find the script key that starts with the item's prefix
+                    var validKey = inventoryItem.ScriptKeys.FirstOrDefault(key => (inventoryItem.Prefix != null) && key.StartsWith(inventoryItem.Prefix, StringComparison.OrdinalIgnoreCase));
+
+                    if (validKey != null)
+                    {
+                        // Clear all script keys and keep only the valid one
+                        inventoryItem.ScriptKeys.Clear();
+                        inventoryItem.ScriptKeys.Add(validKey);
+                        
+                    }
+                }
+            }
+            
             if (Subject.UserStatSheet.Level < 99)
             {
                 // Calculate the target AC based on level
