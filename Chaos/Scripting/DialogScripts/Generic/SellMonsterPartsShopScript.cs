@@ -18,7 +18,7 @@ public class SellMonsterPartsShopScript : DialogScriptBase
         { "lessermonsterextract", (1, 40) },
         { "basicmonsterextract", (41, 70) },
         { "greatermonsterextract", (71, 96) },
-        { "superiormonsterextract", (97, 120) },
+        { "superiormonsterextract", (97, 119) },
         { "primemonsterextract", (120, int.MaxValue) }
     };
 
@@ -120,7 +120,12 @@ public class SellMonsterPartsShopScript : DialogScriptBase
         { "pike", 3 },
         { "purplewhopper", 8 },
         { "rockfish", 2 },
-        { "trout", 1 }
+        { "trout", 1 },
+        { "golemremains", 2 },
+        { "skeletonbones", 2 },
+        { "grimsuccubushair", 3 },
+        { "porbossclaw", 3 },
+        { "kabungkltail", 4 }
 
     };
 
