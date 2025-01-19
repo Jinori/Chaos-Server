@@ -124,7 +124,7 @@ public class ShamensythScript : MonsterScriptBase
         15,
         RandomizationType.Positive,
         false);
-    private readonly IIntervalTimer ReignOfFireTimer = new IntervalTimer(TimeSpan.FromSeconds(2), false);
+    private readonly IIntervalTimer ReignOfFireTimer = new IntervalTimer(TimeSpan.FromSeconds(3), false);
     private readonly IIntervalTimer TeleportPhaseTimer = new IntervalTimer(TimeSpan.FromMinutes(1), false);
     private readonly IIntervalTimer ChantTimer = new IntervalTimer(TimeSpan.FromMilliseconds(2000), false);
     private readonly IIntervalTimer AfterChantTimer1 = new IntervalTimer(TimeSpan.FromSeconds(5), false);
