@@ -1180,16 +1180,16 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 Subject.Client.SendAttributes(StatUpdateType.Full);
             }
 
-            if (!Subject.Titles.ContainsI("Expert Enchanter") && !Subject.IsAdmin)
+            if ((!Subject.Titles.ContainsI("Expert Enchanter") || !Subject.Titles.ContainsI("Master Enchanter")) && !Subject.IsAdmin)
                 Subject.Inventory.RemoveQuantityByTemplateKey("portaltrinket", 1);
 
-            if (!Subject.Titles.ContainsI("Expert Weaponsmith") && !Subject.IsAdmin)
+            if ((!Subject.Titles.ContainsI("Expert Weaponsmith") || !Subject.Titles.ContainsI("Master Weaponsmith")) && !Subject.IsAdmin)
                 Subject.Inventory.RemoveQuantityByTemplateKey("dmgtrinket", 1);
 
-            if (!Subject.Titles.ContainsI("Expert Armorsmith") && !Subject.IsAdmin)
+            if ((!Subject.Titles.ContainsI("Expert Armorsmith") || !Subject.Titles.ContainsI("Master Armorsmith")) && !Subject.IsAdmin)
                 Subject.Inventory.RemoveQuantityByTemplateKey("repairtrinket", 1);
 
-            if (!Subject.Titles.ContainsI("Expert Jewelcrafter") && !Subject.IsAdmin)
+            if ((!Subject.Titles.ContainsI("Expert Jewelcrafter") || !Subject.Titles.ContainsI("Master Jewelcraftersmith")) && !Subject.IsAdmin)
                 Subject.Inventory.RemoveQuantityByTemplateKey("exptrinket", 1);
 
             RemovePureOnlySpells("magmasurge");

@@ -26,10 +26,6 @@ public struct ApplyEffectAbilityComponent : IComponent
             if (options.EffectApplyChance.HasValue && !IntegerRandomizer.RollChance(options.EffectApplyChance.Value))
                 continue;
 
-            //bosses cannot be beagsuained by creag spells
-            if (options.EffectKey is "Beag Suain" && target.Script.Is<ThisIsABossScript>())
-                continue;
-
             var effect = options.EffectFactory.Create(options.EffectKey);
 
             if (options.EffectDurationOverride.HasValue)

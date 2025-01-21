@@ -299,7 +299,6 @@ public sealed class MedusaPhaseScript : MonsterScriptBase
             if (CurrentPhase > 3)
                 CurrentPhase = 1;
 
-            CurrentPhase = 2;
             StartPhase();
         }
 

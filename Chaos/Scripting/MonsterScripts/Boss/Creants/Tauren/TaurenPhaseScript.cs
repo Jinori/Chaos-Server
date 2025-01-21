@@ -85,7 +85,7 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
         SpellTimer = new IntervalTimer(TimeSpan.FromSeconds(5), false);
         SpellTimer2 = new IntervalTimer(TimeSpan.FromSeconds(6), false);
         PhaseDelay = new IntervalTimer(TimeSpan.FromSeconds(5), false);
-        TimeBetweenPhases = new IntervalTimer(TimeSpan.FromSeconds(30), false);
+        TimeBetweenPhases = new IntervalTimer(TimeSpan.FromSeconds(45), false);
         SpellDelay = new IntervalTimer(TimeSpan.FromMilliseconds(200));
         SplitPhaseTimer1 = new IntervalTimer(TimeSpan.FromSeconds(45), false);
         SpellPhaseTimer4 = new IntervalTimer(TimeSpan.FromSeconds(16), false);

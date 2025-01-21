@@ -28,6 +28,9 @@ public sealed class GleamingPrefixScript : ItemScriptBase, IEnchantmentScript
     public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
     {
         if (!node.Name.StartsWithI("Gleaming"))
-            yield return node with { Name = $"Gleaming {node.Name}" };
+            yield return node with
+            {
+                Name = $"Gleaming {node.Name}"
+            };
     }
 }

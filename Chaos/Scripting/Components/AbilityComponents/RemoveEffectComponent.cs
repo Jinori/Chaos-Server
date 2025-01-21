@@ -37,7 +37,7 @@ public class RemoveEffectComponent : IComponent
 
                     if (effect.Name == "Fury6")
                         continue;
-                    
+
                     if (effect.Name == "Cunning1")
                         continue;
 
@@ -59,7 +59,7 @@ public class RemoveEffectComponent : IComponent
                     if (effect.Name == "Invulnerability")
                         continue;
 
-                    if (effect.Name == "mount")
+                    if (effect.Name == "Mount")
                         continue;
 
                     if (effect.Name == "GM Knowledge")
