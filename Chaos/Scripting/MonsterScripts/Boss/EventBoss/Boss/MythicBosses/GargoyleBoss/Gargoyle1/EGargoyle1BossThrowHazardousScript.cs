@@ -20,6 +20,7 @@ public sealed class EGargoyle1BossThrowHazardousScript : MonsterScriptBase
         AnimationSpeed = 100,
         TargetAnimation = 378
     };
+
     private IApplyDamageScript ApplyDamageScript { get; }
     private IIntervalTimer SpawnTiles { get; }
 
@@ -36,13 +37,17 @@ public sealed class EGargoyle1BossThrowHazardousScript : MonsterScriptBase
         ApplyDamageScript = ApplyAttackDamageScript.Create();
     }
 
-    private Aisling? FindLowestAggro() =>
-        Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, AggroRange)
-               .ThatAreObservedBy(Subject)
-               .FirstOrDefault(
-                   obj => !obj.Equals(Subject)
-                          && obj.IsAlive
-                          && (obj.Id == Subject.AggroList.FirstOrDefault(a => a.Value == Subject.AggroList.Values.Min()).Key));
+    private Aisling? FindLowestAggro()
+        => Subject.MapInstance
+                  .GetEntitiesWithinRange<Aisling>(Subject, AggroRange)
+                  .ThatAreObservedBy(Subject)
+                  .ThatAreVisibleTo(Subject)
+                  .FirstOrDefault(
+                      obj => !obj.Equals(Subject)
+                             && obj.IsAlive
+                             && (obj.Id
+                                 == Subject.AggroList.FirstOrDefault(a => a.Value == Subject.AggroList.Values.Min())
+                                           .Key));
 
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
@@ -50,7 +55,8 @@ public sealed class EGargoyle1BossThrowHazardousScript : MonsterScriptBase
         base.Update(delta);
         SpawnTiles.Update(delta);
 
-        if (!Map.GetEntities<Aisling>().Any())
+        if (!Map.GetEntities<Aisling>()
+                .Any())
             return;
 
         if (!SpawnTiles.IntervalElapsed)
@@ -73,10 +79,10 @@ public sealed class EGargoyle1BossThrowHazardousScript : MonsterScriptBase
             foreach (var tile in enumerable)
                 Subject.MapInstance.ShowAnimation(Animation.GetPointAnimation(tile));
 
-            var targets =
-                Subject.MapInstance.GetEntitiesAtPoints<Aisling>(enumerable.Cast<IPoint>())
-                       .WithFilter(Subject, TargetFilter.HostileOnly)
-                       .ToList();
+            var targets = Subject.MapInstance
+                                 .GetEntitiesAtPoints<Aisling>(enumerable.Cast<IPoint>())
+                                 .WithFilter(Subject, TargetFilter.HostileOnly)
+                                 .ToList();
 
             foreach (var aisling in targets)
             {

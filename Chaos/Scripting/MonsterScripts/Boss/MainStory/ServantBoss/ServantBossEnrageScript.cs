@@ -71,7 +71,9 @@ public sealed class ServantBossEnrageScript : MonsterScriptBase
 
                     foreach (var aisling in Subject.MapInstance
                                                    .GetEntities<Aisling>()
-                                                   .Where(x => x.WithinRange(Subject, 10) && !x.IsGodModeEnabled() && !x.IsDead))
+                                                   .Where(x => x.WithinRange(Subject, 10) && !x.IsGodModeEnabled() && !x.IsDead)
+                                                   .ThatAreObservedBy(Subject)
+                                                   .ThatAreVisibleTo(Subject))
                         Subject.TryUseSpell(SpellToCast2, aisling.Id);
 
                     break;

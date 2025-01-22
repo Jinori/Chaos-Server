@@ -1,23 +1,31 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
+using Chaos.Scripting.FunctionalScripts.Abstractions;
+using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Mileth;
 
 public class RelearnCraftScript : DialogScriptBase
 {
+    private readonly IItemFactory ItemFactory;
     private readonly ISkillFactory SkillFactory;
     private readonly ISpellFactory SpellFactory;
+    private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
 
-    public RelearnCraftScript(Dialog subject, ISpellFactory spellFactory, ISkillFactory skillFactory)
+    public RelearnCraftScript(
+        Dialog subject,
+        ISpellFactory spellFactory,
+        ISkillFactory skillFactory,
+        IItemFactory itemFactory)
         : base(subject)
     {
         SpellFactory = spellFactory;
         SkillFactory = skillFactory;
+        ItemFactory = itemFactory;
     }
 
     public override void OnDisplaying(Aisling source)
@@ -26,19 +34,24 @@ public class RelearnCraftScript : DialogScriptBase
         {
             case "riona_relearnrecipes":
             {
-                if (!source.Trackers.TimedEvents.HasActiveEvent("newyear", out _))
+                if (source.Trackers.Enums.HasValue(MainstoryMasterEnums.CompletedCreants)
+                    && !source.Trackers.Flags.HasFlag(MainstoryFlags.ReceivedRewards))
                 {
-                    source.TryGiveGamePoints(50);
-                    source.Trackers.TimedEvents.AddEvent("newyear", TimeSpan.FromDays(14), true);
-                    source.SendOrangeBarMessage("You received 50 Gamepoints for New Year!");
+                    source.Trackers.Enums.Set(ClassStatBracket.Grandmaster);
+                    source.Trackers.Flags.AddFlag(MainstoryFlags.ReceivedRewards);
+                    ExperienceDistributionScript.GiveExp(source, 100000000);
+                    source.TryGiveGamePoints(25);
+                    var godsstar = ItemFactory.Create("godsstar");
+                    source.GiveItemOrSendToBank(godsstar);
+                    source.SendOrangeBarMessage("Riona hands you a Star from the gods.");
                 }
-                
+
                 if (source.Legend.ContainsKey("darkpriest") && !source.SpellBook.ContainsByTemplateKey("auraoftorment"))
                 {
                     var auraoftorment = SpellFactory.Create("auraoftorment");
                     source.SpellBook.TryAddToNextSlot(auraoftorment);
                 }
-                
+
                 if (source.SpellBook.ContainsByTemplateKey("morcradh")
                     && !source.SpellBook.ContainsByTemplateKey("ardcradh")
                     && (source.UserStatSheet.BaseClass != BaseClass.Wizard))

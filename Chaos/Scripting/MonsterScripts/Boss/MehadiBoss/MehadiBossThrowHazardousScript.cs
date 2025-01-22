@@ -41,6 +41,7 @@ public sealed class MehadiBossThrowHazardousScript : MonsterScriptBase
         => Subject.MapInstance
                   .GetEntitiesWithinRange<Aisling>(Subject, AggroRange)
                   .ThatAreObservedBy(Subject)
+                  .ThatAreVisibleTo(Subject)
                   .FirstOrDefault(
                       obj => !obj.Equals(Subject)
                              && obj.IsAlive
@@ -81,6 +82,8 @@ public sealed class MehadiBossThrowHazardousScript : MonsterScriptBase
             var targets = Subject.MapInstance
                                  .GetEntitiesAtPoints<Aisling>(enumerable.Cast<IPoint>())
                                  .WithFilter(Subject, TargetFilter.HostileOnly)
+                                 .ThatAreObservedBy(Subject)
+                                 .ThatAreVisibleTo(Subject)
                                  .ToList();
 
             foreach (var aisling in targets)

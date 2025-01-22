@@ -1,6 +1,7 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.Common.Utilities;
+﻿using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
+using Chaos.Extensions.Common;
+using Chaos.Extensions.Geometry;
 using Chaos.Models.Legend;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -12,14 +13,56 @@ using Chaos.Time;
 
 namespace Chaos.Scripting.ReactorTileScripts.Mileth;
 
-public class MilethAltarWorshipScript(ReactorTile subject, IItemFactory itemFactory) : ReactorTileScriptBase(subject)
+public class MilethAltarWorshipScript(ReactorTile subject, IItemFactory itemFactory, IReactorTileFactory reactorTileFactory)
+    : ReactorTileScriptBase(subject)
 {
+    private readonly IReactorTileFactory ReactorTileFactory = reactorTileFactory;
     private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
 
     public override void OnItemDroppedOn(Creature source, GroundItem groundItem)
     {
         if (source is not Aisling aisling)
             return;
+
+        if (groundItem.Name == "Wirt's Leg")
+        {
+            if (source.MapInstance
+                      .GetEntities<ReactorTile>()
+                      .Any(x => x.ScriptKeys.ContainsI("cowPortal")))
+            {
+                var item = itemFactory.Create(groundItem.Item.Template.TemplateKey);
+                aisling.GiveItemOrSendToBank(item);
+                aisling.MapInstance.RemoveEntity(groundItem);
+                aisling.SendOrangeBarMessage("A rift in the realm here has already been made.");
+
+                return;
+            }
+            
+            var rectangle = new Rectangle(
+                source.X,
+                source.Y,
+                2,
+                2);
+
+            var point = rectangle.TryGetRandomPoint(x => aisling.MapInstance.IsWalkable(x, source.Type), out var portalpoint);
+
+            if (portalpoint == null)
+            {
+                aisling.SendOrangeBarMessage("There is no space nearby, please move and try again.");
+                var item = itemFactory.Create(groundItem.Item.Template.TemplateKey);
+                aisling.GiveItemOrSendToBank(item);
+                aisling.MapInstance.RemoveEntity(groundItem);
+
+                return;
+            }
+
+            var cowPortal = ReactorTileFactory.Create("cowportal", aisling.MapInstance, portalpoint);
+            aisling.MapInstance.SimpleAdd(cowPortal);
+            aisling.MapInstance.RemoveEntity(groundItem);
+            aisling.SendOrangeBarMessage("The ground shakes, a rift in space opens. Looks dangerous...");
+
+            return;
+        }
 
         aisling.MapInstance.RemoveEntity(groundItem);
 
@@ -29,7 +72,8 @@ public class MilethAltarWorshipScript(ReactorTile subject, IItemFactory itemFact
         {
             var randomMessages = new List<string>
             {
-                "The gods are pleased with your sacrifice.", "The item glows before dissolving into the altar.",
+                "The gods are pleased with your sacrifice.",
+                "The item glows before dissolving into the altar.",
                 "Good fortune the gods will grant."
             };
 
@@ -55,8 +99,7 @@ public class MilethAltarWorshipScript(ReactorTile subject, IItemFactory itemFact
             aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You received a unique legend mark!");
             ExperienceDistributionScript.GiveExp(aisling, 20000);
             aisling.GiveItemOrSendToBank(itemFactory.Create("amethystring"));
-        }
-        else
+        } else
         {
             ExperienceDistributionScript.GiveExp(aisling, 5000);
             aisling.GiveItemOrSendToBank(itemFactory.Create("emeraldring"));

@@ -1,5 +1,7 @@
+using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
+using Chaos.Models.Legend;
 using Chaos.Models.World;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
@@ -7,6 +9,7 @@ using Chaos.Scripting.MapScripts.MainStoryLine;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Services.Servers.Options;
+using Chaos.Time;
 
 namespace Chaos.Scripting.MonsterScripts.Boss.Creants;
 
@@ -50,7 +53,7 @@ public class CreantDeathScript : MonsterScriptBase
                              ?? (IEnumerable<Aisling>)new[]
                              {
                                  rewardTarget
-                             }).ThatAreWithinRange(rewardTarget)
+                             }).Where(x => x.MapInstance.IsWithinMap(rewardTarget))
                                .ToArray();
 
         Subject.Items.AddRange(Subject.LootTable.GenerateLoot());
@@ -73,8 +76,9 @@ public class CreantDeathScript : MonsterScriptBase
             }
 
             ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
-            
+
             var mapScript = Subject.MapInstance.Script.As<CreantBossMapScript>();
+
             if (mapScript != null)
                 mapScript.State = CreantBossMapScript.ScriptState.CreantKilled;
 
@@ -93,6 +97,33 @@ public class CreantDeathScript : MonsterScriptBase
                     player.Trackers.Flags.AddFlag(CreantEnums.KilledPhoenix);
                     player.SendOrangeBarMessage("Lady Phoenix is ready to be sealed away, use the altar.");
                 }
+
+                var rewardReoccuringPlayers = Map.GetEntities<Aisling>()
+                                                 .Where(
+                                                     x => x.Trackers.Enums.TryGetValue(out MainstoryMasterEnums stage)
+                                                          && (stage == MainstoryMasterEnums.CompletedCreants));
+
+                foreach (var rewardPlayer in rewardReoccuringPlayers)
+                {
+                    rewardPlayer.TryGiveGamePoints(25);
+                    rewardPlayer.SendOrangeBarMessage("Thank you for helping others.");
+
+                    rewardPlayer.Legend.AddOrAccumulate(
+                        new LegendMark(
+                            "Team work makes the dream work",
+                            "repeatedCreants",
+                            MarkIcon.Yay,
+                            MarkColor.Blue,
+                            1,
+                            GameTime.Now));
+                    var count = rewardPlayer.Legend.GetCount("repeatedCreants");
+
+                    if (count == 10)
+                    {
+                        rewardPlayer.Titles.Add("Creant Slayer");
+                        rewardPlayer.SendOrangeBarMessage("You received a unique Title!");
+                    }
+                }
             }
 
             if (Subject.Template.TemplateKey == "Medusa")
@@ -109,6 +140,33 @@ public class CreantDeathScript : MonsterScriptBase
                     player.Trackers.Flags.RemoveFlag(CreantEnums.StartedMedusa);
                     player.Trackers.Flags.AddFlag(CreantEnums.KilledMedusa);
                     player.SendOrangeBarMessage("Medusa is ready to be sealed away, use the altar.");
+                }
+
+                var rewardReoccuringPlayers = Map.GetEntities<Aisling>()
+                                                 .Where(
+                                                     x => x.Trackers.Enums.TryGetValue(out MainstoryMasterEnums stage)
+                                                          && (stage == MainstoryMasterEnums.CompletedCreants));
+
+                foreach (var rewardPlayer in rewardReoccuringPlayers)
+                {
+                    rewardPlayer.TryGiveGamePoints(25);
+                    rewardPlayer.SendOrangeBarMessage("Thank you for helping others.");
+
+                    rewardPlayer.Legend.AddOrAccumulate(
+                        new LegendMark(
+                            "Team work makes the dream work",
+                            "repeatedCreants",
+                            MarkIcon.Yay,
+                            MarkColor.Blue,
+                            1,
+                            GameTime.Now));
+                    var count = rewardPlayer.Legend.GetCount("repeatedCreants");
+
+                    if (count == 10)
+                    {
+                        rewardPlayer.Titles.Add("Creant Slayer");
+                        rewardPlayer.SendOrangeBarMessage("You received a unique Title!");
+                    }
                 }
             }
 
@@ -127,6 +185,33 @@ public class CreantDeathScript : MonsterScriptBase
                     player.Trackers.Flags.AddFlag(CreantEnums.KilledTauren);
                     player.SendOrangeBarMessage("Tauren is ready to be sealed away, use the altar.");
                 }
+
+                var rewardReoccuringPlayers = Map.GetEntities<Aisling>()
+                                                 .Where(
+                                                     x => x.Trackers.Enums.TryGetValue(out MainstoryMasterEnums stage)
+                                                          && (stage == MainstoryMasterEnums.CompletedCreants));
+
+                foreach (var rewardPlayer in rewardReoccuringPlayers)
+                {
+                    rewardPlayer.TryGiveGamePoints(25);
+                    rewardPlayer.SendOrangeBarMessage("Thank you for helping others.");
+
+                    rewardPlayer.Legend.AddOrAccumulate(
+                        new LegendMark(
+                            "Team work makes the dream work",
+                            "repeatedCreants",
+                            MarkIcon.Yay,
+                            MarkColor.Blue,
+                            1,
+                            GameTime.Now));
+                    var count = rewardPlayer.Legend.GetCount("repeatedCreants");
+
+                    if (count == 10)
+                    {
+                        rewardPlayer.Titles.Add("Creant Slayer");
+                        rewardPlayer.SendOrangeBarMessage("You received a unique Title!");
+                    }
+                }
             }
 
             if (Subject.Template.TemplateKey == "Shamensyth")
@@ -143,6 +228,33 @@ public class CreantDeathScript : MonsterScriptBase
                     player.Trackers.Flags.RemoveFlag(CreantEnums.StartedSham);
                     player.Trackers.Flags.AddFlag(CreantEnums.KilledSham);
                     player.SendOrangeBarMessage("Shamensyth is ready to be sealed away, use the altar.");
+                }
+
+                var rewardReoccuringPlayers = Map.GetEntities<Aisling>()
+                                                 .Where(
+                                                     x => x.Trackers.Enums.TryGetValue(out MainstoryMasterEnums stage)
+                                                          && (stage == MainstoryMasterEnums.CompletedCreants));
+
+                foreach (var rewardPlayer in rewardReoccuringPlayers)
+                {
+                    rewardPlayer.TryGiveGamePoints(25);
+                    rewardPlayer.SendOrangeBarMessage("Thank you for helping others.");
+
+                    rewardPlayer.Legend.AddOrAccumulate(
+                        new LegendMark(
+                            "Team work makes the dream work",
+                            "repeatedCreants",
+                            MarkIcon.Yay,
+                            MarkColor.Blue,
+                            1,
+                            GameTime.Now));
+                    var count = rewardPlayer.Legend.GetCount("repeatedCreants");
+
+                    if (count == 10)
+                    {
+                        rewardPlayer.Titles.Add("Creant Slayer");
+                        rewardPlayer.SendOrangeBarMessage("You received a unique Title!");
+                    }
                 }
             }
         }

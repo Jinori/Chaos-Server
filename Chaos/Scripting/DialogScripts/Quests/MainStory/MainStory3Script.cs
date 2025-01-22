@@ -180,6 +180,9 @@ public class MainStory3Script(Dialog subject, IItemFactory itemFactory) : Dialog
                 source.Trackers.Enums.Set(ClassStatBracket.Grandmaster);
                 ExperienceDistributionScript.GiveExp(source, 100000000);
                 source.TryGiveGamePoints(25);
+                var godsstar = itemFactory.Create("godsstar");
+                source.GiveItemOrSendToBank(godsstar);
+                source.SendOrangeBarMessage("Miraelis hands you a Star from above.");
 
                 return;
             }
