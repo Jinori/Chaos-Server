@@ -1987,7 +1987,8 @@ public enum MainstoryFlags
     CompletedFloor3 = 1 << 7,
     FinishedDungeon = 1 << 8,
     FinishedCreants = 1 << 9,
-    ReceivedRewards = 1 << 10
+    ReceivedRewards = 1 << 10, //useless enum, can delete for live.
+    CreantRewards = 1 << 11
 }
 
 [Flags]

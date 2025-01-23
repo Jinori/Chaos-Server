@@ -32,8 +32,6 @@ using Chaos.Services.Servers.Options;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
-using Humanizer;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Chaos.Scripting.AislingScripts;
 
@@ -417,8 +415,10 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             if (source is Monster monster)
                 monster.AggroList.AddOrUpdate(Subject.Id, _ => result, (_, currentAggro) => currentAggro + result);
 
-            var nonWallPoints = Subject.SpiralSearch(4).Where(x => !Subject.MapInstance.IsWall(x)).ToList();
-            
+            var nonWallPoints = Subject.SpiralSearch(4)
+                                       .Where(x => !Subject.MapInstance.IsWall(x))
+                                       .ToList();
+
             if (nonWallPoints.Count <= 0)
                 return;
 
@@ -802,9 +802,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             var aislings = Subject.MapInstance.GetEntities<Aisling>();
 
             foreach (var aisling in aislings)
-            {
-                aisling.SendServerMessage(ServerMessageType.OrangeBar1, $"{Subject.Name} was killed by {source?.Name}.");   
-            }
+                aisling.SendServerMessage(ServerMessageType.OrangeBar1, $"{Subject.Name} was killed by {source?.Name}.");
         }
 
         if (MapsToNotPunishDeathOn.Contains(Subject.MapInstance.Name))
@@ -822,44 +820,49 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                                            && (x.Template.EquipmentType != EquipmentType.OverArmor)
                                            && (x.Template.EquipmentType != EquipmentType.OverHelmet))
                                   .ToList();
-        
+
         foreach (var item in itemsToBreak)
         {
-            if (!IntegerRandomizer.RollChance(2)) 
+            if (!IntegerRandomizer.RollChance(2))
                 continue;
-            
-            if (Subject.Inventory.ContainsByTemplateKey("mithrildice") &&
-                Subject.Inventory.CountOfByTemplateKey("mithrildice") > 0)
+
+            if (Subject.Inventory.ContainsByTemplateKey("mithrildice") && (Subject.Inventory.CountOfByTemplateKey("mithrildice") > 0))
             {
                 // Notify player that Mithril Dice saved their item
                 Logger.WithTopics(
-                        Topics.Entities.Aisling,
-                        Topics.Entities.Item,
-                        Topics.Actions.Death,
-                        Topics.Actions.Penalty)
-                    .WithProperty(Subject)
-                    .WithProperty(item)
-                    .LogInformation("{@AislingName}'s {@ItemName} was saved by Mithril Dice (Dice Count:{@DiceCount})", Subject.Name, item.DisplayName, Subject.Inventory.CountOfByTemplateKey("mithrildice"));
-                
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Item,
+                          Topics.Actions.Death,
+                          Topics.Actions.Penalty)
+                      .WithProperty(Subject)
+                      .WithProperty(item)
+                      .LogInformation(
+                          "{@AislingName}'s {@ItemName} was saved by Mithril Dice (Dice Count:{@DiceCount})",
+                          Subject.Name,
+                          item.DisplayName,
+                          Subject.Inventory.CountOfByTemplateKey("mithrildice"));
+
                 // Consume one Mithril Dice (remove one from inventory)
                 Subject.Inventory.RemoveQuantityByTemplateKey("mithrildice", 1);
-                
+
                 Subject.Client.SendServerMessage(
                     ServerMessageType.GroupChat,
                     $"Dice has saved your {item.DisplayName} from being consumed.");
-
-            }
-            else
+            } else
             {
                 // Log and notify the player that they lost an item
                 Logger.WithTopics(
-                        Topics.Entities.Aisling,
-                        Topics.Entities.Item,
-                        Topics.Actions.Death,
-                        Topics.Actions.Penalty)
-                    .WithProperty(Subject)
-                    .WithProperty(item)
-                    .LogInformation("{@AislingName} has lost {@ItemName} to death. (Dice Count:{@DiceCount})", Subject.Name, item.DisplayName, Subject.Inventory.CountOfByTemplateKey("mithrildice"));
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Item,
+                          Topics.Actions.Death,
+                          Topics.Actions.Penalty)
+                      .WithProperty(Subject)
+                      .WithProperty(item)
+                      .LogInformation(
+                          "{@AislingName} has lost {@ItemName} to death. (Dice Count:{@DiceCount})",
+                          Subject.Name,
+                          item.DisplayName,
+                          Subject.Inventory.CountOfByTemplateKey("mithrildice"));
 
                 Subject.Client.SendServerMessage(ServerMessageType.GroupChat, $"{item.DisplayName} has been consumed by death.");
 
@@ -1094,13 +1097,21 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         {
             var equipment = Subject.Equipment.ToList();
             var inventory = Subject.Inventory.ToList();
+            var bank = Subject.Bank.ToList();
 
             foreach (var item in equipment)
             {
+                if (item.CurrentDurability > item.Template.MaxDurability)
+                {
+                    item.CurrentDurability = item.Template.MaxDurability;
+                    Subject.Client.SendAttributes(StatUpdateType.Full);
+                }
+
                 if (item.ScriptKeys.Count > 1)
                 {
                     // Find the script key that starts with the item's prefix
-                    var validKey = item.ScriptKeys.FirstOrDefault(key => (item.Prefix != null) && key.StartsWith(item.Prefix, StringComparison.OrdinalIgnoreCase));
+                    var validKey = item.ScriptKeys.FirstOrDefault(
+                        key => (item.Prefix != null) && key.StartsWith(item.Prefix, StringComparison.OrdinalIgnoreCase));
 
                     if (validKey != null)
                     {
@@ -1114,21 +1125,44 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
             foreach (var inventoryItem in inventory)
             {
+                if (inventoryItem.CurrentDurability > inventoryItem.Template.MaxDurability)
+                {
+                    inventoryItem.CurrentDurability = inventoryItem.Template.MaxDurability;
+                    Subject.Client.SendAttributes(StatUpdateType.Full);
+                }
+
                 if (inventoryItem.ScriptKeys.Count > 1)
                 {
                     // Find the script key that starts with the item's prefix
-                    var validKey = inventoryItem.ScriptKeys.FirstOrDefault(key => (inventoryItem.Prefix != null) && key.StartsWith(inventoryItem.Prefix, StringComparison.OrdinalIgnoreCase));
+                    var validKey = inventoryItem.ScriptKeys.FirstOrDefault(
+                        key => (inventoryItem.Prefix != null) && key.StartsWith(inventoryItem.Prefix, StringComparison.OrdinalIgnoreCase));
 
                     if (validKey != null)
                     {
                         // Clear all script keys and keep only the valid one
                         inventoryItem.ScriptKeys.Clear();
                         inventoryItem.ScriptKeys.Add(validKey);
-                        
                     }
                 }
             }
-            
+
+            foreach (var bankItem in bank)
+            {
+                if (bankItem.CurrentDurability > bankItem.Template.MaxDurability)
+                    bankItem.CurrentDurability = bankItem.Template.MaxDurability;
+
+                // Find the script key that starts with the item's prefix
+                var validKey = bankItem.ScriptKeys.FirstOrDefault(
+                    key => (bankItem.Prefix != null) && key.StartsWith(bankItem.Prefix, StringComparison.OrdinalIgnoreCase));
+
+                if (validKey != null)
+                {
+                    // Clear all script keys and keep only the valid one
+                    bankItem.ScriptKeys.Clear();
+                    bankItem.ScriptKeys.Add(validKey);
+                }
+            }
+
             if (Subject.UserStatSheet.Level < 99)
             {
                 // Calculate the target AC based on level
@@ -1180,16 +1214,16 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 Subject.Client.SendAttributes(StatUpdateType.Full);
             }
 
-            if ((!Subject.Titles.ContainsI("Expert Enchanter") || !Subject.Titles.ContainsI("Master Enchanter")) && !Subject.IsAdmin)
+            if (!Subject.Titles.ContainsI("Expert Enchanter") && !Subject.Titles.ContainsI("Master Enchanter") && !Subject.IsAdmin)
                 Subject.Inventory.RemoveQuantityByTemplateKey("portaltrinket", 1);
 
-            if ((!Subject.Titles.ContainsI("Expert Weaponsmith") || !Subject.Titles.ContainsI("Master Weaponsmith")) && !Subject.IsAdmin)
+            if (!Subject.Titles.ContainsI("Expert Weaponsmith") && !Subject.Titles.ContainsI("Master Weaponsmith") && !Subject.IsAdmin)
                 Subject.Inventory.RemoveQuantityByTemplateKey("dmgtrinket", 1);
 
-            if ((!Subject.Titles.ContainsI("Expert Armorsmith") || !Subject.Titles.ContainsI("Master Armorsmith")) && !Subject.IsAdmin)
+            if (!Subject.Titles.ContainsI("Expert Armorsmith") && !Subject.Titles.ContainsI("Master Armorsmith") && !Subject.IsAdmin)
                 Subject.Inventory.RemoveQuantityByTemplateKey("repairtrinket", 1);
 
-            if ((!Subject.Titles.ContainsI("Expert Jewelcrafter") || !Subject.Titles.ContainsI("Master Jewelcraftersmith")) && !Subject.IsAdmin)
+            if (!Subject.Titles.ContainsI("Expert Jewelcrafter") && !Subject.Titles.ContainsI("Master Jewelcrafter") && !Subject.IsAdmin)
                 Subject.Inventory.RemoveQuantityByTemplateKey("exptrinket", 1);
 
             RemovePureOnlySpells("magmasurge");

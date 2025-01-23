@@ -27,11 +27,11 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
     private readonly IReactorTileFactory reactorTileFactory;
     private readonly IIntervalTimer RockFallTimer;
     private readonly IntervalTimer SafePointAnimationTimer;
-    private readonly IntervalTimer SkillSafePointAnimationTimer;
     private readonly List<Point> SafePoints;
-    private readonly List<Point> SkillSafePoints;
     private readonly ISkillFactory SkillFactory;
     private readonly IIntervalTimer SkillPhaseTimer3;
+    private readonly IntervalTimer SkillSafePointAnimationTimer;
+    private readonly List<Point> SkillSafePoints;
     private readonly IntervalTimer SkillTimer;
     private readonly IntervalTimer SpellDelay;
     private readonly ISpellFactory SpellFactory;
@@ -43,6 +43,7 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
     private readonly IIntervalTimer SplitPhaseTimer1;
     private readonly IIntervalTimer TimeBetweenPhases;
     private bool CreatedSafePoints;
+    private bool CreatedSkillSafePoints;
     private bool DownSafePoint;
     public bool InPhase;
     private bool IsChanneling;
@@ -63,7 +64,6 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
     private bool StartSplitPhase;
     private int SummonedTaurens;
     private bool TurnedClockwise;
-    private bool CreatedSkillSafePoints;
 
     private bool UpSafePoint;
 
@@ -123,8 +123,6 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
 
                 if (furthestAisling != null)
                 {
-                    // Get the position of the furthest Aisling
-
                     // Create and spawn the reactor tile
                     var rockFallTile = reactorTileFactory.Create(
                         "rockfall",
@@ -199,11 +197,6 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
         if (!SplitPhase1 && StartSplitPhase)
         {
             SplitPhase1 = true;
-
-            var aislings = Subject.MapInstance.GetEntities<Aisling>();
-
-            foreach (var aisling in aislings)
-                aisling.Trackers.Enums.Set(CreantPhases.None);
 
             for (var i = SummonedTaurens; i < 4; i++)
             {
@@ -482,7 +475,7 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
                     TargetPoint = point
                 });
     }
-    
+
     private void CreateSafePointsSkillPhase()
     {
         var safePointsLeft = new[]

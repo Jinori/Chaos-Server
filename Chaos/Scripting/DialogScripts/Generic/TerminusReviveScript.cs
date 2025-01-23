@@ -27,6 +27,13 @@ public class TerminusReviveScript : DialogScriptBase
                     return;
                 }
 
+                if (source.MapInstance.Template.TemplateKey == "26018")
+                {
+                    Subject.Reply(source, "You can't leave the Pit Fight like this!");
+
+                    return;
+                }
+
                 Point point;
                 point = new Point(13, 10);
                 var mapInstance = SimpleCache.Get<MapInstance>("after_life");

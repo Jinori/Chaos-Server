@@ -14,7 +14,7 @@ namespace Chaos.Scripting.EffectScripts.Monsters;
 public sealed class Bewilderment : ContinuousAnimationEffectBase, HierarchicalEffectComponent.IHierarchicalEffectComponentOptions
 {
     /// <inheritdoc />
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(12);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(6);
 
     /// <inheritdoc />
     public List<string> EffectNameHierarchy { get; init; } = ["Bewilderment"];

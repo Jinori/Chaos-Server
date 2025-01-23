@@ -176,7 +176,7 @@ public class MainStory3Script(Dialog subject, IItemFactory itemFactory) : Dialog
             {
                 source.Trackers.Enums.Set(MainstoryMasterEnums.CompletedCreants);
                 source.Trackers.Flags.AddFlag(MainstoryFlags.FinishedCreants);
-                source.Trackers.Flags.AddFlag(MainstoryFlags.ReceivedRewards);
+                source.Trackers.Flags.AddFlag(MainstoryFlags.CreantRewards);
                 source.Trackers.Enums.Set(ClassStatBracket.Grandmaster);
                 ExperienceDistributionScript.GiveExp(source, 100000000);
                 source.TryGiveGamePoints(25);

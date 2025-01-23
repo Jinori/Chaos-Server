@@ -35,10 +35,11 @@ public class RelearnCraftScript : DialogScriptBase
             case "riona_relearnrecipes":
             {
                 if (source.Trackers.Enums.HasValue(MainstoryMasterEnums.CompletedCreants)
-                    && !source.Trackers.Flags.HasFlag(MainstoryFlags.ReceivedRewards))
+                    && !source.Trackers.Flags.HasFlag(MainstoryFlags.CreantRewards))
                 {
                     source.Trackers.Enums.Set(ClassStatBracket.Grandmaster);
-                    source.Trackers.Flags.AddFlag(MainstoryFlags.ReceivedRewards);
+                    source.Trackers.Flags.AddFlag(MainstoryFlags.CreantRewards);
+                    source.Trackers.Flags.RemoveFlag(MainstoryFlags.ReceivedRewards);
                     ExperienceDistributionScript.GiveExp(source, 100000000);
                     source.TryGiveGamePoints(25);
                     var godsstar = ItemFactory.Create("godsstar");
