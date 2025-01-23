@@ -170,14 +170,18 @@ public sealed record UserStatSheet : StatSheet
 
     private static ClassStatBracket GetCurrentStatBracket(Aisling source)
     {
+        // Check if the player has the Grandmaster flag first
+        if (source.Trackers.Enums.HasValue(ClassStatBracket.Grandmaster))
+            return ClassStatBracket.Grandmaster;
+
+        // Check if the player is a Master
         if (source.UserStatSheet.Master)
             return ClassStatBracket.Master;
 
-        return source.Trackers.Enums.HasValue(ClassStatBracket.Grandmaster) 
-            ? ClassStatBracket.Grandmaster 
-            : ClassStatBracket.PreMaster;
+        // Default to PreMaster
+        return ClassStatBracket.PreMaster;
     }
-    
+
     private readonly Dictionary<BaseClass, Dictionary<ClassStatBracket, Attributes>> ClassStatCaps = new()
     {
         {

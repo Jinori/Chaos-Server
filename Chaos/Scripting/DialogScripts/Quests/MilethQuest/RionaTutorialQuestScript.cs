@@ -60,15 +60,6 @@ public class RionaTutorialQuestScript : DialogScriptBase
                         Subject.Options.Add(option);
                 }
 
-                if (source.Trackers.Enums.HasValue(MainstoryMasterEnums.CompletedCreants)
-                    && !source.Trackers.Flags.HasFlag(MainstoryFlags.ReceivedRewards))
-                {
-                    source.Trackers.Flags.AddFlag(MainstoryFlags.ReceivedRewards);
-                    source.Trackers.Enums.Set(ClassStatBracket.Grandmaster);
-                    ExperienceDistributionScript.GiveExp(source, 100000000);
-                    source.TryGiveGamePoints(25);
-                }
-
                 if (source.Trackers.Enums.HasValue(Crafts.Armorsmithing)
                     || source.Trackers.Enums.HasValue(Crafts.Enchanting)
                     || source.Trackers.Enums.HasValue(Crafts.Weaponsmithing)

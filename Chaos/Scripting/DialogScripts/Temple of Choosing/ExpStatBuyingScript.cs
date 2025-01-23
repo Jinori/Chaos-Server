@@ -226,10 +226,16 @@ public class ExpStatBuyingScript(Dialog subject) : DialogScriptBase(subject)
 
     private static ClassStatBracket GetCurrentStatBracket(Aisling source)
     {
+        // Check if the player has the Grandmaster flag first
+        if (source.Trackers.Enums.HasValue(ClassStatBracket.Grandmaster))
+            return ClassStatBracket.Grandmaster;
+
+        // Check if the player is a Master
         if (source.UserStatSheet.Master)
             return ClassStatBracket.Master;
 
-        return source.Trackers.Enums.HasValue(ClassStatBracket.Grandmaster) ? ClassStatBracket.Grandmaster : ClassStatBracket.PreMaster;
+        // Default to PreMaster
+        return ClassStatBracket.PreMaster;
     }
 
     private bool IsStatCapped(Aisling source, Stats caps, byte optionIndex)
@@ -256,9 +262,9 @@ public class ExpStatBuyingScript(Dialog subject) : DialogScriptBase(subject)
             return;
         }
 
-        if (source.UserStatSheet.UnspentPoints > 19)
+        if (source.UserStatSheet.UnspentPoints > 0)
         {
-            source.SendOrangeBarMessage("You cannot buy stats while having over 19 unspent stat points.");
+            source.SendOrangeBarMessage("You cannot purchase stats while you have unspent stat points.");
             Subject.Close(source);
 
             return;
