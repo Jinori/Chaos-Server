@@ -20,8 +20,8 @@ public class milethCowPortal : ReactorTileScriptBase
 
     protected Animation PortalAnimation { get; } = new()
     {
-        AnimationSpeed = 800,
-        TargetAnimation = 410
+        AnimationSpeed = 145,
+        TargetAnimation = 728
     };
 
     /// <inheritdoc />

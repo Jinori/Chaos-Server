@@ -21,7 +21,7 @@ public class cowPortal : ReactorTileScriptBase
     protected Animation PortalAnimation { get; } = new()
     {
         AnimationSpeed = 145,
-        TargetAnimation = 410
+        TargetAnimation = 729
     };
 
     /// <inheritdoc />
