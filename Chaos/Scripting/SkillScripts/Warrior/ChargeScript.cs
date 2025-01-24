@@ -148,7 +148,7 @@ public class ChargeScript : ConfigurableSkillScriptBase,
 
                 // Warp the source to the new point
                 context.Source.WarpTo(newPoint);
-
+                
                 // Needs Damage & Ability Component or a new Movement Component
                 new ComponentExecutor(context).WithOptions(this)
                                               .ExecuteAndCheck<GenericAbilityComponent<Creature>>()

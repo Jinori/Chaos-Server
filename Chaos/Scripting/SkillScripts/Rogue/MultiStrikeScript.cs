@@ -15,7 +15,7 @@ using Chaos.Time.Abstractions;
 namespace Chaos.Scripting.SkillScripts.Rogue;
 
 public class MultiStrikeScript(Skill subject) : ConfigurableSkillScriptBase(subject),
-    GenericAbilityComponent<Creature>.IAbilityComponentOptions,
+    MultistrikeAbilityComponent<Creature>.IAbilityComponentOptions,
     DamageAbilityComponent.IDamageComponentOptions,
     AssassinStrikeComponent.IDamageComponentOptions
 {
@@ -147,7 +147,7 @@ public class MultiStrikeScript(Skill subject) : ConfigurableSkillScriptBase(subj
                     Context.Source.Turn(newDirection);
 
                     new ComponentExecutor(Context).WithOptions(this)
-                                                  .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
+                                                  .ExecuteAndCheck<MultistrikeAbilityComponent<Creature>>()
                                                   ?.Execute<AssassinStrikeComponent>();
                 }
             }

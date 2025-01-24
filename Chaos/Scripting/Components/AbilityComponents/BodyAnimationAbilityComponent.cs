@@ -1,5 +1,7 @@
 using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
+using Chaos.Models.Panel;
+using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
 
@@ -12,6 +14,7 @@ public struct BodyAnimationAbilityComponent : IComponent
     {
         var options = vars.GetOptions<IBodyAnimationComponentOptions>();
         var animationSpeed = options.AnimationSpeed ?? 25;
+        var sourceScript = vars.GetSourceScript();
 
         if (options.ScaleBodyAnimationSpeedByAttackSpeed is true)
         {
@@ -24,16 +27,16 @@ public struct BodyAnimationAbilityComponent : IComponent
         }
 
         var aisling = context.SourceAisling;
-        if ((aisling != null) && aisling.Equipment.TryGetObject((byte)EquipmentSlot.Weapon, out var item))
-        {
-            if (item.Template.Category == "2H")
-            {
-                context.Source.AnimateBody(BodyAnimation.TwoHandAtk, animationSpeed);
 
-                return;
-            }
-        }
-        
+        if ((aisling != null) && aisling.Equipment.TryGetObject((byte)EquipmentSlot.Weapon, out var item))
+            if (item.Template.Category == "2H")
+                if (sourceScript is SubjectiveScriptBase<Skill> { Subject.Template.IsAssail: true })
+                {
+                    context.Source.AnimateBody(BodyAnimation.TwoHandAtk, animationSpeed);
+
+                    return;
+                }
+
         context.Source.AnimateBody(options.BodyAnimation, animationSpeed);
     }
 

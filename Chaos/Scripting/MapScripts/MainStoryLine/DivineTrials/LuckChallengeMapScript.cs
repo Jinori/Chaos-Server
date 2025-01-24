@@ -232,7 +232,6 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.DivineTrials
                 var point = new Point(16, 16);
                 aisling.TraverseMap(mapInstance, point);
                 aisling.SendOrangeBarMessage("Time is up. You failed the Luck Trial.");
-                aisling.Trackers.TimedEvents.AddEvent("lucktrialcd", TimeSpan.FromHours(1), true);
                 aisling.Trackers.Enums.Set(LuckTrial.None);
                 aisling.Trackers.Enums.Set(MainStoryEnums.StartedSecondTrial);
             }
