@@ -35,9 +35,9 @@ public class PhoenixWindElementalDamageScript : MonsterScriptBase
                 var distance = Subject.ManhattanDistanceFrom(aisling);
                 var damage = distance switch
                 {
-                    0 => MathEx.GetPercentOf<int>((int)aisling.StatSheet.EffectiveMaximumHp, 3),
-                    1 => MathEx.GetPercentOf<int>((int)aisling.StatSheet.EffectiveMaximumHp, 2),
-                    2 => MathEx.GetPercentOf<int>((int)aisling.StatSheet.EffectiveMaximumHp, 1),
+                    0 => MathEx.GetPercentOf<int>((int)aisling.StatSheet.EffectiveMaximumHp, 5),
+                    1 => MathEx.GetPercentOf<int>((int)aisling.StatSheet.EffectiveMaximumHp, 4),
+                    2 => MathEx.GetPercentOf<int>((int)aisling.StatSheet.EffectiveMaximumHp, 3),
                     _ => 0
                 };
                 

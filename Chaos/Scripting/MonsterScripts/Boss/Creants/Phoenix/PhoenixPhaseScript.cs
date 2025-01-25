@@ -33,8 +33,8 @@ public class PhoenixPhaseScript : MonsterScriptBase
     private readonly IApplyDamageScript ApplyDamageScript = ApplyNonAttackDamageScript.Create();
     
     #region Timers
-    private readonly IIntervalTimer SpawnAddsTimer = new IntervalTimer(TimeSpan.FromMinutes(1), false);
-    private readonly IIntervalTimer AbductMessageTimer = new IntervalTimer(TimeSpan.FromMinutes(1), false);
+    private readonly IIntervalTimer SpawnAddsTimer = new IntervalTimer(TimeSpan.FromSeconds(30), false);
+    private readonly IIntervalTimer AbductMessageTimer = new IntervalTimer(TimeSpan.FromSeconds(45), false);
     private readonly IIntervalTimer AbductGraceTimer = new IntervalTimer(TimeSpan.FromSeconds(3), false);
 
     private readonly IIntervalTimer DropTimer = new RandomizedIntervalTimer(
@@ -60,10 +60,9 @@ public class PhoenixPhaseScript : MonsterScriptBase
 
     private void SpawnAdds()
     {
-        var spawnPoints = Subject.GenerateCardinalPoints()
-                                 .WithDirectionBias(Subject.Direction)
-                                 .Where(point => Map.IsWithinMap(point))
-                                 .Take(3);
+        var spawnPoints = Subject.GenerateIntercardinalPoints(radius: 2)
+                                 .Skip(4)
+                                 .Where(point => Map.IsWithinMap(point));
 
         var spawns = spawnPoints.Select(spawnPoint => MonsterFactory.Create("phoenixWindElemental", Subject.MapInstance, spawnPoint))
                                 .ToList();
