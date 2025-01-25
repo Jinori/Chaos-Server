@@ -41,6 +41,9 @@ public struct DamageAbilityComponent : IComponent
                 options.PctOfHealth,
                 options.PctOfHealthMultiplier);
 
+            if (!sourceScript.ScriptKey.Contains("AssassinStrike") && (damage > 1000000))
+                damage = 1000000;
+            
             if (damage > 0)
                 options.ApplyDamageScript.ApplyDamage(
                     context.Source,

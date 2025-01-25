@@ -1,30 +1,28 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
-using Chaos.Scripting.ItemScripts;
 
 namespace Chaos.Scripting.EffectScripts.Warrior;
 
 public class BerserkEffect : EffectBase
 {
-
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(2);
-    public override byte Icon => 87;
-    public override string Name => "Berserk";
-    
+
     protected Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
         TargetAnimation = 291
     };
 
+    public override byte Icon => 87;
+    public override string Name => "Berserk";
+
     public override void OnApplied()
     {
         base.OnApplied();
-        
+
         var attributes = new Attributes
         {
             Ac = 10,
@@ -53,6 +51,7 @@ public class BerserkEffect : EffectBase
         };
 
         AislingSubject?.StatSheet.SubtractBonus(attributes);
+        AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your emotions return to normal.");
     }
 
@@ -64,7 +63,14 @@ public class BerserkEffect : EffectBase
 
             return false;
         }
-        
+
+        if (target.Effects.Contains("Berserk"))
+        {
+            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You're currently berserking!");
+
+            return false;
+        }
+
         return true;
     }
 }

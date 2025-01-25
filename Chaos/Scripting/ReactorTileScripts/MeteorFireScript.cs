@@ -22,10 +22,10 @@ public class MeteorFireScript : ConfigurableReactorTileScriptBase,
                                 TrapDamageAbilityComponent.ITrapDamageComponentOptions,
                                 ManaDrainAbilityComponent.IManaDrainComponentOptions,
                                 ApplyEffectAbilityComponent.IApplyEffectComponentOptions
-{
-    protected IIntervalTimer AnimationTimer { get; set; }
-
+{ 
     protected IIntervalTimer DamageTimer { get; set; }
+    
+    public ComponentExecutor Executor { get; init; }
     protected Creature Owner { get; set; }
     protected IIntervalTimer? Timer { get; set; }
     protected int TriggerCount { get; set; }
@@ -34,6 +34,10 @@ public class MeteorFireScript : ConfigurableReactorTileScriptBase,
     public MeteorFireScript(ReactorTile subject, IEffectFactory effectFactory)
         : base(subject)
     {
+        
+        var context = new ActivationContext(Subject.Owner!, Subject);
+        var vars = new ComponentVars();
+        
         if (Subject.Owner == null)
             throw new Exception(
                 $"""{nameof(TrapScript)} script initialized for {Subject} that has no owner. If this reactor was created through json, you must specify the optional parameter "owningMonsterTemplateKey". If this reactor was created through a script, you must specify the owner in the {nameof(IReactorTileFactory)}.{nameof(IReactorTileFactory.Create)}() call.""");
@@ -44,65 +48,39 @@ public class MeteorFireScript : ConfigurableReactorTileScriptBase,
 
         if (DurationSecs.HasValue)
             Timer = new IntervalTimer(TimeSpan.FromSeconds(DurationSecs.Value), false);
-
-        AnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
+        
         DamageTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
         ApplyDamageScript = ApplyNonAttackDamageScript.Create();
+        
+        Executor = new ComponentExecutor(context, vars).WithOptions(this);
+        
     }
-
-    private void ApplyTrapEffects(Creature target)
-    {
-        if (!Filter.IsValidTarget(Owner, target))
-            return;
-
-        if (target.IsGodModeEnabled())
-            return;
-
-        var executed = new ComponentExecutor(Owner, target).WithOptions(this)
-                                                           .ExecuteAndCheck<GetTargetsAbilityComponent<Creature>>()
-                                                           ?.Execute<SoundAbilityComponent>()
-                                                           .Execute<AnimationAbilityComponent>()
-                                                           .Execute<TrapDamageAbilityComponent>()
-                                                           .Execute<ManaDrainAbilityComponent>()
-                                                           .Execute<ApplyEffectAbilityComponent>()
-                       != null;
-
-        if (Owner is Aisling && target is Aisling aisling)
-            aisling.SendOrangeBarMessage("You're burned by fire from Meteor!");
-
-        if (executed && MaxTriggers.HasValue)
-        {
-            TriggerCount++;
-
-            if (TriggerCount >= MaxTriggers)
-                Map.RemoveEntity(Subject);
-        }
-    }
-
-    /// <inheritdoc />
-    public override void OnWalkedOn(Creature source) => ApplyTrapEffects(source);
 
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
         base.Update(delta);
         DamageTimer.Update(delta);
-
-        AnimationTimer.Update(delta);
-
-        if (Subject.Owner is not null && AnimationTimer.IntervalElapsed && Subject.MapInstance.Equals(Subject.Owner.MapInstance))
-            if (Animation != null)
-                Subject.Owner.MapInstance.ShowAnimation(Animation.GetPointAnimation(Subject));
-
+        
         if (DamageTimer.IntervalElapsed)
-            foreach (var creature in Subject.MapInstance.GetEntities<Creature>())
+        {
+            if (Owner is Aisling aisling)
             {
-                var creaturepoint = (creature.X, creature.Y);
-                var trappoint = (Subject.X, Subject.Y);
+                if (aisling.IsGodModeEnabled())
+                    return;
 
-                if (creaturepoint == trappoint)
-                    ApplyTrapEffects(creature);
+                if (aisling.IsHostileTo(Owner))
+                    aisling.SendOrangeBarMessage("You're burned by fire from Meteor!");
             }
+
+
+            Executor.ExecuteAndCheck<GetTargetsAbilityComponent<Creature>>()
+                    ?.Execute<SoundAbilityComponent>()
+                    .Execute<AnimationAbilityComponent>()
+                    .Execute<TrapDamageAbilityComponent>()
+                    .Execute<ManaDrainAbilityComponent>()
+                    .Execute<ApplyEffectAbilityComponent>();
+        }
 
         if (Timer != null)
         {
@@ -114,34 +92,31 @@ public class MeteorFireScript : ConfigurableReactorTileScriptBase,
     }
 
     #region ScriptVars
-    public TimeSpan? EffectDurationOverride { get; init; }
-
-    public IEffectFactory EffectFactory { get; init; }
-    public IApplyDamageScript ApplyDamageScript { get; init; }
+    public int? ExclusionRange { get; init; }
+    public TargetFilter Filter { get; init; }
+    public bool MustHaveTargets { get; init; }
+    public int Range { get; init; }
     public AoeShape Shape { get; init; }
     public bool SingleTarget { get; init; }
-    public BodyAnimation BodyAnimation { get; init; }
-    public int Range { get; init; }
-    public TargetFilter Filter { get; init; }
-    public Animation? Animation { get; init; }
+    public bool StopOnFirstHit { get; init; }
+    public bool StopOnWalls { get; init; }
     public byte? Sound { get; init; }
     public bool AnimatePoints { get; init; }
-    public bool MustHaveTargets { get; init; } = true;
-    public int? ExclusionRange { get; init; }
-    public bool StopOnWalls { get; init; }
-    public bool StopOnFirstHit { get; init; }
-
+    public Animation? Animation { get; init; }
+    public IApplyDamageScript ApplyDamageScript { get; init; }
     public int? BaseDamage { get; init; }
-    public bool? MoreDmgLowTargetHp { get; init; }
     public Stat? DamageStat { get; init; }
     public decimal? DamageStatMultiplier { get; init; }
-    public decimal? PctHpDamage { get; init; }
     public Element? Element { get; init; }
-    public int? DurationSecs { get; init; }
-    public int? MaxTriggers { get; init; }
-    public string? EffectKey { get; init; }
-    public int? EffectApplyChance { get; init; }
+    public bool? MoreDmgLowTargetHp { get; init; }
+    public decimal? PctHpDamage { get; init; }
     public int? ManaDrain { get; init; }
     public decimal PctManaDrain { get; init; }
+    public int? EffectApplyChance { get; init; }
+    public TimeSpan? EffectDurationOverride { get; init; }
+    public IEffectFactory EffectFactory { get; init; }
+    public string? EffectKey { get; init; }
+    public int? DurationSecs { get; init; }
+  
     #endregion
 }
