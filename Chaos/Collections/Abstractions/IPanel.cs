@@ -45,6 +45,8 @@ public interface IPanel<T> : IEnumerable<T>, IDeltaUpdatable
     /// </param>
     void AddObserver(Observers.Abstractions.IObserver<T> observer);
 
+    bool AttemptSwap(byte slot1, byte slot2);
+
     /// <summary>
     ///     Clears all objects from the panel
     /// </summary>

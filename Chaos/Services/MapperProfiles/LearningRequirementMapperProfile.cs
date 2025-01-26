@@ -21,8 +21,9 @@ public class LearningRequirementMapperProfile(ITypeMapper mapper) : IMapperProfi
             ItemRequirements = Mapper.MapMany<ItemRequirement>(obj.ItemRequirements)
                                      .ToList(),
             RequiredGold = obj.RequiredGold,
-        SkillSpellToUpgrade = obj.SkillSpellToUpgrade
-    };
+            SkillSpellToUpgrade = obj.SkillSpellToUpgrade,
+            SkillSpellToUpgrade2 = obj.SkillSpellToUpgrade2
+        };
 
     /// <inheritdoc />
     public AbilityRequirement Map(AbilityRequirementSchema obj)

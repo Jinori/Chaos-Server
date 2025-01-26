@@ -89,6 +89,8 @@ public class HealScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public decimal? PctHpHeal { get; init; }
 
+    public decimal? PctMptoHpHeal { get; init; }
+
     /// <inheritdoc />
     public int? ManaCost { get; init; }
 

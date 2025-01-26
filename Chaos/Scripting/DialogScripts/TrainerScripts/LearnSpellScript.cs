@@ -89,20 +89,23 @@ public class LearnSpellScript : DialogScriptBase
             {
                 "athar",
                 "morathar",
-                "ardathar"
+                "ardathar",
+                "ardatharmeall"
             }
         },
         {
             "athar", new List<string>
             {
                 "morathar",
-                "ardathar"
+                "ardathar",
+                "ardatharmeall"
             }
         },
         {
             "morathar", new List<string>
             {
-                "ardathar"
+                "ardathar",
+                "ardatharmeall"
             }
         },
         {
@@ -138,20 +141,23 @@ public class LearnSpellScript : DialogScriptBase
             {
                 "creag",
                 "morcreag",
-                "ardcreag"
+                "ardcreag",
+                "ardcreagmeall"
             }
         },
         {
             "creag", new List<string>
             {
                 "morcreag",
-                "ardcreag"
+                "ardcreag",
+                "ardcreagmeall"
             }
         },
         {
             "morcreag", new List<string>
             {
-                "ardcreag"
+                "ardcreag",
+                "ardcreagmeall"
             }
         },
         {
@@ -187,20 +193,23 @@ public class LearnSpellScript : DialogScriptBase
             {
                 "sal",
                 "morsal",
-                "ardsal"
+                "ardsal",
+                "ardsalmeall"
             }
         },
         {
             "sal", new List<string>
             {
                 "morsal",
-                "ardsal"
+                "ardsal",
+                "ardsalmeall"
             }
         },
         {
             "morsal", new List<string>
             {
-                "ardsal"
+                "ardsal",
+                "ardsalmeall"
             }
         },
         {
@@ -236,20 +245,23 @@ public class LearnSpellScript : DialogScriptBase
             {
                 "srad",
                 "morsrad",
-                "ardsrad"
+                "ardsrad",
+                "ardsradmeall"
             }
         },
         {
             "srad", new List<string>
             {
                 "morsrad",
-                "ardsrad"
+                "ardsrad",
+                "ardsradmeall"
             }
         },
         {
             "morsrad", new List<string>
             {
-                "ardsrad"
+                "ardsrad",
+                "ardsradmeall"
             }
         },
         {
@@ -464,6 +476,12 @@ public class LearnSpellScript : DialogScriptBase
             {
                 "lightningstance"
             }
+        },
+        {
+            "dodge", new List<string>
+            {
+                "evasion"
+            }
         }
     };
 
@@ -628,6 +646,20 @@ public class LearnSpellScript : DialogScriptBase
             {
                 source.SpellBook.RemoveByTemplateKey(oldSpell.Template.TemplateKey);
                 source.SendOrangeBarMessage($"{oldSpell.Template.Name} has been upgraded to {spellToLearn.Template.Name}.");
+            }
+        }
+
+        if (!string.IsNullOrEmpty(spellToLearn.Template.LearningRequirements?.SkillSpellToUpgrade2))
+        {
+            var oldSpell2 = source.SpellBook.FirstOrDefault(
+                s => s.Template.TemplateKey.Equals(
+                    spellToLearn.Template.LearningRequirements?.SkillSpellToUpgrade2,
+                    StringComparison.OrdinalIgnoreCase));
+
+            if (oldSpell2 != null)
+            {
+                source.SpellBook.RemoveByTemplateKey(oldSpell2.Template.TemplateKey);
+                source.SendOrangeBarMessage($"{oldSpell2.Template.Name} has been removed.");
             }
         }
 

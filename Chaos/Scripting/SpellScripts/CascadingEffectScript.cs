@@ -4,7 +4,6 @@ using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.ReactorTileScripts;
@@ -74,7 +73,7 @@ public class CascadingEffectScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     /// <inheritdoc />
     public bool MustHaveTargets { get; init; }
-    
+
     /// <inheritdoc />
     public Animation? Animation { get; init; }
 
@@ -98,7 +97,6 @@ public class CascadingEffectScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }
-
     /// <inheritdoc />
     public bool ShouldNotBreakHide { get; init; }
     #endregion

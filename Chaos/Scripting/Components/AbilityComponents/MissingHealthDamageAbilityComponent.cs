@@ -51,8 +51,8 @@ public struct MissingHealthDamageAbilityComponent : IComponent
 
         if (missingHealth < 0)
             missingHealth = 0;
-        
-        var damage = Convert.ToInt32(missingHealth * 0.6m); // Full missing health as damage
+
+        var damage = Convert.ToInt32(missingHealth * 0.1m); // Full missing health as damage
 
         // If there's a base damage, add it
         if (baseDamage.HasValue)

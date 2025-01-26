@@ -2,7 +2,6 @@ using Chaos.DarkAges.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
-using Chaos.Models.Templates;
 using Chaos.Models.World;
 using Chaos.Scripting.ItemScripts.Abstractions;
 
@@ -12,37 +11,6 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
 {
     private readonly Item Subject1 = subject;
     private Attributes? MysticAttributes { get; set; }
-
-    private bool CanWieldStaff(Aisling source, string skillName)
-    {
-        // Check if the character's base class and skill match the traditional rules.
-        var isPriestWithHolyStaff = source.UserStatSheet.BaseClass == BaseClass.Priest && skillName == "Wield Holy Staff";
-        var isWizardWithMagusStaff = source.UserStatSheet.BaseClass == BaseClass.Wizard && skillName == "Wield Magus Staff";
-
-        // Check if the character has the skill, even if it's not typical for their class.
-        var hasSkill = source.SkillBook.Contains(skillName);
-
-        if (isPriestWithHolyStaff || isWizardWithMagusStaff || hasSkill)
-        {
-            if (Subject.Template.RequiresMaster && !source.UserStatSheet.Master)
-            {
-                source.SendOrangeBarMessage($"{Subject.DisplayName} requires Master to wear.");
-                return false;
-            }
-               
-
-            return true;
-        }
-    
-        source.SendOrangeBarMessage("You do not have the skill to wield this staff.");
-        return false;
-    }
-
-    private void EquipStaff(Aisling source, ItemTemplate template)
-    {
-        if (template.EquipmentType is not null)
-            source.Equip(template.EquipmentType.Value, Subject);
-    }
 
     public override void OnUnEquipped(Aisling aisling)
     {
@@ -82,7 +50,7 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
         }
 
         if (template.Category.Contains("Staff"))
-        {
+
             // Check for shield usage which prevents staff wielding
             if (source.Equipment.Contains((byte)EquipmentSlot.Shield) &&
                 source.Equipment.TryGetObject((byte)EquipmentSlot.Shield, out var shield))
@@ -90,45 +58,6 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
                 source.SendOrangeBarMessage($"You cannot equip a staff while using {shield.DisplayName}.");
                 return;
             }
-
-            switch (template.Class)
-            {
-                // Handle equipping a Magus Staff
-                case BaseClass.Wizard:
-                {
-                    if (!CanWieldStaff(source, "Wield Magus Staff"))
-                    {
-                        return;
-                    }
-
-                    if (template.Level > source.UserStatSheet.Level)
-                    {
-                        source.SendOrangeBarMessage($"You are too inexperienced to equip {template.Name}.");
-                        return;
-                    }
-
-                    EquipStaff(source, template);
-                    return;
-                }
-                // Handle equipping a Holy Staff
-                case BaseClass.Priest:
-                {
-                    if (!CanWieldStaff(source, "Wield Holy Staff"))
-                    {
-                        return;
-                    }
-
-                    if (template.Level > source.UserStatSheet.Level)
-                    {
-                        source.SendOrangeBarMessage($"You are too inexperienced to equip {template.Name}.");
-                        return;
-                    }
-
-                    EquipStaff(source, template);
-                    return;
-                }
-            }
-        }
 
         // Check if the item is a shield
         if (template.Category.Contains("Shield"))
@@ -166,12 +95,47 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
             return;
         }
 
-        if (template.Class.HasValue && !source.HasClass(template.Class.Value))
+        if (template.Class.HasValue)
         {
-            source.SendOrangeBarMessage($"{Subject.DisplayName} is not for {source.UserStatSheet.BaseClass}.");
+            // Define a mapping between BaseClass and their corresponding legend keys
+            var classLegendKeys = new Dictionary<BaseClass, string>
+            {
+                { BaseClass.Priest, "priestClass" },
+                { BaseClass.Wizard, "wizardClass" },
+                { BaseClass.Warrior, "warriorClass" },
+                { BaseClass.Rogue, "rogueClass" },
+                {BaseClass.Monk, "monkClass" },
+                // Add other BaseClasses as needed
+            };
 
-            return;
+            // Check if the template's class is in the mapping
+            if (classLegendKeys.TryGetValue(template.Class.Value, out var legendKey))
+            {
+                if (template.RequiresMaster)
+                {
+                    // Master equipment can only be equipped by the same base class as the item
+                    if (source.UserStatSheet.BaseClass != template.Class.Value)
+                    {
+                        source.SendOrangeBarMessage($"{Subject.DisplayName} is for Masters of {template.Class.Value}.");
+                        return;
+                    }
+                }
+                else
+                {
+                    // Non-master equipment: check if the player's current class matches or they have the legend key
+                    if (!source.HasClass(template.Class.Value) &&
+                        source.UserStatSheet.BaseClass != template.Class.Value &&
+                        !source.Legend.ContainsKey(legendKey))
+                    {
+                        source.SendOrangeBarMessage($"{Subject.DisplayName} is not for {source.UserStatSheet.BaseClass}.");
+                        return;
+                    }
+                }
+            }
         }
+
+
+
 
         if (template.AdvClass.HasValue && (template.AdvClass.Value != source.UserStatSheet.AdvClass))
         {

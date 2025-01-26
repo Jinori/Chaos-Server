@@ -12,17 +12,24 @@ public struct ManaCostAbilityComponent : IConditionalComponent
     public bool Execute(ActivationContext context, ComponentVars vars)
     {
         var options = vars.GetOptions<IManaCostComponentOptions>();
+        // Base mana cost
+        var baseCost = options.ManaCost ?? 0;
 
-        var cost = options.ManaCost ?? 0;
-        cost += MathEx.GetPercentOf<int>((int)context.Source.StatSheet.EffectiveMaximumMp, options.PctManaCost);
+        // Add percentage-based mana cost if specified
+        baseCost += MathEx.GetPercentOf<int>((int)context.Source.StatSheet.EffectiveMaximumMp, options.PctManaCost);
 
-        if (!context.Source.StatSheet.TrySubtractMp(cost))
+        // Calculate mana cost based on the number of targets hit
+        var totalCost = baseCost; // Full cost for the first target
+
+        // Check if the source has enough mana
+        if (!context.Source.StatSheet.TrySubtractMp(totalCost))
         {
             context.SourceAisling?.SendActiveMessage("You do not have enough mana.");
 
             return false;
         }
 
+        // Update the client's mana display
         context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
 
         return true;
@@ -30,7 +37,7 @@ public struct ManaCostAbilityComponent : IConditionalComponent
 
     public interface IManaCostComponentOptions
     {
-        int? ManaCost { get; init; }
-        decimal PctManaCost { get; init; }
+        int? ManaCost { get; init; } // Base mana cost
+        decimal PctManaCost { get; init; } // Percentage-based mana cost
     }
 }

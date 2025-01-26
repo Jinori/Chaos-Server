@@ -1,4 +1,5 @@
 using Chaos.Common.Utilities;
+using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
@@ -25,13 +26,9 @@ public class CleaveHealComponent : IComponent
         int targetsHit = 0;
         
         foreach (var target in targets)
-        {
             if (target.IsAlive)
-            {
                 targetsHit++;
-            }
-        }
-        
+
         var missingHealth = context.Source.StatSheet.EffectiveMaximumHp - context.Source.StatSheet.CurrentHp;
         var healAmount = MathEx.GetPercentOf<int>((int)missingHealth, options.HealPercentMissingHealth) * targetsHit;
 
@@ -41,6 +38,7 @@ public class CleaveHealComponent : IComponent
             context.SourceAisling?.SendActiveMessage($"You've been healed by {healAmount} from {targetsHit.ToWords()} targets!");
         }
 
+        context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
         context.SourceAisling?.Animate(Animate);
     }
 

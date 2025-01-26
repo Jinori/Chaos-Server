@@ -24,14 +24,19 @@ public sealed record LearningRequirementsSchema
     ///     The amount of gold required to learn this ability
     /// </summary>
     public int? RequiredGold { get; set; }
-    
-    /// <summary>
-    /// The spell to remove when learning this spell
-    /// </summary>
-    public string? SkillSpellToUpgrade { get; set; }
 
     /// <summary>
     ///     The attributes required to learn this skill
     /// </summary>
     public StatsSchema? RequiredStats { get; set; }
+
+    /// <summary>
+    ///     The spell to remove when learning this spell
+    /// </summary>
+    public string? SkillSpellToUpgrade { get; set; }
+
+    /// <summary>
+    ///     incase there's a second ability you'd like to remove.
+    /// </summary>
+    public string? SkillSpellToUpgrade2 { get; set; }
 }

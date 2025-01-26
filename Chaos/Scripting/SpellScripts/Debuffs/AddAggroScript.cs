@@ -42,7 +42,6 @@ public class AddAggroScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public int? ManaCost { get; init; }
-
     /// <inheritdoc />
     public bool MustHaveTargets { get; init; }
 

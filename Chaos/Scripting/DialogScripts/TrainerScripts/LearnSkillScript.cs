@@ -147,7 +147,22 @@ public class LearnSkillScript : DialogScriptBase
         {
             "slash", new List<string>
             {
-                "sunder"
+                "sunder",
+                "bullrush",
+                "charge"
+            }
+        },
+        {
+            "sunder", new List<string>
+            {
+                "bullrush",
+                "charge"
+            }
+        },
+        {
+            "bullrush", new List<string>
+            {
+                "charge"
             }
         },
         {
@@ -159,25 +174,27 @@ public class LearnSkillScript : DialogScriptBase
         {
             "windblade", new List<string>
             {
-                "tempestblade"
+                "tempestblade",
+                "sever"
+            }
+        },
+        {
+            "tempestblade", new List<string>
+            {
+                "sever"
             }
         },
         {
             "groundstomp", new List<string>
             {
-                "paralyzeforce"
+                "paralyzeforce",
+                "groundshattering"
             }
         },
         {
             "flurry", new List<string>
             {
                 "madsoul"
-            }
-        },
-        {
-            "bullrush", new List<string>
-            {
-                "charge"
             }
         },
 

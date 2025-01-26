@@ -86,7 +86,6 @@ public class FuryEffectScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }
-
     /// <inheritdoc />
     public bool IgnoreMagicResistance { get; init; }
     #endregion

@@ -959,7 +959,7 @@ public sealed class WorldServer : ServerBase<IChaosWorldClient>, IWorldServer<IC
 
             if (!localClient.Aisling.Inventory.TryGetObject(localArgs.SourceSlot, out var item))
                 return default;
-            
+
             if (item.Count < localArgs.Count)
                 return default;
 
@@ -1223,11 +1223,11 @@ public sealed class WorldServer : ServerBase<IChaosWorldClient>, IWorldServer<IC
 
                     break;
                 case PanelType.SpellBook:
-                    localClient.Aisling.SpellBook.TrySwap(localArgs.Slot1, localArgs.Slot2);
+                    localClient.Aisling.SpellBook.AttemptSwap(localArgs.Slot1, localArgs.Slot2);
 
                     break;
                 case PanelType.SkillBook:
-                    localClient.Aisling.SkillBook.TrySwap(localArgs.Slot1, localArgs.Slot2);
+                    localClient.Aisling.SkillBook.AttemptSwap(localArgs.Slot1, localArgs.Slot2);
 
                     break;
                 case PanelType.Equipment:
@@ -1486,7 +1486,7 @@ public sealed class WorldServer : ServerBase<IChaosWorldClient>, IWorldServer<IC
                 localClient.SendServerMessage(
                     ServerMessageType.Whisper,
                     $"{MessageColor.SpanishGray.ToPrefix()}{targetAisling.Name} is gathering and may not respond");
-            
+
             if (targetAisling.Options.SocialStatus == SocialStatus.DayDreaming)
                 localClient.SendServerMessage(
                     ServerMessageType.Whisper,
@@ -1801,12 +1801,9 @@ public sealed class WorldServer : ServerBase<IChaosWorldClient>, IWorldServer<IC
                 //if the player has an exchange open, cancel it so items are returned
                 var activeExchange = aisling.ActiveObject.TryGet<Exchange>();
                 activeExchange?.Cancel(aisling);
-                
-                           
-                if (aisling.Effects.Contains( "Mount"))
-                {
+
+                if (aisling.Effects.Contains("Mount"))
                     aisling.Effects.Terminate("Mount");
-                }
 
                 try
                 {

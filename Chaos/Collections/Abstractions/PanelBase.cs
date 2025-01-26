@@ -112,6 +112,68 @@ public abstract class PanelBase<T> : IPanel<T> where T: PanelEntityBase
         Observers.Add(observer);
     }
 
+    public virtual bool AttemptSwap(byte slot1, byte slot2)
+    {
+        if (!IsValidSlot(slot1) || !IsValidSlot(slot2))
+            return false;
+
+        if (slot1 == slot2)
+            return true;
+
+        using var @lock = Sync.EnterScope();
+
+        // Handle advanced panes (slots 35 and 71)
+        if (slot2 == 35)
+        {
+            var spellSlot = FindEmpty(36); // Look for an empty slot starting at 36
+
+            if (spellSlot == -1) // No empty slot found
+                return false;
+
+            slot2 = (byte)spellSlot;
+        }
+
+        if (slot2 == 71)
+        {
+            var spellSlot = FindEmpty(); // Look for an empty slot starting from 0
+
+            if (spellSlot == -1) // No empty slot found
+                return false;
+
+            slot2 = (byte)spellSlot;
+        }
+
+        // Retrieve objects from the slots
+        var obj1 = Objects[slot1];
+        var obj2 = Objects[slot2];
+
+        // Remove the objects from their original slots
+        if (obj1 != null)
+            BroadcastOnRemoved(slot1, obj1);
+
+        if (obj2 != null)
+            BroadcastOnRemoved(slot2, obj2);
+
+        // Swap the slots
+        if (obj1 != null)
+            obj1.Slot = slot2;
+
+        if (obj2 != null)
+            obj2.Slot = slot1;
+
+        Objects[slot1] = obj2;
+        Objects[slot2] = obj1;
+
+        // Add the objects to their new slots
+        if (obj1 != null)
+            BroadcastOnAdded(obj1);
+
+        if (obj2 != null)
+            BroadcastOnAdded(obj2);
+
+        return true;
+    }
+
     /// <inheritdoc />
     void IPanel<T>.Clear() => Array.Clear(Objects);
 
@@ -473,6 +535,17 @@ public abstract class PanelBase<T> : IPanel<T> where T: PanelEntityBase
             {
                 //ignored
             }
+    }
+
+    private int FindEmpty(int start = 0)
+    {
+        using var @lock = Sync.EnterScope();
+
+        for (var i = start; i < Length; i++)
+            if ((Objects[i] == null) && IsValidSlot((byte)i))
+                return i;
+
+        return -1; // No empty slot found
     }
 
     private bool InnerTryAdd(byte slot, T obj)

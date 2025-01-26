@@ -1,9 +1,7 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Formulae;
 using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -21,9 +19,7 @@ public class HealthBasedDamageComponent : IComponent
 
         foreach (var target in targets)
         {
-            var damage = CalculateDamage(
-                context.Source,
-                options.HealthMultiplier);
+            var damage = CalculateDamage(context.Source, options.HealthMultiplier);
 
             if (damage <= 0)
                 continue;
@@ -47,12 +43,9 @@ public class HealthBasedDamageComponent : IComponent
         context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
     }
 
-    protected virtual int CalculateDamage(
-        Creature source,
-        decimal? healthMultiplier
-    )
+    protected virtual int CalculateDamage(Creature source, decimal? healthMultiplier)
     {
-        var multiplier = healthMultiplier ?? 1;
+        var multiplier = healthMultiplier ?? 0.3m;
         var finalDamage = Convert.ToInt32(multiplier * source.StatSheet.CurrentHp);
 
         return finalDamage;

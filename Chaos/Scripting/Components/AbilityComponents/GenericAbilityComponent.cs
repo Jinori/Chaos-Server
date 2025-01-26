@@ -16,6 +16,7 @@ public struct GenericAbilityComponent<TEntity> : IConditionalComponent where TEn
                                                .Execute<AnimationAbilityComponent>()
                                                .Execute<SoundAbilityComponent>()
                                                .Execute<CooldownComponent>()
+                                               
            != null;
 
     public interface IAbilityComponentOptions : GetTargetsAbilityComponent<TEntity>.IGetTargetsComponentOptions,

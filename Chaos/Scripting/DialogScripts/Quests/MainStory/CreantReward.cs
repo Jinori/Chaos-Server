@@ -595,6 +595,12 @@ public class CreantReward : DialogScriptBase
                                 source.SkillBook.TryAddToNextSlot(skill2);
                                 var spell = SpellFactory.Create("inferno");
                                 source.SpellBook.TryAddToNextSlot(spell);
+
+                                if (source.SpellBook.ContainsByTemplateKey("wrath"))
+                                    source.SpellBook.RemoveByTemplateKey("wrath");
+
+                                if (source.SpellBook.ContainsByTemplateKey("whirlwind"))
+                                    source.SpellBook.RemoveByTemplateKey("whirlwind");
                             } else
                             {
                                 var skill1 = SkillFactory.Create("devour");
@@ -602,6 +608,9 @@ public class CreantReward : DialogScriptBase
                                 var skill2 = SkillFactory.Create("groundshattering");
                                 source.SkillBook.TryAddToNextSlot(skill2);
                             }
+
+                            if (source.SkillBook.ContainsByTemplateKey("groundstomp"))
+                                source.SkillBook.RemoveByTemplateKey("groundstomp");
 
                             source.SendOrangeBarMessage("You learned new abilities!");
                         }
@@ -694,6 +703,9 @@ public class CreantReward : DialogScriptBase
                                 source.SkillBook.TryAddToNextSlot(skill1);
                                 var spell = SpellFactory.Create("evasion");
                                 source.SpellBook.TryAddToNextSlot(spell);
+
+                                if (source.SpellBook.ContainsByTemplateKey("dodge"))
+                                    source.SpellBook.RemoveByTemplateKey("dodge");
                             } else
                             {
                                 var skill1 = SkillFactory.Create("soulfultouch");

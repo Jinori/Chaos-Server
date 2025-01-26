@@ -42,6 +42,9 @@ public class ThrowScript : SkillScriptBase
             if (aisling.IsGodModeEnabled())
                 continue;
 
+            if (!aisling.IsAlive)
+                continue;
+
             if ((context.SourceAisling != null)
                 && (aisling.Effects.Contains("Fishing")
                     || (aisling.Effects.Contains("Foraging") && !context.SourceAisling.IsGodModeEnabled())))

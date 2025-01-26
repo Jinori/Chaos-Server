@@ -34,7 +34,6 @@ public class InspectScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public int? ManaCost { get; init; }
-
     /// <inheritdoc />
     public bool MustHaveTargets { get; init; }
 

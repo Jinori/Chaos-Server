@@ -132,6 +132,7 @@ public class HealZoneScript : ConfigurableReactorTileScriptBase,
     public decimal? HealStatMultiplier { get; init; }
     public bool? MoreHealLowTargetHp { get; init; }
     public decimal? PctHpHeal { get; init; }
+    public decimal? PctMptoHpHeal { get; init; }
     public int? ManaDrain { get; init; }
     public decimal PctManaDrain { get; init; }
     public TimeSpan? EffectDurationOverride { get; init; }

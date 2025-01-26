@@ -203,6 +203,8 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     /// <inheritdoc />
     public decimal? PctHpHeal { get; init; }
 
+    public decimal? PctMptoHpHeal { get; init; }
+
     private SocialStatus PreAfkSocialStatus { get; set; }
 
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
@@ -1254,6 +1256,10 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             RemoveAndNotifyIfBothExist("ardathar", "athar");
             RemoveAndNotifyIfBothExist("ardathar", "beagathar");
             RemoveAndNotifyIfBothExist("moratharmeall", "atharmeall");
+            RemoveAndNotifyIfBothExist("ardatharmeall", "ardathar");
+            RemoveAndNotifyIfBothExist("ardatharmeall", "morathar");
+            RemoveAndNotifyIfBothExist("ardatharmeall", "beagathar");
+            RemoveAndNotifyIfBothExist("ardatharmeall", "athar");
             RemoveAndNotifyIfBothExist("ardatharmeall", "moratharmeall");
             RemoveAndNotifyIfBothExist("ardatharmeall", "atharmeall");
             RemoveAndNotifyIfBothExist("atharlamh", "beagatharlamh");
@@ -1266,6 +1272,10 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             RemoveAndNotifyIfBothExist("ardcreag", "creag");
             RemoveAndNotifyIfBothExist("ardcreag", "beagcreag");
             RemoveAndNotifyIfBothExist("morcreagmeall", "creagmeall");
+            RemoveAndNotifyIfBothExist("ardcreagmeall", "ardcreag");
+            RemoveAndNotifyIfBothExist("ardcreagmeall", "morcreag");
+            RemoveAndNotifyIfBothExist("ardcreagmeall", "beagcreag");
+            RemoveAndNotifyIfBothExist("ardcreagmeall", "creag");
             RemoveAndNotifyIfBothExist("ardcreagmeall", "creagmeall");
             RemoveAndNotifyIfBothExist("ardcreagmeall", "morcreagmeall");
             RemoveAndNotifyIfBothExist("creaglamh", "beagcreaglamh");
@@ -1278,6 +1288,10 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             RemoveAndNotifyIfBothExist("ardsal", "sal");
             RemoveAndNotifyIfBothExist("ardsal", "beagsal");
             RemoveAndNotifyIfBothExist("morsalmeall", "salmeall");
+            RemoveAndNotifyIfBothExist("ardsalmeall", "ardsal");
+            RemoveAndNotifyIfBothExist("ardsalmeall", "morsal");
+            RemoveAndNotifyIfBothExist("ardsalmeall", "beagsal");
+            RemoveAndNotifyIfBothExist("ardsalmeall", "sal");
             RemoveAndNotifyIfBothExist("ardsalmeall", "salmeall");
             RemoveAndNotifyIfBothExist("ardsalmeall", "morsalmeall");
             RemoveAndNotifyIfBothExist("sallamh", "beagsallamh");
@@ -1290,6 +1304,10 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             RemoveAndNotifyIfBothExist("ardsrad", "srad");
             RemoveAndNotifyIfBothExist("ardsrad", "beagsrad");
             RemoveAndNotifyIfBothExist("morsradmeall", "sradmeall");
+            RemoveAndNotifyIfBothExist("ardsradmeall", "ardsrad");
+            RemoveAndNotifyIfBothExist("ardsradmeall", "morsrad");
+            RemoveAndNotifyIfBothExist("ardsradmeall", "beagsrad");
+            RemoveAndNotifyIfBothExist("ardsradmeall", "srad");
             RemoveAndNotifyIfBothExist("ardsradmeall", "sradmeall");
             RemoveAndNotifyIfBothExist("ardsradmeall", "morsradmeall");
             RemoveAndNotifyIfBothExist("sradlamh", "beagsradlamh");
@@ -1343,7 +1361,12 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             // SkillBook removals with the new methods
             RemoveAndNotifyIfBothExist("energybolt", "assail");
             RemoveAndNotifyIfBothExist("blessedbolt", "assail");
+            RemoveAndNotifyIfBothExist("sunder", "slash");
+            RemoveAndNotifyIfBothExist("bullrush", "slash");
+            RemoveAndNotifyIfBothExist("bullrush", "sunder");
             RemoveAndNotifyIfBothExist("charge", "bullrush");
+            RemoveAndNotifyIfBothExist("charge", "sunder");
+            RemoveAndNotifyIfBothExist("charge", "slash");
             RemoveAndNotifyIfBothExist("cleave", "scathe");
             RemoveAndNotifyIfBothExist("devour", "scathe");
             RemoveAndNotifyIfBothExist("devour", "cleave");
@@ -1374,11 +1397,12 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             RemoveAndNotifyIfBothExist("slaughter", "wallop");
             RemoveAndNotifyIfBothExist("slaughter", "pulverize");
             RemoveAndNotifyIfBothExist("slaughter", "thrash");
-            RemoveAndNotifyIfBothExist("sunder", "slash");
             RemoveAndNotifyIfBothExist("tempestblade", "windblade");
+            RemoveAndNotifyIfBothExist("sever", "windblade");
+            RemoveAndNotifyIfBothExist("sever", "tempestblade");
             RemoveAndNotifyIfBothExist("paralyzeforce", "groundstomp");
+            RemoveAndNotifyIfBothExist("groundshattering", "groundstomp");
             RemoveAndNotifyIfBothExist("madsoul", "flurry");
-            RemoveAndNotifyIfBothExist("charge", "bullrush");
             RemoveAndNotifyIfBothExist("doublepunch", "assail");
             RemoveAndNotifyIfBothExist("doublepunch", "punch");
             RemoveAndNotifyIfBothExist("rapidpunch", "punch");

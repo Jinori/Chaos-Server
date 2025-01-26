@@ -3,7 +3,6 @@ using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -65,6 +64,8 @@ public class DevourScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }
 
+    public decimal? PctMptoHpHeal { get; init; }
+
     /// <inheritdoc />
     public int Range { get; init; }
 
@@ -81,7 +82,6 @@ public class DevourScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public byte? Sound { get; init; }
-    
 
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
