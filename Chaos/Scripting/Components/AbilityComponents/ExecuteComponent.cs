@@ -1,4 +1,3 @@
-using System.Reactive.Subjects;
 using Chaos.Common.Utilities;
 using Chaos.Extensions;
 using Chaos.Models.Data;
@@ -14,12 +13,12 @@ namespace Chaos.Scripting.Components.AbilityComponents;
 
 public class ExecuteComponent : IComponent
 {
-    
     private Animation Animate { get; } = new()
     {
         AnimationSpeed = 100,
         TargetAnimation = 97
     };
+
     /// <inheritdoc />
     public void Execute(ActivationContext context, ComponentVars vars)
     {
@@ -30,7 +29,7 @@ public class ExecuteComponent : IComponent
         var hasKilled = false;
 
         foreach (var target in targets)
-            if (!target.Script.Is<ThisIsABossScript>() && target.StatSheet.HealthPercent <= options.KillTargetAtHealthPct)
+            if (!target.Script.Is<ThisIsABossScript>() && (target.StatSheet.HealthPercent <= options.KillTargetAtHealthPct))
             {
                 options.ApplyDamageScript.ApplyDamage(
                     context.Source,
@@ -47,30 +46,29 @@ public class ExecuteComponent : IComponent
                         context.Source,
                         vars.GetSourceScript(),
                         healAmount);
-                
-                    context.SourceAisling?.SendActiveMessage($"You've been healed by {healAmount}!"); 
+
+                    context.SourceAisling?.SendActiveMessage($"You've been healed by {healAmount}!");
                 }
-                
+
                 context.SourceAisling?.Animate(Animate);
 
                 if (!target.IsAlive)
                     hasKilled = true;
-            }
-            else
+            } else
             {
                 if (!target.Script.Is<ThisIsABossScript>())
-                { 
+                {
                     var tenPercent = MathEx.GetPercentOf<int>((int)context.Source.StatSheet.EffectiveMaximumHp, options.DmgHealthPct);
+
                     options.ApplyDamageScript.ApplyDamage(
                         context.Source,
                         target,
                         vars.GetSourceScript(),
                         tenPercent);
-                }
-                else
+                } else
                 {
-                    var onepercent = MathEx.GetPercentOf<int>((int)context.Source.StatSheet.EffectiveMaximumHp,
-                        options.DmgHealthPct);
+                    var onepercent = MathEx.GetPercentOf<int>((int)context.Source.StatSheet.EffectiveMaximumHp, options.DmgHealthPct);
+
                     options.ApplyDamageScript.ApplyDamage(
                         context.Source,
                         target,
@@ -80,7 +78,7 @@ public class ExecuteComponent : IComponent
             }
 
         if (hasKilled)
-            subject.SetTemporaryCooldown(subject.Cooldown!.Value / 2); 
+            subject.SetTemporaryCooldown(subject.Cooldown!.Value / 2);
     }
 
     public interface IExecuteComponentOptions

@@ -84,7 +84,7 @@ public class PietVillagerScript : MerchantScriptBase
     {
         DialogFactory = dialogFactory;
         WalkTimer = new IntervalTimer(TimeSpan.FromMilliseconds(600), false);
-        ActionTimer = new IntervalTimer(TimeSpan.FromSeconds(10), false);
+        ActionTimer = new IntervalTimer(TimeSpan.FromSeconds(10));
         Subject.PietVillagerState = PietVillagerState.Idle;
 
         DialogueTimer = new RandomizedIntervalTimer(
@@ -183,6 +183,8 @@ public class PietVillagerScript : MerchantScriptBase
 
         var aislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject)
                               .Where(x => x.Trackers.Enums.HasValue(WerewolfOfPiet.None) || !hasStage)
+                              .ThatAreObservedBy(Subject)
+                              .ThatAreVisibleTo(Subject)
                               .ToList();
 
         foreach (var aisling in aislings)
@@ -396,7 +398,10 @@ public class PietVillagerScript : MerchantScriptBase
     {
         if (!HasPickedAnAisling)
         {
-            var aislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject).ToList();
+            var aislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject)
+                                  .ThatAreObservedBy(Subject)
+                                  .ThatAreVisibleTo(Subject)
+                                  .ToList();
 
             if (aislings.Count > 0)
             {
@@ -436,13 +441,13 @@ public class PietVillagerScript : MerchantScriptBase
 
     private static readonly List<KeyValuePair<PietVillagerState, decimal>> StateData =
     [
-        new KeyValuePair<PietVillagerState, decimal>(PietVillagerState.Wandering, 40),
-        new KeyValuePair<PietVillagerState, decimal>(PietVillagerState.SayRandomMessage, 20),
-        new KeyValuePair<PietVillagerState, decimal>(PietVillagerState.WalkingToRestaurant, 10),
-        new KeyValuePair<PietVillagerState, decimal>(PietVillagerState.WalkingToTailor, 10),
-        new KeyValuePair<PietVillagerState, decimal>(PietVillagerState.WalkingToArmory, 10),
-        new KeyValuePair<PietVillagerState, decimal>(PietVillagerState.FollowingPlayer, 5),
-        new KeyValuePair<PietVillagerState, decimal>(PietVillagerState.CalloutPasserby, 5),
+        new(PietVillagerState.Wandering, 40),
+        new(PietVillagerState.SayRandomMessage, 20),
+        new(PietVillagerState.WalkingToRestaurant, 10),
+        new(PietVillagerState.WalkingToTailor, 10),
+        new(PietVillagerState.WalkingToArmory, 10),
+        new(PietVillagerState.FollowingPlayer, 5),
+        new(PietVillagerState.CalloutPasserby, 5),
     ];
 
     private void HandleIdleState()
@@ -542,7 +547,7 @@ public class PietVillagerScript : MerchantScriptBase
     {
         if (!HasPickedAnAisling)
         {
-            var aislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject).ToList();
+            var aislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject).ThatAreObservedBy(Subject).ThatAreVisibleTo(Subject).ToList();
 
             if (aislings.Count > 0)
             {

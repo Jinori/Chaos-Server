@@ -53,6 +53,9 @@ public sealed class SuainEffect : ContinuousAnimationEffectBase
         if (target.IsGodModeEnabled())
             return false;
 
+        if (source is Aisling && target is Aisling)
+            Duration = TimeSpan.FromSeconds(4);
+
         if (target.IsSuained())
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is already frozen.");

@@ -66,12 +66,12 @@ public class BeagSalSplashEffect : ContinuousAnimationEffectBase
 
         // Get the points around the subject where the effect is applied
         var options = new AoeShapeOptions
-            {
-                Source = new Point(Subject.X, Subject.Y),
-                Range = 1
-            };
+        {
+            Source = new Point(Subject.X, Subject.Y),
+            Range = 1
+        };
 
-            var points = AoeShape.AllAround.ResolvePoints(options);
+        var points = AoeShape.AllAround.ResolvePoints(options);
 
         // Retrieve the targets at those points, filtering for hostiles
         var targets = Subject.MapInstance
@@ -83,6 +83,9 @@ public class BeagSalSplashEffect : ContinuousAnimationEffectBase
         // Apply damage to each valid target
         foreach (var target in targets)
         {
+            if (target.StatSheet.DefenseElement == Element.Water)
+                continue;
+
             ApplyDamageScript.ApplyDamage(
                 SourceOfEffect,
                 target,
@@ -104,6 +107,9 @@ public class BeagSalSplashEffect : ContinuousAnimationEffectBase
         SourceOfEffect = source;
 
         if (target.IsFriendlyTo(source) || target.IsGodModeEnabled() || target.Effects.Contains("Invulnerability"))
+            return false;
+
+        if (target.StatSheet.DefenseElement == Element.Water)
             return false;
 
         var splashEffects = new[]

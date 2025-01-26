@@ -16,6 +16,7 @@ using Chaos.Scripting.MerchantScripts;
 using Chaos.Scripting.MerchantScripts.Abstractions;
 using Chaos.Scripting.MerchantScripts.Mainstory.Summoner;
 using Chaos.Scripting.MerchantScripts.Piet;
+using Chaos.Scripting.MerchantScripts.Tagor;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Services.Other.Abstractions;
 using Chaos.Time;
@@ -34,21 +35,26 @@ public sealed class Merchant : Creature,
     public bool CurrentlyHosting21Game { get; set; }
 
     public bool CurrentlyHostingMass { get; set; }
-    
+
     public bool CurrentlyShootingFireworks { get; set; }
 
-    public VillagerScript.VillagerState VillagerState { get; set; }
-    
+    public MasterWerewolfMerchantScript.MasterWerewolfState MasterWerewolfState { get; set; }
+
     public PietVillagerScript.PietVillagerState PietVillagerState { get; set; }
 
     public PietWerewolfMerchantScript.PietWerewolfState PietWerewolfState { get; set; }
     public PietWerewolfMerchant2Script.PietWerewolfState2 PietWerewolfState2 { get; set; }
-    
-    public MasterWerewolfMerchantScript.MasterWerewolfState MasterWerewolfState { get; set; }
-    
+
     public SummonerMerchantScript.SummonerState SummonerState { get; set; }
-    
+
     public Summoner2MerchantScript.SummonerState2 SummonerState2 { get; set; }
+
+    public TagorPetScript.TagorPetState TagorPetState { get; set; }
+
+    public TagorVillagerScript.TagorVillagerState TagorVillagerState { get; set; }
+
+    public VillagerScript.VillagerState VillagerState { get; set; }
+
     /// <inheritdoc />
     public ICollection<Item> ItemsForSale { get; }
 
@@ -180,7 +186,6 @@ public sealed class Merchant : Creature,
 
     public override void OnGoldDroppedOn(Aisling source, int amount) => Script.OnGoldDroppedOn(source, amount);
 
-    /// <inheritdoc />
     public bool TryGetSkill(string skillName, [MaybeNullWhen(false)] out Skill skill)
     {
         skill = SkillsToTeach.FirstOrDefault(skill => skill.Template.Name.EqualsI(skillName));
@@ -188,7 +193,6 @@ public sealed class Merchant : Creature,
         return skill != null;
     }
 
-    /// <inheritdoc />
     public bool TryGetSpell(string spellName, [MaybeNullWhen(false)] out Spell spell)
     {
         spell = SpellsToTeach.FirstOrDefault(spell => spell.Template.Name.EqualsI(spellName));

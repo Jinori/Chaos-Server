@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
@@ -16,6 +15,7 @@ public sealed class DallEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(25);
+
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()
     {
@@ -23,12 +23,16 @@ public sealed class DallEffect : ContinuousAnimationEffectBase
         TargetAnimation = 391,
         Priority = 80
     };
+
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromSeconds(1), false);
+
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000), false);
+
     /// <inheritdoc />
     public override byte Icon => 2;
+
     /// <inheritdoc />
     public override string Name => "Blind";
 
@@ -51,16 +55,22 @@ public sealed class DallEffect : ContinuousAnimationEffectBase
     {
         if (target.Script.Is<ThisIsABossScript>())
             return false;
-        
+
         if (target.IsGodModeEnabled())
             return false;
-        
+
+        if (target.StatSheet.DefenseElement == Element.Holy)
+            return false;
+
         if (target.Effects.Contains("Blind"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "That target is already blinded.");
 
             return false;
         }
+
+        if (source is Aisling && target is Aisling)
+            Duration = TimeSpan.FromSeconds(4);
 
         return true;
     }

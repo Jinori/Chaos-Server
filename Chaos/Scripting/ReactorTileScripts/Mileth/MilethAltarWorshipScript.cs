@@ -5,6 +5,7 @@ using Chaos.Extensions.Geometry;
 using Chaos.Models.Legend;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
+using Chaos.Networking.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
@@ -13,12 +14,15 @@ using Chaos.Time;
 
 namespace Chaos.Scripting.ReactorTileScripts.Mileth;
 
-public class MilethAltarWorshipScript(ReactorTile subject, IItemFactory itemFactory, IReactorTileFactory reactorTileFactory)
+public class MilethAltarWorshipScript(ReactorTile subject, IItemFactory itemFactory, IReactorTileFactory reactorTileFactory,
+    IClientRegistry<IChaosWorldClient> clientRegistry)
     : ReactorTileScriptBase(subject)
 {
     private readonly IReactorTileFactory ReactorTileFactory = reactorTileFactory;
     private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
 
+    private readonly IClientRegistry<IChaosWorldClient> ClientRegistry = clientRegistry;
+    
     public override void OnItemDroppedOn(Creature source, GroundItem groundItem)
     {
         if (source is not Aisling aisling)
@@ -34,7 +38,7 @@ public class MilethAltarWorshipScript(ReactorTile subject, IItemFactory itemFact
                 aisling.GiveItemOrSendToBank(item);
                 aisling.MapInstance.RemoveEntity(groundItem);
                 aisling.SendOrangeBarMessage("A rift in the realm here has already been made.");
-
+                
                 return;
             }
             
@@ -59,7 +63,9 @@ public class MilethAltarWorshipScript(ReactorTile subject, IItemFactory itemFact
             var cowPortal = ReactorTileFactory.Create("cowportal", aisling.MapInstance, portalpoint);
             aisling.MapInstance.SimpleAdd(cowPortal);
             aisling.MapInstance.RemoveEntity(groundItem);
-            aisling.SendOrangeBarMessage("The ground shakes, a rift in space opens. Looks dangerous...");
+            
+            foreach (var allaisling in ClientRegistry)
+                allaisling.SendServerMessage(ServerMessageType.OrangeBar2, "The ground shakes, a rift in space opens in Mileth.");
 
             return;
         }

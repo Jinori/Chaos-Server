@@ -4,7 +4,6 @@ using Chaos.Extensions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -30,14 +29,11 @@ public struct AssassinStrikeComponent : IComponent
                 options.DamageStatMultiplier);
 
             if (target is Monster monster)
-            {
-                if (target.Name.Contains("Dummy") || monster.Script.Is<ThisIsABossScript>())
-                    continue;
 
                 // 20% chance to kill the target instantly
                 if (IntegerRandomizer.RollChance(15))
-                    damage = target.StatSheet.CurrentHp;
-            }
+                    if (!target.Name.Contains("Dummy") || !target.Script.Is<ThisIsABossScript>())
+                        damage = target.StatSheet.CurrentHp;
 
             if (damage > 0)
                 options.ApplyDamageScript.ApplyDamage(

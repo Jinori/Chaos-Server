@@ -15,7 +15,7 @@ public class cowPortal : ReactorTileScriptBase
 {
     private readonly ISimpleCache SimpleCache;
     protected IIntervalTimer AnimationTimer { get; set; }
-    
+
     protected IIntervalTimer? Timer { get; set; }
 
     protected Animation PortalAnimation { get; } = new()
@@ -39,7 +39,7 @@ public class cowPortal : ReactorTileScriptBase
         if (source is not Aisling aisling)
             return;
 
-        if (!aisling.Trackers.Enums.HasValue(ClassStatBracket.Grandmaster))
+        if (!aisling.Trackers.Enums.HasValue(ClassStatBracket.Grandmaster) && !aisling.IsAdmin)
         {
             aisling.SendOrangeBarMessage("This is probably a bad idea. (Requires Grandmaster to enter)");
 
@@ -65,18 +65,16 @@ public class cowPortal : ReactorTileScriptBase
 
         if (AnimationTimer.IntervalElapsed)
         {
-           
-            
             var aislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 12);
 
             foreach (var aisling in aislings)
                 aisling.MapInstance.ShowAnimation(PortalAnimation.GetPointAnimation(new Point(Subject.X, Subject.Y)));
         }
-        
+
         if (Timer != null)
         {
             Timer.Update(delta);
-         
+
             if (Timer.IntervalElapsed)
                 Map.RemoveEntity(Subject);
         }

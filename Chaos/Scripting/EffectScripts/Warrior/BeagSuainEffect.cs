@@ -2,6 +2,7 @@ using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
 using Chaos.Models.Data;
+using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.EffectComponents;
 using Chaos.Scripting.Components.Execution;
@@ -55,6 +56,16 @@ public sealed class BeagSuainEffect : ContinuousAnimationEffectBase, Hierarchica
     {
         if (target.Script.Is<ThisIsABossScript>())
             return false;
+
+        if (target.StatSheet.DefenseElement == Element.Earth)
+            return false;
+
+        if (target.Effects.Contains("Beag Suain"))
+        {
+            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "That target is already stunned.");
+
+            return false;
+        }
 
         if (target.IsGodModeEnabled())
             return false;

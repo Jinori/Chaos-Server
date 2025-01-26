@@ -37,7 +37,7 @@ public class BurningGroundScript : ReactorTileScriptBase
 
         Animation = new Animation
         {
-            TargetAnimation = 994,
+            TargetAnimation = 731,
             AnimationSpeed = 250
         };
     }

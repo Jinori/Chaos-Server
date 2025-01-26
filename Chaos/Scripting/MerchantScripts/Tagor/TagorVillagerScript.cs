@@ -12,11 +12,11 @@ using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
-namespace Chaos.Scripting.MerchantScripts;
+namespace Chaos.Scripting.MerchantScripts.Tagor;
 
-public class VillagerScript : MerchantScriptBase
+public class TagorVillagerScript : MerchantScriptBase
 {
-    public enum VillagerState
+    public enum TagorVillagerState
     {
         Idle,
         Wandering,
@@ -33,59 +33,97 @@ public class VillagerScript : MerchantScriptBase
         Eating
     }
 
-    private IPathOptions Options => PathOptions.Default with
-    {
-        LimitRadius = null,
-        IgnoreBlockingReactors = true
-    };
-
-
+    private static readonly List<KeyValuePair<TagorVillagerState, decimal>> StateData =
+    [
+        new(TagorVillagerState.Wandering, 40),
+        new(TagorVillagerState.SayRandomMessage, 20),
+        new(TagorVillagerState.WalkingToRestaurant, 10),
+        new(TagorVillagerState.WalkingToTailor, 10),
+        new(TagorVillagerState.WalkingToArmory, 10),
+        new(TagorVillagerState.FollowingPlayer, 5),
+        new(TagorVillagerState.CalloutPasserby, 5)
+    ];
 
     private readonly IIntervalTimer ActionTimer;
+    private readonly IDialogFactory DialogFactory;
     private readonly IIntervalTimer DialogueTimer;
     private readonly IIntervalTimer EatingTimer;
-    private DateTime LastChant;
+
+    #region TrackedLegendMarks
+    private readonly Dictionary<string, string> LegendMarkResponses = new()
+    {
+        {
+            "Arena Winner", "Arena sounds like one heck of a time."
+        },
+        {
+            "Arena Participant", "Guess we all can't be winners."
+        },
+        {
+            "Loved by Mileth Mundanes", "Our mundanes could use your help!"
+        },
+        {
+            "Loved by Abel Mundanes", "Abel is so beautiful."
+        },
+        {
+            "Inspired Fisk to Reach for the Stars", "Fisk needs all the help he can get."
+        },
+        {
+            "Helped the Eingren Manor's Plumber", "Those ghost didn't really see you coming."
+        },
+        {
+            "Cured the Sick Child of Loures", "That's really cool of you to help the Princess."
+        },
+        {
+            "Successfully conquered their Nightmares", "I think my nightmares defeated me."
+        }
+    };
+    #endregion TrackedLegendMarks
+
     private readonly TimeSpan MaxFollowDuration = TimeSpan.FromSeconds(50);
-    public readonly Location MilethArmoryDoorInsidePoint = new("mileth_armor_shop", 11, 8);
-    public readonly Location MilethArmoryDoorPoint = new("mileth", 10, 31);
-    public readonly Location MilethArmoryPoint = new("mileth_armor_shop", 4, 8);
-
-    public readonly Location MilethTailorDoorInsidePoint = new("mileth_tailor", 6, 14);
-    public readonly Location MilethTailorDoorPoint = new("mileth", 34, 27);
-    public readonly Location MilethTailorPoint = new("mileth_tailor", 6, 10);
-
-
-    public readonly Location MilethRestaurantDoorInsidePoint = new("mileth_restaurant", 8, 14);
-    public readonly Location MilethRestaurantDoorPoint = new("mileth", 34, 11);
-    public readonly Location MilethRestaurantPoint = new("mileth_restaurant", 8, 7);
 
     private readonly Location Spawnpoint;
-    private readonly ISpellFactory SpellFactory;
+
+    public readonly Location TagorArmoryDoorInsidePoint = new("tagor_forge", 6, 14);
+    public readonly Location TagorArmoryDoorPoint = new("tagor", 28, 76);
+    public readonly Location TagorArmoryPoint = new("tagor_forge", 6, 6);
+
+    public readonly Location TagorRestaurantDoorInsidePoint = new("tagor_restaurant", 8, 14);
+    public readonly Location TagorRestaurantDoorPoint = new("tagor", 84, 14);
+    public readonly Location TagorRestaurantPoint = new("tagor_restaurant", 8, 8);
+
+    public readonly Location TagorStorageDoorInsidePoint = new("tagor_storage", 7, 13);
+    public readonly Location TagorStorageDoorPoint = new("tagor", 11, 32);
+    public readonly Location TagorStoragePoint = new("tagor_storage", 6, 8);
     private readonly IIntervalTimer WalkTimer;
     private DateTime FollowUntil;
     public bool HasAskedForItem;
     public bool HasHadConversation;
     public bool HasMerchantResponded;
-    public bool HasMerchantResponded2;
-    public bool HasMerchantResponded3;
-    public bool HasSaidGoodbye;
     public bool HasPickedAnAisling;
     public bool HasReceivedItem;
     public bool HasSaidGreeting;
     private string? ItemRequested;
+    private DateTime LastChant;
     private Aisling? RandomAisling;
 
+    private IPathOptions Options
+        => PathOptions.Default with
+        {
+            LimitRadius = null,
+            IgnoreBlockingReactors = true
+        };
+
     /// <inheritdoc />
-    public VillagerScript(Merchant subject, ISpellFactory spellFactory)
+    public TagorVillagerScript(Merchant subject, IDialogFactory dialogFactory)
         : base(subject)
     {
-        SpellFactory = spellFactory;
+        DialogFactory = dialogFactory;
         WalkTimer = new IntervalTimer(TimeSpan.FromMilliseconds(600), false);
-        ActionTimer = new IntervalTimer(TimeSpan.FromSeconds(10), false);
-        Subject.VillagerState = VillagerState.Idle;
+        ActionTimer = new IntervalTimer(TimeSpan.FromSeconds(10));
+        Subject.TagorVillagerState = TagorVillagerState.Idle;
 
         DialogueTimer = new RandomizedIntervalTimer(
-            TimeSpan.FromSeconds(2.5),
+            TimeSpan.FromSeconds(5),
             50,
             RandomizationType.Positive,
             false);
@@ -97,28 +135,219 @@ public class VillagerScript : MerchantScriptBase
 
     private void AttemptToOpenDoor(IPoint doorPoint)
     {
-        var door = Subject.MapInstance.GetEntitiesAtPoints<Door>(doorPoint).FirstOrDefault();
+        var door = Subject.MapInstance
+                          .GetEntitiesAtPoints<Door>(doorPoint)
+                          .FirstOrDefault();
 
         if (door is { Closed: true })
             door.OnClicked(Subject);
     }
 
-    private void CastBuff()
+    private void ConductDialogueWithMerchant(string merchant)
     {
-        var aislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 8)
-            .Where(x => x.Effects.Contains("ardaite")).ToList();
-
-        if (aislings.Count > 0)
+        switch (merchant)
         {
-            var spell = SpellFactory.Create("ardnaomhaite");
+            case "restaurant":
+            {
+                var npc = Subject.MapInstance
+                                 .GetEntitiesWithinRange<Merchant>(Subject)
+                                 .FirstOrDefault(x => x.Id != Subject.Id);
 
-            foreach (var player in aislings)
-                Subject.TryUseSpell(spell, player.Id);
+                if (!HasSaidGreeting)
+                {
+                    var greeting = string.Format(PickRandom(Greetings), npc?.Name);
+                    Subject.Say(greeting);
+                    HasSaidGreeting = true;
+                    DialogueTimer.Reset();
+                } else if (!HasAskedForItem)
+                {
+                    var foodRequest = PickRandom(FoodRequests);
+                    Subject.Say(foodRequest);
+                    HasAskedForItem = true;
+                    DialogueTimer.Reset();
+                } else if (!HasMerchantResponded)
+                {
+                    var response = PickRandom(ServingFoodResponses);
+                    npc?.Say(response);
+                    HasMerchantResponded = true;
+                    Subject.TagorVillagerState = TagorVillagerState.Eating;
+                    EatingTimer.Reset();
+                    LastChant = DateTime.Now;
+                }
+
+                break;
+            }
+
+            case "tailor":
+            {
+                var npc = Subject.MapInstance
+                                 .GetEntitiesWithinRange<Merchant>(Subject)
+                                 .FirstOrDefault(x => x.Id != Subject.Id);
+
+                if (!HasSaidGreeting)
+                {
+                    var greeting = string.Format(PickRandom(Greetings), npc?.Name);
+                    Subject.Say(greeting);
+                    HasSaidGreeting = true;
+                    DialogueTimer.Reset();
+                } else if (!HasAskedForItem)
+                {
+                    var color = GetRandomDisplayColor();
+                    var purchaseRequest = string.Format(PickRandom(AskAboutDye), color);
+                    ItemRequested = color.ToString();
+                    Subject.Say(purchaseRequest);
+                    HasAskedForItem = true;
+                    DialogueTimer.Reset();
+                } else if (!HasMerchantResponded)
+                {
+                    var purchaseRequest = string.Format(PickRandom(TailorResponses), ItemRequested);
+                    npc?.Say(purchaseRequest);
+                    HasMerchantResponded = true;
+                    DialogueTimer.Reset();
+                } else if (!HasReceivedItem)
+                {
+                    var response = PickRandom(ItemReceivedResponses);
+                    Subject.Say(response);
+                    HasReceivedItem = true;
+                    HasHadConversation = true;
+                }
+
+                break;
+            }
+            case "armorer":
+            {
+                var npc = Subject.MapInstance
+                                 .GetEntitiesWithinRange<Merchant>(Subject)
+                                 .FirstOrDefault(x => x.Id != Subject.Id);
+
+                if (!HasSaidGreeting)
+                {
+                    var greeting = string.Format(PickRandom(Greetings), npc?.Name);
+                    Subject.Say(greeting);
+                    HasSaidGreeting = true;
+                    DialogueTimer.Reset();
+                } else if (!HasAskedForItem)
+                {
+                    var randomItem = npc?.ItemsForSale.PickRandom();
+                    var purchaseRequest = string.Format(PickRandom(PurchaseRequests), randomItem?.DisplayName);
+                    ItemRequested = randomItem?.DisplayName;
+                    Subject.Say(purchaseRequest);
+                    HasAskedForItem = true;
+                    DialogueTimer.Reset();
+                } else if (!HasMerchantResponded)
+                {
+                    var purchaseRequest = string.Format(PickRandom(MerchantResponses), ItemRequested);
+                    npc?.Say(purchaseRequest);
+                    HasMerchantResponded = true;
+                    DialogueTimer.Reset();
+                } else if (!HasReceivedItem)
+                {
+                    var response = PickRandom(ItemReceivedResponses);
+                    Subject.Say(response);
+                    HasReceivedItem = true;
+                    HasHadConversation = true;
+                }
+
+                break;
+            }
+        }
+    }
+
+    private void DisplayEatingMessage()
+    {
+        var chant = EatingActions.PickRandom();
+        Subject.Chant($"*{chant}*");
+    }
+
+    public static DisplayColor GetRandomDisplayColor()
+    {
+        var value = Enum.GetValues<DisplayColor>()
+                        .ToList();
+        var random = value.PickRandom();
+
+        return random;
+    }
+
+    private string GetRandomMessage()
+    {
+        var random = VillagerMessages.PickRandom();
+
+        return random;
+    }
+
+    private void HandleApproachToArmory(TimeSpan delta)
+    {
+        if (ShouldWalkTo(TagorArmoryDoorPoint))
+            WalkTowards(TagorArmoryDoorPoint, delta);
+        else if (ShouldWalkTo(TagorArmoryPoint))
+            WalkTowards(TagorArmoryPoint, delta);
+    }
+
+    private void HandleApproachToRestaurant(TimeSpan delta)
+    {
+        if (ShouldWalkTo(TagorRestaurantDoorPoint))
+            WalkTowards(TagorRestaurantDoorPoint, delta);
+        else if (ShouldWalkTo(TagorRestaurantPoint))
+            WalkTowards(TagorRestaurantPoint, delta);
+    }
+
+    private void HandleApproachToTailor(TimeSpan delta)
+    {
+        if (ShouldWalkTo(TagorStorageDoorPoint))
+            WalkTowards(TagorStorageDoorPoint, delta);
+        else if (ShouldWalkTo(TagorStoragePoint))
+            WalkTowards(TagorStoragePoint, delta);
+    }
+
+    private void HandleCalloutPasserby(TimeSpan delta)
+    {
+        if (!HasPickedAnAisling)
+        {
+            var aislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject).ThatAreObservedBy(Subject).ThatAreVisibleTo(Subject).ToList();
+
+
+            if (aislings.Count > 0)
+            {
+                RandomAisling = aislings.PickRandom();
+                HasPickedAnAisling = true;
+            }
         }
 
-        Subject.Say("That should help a bit.");
+        if (HasPickedAnAisling && !HasHadConversation)
+        {
+            var legendmark = RandomAisling?.Legend.GetRandomMark();
+
+            if (legendmark != null)
+            {
+                if (!LegendMarkResponses.TryGetValue(legendmark, out var response))
+                    HasHadConversation = true;
+
+                if (response != null)
+                    Subject.Say(response);
+
+                HasHadConversation = true;
+            }
+        } else
+        {
+            if (ShouldWalkToSpawnPoint())
+                WalkTowards(Spawnpoint, delta);
+            else
+                ResetConversationState();
+        }
     }
-    
+
+    private void HandleConversationWithMerchant(TimeSpan delta)
+    {
+        if (IsCloseTo(TagorArmoryPoint))
+            UpdateDialogue(delta, "armorer");
+
+        if (IsCloseTo(TagorStoragePoint))
+            UpdateDialogue(delta, "tailor");
+
+        if (IsCloseTo(TagorRestaurantPoint))
+            UpdateDialogue(delta, "restaurant");
+    }
+
     private void HandleEatingState()
     {
         if ((DateTime.Now - LastChant).TotalSeconds >= 2)
@@ -129,8 +358,9 @@ public class VillagerScript : MerchantScriptBase
 
         if (EatingTimer.IntervalElapsed)
         {
-            var npc = Subject.MapInstance.GetEntitiesWithinRange<Merchant>(Subject)
-                .FirstOrDefault(x => x.Id != Subject.Id);
+            var npc = Subject.MapInstance
+                             .GetEntitiesWithinRange<Merchant>(Subject)
+                             .FirstOrDefault(x => x.Id != Subject.Id);
 
             var thanks = string.Format(PickRandom(CustomerThanksCook), npc?.Name);
             Subject.Say(thanks);
@@ -140,194 +370,22 @@ public class VillagerScript : MerchantScriptBase
             DialogueTimer.Reset();
 
             EatingTimer.Reset();
-            Subject.VillagerState = VillagerState.WalkingToRestaurant;
+            Subject.TagorVillagerState = TagorVillagerState.WalkingToRestaurant;
         }
-    }
-
-    private void DisplayEatingMessage()
-    {
-        var chant = EatingActions.PickRandom();
-        Subject.Chant($"*{chant}*");
-    }
-    
-    private void ConductDialogueWithMerchant(string merchant)
-    {
-        switch (merchant)
-        {
-            case "restaurant":
-            {
-                var npc = Subject.MapInstance.GetEntitiesWithinRange<Merchant>(Subject)
-                    .FirstOrDefault(x => x.Id != Subject.Id);
-                
-                    if (!HasSaidGreeting)
-                    {
-                        var greeting = string.Format(PickRandom(Greetings), npc?.Name);
-                        Subject.Say(greeting);
-                        HasSaidGreeting = true;
-                        DialogueTimer.Reset();
-                    }
-                    else if (!HasAskedForItem)
-                    {
-                        var foodRequest = PickRandom(FoodRequests);
-                        Subject.Say(foodRequest);
-                        HasAskedForItem = true;
-                        DialogueTimer.Reset();
-                    }
-                    else if (!HasMerchantResponded)
-                    {
-                        var response = PickRandom(ServingFoodResponses);
-                        npc?.Say(response);
-                        HasMerchantResponded = true;
-                        Subject.VillagerState = VillagerState.Eating;
-                        EatingTimer.Reset();
-                        LastChant = DateTime.Now;
-                    }
-                
-                break;
-            }
-
-
-            case "tailor":
-            {
-                var npc = Subject.MapInstance.GetEntitiesWithinRange<Merchant>(Subject)
-                    .FirstOrDefault(x => x.Id != Subject.Id);
-                
-                    if (!HasSaidGreeting)
-                    {
-                        var greeting = string.Format(PickRandom(Greetings), npc?.Name);
-                        Subject.Say(greeting);
-                        HasSaidGreeting = true;
-                        DialogueTimer.Reset();
-                    }
-                    else if (!HasAskedForItem)
-                    {
-                        var color = GetRandomDisplayColor();
-                        var purchaseRequest = string.Format(PickRandom(AskAboutDye), color);
-                        ItemRequested = color.ToString();
-                        Subject.Say(purchaseRequest);
-                        HasAskedForItem = true;
-                        DialogueTimer.Reset();
-                    }
-                    else if (!HasMerchantResponded)
-                    {
-                        var purchaseRequest = string.Format(PickRandom(TailorResponses), ItemRequested);
-                        npc?.Say(purchaseRequest);
-                        HasMerchantResponded = true;
-                        DialogueTimer.Reset();
-                    }
-                    else if (!HasReceivedItem)
-                    {
-                        var response = PickRandom(ItemReceivedResponses);
-                        Subject.Say(response);
-                        HasReceivedItem = true;
-                        HasHadConversation = true;
-                    }
-
-                break;
-            }
-            case "armorer":
-            {
-                var npc = Subject.MapInstance.GetEntitiesWithinRange<Merchant>(Subject)
-                    .FirstOrDefault(x => x.Id != Subject.Id);
-                
-                    if (!HasSaidGreeting)
-                    {
-                        var greeting = string.Format(PickRandom(Greetings), npc?.Name);
-                        Subject.Say(greeting);
-                        HasSaidGreeting = true;
-                        DialogueTimer.Reset();
-                    }
-                    else if (!HasAskedForItem)
-                    {
-                        var randomItem = npc?.ItemsForSale.PickRandom();
-                        var purchaseRequest = string.Format(PickRandom(PurchaseRequests), randomItem?.DisplayName);
-                        ItemRequested = randomItem?.DisplayName;
-                        Subject.Say(purchaseRequest);
-                        HasAskedForItem = true;
-                        DialogueTimer.Reset();
-                    }
-                    else if (!HasMerchantResponded)
-                    {
-                        var purchaseRequest = string.Format(PickRandom(MerchantResponses), ItemRequested);
-                        npc?.Say(purchaseRequest);
-                        HasMerchantResponded = true;
-                        DialogueTimer.Reset();
-                    }
-                    else if (!HasReceivedItem)
-                    {
-                        var response = PickRandom(ItemReceivedResponses);
-                        Subject.Say(response);
-                        HasReceivedItem = true;
-                        HasHadConversation = true;
-                    }   
-                break;
-            }
-        }
-    }
-
-    public static DisplayColor GetRandomDisplayColor()
-    {
-        var value = Enum.GetValues<DisplayColor>().ToList();
-        var random = value.PickRandom();
-
-        return random;
-    }
-
-
-
-    private string GetRandomMessage()
-    {
-        var random = VillagerMessages.PickRandom();
-        return random;
-    }
-
-    private void HandleApproachToArmory(TimeSpan delta)
-    {
-            if (ShouldWalkTo(MilethArmoryDoorPoint))
-                WalkTowards(MilethArmoryDoorPoint, delta);
-            else if (ShouldWalkTo(MilethArmoryPoint))
-                WalkTowards(MilethArmoryPoint, delta);
-    }
-
-    private void HandleApproachToTailor(TimeSpan delta)
-    {
-            if (ShouldWalkTo(MilethTailorDoorPoint))
-                WalkTowards(MilethTailorDoorPoint, delta);
-            else if (ShouldWalkTo(MilethTailorPoint))
-                WalkTowards(MilethTailorPoint, delta);
-    }
-
-    private void HandleApproachToRestaurant(TimeSpan delta)
-    {
-            if (ShouldWalkTo(MilethRestaurantDoorPoint))
-                WalkTowards(MilethRestaurantDoorPoint, delta);
-            else if (ShouldWalkTo(MilethRestaurantPoint))
-                WalkTowards(MilethRestaurantPoint, delta);
-    }
-
-    private void HandleConversationWithMerchant(TimeSpan delta)
-    {
-            if (IsCloseTo(MilethArmoryPoint, 2))
-                UpdateDialogue(delta, "armorer");
-
-            if (IsCloseTo(MilethTailorPoint, 2))
-                UpdateDialogue(delta, "tailor");
-
-            if (IsCloseTo(MilethRestaurantPoint, 2))
-                UpdateDialogue(delta, "restaurant");
     }
 
     private void HandleFollowingPlayer(TimeSpan delta)
     {
         if (!HasPickedAnAisling)
         {
-            var aislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject).ThatAreObservedBy(Subject).ThatAreVisibleTo(Subject).ToList();
+            var aislings = Subject.MapInstance
+                                  .GetEntitiesWithinRange<Aisling>(Subject)
+                                  .ToList();
 
             if (aislings.Count > 0)
             {
                 RandomAisling = aislings.Count == 1 ? aislings[0] : aislings.PickRandom();
-                FollowUntil =
-                    DateTime.Now.AddSeconds(IntegerRandomizer.RollSingle((int)MaxFollowDuration.TotalSeconds));
+                FollowUntil = DateTime.Now.AddSeconds(IntegerRandomizer.RollSingle((int)MaxFollowDuration.TotalSeconds));
                 HasPickedAnAisling = true;
             }
         }
@@ -349,8 +407,7 @@ public class VillagerScript : MerchantScriptBase
                         ResetConversationState();
                 }
             }
-        }
-        else
+        } else
         {
             if (ShouldWalkToSpawnPoint())
                 WalkTowards(Spawnpoint, delta);
@@ -359,25 +416,13 @@ public class VillagerScript : MerchantScriptBase
         }
     }
 
-    private static readonly List<KeyValuePair<VillagerState, decimal>> StateData =
-    [
-        new KeyValuePair<VillagerState, decimal>(VillagerState.Wandering, 40),
-        new KeyValuePair<VillagerState, decimal>(VillagerState.SayRandomMessage, 20),
-        new KeyValuePair<VillagerState, decimal>(VillagerState.WalkingToRestaurant, 10),
-        new KeyValuePair<VillagerState, decimal>(VillagerState.WalkingToTailor, 10),
-        new KeyValuePair<VillagerState, decimal>(VillagerState.WalkingToArmory, 10),
-        new KeyValuePair<VillagerState, decimal>(VillagerState.FollowingPlayer, 5),
-        new KeyValuePair<VillagerState, decimal>(VillagerState.CalloutPasserby, 5),
-    ];
-
     private void HandleIdleState()
     {
         var state = StateData.PickRandomWeightedSingleOrDefault();
-        Subject.VillagerState = state;
+        Subject.TagorVillagerState = state;
 
         ActionTimer.Reset();
     }
-
 
     private void HandlePostConversationActions(TimeSpan delta, string merchant)
     {
@@ -385,35 +430,48 @@ public class VillagerScript : MerchantScriptBase
         {
             case "armorer":
             {
-                    if (ShouldWalkTo(MilethArmoryDoorInsidePoint))
-                        WalkTowards(MilethArmoryDoorInsidePoint, delta);
-                    else if (ShouldWalkToSpawnPoint())
-                        WalkTowards(Spawnpoint, delta);
-                    else
-                        ResetConversationState();
-                    break;
+                if (ShouldWalkTo(TagorArmoryDoorInsidePoint))
+                    WalkTowards(TagorArmoryDoorInsidePoint, delta);
+                else if (ShouldWalkToSpawnPoint())
+                    WalkTowards(Spawnpoint, delta);
+                else
+                    ResetConversationState();
+
+                break;
             }
             case "tailor":
             {
-                    if (ShouldWalkTo(MilethTailorDoorInsidePoint))
-                        WalkTowards(MilethTailorDoorInsidePoint, delta);
-                    else if (ShouldWalkToSpawnPoint())
-                        WalkTowards(Spawnpoint, delta);
-                    else
-                        ResetConversationState();
-                    break;
+                if (ShouldWalkTo(TagorStorageDoorInsidePoint))
+                    WalkTowards(TagorStorageDoorInsidePoint, delta);
+                else if (ShouldWalkToSpawnPoint())
+                    WalkTowards(Spawnpoint, delta);
+                else
+                    ResetConversationState();
+
+                break;
             }
             case "restaurant":
             {
-                    if (ShouldWalkTo(MilethRestaurantDoorInsidePoint))
-                        WalkTowards(MilethRestaurantDoorInsidePoint, delta);
-                    else if (ShouldWalkToSpawnPoint())
-                        WalkTowards(Spawnpoint, delta);
-                    else
-                        ResetConversationState();
-                    break;
+                if (ShouldWalkTo(TagorRestaurantDoorInsidePoint))
+                    WalkTowards(TagorRestaurantDoorInsidePoint, delta);
+                else if (ShouldWalkToSpawnPoint())
+                    WalkTowards(Spawnpoint, delta);
+                else
+                    ResetConversationState();
+
+                break;
             }
         }
+    }
+
+    private void HandleSayRandomMessageState()
+    {
+        var aislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 8);
+
+        if (aislings.Any())
+            Subject.Say(GetRandomMessage());
+
+        Subject.TagorVillagerState = TagorVillagerState.Idle;
     }
 
     private void HandleWalkingToArmory(TimeSpan delta)
@@ -422,20 +480,8 @@ public class VillagerScript : MerchantScriptBase
         {
             HandleApproachToArmory(delta);
             HandleConversationWithMerchant(delta);
-        }
-        else
+        } else
             HandlePostConversationActions(delta, "armorer");
-    }
-
-    private void HandleWalkingToTailor(TimeSpan delta)
-    {
-        if (!HasHadConversation)
-        {
-            HandleApproachToTailor(delta);
-            HandleConversationWithMerchant(delta);
-        }
-        else
-            HandlePostConversationActions(delta, "tailor");
     }
 
     private void HandleWalkingToRestaurant(TimeSpan delta)
@@ -444,9 +490,18 @@ public class VillagerScript : MerchantScriptBase
         {
             HandleApproachToRestaurant(delta);
             HandleConversationWithMerchant(delta);
-        }
-        else
+        } else
             HandlePostConversationActions(delta, "restaurant");
+    }
+
+    private void HandleWalkingToTailor(TimeSpan delta)
+    {
+        if (!HasHadConversation)
+        {
+            HandleApproachToTailor(delta);
+            HandleConversationWithMerchant(delta);
+        } else
+            HandlePostConversationActions(delta, "tailor");
     }
 
     private void HandleWanderingState()
@@ -455,53 +510,14 @@ public class VillagerScript : MerchantScriptBase
 
         if (Subject.WanderTimer.IntervalElapsed && IntegerRandomizer.RollChance(10))
         {
-            Subject.VillagerState = VillagerState.Idle;
+            Subject.TagorVillagerState = TagorVillagerState.Idle;
             ActionTimer.Reset();
         }
 
         Subject.WanderTimer.Reset();
     }
 
-    private void HandleCalloutPasserby(TimeSpan delta)
-    {
-        if (!HasPickedAnAisling)
-        {
-            var aislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject).ThatAreObservedBy(Subject).ThatAreVisibleTo(Subject).ToList();
-
-            if (aislings.Count > 0)
-            {
-                RandomAisling = aislings.PickRandom();
-                HasPickedAnAisling = true;
-            }
-        }
-
-        if (HasPickedAnAisling && !HasHadConversation)
-        {
-            var legendmark = RandomAisling?.Legend.GetRandomMark();
-
-            if (legendmark != null)
-            {
-                if (!LegendMarkResponses.TryGetValue(legendmark, out var response))
-                {
-                    HasHadConversation = true;
-                }
-
-                if (response != null)
-                    Subject.Say(response);
-
-                HasHadConversation = true;
-            }
-        }
-        else
-        {
-            if (ShouldWalkToSpawnPoint())
-                WalkTowards(Spawnpoint, delta);
-            else
-                ResetConversationState();
-        }
-    }
-
-    private bool IsCloseTo(Location point, int distance) => Subject.ManhattanDistanceFrom(point) <= distance;
+    private bool IsCloseTo(Location point) => Subject.WithinRange(point, 2);
 
     private static string PickRandom(ICollection<string> phrases) => phrases.PickRandom();
 
@@ -516,23 +532,11 @@ public class VillagerScript : MerchantScriptBase
         ItemRequested = null;
         RandomAisling = null;
         FollowUntil = DateTime.MinValue;
-        Subject.VillagerState = VillagerState.Wandering;
+        Subject.TagorVillagerState = TagorVillagerState.Wandering;
     }
 
-    private void HandleSayRandomMessageState()
-    {
-        var aislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 8);
+    private bool ShouldWalkTo(Location destination) => (Subject.ManhattanDistanceFrom(destination) > 0) && Subject.OnSameMapAs(destination);
 
-        if (aislings.Any())
-            Subject.Say(GetRandomMessage());
-
-        Subject.VillagerState = VillagerState.Idle;
-    }
-
-    private bool ShouldWalkTo(Location destination) =>
-        (Subject.ManhattanDistanceFrom(destination) > 0) && Subject.OnSameMapAs(destination);
-
-    private bool ShouldWalkTo(Point destination) => Subject.ManhattanDistanceFrom(destination) > 0;
     private bool ShouldWalkToSpawnPoint() => Subject.ManhattanDistanceFrom(Spawnpoint) > 0;
 
     /// <inheritdoc />
@@ -541,56 +545,57 @@ public class VillagerScript : MerchantScriptBase
         ActionTimer.Update(delta);
         EatingTimer.Update(delta);
 
-        switch (Subject.VillagerState)
+        switch (Subject.TagorVillagerState)
         {
-            case VillagerState.Idle:
+            case TagorVillagerState.Idle:
                 if (ActionTimer.IntervalElapsed)
                     HandleIdleState();
 
                 break;
 
-            case VillagerState.SayRandomMessage:
+            case TagorVillagerState.SayRandomMessage:
                 HandleSayRandomMessageState();
+
                 break;
 
-            case VillagerState.Wandering:
+            case TagorVillagerState.Wandering:
                 if (Subject.WanderTimer.IntervalElapsed)
                     HandleWanderingState();
 
                 break;
 
-            case VillagerState.WalkingToArmory:
+            case TagorVillagerState.WalkingToArmory:
                 HandleWalkingToArmory(delta);
 
                 break;
-            case VillagerState.WalkingToTailor:
+            case TagorVillagerState.WalkingToTailor:
                 HandleWalkingToTailor(delta);
 
                 break;
 
-
-            case VillagerState.WalkingToRestaurant:
+            case TagorVillagerState.WalkingToRestaurant:
                 HandleWalkingToRestaurant(delta);
 
                 break;
 
-            case VillagerState.CalloutPasserby:
+            case TagorVillagerState.CalloutPasserby:
                 HandleCalloutPasserby(delta);
 
                 break;
 
-            case VillagerState.TalkingToAnotherMerchant:
+            case TagorVillagerState.TalkingToAnotherMerchant:
                 break;
-            case VillagerState.TalkingToPlayer:
+            case TagorVillagerState.TalkingToPlayer:
                 break;
 
-            case VillagerState.FollowingPlayer:
+            case TagorVillagerState.FollowingPlayer:
                 HandleFollowingPlayer(delta);
 
                 break;
 
-            case VillagerState.Eating:
+            case TagorVillagerState.Eating:
                 HandleEatingState();
+
                 break;
         }
     }
@@ -611,16 +616,16 @@ public class VillagerScript : MerchantScriptBase
 
         if (WalkTimer.IntervalElapsed)
         {
-                if (destination == MilethArmoryDoorPoint)
-                    AttemptToOpenDoor(MilethArmoryDoorPoint);
+            if (destination == TagorArmoryDoorPoint)
+                AttemptToOpenDoor(TagorArmoryDoorPoint);
 
-                if (destination == MilethTailorDoorPoint)
-                    AttemptToOpenDoor(MilethTailorDoorPoint);
+            if (destination == TagorStorageDoorPoint)
+                AttemptToOpenDoor(TagorStorageDoorPoint);
 
-                if (destination == MilethRestaurantDoorPoint)
-                    AttemptToOpenDoor(MilethRestaurantDoorPoint);
-                
-                Subject.Pathfind(destination, 0, Options);
+            if (destination == TagorRestaurantDoorPoint)
+                AttemptToOpenDoor(TagorRestaurantDoorPoint);
+
+            Subject.Pathfind(destination, 0, Options);
         }
     }
 
@@ -632,24 +637,7 @@ public class VillagerScript : MerchantScriptBase
             Subject.Pathfind(destination, 0);
     }
 
-    #region TrackedLegendMarks
-
-    private readonly Dictionary<string, string> LegendMarkResponses = new()
-    {
-        { "Arena Winner", "I hear the arena is a scary place" },
-        { "Arena Participant", "I hear the arena is a scary place" },
-        { "Loved by Mileth Mundanes", "Wow, you're popular around Mileth" },
-        { "Loved by Abel Mundanes", "Pretty helpful around Abel I see." },
-        { "Inspired Fisk to Reach for the Stars", "Thanks for helping Fisk!" },
-        { "Helped the Eingren Manor's Plumber", "You've dispatched a lot of ghosts!" },
-        { "Cured the Sick Child of Loures", "Thanks for helping that girl in Loures." },
-        { "Successfully conquered their Nightmares", "I had a bad nightmare once too." }
-    };
-
-    #endregion TrackedLegendMarks
-
     #region Messages
-
     private static readonly List<string> EatingActions =
     [
         "big bite",
@@ -889,53 +877,40 @@ public class VillagerScript : MerchantScriptBase
     private readonly List<string> VillagerMessages =
     [
         "Lovely weather we're having!",
-        "Have you visited the blacksmith?",
-        "Beware of wolves in the forest.",
-        "The harvest is bountiful this year.",
-        "Stay clear of the Dark Woods.",
-        "Have you seen the new merchant?",
+        "Has anyone seen Wirt lately? I saw him go into the caverns.",
+        "Wirt's been gone awhile....",
+        "They should have never cleared the way into those caverns.",
         "Legends speak of hidden treasures.",
         "The old well is said to be cursed.",
         "Travelers bring interesting tales.",
-        "Wish I could see the capital city.",
-        "Keep your wits about you at night.",
-        "Ever heard the howl of the banshee?",
+        "One day, I'll be brave and enter the caverns.",
         "Stay a while and listen.",
         "The river seems high this season.",
         "Look out for falling branches!",
-        "A mysterious fog covered us last night.",
+        "Don't try going into the caverns, it's real dangerous.",
         "I miss the songs of the minstrels.",
         "Do you believe in forest spirits?",
-        "I'd avoid the ancient ruins.",
-        "I've heard tales of a secret cave.",
+        "Wirt talked about exploring the caverns, where did he go?",
         "My garden is my greatest treasure.",
         "Best ale in town is at the tavern.",
-        "The old tower? Avoid it at all costs!",
-        "Strange lights were seen near the hill.",
         "A traveling bard visited yesterday.",
         "The wind speaks, if you listen...",
-        "Ever tasted Mileth's famous stew?",
-        "The mill's been quiet these days.",
-        "Those mountains hold dark secrets.",
-        "The full moon brings strange events.",
-        "My family's lived here for generations.",
-        "I once saw a ghost, I swear it!",
+        "The church has been quiet these days.",
+        "Those caverns hold dark secrets.",
+        "I can't find Wirt, I hope he's okay.",
+        "I once saw a zombie, I swear it!",
         "Sometimes, I hear whispers in the fog.",
         "I wouldn't stray far from the village.",
         "The forest isn't safe for travelers.",
-        "Did you come to see the festival?",
-        "Our village is small, but proud.",
-        "Beware of the witch in the woods.",
-        "Some say the lake is enchanted.",
-        "I've never seen a dragon, thankfully.",
-        "The ancient tree holds ancient power.",
+        "Our village is getting big and we're proud.",
+        "Has anyone seen Wirt lately?",
+        "Anyone find Wirt yet? I'm afraid he's gone missing.",
         "Keep an eye on your belongings.",
         "Nothing beats our local honey.",
-        "There's a chill in the air today.",
-        "The old bookshop holds rare tomes.",
+        "I bet Bella has a really nice spot in the graveyard.",
         "Watch the skies, stranger.",
-        "Don't trust the goblins, ever.",
-        "The stars have been bright lately."
+        "The graveyard has become dangerous.",
+        "I heard they buried Bella in the graveyard."
     ];
 
     private static readonly List<string> FoodRequests =

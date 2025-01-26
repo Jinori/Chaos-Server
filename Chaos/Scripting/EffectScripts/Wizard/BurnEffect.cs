@@ -60,6 +60,9 @@ public class BurnEffect : ContinuousAnimationEffectBase, HierarchicalEffectCompo
         if (target.Name == "Shamensyth")
             return false;
 
+        if (target.StatSheet.DefenseElement == Element.Fire)
+            return false;
+
         var execution = new ComponentExecutor(source, target).WithOptions(this)
                                                              .ExecuteAndCheck<HierarchicalEffectComponent>();
 

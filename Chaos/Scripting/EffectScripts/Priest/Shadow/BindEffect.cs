@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
@@ -12,17 +11,18 @@ public class BindEffect : EffectBase, HierarchicalEffectComponent.IHierarchicalE
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(30);
 
+    /// <inheritdoc />
+    public List<string> EffectNameHierarchy { get; init; } = ["Bind"];
+
     private Animation? Animation { get; } = new()
     {
         TargetAnimation = 820,
         AnimationSpeed = 100
     };
 
-    /// <inheritdoc />
-    public List<string> EffectNameHierarchy { get; init; } = ["Bind"];
     public override byte Icon => 77;
     public override string Name => "Bind";
-    
+
     public override void OnApplied()
     {
         base.OnApplied();
@@ -51,12 +51,15 @@ public class BindEffect : EffectBase, HierarchicalEffectComponent.IHierarchicalE
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Attack speed has returned to normal.");
     }
-    
+
     public override bool ShouldApply(Creature source, Creature target)
     {
+        if (target.StatSheet.DefenseElement == Element.Darkness)
+            return false;
+
         var execution = new ComponentExecutor(source, target).WithOptions(this)
                                                              .ExecuteAndCheck<HierarchicalEffectComponent>();
-        
+
         return execution is not null;
     }
 }

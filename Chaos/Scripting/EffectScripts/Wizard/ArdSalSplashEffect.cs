@@ -81,6 +81,9 @@ public class ArdSalSplashEffect : ContinuousAnimationEffectBase
         // Apply damage to each valid target
         foreach (var target in targets)
         {
+            if (target.StatSheet.DefenseElement == Element.Water)
+                continue;
+
             ApplyDamageScript.ApplyDamage(
                 SourceOfEffect,
                 target,
@@ -102,6 +105,9 @@ public class ArdSalSplashEffect : ContinuousAnimationEffectBase
         SourceOfEffect = source;
 
         if (target.IsFriendlyTo(source) || target.IsGodModeEnabled() || target.Effects.Contains("Invulnerability"))
+            return false;
+
+        if (target.StatSheet.DefenseElement == Element.Water)
             return false;
 
         var splashEffects = new[]
