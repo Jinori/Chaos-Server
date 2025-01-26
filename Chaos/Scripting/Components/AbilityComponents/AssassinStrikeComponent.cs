@@ -1,12 +1,14 @@
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
+using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
+using Chaos.Scripting.MonsterScripts;
 using Chaos.Scripting.MonsterScripts.Boss;
 
 namespace Chaos.Scripting.Components.AbilityComponents;
@@ -32,7 +34,7 @@ public struct AssassinStrikeComponent : IComponent
 
                 // 20% chance to kill the target instantly
                 if (IntegerRandomizer.RollChance(15))
-                    if (!target.Name.Contains("Dummy") || !target.Script.Is<ThisIsABossScript>())
+                    if (!target.Script.Is<TrainingDummyScript>() && !target.Script.Is<ThisIsABossScript>())
                         damage = target.StatSheet.CurrentHp;
 
             if (damage > 0)

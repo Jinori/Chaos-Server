@@ -86,7 +86,6 @@ public class LearnAllCommand : ICommand<Aisling>
             {
                 BaseClass.Wizard, (new[]
                 {
-                    "wieldmagusstaff",
                     "rumination",
                     "assail"
                 }, new[]
@@ -133,7 +132,6 @@ public class LearnAllCommand : ICommand<Aisling>
             {
                 BaseClass.Priest, (new[]
                 {
-                    "wieldholystaff",
                     "summonpet",
                     "assail"
                 }, new[]
