@@ -9,7 +9,7 @@ using Chaos.Time.Abstractions;
 namespace Chaos.Scripting.MapScripts.Events;
 
 /// <summary>
-/// Map script responsible for spawning merchants when an event is active.
+/// Map script responsible for spawning and removing merchants based on active events.
 /// </summary>
 internal class EventMerchantScript : MapScriptBase
 {
@@ -17,7 +17,7 @@ internal class EventMerchantScript : MapScriptBase
     private readonly IMerchantFactory MerchantFactory;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="EventMerchantScript"/> class.
+    /// Initializes a new instance of the class.
     /// </summary>
     public EventMerchantScript(MapInstance subject, IMerchantFactory merchantFactory) : base(subject)
     {
@@ -44,38 +44,65 @@ internal class EventMerchantScript : MapScriptBase
         EventCheckTimer.Update(delta);
         if (!EventCheckTimer.IntervalElapsed) return;
 
-        TrySpawnMerchantsForActiveEvent();
+        ManageEventMerchants();
     }
 
     /// <summary>
-    /// Checks for an active event on the current map and spawns merchants if needed.
+    /// Manages merchant spawning and removal based on event status.
     /// </summary>
-    private void TrySpawnMerchantsForActiveEvent()
+    private void ManageEventMerchants()
     {
         var mapId = Subject.InstanceId;
         var isEventActive = EventPeriod.IsEventActive(DateTime.UtcNow, mapId);
-        
-        if (!isEventActive || !MerchantSpawns.TryGetValue(mapId, out var merchants))
-            return;
 
+        if (!MerchantSpawns.TryGetValue(mapId, out var merchants)) 
+            return;
+        
+        if (isEventActive)
+        {
+            SpawnMissingMerchants(merchants);
+        }
+        else
+        {
+            RemoveEventMerchants(merchants);
+        }
+    }
+
+    /// <summary>
+    /// Spawns merchants if they are missing from the map.
+    /// </summary>
+    private void SpawnMissingMerchants(IEnumerable<MerchantSpawn> merchants)
+    {
         foreach (var merchant in merchants)
         {
-            if (Subject.GetEntities<Merchant>().Any(x => x.Template.TemplateKey == merchant.MerchantId))
-                continue;
+            if (Subject.GetEntities<Merchant>().All(x => x.Template.TemplateKey != merchant.MerchantId))
+            {
+                SpawnMerchant(merchant);
+            }
+        }
+    }
 
-            SpawnMerchant(merchant);
+    /// <summary>
+    /// Removes merchants from the map if the event is no longer active.
+    /// </summary>
+    private void RemoveEventMerchants(IEnumerable<MerchantSpawn> merchants)
+    {
+        var merchantsOnMap = Subject.GetEntities<Merchant>().ToList();
+
+        foreach (var merchant in merchantsOnMap.Where(merchant => merchants.Any(m => m.MerchantId == merchant.Template.TemplateKey)))
+        {
+            Subject.RemoveEntity(merchant);
         }
     }
 
     /// <summary>
     /// Spawns a merchant at a specific location and direction based on the dictionary.
     /// </summary>
-    /// <param name="merchant">The merchant to spawn.</param>
     private void SpawnMerchant(MerchantSpawn merchant)
     {
         var merchantPoint = new Point(merchant.X, merchant.Y);
         var merchantToSpawn = MerchantFactory.Create(merchant.MerchantId, Subject, merchantPoint);
-        
+
         merchantToSpawn.Direction = merchant.Direction;
         Subject.AddEntity(merchantToSpawn, merchantPoint);
     }
