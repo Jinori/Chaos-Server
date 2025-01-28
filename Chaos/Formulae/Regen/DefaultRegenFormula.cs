@@ -2,14 +2,23 @@ using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
 using Chaos.Formulae.Abstractions;
-using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 
 namespace Chaos.Formulae.Regen;
 
 public sealed class DefaultRegenFormula : IRegenFormula
 {
-    /// <inheritdoc />
+    private const decimal BASE_HP_REGEN_PERCENT = 6m; // Base % regeneration
+    private const decimal BASE_MP_REGEN_PERCENT = 4m; // Base % regeneration
+    private const decimal MAX_HP_REGEN_PERCENT = 18m; // Max % regeneration at cap stats
+    private const decimal MAX_MP_REGEN_PERCENT = 16m; // Max % regeneration at cap stats
+    private const decimal MAX_CON_BONUS = 8m; // Max % from Constitution
+    private const decimal MAX_WIS_BONUS = 8m; // Max % from Wisdom
+    private const decimal INNER_FIRE_BONUS = 4m; // Bonus % from InnerFire
+    private const decimal HOT_CHOCOLATE_HEALTH_BONUS = 6m; // Bonus % health regen from HotChocolate
+    private const decimal HOT_CHOCOLATE_MANA_BONUS = 3m; // Bonus % mana regen from HotChocolate
+    private const int MAX_STAT = 200; // Maximum value for stats (Con/Wis)
+
     public int CalculateHealthRegen(Creature creature)
     {
         if (creature.StatSheet.HealthPercent == 100)
@@ -18,103 +27,48 @@ public sealed class DefaultRegenFormula : IRegenFormula
         if (creature.Effects.Contains("Poison") || creature.Effects.Contains("Miasma"))
             return 0;
 
+        // Base health regeneration %
+        decimal healthRegenPercent = BASE_HP_REGEN_PERCENT;
+
+        // Add Constitution-based bonus
+        var con = creature.StatSheet.GetEffectiveStat(Stat.CON);
+        healthRegenPercent += (con / (decimal)MAX_STAT) * MAX_CON_BONUS;
+
+        // Apply InnerFire bonus
         if (creature.IsInnerFired())
-        {
-            var percentToRegenerate = creature switch
-            {
-                Aisling  => 18,
-                Monster  => 11,
-                Merchant => 100,
-                _        => throw new ArgumentOutOfRangeException(nameof(creature), creature, null)
-            };
+            healthRegenPercent += INNER_FIRE_BONUS;
 
-            return MathEx.GetPercentOf<int>((int)creature.StatSheet.EffectiveMaximumHp, percentToRegenerate);
-        }
-
+        // Apply HotChocolate bonus
         if (creature.IsHotChocolated())
-        {
-            var percentToRegenerate = creature switch
-            {
-                Aisling  => 16,
-                Monster  => 11,
-                Merchant => 100,
-                _        => throw new ArgumentOutOfRangeException(nameof(creature), creature, null)
-            };
+            healthRegenPercent += HOT_CHOCOLATE_HEALTH_BONUS;
 
-            return MathEx.GetPercentOf<int>((int)creature.StatSheet.EffectiveMaximumHp, percentToRegenerate);
-        } else
-        {
-            var percentToRegenerate = creature switch
-            {
-                Aisling  => 10,
-                Monster  => 3,
-                Merchant => 100,
-                _        => throw new ArgumentOutOfRangeException(nameof(creature), creature, null)
-            };
+        // Clamp to max regeneration cap
+        healthRegenPercent = Math.Min(healthRegenPercent, MAX_HP_REGEN_PERCENT);
 
-            return MathEx.GetPercentOf<int>((int)creature.StatSheet.EffectiveMaximumHp, percentToRegenerate);
-        }
+        // Calculate regeneration value based on effective max HP
+        return MathEx.GetPercentOf<int>((int)creature.StatSheet.EffectiveMaximumHp, healthRegenPercent);
     }
-
-    /// <inheritdoc />
-    public int CalculateIntervalSecs(Creature creature)
-    {
-        // Ensure creature and its StatSheet are not null
-        if ((creature == null) || (creature.StatSheet == null))
-            return 12;
-
-        // Base interval time in seconds
-        const int BASE_INTERVAL = 16;
-
-        // Minimum interval time
-        const int MIN_INTERVAL = 6;
-
-        // Reduction rate: how much interval decreases per point of Con
-        const double REDUCTION_PER_CON = 10.0 / 255;
-
-        if (creature.StatSheet.Con > 3)
-        {
-            var con = creature.StatSheet.GetEffectiveStat(Stat.CON);
-
-            // Calculate the reduced interval
-            var reducedInterval = BASE_INTERVAL - con * REDUCTION_PER_CON;
-
-            // Ensure the interval is not lower than the minimum interval
-            return Math.Max((int)Math.Ceiling(reducedInterval), MIN_INTERVAL);
-        }
-
-        // Ensure the interval is not lower than the minimum interval
-        return 12;
-    }
-
-    /// <inheritdoc />
     public int CalculateManaRegen(Creature creature)
     {
         if (creature.StatSheet.ManaPercent == 100)
             return 0;
 
+        // Base mana regeneration %
+        decimal manaRegenPercent = BASE_MP_REGEN_PERCENT;
+
+        // Add Wisdom-based bonus
+        var wis = creature.StatSheet.GetEffectiveStat(Stat.WIS);
+        manaRegenPercent += (wis / (decimal)MAX_STAT) * MAX_WIS_BONUS;
+
+        // Apply HotChocolate bonus
         if (creature.IsHotChocolated())
-        {
-            var percentToRegenerate = creature switch
-            {
-                Aisling  => 8,
-                Monster  => 2,
-                Merchant => 100,
-                _        => throw new ArgumentOutOfRangeException(nameof(creature), creature, null)
-            };
+            manaRegenPercent += HOT_CHOCOLATE_MANA_BONUS;
 
-            return MathEx.GetPercentOf<int>((int)creature.StatSheet.EffectiveMaximumMp, percentToRegenerate);
-        } else
-        {
-            var percentToRegenerate = creature switch
-            {
-                Aisling  => 5,
-                Monster  => 1.5m,
-                Merchant => 100,
-                _        => throw new ArgumentOutOfRangeException(nameof(creature), creature, null)
-            };
+        // Clamp to max regeneration cap
+        manaRegenPercent = Math.Min(manaRegenPercent, MAX_MP_REGEN_PERCENT);
 
-            return MathEx.GetPercentOf<int>((int)creature.StatSheet.EffectiveMaximumMp, percentToRegenerate);
-        }
+        // Calculate regeneration value based on effective max MP
+        return MathEx.GetPercentOf<int>((int)creature.StatSheet.EffectiveMaximumMp, manaRegenPercent);
     }
+    public int CalculateIntervalSecs(Creature creature) => 8;
 }

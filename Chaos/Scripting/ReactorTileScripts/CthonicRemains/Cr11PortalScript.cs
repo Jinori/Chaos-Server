@@ -87,9 +87,6 @@ public class Cr11PortalScript : ReactorTileScriptBase
             
             owner.SendActiveMessage($"{aisling.Name} has entered your portal to Cthonic Remains 11.");
         }
-        
-        
-        
     }
 
     /// <inheritdoc />

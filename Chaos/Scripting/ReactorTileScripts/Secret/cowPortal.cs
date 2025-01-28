@@ -1,5 +1,6 @@
 using Chaos.Collections;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 using Chaos.Models.World;
@@ -29,33 +30,59 @@ public class cowPortal : ReactorTileScriptBase
         : base(subject)
     {
         SimpleCache = simpleCache;
-        Timer = new IntervalTimer(TimeSpan.FromMinutes(120), false);
+        Timer = new IntervalTimer(TimeSpan.FromHours(2), false);
         AnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
     }
 
     /// <inheritdoc />
     public override void OnWalkedOn(Creature source)
     {
-        if (source is not Aisling aisling)
-            return;
-
-        if (!aisling.Trackers.Enums.HasValue(ClassStatBracket.Grandmaster) && !aisling.IsAdmin)
+        if (Subject.Owner is Aisling owner)
         {
-            aisling.SendOrangeBarMessage("This is probably a bad idea. (Requires Grandmaster to enter)");
+            if (source is not Aisling aisling)
+                return;
+            
+            var targetMap = SimpleCache.Get<MapInstance>("secret_cow_level");
 
-            return;
+            var rectangle = new Rectangle(
+                41,
+                65,
+                5,
+                5);
+            
+            var point = rectangle.GetRandomPoint();
+
+            if (aisling.IsGodModeEnabled())
+            {
+                aisling.TraverseMap(targetMap, point);
+            }
+
+            if ((aisling?.Name == owner.Name) && aisling.Trackers.Enums.HasValue(ClassStatBracket.Grandmaster))
+            {
+                aisling.TraverseMap(targetMap, point);
+                return;
+            }
+
+            if ((aisling?.Group != null) && !aisling.Group.Contains(owner))
+            {
+                aisling.SendOrangeBarMessage("This portal is for another group.");
+                return;
+            }
+
+            if (aisling?.Group == null)
+            {
+                aisling?.SendOrangeBarMessage("You must be grouped with the player who opened the portal.");
+                return;
+            }
+            
+            if (source.Trackers.Enums.HasValue(ClassStatBracket.Grandmaster))
+            {
+                aisling.SendOrangeBarMessage($"That portal looks really dangerous. (Grandmaster to enter)");
+                return;
+            }
+
+            source.TraverseMap(targetMap, point);
         }
-
-        var targetMap = SimpleCache.Get<MapInstance>("secret_cow_level");
-
-        var rectangle = new Rectangle(
-            41,
-            65,
-            5,
-            5);
-        var point = rectangle.GetRandomPoint();
-
-        source.TraverseMap(targetMap, point);
     }
 
     /// <inheritdoc />

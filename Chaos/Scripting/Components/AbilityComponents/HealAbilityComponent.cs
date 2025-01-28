@@ -73,8 +73,11 @@ public struct HealAbilityComponent : IComponent
                 finalHeal += Convert.ToInt32(source.StatSheet.GetEffectiveStat(healStat.Value) * healStatMultiplier.Value);
 
         if (pctMptoHpHeal.HasValue)
-            finalHeal += Convert.ToInt32(source.StatSheet.EffectiveMaximumMp * pctMptoHpHeal.Value);
-        
+        {
+            var pctMpToHealPct = pctMptoHpHeal / 100;
+            finalHeal += Convert.ToInt32(source.StatSheet.EffectiveMaximumMp * pctMpToHealPct);
+        }
+
         if (source.StatSheet.EffectiveHealBonusPct > 0)
         {
             var healbonuspct = source.StatSheet.EffectiveHealBonusPct / 100m;
@@ -87,7 +90,7 @@ public struct HealAbilityComponent : IComponent
 
         return finalHeal;
     }
- 
+
     public interface IHealComponentOptions
     {
         IApplyHealScript ApplyHealScript { get; init; }
@@ -95,7 +98,7 @@ public struct HealAbilityComponent : IComponent
         Stat? HealStat { get; init; }
         decimal? HealStatMultiplier { get; init; }
         decimal? PctHpHeal { get; init; }
-        
+
         decimal? PctMptoHpHeal { get; init; }
     }
 }

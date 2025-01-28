@@ -10,12 +10,14 @@ using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.SkillScripts.Abstractions;
+using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.SkillScripts.Warrior;
 
 public class BullRushScript : ConfigurableSkillScriptBase,
                               GenericAbilityComponent<Creature>.IAbilityComponentOptions,
-                              DamageAbilityComponent.IDamageComponentOptions
+                              DamageAbilityComponent.IDamageComponentOptions,
+                              ApplyEffectAbilityComponent.IApplyEffectComponentOptions
 {
     /// <inheritdoc />
     public bool AnimatePoints { get; init; }
@@ -152,7 +154,8 @@ public class BullRushScript : ConfigurableSkillScriptBase,
                 // Needs Damage & Ability Component or a new Movement Component
                 new ComponentExecutor(context).WithOptions(this)
                                               .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
-                                              ?.Execute<DamageAbilityComponent>();
+                                              ?.Execute<DamageAbilityComponent>()
+                                              .Execute<ApplyEffectAbilityComponent>();
 
                 return;
             }
@@ -161,4 +164,9 @@ public class BullRushScript : ConfigurableSkillScriptBase,
         // If no creature was found, warp the source to the endpoint
         context.Source.WarpTo(endPoint);
     }
+
+    public int? EffectApplyChance { get; init; }
+    public TimeSpan? EffectDurationOverride { get; init; }
+    public IEffectFactory EffectFactory { get; init; }
+    public string? EffectKey { get; init; }
 }

@@ -27,6 +27,14 @@ public class TerrorOfTheCryptScript : MapScriptBase
     private DateTime? StartTime;
     private ScriptState State;
 
+    private Element[] Elements { get; } =
+        [
+            Element.Fire,
+            Element.Water,
+            Element.Wind,
+            Element.Earth
+        ];
+
     public TerrorOfTheCryptScript(MapInstance subject, IMonsterFactory monsterFactory)
         : base(subject)
     {
@@ -34,8 +42,13 @@ public class TerrorOfTheCryptScript : MapScriptBase
         StartDelay = TimeSpan.FromSeconds(5);
         AnimationInterval = new IntervalTimer(TimeSpan.FromMilliseconds(200));
         AnimationShape = new Rectangle(new Point(8, 8), 5, 5);
-        ShapeOutline = AnimationShape.GetOutline().ToList();
-        ReverseOutline = ShapeOutline.AsEnumerable().Reverse().ToList();
+
+        ShapeOutline = AnimationShape.GetOutline()
+                                     .ToList();
+
+        ReverseOutline = ShapeOutline.AsEnumerable()
+                                     .Reverse()
+                                     .ToList();
 
         Animation = new Animation
         {
@@ -43,15 +56,7 @@ public class TerrorOfTheCryptScript : MapScriptBase
             TargetAnimation = 13
         };
     }
-    
-    private Element[] Elements { get; } =
-    [
-        Element.Fire,
-        Element.Water,
-        Element.Wind,
-        Element.Earth
-    ];
-    
+
     public override void OnEntered(Creature creature)
     {
         if (creature is not Aisling aisling)
@@ -72,15 +77,17 @@ public class TerrorOfTheCryptScript : MapScriptBase
                 StartTime ??= DateTime.UtcNow;
 
                 // Check if the start delay has been exceeded
-                if (DateTime.UtcNow - StartTime > StartDelay)
+                if ((DateTime.UtcNow - StartTime) > StartDelay)
                 {
                     // Reset the start time
                     StartTime = null;
+
                     // Set the state to spawning
                     State = ScriptState.Spawning;
 
                     // Get all Aislings in the subject
                     foreach (var aisling in Subject.GetEntities<Aisling>())
+
                         // Send an orange bar message to the Aisling
                         aisling.Client.SendServerMessage(
                             ServerMessageType.OrangeBar1,
@@ -88,6 +95,7 @@ public class TerrorOfTheCryptScript : MapScriptBase
                 }
 
                 break;
+
             // Spawning state
             case ScriptState.Spawning:
                 // Update the animation interval
@@ -100,77 +108,92 @@ public class TerrorOfTheCryptScript : MapScriptBase
                 // Get the points for the current animation index
                 var pt1 = ShapeOutline[AnimationIndex];
                 var pt2 = ReverseOutline[AnimationIndex];
+
                 // Show the animations for the points
                 Subject.ShowAnimation(Animation.GetPointAnimation(pt1));
                 Subject.ShowAnimation(Animation.GetPointAnimation(pt2));
+
                 // Increment the animation index
                 AnimationIndex++;
 
                 // Check if the animation index has exceeded the shape outline count
                 if (AnimationIndex >= ShapeOutline.Count)
                 {
-                    var groupLevel = Subject.GetEntities<Aisling>().Select(aisling => aisling.StatSheet.Level).ToList();
+                    var groupLevel = Subject.GetEntities<Aisling>()
+                                            .Select(aisling => aisling.StatSheet.Level)
+                                            .ToList();
                     Monster monster;
-                    
+
                     switch (groupLevel.Average())
                     {
                         case <= 10:
                             monster = MonsterFactory.Create("terror10Minus", Subject, new Point(8, 8));
+
                             break;
-                        
+
                         case <= 19:
                             monster = MonsterFactory.Create("terror10To19", Subject, new Point(8, 8));
                             monster.StatSheet.SetDefenseElement(Elements.PickRandom());
+
                             break;
-                        
+
                         case <= 25:
                             monster = MonsterFactory.Create("terror20To25", Subject, new Point(8, 8));
                             monster.StatSheet.SetOffenseElement(Element.Darkness);
                             monster.StatSheet.SetDefenseElement(Elements.PickRandom());
+
                             break;
-                        
+
                         case <= 40:
                             monster = MonsterFactory.Create("terror26To40", Subject, new Point(8, 8));
                             monster.StatSheet.SetOffenseElement(Element.Darkness);
                             monster.StatSheet.SetDefenseElement(Element.Darkness);
+
                             break;
-                        
+
                         default:
                             monster = MonsterFactory.Create("terror10Minus", Subject, new Point(8, 8));
+
                             break;
                     }
 
                     var attrib = new Attributes
                     {
-                        AtkSpeedPct = groupLevel.Count * 5 + 5,
-                        MaximumHp = (int)groupLevel.Average() * groupLevel.Count * 700,
-                        MaximumMp = (int)groupLevel.Average() * groupLevel.Count * 700,
+                        AtkSpeedPct = (int)groupLevel.Average() * 4 / 2,
+                        MaximumHp = (int)groupLevel.Average() * groupLevel.Count * 500,
+                        MaximumMp = (int)groupLevel.Average() * groupLevel.Count * 500,
                         SkillDamagePct = groupLevel.Count,
-                        SpellDamagePct = groupLevel.Count,
+                        SpellDamagePct = groupLevel.Count
                     };
-                    
+
                     // Add the attributes to the monster
                     monster.StatSheet.AddBonus(attrib);
+
                     // Add HP and MP to the monster
                     monster.StatSheet.SetHealthPct(100);
                     monster.StatSheet.SetManaPct(100);
+
                     // Add the monster to the subject
-                    Subject.AddEntity(monster, monster);  
-                    
+                    Subject.AddEntity(monster, monster);
+
                     // Set the state to spawned
                     State = ScriptState.Spawned;
+
                     // Reset the animation index
                     AnimationIndex = 0;
                 }
 
                 break;
+
             // Spawned state
             case ScriptState.Spawned:
                 // Check if there are any Aislings in the subject
-                if (!Subject.GetEntities<Aisling>().Any())
+                if (!Subject.GetEntities<Aisling>()
+                            .Any())
                 {
                     // Get all monsters in the subject
-                    var monsters = Subject.GetEntities<Monster>().ToList();
+                    var monsters = Subject.GetEntities<Monster>()
+                                          .ToList();
 
                     // Remove all monsters from the subject
                     foreach (var monster in monsters)

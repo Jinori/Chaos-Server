@@ -1,7 +1,6 @@
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
-using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -61,6 +60,10 @@ public struct AssassinStrikeComponent : IComponent
         if (pctHpDamage.HasValue)
         {
             var healthDamage = target.StatSheet.CurrentHp * (pctHpDamage.Value / 100m);
+
+            if (healthDamage > 200000)
+                healthDamage = 200000;
+
             finalDamage += Convert.ToInt32(healthDamage);
         }
 
@@ -76,7 +79,7 @@ public struct AssassinStrikeComponent : IComponent
         if (monster.AggroList.TryGetValue(source.Id, out _))
             return finalDamage;
 
-        var bonusDamage = finalDamage * .50;
+        var bonusDamage = finalDamage * .25;
         finalDamage += Convert.ToInt32(bonusDamage);
 
         return finalDamage;

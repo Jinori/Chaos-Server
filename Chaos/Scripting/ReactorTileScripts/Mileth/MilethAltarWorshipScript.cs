@@ -1,5 +1,6 @@
 ﻿using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
+using Chaos.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Legend;
@@ -30,6 +31,16 @@ public class MilethAltarWorshipScript(ReactorTile subject, IItemFactory itemFact
 
         if (groundItem.Name == "Wirt's Leg")
         {
+            if (!source.Trackers.Enums.HasValue(ClassStatBracket.Grandmaster))
+            {
+                var item = itemFactory.Create(groundItem.Item.Template.TemplateKey);
+                aisling.GiveItemOrSendToBank(item);
+                aisling.MapInstance.RemoveEntity(groundItem);
+                aisling.SendOrangeBarMessage("You must be a Grand Master to do what you were about to do.");
+
+                return;
+            }
+            
             if (source.MapInstance
                       .GetEntities<ReactorTile>()
                       .Any(x => x.ScriptKeys.ContainsI("cowPortal")))
@@ -47,8 +58,8 @@ public class MilethAltarWorshipScript(ReactorTile subject, IItemFactory itemFact
                 source.Y,
                 2,
                 2);
-
-            var point = rectangle.TryGetRandomPoint(x => aisling.MapInstance.IsWalkable(x, source.Type), out var portalpoint);
+            
+            rectangle.TryGetRandomPoint(x => aisling.MapInstance.IsWalkable(x, source.Type), out var portalpoint);
 
             if (portalpoint == null)
             {
@@ -60,8 +71,8 @@ public class MilethAltarWorshipScript(ReactorTile subject, IItemFactory itemFact
                 return;
             }
 
-            var cowPortal = ReactorTileFactory.Create("cowportal", aisling.MapInstance, portalpoint);
-            aisling.MapInstance.SimpleAdd(cowPortal);
+            var portal = ReactorTileFactory.Create("cowportal", aisling.MapInstance, portalpoint, null, source);
+            aisling.MapInstance.SimpleAdd(portal);
             aisling.MapInstance.RemoveEntity(groundItem);
             
             foreach (var allaisling in ClientRegistry)

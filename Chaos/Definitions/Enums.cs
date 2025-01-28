@@ -2142,3 +2142,85 @@ public enum ThanksgivingChallenge
     NinteenthWave = 1 << 19,
     TwentyEighthWave = 1 << 20
 }
+[Flags]
+public enum BountyBoardFlags
+{
+    None = 0,
+    Easy1 = 1 << 1,
+    Easy2 = 1 << 2,
+    Easy3 = 1 << 3,
+    Medium1 = 1 << 4,
+    Medium2 = 1 << 5,
+    Medium3 = 1 << 6,
+    Hard1 = 1 << 7,
+    Hard2 = 1 << 8,
+    Hard3 = 1 << 9,
+    Epic1 = 1 << 10,
+    Epic2 = 1 << 11,
+    Epic3 = 1 << 12,
+}
+
+public enum BountyBoardKill1
+{
+    None = 0,
+    AncientBeetalic = 1,
+    AncientSkeleton = 2,
+    Losgann = 3,
+    Ruidhtear = 4,
+    BrownMantis = 5,
+    GoldBeetalic = 6,
+    RedShocker = 7,
+    BlackShocker = 8,
+    GoldShocker = 9,
+    BlueShocker = 10,
+    DireWolf = 11,
+    IceElemental = 12,
+    IceSkeleton = 13,
+    IceSpore = 14,
+}
+
+public enum BountyBoardKill2
+{
+    None = 0,
+    AncientBeetalic = 1,
+    AncientSkeleton = 2,
+    Losgann = 3,
+    Ruidhtear = 4,
+    BrownMantis = 5,
+    GoldBeetalic = 6,
+    RedShocker = 7,
+    BlackShocker = 8,
+    GoldShocker = 9,
+    BlueShocker = 10,
+    DireWolf = 11,
+    IceElemental = 12,
+    IceSkeleton = 13,
+    IceSpore = 14,
+}
+
+public enum BountyBoardKill3
+{
+    None = 0,
+    AncientBeetalic = 1,
+    AncientSkeleton = 2,
+    Losgann = 3,
+    Ruidhtear = 4,
+    BrownMantis = 5,
+    GoldBeetalic = 6,
+    RedShocker = 7,
+    BlackShocker = 8,
+    GoldShocker = 9,
+    BlueShocker = 10,
+    DireWolf = 11,
+    IceElemental = 12,
+    IceSkeleton = 13,
+    IceSpore = 14
+}
+
+public enum EpicBountyBoardKill
+{
+    None = 0,
+    Kelberoth = 1,
+    AncientDraco = 2,
+    GreenMantis = 3
+}
