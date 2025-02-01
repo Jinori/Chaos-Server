@@ -4,7 +4,6 @@ using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -45,6 +44,11 @@ public class ChargeScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public decimal? DamageStatMultiplier { get; init; }
 
+    public int? EffectApplyChance { get; init; }
+    public TimeSpan? EffectDurationOverride { get; init; }
+    public IEffectFactory EffectFactory { get; init; }
+    public string? EffectKey { get; init; }
+
     /// <inheritdoc />
     public Element? Element { get; init; }
 
@@ -67,7 +71,6 @@ public class ChargeScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public decimal? PctHpDamage { get; init; }
 
-    /// <inheritdoc />
     public decimal PctManaCost { get; init; }
 
     public decimal? PctOfHealth { get; init; }
@@ -92,7 +95,7 @@ public class ChargeScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public byte? Sound { get; init; }
-    
+
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
@@ -102,9 +105,10 @@ public class ChargeScript : ConfigurableSkillScriptBase,
     public bool? SurroundingTargets { get; init; }
 
     /// <inheritdoc />
-    public ChargeScript(Skill subject)
+    public ChargeScript(Skill subject, IEffectFactory effectFactory)
         : base(subject)
     {
+        EffectFactory = effectFactory;
         ApplyDamageScript = ApplyAttackDamageScript.Create();
     }
 
@@ -150,7 +154,7 @@ public class ChargeScript : ConfigurableSkillScriptBase,
 
                 // Warp the source to the new point
                 context.Source.WarpTo(newPoint);
-                
+
                 // Needs Damage & Ability Component or a new Movement Component
                 new ComponentExecutor(context).WithOptions(this)
                                               .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
@@ -164,9 +168,4 @@ public class ChargeScript : ConfigurableSkillScriptBase,
         // If no creature was found, warp the source to the endpoint
         context.Source.WarpTo(endPoint);
     }
-
-    public int? EffectApplyChance { get; init; }
-    public TimeSpan? EffectDurationOverride { get; init; }
-    public IEffectFactory EffectFactory { get; init; }
-    public string? EffectKey { get; init; }
 }

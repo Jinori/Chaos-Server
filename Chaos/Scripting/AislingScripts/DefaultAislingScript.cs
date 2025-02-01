@@ -398,9 +398,6 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         if (Subject.Effects.Contains("Wolf Fang Fist"))
             Subject.Effects.Dispel("Wolf Fang Fist");
 
-        if (Subject.Effects.Contains("Crit"))
-            Subject.Effects.Dispel("Crit");
-
         if (Subject.IsLightningStanced())
         {
             var result = damage * 30;

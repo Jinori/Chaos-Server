@@ -2142,6 +2142,7 @@ public enum ThanksgivingChallenge
     NinteenthWave = 1 << 19,
     TwentyEighthWave = 1 << 20
 }
+
 [Flags]
 public enum BountyBoardFlags
 {
@@ -2157,7 +2158,7 @@ public enum BountyBoardFlags
     Hard3 = 1 << 9,
     Epic1 = 1 << 10,
     Epic2 = 1 << 11,
-    Epic3 = 1 << 12,
+    Epic3 = 1 << 12
 }
 
 public enum BountyBoardKill1
@@ -2177,6 +2178,10 @@ public enum BountyBoardKill1
     IceElemental = 12,
     IceSkeleton = 13,
     IceSpore = 14,
+    Kelberoth = 15,
+    AncientDraco = 16,
+    GreenMantis = 17,
+    AncientHydra = 18
 }
 
 public enum BountyBoardKill2
@@ -2196,6 +2201,10 @@ public enum BountyBoardKill2
     IceElemental = 12,
     IceSkeleton = 13,
     IceSpore = 14,
+    Kelberoth = 15,
+    AncientDraco = 16,
+    GreenMantis = 17,
+    AncientHydra = 18
 }
 
 public enum BountyBoardKill3
@@ -2214,13 +2223,61 @@ public enum BountyBoardKill3
     DireWolf = 11,
     IceElemental = 12,
     IceSkeleton = 13,
-    IceSpore = 14
+    IceSpore = 14,
+    Kelberoth = 15,
+    AncientDraco = 16,
+    GreenMantis = 17,
+    AncientHydra = 18
 }
 
-public enum EpicBountyBoardKill
+[Flags]
+public enum BountyBoardOptions : ulong
 {
     None = 0,
-    Kelberoth = 1,
-    AncientDraco = 2,
-    GreenMantis = 3
+    EasyAncientBeetalic = 1L << 1,
+    EasyAncientSkeleton = 1L << 2,
+    EasyLosgann = 1L << 3,
+    EasyRuidhtear = 1L << 4,
+    EasyBrownMantis = 1L << 5,
+    EasyGoldBeetalic = 1L << 6,
+    EasyRedShocker = 1L << 7,
+    EasyBlackShocker = 1L << 8,
+    EasyGoldShocker = 1L << 9,
+    EasyBlueShocker = 1L << 10,
+    EasyDireWolf = 1L << 11,
+    EasyIceElemental = 1L << 12,
+    EasyIceSkeleton = 1L << 13,
+    EasyIceSpore = 1L << 14,
+    MediumAncientBeetalic = 1L << 15,
+    MediumAncientSkeleton = 1L << 16,
+    MediumLosgann = 1L << 17,
+    MediumRuidhtear = 1L << 18,
+    MediumBrownMantis = 1L << 19,
+    MediumGoldBeetalic = 1L << 20,
+    MediumRedShocker = 1L << 21,
+    MediumBlackShocker = 1L << 22,
+    MediumGoldShocker = 1L << 23,
+    MediumBlueShocker = 1L << 24,
+    MediumDireWolf = 1L << 25,
+    MediumIceElemental = 1L << 26,
+    MediumIceSkeleton = 1L << 27,
+    MediumIceSpore = 1L << 28,
+    HardAncientBeetalic = 1L << 29,
+    HardAncientSkeleton = 1L << 30,
+    HardLosgann = 1L << 31,
+    HardRuidhtear = 1L << 32,
+    HardBrownMantis = 1L << 33,
+    HardGoldBeetalic = 1L << 34,
+    HardRedShocker = 1L << 35,
+    HardBlackShocker = 1L << 36,
+    HardGoldShocker = 1L << 37,
+    HardBlueShocker = 1L << 38,
+    HardDireWolf = 1L << 39,
+    HardIceElemental = 1L << 40,
+    HardIceSkeleton = 1L << 41,
+    HardIceSpore = 1L << 42,
+    EpicKelberoth = 1L << 43,
+    EpicAncientDraco = 1L << 44,
+    EpicGreenMantis = 1L << 45,
+    EpicAncientHydra = 1L << 46
 }

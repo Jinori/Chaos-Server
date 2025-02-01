@@ -72,6 +72,7 @@ public class RevivePotionScript : ConfigurableItemScriptBase
         //Let's tell the player they have been revived
         source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are revived.");
         source.Refresh(true);
+        source.Display();
         source.Trackers.TimedEvents.AddEvent("revivepotion", TimeSpan.FromMinutes(15), true);
     }
 }

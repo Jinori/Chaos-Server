@@ -17,7 +17,9 @@ public sealed class MagicResistanceComponent : IComponent
     public void Execute(ActivationContext context, ComponentVars vars)
     {
         var userHit = context.Source.StatSheet.EffectiveHit;
-        var targets = vars.GetTargets<Creature>().ToList();
+
+        var targets = vars.GetTargets<Creature>()
+                          .ToList();
         var options = vars.GetOptions<IMagicResistanceComponentOptions>();
 
         // Immediately cast spell if ignoring magic resistance
@@ -35,9 +37,7 @@ public sealed class MagicResistanceComponent : IComponent
 
             // Step 3: Apply minimum hit chance threshold of 20%
             if (rawChanceToHit < 20)
-            {
                 rawChanceToHit = 20;
-            }
 
             // Step 4: Clamp the chance to hit between 0 and 100
             var finalChanceToHit = Math.Clamp(rawChanceToHit, 0, 100);

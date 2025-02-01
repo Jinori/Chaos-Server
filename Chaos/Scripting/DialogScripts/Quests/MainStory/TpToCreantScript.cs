@@ -28,11 +28,17 @@ public class TpToCreantScript : DialogScriptBase
     {
         if (source.MapInstance.Template.TemplateKey == "6599")
         {
+            // ❌ If ANYONE in the group has KilledMedusa or CompletedMedusa, return false
             if ((source.Group != null)
                 && source.Group.Any(
-                    x => (x.Trackers.Flags.HasFlag(CreantEnums.KilledMedusa)
-                          || x.Trackers.Flags.HasFlag(CreantEnums.CompletedMedusa))
-                         && !x.Trackers.Flags.HasFlag(MainstoryFlags.FinishedCreants)))
+                    x => x.Trackers.Flags.HasFlag(CreantEnums.KilledMedusa) || x.Trackers.Flags.HasFlag(CreantEnums.CompletedMedusa)))
+                return false;
+
+            // ❌ If ANYONE in the group does NOT have StartedCreants OR CreantRewards, return false
+            if ((source.Group != null)
+                && source.Group.Any(
+                    x => !x.Trackers.Enums.HasValue(MainstoryMasterEnums.StartedCreants)
+                         && !x.Trackers.Flags.HasFlag(MainstoryFlags.CreantRewards)))
                 return false;
         }
 
@@ -40,9 +46,14 @@ public class TpToCreantScript : DialogScriptBase
         {
             if ((source.Group != null)
                 && source.Group.Any(
-                    x => (x.Trackers.Flags.HasFlag(CreantEnums.KilledPhoenix)
-                          || x.Trackers.Flags.HasFlag(CreantEnums.CompletedPhoenix))
-                         && !x.Trackers.Flags.HasFlag(MainstoryFlags.FinishedCreants)))
+                    x => x.Trackers.Flags.HasFlag(CreantEnums.KilledPhoenix) || x.Trackers.Flags.HasFlag(CreantEnums.CompletedPhoenix)))
+                return false;
+
+            // ❌ If ANYONE in the group does NOT have StartedCreants OR CreantRewards, return false
+            if ((source.Group != null)
+                && source.Group.Any(
+                    x => !x.Trackers.Enums.HasValue(MainstoryMasterEnums.StartedCreants)
+                         && !x.Trackers.Flags.HasFlag(MainstoryFlags.CreantRewards)))
                 return false;
         }
 
@@ -50,9 +61,14 @@ public class TpToCreantScript : DialogScriptBase
         {
             if ((source.Group != null)
                 && source.Group.Any(
-                    x => (x.Trackers.Flags.HasFlag(CreantEnums.KilledSham)
-                          || x.Trackers.Flags.HasFlag(CreantEnums.CompletedSham))
-                         && !x.Trackers.Flags.HasFlag(MainstoryFlags.FinishedCreants)))
+                    x => x.Trackers.Flags.HasFlag(CreantEnums.KilledSham) || x.Trackers.Flags.HasFlag(CreantEnums.CompletedSham)))
+                return false;
+
+            // ❌ If ANYONE in the group does NOT have StartedCreants OR CreantRewards, return false
+            if ((source.Group != null)
+                && source.Group.Any(
+                    x => !x.Trackers.Enums.HasValue(MainstoryMasterEnums.StartedCreants)
+                         && !x.Trackers.Flags.HasFlag(MainstoryFlags.CreantRewards)))
                 return false;
         }
 
@@ -60,15 +76,19 @@ public class TpToCreantScript : DialogScriptBase
         {
             if ((source.Group != null)
                 && source.Group.Any(
-                    x => (x.Trackers.Flags.HasFlag(CreantEnums.KilledTauren)
-                          || x.Trackers.Flags.HasFlag(CreantEnums.CompletedTauren))
-                         && !x.Trackers.Flags.HasFlag(MainstoryFlags.FinishedCreants)))
+                    x => x.Trackers.Flags.HasFlag(CreantEnums.KilledTauren) || x.Trackers.Flags.HasFlag(CreantEnums.CompletedTauren)))
+                return false;
+
+            // ❌ If ANYONE in the group does NOT have StartedCreants OR CreantRewards, return false
+            if ((source.Group != null)
+                && source.Group.Any(
+                    x => !x.Trackers.Enums.HasValue(MainstoryMasterEnums.StartedCreants)
+                         && !x.Trackers.Flags.HasFlag(MainstoryFlags.CreantRewards)))
                 return false;
         }
 
         return true;
     }
-
 
     private bool IsGroupValid(Aisling source)
         => (source.Group != null) && !source.Group.Any(x => !x.OnSameMapAs(source) || !x.WithinRange(source));
@@ -84,7 +104,7 @@ public class TpToCreantScript : DialogScriptBase
             {
                 if (source.Trackers.Enums.HasValue(MainstoryMasterEnums.StartedCreants))
                     source.Trackers.Flags.AddFlag(CreantEnums.StartedPhoenix);
-                
+
                 var mapInstance = SimpleCache.Get<MapInstance>("phoenixbossroom");
 
                 var point = new Point(source.X, source.Y);
@@ -101,7 +121,7 @@ public class TpToCreantScript : DialogScriptBase
             {
                 if (source.Trackers.Enums.HasValue(MainstoryMasterEnums.StartedCreants))
                     source.Trackers.Flags.AddFlag(CreantEnums.StartedSham);
-                
+
                 var mapInstance = SimpleCache.Get<MapInstance>("shamensythbossroom");
 
                 var point = new Point(source.X, source.Y);
@@ -118,7 +138,7 @@ public class TpToCreantScript : DialogScriptBase
             {
                 if (source.Trackers.Enums.HasValue(MainstoryMasterEnums.StartedCreants))
                     source.Trackers.Flags.AddFlag(CreantEnums.StartedTauren);
-                
+
                 var mapInstance = SimpleCache.Get<MapInstance>("taurenbossroom");
 
                 var point = new Point(source.X, source.Y);
@@ -237,7 +257,7 @@ public class TpToCreantScript : DialogScriptBase
             {
                 if (member.Trackers.Enums.HasValue(MainstoryMasterEnums.StartedCreants))
                     member.Trackers.Flags.AddFlag(CreantEnums.StartedSham);
-                
+
                 var point = new Point(member.X, member.Y);
 
                 var dialog = member.ActiveDialog.Get();
@@ -256,7 +276,7 @@ public class TpToCreantScript : DialogScriptBase
             {
                 if (member.Trackers.Enums.HasValue(MainstoryMasterEnums.StartedCreants))
                     member.Trackers.Flags.AddFlag(CreantEnums.StartedTauren);
-                
+
                 var point = new Point(member.X, member.Y);
 
                 var dialog = member.ActiveDialog.Get();
@@ -275,7 +295,7 @@ public class TpToCreantScript : DialogScriptBase
             {
                 if (member.Trackers.Enums.HasValue(MainstoryMasterEnums.StartedCreants))
                     member.Trackers.Flags.AddFlag(CreantEnums.StartedMedusa);
-                
+
                 var point = new Point(member.X, member.Y);
 
                 var dialog = member.ActiveDialog.Get();

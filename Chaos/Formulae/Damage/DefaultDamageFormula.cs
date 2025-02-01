@@ -73,7 +73,7 @@ public class DefaultDamageFormula : IDamageFormula
         HandleAite(ref damage, target);
         HandleWeaponDamage(ref damage, source);
         HandleDmgStat(ref damage, script, source);
-        HandleEffectDmg(ref damage, target);
+        HandleEffectDmg(ref damage, target, script);
 
         return damage;
     }
@@ -194,14 +194,27 @@ public class DefaultDamageFormula : IDamageFormula
         damage = (int)(damage * damageMultiplier);
     }
 
-    protected virtual void HandleEffectDmg(ref int damage, Creature defender)
+    protected virtual void HandleEffectDmg(ref int damage, Creature defender, IScript script)
     {
         var damageMultiplier = 1.0;
 
         if (defender.Effects.Contains("Beag Pramh"))
             damageMultiplier *= 1.25;
 
-        if (defender.Effects.Contains("Wolf Fang Fist") || defender.Effects.Contains("Crit") || defender.Effects.Contains("Pramh"))
+        if (defender.Effects.Contains("Crit"))
+        {
+            if (script is SubjectiveScriptBase<Skill> skillScript && !skillScript.Subject.Template.IsAssail)
+            {
+                damageMultiplier *= 2; // Double damage for Crit
+                defender.Effects.Dispel("Crit"); // ✅ Remove Crit effect
+            } else if (script is SubjectiveScriptBase<Spell>)
+            {
+                damageMultiplier *= 2; // ✅ Double damage for non-Assail spells too
+                defender.Effects.Dispel("Crit"); // ✅ Remove Crit effect
+            }
+        }
+
+        if (defender.Effects.Contains("Wolf Fang Fist") || defender.Effects.Contains("Pramh"))
             damageMultiplier *= 2.0;
         var modifiedDamage = damage * damageMultiplier;
 
