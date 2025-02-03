@@ -41,7 +41,7 @@ public class cowPortal : ReactorTileScriptBase
         {
             if (source is not Aisling aisling)
                 return;
-            
+
             var targetMap = SimpleCache.Get<MapInstance>("secret_cow_level");
 
             var rectangle = new Rectangle(
@@ -49,35 +49,37 @@ public class cowPortal : ReactorTileScriptBase
                 65,
                 5,
                 5);
-            
+
             var point = rectangle.GetRandomPoint();
 
             if (aisling.IsGodModeEnabled())
-            {
                 aisling.TraverseMap(targetMap, point);
-            }
 
             if ((aisling?.Name == owner.Name) && aisling.Trackers.Enums.HasValue(ClassStatBracket.Grandmaster))
             {
                 aisling.TraverseMap(targetMap, point);
+
                 return;
             }
 
             if ((aisling?.Group != null) && !aisling.Group.Contains(owner))
             {
                 aisling.SendOrangeBarMessage("This portal is for another group.");
+
                 return;
             }
 
             if (aisling?.Group == null)
             {
                 aisling?.SendOrangeBarMessage("You must be grouped with the player who opened the portal.");
+
                 return;
             }
-            
-            if (source.Trackers.Enums.HasValue(ClassStatBracket.Grandmaster))
+
+            if (!source.Trackers.Enums.HasValue(ClassStatBracket.Grandmaster))
             {
-                aisling.SendOrangeBarMessage($"That portal looks really dangerous. (Grandmaster to enter)");
+                aisling.SendOrangeBarMessage("That portal looks really dangerous. (Grandmaster to enter)");
+
                 return;
             }
 

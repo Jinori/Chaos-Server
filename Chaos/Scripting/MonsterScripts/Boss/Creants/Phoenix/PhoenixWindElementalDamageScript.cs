@@ -14,7 +14,7 @@ public class PhoenixWindElementalDamageScript : MonsterScriptBase
 {
     private readonly IApplyDamageScript ApplyDamageScript = ApplyNonAttackDamageScript.Create();
     private readonly IIntervalTimer DamageTimer = new IntervalTimer(TimeSpan.FromMilliseconds(100));
-    
+
     /// <inheritdoc />
     public PhoenixWindElementalDamageScript(Monster subject)
         : base(subject) { }
@@ -33,15 +33,20 @@ public class PhoenixWindElementalDamageScript : MonsterScriptBase
             foreach (var aisling in nearbyAislings)
             {
                 var distance = Subject.ManhattanDistanceFrom(aisling);
+
                 var damage = distance switch
                 {
                     0 => MathEx.GetPercentOf<int>((int)aisling.StatSheet.EffectiveMaximumHp, 5),
-                    1 => MathEx.GetPercentOf<int>((int)aisling.StatSheet.EffectiveMaximumHp, 4),
-                    2 => MathEx.GetPercentOf<int>((int)aisling.StatSheet.EffectiveMaximumHp, 3),
+                    1 => MathEx.GetPercentOf<int>((int)aisling.StatSheet.EffectiveMaximumHp, 3),
+                    2 => MathEx.GetPercentOf<int>((int)aisling.StatSheet.EffectiveMaximumHp, 1.5m),
                     _ => 0
                 };
-                
-                ApplyDamageScript.ApplyDamage(Subject, aisling, this, damage);
+
+                ApplyDamageScript.ApplyDamage(
+                    Subject,
+                    aisling,
+                    this,
+                    damage);
             }
         }
     }

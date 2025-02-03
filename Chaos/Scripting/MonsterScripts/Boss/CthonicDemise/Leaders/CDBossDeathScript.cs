@@ -238,7 +238,7 @@ public class CdBossDeathScript : MonsterScriptBase
 
                     if (Subject.Template.TemplateKey == "darkmasterwanda")
                         if (target.UserStatSheet.BaseClass == BaseClass.Wizard)
-                            if (!target.SpellBook.ContainsByTemplateKey("chainlightning"))
+                            if (!target.SpellBook.ContainsByTemplateKey("tidalwave"))
                             {
                                 var spell = SpellFactory.Create("tidalwave");
                                 target.SpellBook.TryAddToNextSlot(spell);

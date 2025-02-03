@@ -2,6 +2,7 @@ using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
 using Chaos.Formulae.Abstractions;
+using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 
 namespace Chaos.Formulae.Regen;
@@ -27,12 +28,15 @@ public sealed class DefaultRegenFormula : IRegenFormula
         if (creature.Effects.Contains("Poison") || creature.Effects.Contains("Miasma"))
             return 0;
 
+        if (creature is Monster)
+            return MathEx.GetPercentOf<int>((int)creature.StatSheet.EffectiveMaximumHp, 1.5m);
+
         // Base health regeneration %
-        decimal healthRegenPercent = BASE_HP_REGEN_PERCENT;
+        var healthRegenPercent = BASE_HP_REGEN_PERCENT;
 
         // Add Constitution-based bonus
         var con = creature.StatSheet.GetEffectiveStat(Stat.CON);
-        healthRegenPercent += (con / (decimal)MAX_STAT) * MAX_CON_BONUS;
+        healthRegenPercent += con / (decimal)MAX_STAT * MAX_CON_BONUS;
 
         // Apply InnerFire bonus
         if (creature.IsInnerFired())
@@ -48,17 +52,20 @@ public sealed class DefaultRegenFormula : IRegenFormula
         // Calculate regeneration value based on effective max HP
         return MathEx.GetPercentOf<int>((int)creature.StatSheet.EffectiveMaximumHp, healthRegenPercent);
     }
+
+    public int CalculateIntervalSecs(Creature creature) => 8;
+
     public int CalculateManaRegen(Creature creature)
     {
         if (creature.StatSheet.ManaPercent == 100)
             return 0;
 
         // Base mana regeneration %
-        decimal manaRegenPercent = BASE_MP_REGEN_PERCENT;
+        var manaRegenPercent = BASE_MP_REGEN_PERCENT;
 
         // Add Wisdom-based bonus
         var wis = creature.StatSheet.GetEffectiveStat(Stat.WIS);
-        manaRegenPercent += (wis / (decimal)MAX_STAT) * MAX_WIS_BONUS;
+        manaRegenPercent += wis / (decimal)MAX_STAT * MAX_WIS_BONUS;
 
         // Apply HotChocolate bonus
         if (creature.IsHotChocolated())
@@ -70,5 +77,4 @@ public sealed class DefaultRegenFormula : IRegenFormula
         // Calculate regeneration value based on effective max MP
         return MathEx.GetPercentOf<int>((int)creature.StatSheet.EffectiveMaximumMp, manaRegenPercent);
     }
-    public int CalculateIntervalSecs(Creature creature) => 8;
 }

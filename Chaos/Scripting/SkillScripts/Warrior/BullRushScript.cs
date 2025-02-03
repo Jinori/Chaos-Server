@@ -4,7 +4,6 @@ using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -44,6 +43,11 @@ public class BullRushScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public decimal? DamageStatMultiplier { get; init; }
+
+    public int? EffectApplyChance { get; init; }
+    public TimeSpan? EffectDurationOverride { get; init; }
+    public IEffectFactory EffectFactory { get; init; }
+    public string? EffectKey { get; init; }
 
     /// <inheritdoc />
     public Element? Element { get; init; }
@@ -102,9 +106,10 @@ public class BullRushScript : ConfigurableSkillScriptBase,
     public bool? SurroundingTargets { get; init; }
 
     /// <inheritdoc />
-    public BullRushScript(Skill subject)
+    public BullRushScript(Skill subject, IEffectFactory effectFactory)
         : base(subject)
     {
+        EffectFactory = effectFactory;
         ApplyDamageScript = ApplyAttackDamageScript.Create();
     }
 
@@ -164,9 +169,4 @@ public class BullRushScript : ConfigurableSkillScriptBase,
         // If no creature was found, warp the source to the endpoint
         context.Source.WarpTo(endPoint);
     }
-
-    public int? EffectApplyChance { get; init; }
-    public TimeSpan? EffectDurationOverride { get; init; }
-    public IEffectFactory EffectFactory { get; init; }
-    public string? EffectKey { get; init; }
 }
