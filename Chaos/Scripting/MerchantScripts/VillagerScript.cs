@@ -640,10 +640,21 @@ public class VillagerScript : MerchantScriptBase
         { "Arena Participant", "I hear the arena is a scary place" },
         { "Loved by Mileth Mundanes", "Wow, you're popular around Mileth" },
         { "Loved by Abel Mundanes", "Pretty helpful around Abel I see." },
+        { "Loved by Undine Mundanes", "Your legacy from Undine proceeds you." },
+        { "Loved by Rucesion Mundanes", "Rucesion says you're helpful." },
         { "Inspired Fisk to Reach for the Stars", "Thanks for helping Fisk!" },
         { "Helped the Eingren Manor's Plumber", "You've dispatched a lot of ghosts!" },
         { "Cured the Sick Child of Loures", "Thanks for helping that girl in Loures." },
-        { "Successfully conquered their Nightmares", "I had a bad nightmare once too." }
+        { "Successfully conquered their Nightmares", "I had a bad nightmare once too." },
+        { "Sealed away the Lady Phoenix Creant", "Lady Phoenix got hammered by you.." },
+        { "Sealed away the Tauren Creant", "You did WHAT to Tauren?" },
+        { "Sealed away the Medusa Creant", "Medusa controlled snakes? Glad shes gone." },
+        { "Sealed away the Shamensyth Creant", "You stoked Shamensyth's fire!" },
+        { "Protected the Lynith Pirate Ship from Sea Monsters", "That pirate ship owes you big time." },
+        { "Controlled the Mileth Crypt Population", "Thanks for cleaning up the crypts!" },
+        { "Completed the Pentagram Quest", "Woah! You defeated Soul Eater?!" },
+        { "Ended the Feud of Mythic", "You conquered Mythic? Awesome." },
+        { "Stolen Zulera's Heirloom", "You took Zulera's necklace? That's mean." },
     };
 
     #endregion TrackedLegendMarks

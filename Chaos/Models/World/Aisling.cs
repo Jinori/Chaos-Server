@@ -702,16 +702,24 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         if (!Script.CanTalk())
             return;
 
+        
+        if (publicMessageType == PublicMessageType.Chant && Trackers.LastUsedSkill?.Template.IsAssail == true)
+        {
+            base.ShowPublicMessage(publicMessageType, message);
+            return;
+        }
+        
         Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Message, Topics.Actions.Send)
-              .WithProperty(this)
-              .LogInformation(
-                  "Aisling {@AislingName} sent {@Type} message {@Message}",
-                  Name,
-                  publicMessageType,
-                  message);
+            .WithProperty(this)
+            .LogInformation(
+                "Aisling {@AislingName} sent {@Type} message {@Message}",
+                Name,
+                publicMessageType,
+                message);
 
         base.ShowPublicMessage(publicMessageType, message);
     }
+
 
     public override void ShowTo(Aisling aisling) => aisling.Client.SendDisplayAisling(this);
 
