@@ -1,3 +1,4 @@
+using System.Text;
 using Chaos.Definitions;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
@@ -11,604 +12,42 @@ public class BountyBoardDialogScript(Dialog subject, ILogger<BountyBoardDialogSc
 {
     private static readonly Random Random = new();
 
-    // Dictionary of bounty options
-    private static readonly
-        Dictionary<string, (string MonsterKey, int KillRequirement, BountyBoardKill1 KillEnum, BountyBoardFlags DifficultyFlag,
-            BountyBoardOptions BountyOption )> BountyOptions1 = new()
-        {
-            // Easy Tier
-            {
-                "Hunt 100 Ancient Skeletons (Easy)",
-                ("ancientskeleton", 100, BountyBoardKill1.AncientSkeleton, BountyBoardFlags.Easy1, BountyBoardOptions.EasyAncientSkeleton)
-            },
-            {
-                "Hunt 100 Ancient Beetalics (Easy)",
-                ("ancientbeetalic", 100, BountyBoardKill1.AncientBeetalic, BountyBoardFlags.Easy1, BountyBoardOptions.EasyAncientBeetalic)
-            },
-            {
-                "Hunt 100 Losganns (Easy)",
-                ("losgann", 100, BountyBoardKill1.Losgann, BountyBoardFlags.Easy1, BountyBoardOptions.EasyLosgann)
-            },
-            {
-                "Hunt 100 Ruidhtears (Easy)",
-                ("ruidhtear", 100, BountyBoardKill1.Ruidhtear, BountyBoardFlags.Easy1, BountyBoardOptions.EasyRuidhtear)
-            },
-            {
-                "Hunt 100 Brown Mantises (Easy)",
-                ("brownmantis", 100, BountyBoardKill1.BrownMantis, BountyBoardFlags.Easy1, BountyBoardOptions.EasyBrownMantis)
-            },
-            {
-                "Hunt 100 Gold Beetalics (Easy)",
-                ("goldbeetalic", 100, BountyBoardKill1.GoldBeetalic, BountyBoardFlags.Easy1, BountyBoardOptions.EasyGoldBeetalic)
-            },
-            {
-                "Hunt 100 Red Shockers (Easy)",
-                ("redshocker", 100, BountyBoardKill1.RedShocker, BountyBoardFlags.Easy1, BountyBoardOptions.EasyRedShocker)
-            },
-            {
-                "Hunt 100 Black Shockers (Easy)",
-                ("blackshocker", 100, BountyBoardKill1.BlackShocker, BountyBoardFlags.Easy1, BountyBoardOptions.EasyBlackShocker)
-            },
-            {
-                "Hunt 100 Gold Shockers (Easy)",
-                ("goldshocker", 100, BountyBoardKill1.GoldShocker, BountyBoardFlags.Easy1, BountyBoardOptions.EasyGoldShocker)
-            },
-            {
-                "Hunt 100 Blue Shockers (Easy)",
-                ("blueshocker", 100, BountyBoardKill1.BlueShocker, BountyBoardFlags.Easy1, BountyBoardOptions.EasyBlueShocker)
-            },
-            {
-                "Hunt 100 Dire Wolves (Easy)",
-                ("direwolf", 100, BountyBoardKill1.DireWolf, BountyBoardFlags.Easy1, BountyBoardOptions.EasyDireWolf)
-            },
-            {
-                "Hunt 100 Ice Elementals (Easy)",
-                ("iceelemental", 100, BountyBoardKill1.IceElemental, BountyBoardFlags.Easy1, BountyBoardOptions.EasyIceElemental)
-            },
-            {
-                "Hunt 100 Ice Skeletons (Easy)",
-                ("iceskeleton", 100, BountyBoardKill1.IceSkeleton, BountyBoardFlags.Easy1, BountyBoardOptions.EasyIceSkeleton)
-            },
-            {
-                "Hunt 100 Ice Spores (Easy)",
-                ("icespore", 100, BountyBoardKill1.IceSpore, BountyBoardFlags.Easy1, BountyBoardOptions.EasyIceSpore)
-            },
-
-            // Medium Tier
-            {
-                "Hunt 500 Ancient Skeletons (Medium)",
-                ("ancientskeleton", 500, BountyBoardKill1.AncientSkeleton, BountyBoardFlags.Medium1,
-                    BountyBoardOptions.MediumAncientSkeleton)
-            },
-            {
-                "Hunt 500 Ancient Beetalics (Medium)",
-                ("ancientbeetalic", 500, BountyBoardKill1.AncientBeetalic, BountyBoardFlags.Medium1,
-                    BountyBoardOptions.MediumAncientBeetalic)
-            },
-            {
-                "Hunt 500 Losganns (Medium)",
-                ("losgann", 500, BountyBoardKill1.Losgann, BountyBoardFlags.Medium1, BountyBoardOptions.MediumLosgann)
-            },
-            {
-                "Hunt 500 Ruidhtears (Medium)",
-                ("ruidhtear", 500, BountyBoardKill1.Ruidhtear, BountyBoardFlags.Medium1, BountyBoardOptions.MediumRuidhtear)
-            },
-            {
-                "Hunt 500 Brown Mantises (Medium)",
-                ("brownmantis", 500, BountyBoardKill1.BrownMantis, BountyBoardFlags.Medium1, BountyBoardOptions.MediumBrownMantis)
-            },
-            {
-                "Hunt 500 Gold Beetalics (Medium)",
-                ("goldbeetalic", 500, BountyBoardKill1.GoldBeetalic, BountyBoardFlags.Medium1, BountyBoardOptions.MediumGoldBeetalic)
-            },
-            {
-                "Hunt 500 Red Shockers (Medium)",
-                ("redshocker", 500, BountyBoardKill1.RedShocker, BountyBoardFlags.Medium1, BountyBoardOptions.MediumRedShocker)
-            },
-            {
-                "Hunt 500 Black Shockers (Medium)",
-                ("blackshocker", 500, BountyBoardKill1.BlackShocker, BountyBoardFlags.Medium1, BountyBoardOptions.MediumBlackShocker)
-            },
-            {
-                "Hunt 500 Gold Shockers (Medium)",
-                ("goldshocker", 500, BountyBoardKill1.GoldShocker, BountyBoardFlags.Medium1, BountyBoardOptions.MediumGoldShocker)
-            },
-            {
-                "Hunt 500 Blue Shockers (Medium)",
-                ("blueshocker", 500, BountyBoardKill1.BlueShocker, BountyBoardFlags.Medium1, BountyBoardOptions.MediumBlueShocker)
-            },
-            {
-                "Hunt 500 Dire Wolves (Medium)",
-                ("direwolf", 500, BountyBoardKill1.DireWolf, BountyBoardFlags.Medium1, BountyBoardOptions.MediumDireWolf)
-            },
-            {
-                "Hunt 500 Ice Elementals (Medium)",
-                ("iceelemental", 500, BountyBoardKill1.IceElemental, BountyBoardFlags.Medium1, BountyBoardOptions.MediumIceElemental)
-            },
-            {
-                "Hunt 500 Ice Skeletons (Medium)",
-                ("iceskeleton", 500, BountyBoardKill1.IceSkeleton, BountyBoardFlags.Medium1, BountyBoardOptions.MediumIceSkeleton)
-            },
-            {
-                "Hunt 500 Ice Spores (Medium)",
-                ("icespore", 500, BountyBoardKill1.IceSpore, BountyBoardFlags.Medium1, BountyBoardOptions.MediumIceSpore)
-            },
-
-            // Hard Tier
-            {
-                "Hunt 1000 Ancient Skeletons (Hard)",
-                ("ancientskeleton", 1000, BountyBoardKill1.AncientSkeleton, BountyBoardFlags.Hard1, BountyBoardOptions.HardAncientSkeleton)
-            },
-            {
-                "Hunt 1000 Ancient Beetalics (Hard)",
-                ("ancientbeetalic", 1000, BountyBoardKill1.AncientBeetalic, BountyBoardFlags.Hard1, BountyBoardOptions.HardAncientBeetalic)
-            },
-            {
-                "Hunt 1000 Losganns (Hard)",
-                ("losgann", 1000, BountyBoardKill1.Losgann, BountyBoardFlags.Hard1, BountyBoardOptions.HardLosgann)
-            },
-            {
-                "Hunt 1000 Ruidhtears (Hard)",
-                ("ruidhtear", 1000, BountyBoardKill1.Ruidhtear, BountyBoardFlags.Hard1, BountyBoardOptions.HardRuidhtear)
-            },
-            {
-                "Hunt 1000 Brown Mantises (Hard)",
-                ("brownmantis", 1000, BountyBoardKill1.BrownMantis, BountyBoardFlags.Hard1, BountyBoardOptions.HardBrownMantis)
-            },
-            {
-                "Hunt 1000 Gold Beetalics (Hard)",
-                ("goldbeetalic", 1000, BountyBoardKill1.GoldBeetalic, BountyBoardFlags.Hard1, BountyBoardOptions.HardGoldBeetalic)
-            },
-            {
-                "Hunt 1000 Red Shockers (Hard)",
-                ("redshocker", 1000, BountyBoardKill1.RedShocker, BountyBoardFlags.Hard1, BountyBoardOptions.HardRedShocker)
-            },
-            {
-                "Hunt 1000 Black Shockers (Hard)",
-                ("blackshocker", 1000, BountyBoardKill1.BlackShocker, BountyBoardFlags.Hard1, BountyBoardOptions.HardBlackShocker)
-            },
-            {
-                "Hunt 1000 Gold Shockers (Hard)",
-                ("goldshocker", 1000, BountyBoardKill1.GoldShocker, BountyBoardFlags.Hard1, BountyBoardOptions.HardGoldShocker)
-            },
-            {
-                "Hunt 1000 Blue Shockers (Hard)",
-                ("blueshocker", 1000, BountyBoardKill1.BlueShocker, BountyBoardFlags.Hard1, BountyBoardOptions.HardBlueShocker)
-            },
-            {
-                "Hunt 1000 Dire Wolves (Hard)",
-                ("direwolf", 1000, BountyBoardKill1.DireWolf, BountyBoardFlags.Hard1, BountyBoardOptions.HardDireWolf)
-            },
-            {
-                "Hunt 1000 Ice Elementals (Hard)",
-                ("iceelemental", 1000, BountyBoardKill1.IceElemental, BountyBoardFlags.Hard1, BountyBoardOptions.HardIceElemental)
-            },
-            {
-                "Hunt 1000 Ice Skeletons (Hard)",
-                ("iceskeleton", 1000, BountyBoardKill1.IceSkeleton, BountyBoardFlags.Hard1, BountyBoardOptions.HardIceSkeleton)
-            },
-            {
-                "Hunt 1000 Ice Spores (Hard)",
-                ("icespore", 1000, BountyBoardKill1.IceSpore, BountyBoardFlags.Hard1, BountyBoardOptions.HardIceSpore)
-            },
-
-            // Epic Tier
-            {
-                "Hunt 25 Kelberoths (Epic)",
-                ("kelberoth", 25, BountyBoardKill1.Kelberoth, BountyBoardFlags.Epic1, BountyBoardOptions.EpicKelberoth)
-            },
-            {
-                "Hunt 25 Ancient Dracos (Epic)",
-                ("ancientdraco", 25, BountyBoardKill1.AncientDraco, BountyBoardFlags.Epic1, BountyBoardOptions.EpicAncientDraco)
-            },
-            {
-                "Hunt 25 Green Mantises (Epic)",
-                ("greenmantis", 25, BountyBoardKill1.GreenMantis, BountyBoardFlags.Epic1, BountyBoardOptions.EpicGreenMantis)
-            },
-            {
-                "Hunt 25 Ancient Hydra (Epic)",
-                ("ancienthydra", 25, BountyBoardKill1.AncientHydra, BountyBoardFlags.Epic1, BountyBoardOptions.EpicAncientHydra)
-            }
-        };
-
-    private static readonly
-        Dictionary<string, (string MonsterKey, int KillRequirement, BountyBoardKill2 KillEnum, BountyBoardFlags DifficultyFlag,
-            BountyBoardOptions BountyOption )> BountyOptions2 = new()
-        {
-            // Easy Tier
-            {
-                "Hunt 100 Ancient Skeletons (Easy)",
-                ("ancientskeleton", 100, BountyBoardKill2.AncientSkeleton, BountyBoardFlags.Easy2, BountyBoardOptions.EasyAncientSkeleton)
-            },
-            {
-                "Hunt 100 Ancient Beetalics (Easy)",
-                ("ancientbeetalic", 100, BountyBoardKill2.AncientBeetalic, BountyBoardFlags.Easy2, BountyBoardOptions.EasyAncientBeetalic)
-            },
-            {
-                "Hunt 100 Losganns (Easy)",
-                ("losgann", 100, BountyBoardKill2.Losgann, BountyBoardFlags.Easy2, BountyBoardOptions.EasyLosgann)
-            },
-            {
-                "Hunt 100 Ruidhtears (Easy)",
-                ("ruidhtear", 100, BountyBoardKill2.Ruidhtear, BountyBoardFlags.Easy2, BountyBoardOptions.EasyRuidhtear)
-            },
-            {
-                "Hunt 100 Brown Mantises (Easy)",
-                ("brownmantis", 100, BountyBoardKill2.BrownMantis, BountyBoardFlags.Easy2, BountyBoardOptions.EasyBrownMantis)
-            },
-            {
-                "Hunt 100 Gold Beetalics (Easy)",
-                ("goldbeetalic", 100, BountyBoardKill2.GoldBeetalic, BountyBoardFlags.Easy2, BountyBoardOptions.EasyGoldBeetalic)
-            },
-            {
-                "Hunt 100 Red Shockers (Easy)",
-                ("redshocker", 100, BountyBoardKill2.RedShocker, BountyBoardFlags.Easy2, BountyBoardOptions.EasyRedShocker)
-            },
-            {
-                "Hunt 100 Black Shockers (Easy)",
-                ("blackshocker", 100, BountyBoardKill2.BlackShocker, BountyBoardFlags.Easy2, BountyBoardOptions.EasyBlackShocker)
-            },
-            {
-                "Hunt 100 Gold Shockers (Easy)",
-                ("goldshocker", 100, BountyBoardKill2.GoldShocker, BountyBoardFlags.Easy2, BountyBoardOptions.EasyGoldShocker)
-            },
-            {
-                "Hunt 100 Blue Shockers (Easy)",
-                ("blueshocker", 100, BountyBoardKill2.BlueShocker, BountyBoardFlags.Easy2, BountyBoardOptions.EasyBlueShocker)
-            },
-            {
-                "Hunt 100 Dire Wolves (Easy)",
-                ("direwolf", 100, BountyBoardKill2.DireWolf, BountyBoardFlags.Easy2, BountyBoardOptions.EasyDireWolf)
-            },
-            {
-                "Hunt 100 Ice Elementals (Easy)",
-                ("iceelemental", 100, BountyBoardKill2.IceElemental, BountyBoardFlags.Easy2, BountyBoardOptions.EasyIceElemental)
-            },
-            {
-                "Hunt 100 Ice Skeletons (Easy)",
-                ("iceskeleton", 100, BountyBoardKill2.IceSkeleton, BountyBoardFlags.Easy2, BountyBoardOptions.EasyIceSkeleton)
-            },
-            {
-                "Hunt 100 Ice Spores (Easy)",
-                ("icespore", 100, BountyBoardKill2.IceSpore, BountyBoardFlags.Easy2, BountyBoardOptions.EasyIceSpore)
-            },
-
-            // Medium Tier
-            {
-                "Hunt 500 Ancient Skeletons (Medium)",
-                ("ancientskeleton", 500, BountyBoardKill2.AncientSkeleton, BountyBoardFlags.Medium2,
-                    BountyBoardOptions.MediumAncientSkeleton)
-            },
-            {
-                "Hunt 500 Ancient Beetalics (Medium)",
-                ("ancientbeetalic", 500, BountyBoardKill2.AncientBeetalic, BountyBoardFlags.Medium2,
-                    BountyBoardOptions.MediumAncientBeetalic)
-            },
-            {
-                "Hunt 500 Losganns (Medium)",
-                ("losgann", 500, BountyBoardKill2.Losgann, BountyBoardFlags.Medium2, BountyBoardOptions.MediumLosgann)
-            },
-            {
-                "Hunt 500 Ruidhtears (Medium)",
-                ("ruidhtear", 500, BountyBoardKill2.Ruidhtear, BountyBoardFlags.Medium2, BountyBoardOptions.MediumRuidhtear)
-            },
-            {
-                "Hunt 500 Brown Mantises (Medium)",
-                ("brownmantis", 500, BountyBoardKill2.BrownMantis, BountyBoardFlags.Medium2, BountyBoardOptions.MediumBrownMantis)
-            },
-            {
-                "Hunt 500 Gold Beetalics (Medium)",
-                ("goldbeetalic", 500, BountyBoardKill2.GoldBeetalic, BountyBoardFlags.Medium2, BountyBoardOptions.MediumGoldBeetalic)
-            },
-            {
-                "Hunt 500 Red Shockers (Medium)",
-                ("redshocker", 500, BountyBoardKill2.RedShocker, BountyBoardFlags.Medium2, BountyBoardOptions.MediumRedShocker)
-            },
-            {
-                "Hunt 500 Black Shockers (Medium)",
-                ("blackshocker", 500, BountyBoardKill2.BlackShocker, BountyBoardFlags.Medium2, BountyBoardOptions.MediumBlackShocker)
-            },
-            {
-                "Hunt 500 Gold Shockers (Medium)",
-                ("goldshocker", 500, BountyBoardKill2.GoldShocker, BountyBoardFlags.Medium2, BountyBoardOptions.MediumGoldShocker)
-            },
-            {
-                "Hunt 500 Blue Shockers (Medium)",
-                ("blueshocker", 500, BountyBoardKill2.BlueShocker, BountyBoardFlags.Medium2, BountyBoardOptions.MediumBlueShocker)
-            },
-            {
-                "Hunt 500 Dire Wolves (Medium)",
-                ("direwolf", 500, BountyBoardKill2.DireWolf, BountyBoardFlags.Medium2, BountyBoardOptions.MediumDireWolf)
-            },
-            {
-                "Hunt 500 Ice Elementals (Medium)",
-                ("iceelemental", 500, BountyBoardKill2.IceElemental, BountyBoardFlags.Medium2, BountyBoardOptions.MediumIceElemental)
-            },
-            {
-                "Hunt 500 Ice Skeletons (Medium)",
-                ("iceskeleton", 500, BountyBoardKill2.IceSkeleton, BountyBoardFlags.Medium2, BountyBoardOptions.MediumIceSkeleton)
-            },
-            {
-                "Hunt 500 Ice Spores (Medium)",
-                ("icespore", 500, BountyBoardKill2.IceSpore, BountyBoardFlags.Medium2, BountyBoardOptions.MediumIceSpore)
-            },
-
-            // Hard Tier
-            {
-                "Hunt 1000 Ancient Skeletons (Hard)",
-                ("ancientskeleton", 1000, BountyBoardKill2.AncientSkeleton, BountyBoardFlags.Hard2, BountyBoardOptions.HardAncientSkeleton)
-            },
-            {
-                "Hunt 1000 Ancient Beetalics (Hard)",
-                ("ancientbeetalic", 1000, BountyBoardKill2.AncientBeetalic, BountyBoardFlags.Hard2, BountyBoardOptions.HardAncientBeetalic)
-            },
-            {
-                "Hunt 1000 Losganns (Hard)",
-                ("losgann", 1000, BountyBoardKill2.Losgann, BountyBoardFlags.Hard2, BountyBoardOptions.HardLosgann)
-            },
-            {
-                "Hunt 1000 Ruidhtears (Hard)",
-                ("ruidhtear", 1000, BountyBoardKill2.Ruidhtear, BountyBoardFlags.Hard2, BountyBoardOptions.HardRuidhtear)
-            },
-            {
-                "Hunt 1000 Brown Mantises (Hard)",
-                ("brownmantis", 1000, BountyBoardKill2.BrownMantis, BountyBoardFlags.Hard2, BountyBoardOptions.HardBrownMantis)
-            },
-            {
-                "Hunt 1000 Gold Beetalics (Hard)",
-                ("goldbeetalic", 1000, BountyBoardKill2.GoldBeetalic, BountyBoardFlags.Hard2, BountyBoardOptions.HardGoldBeetalic)
-            },
-            {
-                "Hunt 1000 Red Shockers (Hard)",
-                ("redshocker", 1000, BountyBoardKill2.RedShocker, BountyBoardFlags.Hard2, BountyBoardOptions.HardRedShocker)
-            },
-            {
-                "Hunt 1000 Black Shockers (Hard)",
-                ("blackshocker", 1000, BountyBoardKill2.BlackShocker, BountyBoardFlags.Hard2, BountyBoardOptions.HardBlackShocker)
-            },
-            {
-                "Hunt 1000 Gold Shockers (Hard)",
-                ("goldshocker", 1000, BountyBoardKill2.GoldShocker, BountyBoardFlags.Hard2, BountyBoardOptions.HardGoldShocker)
-            },
-            {
-                "Hunt 1000 Blue Shockers (Hard)",
-                ("blueshocker", 1000, BountyBoardKill2.BlueShocker, BountyBoardFlags.Hard2, BountyBoardOptions.HardBlueShocker)
-            },
-            {
-                "Hunt 1000 Dire Wolves (Hard)",
-                ("direwolf", 1000, BountyBoardKill2.DireWolf, BountyBoardFlags.Hard2, BountyBoardOptions.HardDireWolf)
-            },
-            {
-                "Hunt 1000 Ice Elementals (Hard)",
-                ("iceelemental", 1000, BountyBoardKill2.IceElemental, BountyBoardFlags.Hard2, BountyBoardOptions.HardIceElemental)
-            },
-            {
-                "Hunt 1000 Ice Skeletons (Hard)",
-                ("iceskeleton", 1000, BountyBoardKill2.IceSkeleton, BountyBoardFlags.Hard2, BountyBoardOptions.HardIceSkeleton)
-            },
-            {
-                "Hunt 1000 Ice Spores (Hard)",
-                ("icespore", 1000, BountyBoardKill2.IceSpore, BountyBoardFlags.Hard2, BountyBoardOptions.HardIceSpore)
-            },
-
-            // Epic Tier
-            {
-                "Hunt 25 Kelberoths (Epic)",
-                ("kelberoth", 25, BountyBoardKill2.Kelberoth, BountyBoardFlags.Epic2, BountyBoardOptions.EpicKelberoth)
-            },
-            {
-                "Hunt 25 Ancient Dracos (Epic)",
-                ("ancientdraco", 25, BountyBoardKill2.AncientDraco, BountyBoardFlags.Epic2, BountyBoardOptions.EpicAncientDraco)
-            },
-            {
-                "Hunt 25 Green Mantis (Epic)",
-                ("greenmantis", 25, BountyBoardKill2.GreenMantis, BountyBoardFlags.Epic2, BountyBoardOptions.EpicGreenMantis)
-            },
-            {
-                "Hunt 25 Ancient Hydra (Epic)",
-                ("ancienthydra", 25, BountyBoardKill2.AncientHydra, BountyBoardFlags.Epic2, BountyBoardOptions.EpicAncientHydra)
-            }
-        };
-
-    private static readonly
-        Dictionary<string, (string MonsterKey, int KillRequirement, BountyBoardKill3 KillEnum, BountyBoardFlags DifficultyFlag,
-            BountyBoardOptions BountyOption )> BountyOptions3 = new()
-        {
-            // Easy Tier
-            {
-                "Hunt 100 Ancient Skeletons (Easy)",
-                ("ancientskeleton", 100, BountyBoardKill3.AncientSkeleton, BountyBoardFlags.Easy3, BountyBoardOptions.EasyAncientSkeleton)
-            },
-            {
-                "Hunt 100 Ancient Beetalics (Easy)",
-                ("ancientbeetalic", 100, BountyBoardKill3.AncientBeetalic, BountyBoardFlags.Easy3, BountyBoardOptions.EasyAncientBeetalic)
-            },
-            {
-                "Hunt 100 Losganns (Easy)",
-                ("losgann", 100, BountyBoardKill3.Losgann, BountyBoardFlags.Easy3, BountyBoardOptions.EasyLosgann)
-            },
-            {
-                "Hunt 100 Ruidhtears (Easy)",
-                ("ruidhtear", 100, BountyBoardKill3.Ruidhtear, BountyBoardFlags.Easy3, BountyBoardOptions.EasyRuidhtear)
-            },
-            {
-                "Hunt 100 Brown Mantises (Easy)",
-                ("brownmantis", 100, BountyBoardKill3.BrownMantis, BountyBoardFlags.Easy3, BountyBoardOptions.EasyBrownMantis)
-            },
-            {
-                "Hunt 100 Gold Beetalics (Easy)",
-                ("goldbeetalic", 100, BountyBoardKill3.GoldBeetalic, BountyBoardFlags.Easy3, BountyBoardOptions.EasyGoldBeetalic)
-            },
-            {
-                "Hunt 100 Red Shockers (Easy)",
-                ("redshocker", 100, BountyBoardKill3.RedShocker, BountyBoardFlags.Easy3, BountyBoardOptions.EasyRedShocker)
-            },
-            {
-                "Hunt 100 Black Shockers (Easy)",
-                ("blackshocker", 100, BountyBoardKill3.BlackShocker, BountyBoardFlags.Easy3, BountyBoardOptions.EasyBlackShocker)
-            },
-            {
-                "Hunt 100 Gold Shockers (Easy)",
-                ("goldshocker", 100, BountyBoardKill3.GoldShocker, BountyBoardFlags.Easy3, BountyBoardOptions.EasyGoldShocker)
-            },
-            {
-                "Hunt 100 Blue Shockers (Easy)",
-                ("blueshocker", 100, BountyBoardKill3.BlueShocker, BountyBoardFlags.Easy3, BountyBoardOptions.EasyBlueShocker)
-            },
-            {
-                "Hunt 100 Dire Wolves (Easy)",
-                ("direwolf", 100, BountyBoardKill3.DireWolf, BountyBoardFlags.Easy3, BountyBoardOptions.EasyDireWolf)
-            },
-            {
-                "Hunt 100 Ice Elementals (Easy)",
-                ("iceelemental", 100, BountyBoardKill3.IceElemental, BountyBoardFlags.Easy3, BountyBoardOptions.EasyIceElemental)
-            },
-            {
-                "Hunt 100 Ice Skeletons (Easy)",
-                ("iceskeleton", 100, BountyBoardKill3.IceSkeleton, BountyBoardFlags.Easy3, BountyBoardOptions.EasyIceSkeleton)
-            },
-            {
-                "Hunt 100 Ice Spores (Easy)",
-                ("icespore", 100, BountyBoardKill3.IceSpore, BountyBoardFlags.Easy3, BountyBoardOptions.EasyIceSpore)
-            },
-
-            //Medium Tier
-            {
-                "Hunt 500 Ancient Skeletons (Medium)",
-                ("ancientskeleton", 500, BountyBoardKill3.AncientSkeleton, BountyBoardFlags.Medium3,
-                    BountyBoardOptions.MediumAncientSkeleton)
-            },
-            {
-                "Hunt 500 Ancient Beetalics (Medium)",
-                ("ancientbeetalic", 500, BountyBoardKill3.AncientBeetalic, BountyBoardFlags.Medium3,
-                    BountyBoardOptions.MediumAncientBeetalic)
-            },
-            {
-                "Hunt 500 Losganns (Medium)",
-                ("losgann", 500, BountyBoardKill3.Losgann, BountyBoardFlags.Medium3, BountyBoardOptions.MediumLosgann)
-            },
-            {
-                "Hunt 500 Ruidhtears (Medium)",
-                ("ruidhtear", 500, BountyBoardKill3.Ruidhtear, BountyBoardFlags.Medium3, BountyBoardOptions.MediumRuidhtear)
-            },
-            {
-                "Hunt 500 Brown Mantises (Medium)",
-                ("brownmantis", 500, BountyBoardKill3.BrownMantis, BountyBoardFlags.Medium3, BountyBoardOptions.MediumBrownMantis)
-            },
-            {
-                "Hunt 500 Gold Beetalics (Medium)",
-                ("goldbeetalic", 500, BountyBoardKill3.GoldBeetalic, BountyBoardFlags.Medium3, BountyBoardOptions.MediumGoldBeetalic)
-            },
-            {
-                "Hunt 500 Red Shockers (Medium)",
-                ("redshocker", 500, BountyBoardKill3.RedShocker, BountyBoardFlags.Medium3, BountyBoardOptions.MediumRedShocker)
-            },
-            {
-                "Hunt 500 Black Shockers (Medium)",
-                ("blackshocker", 500, BountyBoardKill3.BlackShocker, BountyBoardFlags.Medium3, BountyBoardOptions.MediumBlackShocker)
-            },
-            {
-                "Hunt 500 Gold Shockers (Medium)",
-                ("goldshocker", 500, BountyBoardKill3.GoldShocker, BountyBoardFlags.Medium3, BountyBoardOptions.MediumGoldShocker)
-            },
-            {
-                "Hunt 500 Blue Shockers (Medium)",
-                ("blueshocker", 500, BountyBoardKill3.BlueShocker, BountyBoardFlags.Medium3, BountyBoardOptions.MediumBlueShocker)
-            },
-            {
-                "Hunt 500 Dire Wolves (Medium)",
-                ("direwolf", 500, BountyBoardKill3.DireWolf, BountyBoardFlags.Medium3, BountyBoardOptions.MediumDireWolf)
-            },
-            {
-                "Hunt 500 Ice Elementals (Medium)",
-                ("iceelemental", 500, BountyBoardKill3.IceElemental, BountyBoardFlags.Medium3, BountyBoardOptions.MediumIceElemental)
-            },
-            {
-                "Hunt 500 Ice Skeletons (Medium)",
-                ("iceskeleton", 500, BountyBoardKill3.IceSkeleton, BountyBoardFlags.Medium3, BountyBoardOptions.MediumIceSkeleton)
-            },
-            {
-                "Hunt 500 Ice Spores (Medium)",
-                ("icespore", 500, BountyBoardKill3.IceSpore, BountyBoardFlags.Medium3, BountyBoardOptions.MediumIceSpore)
-            },
-
-            //Hard Tier
-            {
-                "Hunt 1000 Ancient Skeletons (Hard)",
-                ("ancientskeleton", 1000, BountyBoardKill3.AncientSkeleton, BountyBoardFlags.Hard3, BountyBoardOptions.HardAncientSkeleton)
-            },
-            {
-                "Hunt 1000 Ancient Beetalics (Hard)",
-                ("ancientbeetalic", 1000, BountyBoardKill3.AncientBeetalic, BountyBoardFlags.Hard3, BountyBoardOptions.HardAncientBeetalic)
-            },
-            {
-                "Hunt 1000 Losganns (Hard)",
-                ("losgann", 1000, BountyBoardKill3.Losgann, BountyBoardFlags.Hard3, BountyBoardOptions.HardLosgann)
-            },
-            {
-                "Hunt 1000 Ruidhtears (Hard)",
-                ("ruidhtear", 1000, BountyBoardKill3.Ruidhtear, BountyBoardFlags.Hard3, BountyBoardOptions.HardRuidhtear)
-            },
-            {
-                "Hunt 1000 Brown Mantises (Hard)",
-                ("brownmantis", 1000, BountyBoardKill3.BrownMantis, BountyBoardFlags.Hard3, BountyBoardOptions.HardBrownMantis)
-            },
-            {
-                "Hunt 1000 Gold Beetalics (Hard)",
-                ("goldbeetalic", 1000, BountyBoardKill3.GoldBeetalic, BountyBoardFlags.Hard3, BountyBoardOptions.HardGoldBeetalic)
-            },
-            {
-                "Hunt 1000 Red Shockers (Hard)",
-                ("redshocker", 1000, BountyBoardKill3.RedShocker, BountyBoardFlags.Hard3, BountyBoardOptions.HardRedShocker)
-            },
-            {
-                "Hunt 1000 Black Shockers (Hard)",
-                ("blackshocker", 1000, BountyBoardKill3.BlackShocker, BountyBoardFlags.Hard3, BountyBoardOptions.HardBlackShocker)
-            },
-            {
-                "Hunt 1000 Gold Shockers (Hard)",
-                ("goldshocker", 1000, BountyBoardKill3.GoldShocker, BountyBoardFlags.Hard3, BountyBoardOptions.HardGoldShocker)
-            },
-            {
-                "Hunt 1000 Blue Shockers (Hard)",
-                ("blueshocker", 1000, BountyBoardKill3.BlueShocker, BountyBoardFlags.Hard3, BountyBoardOptions.HardBlueShocker)
-            },
-            {
-                "Hunt 1000 Dire Wolves (Hard)",
-                ("direwolf", 1000, BountyBoardKill3.DireWolf, BountyBoardFlags.Hard3, BountyBoardOptions.HardDireWolf)
-            },
-            {
-                "Hunt 1000 Ice Elementals (Hard)",
-                ("iceelemental", 1000, BountyBoardKill3.IceElemental, BountyBoardFlags.Hard3, BountyBoardOptions.HardIceElemental)
-            },
-            {
-                "Hunt 1000 Ice Skeletons (Hard)",
-                ("iceskeleton", 1000, BountyBoardKill3.IceSkeleton, BountyBoardFlags.Hard3, BountyBoardOptions.HardIceSkeleton)
-            },
-            {
-                "Hunt 1000 Ice Spores (Hard)",
-                ("icespore", 1000, BountyBoardKill3.IceSpore, BountyBoardFlags.Hard3, BountyBoardOptions.HardIceSpore)
-            },
-
-            {
-                "Hunt 25 Kelberoths (Epic)",
-                ("kelberoth", 25, BountyBoardKill3.Kelberoth, BountyBoardFlags.Epic3, BountyBoardOptions.EpicKelberoth)
-            },
-            {
-                "Hunt 25 Ancient Dracos (Epic)",
-                ("ancientdraco", 25, BountyBoardKill3.AncientDraco, BountyBoardFlags.Epic3, BountyBoardOptions.EpicAncientDraco)
-            },
-            {
-                "Hunt 25 Green Mantis (Epic)",
-                ("greenmantis", 25, BountyBoardKill3.GreenMantis, BountyBoardFlags.Epic3, BountyBoardOptions.EpicGreenMantis)
-            },
-            {
-                "Hunt 25 Ancient Hydra (Epic)",
-                ("ancienthydra", 25, BountyBoardKill3.AncientHydra, BountyBoardFlags.Epic3, BountyBoardOptions.EpicAncientHydra)
-            }
-        };
-
     private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
+
+    private void AbandonBounty(Aisling source, string bountyName)
+    {
+        // Safely try to retrieve the bounty data from any of the three dictionaries
+        (var monsterKey, _, var killEnum, var originalFlag, _) = GetBountyFromAnyDictionary(bountyName);
+
+        // Check each slot to see which one actually holds this bounty.
+        // Remove the bounty from that slot, its counter, and the corresponding difficulty flag.
+        if (source.Trackers.Enums.TryGetValue(out BountyBoardKill1 slot1Bounty) && slot1Bounty.Equals(killEnum))
+        {
+            // Clear the enum from Slot 1
+            source.Trackers.Enums.Remove(typeof(BountyBoardKill1));
+
+            // Remove the monster kill counter
+            source.Trackers.Counters.Remove(monsterKey, out _);
+
+            // Convert originalFlag into the correct suffix for slot "1"
+            var difficultyFlag = GetMatchingDifficultyFlag(originalFlag, 1);
+            source.Trackers.Flags.RemoveFlag(typeof(BountyBoardFlags), difficultyFlag);
+        } else if (source.Trackers.Enums.TryGetValue(out BountyBoardKill2 slot2Bounty) && slot2Bounty.Equals(killEnum))
+        {
+            source.Trackers.Enums.Remove(typeof(BountyBoardKill2));
+            source.Trackers.Counters.Remove(monsterKey, out _);
+
+            var difficultyFlag = GetMatchingDifficultyFlag(originalFlag, 2);
+            source.Trackers.Flags.RemoveFlag(typeof(BountyBoardFlags), difficultyFlag);
+        } else if (source.Trackers.Enums.TryGetValue(out BountyBoardKill3 slot3Bounty) && slot3Bounty.Equals(killEnum))
+        {
+            source.Trackers.Enums.Remove(typeof(BountyBoardKill3));
+            source.Trackers.Counters.Remove(monsterKey, out _);
+
+            var difficultyFlag = GetMatchingDifficultyFlag(originalFlag, 3);
+            source.Trackers.Flags.RemoveFlag(typeof(BountyBoardFlags), difficultyFlag);
+        }
+    }
 
     private void CompleteBounty<T>(Aisling source, T bounty, Type bountyEnumType) where T: Enum
     {
@@ -617,7 +56,7 @@ public class BountyBoardDialogScript(Dialog subject, ILogger<BountyBoardDialogSc
 
         if (bountyEntry.Key == null)
         {
-            Subject.Reply(source, "Error: Unable to find the corresponding bounty in the system.");
+            Subject.Reply(source, "Error: Unable to find the corresponding bounty in the system.", "bountyboard_initial");
 
             return;
         }
@@ -627,7 +66,7 @@ public class BountyBoardDialogScript(Dialog subject, ILogger<BountyBoardDialogSc
         // ✅ Use `BountyMonsterKey` instead of the default counter key
         if (!source.Trackers.Counters.TryGetValue(monsterKey, out var currentKills) || (currentKills < killRequirement))
         {
-            Subject.Reply(source, $"You have not completed the bounty for {bountyEntry.Key} yet.");
+            Subject.Reply(source, $"You have not completed the bounty for {bountyEntry.Key} yet.", "bountyboard_initial");
 
             return;
         }
@@ -644,7 +83,7 @@ public class BountyBoardDialogScript(Dialog subject, ILogger<BountyBoardDialogSc
         // ✅ Remove only the specific difficulty flag
         source.Trackers.Flags.RemoveFlag(typeof(BountyBoardFlags), difficultyFlag);
 
-        Subject.Reply(source, $"You have completed the bounty: {bountyEntry.Key}! Well done.");
+        Subject.Reply(source, $"You have completed the bounty: {bountyEntry.Key}! Well done.", "bountyboard_initial");
     }
 
     private List<string> GetAllBounties()
@@ -662,13 +101,13 @@ public class BountyBoardDialogScript(Dialog subject, ILogger<BountyBoardDialogSc
         BountyBoardOptions BountyOption)> GetBountyDictionary(Type bountyEnumType)
         => bountyEnumType switch
         {
-            _ when bountyEnumType == typeof(BountyBoardKill1) => BountyOptions1.ToDictionary(
+            _ when bountyEnumType == typeof(BountyBoardKill1) => BountyBoardDictionary.BountyOptions1.ToDictionary(
                 x => x.Key,
                 x => (x.Value.MonsterKey, x.Value.KillRequirement, (Enum)x.Value.KillEnum, x.Value.DifficultyFlag, x.Value.BountyOption)),
-            _ when bountyEnumType == typeof(BountyBoardKill2) => BountyOptions2.ToDictionary(
+            _ when bountyEnumType == typeof(BountyBoardKill2) => BountyBoardDictionary.BountyOptions2.ToDictionary(
                 x => x.Key,
                 x => (x.Value.MonsterKey, x.Value.KillRequirement, (Enum)x.Value.KillEnum, x.Value.DifficultyFlag, x.Value.BountyOption)),
-            _ when bountyEnumType == typeof(BountyBoardKill3) => BountyOptions3.ToDictionary(
+            _ when bountyEnumType == typeof(BountyBoardKill3) => BountyBoardDictionary.BountyOptions3.ToDictionary(
                 x => x.Key,
                 x => (x.Value.MonsterKey, x.Value.KillRequirement, (Enum)x.Value.KillEnum, x.Value.DifficultyFlag, x.Value.BountyOption)),
             _ => throw new InvalidOperationException("Invalid bounty enum type.")
@@ -726,7 +165,7 @@ public class BountyBoardDialogScript(Dialog subject, ILogger<BountyBoardDialogSc
         ExperienceDistributionScript.GiveExp(source, baseExp);
         source.TryGiveGold(goldReward);
 
-        Subject.Reply(source, $"You received {baseExp} experience and {goldReward} gold for completing {bountyName}.");
+        Subject.Reply(source, $"You received {baseExp} experience and {goldReward} gold for completing {bountyName}.", "bountyboard_initial");
     }
 
     private bool HasBountyCompleted(Aisling source, Type bountyEnumType)
@@ -768,6 +207,13 @@ public class BountyBoardDialogScript(Dialog subject, ILogger<BountyBoardDialogSc
                     return;
                 }
 
+                Subject.Options.Add(
+                    new DialogOption
+                    {
+                        DialogKey = "bountyboard_viewactive",
+                        OptionText = "View Active Bounties"
+                    });
+
                 Subject.Options.Insert(
                     0,
                     new DialogOption
@@ -800,6 +246,286 @@ public class BountyBoardDialogScript(Dialog subject, ILogger<BountyBoardDialogSc
                             OptionText = "Turn in Bounty"
                         });
 
+                // NEW: If any slot is active, allow "Abandon a Bounty"
+                if (hasStage1 || hasStage2 || hasStage3)
+
+                    // Add "Abandon a Bounty" option
+                    Subject.Options.Add(
+                        new DialogOption
+                        {
+                            DialogKey = "bountyboard_abandon",
+                            OptionText = "Abandon a Bounty"
+                        });
+
+                break;
+            }
+
+            case "bountyboard_viewactive":
+            {
+                var sb = new StringBuilder();
+
+                // SLOT 1
+                if (source.Trackers.Enums.TryGetValue(out BountyBoardKill1 slot1Bounty) && !slot1Bounty.Equals(default))
+                {
+                    var dict1 = GetBountyDictionary(typeof(BountyBoardKill1));
+
+                    BountyBoardFlags? slotFlag = null;
+
+                    if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Epic1))
+                        slotFlag = BountyBoardFlags.Epic1;
+                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Hard1))
+                        slotFlag = BountyBoardFlags.Hard1;
+                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Medium1))
+                        slotFlag = BountyBoardFlags.Medium1;
+                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Easy1))
+                        slotFlag = BountyBoardFlags.Easy1;
+
+                    if (slotFlag.HasValue)
+                    {
+                        var entry = dict1.FirstOrDefault(
+                            x => x.Value.KillEnum.Equals(slot1Bounty) && (x.Value.DifficultyFlag == slotFlag.Value));
+
+                        if (!string.IsNullOrEmpty(entry.Key))
+                        {
+                            (var monsterKey, var required, _, _, _) = entry.Value;
+
+                            source.Trackers.Counters.TryGetValue(monsterKey, out var killsSoFar);
+                            killsSoFar = Math.Max(0, killsSoFar);
+
+                            sb.Append($"{entry.Key} - {killsSoFar}/{required}\n");
+                        }
+                    }
+                }
+
+                // SLOT 2
+                if (source.Trackers.Enums.TryGetValue(out BountyBoardKill2 slot2Bounty) && !slot2Bounty.Equals(default))
+                {
+                    var dict2 = GetBountyDictionary(typeof(BountyBoardKill2));
+
+                    BountyBoardFlags? slotFlag = null;
+
+                    if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Epic2))
+                        slotFlag = BountyBoardFlags.Epic2;
+                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Hard2))
+                        slotFlag = BountyBoardFlags.Hard2;
+                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Medium2))
+                        slotFlag = BountyBoardFlags.Medium2;
+                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Easy2))
+                        slotFlag = BountyBoardFlags.Easy2;
+
+                    if (slotFlag.HasValue)
+                    {
+                        var entry = dict2.FirstOrDefault(
+                            x => x.Value.KillEnum.Equals(slot2Bounty) && (x.Value.DifficultyFlag == slotFlag.Value));
+
+                        if (!string.IsNullOrEmpty(entry.Key))
+                        {
+                            (var monsterKey, var required, _, _, _) = entry.Value;
+
+                            source.Trackers.Counters.TryGetValue(monsterKey, out var killsSoFar);
+                            killsSoFar = Math.Max(0, killsSoFar);
+
+                            sb.Append($"{entry.Key} - {killsSoFar}/{required}\n");
+                        }
+                    }
+                }
+
+                // SLOT 3
+                if (source.Trackers.Enums.TryGetValue(out BountyBoardKill3 slot3Bounty) && !slot3Bounty.Equals(default))
+                {
+                    var dict3 = GetBountyDictionary(typeof(BountyBoardKill3));
+
+                    BountyBoardFlags? slotFlag = null;
+
+                    if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Epic3))
+                        slotFlag = BountyBoardFlags.Epic3;
+                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Hard3))
+                        slotFlag = BountyBoardFlags.Hard3;
+                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Medium3))
+                        slotFlag = BountyBoardFlags.Medium3;
+                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Easy3))
+                        slotFlag = BountyBoardFlags.Easy3;
+
+                    if (slotFlag.HasValue)
+                    {
+                        var entry = dict3.FirstOrDefault(
+                            x => x.Value.KillEnum.Equals(slot3Bounty) && (x.Value.DifficultyFlag == slotFlag.Value));
+
+                        if (!string.IsNullOrEmpty(entry.Key))
+                        {
+                            (var monsterKey, var required, _, _, _) = entry.Value;
+
+                            source.Trackers.Counters.TryGetValue(monsterKey, out var killsSoFar);
+                            killsSoFar = Math.Max(0, killsSoFar);
+
+                            sb.Append($"{entry.Key} - {killsSoFar}/{required}");
+                        }
+                    }
+                }
+
+                // If sb is empty, the user has no active bounties
+                if (sb.Length == 0)
+                    Subject.Reply(source, "You have no active bounties right now.", "bountyboard_initial");
+                else
+                    Subject.Reply(source, "Your Current Bounties:\n" + sb, "bountyboard_initial");
+
+                break;
+            }
+
+            case "bountyboard_abandon":
+            {
+                // Collect names of the bounties the player is actually on
+                var activeBounties = new List<string>();
+
+                if (hasStage1 && source.Trackers.Enums.TryGetValue(out BountyBoardKill1 bounty1))
+                {
+                    var dict = GetBountyDictionary(typeof(BountyBoardKill1));
+
+                    // Figure out which difficulty is set for slot 1
+                    BountyBoardFlags? slotFlag = null;
+
+                    if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Epic1))
+                        slotFlag = BountyBoardFlags.Epic1;
+                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Hard1))
+                        slotFlag = BountyBoardFlags.Hard1;
+                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Medium1))
+                        slotFlag = BountyBoardFlags.Medium1;
+                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Easy1))
+                        slotFlag = BountyBoardFlags.Easy1;
+
+                    if (slotFlag.HasValue)
+                    {
+                        // Now find the dictionary entry that has BOTH the killEnum + the correct difficulty
+                        var entry
+                            = dict.FirstOrDefault(x => x.Value.KillEnum.Equals(bounty1) && (x.Value.DifficultyFlag == slotFlag.Value));
+
+                        if (!string.IsNullOrEmpty(entry.Key))
+                            activeBounties.Add(entry.Key);
+                    }
+                }
+
+                if (hasStage2 && source.Trackers.Enums.TryGetValue(out BountyBoardKill2 bounty2))
+                {
+                    var dict = GetBountyDictionary(typeof(BountyBoardKill2));
+
+                    // Figure out which difficulty is set for slot 2
+                    BountyBoardFlags? slotFlag = null;
+
+                    if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Epic2))
+                        slotFlag = BountyBoardFlags.Epic2;
+                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Hard2))
+                        slotFlag = BountyBoardFlags.Hard2;
+                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Medium2))
+                        slotFlag = BountyBoardFlags.Medium2;
+                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Easy2))
+                        slotFlag = BountyBoardFlags.Easy2;
+
+                    if (slotFlag.HasValue)
+                    {
+                        // Now find the dictionary entry that has BOTH the killEnum + the correct difficulty
+                        var entry
+                            = dict.FirstOrDefault(x => x.Value.KillEnum.Equals(bounty2) && (x.Value.DifficultyFlag == slotFlag.Value));
+
+                        if (!string.IsNullOrEmpty(entry.Key))
+                            activeBounties.Add(entry.Key);
+                    }
+                }
+
+                if (hasStage3 && source.Trackers.Enums.TryGetValue(out BountyBoardKill3 bounty3))
+                {
+                    var dict = GetBountyDictionary(typeof(BountyBoardKill3));
+
+                    // Figure out which difficulty is set for slot 3
+                    BountyBoardFlags? slotFlag = null;
+
+                    if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Epic3))
+                        slotFlag = BountyBoardFlags.Epic3;
+                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Hard3))
+                        slotFlag = BountyBoardFlags.Hard3;
+                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Medium3))
+                        slotFlag = BountyBoardFlags.Medium3;
+                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Easy3))
+                        slotFlag = BountyBoardFlags.Easy3;
+
+                    if (slotFlag.HasValue)
+                    {
+                        // Now find the dictionary entry that has BOTH the killEnum + the correct difficulty
+                        var entry
+                            = dict.FirstOrDefault(x => x.Value.KillEnum.Equals(bounty3) && (x.Value.DifficultyFlag == slotFlag.Value));
+
+                        if (!string.IsNullOrEmpty(entry.Key))
+                            activeBounties.Add(entry.Key);
+                    }
+                }
+
+                if (activeBounties.Count == 0)
+                {
+                    Subject.Reply(source, "You have no active bounties to abandon.", "bountyboard_initial");
+
+                    return;
+                }
+
+                foreach (var bountyName in activeBounties)
+                    Subject.Options.Add(
+                        new DialogOption
+                        {
+                            DialogKey = "bountyboard_abandon_confirm",
+                            OptionText = bountyName
+                        });
+
+                break;
+            }
+            case "bountyboard_abandon_confirm":
+            {
+                // The bounty's name is in Subject.Context due to OnNext passing it
+                var chosenBounty = Subject.Context as string;
+
+                if (string.IsNullOrEmpty(chosenBounty))
+                {
+                    Subject.Reply(source, "Invalid bounty selection to abandon.", "bountyboard_initial");
+
+                    return;
+                }
+
+                // Provide "Yes" and "No" choices
+                if (!Subject.HasOption("Yes"))
+                    Subject.Options.Add(
+                        new DialogOption
+                        {
+                            DialogKey = "bountyboard_abandon_yes",
+                            OptionText = "Yes"
+                        });
+
+                if (!Subject.HasOption("No"))
+
+                    // Return them to the main board if they decline
+                    Subject.Options.Add(
+                        new DialogOption
+                        {
+                            DialogKey = "bountyboard_initial",
+                            OptionText = "No"
+                        });
+
+                break;
+            }
+
+            case "bountyboard_abandon_yes":
+            {
+                var chosenBounty = Subject.Context as string;
+
+                if (string.IsNullOrEmpty(chosenBounty))
+                {
+                    Subject.Reply(source, "Invalid bounty to abandon.", "bountyboard_initial");
+
+                    return;
+                }
+
+                // Do the actual removal logic
+                AbandonBounty(source, chosenBounty);
+
+                Subject.Reply(source, $"You have abandoned the bounty: {chosenBounty}.", "bountyboard_initial");
+
+                // Optionally jump back to the bountyboard_initial dialog
                 break;
             }
 
@@ -824,7 +550,7 @@ public class BountyBoardDialogScript(Dialog subject, ILogger<BountyBoardDialogSc
 
                 if (hasStage1 && hasStage2 && hasStage3)
                 {
-                    Subject.Reply(source, "You're currently on three bounties, you can't take anymore!");
+                    Subject.Reply(source, "You're currently on three bounties, you can't take anymore!", "bountyboard_initial");
 
                     return;
                 }
@@ -848,7 +574,7 @@ public class BountyBoardDialogScript(Dialog subject, ILogger<BountyBoardDialogSc
                     source.Trackers.TimedEvents.AddEvent("bountyboardreset", TimeSpan.FromHours(8), true);
                 } else if (source.Trackers.Counters.TryGetValue("maxBountiesAccepted", out var count) && (count >= 3))
                 {
-                    Subject.Reply(source, "You can only accept three bounties per 8 hours.");
+                    Subject.Reply(source, "You can only accept three bounties per 8 hours.", "bountyboard_initial");
 
                     return;
                 }
@@ -857,7 +583,7 @@ public class BountyBoardDialogScript(Dialog subject, ILogger<BountyBoardDialogSc
 
                 if (availableBounties.Count == 0)
                 {
-                    Subject.Reply(source, "No bounties are available at this time.");
+                    Subject.Reply(source, "No bounties are available at this time.", "bountyboard_initial");
 
                     return;
                 }
@@ -881,7 +607,7 @@ public class BountyBoardDialogScript(Dialog subject, ILogger<BountyBoardDialogSc
 
                 if (string.IsNullOrEmpty(selectedBounty))
                 {
-                    Subject.Reply(source, "Invalid bounty selection.");
+                    Subject.Reply(source, "Invalid bounty selection.", "bountyboard_initial");
 
                     return;
                 }
@@ -906,7 +632,7 @@ public class BountyBoardDialogScript(Dialog subject, ILogger<BountyBoardDialogSc
                 // Ensure the selected bounty exists
                 if (!bountyDictionary.TryGetValue(selectedBounty, out var bountyData))
                 {
-                    Subject.Reply(source, "Invalid bounty selection.");
+                    Subject.Reply(source, "Invalid bounty selection.", "bountyboard_initial");
 
                     return;
                 }
@@ -933,7 +659,7 @@ public class BountyBoardDialogScript(Dialog subject, ILogger<BountyBoardDialogSc
                     difficultyFlag = GetMatchingDifficultyFlag(difficultyFlag, 3);
                 } else
                 {
-                    Subject.Reply(source, "You already have three active bounties. Complete one before accepting another.");
+                    Subject.Reply(source, "You already have three active bounties. Complete one before accepting another.", "bountyboard_initial");
 
                     return;
                 }
@@ -946,7 +672,7 @@ public class BountyBoardDialogScript(Dialog subject, ILogger<BountyBoardDialogSc
                 if (bountyOption != BountyBoardOptions.None)
                     source.Trackers.Flags.RemoveFlag(bountyOption);
 
-                Subject.Reply(source, $"You've accepted the bounty: {selectedBounty}. Kill {killRequirement} to complete it!");
+                Subject.Reply(source, $"You've accepted the bounty: {selectedBounty}. Kill {killRequirement} to complete it!", "bountyboard_initial");
 
                 break;
             }
@@ -955,10 +681,26 @@ public class BountyBoardDialogScript(Dialog subject, ILogger<BountyBoardDialogSc
 
     public override void OnNext(Aisling source, byte? optionIndex = null)
     {
-        if (optionIndex is > 0 && (optionIndex.Value <= Subject.Options.Count))
+        if (optionIndex is > 0 && (optionIndex <= Subject.Options.Count))
+        {
+            var chosenText = Subject.Options[optionIndex.Value - 1].OptionText;
 
-            // Store the selected bounty in Context
-            Subject.Context = Subject.Options[optionIndex.Value - 1].OptionText;
+            // Example of skipping the overwrite if we are in confirm step.
+            if (Subject.Template.TemplateKey.Equals("bountyboard_abandon_confirm", StringComparison.OrdinalIgnoreCase))
+            {
+                if ((chosenText == "Yes") || (chosenText == "No"))
+                {
+                    // keep existing Subject.Context so we don't lose the bounty name
+                    // do nothing here
+                } else
+
+                    // normal scenario
+                    Subject.Context = chosenText;
+            } else
+
+                // normal scenario
+                Subject.Context = chosenText;
+        }
 
         base.OnNext(source, optionIndex);
     }
@@ -972,7 +714,7 @@ public class BountyBoardDialogScript(Dialog subject, ILogger<BountyBoardDialogSc
         else if ((bountyEnumType == typeof(BountyBoardKill3)) && source.Trackers.Enums.TryGetValue(out BountyBoardKill3 bounty3))
             CompleteBounty(source, bounty3, bountyEnumType);
         else
-            Subject.Reply(source, "You have no completed bounties to turn in.");
+            Subject.Reply(source, "You have no completed bounties to turn in.", "bountyboard_initial");
     }
 
     private List<string> RetrieveExistingBounties(Aisling source)
@@ -981,16 +723,14 @@ public class BountyBoardDialogScript(Dialog subject, ILogger<BountyBoardDialogSc
 
         if (!source.Trackers.Flags.TryGetFlag<BountyBoardOptions>(out var playerBountyOptions))
         {
-            Subject.Reply(source, "No active bounties found.");
+            Subject.Reply(source, "No active bounties found.", "bountyboard_initial");
 
             return availableBounties;
         }
 
         foreach (var bountyDict in new[]
                  {
-                     GetBountyDictionary(typeof(BountyBoardKill1)),
-                     GetBountyDictionary(typeof(BountyBoardKill2)),
-                     GetBountyDictionary(typeof(BountyBoardKill3))
+                     GetBountyDictionary(typeof(BountyBoardKill1))
                  })
         {
             foreach ((var bountyName, (_, _, _, _, var bountyOption)) in bountyDict)
@@ -1008,7 +748,7 @@ public class BountyBoardDialogScript(Dialog subject, ILogger<BountyBoardDialogSc
 
         // Filter out epic quests BEFORE shuffling
         var filteredBounties = allBounties
-                               .Where(bounty => !bounty.Contains("(Epic)", StringComparison.OrdinalIgnoreCase)) // Exclude Epic bounties
+                               .Where(bounty => !bounty.Contains("({=pEpic", StringComparison.OrdinalIgnoreCase)) // Exclude Epic bounties
                                .ToList();
 
         // Shuffle filtered list before selection

@@ -10,7 +10,7 @@ namespace Chaos.Scripting.MonsterScripts.Kill_Counters;
 public class BountyBoardCounterScript(Monster subject) : ConfigurableMonsterScriptBase(subject)
 {
     #region ScriptVars
-    public string? BountyMonsterKey { get; init; } // ✅ Matches monsterKey in dictionary
+    public string? BountyMonsterKey { get; init; } // ✅ Matches monsterKey in the dictionaries
     #endregion
 
     public override void OnDeath()
@@ -34,6 +34,7 @@ public class BountyBoardCounterScript(Monster subject) : ConfigurableMonsterScri
 
         foreach (var aisling in rewardTargets)
         {
+            // We'll check each of the 3 bounty slots.
             var bountyTypes = new[]
             {
                 typeof(BountyBoardKill1),
@@ -41,88 +42,56 @@ public class BountyBoardCounterScript(Monster subject) : ConfigurableMonsterScri
                 typeof(BountyBoardKill3)
             };
 
-            // ✅ Loop through all three bounty types
             foreach (var bountyType in bountyTypes)
             {
                 var bountyDictionary = BountyBoardDialogScript.GetBountyDictionary(bountyType);
-
                 var monsterKey = BountyMonsterKey?.ToLowerInvariant();
 
-                // ✅ Ensure the player accepted this bounty
+                // 1) If no monsterKey or dictionary doesn't contain this monster, skip
                 if (string.IsNullOrEmpty(monsterKey) || !bountyDictionary.Values.Any(b => b.MonsterKey == monsterKey))
                     continue;
 
-                if (!PlayerHasBounty(aisling, monsterKey))
-                    continue;
-
-                // ✅ Retrieve the correct bounty based on difficulty flag
+                // 2) Figure out which difficulty flag is actually set for this monster
+                //    e.g. Easy1, Medium1, Hard1, etc.  We'll find that from the dictionary.
                 var bountyData = bountyDictionary.Values.FirstOrDefault(
                     b => (b.MonsterKey == monsterKey) && aisling.Trackers.Flags.HasFlag(b.DifficultyFlag));
 
-                if (bountyData == default)
-                {
-                    Console.WriteLine($"❌ ERROR: No bounty found for monsterKey '{monsterKey}' with matching difficulty.");
+                // If the user doesn't have, e.g., "Easy2" (or whichever difficulty is needed),
+                // then bountyData will be default.
+                if (bountyData.Equals(default))
 
+                    // Not a matching difficulty for this bountyType => skip.
                     continue;
-                }
 
+                // 3) Now check if the user is actually on this exact slot/bounty
                 (var monster, var killRequirement, var killEnum, _, _) = bountyData;
 
-                // ✅ Ensure this is the correct bounty the player has
                 if (!aisling.Trackers.Enums.TryGetValue(bountyType, out var activeBounty) || !killEnum.Equals(activeBounty))
+
+                    // This means, e.g., the dictionary is BountyBoardKill1, but the user
+                    // might really have it in BountyBoardKill2 => skip.
                     continue;
 
-                // ✅ Ensure the kill is counted
+                // 4) We now have a valid slot and difficulty. Make sure we have a counter for it:
                 if (!aisling.Trackers.Counters.TryGetValue(monster, out _))
                     aisling.Trackers.Counters.Set(monster, 0);
 
+                // 5) Check if they're already at or above the kill requirement
                 if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(monster, killRequirement))
                 {
-                    aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
+                    aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}!");
 
-                    break; // ✅ Exit after finding a match to avoid duplicate processing
+                    // We break from the bountyType loop so we don't double-increment
+                    break;
                 }
 
+                // 6) Otherwise, increment kills and inform the user
                 var newCount = aisling.Trackers.Counters.AddOrIncrement(monster);
                 aisling.Client.SendServerMessage(ServerMessageType.PersistentMessage, $"{newCount} - {Subject.Template.Name}");
 
-                break; // ✅ Once a match is found, stop checking other bounty types
+                // 7) Break once we've found the correct match and incremented
+                break;
             }
         }
-    }
-
-    private bool PlayerHasBounty(Aisling aisling, string monsterKey)
-    {
-        var bountyTypes = new[]
-        {
-            typeof(BountyBoardKill1),
-            typeof(BountyBoardKill2),
-            typeof(BountyBoardKill3)
-        };
-
-        foreach (var bountyType in bountyTypes)
-        {
-            var bountyDict = BountyBoardDialogScript.GetBountyDictionary(bountyType);
-
-            foreach (var bountyData in bountyDict.Values)
-            {
-                // ✅ Check if monsterKey matches
-                if (bountyData.MonsterKey != monsterKey)
-                    continue;
-
-                // ✅ Check if player has this bounty
-                if (!aisling.Trackers.Enums.TryGetValue(bountyType, out var activeBounty) || !bountyData.KillEnum.Equals(activeBounty))
-                    continue;
-
-                // ✅ Check if player has the correct difficulty flag
-                if (!aisling.Trackers.Flags.HasFlag(bountyData.DifficultyFlag))
-                    continue;
-
-                // ✅ If all conditions match, the player has the correct bounty
-                return true;
-            }
-        }
-
-        return false;
     }
 }

@@ -1,11 +1,13 @@
 ﻿using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
+using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
+using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Mileth;
 
@@ -34,6 +36,42 @@ public class RelearnCraftScript : DialogScriptBase
         {
             case "riona_relearnrecipes":
             {
+                if (source.Name == "Star" && !source.Legend.ContainsKey("frostyrunnerup"))
+                {
+                        source.Legend.AddUnique(
+                            new LegendMark(
+                                "Frosty Challenge Runner-Up: So Close So Cool!",
+                                "frostyrunnerup",
+                                MarkIcon.Heart,
+                                MarkColor.Cyan,
+                                1,
+                                GameTime.Now));
+                }
+                
+                if (source.Name == "Dood" && !source.Legend.ContainsKey("frostyfirstplace"))
+                {
+                    source.Legend.AddUnique(
+                        new LegendMark(
+                            "Frosty Challenge First Place: The best of the best!",
+                            "frostyfirstplace",
+                            MarkIcon.Heart,
+                            MarkColor.Cyan,
+                            1,
+                            GameTime.Now));
+                }
+                
+                if (source.Name == "Path" && !source.Legend.ContainsKey("frostythirdplace"))
+                {
+                    source.Legend.AddUnique(
+                        new LegendMark(
+                            "Frosty Challenge Third Place: Just made it!",
+                            "frostythirdplace",
+                            MarkIcon.Heart,
+                            MarkColor.Cyan,
+                            1,
+                            GameTime.Now));
+                }
+                
                 if (source.Trackers.Enums.HasValue(MainstoryMasterEnums.CompletedCreants)
                     && !source.Trackers.Flags.HasFlag(MainstoryFlags.CreantRewards))
                 {
