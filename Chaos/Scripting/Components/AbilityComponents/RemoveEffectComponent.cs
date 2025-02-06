@@ -3,124 +3,80 @@ using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
 
-namespace Chaos.Scripting.Components.AbilityComponents;
-
-public class RemoveEffectComponent : IComponent
+namespace Chaos.Scripting.Components.AbilityComponents
 {
-    /// <inheritdoc />
-    public void Execute(ActivationContext context, ComponentVars vars)
+    public class RemoveEffectComponent : IComponent
     {
-        var options = vars.GetOptions<IRemoveEffectComponentOptions>();
-        var targets = vars.GetTargets<Creature>();
+        private static readonly HashSet<string> SkippedEffects =
+        [
+            "Arena Revive", "Hot Chocolate", "ValentinesCandy",
+            "Fury1", "Fury2", "Fury3", "Fury4", "Fury5", "Fury6",
+            "Cunning1", "Cunning2", "Cunning3", "Cunning4", "Cunning5", "Cunning6",
+            "Invulnerability", "Mount", "GM Knowledge", "Strong Knowledge",
+            "Stoned", "Knowledge", "Werewolf", "Fishing", "Foraging"
+        ];
 
-        // If RemoveAllEffects is set to true, remove all effects
-        if (options.RemoveAllEffects == true)
+        private static readonly HashSet<string> NegativeEffects = new()
+        {
+            "Poison", "Blind", "Burn"
+        };
+
+        /// <inheritdoc />
+        public void Execute(ActivationContext context, ComponentVars vars)
+        {
+            var options = vars.GetOptions<IRemoveEffectComponentOptions>();
+            var targets = vars.GetTargets<Creature>();
+
+            if (options.RemoveAllEffects == true)
+            {
+                RemoveAllEffects(targets);
+                return;
+            }
+
+            if (options.NegativeEffect == true)
+            {
+                RemoveSpecificEffects(targets, NegativeEffects);
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(options.EffectKey))
+            {
+                RemoveSpecificEffects(targets, [options.EffectKey]);
+            }
+        }
+
+        private static void RemoveAllEffects(IEnumerable<Creature> targets)
         {
             foreach (var target in targets)
             {
-                foreach (var effect in target.Effects.ToList()) // ToList() to avoid modification during iteration
+                var removableEffects = target.Effects
+                    .Where(effect => !SkippedEffects.Contains(effect.Name))
+                    .Select(effect => effect.Name)
+                    .ToList();
+
+                foreach (var effectName in removableEffects)
                 {
-                    if (effect.Name == "Fury1")
-                        continue;
-
-                    if (effect.Name == "Fury2")
-                        continue;
-
-                    if (effect.Name == "Fury3")
-                        continue;
-
-                    if (effect.Name == "Fury4")
-                        continue;
-
-                    if (effect.Name == "Fury5")
-                        continue;
-
-                    if (effect.Name == "Fury6")
-                        continue;
-
-                    if (effect.Name == "Cunning1")
-                        continue;
-
-                    if (effect.Name == "Cunning2")
-                        continue;
-
-                    if (effect.Name == "Cunning3")
-                        continue;
-
-                    if (effect.Name == "Cunning4")
-                        continue;
-
-                    if (effect.Name == "Cunning5")
-                        continue;
-
-                    if (effect.Name == "Cunning6")
-                        continue;
-
-                    if (effect.Name == "Invulnerability")
-                        continue;
-
-                    if (effect.Name == "Mount")
-                        continue;
-
-                    if (effect.Name == "GM Knowledge")
-                        continue;
-
-                    if (effect.Name == "Strong Knowledge")
-                        continue;
-
-                    if (effect.Name == "Stoned")
-                        continue;
-
-                    if (effect.Name == "Knowledge")
-                        continue;
-
-                    if (effect.Name == "Werewolf")
-                        continue;
-
-                    if (effect.Name == "Fishing")
-                        continue;
-
-                    if (effect.Name == "Foraging")
-                        continue;
-
-                    target.Effects.Dispel(effect.Name);
+                    target.Effects.Dispel(effectName);
                 }
             }
-
-            // Exit after removing all effects
-            return;
         }
 
-        // If NegativeEffect is set to true, remove specific negative effects
-        if (options.NegativeEffect == true)
+        private static void RemoveSpecificEffects(IEnumerable<Creature> targets, HashSet<string> effectsToRemove)
         {
-            var negativeEffects = new[]
-            {
-                "Poison",
-                "Blind",
-                "Burn"
-            };
-
             foreach (var target in targets)
             {
-                foreach (var effect in negativeEffects)
+                foreach (var effect in effectsToRemove)
+                {
                     target.Effects.Dispel(effect);
+                }
             }
-
-            // Exit after removing negative effects
-            return;
         }
 
-        // If EffectKey is provided, remove specific effect
-        if (!string.IsNullOrEmpty(options.EffectKey))
-            foreach (var target in targets)
-                target.Effects.Dispel(options.EffectKey);
-    }
-
-    public interface IRemoveEffectComponentOptions
-    {
-        string? EffectKey { get; init; }
-        bool? NegativeEffect { get; init; } // Add NegativeEffect option
-        bool? RemoveAllEffects { get; init; }
+        public interface IRemoveEffectComponentOptions
+        {
+            string? EffectKey { get; init; }
+            bool? NegativeEffect { get; init; }
+            bool? RemoveAllEffects { get; init; }
+        }
     }
 }

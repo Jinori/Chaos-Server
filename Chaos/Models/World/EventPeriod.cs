@@ -104,8 +104,8 @@ public class EventPeriod
 
             new EventPeriod(
                 "0 0 * 2 3#2", // Second Wednesday of February at 12 AM
-                "0 6 * 2 4#3", // Thursday after the third Wednesday of February at 6 AM
-                ["loures_castle_way"])
+                "0 23 * 2 2#3", // Third Tuesday of February at 11 PM
+                ["loures_castle_way", "shinewood_forest_entrance"]),
         ];
 
     /// <summary>
