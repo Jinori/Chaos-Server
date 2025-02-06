@@ -16,8 +16,10 @@ public class ShadowTouchScript : SpellScriptBase
     /// <inheritdoc />
     public override void OnUse(SpellContext context)
     {
+        context.SourceAisling?.StatSheet.SubtractMp(1200);
         var newMonster = MonsterFactory.Create("shadowPet", context.SourceMap, context.Source);
         newMonster.PetOwner = context.SourceAisling;
+        
         newMonster.Direction = context.Source.Direction;
         context.SourceMap.AddEntity(newMonster, context.Source);
     }

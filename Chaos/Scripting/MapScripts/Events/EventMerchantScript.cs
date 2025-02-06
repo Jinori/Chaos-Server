@@ -29,6 +29,7 @@ internal class EventMerchantScript : MapScriptBase
     /// </summary>
     private static readonly Dictionary<string, List<MerchantSpawn>> MerchantSpawns = new()
     {
+        { "shinewood_forest_entrance", [ new MerchantSpawn("cueti", 16, 8, Direction.Down) ] },
         { "loures_castle_way", [ new MerchantSpawn("aidan", 8, 2, Direction.Down), new MerchantSpawn("nadia", 7, 2, Direction.Down) ] },
         { "elf_room", [ new MerchantSpawn("elf2", 5, 4, Direction.Down) ] },
         { "lift_room", [ new MerchantSpawn("elf4", 3, 2, Direction.Down) ] },
