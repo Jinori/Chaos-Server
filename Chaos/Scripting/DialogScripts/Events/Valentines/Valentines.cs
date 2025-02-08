@@ -1,4 +1,5 @@
 using Chaos.Collections;
+using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
@@ -12,6 +13,7 @@ using Chaos.Services.Factories.Abstractions;
 using Chaos.Services.Storage.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
+using Humanizer;
 
 namespace Chaos.Scripting.DialogScripts.Events.Valentines
 {
@@ -120,20 +122,20 @@ namespace Chaos.Scripting.DialogScripts.Events.Valentines
             {
                 source.Legend.AddOrAccumulate(new LegendMark(
                     "Loures Love Heist Romantic",
-                    "louresheistromance", MarkIcon.Heart, MarkColor.Pink, 1, GameTime.Now));
+                    "louresheistroman", MarkIcon.Heart, MarkColor.Pink, 1, GameTime.Now));
                 var item = itemFactory.Create("blackcape");
                 source.GiveItemOrSendToBank(item);
-                source.SendOrangeBarMessage("You've been a unique item and legend mark!");
+                source.SendOrangeBarMessage("You've received a unique item and legend mark!");
                 source.Trackers.Enums.Set(FlourentineQuest.FinishedQuest);
             }
             else
             {
                 source.Legend.AddOrAccumulate(new LegendMark(
                     "Loures Love Heist Pragmatic",
-                    "louresheistromance", MarkIcon.Victory, MarkColor.Pink, 1, GameTime.Now));
+                    "louresheistprag", MarkIcon.Victory, MarkColor.LightGreen, 1, GameTime.Now));
                 var item = itemFactory.Create("royalcloak");
                 source.GiveItemOrSendToBank(item);
-                source.SendOrangeBarMessage("You've been a unique item and legend mark!");
+                source.SendOrangeBarMessage("You've received a unique item and legend mark!");
                 source.Trackers.Enums.Set(FlourentineQuest.FinishedQuest);
             }
         }
@@ -242,12 +244,14 @@ namespace Chaos.Scripting.DialogScripts.Events.Valentines
             
             if (selectedAnswer.Equals(correctAnswer, StringComparison.OrdinalIgnoreCase))
             {
-                Subject.Reply(source, "Correct! Tricksy Lovefool scowls, defeated.", "tricksylovefool_riddle1");
                 source.Trackers.Counters.AddOrIncrement("ValentinesRiddles");
+                source.Trackers.Counters.TryGetValue("ValentinesRiddles", out var value);
+                Subject.Reply(source, $"Correct! Tricksy Lovefool scowls, defeated. You've answered {value.ToWords()} of three correct.", "tricksylovefool_riddle1");
             }
             else
             {
-                Subject.Reply(source, "Wrong! Tricksy Lovefool bursts into laughter at your blunder.", "tricksylovefool_riddle1");
+                source.Trackers.Counters.TryGetValue("ValentinesRiddles", out var value);
+                Subject.Reply(source, $"Wrong! Tricksy Lovefool bursts into laughter at your blunder. You've answered {value.ToWords()} of three correct.", "tricksylovefool_riddle1");
             }
         }
 
@@ -263,13 +267,21 @@ namespace Chaos.Scripting.DialogScripts.Events.Valentines
                     return;
                 }
             }
-            var rnd = new Random();
-            var randomKey = rnd.Next(1, Riddles.Count + 1);
-            var selectedRiddle = Riddles[randomKey];
+
+            var random = IntegerRandomizer.RollSingle(20);
+            var selectedRiddle = Riddles[random];
+
             Subject.Options.Clear();
-            
             Subject.InjectTextParameters(selectedRiddle.Question);
-            foreach (var option in selectedRiddle.Options)
+            
+            var shuffledOptions = selectedRiddle.Options.ToList();
+            for (var i = shuffledOptions.Count - 1; i > 0; i--)
+            {
+                var swapIndex = Random.Shared.Next(i + 1);
+                (shuffledOptions[i], shuffledOptions[swapIndex]) = (shuffledOptions[swapIndex], shuffledOptions[i]);
+            }
+            
+            foreach (var option in shuffledOptions)
             {
                 var opt = new DialogOption()
                 {
@@ -279,6 +291,7 @@ namespace Chaos.Scripting.DialogScripts.Events.Valentines
                 Subject.Options.Add(opt);
             }
         }
+
 
         private void HandleTricksyInitial(Aisling source)
         {
@@ -556,125 +569,126 @@ namespace Chaos.Scripting.DialogScripts.Events.Valentines
         {
             {
                 1, new Riddle(
-                    "I begin as bitter, yet end up sweet. Melt me too much, and I admit defeat. I can be dark, or light as snow. On Valentine's Day, I steal the show!",
-                    ["Vanilla", "Caramel", "Chocolate"], "Chocolate")
+                    "Though I'm struck, I do not bleed. My wound's unseen, yet hearts concede. I make the mighty weak in stride, when longing takes them for a ride.",
+                    ["An Arrow", "Love", "A Sword"], "Love")
             },
 
             {
                 2, new Riddle(
-                    "I have no eyes, yet I can cry. I have no breath, yet I will sigh. I'm not a drum, but still I beat. When given away, I feel complete.",
-                    ["A Drum", "A Whisper", "A Heart"], "A Heart")
+                    "I have a twin but we never meet. Though close at heart, we'll never greet. We work as one, yet stand apart. We race through life, a mirrored art.",
+                    ["A Reflection", "A Wedding Ring", "Shoes"], "A Reflection")
             },
 
             {
                 3, new Riddle(
-                    "I wear a coat but have no feet. I can be hard or soft to eat. I come in pairs, in shapes, in swirls. I'm often gifted to boys and girls.",
-                    ["An Apple", "A Lollipop", "Candy"], "Candy")
+                    "I'm caught but never thrown, though some let me slip. I'm silent, yet cause cries. Some give me freely, others never try.",
+                    ["A Whisper", "A Kiss", "A Tear"], "A Kiss")
             },
 
             {
                 4, new Riddle(
-                    "I'm red but I'm not a rose. I'm sweet but I'm not sugar. I have seeds but I'm not an apple. What am I?",
-                    ["A Cherry", "A Tomato", "Strawberry"], "Strawberry")
+                    "I can be made but not seen, whispered yet never heard. I carry weight but never touch, binding souls with just a word.",
+                    ["A Secret", "A Promise", "A Wish"], "A Promise")
             },
 
             {
                 5, new Riddle(
-                    "I hold messages but I am not a phone. I am sealed with love and sent from home. What am I?",
-                    ["A Scroll", "A Postcard", "A Love Letter"], "A Love Letter")
+                    "I exist between two souls yet I am neither. I am felt but never held. If true, I last forever.",
+                    ["A Dream", "Love", "A Memory"], "Love")
             },
 
             {
                 6, new Riddle(
-                    "I can be twisted, I can be tied, in loves embrace, I stand with pride. What am I?",
-                    ["A Knot", "A Bowtie", "A Ribbon"], "A Ribbon")
+                    "I am not a mirror, but I reflect. I make two one, yet stay intact. I show the past, present, and what's to come. Who am I?",
+                    ["A Photograph", "A Shadow", "A Memory"], "A Photograph")
             },
 
             {
                 7, new Riddle(
-                    "I grow shorter as I shine bright, bringing warmth and soft delight. Lovers light me on special days. What am I?",
-                    ["A Lantern", "A Sparkler", "A Candle"], "A Candle")
+                    "I can be wrapped but I'm not a gift. I can be tight but I'm not a fist. I bring comfort when given right. What am I?",
+                    ["A Hug", "A Scarf", "A Ribbon"], "A Hug")
             },
 
             {
                 8, new Riddle(
-                    "I have wings but I don't fly. I have a bow, but I don't tie. I strike hearts and make them swoon. Who am I?",
-                    ["An Archer", "A Cherub", "Cupid"], "Cupid")
+                    "I am heavy yet I float. I am silent yet I scream. I am invisible yet felt by all. What am I?",
+                    ["A Dream", "A Memory", "A Heart"], "A Heart")
             },
 
             {
                 9, new Riddle(
-                    "I can be given, I can be stolen. I can be broken, yet I stay whole. What am I?",
-                    ["A Promise", "A Hug", "A Kiss"], "A Kiss")
+                    "The more you take, the more you leave behind. But in love, the ones you make stay in mind.",
+                    ["A Kiss", "A Memory", "A Footstep"], "A Memory")
             },
 
             {
                 10, new Riddle(
-                    "I am round, yet not a ball. I shine bright, yet I'm not the sun. I am often placed upon the hand of one. What am I?",
-                    ["A Coin", "A Bracelet", "A Ring"], "A Ring")
+                    "I am full when I start, but I vanish by the end. I bring joy, yet sometimes pain, and memories I help suspend.",
+                    ["A Letter", "A Candle", "A Love Song"], "A Candle")
             },
 
             {
                 11, new Riddle(
-                    "I am written and spoken, yet never heard. I can bind two people without a word. What am I?",
-                    ["A Contract", "A Poem", "A Vow"], "A Vow")
+                    "I can be spoken, yet I make no sound. I bind two hearts, yet I am not a rope. Once made, I should never be broken. What am I?",
+                    ["A Promise", "A Vow", "A Secret"], "A Vow")
             },
 
             {
                 12, new Riddle(
-                    "I am soft, but I'm not a pillow. I have petals, but I'm not a tree. I have thorns, but I don't bite. What am I?",
-                    ["A Tulip", "A Daisy", "A Rose"], "A Rose")
+                    "I am soft yet strong, silent yet loud. I stand in a field but never move. Though I fade, I'm never forgotten. What am I?",
+                    ["A Rose", "A Letter", "A Shadow"], "A Rose")
             },
 
             {
                 13, new Riddle(
-                    "I go up but never down. I'm counted once a year but never found. What am I?",
-                    ["The Moon", "A Clock Hand", "Age"], "Age")
+                    "I grow but have no roots. I can be shared but not held. The more I give, the more I have. What am I?",
+                    ["A Smile", "Love", "A Secret"], "Love")
             },
 
             {
                 14, new Riddle(
-                    "I can be cracked, made, told, and played. But when I'm shared, love is displayed. What am I?",
-                    ["A Secret", "A Story", "A Joke"], "A Joke")
+                    "I can be found on a face but I'm not a nose. I can be a secret, but everyone knows. I can be stolen or freely given. What am I?",
+                    ["A Kiss", "A Wink", "A Whisper"], "A Kiss")
             },
 
             {
                 15, new Riddle(
-                    "I come in a box but I am not a toy. I can be filled with sweetness and bring joy. What am I?",
-                    ["A Treasure Chest", "A Jewelry Box", "A Box of Chocolates"],
-                    "A Box of Chocolates")
+                    "I begin empty but fill with delight. I hold treasures both big and small. I'm often opened with eager hands. What am I?",
+                    ["A Love Letter", "A Box of Chocolates", "A Heart"], "A Box of Chocolates")
             },
 
             {
                 16, new Riddle(
-                    "Though I start small, I can grow tall. When love is true, I stand above all. What am I?",
-                    ["A Wedding Cake", "A Love Letter", "A Rosebush"], "A Wedding Cake")
+                    "I have many layers but I am not an onion. I stand tall in celebration, yet I disappear bite by bite. What am I?",
+                    ["A Wedding Cake", "A Love Story", "A Rose"], "A Wedding Cake")
             },
 
             {
                 17, new Riddle(
-                    "You'll find me where hearts are true, I tie the knot for more than two. What am I?",
-                    ["A Love Triangle", "A Wedding Ring", "A Marriage"], "A Marriage")
+                    "I am a journey, not a place. I require two but can be lost by one. I grow stronger with time but fade if neglected. What am I?",
+                    ["Marriage", "A Dance", "Trust"], "Marriage")
             },
 
             {
                 18, new Riddle(
-                    "I can be gold, silver, or lace. I often bring a smile to a face. What am I?",
-                    ["A Crown", "A Necklace", "Jewelry"], "Jewelry")
+                    "I am a circle with no beginning or end. I am a promise made with metal and heart. I can be given but never owned alone. What am I?",
+                    ["A Necklace", "A Wedding Ring", "A Coin"], "A Wedding Ring")
             },
 
             {
                 19, new Riddle(
-                    "I can be shared but I'm not a meal. I can be stolen but I'm not a jewel. What am I?",
-                    ["A Story", "A Memory", "Love"], "Love")
+                    "I am invisible but I can be felt. I can be lost but never stolen. I live in the heart and grow with time. What am I?",
+                    ["A Memory", "A Promise", "Love"], "A Memory")
             },
 
             {
                 20, new Riddle(
-                    "I have hands but no arms. I count moments that make hearts warm. What am I?",
-                    ["A Sundial", "A Calendar", "A Clock"], "A Clock")
+                    "I have hands but do not hold. I mark the moments that make love bold. I move forward but never back. What am I?",
+                    ["A Calendar", "A Clock", "A Sundial"], "A Clock")
             }
+
         };
+
 
         
         public class Riddle(string question, List<string> options, string answer)
