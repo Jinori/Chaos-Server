@@ -7,7 +7,7 @@ using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Items.CookingMeals;
 
-public class PieGreenGrapeEffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
+public class PieGreenGrapesEffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
 {
     public List<string> ConflictingEffectNames { get; init; } =
         [
@@ -19,7 +19,7 @@ public class PieGreenGrapeEffect : EffectBase, NonOverwritableEffectComponent.IN
             "Pie Apple",
             "Pie Cherry",
             "Pie Grape",
-            "Pie Greengrapes",
+            "PieGreengrapes",
             "Pie Strawberry",
             "Pie Tangerines",
             "Salad",
@@ -37,7 +37,8 @@ public class PieGreenGrapeEffect : EffectBase, NonOverwritableEffectComponent.IN
     };
 
     public override byte Icon => 72;
-    public override string Name => "Pie Greengrapes";
+    public override string Name => "PieGreengrapes";
+    
     protected byte? Sound => 115;
 
     public override void OnApplied()

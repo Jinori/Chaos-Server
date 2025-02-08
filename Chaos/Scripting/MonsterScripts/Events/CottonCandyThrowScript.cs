@@ -12,7 +12,7 @@ namespace Chaos.Scripting.MonsterScripts.Events
 {
     public class CottonCandyThrowScript : MonsterScriptBase
     {
-        private readonly IIntervalTimer _knockbackTimer = new IntervalTimer(TimeSpan.FromMilliseconds(100));
+        private readonly IIntervalTimer _knockbackTimer = new IntervalTimer(TimeSpan.FromMilliseconds(300));
         
         public CottonCandyThrowScript(Monster subject)
             : base(subject) { }

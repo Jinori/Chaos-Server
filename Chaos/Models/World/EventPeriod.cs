@@ -58,7 +58,7 @@ public class EventPeriod
     private static List<EventPeriod> GetAllEvents()
         =>
         [
-            new EventPeriod(
+            new(
                 "0 17 * 12 5#2", // Second Friday of December at 5 PM
                 "0 5 * 1 1#1", // First Monday of January at 5 AM
                 [
@@ -91,21 +91,19 @@ public class EventPeriod
                 ]),
 
             //New Years
-            new EventPeriod(
+            new(
                 "0 12 31 12 *", // December 31st at 12:00 PM
                 "0 12 2 1 *", // January 2st at 12:00 AM
-                new List<string>
-                {
-                    "rucesion"
-                } // Replace with your actual map identifiers
+                ["rucesion"] // Replace with your actual map identifiers
             ),
 
             // Valentines
 
-            new EventPeriod(
+            new(
                 "0 0 * 2 3#2", // Second Wednesday of February at 12 AM
                 "0 23 * 2 2#3", // Third Tuesday of February at 11 PM
-                ["loures_castle_way", "shinewood_forest_entrance"]),
+                ["loures_castle_way", "shinewood_forest_entrance", "loures_1_floor_restaurant", "loures_2_floor_restaurant", "loures_3_floor_office", "loures_3_floor_magic_room"])
+
         ];
 
     /// <summary>
