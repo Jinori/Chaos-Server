@@ -2281,3 +2281,14 @@ public enum BountyBoardOptions : ulong
     EpicGreenMantis = 1L << 45,
     EpicAncientHydra = 1L << 46
 }
+
+public enum FlourentineQuest
+{
+    None = 0,
+    SpeakWithJester = 1,
+    SpeakWithSnaggles = 2,
+    SpeakWithZappy = 3,
+    SpeakWithFlourentineFirst = 4,
+    SpeakWithFlourentineAfterZappy = 5,
+    FinishedQuest = 6
+}
