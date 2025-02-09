@@ -1988,7 +1988,8 @@ public enum MainstoryFlags
     FinishedDungeon = 1 << 8,
     FinishedCreants = 1 << 9,
     ReceivedRewards = 1 << 10, //useless enum, can delete for live.
-    CreantRewards = 1 << 11
+    CreantRewards = 1 << 11,
+    BountyBoardEpicChampion = 1 << 12
 }
 
 [Flags]
@@ -2144,94 +2145,7 @@ public enum ThanksgivingChallenge
 }
 
 [Flags]
-public enum BountyBoardFlags
-{
-    None = 0,
-    Easy1 = 1 << 1,
-    Easy2 = 1 << 2,
-    Easy3 = 1 << 3,
-    Medium1 = 1 << 4,
-    Medium2 = 1 << 5,
-    Medium3 = 1 << 6,
-    Hard1 = 1 << 7,
-    Hard2 = 1 << 8,
-    Hard3 = 1 << 9,
-    Epic1 = 1 << 10,
-    Epic2 = 1 << 11,
-    Epic3 = 1 << 12
-}
-
-public enum BountyBoardKill1
-{
-    None = 0,
-    AncientBeetalic = 1,
-    AncientSkeleton = 2,
-    Losgann = 3,
-    Ruidhtear = 4,
-    BrownMantis = 5,
-    GoldBeetalic = 6,
-    RedShocker = 7,
-    BlackShocker = 8,
-    GoldShocker = 9,
-    BlueShocker = 10,
-    DireWolf = 11,
-    IceElemental = 12,
-    IceSkeleton = 13,
-    IceSpore = 14,
-    Kelberoth = 15,
-    AncientDraco = 16,
-    GreenMantis = 17,
-    AncientHydra = 18
-}
-
-public enum BountyBoardKill2
-{
-    None = 0,
-    AncientBeetalic = 1,
-    AncientSkeleton = 2,
-    Losgann = 3,
-    Ruidhtear = 4,
-    BrownMantis = 5,
-    GoldBeetalic = 6,
-    RedShocker = 7,
-    BlackShocker = 8,
-    GoldShocker = 9,
-    BlueShocker = 10,
-    DireWolf = 11,
-    IceElemental = 12,
-    IceSkeleton = 13,
-    IceSpore = 14,
-    Kelberoth = 15,
-    AncientDraco = 16,
-    GreenMantis = 17,
-    AncientHydra = 18
-}
-
-public enum BountyBoardKill3
-{
-    None = 0,
-    AncientBeetalic = 1,
-    AncientSkeleton = 2,
-    Losgann = 3,
-    Ruidhtear = 4,
-    BrownMantis = 5,
-    GoldBeetalic = 6,
-    RedShocker = 7,
-    BlackShocker = 8,
-    GoldShocker = 9,
-    BlueShocker = 10,
-    DireWolf = 11,
-    IceElemental = 12,
-    IceSkeleton = 13,
-    IceSpore = 14,
-    Kelberoth = 15,
-    AncientDraco = 16,
-    GreenMantis = 17,
-    AncientHydra = 18
-}
-
-[Flags]
-public enum BountyBoardOptions : ulong
+public enum BountyQuestFlags1 : ulong
 {
     None = 0,
     EasyAncientBeetalic = 1L << 1,
@@ -2279,8 +2193,72 @@ public enum BountyBoardOptions : ulong
     EpicKelberoth = 1L << 43,
     EpicAncientDraco = 1L << 44,
     EpicGreenMantis = 1L << 45,
-    EpicAncientHydra = 1L << 46
+    EpicHydra = 1L << 46
 }
+
+[Flags]
+public enum BountyQuestFlags2 : ulong { }
+
+[Flags]
+public enum BountyQuestFlags3 : ulong { }
+
+[Flags]
+public enum AvailableQuestFlags1 : ulong
+{
+    None = 0,
+    EasyAncientBeetalic = 1L << 1,
+    EasyAncientSkeleton = 1L << 2,
+    EasyLosgann = 1L << 3,
+    EasyRuidhtear = 1L << 4,
+    EasyBrownMantis = 1L << 5,
+    EasyGoldBeetalic = 1L << 6,
+    EasyRedShocker = 1L << 7,
+    EasyBlackShocker = 1L << 8,
+    EasyGoldShocker = 1L << 9,
+    EasyBlueShocker = 1L << 10,
+    EasyDireWolf = 1L << 11,
+    EasyIceElemental = 1L << 12,
+    EasyIceSkeleton = 1L << 13,
+    EasyIceSpore = 1L << 14,
+    MediumAncientBeetalic = 1L << 15,
+    MediumAncientSkeleton = 1L << 16,
+    MediumLosgann = 1L << 17,
+    MediumRuidhtear = 1L << 18,
+    MediumBrownMantis = 1L << 19,
+    MediumGoldBeetalic = 1L << 20,
+    MediumRedShocker = 1L << 21,
+    MediumBlackShocker = 1L << 22,
+    MediumGoldShocker = 1L << 23,
+    MediumBlueShocker = 1L << 24,
+    MediumDireWolf = 1L << 25,
+    MediumIceElemental = 1L << 26,
+    MediumIceSkeleton = 1L << 27,
+    MediumIceSpore = 1L << 28,
+    HardAncientBeetalic = 1L << 29,
+    HardAncientSkeleton = 1L << 30,
+    HardLosgann = 1L << 31,
+    HardRuidhtear = 1L << 32,
+    HardBrownMantis = 1L << 33,
+    HardGoldBeetalic = 1L << 34,
+    HardRedShocker = 1L << 35,
+    HardBlackShocker = 1L << 36,
+    HardGoldShocker = 1L << 37,
+    HardBlueShocker = 1L << 38,
+    HardDireWolf = 1L << 39,
+    HardIceElemental = 1L << 40,
+    HardIceSkeleton = 1L << 41,
+    HardIceSpore = 1L << 42,
+    EpicKelberoth = 1L << 43,
+    EpicAncientDraco = 1L << 44,
+    EpicGreenMantis = 1L << 45,
+    EpicHydra = 1L << 46
+}
+
+[Flags]
+public enum AvailableQuestFlags2 : ulong { }
+
+[Flags]
+public enum AvailableQuestFlags3 : ulong { }
 
 public enum FlourentineQuest
 {

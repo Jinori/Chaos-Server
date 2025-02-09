@@ -1,679 +1,292 @@
 using System.Text;
+using Chaos.Common.Utilities;
+using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
+using Chaos.Extensions.Common;
+using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
+using Chaos.Services.Factories.Abstractions;
+using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Quests.BountyBoard;
 
-public class BountyBoardDialogScript(Dialog subject, ILogger<BountyBoardDialogScript> logger) : DialogScriptBase(subject)
+public class BountyBoardDialogScript : DialogScriptBase
 {
-    private static readonly Random Random = new();
+    private readonly IItemFactory ItemFactory;
+    private readonly ILogger<BountyBoardDialogScript> Logger;
+    private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
-    private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
-
-    private void AbandonBounty(Aisling source, string bountyName)
+    public BountyBoardDialogScript(Dialog subject, IItemFactory itemFactory, ILogger<BountyBoardDialogScript> logger)
+        : base(subject)
     {
-        // Safely try to retrieve the bounty data from any of the three dictionaries
-        (var monsterKey, _, var killEnum, var originalFlag, _) = GetBountyFromAnyDictionary(bountyName);
+        ItemFactory = itemFactory;
+        Logger = logger;
+        ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
+    }
+    
+    private static readonly List<KeyValuePair<string, decimal>> EpicRewards =
+    [
+        new("nyxtwilightband", 10),
+        new("nyxumbralshield", 6),
+        new("nyxwhisper", 8),
+        new("nyxembrace", 8),
+        new("", 5),
+        new("", 8),
+        new("", 6),
+        new("", 2)
+    ];
 
-        // Check each slot to see which one actually holds this bounty.
-        // Remove the bounty from that slot, its counter, and the corresponding difficulty flag.
-        if (source.Trackers.Enums.TryGetValue(out BountyBoardKill1 slot1Bounty) && slot1Bounty.Equals(killEnum))
-        {
-            // Clear the enum from Slot 1
-            source.Trackers.Enums.Remove(typeof(BountyBoardKill1));
+    private IEnumerable<BountyDetails> GetCurrentBounties(Aisling source)
+    {
+        if (source.Trackers.Flags.TryGetFlag(typeof(BountyQuestFlags1), out var flags1))
+            foreach (var bounty in BountyBoardQuests.PossibleQuestDetails.Where(bounty => flags1.HasFlag(bounty.BountyQuestFlag)))
+                yield return bounty;
 
-            // Remove the monster kill counter
-            source.Trackers.Counters.Remove(monsterKey, out _);
+        if (source.Trackers.Flags.TryGetFlag(typeof(BountyQuestFlags2), out var flags2))
+            foreach (var bounty in BountyBoardQuests.PossibleQuestDetails.Where(bounty => flags2.HasFlag(bounty.BountyQuestFlag)))
+                yield return bounty;
 
-            // Convert originalFlag into the correct suffix for slot "1"
-            var difficultyFlag = GetMatchingDifficultyFlag(originalFlag, 1);
-            source.Trackers.Flags.RemoveFlag(typeof(BountyBoardFlags), difficultyFlag);
-        } else if (source.Trackers.Enums.TryGetValue(out BountyBoardKill2 slot2Bounty) && slot2Bounty.Equals(killEnum))
-        {
-            source.Trackers.Enums.Remove(typeof(BountyBoardKill2));
-            source.Trackers.Counters.Remove(monsterKey, out _);
-
-            var difficultyFlag = GetMatchingDifficultyFlag(originalFlag, 2);
-            source.Trackers.Flags.RemoveFlag(typeof(BountyBoardFlags), difficultyFlag);
-        } else if (source.Trackers.Enums.TryGetValue(out BountyBoardKill3 slot3Bounty) && slot3Bounty.Equals(killEnum))
-        {
-            source.Trackers.Enums.Remove(typeof(BountyBoardKill3));
-            source.Trackers.Counters.Remove(monsterKey, out _);
-
-            var difficultyFlag = GetMatchingDifficultyFlag(originalFlag, 3);
-            source.Trackers.Flags.RemoveFlag(typeof(BountyBoardFlags), difficultyFlag);
-        }
+        if (source.Trackers.Flags.TryGetFlag(typeof(BountyQuestFlags3), out var flags3))
+            foreach (var bounty in BountyBoardQuests.PossibleQuestDetails.Where(bounty => flags3.HasFlag(bounty.BountyQuestFlag)))
+                yield return bounty;
     }
 
-    private void CompleteBounty<T>(Aisling source, T bounty, Type bountyEnumType) where T: Enum
-    {
-        var bountyDictionary = GetBountyDictionary(bountyEnumType);
-        var bountyEntry = bountyDictionary.FirstOrDefault(x => x.Value.KillEnum.Equals(bounty));
-
-        if (bountyEntry.Key == null)
-        {
-            Subject.Reply(source, "Error: Unable to find the corresponding bounty in the system.", "bountyboard_initial");
-
-            return;
-        }
-
-        (var monsterKey, var killRequirement, _, var difficultyFlag, _) = bountyEntry.Value;
-
-        // ✅ Use `BountyMonsterKey` instead of the default counter key
-        if (!source.Trackers.Counters.TryGetValue(monsterKey, out var currentKills) || (currentKills < killRequirement))
-        {
-            Subject.Reply(source, $"You have not completed the bounty for {bountyEntry.Key} yet.", "bountyboard_initial");
-
-            return;
-        }
-
-        // ✅ Grant rewards
-        GrantBountyRewards(source, bountyEntry.Key, killRequirement);
-
-        // ✅ Remove the bounty slot
-        source.Trackers.Enums.Remove(bountyEnumType);
-
-        // ✅ Remove the kill counter
-        source.Trackers.Counters.Remove(monsterKey, out _);
-
-        // ✅ Remove only the specific difficulty flag
-        source.Trackers.Flags.RemoveFlag(typeof(BountyBoardFlags), difficultyFlag);
-
-        Subject.Reply(source, $"You have completed the bounty: {bountyEntry.Key}! Well done.", "bountyboard_initial");
-    }
-
-    private List<string> GetAllBounties()
-        => GetBountyDictionary(typeof(BountyBoardKill1))
-           .Keys
-           .Concat(
-               GetBountyDictionary(typeof(BountyBoardKill2))
-                   .Keys)
-           .Concat(
-               GetBountyDictionary(typeof(BountyBoardKill3))
-                   .Keys)
-           .ToList();
-
-    public static Dictionary<string, (string MonsterKey, int KillRequirement, Enum KillEnum, BountyBoardFlags DifficultyFlag,
-        BountyBoardOptions BountyOption)> GetBountyDictionary(Type bountyEnumType)
-        => bountyEnumType switch
-        {
-            _ when bountyEnumType == typeof(BountyBoardKill1) => BountyBoardDictionary.BountyOptions1.ToDictionary(
-                x => x.Key,
-                x => (x.Value.MonsterKey, x.Value.KillRequirement, (Enum)x.Value.KillEnum, x.Value.DifficultyFlag, x.Value.BountyOption)),
-            _ when bountyEnumType == typeof(BountyBoardKill2) => BountyBoardDictionary.BountyOptions2.ToDictionary(
-                x => x.Key,
-                x => (x.Value.MonsterKey, x.Value.KillRequirement, (Enum)x.Value.KillEnum, x.Value.DifficultyFlag, x.Value.BountyOption)),
-            _ when bountyEnumType == typeof(BountyBoardKill3) => BountyBoardDictionary.BountyOptions3.ToDictionary(
-                x => x.Key,
-                x => (x.Value.MonsterKey, x.Value.KillRequirement, (Enum)x.Value.KillEnum, x.Value.DifficultyFlag, x.Value.BountyOption)),
-            _ => throw new InvalidOperationException("Invalid bounty enum type.")
-        };
-
-    private (string, int, Enum, BountyBoardFlags, BountyBoardOptions) GetBountyFromAnyDictionary(string bounty)
-        => GetBountyDictionary(typeof(BountyBoardKill1))
-            .TryGetValue(bounty, out var bountyData)
-            ? bountyData
-            : GetBountyDictionary(typeof(BountyBoardKill2))
-                .TryGetValue(bounty, out bountyData)
-                ? bountyData
-                : GetBountyDictionary(typeof(BountyBoardKill3))
-                    .TryGetValue(bounty, out bountyData)
-                    ? bountyData
-                    : throw new KeyNotFoundException($"Bounty '{bounty}' not found in any dictionary.");
-
-    private BountyBoardFlags GetMatchingDifficultyFlag(BountyBoardFlags originalFlag, int slot)
-    {
-        var flagName = originalFlag.ToString();
-
-        if (flagName.EndsWith('1'))
-            return Enum.Parse<BountyBoardFlags>(flagName.Replace("1", slot.ToString()));
-
-        if (flagName.EndsWith('2'))
-            return Enum.Parse<BountyBoardFlags>(flagName.Replace("2", slot.ToString()));
-
-        if (flagName.EndsWith('3'))
-            return Enum.Parse<BountyBoardFlags>(flagName.Replace("3", slot.ToString()));
-
-        return originalFlag; // Default to original if no match
-    }
-
-    private void GrantBountyRewards(Aisling source, string bountyName, int killRequirement)
-    {
-        var baseExp = 500; // Base XP per bounty
-        var goldReward = 1000; // Base Gold Reward
-
-        // Adjust reward based on difficulty
-        if (killRequirement == 100)
-        {
-            baseExp = 500;
-            goldReward = 1000;
-        } else if (killRequirement == 500)
-        {
-            baseExp = 2500;
-            goldReward = 5000;
-        } else if (killRequirement == 1000)
-        {
-            baseExp = 5000;
-            goldReward = 10000;
-        }
-
-        // Grant EXP and Gold
-        ExperienceDistributionScript.GiveExp(source, baseExp);
-        source.TryGiveGold(goldReward);
-
-        Subject.Reply(source, $"You received {baseExp} experience and {goldReward} gold for completing {bountyName}.", "bountyboard_initial");
-    }
-
-    private bool HasBountyCompleted(Aisling source, Type bountyEnumType)
-    {
-        if (!source.Trackers.Enums.TryGetValue(bountyEnumType, out var activeBounty) || activeBounty.Equals(default(Enum)))
-            return false; // ✅ No active bounty in this slot, so no completion check needed.
-
-        var bountyDictionary = GetBountyDictionary(bountyEnumType);
-
-        foreach ((_, (var monsterKey, var killRequirement, var killEnum, var difficultyFlag, _)) in bountyDictionary)
-        {
-            if (string.IsNullOrEmpty(monsterKey) || !killEnum.Equals(activeBounty))
-                continue; // ✅ Ensure we only check the active bounty
-
-            // ✅ Validate Kill Requirement Based on Difficulty
-            if (source.Trackers.Flags.HasFlag(difficultyFlag)
-                && source.Trackers.Counters.TryGetValue(monsterKey, out var currentKills)
-                && (currentKills >= killRequirement))
-                return true;
-        }
-
-        return false;
-    }
+    private List<BountyDetails> GrabAislingAvailableBounties(Aisling source)
+        => BountyBoardQuests.PossibleQuestDetails
+                            .Where(bounty => source.Trackers.Flags.HasFlag(bounty.AvailableQuestFlag.GetType(), bounty.AvailableQuestFlag))
+                            .ToList();
 
     public override void OnDisplaying(Aisling source)
     {
-        var hasStage1 = source.Trackers.Enums.TryGetValue(out BountyBoardKill1 _);
-        var hasStage2 = source.Trackers.Enums.TryGetValue(out BountyBoardKill2 _);
-        var hasStage3 = source.Trackers.Enums.TryGetValue(out BountyBoardKill3 _);
-
-        switch (Subject.Template.TemplateKey.ToLower())
+        switch (Subject.Template.TemplateKey)
         {
             case "bountyboard_initial":
             {
                 if (!source.UserStatSheet.Master)
                 {
-                    Subject.Reply(source, "The bounty board doesn't make any sense to you. (Master Only)");
+                    Subject.Reply(source, "You don't understand anything on the board. (Requires Master)");
 
                     return;
                 }
 
-                Subject.Options.Add(
-                    new DialogOption
+                if (source.Trackers.Counters.CounterGreaterThanOrEqualTo("epicBounty", 10))
+                {
+                    var option = new DialogOption
                     {
-                        DialogKey = "bountyboard_viewactive",
-                        OptionText = "View Active Bounties"
-                    });
+                        DialogKey = "bountyboard_epicbountyinitial",
+                        OptionText = "Epic Bounty"
+                    };
 
-                Subject.Options.Insert(
-                    0,
-                    new DialogOption
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
+                var epicMarkCount = source.Legend.GetCount("epicbounty");
+                
+                if ((epicMarkCount >= 100) && !source.Titles.ContainsI("Bounty Master"))
+                {
+                    var option = new DialogOption
                     {
-                        DialogKey = "bountyboard_questinitial",
-                        OptionText = "Browse Posted Bounties"
-                    });
+                        DialogKey = "bountyboard_epicbountyreward",
+                        OptionText = "Bounty Master"
+                    };
 
-                if (hasStage1 && HasBountyCompleted(source, typeof(BountyBoardKill1)))
-                    Subject.Options.Add(
-                        new DialogOption
-                        {
-                            DialogKey = "bountyboard_turnin1",
-                            OptionText = "Turn in Bounty"
-                        });
-
-                if (hasStage2 && HasBountyCompleted(source, typeof(BountyBoardKill2)))
-                    Subject.Options.Add(
-                        new DialogOption
-                        {
-                            DialogKey = "bountyboard_turnin2",
-                            OptionText = "Turn in Bounty"
-                        });
-
-                if (hasStage3 && HasBountyCompleted(source, typeof(BountyBoardKill3)))
-                    Subject.Options.Add(
-                        new DialogOption
-                        {
-                            DialogKey = "bountyboard_turnin3",
-                            OptionText = "Turn in Bounty"
-                        });
-
-                // NEW: If any slot is active, allow "Abandon a Bounty"
-                if (hasStage1 || hasStage2 || hasStage3)
-
-                    // Add "Abandon a Bounty" option
-                    Subject.Options.Add(
-                        new DialogOption
-                        {
-                            DialogKey = "bountyboard_abandon",
-                            OptionText = "Abandon a Bounty"
-                        });
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
 
                 break;
             }
-
-            case "bountyboard_viewactive":
-            {
-                var sb = new StringBuilder();
-
-                // SLOT 1
-                if (source.Trackers.Enums.TryGetValue(out BountyBoardKill1 slot1Bounty) && !slot1Bounty.Equals(default))
-                {
-                    var dict1 = GetBountyDictionary(typeof(BountyBoardKill1));
-
-                    BountyBoardFlags? slotFlag = null;
-
-                    if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Epic1))
-                        slotFlag = BountyBoardFlags.Epic1;
-                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Hard1))
-                        slotFlag = BountyBoardFlags.Hard1;
-                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Medium1))
-                        slotFlag = BountyBoardFlags.Medium1;
-                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Easy1))
-                        slotFlag = BountyBoardFlags.Easy1;
-
-                    if (slotFlag.HasValue)
-                    {
-                        var entry = dict1.FirstOrDefault(
-                            x => x.Value.KillEnum.Equals(slot1Bounty) && (x.Value.DifficultyFlag == slotFlag.Value));
-
-                        if (!string.IsNullOrEmpty(entry.Key))
-                        {
-                            (var monsterKey, var required, _, _, _) = entry.Value;
-
-                            source.Trackers.Counters.TryGetValue(monsterKey, out var killsSoFar);
-                            killsSoFar = Math.Max(0, killsSoFar);
-
-                            sb.Append($"{entry.Key} - {killsSoFar}/{required}\n");
-                        }
-                    }
-                }
-
-                // SLOT 2
-                if (source.Trackers.Enums.TryGetValue(out BountyBoardKill2 slot2Bounty) && !slot2Bounty.Equals(default))
-                {
-                    var dict2 = GetBountyDictionary(typeof(BountyBoardKill2));
-
-                    BountyBoardFlags? slotFlag = null;
-
-                    if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Epic2))
-                        slotFlag = BountyBoardFlags.Epic2;
-                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Hard2))
-                        slotFlag = BountyBoardFlags.Hard2;
-                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Medium2))
-                        slotFlag = BountyBoardFlags.Medium2;
-                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Easy2))
-                        slotFlag = BountyBoardFlags.Easy2;
-
-                    if (slotFlag.HasValue)
-                    {
-                        var entry = dict2.FirstOrDefault(
-                            x => x.Value.KillEnum.Equals(slot2Bounty) && (x.Value.DifficultyFlag == slotFlag.Value));
-
-                        if (!string.IsNullOrEmpty(entry.Key))
-                        {
-                            (var monsterKey, var required, _, _, _) = entry.Value;
-
-                            source.Trackers.Counters.TryGetValue(monsterKey, out var killsSoFar);
-                            killsSoFar = Math.Max(0, killsSoFar);
-
-                            sb.Append($"{entry.Key} - {killsSoFar}/{required}\n");
-                        }
-                    }
-                }
-
-                // SLOT 3
-                if (source.Trackers.Enums.TryGetValue(out BountyBoardKill3 slot3Bounty) && !slot3Bounty.Equals(default))
-                {
-                    var dict3 = GetBountyDictionary(typeof(BountyBoardKill3));
-
-                    BountyBoardFlags? slotFlag = null;
-
-                    if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Epic3))
-                        slotFlag = BountyBoardFlags.Epic3;
-                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Hard3))
-                        slotFlag = BountyBoardFlags.Hard3;
-                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Medium3))
-                        slotFlag = BountyBoardFlags.Medium3;
-                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Easy3))
-                        slotFlag = BountyBoardFlags.Easy3;
-
-                    if (slotFlag.HasValue)
-                    {
-                        var entry = dict3.FirstOrDefault(
-                            x => x.Value.KillEnum.Equals(slot3Bounty) && (x.Value.DifficultyFlag == slotFlag.Value));
-
-                        if (!string.IsNullOrEmpty(entry.Key))
-                        {
-                            (var monsterKey, var required, _, _, _) = entry.Value;
-
-                            source.Trackers.Counters.TryGetValue(monsterKey, out var killsSoFar);
-                            killsSoFar = Math.Max(0, killsSoFar);
-
-                            sb.Append($"{entry.Key} - {killsSoFar}/{required}");
-                        }
-                    }
-                }
-
-                // If sb is empty, the user has no active bounties
-                if (sb.Length == 0)
-                    Subject.Reply(source, "You have no active bounties right now.", "bountyboard_initial");
-                else
-                    Subject.Reply(source, "Your Current Bounties:\n" + sb, "bountyboard_initial");
-
-                break;
-            }
-
-            case "bountyboard_abandon":
-            {
-                // Collect names of the bounties the player is actually on
-                var activeBounties = new List<string>();
-
-                if (hasStage1 && source.Trackers.Enums.TryGetValue(out BountyBoardKill1 bounty1))
-                {
-                    var dict = GetBountyDictionary(typeof(BountyBoardKill1));
-
-                    // Figure out which difficulty is set for slot 1
-                    BountyBoardFlags? slotFlag = null;
-
-                    if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Epic1))
-                        slotFlag = BountyBoardFlags.Epic1;
-                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Hard1))
-                        slotFlag = BountyBoardFlags.Hard1;
-                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Medium1))
-                        slotFlag = BountyBoardFlags.Medium1;
-                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Easy1))
-                        slotFlag = BountyBoardFlags.Easy1;
-
-                    if (slotFlag.HasValue)
-                    {
-                        // Now find the dictionary entry that has BOTH the killEnum + the correct difficulty
-                        var entry
-                            = dict.FirstOrDefault(x => x.Value.KillEnum.Equals(bounty1) && (x.Value.DifficultyFlag == slotFlag.Value));
-
-                        if (!string.IsNullOrEmpty(entry.Key))
-                            activeBounties.Add(entry.Key);
-                    }
-                }
-
-                if (hasStage2 && source.Trackers.Enums.TryGetValue(out BountyBoardKill2 bounty2))
-                {
-                    var dict = GetBountyDictionary(typeof(BountyBoardKill2));
-
-                    // Figure out which difficulty is set for slot 2
-                    BountyBoardFlags? slotFlag = null;
-
-                    if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Epic2))
-                        slotFlag = BountyBoardFlags.Epic2;
-                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Hard2))
-                        slotFlag = BountyBoardFlags.Hard2;
-                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Medium2))
-                        slotFlag = BountyBoardFlags.Medium2;
-                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Easy2))
-                        slotFlag = BountyBoardFlags.Easy2;
-
-                    if (slotFlag.HasValue)
-                    {
-                        // Now find the dictionary entry that has BOTH the killEnum + the correct difficulty
-                        var entry
-                            = dict.FirstOrDefault(x => x.Value.KillEnum.Equals(bounty2) && (x.Value.DifficultyFlag == slotFlag.Value));
-
-                        if (!string.IsNullOrEmpty(entry.Key))
-                            activeBounties.Add(entry.Key);
-                    }
-                }
-
-                if (hasStage3 && source.Trackers.Enums.TryGetValue(out BountyBoardKill3 bounty3))
-                {
-                    var dict = GetBountyDictionary(typeof(BountyBoardKill3));
-
-                    // Figure out which difficulty is set for slot 3
-                    BountyBoardFlags? slotFlag = null;
-
-                    if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Epic3))
-                        slotFlag = BountyBoardFlags.Epic3;
-                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Hard3))
-                        slotFlag = BountyBoardFlags.Hard3;
-                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Medium3))
-                        slotFlag = BountyBoardFlags.Medium3;
-                    else if (source.Trackers.Flags.HasFlag(BountyBoardFlags.Easy3))
-                        slotFlag = BountyBoardFlags.Easy3;
-
-                    if (slotFlag.HasValue)
-                    {
-                        // Now find the dictionary entry that has BOTH the killEnum + the correct difficulty
-                        var entry
-                            = dict.FirstOrDefault(x => x.Value.KillEnum.Equals(bounty3) && (x.Value.DifficultyFlag == slotFlag.Value));
-
-                        if (!string.IsNullOrEmpty(entry.Key))
-                            activeBounties.Add(entry.Key);
-                    }
-                }
-
-                if (activeBounties.Count == 0)
-                {
-                    Subject.Reply(source, "You have no active bounties to abandon.", "bountyboard_initial");
-
-                    return;
-                }
-
-                foreach (var bountyName in activeBounties)
-                    Subject.Options.Add(
-                        new DialogOption
-                        {
-                            DialogKey = "bountyboard_abandon_confirm",
-                            OptionText = bountyName
-                        });
-
-                break;
-            }
-            case "bountyboard_abandon_confirm":
-            {
-                // The bounty's name is in Subject.Context due to OnNext passing it
-                var chosenBounty = Subject.Context as string;
-
-                if (string.IsNullOrEmpty(chosenBounty))
-                {
-                    Subject.Reply(source, "Invalid bounty selection to abandon.", "bountyboard_initial");
-
-                    return;
-                }
-
-                // Provide "Yes" and "No" choices
-                if (!Subject.HasOption("Yes"))
-                    Subject.Options.Add(
-                        new DialogOption
-                        {
-                            DialogKey = "bountyboard_abandon_yes",
-                            OptionText = "Yes"
-                        });
-
-                if (!Subject.HasOption("No"))
-
-                    // Return them to the main board if they decline
-                    Subject.Options.Add(
-                        new DialogOption
-                        {
-                            DialogKey = "bountyboard_initial",
-                            OptionText = "No"
-                        });
-
-                break;
-            }
-
-            case "bountyboard_abandon_yes":
-            {
-                var chosenBounty = Subject.Context as string;
-
-                if (string.IsNullOrEmpty(chosenBounty))
-                {
-                    Subject.Reply(source, "Invalid bounty to abandon.", "bountyboard_initial");
-
-                    return;
-                }
-
-                // Do the actual removal logic
-                AbandonBounty(source, chosenBounty);
-
-                Subject.Reply(source, $"You have abandoned the bounty: {chosenBounty}.", "bountyboard_initial");
-
-                // Optionally jump back to the bountyboard_initial dialog
-                break;
-            }
-
-            case "bountyboard_turnin1":
-                ProcessBountyTurnIn(source, typeof(BountyBoardKill1));
-
-                break;
-
-            case "bountyboard_turnin2":
-                ProcessBountyTurnIn(source, typeof(BountyBoardKill2));
-
-                break;
-
-            case "bountyboard_turnin3":
-                ProcessBountyTurnIn(source, typeof(BountyBoardKill3));
-
-                break;
 
             case "bountyboard_questinitial":
             {
-                List<string> availableBounties;
+                var flagCount = GetCurrentBounties(source);
 
-                if (hasStage1 && hasStage2 && hasStage3)
+                var flags = flagCount.ToList();
+
+                if (flags.Count >= 3)
                 {
-                    Subject.Reply(source, "You're currently on three bounties, you can't take anymore!", "bountyboard_initial");
+                    Subject.Reply(source, "You can only have three active bounties at a time.", "bountyboard_initial");
 
                     return;
                 }
 
-                if (!source.Trackers.TimedEvents.HasActiveEvent("bountyboardreset", out _))
+                if (source.Trackers.TimedEvents.HasActiveEvent("bountyboard_reset", out _))
                 {
-                    if (source.Trackers.Flags.TryGetFlag(out BountyBoardOptions flags))
-                        source.Trackers.Flags.RemoveFlag(flags);
-
-                    var allBounties = GetAllBounties();
-                    availableBounties = SelectRandomBounties(allBounties, 5);
-
-                    source.Trackers.Counters.Remove("maxBountiesAccepted", out _);
-
-                    foreach (var bounty in availableBounties)
+                    if (source.Trackers.Counters.TryGetValue("bountycount", out var count) && (count >= 3))
                     {
-                        (_, _, _, _, var bountyOption) = GetBountyFromAnyDictionary(bounty);
-                        source.Trackers.Flags.AddFlag(bountyOption);
+                        Subject.Reply(source, "You may not take anymore bounties today.", "bountyboard_initial");
+
+                        return;
                     }
 
-                    source.Trackers.TimedEvents.AddEvent("bountyboardreset", TimeSpan.FromHours(8), true);
-                } else if (source.Trackers.Counters.TryGetValue("maxBountiesAccepted", out var count) && (count >= 3))
+                    var currentAvailableBounties = GrabAislingAvailableBounties(source);
+                    Subject.Context = currentAvailableBounties;
+                    var options = currentAvailableBounties.Select(bounty => (bounty.QuestText, "bountyboard_acceptbounty"));
+                    Subject.AddOptions(options);
+                } else
                 {
-                    Subject.Reply(source, "You can only accept three bounties per 8 hours.", "bountyboard_initial");
+                    var possibleBounties = SelectRandomBounties(source);
 
-                    return;
+                    Subject.Context = possibleBounties;
+
+                    var options2 = possibleBounties.Select(bounty => (bounty.QuestText, "bountyboard_acceptbounty"));
+                    Subject.AddOptions(options2);
+
+                    var previousBounties = source.Trackers.Flags.TryGetFlag(out AvailableQuestFlags1 flags1);
+
+                    if (previousBounties)
+                        source.Trackers.Flags.RemoveFlag(flags1);
+
+                    foreach (var bounty in possibleBounties)
+                        source.Trackers.Flags.AddFlag(bounty.AvailableQuestFlag.GetType(), bounty.AvailableQuestFlag);
+
+                    source.Trackers.TimedEvents.AddEvent("bountyboard_reset", TimeSpan.FromHours(8), true);
+                    source.Trackers.Counters.Remove("bountycount", out _);
                 }
 
-                availableBounties = RetrieveExistingBounties(source);
+                break;
+            }
+            case "bountyboard_epicbountyinitial":
+            {
+                var flagCount = GetCurrentBounties(source);
 
-                if (availableBounties.Count == 0)
-                {
-                    Subject.Reply(source, "No bounties are available at this time.", "bountyboard_initial");
+                var flags = flagCount.ToList();
 
-                    return;
-                }
+                if (flags.Count >= 3)
+                    Subject.Reply(
+                        source,
+                        "You can only have three active bounties at a time. You must abandon or complete a normal bounty to free up a slot in order to accept an Epic Bounty.",
+                        "bountyboard_initial");
 
-                foreach (var bounty in availableBounties)
-                    if (!Subject.HasOption(bounty))
-                        Subject.Options.Add(
-                            new DialogOption
-                            {
-                                DialogKey = "bountyboard_acceptbounty",
-                                OptionText = bounty
-                            });
+                if (source.Trackers.Flags.HasFlag(BountyQuestFlags1.EpicAncientDraco)
+                    || source.Trackers.Flags.HasFlag(BountyQuestFlags1.EpicKelberoth)
+                    || source.Trackers.Flags.HasFlag(BountyQuestFlags1.EpicHydra)
+                    || source.Trackers.Flags.HasFlag(BountyQuestFlags1.EpicGreenMantis))
+                    Subject.Reply(
+                        source,
+                        "You may only have one Epic Bounty active at a time. Please abandon or complete your current Epic Bounty to accept another.");
 
                 break;
             }
 
             case "bountyboard_acceptbounty":
             {
-                // Retrieve the selected bounty from the Context
-                var selectedBounty = Subject.Context as string;
-
-                if (string.IsNullOrEmpty(selectedBounty))
+                if (Subject.Context is not BountyDetails bountyDetails)
                 {
-                    Subject.Reply(source, "Invalid bounty selection.", "bountyboard_initial");
+                    Subject.ReplyToUnknownInput(source);
 
                     return;
                 }
 
-                // Merge all bounty dictionaries into a single one, preventing duplicates
-                var bountyDictionary
-                    = new Dictionary<string, (string MonsterKey, int KillRequirement, Enum KillEnum, BountyBoardFlags DifficultyFlag,
-                        BountyBoardOptions BountyOption)>();
+                //after they select the quest, Subject.Context contains bountyDetails
+                Subject.InjectTextParameters(bountyDetails.QuestText);
 
-                foreach (var dict in new[]
-                         {
-                             GetBountyDictionary(typeof(BountyBoardKill1)),
-                             GetBountyDictionary(typeof(BountyBoardKill2)),
-                             GetBountyDictionary(typeof(BountyBoardKill3))
-                         })
-                {
-                    foreach (var kvp in dict)
-                        if (!bountyDictionary.ContainsKey(kvp.Key)) // Prevent duplicates
-                            bountyDictionary[kvp.Key] = kvp.Value;
-                }
+                break;
+            }
+            case "bountyboard_viewactive":
+            {
+                var currentBounties = GetCurrentBounties(source)
+                    .ToList();
 
-                // Ensure the selected bounty exists
-                if (!bountyDictionary.TryGetValue(selectedBounty, out var bountyData))
+                if (currentBounties.Count < 1)
                 {
-                    Subject.Reply(source, "Invalid bounty selection.", "bountyboard_initial");
+                    Subject.Reply(source, "You don't have any current bounties.", "bountyboard_initial");
 
                     return;
                 }
 
-                // Extract data from the bounty
-                (_, var killRequirement, var killEnum, var difficultyFlag, var bountyOption) = bountyData;
+                var builder = new StringBuilder();
 
-                // Determine which slot to use
-                var hasBounty1 = source.Trackers.Enums.TryGetValue(out BountyBoardKill1 bounty1) && !bounty1.Equals(default);
-                var hasBounty2 = source.Trackers.Enums.TryGetValue(out BountyBoardKill2 bounty2) && !bounty2.Equals(default);
-                var hasBounty3 = source.Trackers.Enums.TryGetValue(out BountyBoardKill3 bounty3) && !bounty3.Equals(default);
+                foreach (var bounty in currentBounties)
+                    builder.AppendLine(bounty.QuestText);
 
-                if (!hasBounty1)
+                Subject.InjectTextParameters(
+                    builder.ToString()
+                           .FixLineEndings());
+
+                break;
+            }
+            case "bountyboard_abandon":
+            {
+                var currentBounties = GetCurrentBounties(source)
+                    .ToList();
+
+                if (currentBounties.Count < 1)
                 {
-                    source.Trackers.Enums.Set(typeof(BountyBoardKill1), killEnum);
-                    difficultyFlag = GetMatchingDifficultyFlag(difficultyFlag, 1);
-                } else if (!hasBounty2)
-                {
-                    source.Trackers.Enums.Set(typeof(BountyBoardKill2), killEnum);
-                    difficultyFlag = GetMatchingDifficultyFlag(difficultyFlag, 2);
-                } else if (!hasBounty3)
-                {
-                    source.Trackers.Enums.Set(typeof(BountyBoardKill3), killEnum);
-                    difficultyFlag = GetMatchingDifficultyFlag(difficultyFlag, 3);
-                } else
-                {
-                    Subject.Reply(source, "You already have three active bounties. Complete one before accepting another.", "bountyboard_initial");
+                    Subject.Reply(source, "You have no current bounties to abandon.", "bountyboard_initial");
 
                     return;
                 }
 
-                // Apply the appropriate flag
-                source.Trackers.Flags.AddFlag(difficultyFlag);
-                source.Trackers.Counters.AddOrIncrement("maxBountiesAccepted");
+                var options = currentBounties.Select(bounty => (bounty.QuestText, "bountyboard_abandon_confirm"));
+                Subject.AddOptions(options);
+                Subject.Context = currentBounties;
 
-                // Remove the bounty option flag so it does not reappear
-                if (bountyOption != BountyBoardOptions.None)
-                    source.Trackers.Flags.RemoveFlag(bountyOption);
+                break;
+            }
+            case "bountyboard_abandon_confirm":
+            {
+                if (Subject.Context is not BountyDetails bountyDetails)
+                {
+                    Subject.ReplyToUnknownInput(source);
 
-                Subject.Reply(source, $"You've accepted the bounty: {selectedBounty}. Kill {killRequirement} to complete it!", "bountyboard_initial");
+                    return;
+                }
 
+                Subject.InjectTextParameters(bountyDetails.QuestText);
+
+                break;
+            }
+
+            case "bountyboard_turnin":
+            {
+                var currentBounties = GetCurrentBounties(source)
+                    .ToList();
+
+                if (currentBounties.Count < 1)
+                {
+                    Subject.Reply(source, "You do not have any bounties to turn in.", "bountyboard_initial");
+
+                    return;
+                }
+
+                var options = currentBounties.Select(bounty => (bounty.QuestText, "bountyboard_turninbounty"));
+                Subject.AddOptions(options);
+                Subject.Context = currentBounties;
+
+                break;
+            }
+            case "bountyboard_turninbounty":
+            {
+                if (Subject.Context is not BountyDetails)
+                    Subject.ReplyToUnknownInput(source);
+
+                break;
+            }
+
+            case "bountyboard_epicbountyreward":
+            {
+                source.Titles.Add("Bounty Master");
+                source.SendOrangeBarMessage("Visit Goddess Skandara in the God's Realm immediately.");
+                
+                Logger.WithTopics(
+                          [Topics.Entities.Aisling,
+                              Topics.Entities.Experience,
+                              Topics.Entities.Dialog,
+                              Topics.Entities.Quest])
+                      .WithProperty(source)
+                      .WithProperty(Subject)
+                      .LogInformation(
+                          "{@AislingName} has received Bounty Master title.",
+                          source.Name);
+                
                 break;
             }
         }
@@ -681,97 +294,388 @@ public class BountyBoardDialogScript(Dialog subject, ILogger<BountyBoardDialogSc
 
     public override void OnNext(Aisling source, byte? optionIndex = null)
     {
-        if (optionIndex is > 0 && (optionIndex <= Subject.Options.Count))
+        switch (Subject.Template.TemplateKey)
         {
-            var chosenText = Subject.Options[optionIndex.Value - 1].OptionText;
-
-            // Example of skipping the overwrite if we are in confirm step.
-            if (Subject.Template.TemplateKey.Equals("bountyboard_abandon_confirm", StringComparison.OrdinalIgnoreCase))
+            case "bountyboard_questinitial":
             {
-                if ((chosenText == "Yes") || (chosenText == "No"))
+                switch (optionIndex!.Value)
                 {
-                    // keep existing Subject.Context so we don't lose the bounty name
-                    // do nothing here
-                } else
+                    case 1:
+                    {
+                        if (Subject.Context is not List<BountyDetails> bountyDetails)
+                        {
+                            Subject.ReplyToUnknownInput(source);
 
-                    // normal scenario
-                    Subject.Context = chosenText;
-            } else
+                            return;
+                        }
 
-                // normal scenario
-                Subject.Context = chosenText;
-        }
+                        var selectedBounty = bountyDetails[0];
 
-        base.OnNext(source, optionIndex);
-    }
+                        source.Trackers.Flags.AddFlag(selectedBounty.BountyQuestFlag.GetType(), selectedBounty.BountyQuestFlag);
+                        source.Trackers.Counters.AddOrIncrement("bountycount", 1);
+                        source.SendOrangeBarMessage($"You accepted {selectedBounty.QuestText}.");
+                        source.Trackers.Flags.RemoveFlag(selectedBounty.AvailableQuestFlag.GetType(), selectedBounty.AvailableQuestFlag);
+                        Subject.Context = selectedBounty;
+                        
+                        Logger.WithTopics(
+                                  [Topics.Entities.Aisling,
+                                      Topics.Entities.Experience,
+                                      Topics.Entities.Dialog,
+                                      Topics.Entities.Quest])
+                              .WithProperty(source)
+                              .WithProperty(Subject)
+                              .LogInformation(
+                                  "{@AislingName} has accepted {@QuestText} bounty.",
+                                  source.Name,
+                                  selectedBounty.QuestText);
 
-    private void ProcessBountyTurnIn(Aisling source, Type bountyEnumType)
-    {
-        if ((bountyEnumType == typeof(BountyBoardKill1)) && source.Trackers.Enums.TryGetValue(out BountyBoardKill1 bounty1))
-            CompleteBounty(source, bounty1, bountyEnumType);
-        else if ((bountyEnumType == typeof(BountyBoardKill2)) && source.Trackers.Enums.TryGetValue(out BountyBoardKill2 bounty2))
-            CompleteBounty(source, bounty2, bountyEnumType);
-        else if ((bountyEnumType == typeof(BountyBoardKill3)) && source.Trackers.Enums.TryGetValue(out BountyBoardKill3 bounty3))
-            CompleteBounty(source, bounty3, bountyEnumType);
-        else
-            Subject.Reply(source, "You have no completed bounties to turn in.", "bountyboard_initial");
-    }
+                        break;
+                    }
+                    case 2:
+                    {
+                        if (Subject.Context is not List<BountyDetails> bountyDetails)
+                        {
+                            Subject.ReplyToUnknownInput(source);
 
-    private List<string> RetrieveExistingBounties(Aisling source)
-    {
-        var availableBounties = new List<string>();
+                            return;
+                        }
 
-        if (!source.Trackers.Flags.TryGetFlag<BountyBoardOptions>(out var playerBountyOptions))
-        {
-            Subject.Reply(source, "No active bounties found.", "bountyboard_initial");
+                        var selectedBounty = bountyDetails[1];
 
-            return availableBounties;
-        }
+                        source.Trackers.Flags.AddFlag(selectedBounty.BountyQuestFlag.GetType(), selectedBounty.BountyQuestFlag);
+                        source.Trackers.Counters.AddOrIncrement("bountycount", 1);
+                        source.SendOrangeBarMessage($"You accepted {selectedBounty.QuestText}.");
+                        source.Trackers.Flags.RemoveFlag(selectedBounty.AvailableQuestFlag.GetType(), selectedBounty.AvailableQuestFlag);
+                        Subject.Context = selectedBounty;
+                        
+                        Logger.WithTopics(
+                                  [Topics.Entities.Aisling,
+                                      Topics.Entities.Experience,
+                                      Topics.Entities.Dialog,
+                                      Topics.Entities.Quest])
+                              .WithProperty(source)
+                              .WithProperty(Subject)
+                              .LogInformation(
+                                  "{@AislingName} has accepted {@QuestText} bounty.",
+                                  source.Name,
+                                  selectedBounty.QuestText);
 
-        foreach (var bountyDict in new[]
-                 {
-                     GetBountyDictionary(typeof(BountyBoardKill1))
-                 })
-        {
-            foreach ((var bountyName, (_, _, _, _, var bountyOption)) in bountyDict)
-                if (playerBountyOptions.HasFlag(bountyOption))
-                    availableBounties.Add(bountyName);
-        }
+                        break;
+                    }
+                    case 3:
+                    {
+                        if (Subject.Context is not List<BountyDetails> bountyDetails)
+                        {
+                            Subject.ReplyToUnknownInput(source);
 
-        return availableBounties;
-    }
+                            return;
+                        }
 
-    private List<string> SelectRandomBounties(List<string> allBounties, int count)
-    {
-        var selectedBounties = new List<string>();
-        var selectedMonsters = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                        var selectedBounty = bountyDetails[2];
 
-        // Filter out epic quests BEFORE shuffling
-        var filteredBounties = allBounties
-                               .Where(bounty => !bounty.Contains("({=pEpic", StringComparison.OrdinalIgnoreCase)) // Exclude Epic bounties
-                               .ToList();
+                        source.Trackers.Flags.AddFlag(selectedBounty.BountyQuestFlag.GetType(), selectedBounty.BountyQuestFlag);
+                        source.Trackers.Counters.AddOrIncrement("bountycount", 1);
+                        source.SendOrangeBarMessage($"You accepted {selectedBounty.QuestText}.");
+                        source.Trackers.Flags.RemoveFlag(selectedBounty.AvailableQuestFlag.GetType(), selectedBounty.AvailableQuestFlag);
+                        Subject.Context = selectedBounty;
+                        
+                        Logger.WithTopics(
+                                  [Topics.Entities.Aisling,
+                                      Topics.Entities.Experience,
+                                      Topics.Entities.Dialog,
+                                      Topics.Entities.Quest])
+                              .WithProperty(source)
+                              .WithProperty(Subject)
+                              .LogInformation(
+                                  "{@AislingName} has accepted {@QuestText} bounty.",
+                                  source.Name,
+                                  selectedBounty.QuestText);
 
-        // Shuffle filtered list before selection
-        var shuffledBounties = filteredBounties.OrderBy(_ => Random.Next())
-                                               .ToList();
+                        break;
+                    }
+                    case 4:
+                    {
+                        if (Subject.Context is not List<BountyDetails> bountyDetails)
+                        {
+                            Subject.ReplyToUnknownInput(source);
 
-        foreach (var bounty in shuffledBounties)
-        {
-            (var monsterKey, _, _, _, _) = GetBountyFromAnyDictionary(bounty);
+                            return;
+                        }
 
-            // Skip if this monster was already selected at another difficulty
-            if (selectedMonsters.Contains(monsterKey))
-                continue;
+                        var selectedBounty = bountyDetails[3];
 
-            // Add to selected lists
-            selectedBounties.Add(bounty);
-            selectedMonsters.Add(monsterKey);
+                        source.Trackers.Flags.AddFlag(selectedBounty.BountyQuestFlag.GetType(), selectedBounty.BountyQuestFlag);
+                        source.Trackers.Counters.AddOrIncrement("bountycount", 1);
+                        source.SendOrangeBarMessage($"You accepted {selectedBounty.QuestText}.");
+                        source.Trackers.Flags.RemoveFlag(selectedBounty.AvailableQuestFlag.GetType(), selectedBounty.AvailableQuestFlag);
+                        Subject.Context = selectedBounty;
+                        
+                        Logger.WithTopics(
+                                  [Topics.Entities.Aisling,
+                                      Topics.Entities.Experience,
+                                      Topics.Entities.Dialog,
+                                      Topics.Entities.Quest])
+                              .WithProperty(source)
+                              .WithProperty(Subject)
+                              .LogInformation(
+                                  "{@AislingName} has accepted {@QuestText} bounty.",
+                                  source.Name,
+                                  selectedBounty.QuestText);
 
-            // Stop when reaching the required count
-            if (selectedBounties.Count == count)
+                        break;
+                    }
+                    case 5:
+                    {
+                        if (Subject.Context is not List<BountyDetails> bountyDetails)
+                        {
+                            Subject.ReplyToUnknownInput(source);
+
+                            return;
+                        }
+
+                        var selectedBounty = bountyDetails[4];
+
+                        source.Trackers.Flags.AddFlag(selectedBounty.BountyQuestFlag.GetType(), selectedBounty.BountyQuestFlag);
+                        source.Trackers.Counters.AddOrIncrement("bountycount", 1);
+                        source.SendOrangeBarMessage($"You accepted {selectedBounty.QuestText}.");
+                        source.Trackers.Flags.RemoveFlag(selectedBounty.AvailableQuestFlag.GetType(), selectedBounty.AvailableQuestFlag);
+                        Subject.Context = selectedBounty;
+                        
+                        Logger.WithTopics(
+                                  [Topics.Entities.Aisling,
+                                      Topics.Entities.Experience,
+                                      Topics.Entities.Dialog,
+                                      Topics.Entities.Quest])
+                              .WithProperty(source)
+                              .WithProperty(Subject)
+                              .LogInformation(
+                                  "{@AislingName} has accepted {@QuestText} bounty.",
+                                  source.Name,
+                                  selectedBounty.QuestText);
+                    }
+
+                        break;
+                }
+
                 break;
-        }
+            }
 
-        return selectedBounties;
+            case "bountyboard_abandon":
+            {
+                if (Subject.Context is not List<BountyDetails> bountyDetails)
+                {
+                    Subject.ReplyToUnknownInput(source);
+
+                    return;
+                }
+
+                var selectedBounty = bountyDetails[optionIndex!.Value - 1];
+                Subject.Context = selectedBounty;
+
+                break;
+            }
+            case "bountyboard_abandon_confirm":
+            {
+                if (Subject.Context is not BountyDetails bountyDetails)
+                {
+                    Subject.ReplyToUnknownInput(source);
+
+                    return;
+                }
+
+                //if confirmed
+                if (optionIndex!.Value == 1)
+                {
+                    source.Trackers.Flags.RemoveFlag(bountyDetails.BountyQuestFlag.GetType(), bountyDetails.BountyQuestFlag);
+                    source.Trackers.Counters.Remove(bountyDetails.MonsterTemplateKey, out _);
+                    source.SendOrangeBarMessage($"You abandoned {bountyDetails.QuestText}.");
+
+                    Subject.Context = bountyDetails.QuestText;
+                    
+                    Logger.WithTopics(
+                              [Topics.Entities.Aisling,
+                                  Topics.Entities.Experience,
+                                  Topics.Entities.Dialog,
+                                  Topics.Entities.Quest])
+                          .WithProperty(source)
+                          .WithProperty(Subject)
+                          .LogInformation(
+                              "{@AislingName} has abandoned {@QuestText} bounty.",
+                              source.Name,
+                              bountyDetails.QuestText);
+
+                    Subject.Reply(source, $"You've abandoned {bountyDetails.QuestText}", "bountyboard_initial");
+                }
+
+                break;
+            }
+
+            case "bountyboard_epicbountyinitial":
+            {
+                if (optionIndex!.Value == 1)
+                {
+                    var epicBountyList = SelectRandomEpicBounty(source)
+                        .ToList();
+
+                    var selectedBounty = epicBountyList[0];
+
+                    source.Trackers.Flags.AddFlag(selectedBounty.BountyQuestFlag.GetType(), selectedBounty.BountyQuestFlag);
+                    source.Trackers.Counters.TryDecrement("epicbounty", 10, out _);
+                    source.SendOrangeBarMessage($"You accepted {selectedBounty.QuestText}.");
+
+                    Subject.Context = selectedBounty.QuestText;
+                    
+                    Logger.WithTopics(
+                              [Topics.Entities.Aisling,
+                                  Topics.Entities.Dialog,
+                                  Topics.Entities.Quest])
+                          .WithProperty(source)
+                          .WithProperty(Subject)
+                          .LogInformation(
+                              "{@AislingName} has accepted {@QuestText} bounty.",
+                              source.Name,
+                              selectedBounty.QuestText);
+                    
+
+                    Subject.Reply(source, $"You've accepted {selectedBounty.QuestText}!", "bountyboard_initial");
+                }
+
+                break;
+            }
+
+            case "bountyboard_turnin":
+            {
+                if (Subject.Context is not List<BountyDetails> bountyDetails)
+                {
+                    Subject.ReplyToUnknownInput(source);
+
+                    return;
+                }
+
+                var selectedBounty = bountyDetails[optionIndex!.Value - 1];
+
+                Subject.Context = selectedBounty;
+
+                if (source.Trackers.Counters.CounterGreaterThanOrEqualTo(selectedBounty.MonsterTemplateKey, selectedBounty.KillRequirement))
+                {
+                    var gamepoints = 0;
+                    var exp = 0;
+                    var bountyPoints = 0;
+
+                    source.Trackers.Flags.RemoveFlag(selectedBounty.BountyQuestFlag.GetType(), selectedBounty.BountyQuestFlag);
+                    source.Trackers.Counters.Remove(selectedBounty.MonsterTemplateKey, out _);
+
+                    if (selectedBounty.KillRequirement == 100)
+                    {
+                        exp = 50000000;
+                        gamepoints = 20;
+                        bountyPoints = 1;
+                    } else if (selectedBounty.KillRequirement == 250)
+                    {
+                        exp = 150000000;
+                        gamepoints = 50;
+                        bountyPoints = 2;
+                    } else if (selectedBounty.KillRequirement == 400)
+                    {
+                        exp = 250000000;
+                        gamepoints = 75;
+                        bountyPoints = 3;
+                    } else if (selectedBounty.KillRequirement == 10)
+                    {
+                        exp = 300000000;
+                        gamepoints = 100;
+
+                        var item = EpicRewards.PickRandomWeighted();
+                        var itemReward = ItemFactory.Create(item);
+                        
+                        source.GiveItemOrSendToBank(itemReward);
+                        
+                        source.Legend.AddOrAccumulate(
+                            new LegendMark(
+                                "Completed an Epic Bounty",
+                                "epicbounty",
+                                MarkIcon.Victory,
+                                MarkColor.DarkPurple,
+                                1,
+                                GameTime.Now));
+                    }
+
+                    ExperienceDistributionScript.GiveExp(source, exp);
+                    source.TryGiveGamePoints(gamepoints);
+                    source.Trackers.Counters.AddOrIncrement("epicBounty", bountyPoints);
+                    
+                    Logger.WithTopics(
+                              [Topics.Entities.Aisling,
+                                  Topics.Entities.Experience,
+                                  Topics.Entities.Dialog,
+                                  Topics.Entities.Quest])
+                          .WithProperty(source)
+                          .WithProperty(Subject)
+                          .LogInformation(
+                              "{@AislingName} has received {@ExpAmount} exp and {@GamePoints} from {@QuestText} bounty.",
+                              source.Name,
+                              exp,
+                              gamepoints,
+                              selectedBounty.QuestText);
+
+                    Subject.Reply(
+                        source,
+                        $"Congratulations! You've completed {selectedBounty.QuestText}! You receive {exp} experience and {gamepoints} gamepoints!",
+                        "bountyboard_initial");
+                } else
+                {
+                    var killCount = source.Trackers.Counters.TryGetValue(selectedBounty.MonsterTemplateKey, out var k) ? k : 0;
+
+                    Subject.Reply(
+                        source,
+                        $"You haven't completed this bounty. You're current progress is {killCount}/{selectedBounty.KillRequirement}!",
+                        "bountyboard_initial");
+                }
+
+                break;
+            }
+        }
+    }
+
+    private List<BountyDetails> SelectRandomBounties(Aisling source)
+    {
+        var activeBounties = GetCurrentBounties(source)
+                             .Select(b => b.BountyQuestFlag)
+                             .ToHashSet();
+
+        var activeMonsterKeys = BountyBoardQuests.PossibleQuestDetails
+                                                 .Where(q => activeBounties.Contains(q.BountyQuestFlag))
+                                                 .Select(q => q.MonsterTemplateKey)
+                                                 .ToHashSet();
+
+        return BountyBoardQuests.PossibleQuestDetails
+                                .Where(bounty => !bounty.QuestText.ContainsI("({=pEpic"))
+                                .Where(bounty => !source.Trackers.Flags.HasFlag(bounty.BountyQuestFlag.GetType(), bounty.BountyQuestFlag))
+                                .Where(bounty => !activeMonsterKeys.Contains(bounty.MonsterTemplateKey))
+                                .Shuffle()
+                                .DistinctBy(bounty => bounty.MonsterTemplateKey)
+                                .Take(5)
+                                .ToList();
+    }
+
+    private List<BountyDetails> SelectRandomEpicBounty(Aisling source)
+    {
+        var activeBounties = GetCurrentBounties(source)
+                             .Select(b => b.BountyQuestFlag)
+                             .ToHashSet();
+
+        var activeMonsterKeys = BountyBoardQuests.PossibleQuestDetails
+                                                 .Where(q => activeBounties.Contains(q.BountyQuestFlag))
+                                                 .Select(q => q.MonsterTemplateKey)
+                                                 .ToHashSet();
+
+        return BountyBoardQuests.PossibleQuestDetails
+                                .Where(bounty => bounty.QuestText.ContainsI("({=pEpic"))
+                                .Where(bounty => !source.Trackers.Flags.HasFlag(bounty.BountyQuestFlag.GetType(), bounty.BountyQuestFlag))
+                                .Where(bounty => !activeMonsterKeys.Contains(bounty.MonsterTemplateKey))
+                                .DistinctBy(bounty => bounty.MonsterTemplateKey)
+                                .Shuffle()
+                                .Take(1)
+                                .ToList();
     }
 }
