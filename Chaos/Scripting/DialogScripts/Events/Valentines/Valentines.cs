@@ -186,6 +186,9 @@ namespace Chaos.Scripting.DialogScripts.Events.Valentines
                             return;
                         }
                         
+                        if (source.Effects.Contains("Mount"))
+                            source.Effects.Dispel("Mount");
+                        
                         source.SendOrangeBarMessage($"Catch Snaggles the Sweetsnatcher!");
                         source.TraverseMap(shard, new Point(21, 12));
                         Subject.Close(source);
@@ -201,9 +204,19 @@ namespace Chaos.Scripting.DialogScripts.Events.Valentines
                             Subject.Close(source);
                             return;
                         }
+
+                        if (source.Group.Count > 3)
+                        {
+                            source.SendOrangeBarMessage($"Only three members can be in your group for this part of the quest.");
+                            Subject.Close(source);
+                            return;
+                        }
                         
                         foreach (var member in source.Group)
                         {
+                            if (member.Effects.Contains("Mount"))
+                                member.Effects.Dispel("Mount");
+                            
                             member.SendOrangeBarMessage($"Catch Snaggles the Sweetsnatcher!");
                             member.TraverseMap(shard, new Point(21, 12));
                             Subject.Close(source);
