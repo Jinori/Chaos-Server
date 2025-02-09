@@ -52,15 +52,15 @@ public sealed class BossRandomBuffScript : MonsterScriptBase
         switch (buffType)
         {
             case 1:
-                CurrentBuff = new Attributes { Dmg = 20 };
+                CurrentBuff = new Attributes { Dmg = 30 };
                 Subject.Say("I feel stronger!");
                 break;
             case 2:
-                CurrentBuff = new Attributes { AtkSpeedPct = 20 };
+                CurrentBuff = new Attributes { AtkSpeedPct = 40 };
                 Subject.Say("I am faster now!");
                 break;
             case 3:
-                CurrentBuff = new Attributes { MagicResistance = 20 };
+                CurrentBuff = new Attributes { MagicResistance = 40 };
                 Subject.Say("My magic resist grows!");
                 break;
         }
