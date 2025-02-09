@@ -38,7 +38,7 @@ namespace Chaos.Scripting.MonsterScripts.Events
         private void ApplyKnockback(Aisling aisling)
         {
             var distance = Subject.ManhattanDistanceFrom(aisling);
-            int pushDistance = distance switch
+            var pushDistance = distance switch
             {
                 0 => 3,  // Direct hit → Strongest knockback
                 1 => 2,  // Nearby → Moderate knockback
@@ -59,19 +59,36 @@ namespace Chaos.Scripting.MonsterScripts.Events
 
             var possibleDirections = new List<Direction>();
 
-            if (dx > 0) possibleDirections.Add(Direction.Right);
-            if (dx < 0) possibleDirections.Add(Direction.Left);
-            if (dy > 0) possibleDirections.Add(Direction.Down);
-            if (dy < 0) possibleDirections.Add(Direction.Up);
+            switch (dx)
+            {
+                case > 0:
+                    possibleDirections.Add(Direction.Right);
+                    break;
+                case < 0:
+                    possibleDirections.Add(Direction.Left);
+                    break;
+            }
 
-            return possibleDirections.Any() 
-                ? possibleDirections[Random.Shared.Next(possibleDirections.Count)] 
-                : Direction.Invalid;
+            switch (dy)
+            {
+                case > 0:
+                    possibleDirections.Add(Direction.Down);
+                    break;
+                case < 0:
+                    possibleDirections.Add(Direction.Up);
+                    break;
+            }
+
+            return possibleDirections.Count == 0 ? Direction.Invalid : possibleDirections[Random.Shared.Next(possibleDirections.Count)];
         }
+
 
         private void MoveAisling(Aisling aisling, Direction direction, int distance)
         {
-            for (int i = 0; i < distance; i++)
+            if (direction == Direction.Invalid)
+                return;
+
+            for (var i = 0; i < distance; i++)
             {
                 var nextPosition = aisling.DirectionalOffset(direction);
 
@@ -87,6 +104,7 @@ namespace Chaos.Scripting.MonsterScripts.Events
                 }
             }
         }
+
         
         private Animation Throw { get; } = new()
         {

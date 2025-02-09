@@ -1,18 +1,22 @@
+using Chaos.Collections;
 using Chaos.Extensions;
+using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
 using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 using Chaos.Pathfinding;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
+using Chaos.Storage.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 using Humanizer;
 
 namespace Chaos.Scripting.MonsterScripts.Events;
 
-public class SnagglesMonster(Monster subject, IMerchantFactory merchantFactory, IMonsterFactory monsterFactory) : MonsterScriptBase(subject)
+public class SnagglesMonster(Monster subject, IMerchantFactory merchantFactory, IMonsterFactory monsterFactory, ISimpleCache simpleCache) : MonsterScriptBase(subject)
 {
     private bool Tagged;
     private int TagCount;
@@ -23,6 +27,20 @@ public class SnagglesMonster(Monster subject, IMerchantFactory merchantFactory, 
     private readonly IIntervalTimer SpawnsKillTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
     private readonly IIntervalTimer WalkToSweetsTimer = new IntervalTimer(TimeSpan.FromMilliseconds(600), false);
 
+    public override void OnPublicMessage(Creature source, string message)
+    {
+        base.OnPublicMessage(source, message);
+        
+        if (source is not Aisling aisling)
+            return;
+
+        if (message is not "I give up!") 
+            return;
+        
+        var instance = simpleCache.Get<MapInstance>("loures_1_floor_restaurant");
+        aisling.TraverseMap(instance, new Point(5, 5));
+    }
+    
     public override void Update(TimeSpan delta)
     {
         // Update walk interval

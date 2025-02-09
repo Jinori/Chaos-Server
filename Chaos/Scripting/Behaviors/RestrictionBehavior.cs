@@ -104,7 +104,7 @@ public class RestrictionBehavior
 
                 return false;
             }
-
+            
             if (aisling.IsPramhed() || aisling.IsSuained())
             {
                 aisling.SendOrangeBarMessage("You can't do that now.");
@@ -115,10 +115,16 @@ public class RestrictionBehavior
             if (aisling.IsStoned() && !item.Template.TemplateKey.EqualsI("lightPotion"))
                 return false;
             
-            if(aisling.MapInstance.LoadedFromInstanceId.StartsWithI("phoenix_sky"))
+            if (aisling.MapInstance.LoadedFromInstanceId.StartsWithI("phoenix_sky"))
             {
                 aisling.SendOrangeBarMessage("You are in Lady Phoenix's clutches");
 
+                return false;
+            }
+            
+            if (aisling.MapInstance.LoadedFromInstanceId.StartsWithI("snaggleschallenge"))
+            {
+                aisling.SendOrangeBarMessage("You can't use items here.");
                 return false;
             }
 
@@ -141,7 +147,7 @@ public class RestrictionBehavior
                                       || aisling.IsPramhed()
                                       || aisling.IsStoned()
                                       || aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out _)
-                                      || (aisling.MapInstance.Name.EqualsI("Frosty's Challenge") && !aisling.IsGodModeEnabled()):
+                                      || aisling.MapInstance.Name.EqualsI("Frosty's Challenge") || (aisling.MapInstance.Name.EqualsI("Snaggles Secret Sweetroom") && !aisling.IsGodModeEnabled()):
             {
                 aisling.SendOrangeBarMessage("You cannot use skills.");
 
@@ -196,7 +202,7 @@ public class RestrictionBehavior
                                       || aisling.IsPramhed()
                                       || aisling.IsStoned()
                                       || aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out _)
-                                      || (aisling.MapInstance.Name.EqualsI("Frosty's Challenge") && !aisling.IsGodModeEnabled()):
+                                      || aisling.MapInstance.Name.EqualsI("Frosty's Challenge") || (aisling.MapInstance.Name.EqualsI("Snaggles Secret Sweetroom") && !aisling.IsGodModeEnabled()):
             {
                 aisling.SendOrangeBarMessage("You cannot use spells.");
 
