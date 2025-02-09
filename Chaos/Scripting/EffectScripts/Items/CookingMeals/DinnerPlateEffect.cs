@@ -26,7 +26,7 @@ public class DinnerPlateEffect : EffectBase, NonOverwritableEffectComponent.INon
         "Pie Apple",
         "Pie Cherry",
         "Pie Grape",
-        "Pie Greengrapes",
+        "PieGreengrapes",
         "Pie Strawberry",
         "Pie Tangerines",
         "Salad",

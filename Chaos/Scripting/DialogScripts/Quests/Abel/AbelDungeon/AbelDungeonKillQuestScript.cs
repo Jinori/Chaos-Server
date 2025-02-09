@@ -97,7 +97,7 @@ public class AbelDungeonKillQuestScript(Dialog subject, ILogger<TheSacrificeQues
                         "nico_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("abeldungeoncd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("abeldungeoncd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("dungeonslugcounter", out _);
                     source.Trackers.Enums.Set(AbelDungeonKillQuestStage.None);
                     return;
@@ -126,7 +126,7 @@ public class AbelDungeonKillQuestScript(Dialog subject, ILogger<TheSacrificeQues
                         "nico_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("abeldungeoncd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("abeldungeoncd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("dungeonglupecounter", out _);
                     source.Trackers.Enums.Set(AbelDungeonKillQuestStage.None);
                     return;
@@ -154,7 +154,7 @@ public class AbelDungeonKillQuestScript(Dialog subject, ILogger<TheSacrificeQues
                         "nico_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("abeldungeoncd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("abeldungeoncd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("dungeonleechcounter", out _);
                     source.Trackers.Enums.Set(AbelDungeonKillQuestStage.None);
                     return;
@@ -182,7 +182,7 @@ public class AbelDungeonKillQuestScript(Dialog subject, ILogger<TheSacrificeQues
                         "nico_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("abeldungeoncd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("abeldungeoncd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("dungeonsporecounter", out _);
                     source.Trackers.Enums.Set(AbelDungeonKillQuestStage.None);
                     return;
@@ -210,7 +210,7 @@ public class AbelDungeonKillQuestScript(Dialog subject, ILogger<TheSacrificeQues
                         "nico_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("abeldungeoncd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("abeldungeoncd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("dungeonpolypcounter", out _);
                     source.Trackers.Enums.Set(AbelDungeonKillQuestStage.None);
                     return;
@@ -238,7 +238,7 @@ public class AbelDungeonKillQuestScript(Dialog subject, ILogger<TheSacrificeQues
                         "nico_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("abeldungeoncd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("abeldungeoncd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("dungeondwarfcounter", out _);
                     source.Trackers.Enums.Set(AbelDungeonKillQuestStage.None);
                     return;
@@ -266,7 +266,7 @@ public class AbelDungeonKillQuestScript(Dialog subject, ILogger<TheSacrificeQues
                         "nico_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("abeldungeoncd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("abeldungeoncd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("dungeondwarfsoldiercounter", out _);
                     source.Trackers.Enums.Set(AbelDungeonKillQuestStage.None);
                     return;
@@ -297,7 +297,7 @@ public class AbelDungeonKillQuestScript(Dialog subject, ILogger<TheSacrificeQues
                         "nico_initial");
                     source.TryGiveGamePoints(5);
                     ExperienceDistributionScript.GiveExp(source, tenPercent);
-                    source.Trackers.TimedEvents.AddEvent("abeldungeoncd", TimeSpan.FromHours(24), true);
+                    source.Trackers.TimedEvents.AddEvent("abeldungeoncd", TimeSpan.FromHours(22), true);
                     source.Trackers.Counters.Remove("dungeonbosscounter", out _);
                     source.Trackers.Enums.Set(AbelDungeonKillQuestStage.None);
                 }

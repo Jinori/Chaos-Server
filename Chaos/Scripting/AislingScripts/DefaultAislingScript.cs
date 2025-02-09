@@ -48,6 +48,12 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         "arena_pitfight"
     };
 
+    
+    private static readonly HashSet<string> SkippedEffects =
+    [
+        "Hot Chocolate", "ValentinesCandy", "GM Knowledge", "Strong Knowledge", "Knowledge", "Werewolf"
+    ];
+    
     private readonly IStore<BulletinBoard> BoardStore;
     private readonly IIntervalTimer CleanupSkillsSpellsTimer;
     private readonly IIntervalTimer ClearOrangeBarTimer;
@@ -671,7 +677,12 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         var effects = Subject.Effects.ToList();
 
         foreach (var effect in effects)
+        {
+            if (SkippedEffects.Contains(effect.Name))
+                continue;
+            
             Subject.Effects.Dispel(effect.Name);
+        }
 
         if (source?.MapInstance.Name.Equals("Mr. Hopps's Home") == true)
         {

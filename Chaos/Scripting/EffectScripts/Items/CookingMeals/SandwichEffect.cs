@@ -26,7 +26,7 @@ public class SandwichEffect : EffectBase, NonOverwritableEffectComponent.INonOve
         "Pie Apple",
         "Pie Cherry",
         "Pie Grape",
-        "Pie Greengrapes",
+        "PieGreengrapes",
         "Pie Strawberry",
         "Pie Tangerines",
         "Salad",

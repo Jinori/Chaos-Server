@@ -19,7 +19,7 @@ public class SaladEffect : EffectBase, NonOverwritableEffectComponent.INonOverwr
             "Pie Apple",
             "Pie Cherry",
             "Pie Grape",
-            "Pie Greengrapes",
+            "PieGreengrapes",
             "Pie Strawberry",
             "Pie Tangerines",
             "Salad",

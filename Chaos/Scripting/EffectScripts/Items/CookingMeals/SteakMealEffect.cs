@@ -26,7 +26,7 @@ public class SteakMealEffect : EffectBase, NonOverwritableEffectComponent.INonOv
         "Pie Apple",
         "Pie Cherry",
         "Pie Grape",
-        "Pie Greengrapes",
+        "PieGreengrapes",
         "Pie Strawberry",
         "Pie Tangerines",
         "Salad",
