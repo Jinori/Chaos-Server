@@ -196,11 +196,13 @@ namespace Chaos.Scripting.DialogScripts.Events.Valentines
                     else
                     {
                         
-                        var allOnSnaggles = source.Group.Any(x => x.Trackers.Enums.TryGetValue(out FlourentineQuest queststate) && queststate != FlourentineQuest.SpeakWithSnaggles);
-                        
-                        if (allOnSnaggles)
+                        var allOnSnaggles = source.Group.All(x => 
+                            x.Trackers.Enums.TryGetValue(out FlourentineQuest queststate) && 
+                            queststate == FlourentineQuest.SpeakWithSnaggles);
+
+                        if (!allOnSnaggles) // If NOT all members are on SpeakWithSnaggles
                         {
-                            source.SendOrangeBarMessage($"Someone in the group is not on this part of the quest yet.");
+                            source.SendOrangeBarMessage("Someone in the group is not on this part of the quest yet.");
                             Subject.Close(source);
                             return;
                         }
