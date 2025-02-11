@@ -111,10 +111,11 @@ public class SnagglesMonster(Monster subject, IMerchantFactory merchantFactory, 
 
         if (TagDelayTimer.IntervalElapsed && Tagged && TagCount < 3)
         {
-            Subject.Say("You won't catch me again!");
             Subject.MapInstance.TryGetRandomWalkablePoint(out var point);
             if (point != null) 
                 Subject.WarpTo(point);
+            Subject.Say("Won't catch me again! Take this!");
+            SpawnAdds();
             Tagged = false;
         }
         

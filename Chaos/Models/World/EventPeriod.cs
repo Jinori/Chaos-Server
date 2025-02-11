@@ -100,10 +100,11 @@ public class EventPeriod
             // Valentines
 
             new(
-                "0 0 * 2 3#2", // Second Wednesday of February at 12 AM
-                "0 23 * 2 2#3", // Third Tuesday of February at 11 PM
-                ["loures_castle_way", "shinewood_forest_entrance", "loures_1_floor_restaurant", "loures_2_floor_restaurant", "loures_3_floor_office", "loures_3_floor_magic_room"])
-
+                "0 6 * 2 1#2", // Second Monday of February at 6 AM
+                "0 6 * 2 1#3", // Third Monday of February at 6 AM
+                ["loures_castle_way", "shinewood_forest_entrance", "loures_1_floor_restaurant", "loures_2_floor_restaurant", "loures_3_floor_office", "loures_3_floor_magic_room"]
+            )
+            
         ];
 
     /// <summary>
