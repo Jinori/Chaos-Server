@@ -112,7 +112,7 @@ public class BountyBoardDialogScript : DialogScriptBase
 
                 if (flags.Count >= 3)
                 {
-                    Subject.Reply(source, "You can only have three active bounties at a time.", "bountyboard_initial");
+                    Subject.Reply(source, "You may only have three active bounties at a time.", "bountyboard_initial");
 
                     return;
                 }
@@ -197,7 +197,7 @@ public class BountyBoardDialogScript : DialogScriptBase
 
                 if (currentBounties.Count < 1)
                 {
-                    Subject.Reply(source, "You don't have any current bounties.", "bountyboard_initial");
+                    Subject.Reply(source, "You are not actively pursuing any bounties.", "bountyboard_initial");
 
                     return;
                 }
@@ -220,7 +220,7 @@ public class BountyBoardDialogScript : DialogScriptBase
 
                 if (currentBounties.Count < 1)
                 {
-                    Subject.Reply(source, "You have no current bounties to abandon.", "bountyboard_initial");
+                    Subject.Reply(source, "You are not actively pursuing any bounties.", "bountyboard_initial");
 
                     return;
                 }
@@ -252,7 +252,7 @@ public class BountyBoardDialogScript : DialogScriptBase
 
                 if (currentBounties.Count < 1)
                 {
-                    Subject.Reply(source, "You do not have any bounties to turn in.", "bountyboard_initial");
+                    Subject.Reply(source, "You are not actively pursuing any bounties.", "bountyboard_initial");
 
                     return;
                 }
@@ -588,6 +588,9 @@ public class BountyBoardDialogScript : DialogScriptBase
                         var item = EpicRewards.PickRandomWeighted();
                         var itemReward = ItemFactory.Create(item);
                         
+                        if (itemReward.DisplayName.ContainsI("Nyx"))
+                            source.Trackers.Counters.AddOrIncrement($"NyxItem{itemReward.UniqueId}");
+                        
                         source.GiveItemOrSendToBank(itemReward);
                         
                         source.Legend.AddOrAccumulate(
@@ -620,7 +623,7 @@ public class BountyBoardDialogScript : DialogScriptBase
 
                     Subject.Reply(
                         source,
-                        $"Congratulations! You've completed {selectedBounty.QuestText}! You receive {exp} experience and {gamepoints} gamepoints!",
+                        $"Congratulations! You've completed {selectedBounty.QuestText}! You received {exp} experience and {gamepoints} gamepoints!",
                         "bountyboard_initial");
                 } else
                 {

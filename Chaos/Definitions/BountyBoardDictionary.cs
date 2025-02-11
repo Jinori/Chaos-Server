@@ -2,11 +2,11 @@ namespace Chaos.Definitions;
 
 public sealed class BountyDetails
 {
-    public Enum AvailableQuestFlag { get; init; }
-    public Enum BountyQuestFlag { get; init; }
+    public required Enum AvailableQuestFlag { get; init; }
+    public required Enum BountyQuestFlag { get; init; }
     public int KillRequirement { get; init; }
-    public string MonsterTemplateKey { get; init; }
-    public string QuestText { get; init; }
+    public required string MonsterTemplateKey { get; init; }
+    public required string QuestText { get; init; }
 }
 
 public class BountyBoardQuests
