@@ -2,11 +2,13 @@
 using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Geometry.Abstractions;
+using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyDamage;
+using Chaos.Scripting.MonsterScripts.Pet;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
@@ -17,7 +19,7 @@ public class ArdSalSplashEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(9);
 
-    private Creature SourceOfEffect { get; set; } = null!;
+    private Creature? SourceOfEffect { get; set; }
 
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()
@@ -52,9 +54,23 @@ public class ArdSalSplashEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
     {
+        if (SourceOfEffect == null)
+        {
+            AislingSubject?.Effects.Terminate(Name);
+
+            return;
+        }
+
+        if ((AislingSubject == null) && !Subject.Script.Is<PetScript>())
+        {
+            Subject.Effects.Terminate("Ard Sal Splash");
+
+            return;
+        }
+
         if (Subject.MapInstance != SourceOfEffect.MapInstance)
         {
-            Subject.Effects.Terminate("ArdSalSplash");
+            Subject.Effects.Terminate("Ard Sal Splash");
 
             return;
         }
@@ -66,7 +82,8 @@ public class ArdSalSplashEffect : ContinuousAnimationEffectBase
         var options = new AoeShapeOptions
         {
             Source = new Point(Subject.X, Subject.Y),
-            Range = 1
+            Range = 1,
+            Direction = Direction.All
         };
 
         var points = AoeShape.AllAround.ResolvePoints(options);
@@ -74,7 +91,8 @@ public class ArdSalSplashEffect : ContinuousAnimationEffectBase
         // Retrieve and filter targets at those points
         var targets = Subject.MapInstance
                              .GetEntitiesAtPoints<Creature>(points.Cast<IPoint>())
-                             .WithFilter(SourceOfEffect, TargetFilter.HostileOnly)
+                             .WithFilter(Subject, TargetFilter.HostileOnly)
+                             .WithFilter(Subject, TargetFilter.AliveOnly)
                              .Where(x => !x.Equals(Subject) && !x.MapInstance.IsWall(x))
                              .ToList();
 
@@ -84,11 +102,13 @@ public class ArdSalSplashEffect : ContinuousAnimationEffectBase
             if (target.StatSheet.DefenseElement == Element.Water)
                 continue;
 
+            var pctMana = SourceOfEffect.StatSheet.EffectiveMaximumMp * 0.02;
+
             ApplyDamageScript.ApplyDamage(
                 SourceOfEffect,
                 target,
                 this,
-                (SourceOfEffect.StatSheet.Level + SourceOfEffect.StatSheet.EffectiveInt) * 5 + 100,
+                (SourceOfEffect.StatSheet.Level + SourceOfEffect.StatSheet.EffectiveInt) * 10 + 1000 + (int)pctMana,
                 Element.Water);
 
             // Show target health status and animate the effect

@@ -6,6 +6,7 @@ using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
+using Chaos.Networking.Abstractions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
@@ -19,8 +20,12 @@ public class MainStoryScript(
     IItemFactory itemFactory,
     IMerchantFactory merchantFactory,
     ISimpleCache simpleCache,
-    IDialogFactory dialogFactory) : DialogScriptBase(subject)
+    IEffectFactory effectFactory,
+    ISpellFactory spellFactory,
+    IDialogFactory dialogFactory,
+    IClientRegistry<IChaosWorldClient> clientRegistry) : DialogScriptBase(subject)
 {
+    protected IClientRegistry<IChaosWorldClient> ClientRegistry { get; } = clientRegistry;
     private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
 
     public override void OnDisplaying(Aisling source)
@@ -29,33 +34,33 @@ public class MainStoryScript(
         {
             {
                 "kalkuri", [
-                    "enchantedkalkuri",
-                    "empoweredkalkuri"
-                ]
+                               "enchantedkalkuri",
+                               "empoweredkalkuri"
+                           ]
             },
             {
                 "holyhybrasylgnarl", [
-                    "enchantedholygnarl",
-                    "empoweredholygnarl"
-                ]
+                                         "enchantedholygnarl",
+                                         "empoweredholygnarl"
+                                     ]
             },
             {
                 "hybrasylazoth", [
-                    "enchantedhybrasylazoth",
-                    "empoweredhybrasylazoth"
-                ]
+                                     "enchantedhybrasylazoth",
+                                     "empoweredhybrasylazoth"
+                                 ]
             },
             {
                 "magusorb", [
-                    "enchantedmagusorb",
-                    "empoweredmagusorb"
-                ]
+                                "enchantedmagusorb",
+                                "empoweredmagusorb"
+                            ]
             },
             {
                 "hybrasylescalon", [
-                    "enchantedhybrasylescalon",
-                    "empoweredhybrasylescalon"
-                ]
+                                       "enchantedhybrasylescalon",
+                                       "empoweredhybrasylescalon"
+                                   ]
             }
         };
 
@@ -315,6 +320,7 @@ public class MainStoryScript(
             case "mainstory_miraelis_summonerinitial1":
             {
                 source.Trackers.Enums.Set(MainStoryEnums.CompletedTrials);
+
                 return;
             }
 
@@ -858,6 +864,18 @@ public class MainStoryScript(
             #region Skandara
             case "mainstory_skandara_initial":
             {
+                if (source.Titles.ContainsI("Bounty Master") && !source.Trackers.Flags.HasFlag(MainstoryFlags.BountyBoardEpicChampion))
+                {
+                    var option = new DialogOption
+                    {
+                        DialogKey = "mainstory_skandara_bountymaster1",
+                        OptionText = "I am a Bounty Master"
+                    };
+
+                    if (!Subject.HasOption(option.OptionText))
+                        Subject.Options.Insert(0, option);
+                }
+
                 if (source.UserStatSheet.Master)
                 {
                     var hasMasterWeapon = false;
@@ -987,6 +1005,22 @@ public class MainStoryScript(
 
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.FinishedArtifact4))
                     Subject.Reply(source, "Skip", "mainstory_skandara_finisheda1");
+
+                break;
+            }
+
+            case "mainstory_skandara_bountymaster5":
+            {
+                source.Trackers.Flags.AddFlag(MainstoryFlags.BountyBoardEpicChampion);
+                var nyxPendant = itemFactory.Create("nyxpendant");
+                source.GiveItemOrSendToBank(nyxPendant);
+                var celebrationEffect = effectFactory.Create("celebration");
+                source.Effects.Apply(source, celebrationEffect);
+                var spell = spellFactory.Create("Celebrate");
+                source.SpellBook.TryAdd(73, spell);
+
+                foreach (var client in ClientRegistry)
+                    client.Aisling.SendActiveMessage($"{source.Name} has obtained Nyx's Pendant as a true Bounty Hunter.");
 
                 break;
             }

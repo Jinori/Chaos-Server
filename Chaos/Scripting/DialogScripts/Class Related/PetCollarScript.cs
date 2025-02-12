@@ -182,7 +182,6 @@ public class PetCollarScript(
         if (source.Group is { Count: > 2 })
         {
             source.SendOrangeBarMessage("You cannot summon a pet with more than two group members.");
-            source.Trackers.TimedEvents.AddEvent("PetReturn", TimeSpan.FromMinutes(5), true);
 
             return;
         }

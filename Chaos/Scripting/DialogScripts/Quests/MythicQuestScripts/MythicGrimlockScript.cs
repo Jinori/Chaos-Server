@@ -251,16 +251,24 @@ public class MythicGrimlockScript : DialogScriptBase
 
             case "grimlock_item2":
             {
-                if (!source.Inventory.RemoveQuantity("Brown Kobold Tail", 10)
-                    || !source.Inventory.RemoveQuantity("Black Kobold Tail", 10)
-                    || !source.Inventory.RemoveQuantity("Silver Kobold Tail", 10))
+                // 1) Check if the player has enough of each item first
+                var hasBrown = source.Inventory.HasCount("Brown Kobold Tail", 10);
+                var hasBlack  = source.Inventory.HasCount("Black Kobold Tail", 10);
+                var hasSilver = source.Inventory.HasCount("Silver Kobold Tail",10);
+
+                if (!hasBrown || !hasBlack || !hasSilver)
                 {
                     Subject.Reply(
                         source,
-                        "This is not enough tails! My people will blow through that many very quickly, please try harder. We are counting on you.");
-
+                        "This is not enough tails! My people will blow through that many very quickly. Please try harder. We are counting on you."
+                    );
                     return;
                 }
+
+                // 2) If the player does have enough, safely remove them all at once
+                source.Inventory.RemoveQuantity("Brown Kobold Tail", 10);
+                source.Inventory.RemoveQuantity("Black Kobold Tail", 10);
+                source.Inventory.RemoveQuantity("Silver Kobold Tail", 10);
 
                 source.Animate(ani, source.Id);
 

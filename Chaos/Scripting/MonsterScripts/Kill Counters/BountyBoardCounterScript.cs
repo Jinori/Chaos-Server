@@ -52,7 +52,7 @@ public class BountyBoardCounterScript(Monster subject) : ConfigurableMonsterScri
                 .ToList();
 
             if (!currentBounties.Any())
-                return;
+                continue;
 
             foreach (var currentbounty in currentBounties)
             {

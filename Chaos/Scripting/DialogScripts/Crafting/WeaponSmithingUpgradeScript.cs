@@ -322,8 +322,8 @@ public class WeaponSmithingUpgradeScript : DialogScriptBase
 
             var newCraft = roll switch
             {
-                < 10  => ItemFactory.Create("grand" + recipe.TemplateKey),
-                < 40  => ItemFactory.Create("great" + recipe.TemplateKey),
+                < 15  => ItemFactory.Create("grand" + recipe.TemplateKey),
+                < 45  => ItemFactory.Create("great" + recipe.TemplateKey),
                 < 100 => ItemFactory.Create("good" + recipe.TemplateKey),
                 _     => ItemFactory.Create(recipe.TemplateKey)
             };

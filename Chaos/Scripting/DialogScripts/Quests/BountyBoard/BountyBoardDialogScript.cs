@@ -18,6 +18,21 @@ namespace Chaos.Scripting.DialogScripts.Quests.BountyBoard;
 
 public class BountyBoardDialogScript : DialogScriptBase
 {
+    private static readonly List<KeyValuePair<string, decimal>> EpicRewards =
+    [
+        new("nyxtwilightband", 10),
+        new("nyxumbralshield", 6),
+        new("nyxwhisper", 8),
+        new("nyxembrace", 8),
+        new("radiantpearl", 15),
+        new("eclipsepearl", 15),
+        new("largejewelcraftingbox", 15),
+        new("largeenchantingbox", 15),
+        new("artisanweaponsmithingbox", 15),
+        new("artisanarmorsmithingbox", 15),
+        new("artisanalchemybox", 15)
+    ];
+
     private readonly IItemFactory ItemFactory;
     private readonly ILogger<BountyBoardDialogScript> Logger;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
@@ -29,18 +44,6 @@ public class BountyBoardDialogScript : DialogScriptBase
         Logger = logger;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
     }
-    
-    private static readonly List<KeyValuePair<string, decimal>> EpicRewards =
-    [
-        new("nyxtwilightband", 10),
-        new("nyxumbralshield", 6),
-        new("nyxwhisper", 8),
-        new("nyxembrace", 8),
-        new("", 5),
-        new("", 8),
-        new("", 6),
-        new("", 2)
-    ];
 
     private IEnumerable<BountyDetails> GetCurrentBounties(Aisling source)
     {
@@ -88,7 +91,7 @@ public class BountyBoardDialogScript : DialogScriptBase
                 }
 
                 var epicMarkCount = source.Legend.GetCount("epicbounty");
-                
+
                 if ((epicMarkCount >= 100) && !source.Titles.ContainsI("Bounty Master"))
                 {
                     var option = new DialogOption
@@ -275,18 +278,16 @@ public class BountyBoardDialogScript : DialogScriptBase
             {
                 source.Titles.Add("Bounty Master");
                 source.SendOrangeBarMessage("Visit Goddess Skandara in the God's Realm immediately.");
-                
+
                 Logger.WithTopics(
-                          [Topics.Entities.Aisling,
-                              Topics.Entities.Experience,
-                              Topics.Entities.Dialog,
-                              Topics.Entities.Quest])
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Experience,
+                          Topics.Entities.Dialog,
+                          Topics.Entities.Quest)
                       .WithProperty(source)
                       .WithProperty(Subject)
-                      .LogInformation(
-                          "{@AislingName} has received Bounty Master title.",
-                          source.Name);
-                
+                      .LogInformation("{@AislingName} has received Bounty Master title.", source.Name);
+
                 break;
             }
         }
@@ -316,18 +317,15 @@ public class BountyBoardDialogScript : DialogScriptBase
                         source.SendOrangeBarMessage($"You accepted {selectedBounty.QuestText}.");
                         source.Trackers.Flags.RemoveFlag(selectedBounty.AvailableQuestFlag.GetType(), selectedBounty.AvailableQuestFlag);
                         Subject.Context = selectedBounty;
-                        
+
                         Logger.WithTopics(
-                                  [Topics.Entities.Aisling,
-                                      Topics.Entities.Experience,
-                                      Topics.Entities.Dialog,
-                                      Topics.Entities.Quest])
+                                  Topics.Entities.Aisling,
+                                  Topics.Entities.Experience,
+                                  Topics.Entities.Dialog,
+                                  Topics.Entities.Quest)
                               .WithProperty(source)
                               .WithProperty(Subject)
-                              .LogInformation(
-                                  "{@AislingName} has accepted {@QuestText} bounty.",
-                                  source.Name,
-                                  selectedBounty.QuestText);
+                              .LogInformation("{@AislingName} has accepted {@QuestText} bounty.", source.Name, selectedBounty.QuestText);
 
                         break;
                     }
@@ -347,18 +345,15 @@ public class BountyBoardDialogScript : DialogScriptBase
                         source.SendOrangeBarMessage($"You accepted {selectedBounty.QuestText}.");
                         source.Trackers.Flags.RemoveFlag(selectedBounty.AvailableQuestFlag.GetType(), selectedBounty.AvailableQuestFlag);
                         Subject.Context = selectedBounty;
-                        
+
                         Logger.WithTopics(
-                                  [Topics.Entities.Aisling,
-                                      Topics.Entities.Experience,
-                                      Topics.Entities.Dialog,
-                                      Topics.Entities.Quest])
+                                  Topics.Entities.Aisling,
+                                  Topics.Entities.Experience,
+                                  Topics.Entities.Dialog,
+                                  Topics.Entities.Quest)
                               .WithProperty(source)
                               .WithProperty(Subject)
-                              .LogInformation(
-                                  "{@AislingName} has accepted {@QuestText} bounty.",
-                                  source.Name,
-                                  selectedBounty.QuestText);
+                              .LogInformation("{@AislingName} has accepted {@QuestText} bounty.", source.Name, selectedBounty.QuestText);
 
                         break;
                     }
@@ -378,18 +373,15 @@ public class BountyBoardDialogScript : DialogScriptBase
                         source.SendOrangeBarMessage($"You accepted {selectedBounty.QuestText}.");
                         source.Trackers.Flags.RemoveFlag(selectedBounty.AvailableQuestFlag.GetType(), selectedBounty.AvailableQuestFlag);
                         Subject.Context = selectedBounty;
-                        
+
                         Logger.WithTopics(
-                                  [Topics.Entities.Aisling,
-                                      Topics.Entities.Experience,
-                                      Topics.Entities.Dialog,
-                                      Topics.Entities.Quest])
+                                  Topics.Entities.Aisling,
+                                  Topics.Entities.Experience,
+                                  Topics.Entities.Dialog,
+                                  Topics.Entities.Quest)
                               .WithProperty(source)
                               .WithProperty(Subject)
-                              .LogInformation(
-                                  "{@AislingName} has accepted {@QuestText} bounty.",
-                                  source.Name,
-                                  selectedBounty.QuestText);
+                              .LogInformation("{@AislingName} has accepted {@QuestText} bounty.", source.Name, selectedBounty.QuestText);
 
                         break;
                     }
@@ -409,18 +401,15 @@ public class BountyBoardDialogScript : DialogScriptBase
                         source.SendOrangeBarMessage($"You accepted {selectedBounty.QuestText}.");
                         source.Trackers.Flags.RemoveFlag(selectedBounty.AvailableQuestFlag.GetType(), selectedBounty.AvailableQuestFlag);
                         Subject.Context = selectedBounty;
-                        
+
                         Logger.WithTopics(
-                                  [Topics.Entities.Aisling,
-                                      Topics.Entities.Experience,
-                                      Topics.Entities.Dialog,
-                                      Topics.Entities.Quest])
+                                  Topics.Entities.Aisling,
+                                  Topics.Entities.Experience,
+                                  Topics.Entities.Dialog,
+                                  Topics.Entities.Quest)
                               .WithProperty(source)
                               .WithProperty(Subject)
-                              .LogInformation(
-                                  "{@AislingName} has accepted {@QuestText} bounty.",
-                                  source.Name,
-                                  selectedBounty.QuestText);
+                              .LogInformation("{@AislingName} has accepted {@QuestText} bounty.", source.Name, selectedBounty.QuestText);
 
                         break;
                     }
@@ -440,18 +429,15 @@ public class BountyBoardDialogScript : DialogScriptBase
                         source.SendOrangeBarMessage($"You accepted {selectedBounty.QuestText}.");
                         source.Trackers.Flags.RemoveFlag(selectedBounty.AvailableQuestFlag.GetType(), selectedBounty.AvailableQuestFlag);
                         Subject.Context = selectedBounty;
-                        
+
                         Logger.WithTopics(
-                                  [Topics.Entities.Aisling,
-                                      Topics.Entities.Experience,
-                                      Topics.Entities.Dialog,
-                                      Topics.Entities.Quest])
+                                  Topics.Entities.Aisling,
+                                  Topics.Entities.Experience,
+                                  Topics.Entities.Dialog,
+                                  Topics.Entities.Quest)
                               .WithProperty(source)
                               .WithProperty(Subject)
-                              .LogInformation(
-                                  "{@AislingName} has accepted {@QuestText} bounty.",
-                                  source.Name,
-                                  selectedBounty.QuestText);
+                              .LogInformation("{@AislingName} has accepted {@QuestText} bounty.", source.Name, selectedBounty.QuestText);
                     }
 
                         break;
@@ -491,18 +477,15 @@ public class BountyBoardDialogScript : DialogScriptBase
                     source.SendOrangeBarMessage($"You abandoned {bountyDetails.QuestText}.");
 
                     Subject.Context = bountyDetails.QuestText;
-                    
+
                     Logger.WithTopics(
-                              [Topics.Entities.Aisling,
-                                  Topics.Entities.Experience,
-                                  Topics.Entities.Dialog,
-                                  Topics.Entities.Quest])
+                              Topics.Entities.Aisling,
+                              Topics.Entities.Experience,
+                              Topics.Entities.Dialog,
+                              Topics.Entities.Quest)
                           .WithProperty(source)
                           .WithProperty(Subject)
-                          .LogInformation(
-                              "{@AislingName} has abandoned {@QuestText} bounty.",
-                              source.Name,
-                              bountyDetails.QuestText);
+                          .LogInformation("{@AislingName} has abandoned {@QuestText} bounty.", source.Name, bountyDetails.QuestText);
 
                     Subject.Reply(source, $"You've abandoned {bountyDetails.QuestText}", "bountyboard_initial");
                 }
@@ -524,18 +507,11 @@ public class BountyBoardDialogScript : DialogScriptBase
                     source.SendOrangeBarMessage($"You accepted {selectedBounty.QuestText}.");
 
                     Subject.Context = selectedBounty.QuestText;
-                    
-                    Logger.WithTopics(
-                              [Topics.Entities.Aisling,
-                                  Topics.Entities.Dialog,
-                                  Topics.Entities.Quest])
+
+                    Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Dialog, Topics.Entities.Quest)
                           .WithProperty(source)
                           .WithProperty(Subject)
-                          .LogInformation(
-                              "{@AislingName} has accepted {@QuestText} bounty.",
-                              source.Name,
-                              selectedBounty.QuestText);
-                    
+                          .LogInformation("{@AislingName} has accepted {@QuestText} bounty.", source.Name, selectedBounty.QuestText);
 
                     Subject.Reply(source, $"You've accepted {selectedBounty.QuestText}!", "bountyboard_initial");
                 }
@@ -585,14 +561,28 @@ public class BountyBoardDialogScript : DialogScriptBase
                         exp = 300000000;
                         gamepoints = 100;
 
-                        var item = EpicRewards.PickRandomWeighted();
-                        var itemReward = ItemFactory.Create(item);
-                        
-                        if (itemReward.DisplayName.ContainsI("Nyx"))
-                            source.Trackers.Counters.AddOrIncrement($"NyxItem{itemReward.UniqueId}");
-                        
-                        source.GiveItemOrSendToBank(itemReward);
-                        
+                        // Pick the first item
+                        var firstItemDefinition = EpicRewards.PickRandomWeighted();
+                        var firstItemReward = ItemFactory.Create(firstItemDefinition);
+
+                        if (firstItemReward.DisplayName.ContainsI("Nyx"))
+                            source.Trackers.Counters.AddOrIncrement($"NyxItem{firstItemReward.UniqueId}");
+
+                        source.GiveItemOrSendToBank(firstItemReward);
+
+                        // Keep picking the second item until it's different from the first
+                        var secondItemDefinition = EpicRewards.PickRandomWeighted();
+                        var secondItemReward = ItemFactory.Create(secondItemDefinition);
+
+                        // Compare the actual reward objects (or names) to ensure they differ
+                        while (secondItemReward.DisplayName == firstItemReward.DisplayName)
+                        {
+                            secondItemDefinition = EpicRewards.PickRandomWeighted();
+                            secondItemReward = ItemFactory.Create(secondItemDefinition);
+                        }
+
+                        source.GiveItemOrSendToBank(secondItemReward);
+
                         source.Legend.AddOrAccumulate(
                             new LegendMark(
                                 "Completed an Epic Bounty",
@@ -606,12 +596,12 @@ public class BountyBoardDialogScript : DialogScriptBase
                     ExperienceDistributionScript.GiveExp(source, exp);
                     source.TryGiveGamePoints(gamepoints);
                     source.Trackers.Counters.AddOrIncrement("epicBounty", bountyPoints);
-                    
+
                     Logger.WithTopics(
-                              [Topics.Entities.Aisling,
-                                  Topics.Entities.Experience,
-                                  Topics.Entities.Dialog,
-                                  Topics.Entities.Quest])
+                              Topics.Entities.Aisling,
+                              Topics.Entities.Experience,
+                              Topics.Entities.Dialog,
+                              Topics.Entities.Quest)
                           .WithProperty(source)
                           .WithProperty(Subject)
                           .LogInformation(

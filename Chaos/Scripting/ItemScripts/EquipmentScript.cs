@@ -28,18 +28,18 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
     public override void OnUse(Aisling source)
     {
         if (source.Options.LockHands)
-        {
             switch (Subject.Template.EquipmentType)
             {
                 case EquipmentType.Weapon:
                     source.SendOrangeBarMessage($"Lock Hands is stopping you from equipping {Subject.DisplayName}.");
+
                     return;
                 case EquipmentType.Shield:
                     source.SendOrangeBarMessage($"Lock Hands is stopping you from equipping {Subject.DisplayName}.");
+
                     return;
             }
-        }
-        
+
         var template = Subject.Template;
 
         if (Subject.CurrentDurability is < 1)
@@ -50,7 +50,7 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
         }
 
         if (template.Name.ContainsI("Nyx"))
-            if (!source.Trackers.Counters.ContainsKey($"NyxItem{Subject.UniqueId}"))
+            if (!source.Trackers.Counters.ContainsKey($"NyxItem{Subject.UniqueId}") && !source.IsAdmin)
             {
                 source.SendOrangeBarMessage($"{Subject.DisplayName} is not yours.");
 
@@ -60,10 +60,11 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
         if (template.Category.Contains("Staff"))
 
             // Check for shield usage which prevents staff wielding
-            if (source.Equipment.Contains((byte)EquipmentSlot.Shield) &&
-                source.Equipment.TryGetObject((byte)EquipmentSlot.Shield, out var shield))
+            if (source.Equipment.Contains((byte)EquipmentSlot.Shield)
+                && source.Equipment.TryGetObject((byte)EquipmentSlot.Shield, out var shield))
             {
                 source.SendOrangeBarMessage($"You cannot equip a staff while using {shield.DisplayName}.");
+
                 return;
             }
 
@@ -108,11 +109,22 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
             // Define a mapping between BaseClass and their corresponding legend keys
             var classLegendKeys = new Dictionary<BaseClass, string>
             {
-                { BaseClass.Priest, "priestClass" },
-                { BaseClass.Wizard, "wizardClass" },
-                { BaseClass.Warrior, "warriorClass" },
-                { BaseClass.Rogue, "rogueClass" },
-                {BaseClass.Monk, "monkClass" },
+                {
+                    BaseClass.Priest, "priestClass"
+                },
+                {
+                    BaseClass.Wizard, "wizardClass"
+                },
+                {
+                    BaseClass.Warrior, "warriorClass"
+                },
+                {
+                    BaseClass.Rogue, "rogueClass"
+                },
+                {
+                    BaseClass.Monk, "monkClass"
+                }
+
                 // Add other BaseClasses as needed
             };
 
@@ -125,25 +137,23 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
                     if (source.UserStatSheet.BaseClass != template.Class.Value)
                     {
                         source.SendOrangeBarMessage($"{Subject.DisplayName} is for Masters of {template.Class.Value}.");
+
                         return;
                     }
-                }
-                else
+                } else
                 {
                     // Non-master equipment: check if the player's current class matches or they have the legend key
-                    if (!source.HasClass(template.Class.Value) &&
-                        source.UserStatSheet.BaseClass != template.Class.Value &&
-                        !source.Legend.ContainsKey(legendKey))
+                    if (!source.HasClass(template.Class.Value)
+                        && (source.UserStatSheet.BaseClass != template.Class.Value)
+                        && !source.Legend.ContainsKey(legendKey))
                     {
                         source.SendOrangeBarMessage($"{Subject.DisplayName} is not for {source.UserStatSheet.BaseClass}.");
+
                         return;
                     }
                 }
             }
         }
-
-
-
 
         if (template.AdvClass.HasValue && (template.AdvClass.Value != source.UserStatSheet.AdvClass))
         {

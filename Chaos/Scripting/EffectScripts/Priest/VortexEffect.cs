@@ -33,7 +33,7 @@ public class VortexEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(20000), false);
 
-    protected IApplyDamageScript ApplyDamageScript { get; }
+    protected IApplyDamageScript ApplyDamageScript { get; } = ApplyAttackDamageScript.Create();
 
     protected Animation CreatureAnimation { get; } = new()
     {
@@ -49,8 +49,6 @@ public class VortexEffect : ContinuousAnimationEffectBase
 
     /// <inheritdoc />
     public override string Name => "Vortex";
-
-    public VortexEffect() => ApplyDamageScript = ApplyAttackDamageScript.Create();
 
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
@@ -89,7 +87,7 @@ public class VortexEffect : ContinuousAnimationEffectBase
                              .GetEntitiesAtPoints<Creature>(points.Cast<IPoint>())
                              .WithFilter(Subject, TargetFilter.HostileOnly)
                              .WithFilter(Subject, TargetFilter.AliveOnly)
-                             .Where(x => !x.MapInstance.IsWall(Subject))
+                             .Where(x => !x.Equals(Subject) && !x.MapInstance.IsWall(Subject))
                              .ToList();
 
         if (((AislingSubject?.Group == null)

@@ -86,8 +86,8 @@ namespace Chaos.Scripting.DialogScripts.Events.Valentines
                 case "aidan_polypredmake":
                     HandleItemExchange(source, "polypsac", 3, "cherry", 30, 5000000, "redheartpuppet");
                     break;
-
-                case "nadia_initial":
+                
+                case "nadia_confirm":
                     HandleEventCandy(source, merchant);
                     break;
             }
