@@ -1,5 +1,6 @@
 #region
 using Chaos.DarkAges.Definitions;
+using Chaos.Extensions.Common;
 using Chaos.Common.Utilities;
 using Chaos.Extensions;
 using Chaos.Messaging.Abstractions;
@@ -310,6 +311,27 @@ public sealed class Group : IEnumerable<Aisling>, IDedicatedChannel
         }
     }
 
+    public void Promote(Aisling aisling)
+    {
+        using var @lock = Sync.EnterScope();
+
+        if (aisling.Equals(Leader))
+        {
+            aisling.SendActiveMessage("You dumbly point to yourself");
+
+            return;
+        }
+
+        Members.Remove(aisling);
+        Members.Insert(0, aisling);
+
+        foreach (var member in Members)
+        {
+            member.SendActiveMessage($"{aisling.Name} has been promoted to group leader");
+            member.Client.SendSelfProfile();
+        }
+    }
+
     private bool Remove(Aisling aisling)
     {
         using var @lock = Sync.EnterScope();
@@ -332,10 +354,14 @@ public sealed class Group : IEnumerable<Aisling>, IDedicatedChannel
         var groupString = "Group members";
 
         foreach (var user in Members)
+        {
+            var name = user.Name.ReplaceI(" ", "_");
+
             if (user.Equals(Leader))
-                groupString += '\n' + $"* {user.Name}";
+                groupString += '\n' + $"* {name}";
             else
-                groupString += '\n' + $"  {user.Name}";
+                groupString += '\n' + $"  {name}";
+        }
 
         groupString += '\n' + $"Total {Count}";
 
