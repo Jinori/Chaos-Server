@@ -1,0 +1,88 @@
+using Chaos.Models.Menu;
+using Chaos.Models.World;
+using Chaos.Scripting.DialogScripts.Abstractions;
+using Chaos.Storage.Abstractions;
+
+namespace Chaos.Scripting.DialogScripts.GuildScripts;
+
+public class GuildUpdateHallScript : DialogScriptBase
+{
+    private readonly IStorage<GuildHouseState> GuildHouseStateStorage;
+    private const int UPGRADE_COST = 10000000;
+
+    public GuildUpdateHallScript(Dialog subject, IStorage<GuildHouseState> guildHouseStateStorage) : base(subject)
+    {
+        GuildHouseStateStorage = guildHouseStateStorage;
+    }
+
+    public override void OnDisplaying(Aisling source)
+    {
+        var guildHouseState = GuildHouseStateStorage.Value;
+        guildHouseState.SetStorage(GuildHouseStateStorage);
+
+        if (source.Guild == null)
+        {
+            Subject.Reply(source, "You are not part of a guild.");
+            return;
+        }
+
+        string guildName = source.Guild.Name;
+        switch (Subject.Template.TemplateKey.ToLower())
+        {
+            case "tibbs_purchase_tailor_confirm":
+                HandleUpgrade(source, guildName, "tailor", "You do not have enough gold to purchase a tailor.");
+                break;
+            case "tibbs_purchase_armory_confirm":
+                HandleUpgrade(source, guildName, "armory", "You do not have enough gold to purchase an armory.");
+                break;
+            case "tibbs_purchase_bank_confirm":
+                HandleUpgrade(source, guildName, "bank", "You do not have enough gold to purchase a bank.");
+                break;
+        }
+    }
+
+    private void HandleUpgrade(Aisling source, string guildName, string property, string insufficientFundsMessage)
+    {
+        var guildHouseState = GuildHouseStateStorage.Value;
+
+        if (guildHouseState.HasProperty(guildName, property))
+        {
+            Subject.Reply(source, $"Your guild hall already has a {property} installed.");
+            return;
+        }
+
+        if (!source.TryTakeGold(UPGRADE_COST))
+        {
+            Subject.Reply(source, insufficientFundsMessage);
+            return;
+        }
+
+        guildHouseState.EnableProperty(guildName, property);
+        source.MapInstance.Morph(GetMorphCode(guildHouseState, guildName));
+    }
+
+    private string GetMorphCode(GuildHouseState guildHouseState, string guildName)
+    {
+        var properties = new HashSet<string?>
+        {
+            guildHouseState.HasProperty(guildName, "bank") ? "bank" : null,
+            guildHouseState.HasProperty(guildName, "armory") ? "armory" : null,
+            guildHouseState.HasProperty(guildName, "tailor") ? "tailor" : null
+        };
+
+        properties.RemoveWhere(p => p == null);
+
+        return properties switch
+        {
+            var p when p.SetEquals(new HashSet<string>()) => "27000",
+            var p when p.SetEquals(new HashSet<string> { "bank" }) => "27001",
+            var p when p.SetEquals(new HashSet<string> { "bank", "armory" }) => "27002",
+            var p when p.SetEquals(new HashSet<string> { "armory" }) => "27003",
+            var p when p.SetEquals(new HashSet<string> { "tailor" }) => "27004",
+            var p when p.SetEquals(new HashSet<string> { "tailor", "bank", "armory" }) => "27005",
+            var p when p.SetEquals(new HashSet<string> { "tailor", "armory" }) => "27006",
+            var p when p.SetEquals(new HashSet<string> { "tailor", "bank" }) => "27007",
+            _ => "27000"
+        };
+    }
+}

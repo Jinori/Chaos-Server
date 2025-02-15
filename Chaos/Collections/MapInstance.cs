@@ -336,7 +336,7 @@ public sealed class MapInstance : IScripted<IMapScript>, IDeltaUpdatable
 
         if (extraScriptKeys != null)
             ScriptKeys.AddRange(extraScriptKeys);
-
+        
         Script = scriptProvider.CreateScript<IMapScript, MapInstance>(ScriptKeys, this);
     }
 
@@ -514,6 +514,17 @@ public sealed class MapInstance : IScripted<IMapScript>, IDeltaUpdatable
         shard.Shards = Shards;
         Shards.TryAdd(shard.InstanceId, shard);
 
+        shard.AddAislingDirect(aisling, point);
+    }
+    
+    
+    private void AddToNewGuildShard(Aisling aisling, IPoint point)
+    {
+        var shard = ShardGenerator.CreateShardOfInstance(InstanceId);
+        shard.Shards = Shards;
+        Shards.TryAdd(shard.InstanceId, shard);
+        shard.Name = aisling.Guild?.Name + " Hall";
+        
         shard.AddAislingDirect(aisling, point);
     }
 
@@ -759,6 +770,32 @@ public sealed class MapInstance : IScripted<IMapScript>, IDeltaUpdatable
 
                 break;
             }
+            case ShardingType.GuildHouse:
+            {
+                if (aisling.Guild == null)
+                {
+                    aisling.SendOrangeBarMessage("You are not in a guild.");
+                    var exitMapInstance = SimpleCache.Get<MapInstance>(ShardingOptions.ExitLocation.Map);
+                    aisling.TraverseMap(exitMapInstance, ShardingOptions.ExitLocation);
+                    return;
+                }
+                
+                //if any guild member is already in this instance or a shard of this instance
+                var shard = aisling.Guild?.GetOnlineMembers().Where(a => a.Guild?.Name == aisling.Guild.Name && !a.Equals(aisling)).Select(m => m.MapInstance).FirstOrDefault(m => m.InstanceId.EqualsI(InstanceId) || (m.IsShard && m.BaseInstanceId!.EqualsI(InstanceId)));
+                
+                if (shard != null)
+                {
+                    //add this player to that instance or shard
+                    shard.AddAislingDirect(aisling, point);
+
+                    return;
+                }
+                
+                //if we couldnt find a suitable instance to place the player, generate a new one and add them to it
+                AddToNewGuildShard(aisling, point);
+
+                break;
+            }
             default:
                 throw new ArgumentOutOfRangeException();
         }
@@ -780,6 +817,7 @@ public sealed class MapInstance : IScripted<IMapScript>, IDeltaUpdatable
         {
             case ShardingType.None:
             case ShardingType.PlayerLimit:
+            case ShardingType.GuildHouse:
                 break;
             case ShardingType.AbsolutePlayerLimit:
             {
