@@ -56,7 +56,7 @@ namespace Chaos.Scripting.ReactorTileScripts.GuildHall
                     dialog.Display(aisling);
                     break;
                 
-                case var p when p == new Point(54, 23):
+                case var p when p == new Point(54, 22):
                     var point1 = new Point(source.X, source.Y);
                     var blankMerchant1 = MerchantFactory.Create("huntcombat", Subject.MapInstance, point1);
                     var dialog1 = DialogFactory.Create("huntcombat_initial", blankMerchant1);
@@ -91,7 +91,7 @@ namespace Chaos.Scripting.ReactorTileScripts.GuildHall
                     }
                     break;
                 
-                case var p when p == new Point(54, 23):
+                case var p when p == new Point(54, 22):
                     foreach (var aisling in aislings)
                     {
                         aisling.MapInstance.ShowAnimation(HuntCombatAnimation.GetPointAnimation(new Point(Subject.X, Subject.Y)));   

@@ -5,6 +5,8 @@ using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
+using Discord;
+using Direction = Chaos.Geometry.Abstractions.Definitions.Direction;
 
 namespace Chaos.Scripting.DialogScripts.GuildScripts;
 
@@ -25,27 +27,194 @@ public class GuildCombatScript : DialogScriptBase
             {
                 ClearMonsters(source);
                 WarpToPosition(source);
-                var mob1 = MonsterFactory.Create("trainingdummy0", source.MapInstance, new Point(64, 29));
-                var mob2 = MonsterFactory.Create("trainingdummy0", source.MapInstance, new Point(63, 28));
-                var mob3 = MonsterFactory.Create("trainingdummy0", source.MapInstance, new Point(63, 30));
-                source.MapInstance.AddEntity(mob1, new Point(64, 29));
-                source.MapInstance.AddEntity(mob2, new Point(63, 28));
-                source.MapInstance.AddEntity(mob3, new Point(63, 30));
+                
+                var options = new AoeShapeOptions
+                {
+                    Source = new Point(source.X, source.Y),
+                    Range = 1,
+                    Direction = source.Direction
+                };
+
+                var points = AoeShape.Cleave.ResolvePoints(options);
+                
+                foreach (var point in points)
+                {
+                    if (point == new Point(source.X, source.Y))
+                        continue;
+                    
+                    var mob1 = MonsterFactory.Create("trainingdummy0", source.MapInstance, point);
+                    mob1.Direction = Direction.Right;
+                    source.MapInstance.AddEntity(mob1, point);
+                }
+                
                 Subject.Close(source);
                 break;
             }
 
+            case "skillcombat_frontalcone_range3":
+            {
+
+                ClearMonsters(source);
+                WarpToPosition(source);
+                
+                var options = new AoeShapeOptions
+                {
+                    Source = new Point(source.X, source.Y),
+                    Range = 3,
+                    Direction = source.Direction
+                };
+
+                var points = AoeShape.FrontalCone.ResolvePoints(options);
+                
+                foreach (var point in points)
+                {
+                    if (point == new Point(source.X, source.Y))
+                        continue;
+                    
+                    var mob1 = MonsterFactory.Create("trainingdummy0", source.MapInstance, point);
+                    mob1.Direction = Direction.Right;
+                    source.MapInstance.AddEntity(mob1, point);
+                }
+                
+                Subject.Close(source);
+                break;
+            }
+            
+            case "skillcombat_frontalcone_frontandcascaderange2":
+            {
+
+                ClearMonsters(source);
+                WarpToPosition(source);
+                
+                var options = new AoeShapeOptions
+                {
+                    Source = new Point(source.X + 1, source.Y),
+                    Range = 2,
+                    Direction = source.Direction
+                };
+
+                var points = AoeShape.FrontalCone.ResolvePoints(options);
+                
+                foreach (var point in points)
+                {
+                    var mob1 = MonsterFactory.Create("trainingdummy0", source.MapInstance, point);
+                    mob1.Direction = Direction.Right;
+                    source.MapInstance.AddEntity(mob1, point);
+                }
+                
+                Subject.Close(source);
+                break;
+            }
+            
+            case "skillcombat_frontaldiamond_frontandcascaderange4":
+            {
+
+                ClearMonsters(source);
+                WarpToPosition(source);
+                
+                var options = new AoeShapeOptions
+                {
+                    Source = new Point(source.X + 1, source.Y),
+                    Range = 4,
+                    Direction = source.Direction
+                };
+
+                var points = AoeShape.FrontalDiamond.ResolvePoints(options);
+                
+                foreach (var point in points)
+                {
+                    var mob1 = MonsterFactory.Create("trainingdummy0", source.MapInstance, point);
+                    mob1.Direction = Direction.Right;
+                    source.MapInstance.AddEntity(mob1, point);
+                }
+                
+                Subject.Close(source);
+                break;
+            }
+            
+            case "skillcombat_frontaldiamond_range3":
+            {
+
+                ClearMonsters(source);
+                WarpToPosition(source);
+                
+                var options = new AoeShapeOptions
+                {
+                    Source = new Point(source.X, source.Y),
+                    Range = 3,
+                    Direction = source.Direction
+                };
+
+                var points = AoeShape.FrontalDiamond.ResolvePoints(options);
+                
+                foreach (var point in points)
+                {
+                    if (point == new Point(source.X, source.Y))
+                        continue;
+                    
+                    var mob1 = MonsterFactory.Create("trainingdummy0", source.MapInstance, point);
+                    mob1.Direction = Direction.Right;
+                    source.MapInstance.AddEntity(mob1, point);
+                }
+                
+                Subject.Close(source);
+                break;
+            }
+            
             case "skillcombat_threeinrowfront":
             {
 
                 ClearMonsters(source);
                 WarpToPosition(source);
-                var mob1 = MonsterFactory.Create("trainingdummy0", source.MapInstance, new Point(64, 29));
-                var mob2 = MonsterFactory.Create("trainingdummy0", source.MapInstance, new Point(64, 28));
-                var mob3 = MonsterFactory.Create("trainingdummy0", source.MapInstance, new Point(64, 30));
-                source.MapInstance.AddEntity(mob1, new Point(64, 29));
-                source.MapInstance.AddEntity(mob2, new Point(64, 28));
-                source.MapInstance.AddEntity(mob3, new Point(64, 30));
+                
+                var options = new AoeShapeOptions
+                {
+                    Source = new Point(source.X, source.Y),
+                    Range = 1,
+                    Direction = source.Direction
+                };
+
+                var points = AoeShape.FrontalCone.ResolvePoints(options);
+                
+                foreach (var point in points)
+                {
+                    if (point == new Point(source.X, source.Y))
+                        continue;
+                    
+                    var mob1 = MonsterFactory.Create("trainingdummy0", source.MapInstance, point);
+                    mob1.Direction = Direction.Right;
+                    source.MapInstance.AddEntity(mob1, point);
+                }
+                
+                Subject.Close(source);
+                break;
+            }
+            
+            case "skillcombat_fourinfront":
+            {
+
+                ClearMonsters(source);
+                WarpToPosition(source);
+                
+                var options = new AoeShapeOptions
+                {
+                    Source = new Point(source.X, source.Y),
+                    Range = 4,
+                    Direction = source.Direction
+                };
+
+                var points = AoeShape.Front.ResolvePoints(options);
+                
+                foreach (var point in points)
+                {
+                    if (point == new Point(source.X, source.Y))
+                        continue;
+                    
+                    var mob1 = MonsterFactory.Create("trainingdummy0", source.MapInstance, point);
+                    mob1.Direction = Direction.Right;
+                    source.MapInstance.AddEntity(mob1, point);
+                }
+                
                 Subject.Close(source);
                 break;
             }
@@ -55,10 +224,26 @@ public class GuildCombatScript : DialogScriptBase
 
                 ClearMonsters(source);
                 WarpToPosition(source);
-                var mob1 = MonsterFactory.Create("trainingdummy0", source.MapInstance, new Point(64, 29));
-                var mob2 = MonsterFactory.Create("trainingdummy0", source.MapInstance, new Point(65, 29));
-                source.MapInstance.AddEntity(mob1, new Point(64, 29));
-                source.MapInstance.AddEntity(mob2, new Point(65, 29));
+                
+                var options = new AoeShapeOptions
+                {
+                    Source = new Point(source.X, source.Y),
+                    Range = 2,
+                    Direction = source.Direction
+                };
+
+                var points = AoeShape.Front.ResolvePoints(options);
+                
+                foreach (var point in points)
+                {
+                    if (point == new Point(source.X, source.Y))
+                        continue;
+                    
+                    var mob1 = MonsterFactory.Create("trainingdummy0", source.MapInstance, point);
+                    mob1.Direction = Direction.Right;
+                    source.MapInstance.AddEntity(mob1, point);
+                }
+                
                 Subject.Close(source);
                 break;
             }
@@ -68,8 +253,26 @@ public class GuildCombatScript : DialogScriptBase
 
                 ClearMonsters(source);
                 WarpToPosition(source);
-                var mob1 = MonsterFactory.Create("trainingdummy0", source.MapInstance, new Point(64, 29));
-                source.MapInstance.AddEntity(mob1, new Point(64, 29));
+                
+                var options = new AoeShapeOptions
+                {
+                    Source = new Point(source.X, source.Y),
+                    Range = 1,
+                    Direction = source.Direction
+                };
+
+                var points = AoeShape.Front.ResolvePoints(options);
+                
+                foreach (var point in points)
+                {
+                    if (point == new Point(source.X, source.Y))
+                        continue;
+                    
+                    var mob1 = MonsterFactory.Create("trainingdummy0", source.MapInstance, point);
+                    mob1.Direction = Direction.Right;
+                    source.MapInstance.AddEntity(mob1, point);
+                }
+
                 Subject.Close(source);
                 break;
             }
@@ -94,6 +297,35 @@ public class GuildCombatScript : DialogScriptBase
                         continue;
                     
                     var mob1 = MonsterFactory.Create("trainingdummy0", source.MapInstance, point);
+                    mob1.Direction = Direction.Right;
+                    source.MapInstance.AddEntity(mob1, point);
+                }
+                
+                Subject.Close(source);
+                break;
+            }
+            
+            case "skillcombat_allaround2":
+            {
+
+                ClearMonsters(source);
+                WarpToPosition(source);
+                
+                var options = new AoeShapeOptions
+                {
+                    Source = new Point(source.X, source.Y),
+                    Range = 2
+                };
+
+                var points = AoeShape.AllAround.ResolvePoints(options);
+
+                foreach (var point in points)
+                {
+                    if (point == new Point(source.X, source.Y))
+                        continue;
+                    
+                    var mob1 = MonsterFactory.Create("trainingdummy0", source.MapInstance, point);
+                    mob1.Direction = Direction.Right;
                     source.MapInstance.AddEntity(mob1, point);
                 }
                 
@@ -106,6 +338,7 @@ public class GuildCombatScript : DialogScriptBase
     private void WarpToPosition(Aisling source)
     {
         source.WarpTo(new Point(63, 29));
+        source.Turn(Direction.Right);
     }
     
     private void ClearMonsters(Aisling source)
