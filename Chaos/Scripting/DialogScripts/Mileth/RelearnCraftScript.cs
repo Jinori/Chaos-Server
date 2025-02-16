@@ -36,6 +36,14 @@ public class RelearnCraftScript : DialogScriptBase
         {
             case "riona_relearnrecipes":
             {
+                if (source.Trackers.Flags.HasFlag(MainstoryFlags.CreantRewards))
+                {
+                    source.Trackers.Flags.RemoveFlag(CreantEnums.CompletedMedusa);
+                    source.Trackers.Flags.RemoveFlag(CreantEnums.CompletedSham);
+                    source.Trackers.Flags.RemoveFlag(CreantEnums.CompletedTauren);
+                    source.Trackers.Flags.RemoveFlag(CreantEnums.CompletedPhoenix);
+                }
+                
                 if (source.Name == "Star" && !source.Legend.ContainsKey("frostyrunnerup"))
                 {
                         source.Legend.AddUnique(

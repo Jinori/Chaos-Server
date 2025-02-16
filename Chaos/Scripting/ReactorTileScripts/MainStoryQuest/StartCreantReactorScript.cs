@@ -65,7 +65,7 @@ public class StartCreantReactorScript : ReactorTileScriptBase
             aisling.SendOrangeBarMessage("The altar knocks you back.");
         }
 
-        if (aisling.Trackers.Enums.HasValue(MainstoryMasterEnums.CompletedCreants))
+        if (aisling.Trackers.Enums.HasValue(MainstoryMasterEnums.CompletedCreants) || aisling.Trackers.Flags.HasFlag(MainstoryFlags.CreantRewards))
         {
             aisling.SendOrangeBarMessage("The Creant is sealed away, the altar does nothing.");
 

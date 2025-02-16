@@ -4,6 +4,7 @@ using Chaos.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Models.Data;
+using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Networking.Abstractions;
@@ -12,6 +13,7 @@ using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
+using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Quests.MainStory;
 
@@ -1018,6 +1020,16 @@ public class MainStoryScript(
                 source.Effects.Apply(source, celebrationEffect);
                 var spell = spellFactory.Create("Celebrate");
                 source.SpellBook.TryAdd(73, spell);
+                source.SendOrangeBarMessage("Nyx's Pendant acquired, new H pane spell, and %5 permanent bonus xp.");
+
+                source.Legend.AddUnique(
+                    new LegendMark(
+                        "A True Bounty Master",
+                        "epicbountymark",
+                        MarkIcon.Victory,
+                        MarkColor.DarkPurple,
+                        1,
+                        GameTime.Now));
 
                 foreach (var client in ClientRegistry)
                     client.Aisling.SendActiveMessage($"{source.Name} has obtained Nyx's Pendant as a true Bounty Hunter.");

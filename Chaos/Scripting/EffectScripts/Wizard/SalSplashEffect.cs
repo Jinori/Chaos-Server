@@ -63,13 +63,6 @@ public class SalSplashEffect : ContinuousAnimationEffectBase
             return;
         }
 
-        if ((AislingSubject == null) && !Subject.Script.Is<PetScript>())
-        {
-            Subject.Effects.Terminate("Sal Splash");
-
-            return;
-        }
-
         if (Subject.MapInstance != SourceOfEffect.MapInstance)
         {
             Subject.Effects.Terminate("Sal Splash");
@@ -93,7 +86,7 @@ public class SalSplashEffect : ContinuousAnimationEffectBase
         // Retrieve and filter targets at those points
         var targets = Subject.MapInstance
                              .GetEntitiesAtPoints<Creature>(points.Cast<IPoint>())
-                             .WithFilter(Subject, TargetFilter.HostileOnly)
+                             .WithFilter(Subject, TargetFilter.NonHostileOnly)
                              .WithFilter(Subject, TargetFilter.AliveOnly)
                              .Where(x => !x.Equals(Subject) && !x.MapInstance.IsWall(x))
                              .ToList();

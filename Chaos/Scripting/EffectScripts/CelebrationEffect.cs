@@ -62,8 +62,8 @@ public class CelebrationEffect : ContinuousAnimationEffectBase
         var chosenAnimation = animations.PickRandom();
 
         var rectangle = new Rectangle(
-            Subject.X,
-            Subject.Y,
+            Subject.X - 2,
+            Subject.Y - 2,
             5,
             5);
 

@@ -35,7 +35,14 @@ public class MainStory3Script(Dialog subject, IItemFactory itemFactory) : Dialog
                 }
 
                 if (source.Trackers.Flags.HasFlag(MainstoryFlags.FinishedCreants))
+                {
                     source.Trackers.Enums.Set(MainstoryMasterEnums.CompletedCreants);
+                    source.Trackers.Flags.RemoveFlag(CreantEnums.CompletedMedusa);
+                    source.Trackers.Flags.RemoveFlag(CreantEnums.CompletedPhoenix);
+                    source.Trackers.Flags.RemoveFlag(CreantEnums.CompletedSham);
+                    source.Trackers.Flags.RemoveFlag(CreantEnums.CompletedTauren);
+                }
+                    
 
                 if (source.Trackers.Enums.HasValue(MainstoryMasterEnums.StartedDungeon))
                 {
