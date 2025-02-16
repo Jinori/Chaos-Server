@@ -10,6 +10,7 @@ using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
+using Namotion.Reflection;
 
 namespace Chaos.Scripting.DialogScripts.Crafting;
 
@@ -295,15 +296,13 @@ public class EnchantingScript : DialogScriptBase
 
             return;
         }
+        if (source.Inventory.TryGetObject(item.Slot, out var itemToDisenchant))
+        {
+            itemToDisenchant.Prefix = string.Empty;
 
-        //Create new item based on the old one
-        var newItem = ItemFactory.Create(item.Template.TemplateKey);
-
-        //Remove Old Item
-        source.Inventory.Remove(item.DisplayName);
-
-        source.GiveItemOrSendToBank(newItem);
-
+            itemToDisenchant.ScriptKeys.Clear();
+        }
+        
         Subject.InjectTextParameters(item.DisplayName);
     }
 
