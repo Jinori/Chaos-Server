@@ -582,6 +582,9 @@ public class BountyBoardDialogScript : DialogScriptBase
                         }
 
                         source.GiveItemOrSendToBank(secondItemReward);
+                        
+                        if (secondItemReward.DisplayName.ContainsI("Nyx"))
+                            source.Trackers.Counters.AddOrIncrement($"NyxItem{secondItemReward.UniqueId}");
 
                         source.Legend.AddOrAccumulate(
                             new LegendMark(

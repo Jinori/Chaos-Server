@@ -126,7 +126,7 @@ public sealed class ChainLightningEffect : ContinuousAnimationEffectBase
         if (!target.IsHostileTo(source))
             return false;
 
-        if (target.Effects.Contains("ChainLightning"))
+        if (target.Effects.Contains("Chain Lightning"))
             return false;
 
         if (HitTargetIds.Contains(target.Id))

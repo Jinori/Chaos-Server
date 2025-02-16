@@ -36,30 +36,35 @@ public class DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistri
         var baseExp = ExperienceFormula.Calculate(killedCreature, aislings);
         var totalBonus = 1m; // Start with 1 (no bonus)
 
-        // Apply a 5% experience bonus for "Knowledge"
-        if (HasKnowledgeEffect(aislings))
-            totalBonus += 0.05m;
-
-        // Apply a 10% experience bonus for "Strong Knowledge"
-        if (HasStrongKnowledgeEffect(aislings))
-            totalBonus += 0.10m;
-
-        if (HasGMKnowledgeEffect(aislings))
-            totalBonus += 0.25m;
-
-        if (HasValentinesCandyEffect(aislings))
-            totalBonus += 0.4m;
-
-        // Apply an additional 5% bonus for mythic completion
-        if (HasCompletedMythic(aislings))
-            totalBonus += 0.05m;
-
-        // Calculate the final experience with bonuses applied
-        var finalExp = baseExp * totalBonus;
-
         // Distribute the experience to each Aisling
         foreach (var aisling in aislings)
+        {
+            // Apply a 5% experience bonus for "Knowledge"
+            if (HasKnowledgeEffect(aisling))
+                totalBonus += 0.05m;
+
+            // Apply a 10% experience bonus for "Strong Knowledge"
+            if (HasStrongKnowledgeEffect(aisling))
+                totalBonus += 0.10m;
+
+            if (HasGMKnowledgeEffect(aisling))
+                totalBonus += 0.25m;
+
+            if (HasValentinesCandyEffect(aisling))
+                totalBonus += 0.4m;
+
+            // Apply an additional 5% bonus for mythic completion
+            if (HasCompletedMythic(aisling))
+                totalBonus += 0.05m;
+
+            if (HasEpicMaster(aisling))
+                totalBonus += 0.05m;
+
+            // Calculate the final experience with bonuses applied
+            var finalExp = baseExp * totalBonus;
+
             GiveExp(aisling, (long)finalExp);
+        }
     }
 
     public virtual void GiveExp(Aisling aisling, long amount)
@@ -150,51 +155,51 @@ public class DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistri
         return true;
     }
 
-    private bool HasCompletedMythic(ICollection<Aisling> aislings)
+    private bool HasCompletedMythic(Aisling aisling)
     {
-        foreach (var aisling in aislings)
-            if (aisling.Trackers.Enums.HasValue(MythicQuestMain.CompletedMythic))
-                return true;
+        if (aisling.Trackers.Enums.HasValue(MythicQuestMain.CompletedMythic))
+            return true;
 
         return false;
     }
 
-    private bool HasGMKnowledgeEffect(ICollection<Aisling> aislings)
+    private bool HasEpicMaster(Aisling aisling)
+    {
+        if (aisling.Legend.ContainsKey("epicbountymark"))
+            return true;
+
+        return false;
+    }
+
+    private bool HasGMKnowledgeEffect(Aisling aisling)
     {
         // Check if any of the Aislings have the "Strong Knowledge" effect
-        foreach (var aisling in aislings)
-            if (aisling.Effects.Contains("GM Knowledge"))
-                return true;
+        if (aisling.Effects.Contains("GM Knowledge"))
+            return true;
 
         return false;
     }
 
-    private bool HasKnowledgeEffect(ICollection<Aisling> aislings)
+    private bool HasKnowledgeEffect(Aisling aisling)
     {
-        // Check if any of the Aislings have the "Knowledge" effect
-        foreach (var aisling in aislings)
-            if (aisling.Effects.Contains("Knowledge"))
-                return true;
+        if (aisling.Effects.Contains("Knowledge"))
+            return true;
 
         return false;
     }
 
-    private bool HasStrongKnowledgeEffect(ICollection<Aisling> aislings)
+    private bool HasStrongKnowledgeEffect(Aisling aisling)
     {
-        // Check if any of the Aislings have the "Strong Knowledge" effect
-        foreach (var aisling in aislings)
-            if (aisling.Effects.Contains("Strong Knowledge"))
-                return true;
+        if (aisling.Effects.Contains("Strong Knowledge"))
+            return true;
 
         return false;
     }
 
-    private bool HasValentinesCandyEffect(ICollection<Aisling> aislings)
+    private bool HasValentinesCandyEffect(Aisling aisling)
     {
-        // Check if any of the Aislings have the "Valentines Candy" effect
-        foreach (var aisling in aislings)
-            if (aisling.Effects.Contains("ValentinesCandy"))
-                return true;
+        if (aisling.Effects.Contains("ValentinesCandy"))
+            return true;
 
         return false;
     }
