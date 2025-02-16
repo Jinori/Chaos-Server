@@ -513,7 +513,7 @@ namespace Chaos.Scripting.DialogScripts.Events.Valentines
             }
 
             var partner = clientRegistry.FirstOrDefault(cli => cli.Aisling.Name.EqualsI(name));
-
+            
             if (partner == null)
             {
                 Subject.Reply(source,
@@ -521,6 +521,13 @@ namespace Chaos.Scripting.DialogScripts.Events.Valentines
                 return;
             }
 
+            if (partner.Aisling.Name == source.Name)
+            {
+                Subject.Reply(source,
+                    "You cannot promise a ring to yourself.");
+                return;
+            }
+            
             source.Trackers.Counters.AddOrIncrement($"ValentinesPromise[{partner.Aisling.Name.ToLower()}]");
             var ring = itemFactory.Create("promisering");
             ring.CustomNameOverride = $"{partner.Aisling.Name}'s Promise Ring";

@@ -24,21 +24,30 @@ public class GuildHallScript(MapInstance subject, IStorage<GuildHouseState> guil
         {
             guildHouseState.HasProperty(guildName, "bank") ? "bank" : null,
             guildHouseState.HasProperty(guildName, "armory") ? "armory" : null,
-            guildHouseState.HasProperty(guildName, "tailor") ? "tailor" : null
+            guildHouseState.HasProperty(guildName, "tailor") ? "tailor" : null,
+            guildHouseState.HasProperty(guildName, "combatroom") ? "combatroom" : null
         };
 
         properties.RemoveWhere(p => p == null);
 
         return properties switch
         {
-            _ when properties.SetEquals(new HashSet<string>()) => "27000",
-            _ when properties.SetEquals(new HashSet<string> { "bank" }) => "27001",
-            _ when properties.SetEquals(new HashSet<string> { "bank", "armory" }) => "27002",
-            _ when properties.SetEquals(new HashSet<string> { "armory" }) => "27003",
-            _ when properties.SetEquals(new HashSet<string> { "tailor" }) => "27004",
-            _ when properties.SetEquals(new HashSet<string> { "tailor", "bank", "armory" }) => "27005",
-            _ when properties.SetEquals(new HashSet<string> { "tailor", "armory" }) => "27006",
-            _ when properties.SetEquals(new HashSet<string> { "tailor", "bank" }) => "27007",
+            var p when p.SetEquals(new HashSet<string>()) => "27000",
+            var p when p.SetEquals(new HashSet<string> { "bank" }) => "27001",
+            var p when p.SetEquals(new HashSet<string> { "bank", "armory" }) => "27002",
+            var p when p.SetEquals(new HashSet<string> { "armory" }) => "27003",
+            var p when p.SetEquals(new HashSet<string> { "tailor" }) => "27004",
+            var p when p.SetEquals(new HashSet<string> { "tailor", "bank", "armory" }) => "27005",
+            var p when p.SetEquals(new HashSet<string> { "tailor", "armory" }) => "27006",
+            var p when p.SetEquals(new HashSet<string> { "tailor", "bank" }) => "27007",
+            var p when p.SetEquals(new HashSet<string> { "combatroom" }) => "27008",
+            var p when p.SetEquals(new HashSet<string> { "combatroom", "bank", "armory", "tailor" }) => "27009",
+            var p when p.SetEquals(new HashSet<string> { "combatroom", "armory" }) => "27010",
+            var p when p.SetEquals(new HashSet<string> { "combatroom", "armory", "bank" }) => "27011",
+            var p when p.SetEquals(new HashSet<string> { "combatroom", "bank" }) => "27012",
+            var p when p.SetEquals(new HashSet<string> { "combatroom", "tailor", "bank" }) => "27013",
+            var p when p.SetEquals(new HashSet<string> { "combatroom", "tailor" }) => "27014",
+            var p when p.SetEquals(new HashSet<string> { "combatroom", "tailor", "armory" }) => "27015",
             _ => "27000"
         };
     }

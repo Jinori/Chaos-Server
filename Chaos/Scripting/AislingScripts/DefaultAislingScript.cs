@@ -20,6 +20,7 @@ using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.AislingScripts.Abstractions;
 using Chaos.Scripting.Behaviors;
 using Chaos.Scripting.Components.AbilityComponents;
+using Chaos.Scripting.DialogScripts.Religion.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.FunctionalScripts.ApplyHealing;
@@ -319,30 +320,42 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         if (Subject.Guild is not null && BoardStore.Exists(Subject.Guild.Name))
             yield return BoardStore.Load(Subject.Guild.Name);
 
-        //yield return BoardStore.Load("public_test_board");
+        var religion = ReligionScriptBase.CheckDeity(Subject);
 
-        //things like... get board based on Nation, Guild, Enums, Flags, whatever
-        //e.g.
-        //var nationBoard = Subject.Nation switch
-        //{
-        //    Nation.Exile      => BoardStore.Load("nation_board_exile"),
-        //    Nation.Suomi      => BoardStore.Load("nation_board_suomi"),
-        //    Nation.Ellas      => BoardStore.Load("nation_board_ellas"),
-        //    Nation.Loures     => BoardStore.Load("nation_board_loures"),
-        //    Nation.Mileth     => BoardStore.Load("nation_board_mileth"),
-        //    Nation.Tagor      => BoardStore.Load("nation_board_tagor"),
-        //    Nation.Rucesion   => BoardStore.Load("nation_board_rucesion"),
-        //    Nation.Noes       => BoardStore.Load("nation_board_noes"),
-        //    Nation.Illuminati => BoardStore.Load("nation_board_illuminati"),
-        //    Nation.Piet       => BoardStore.Load("nation_board_piet"),
-        //    Nation.Atlantis   => BoardStore.Load("nation_board_atlantis"),
-        //    Nation.Abel       => BoardStore.Load("nation_board_abel"),
-        //    Nation.Undine     => BoardStore.Load("nation_board_undine"),
-        //    Nation.Purgatory  => BoardStore.Load("nation_board_purgatory"),
-        //    _                 => throw new ArgumentOutOfRangeException()
-        //};
-        //
-        //yield return nationBoard;
+        var board = religion switch
+        {
+            "Miraelis"  => BoardStore.Load("miraelisShrine"),
+            "Skandara"  => BoardStore.Load("skandaraShrine"),
+            "Serendael" => BoardStore.Load("serendaelShrine"),
+            "Theselene" => BoardStore.Load("theseleneShrine"),
+            null => null,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+
+        if (board != null) 
+            yield return board;
+
+        var nationBoard = Subject.Nation switch
+        {
+            Nation.Exile => null,
+            Nation.Suomi => BoardStore.Load("nation_board_suomi"),
+            Nation.Ellas => BoardStore.Load("nation_board_ellas"),
+            Nation.Loures => BoardStore.Load("nation_board_loures"),
+            Nation.Mileth => BoardStore.Load("nation_board_mileth"),
+            Nation.Tagor => BoardStore.Load("nation_board_tagor"),
+            Nation.Rucesion => BoardStore.Load("nation_board_rucesion"),
+            Nation.Noes => BoardStore.Load("nation_board_noes"),
+            Nation.Illuminati => BoardStore.Load("nation_board_illuminati"),
+            Nation.Piet => BoardStore.Load("nation_board_piet"),
+            Nation.Atlantis => BoardStore.Load("nation_board_atlantis"),
+            Nation.Abel => BoardStore.Load("nation_board_abel"),
+            Nation.Undine => BoardStore.Load("nation_board_undine"),
+            Nation.Labyrinth => BoardStore.Load("nation_board_labyrinth"),
+            _ => throw new ArgumentOutOfRangeException()
+        };
+
+        if (nationBoard != null) 
+            yield return nationBoard;
     }
 
     private void HandleWerewolfEffect()

@@ -46,6 +46,7 @@ public sealed class GuildHouseState
             "armory" => properties.Armory,
             "bank" => properties.Bank,
             "tailor" => properties.Tailor,
+            "combatroom" => properties.Combatroom,
             _ => throw new ArgumentException($"Unknown property: {propertyName}", nameof(propertyName))
         };
     }
@@ -62,6 +63,9 @@ public sealed class GuildHouseState
                 break;
             case "tailor":
                 properties.Tailor = value;
+                break;
+            case "combatroom":
+                properties.Combatroom = value;
                 break;
             default:
                 throw new ArgumentException($"Unknown property: {propertyName}", nameof(propertyName));
@@ -87,6 +91,7 @@ public sealed class GuildHouseState
             public bool Armory { get; set; }
             public bool Bank { get; set; }
             public bool Tailor { get; set; }
+            public bool Combatroom { get; set; }
         }
     }
 }

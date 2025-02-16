@@ -39,6 +39,9 @@ public class GuildUpdateHallScript : DialogScriptBase
             case "tibbs_purchase_bank_confirm":
                 HandleUpgrade(source, guildName, "bank", "You do not have enough gold or game points to purchase a bank.");
                 break;
+            case "tibbs_purchase_combatroom_confirm":
+                HandleUpgrade(source, guildName, "combatroom", "You do not have enough gold or game points to purchase a combat room.");
+                break;
         }
     }
 
@@ -68,7 +71,8 @@ public class GuildUpdateHallScript : DialogScriptBase
         {
             guildHouseState.HasProperty(guildName, "bank") ? "bank" : null,
             guildHouseState.HasProperty(guildName, "armory") ? "armory" : null,
-            guildHouseState.HasProperty(guildName, "tailor") ? "tailor" : null
+            guildHouseState.HasProperty(guildName, "tailor") ? "tailor" : null,
+            guildHouseState.HasProperty(guildName, "combatroom") ? "combatroom" : null
         };
 
         properties.RemoveWhere(p => p == null);
@@ -83,6 +87,14 @@ public class GuildUpdateHallScript : DialogScriptBase
             var p when p.SetEquals(new HashSet<string> { "tailor", "bank", "armory" }) => "27005",
             var p when p.SetEquals(new HashSet<string> { "tailor", "armory" }) => "27006",
             var p when p.SetEquals(new HashSet<string> { "tailor", "bank" }) => "27007",
+            var p when p.SetEquals(new HashSet<string> { "combatroom" }) => "27008",
+            var p when p.SetEquals(new HashSet<string> { "combatroom", "bank", "armory", "tailor" }) => "27009",
+            var p when p.SetEquals(new HashSet<string> { "combatroom", "armory" }) => "27010",
+            var p when p.SetEquals(new HashSet<string> { "combatroom", "armory", "bank" }) => "27011",
+            var p when p.SetEquals(new HashSet<string> { "combatroom", "bank" }) => "27012",
+            var p when p.SetEquals(new HashSet<string> { "combatroom", "tailor", "bank" }) => "27013",
+            var p when p.SetEquals(new HashSet<string> { "combatroom", "tailor" }) => "27014",
+            var p when p.SetEquals(new HashSet<string> { "combatroom", "tailor", "armory" }) => "27015",
             _ => "27000"
         };
     }
