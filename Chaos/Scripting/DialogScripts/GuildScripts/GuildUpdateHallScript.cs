@@ -8,7 +8,8 @@ namespace Chaos.Scripting.DialogScripts.GuildScripts;
 public class GuildUpdateHallScript : DialogScriptBase
 {
     private readonly IStorage<GuildHouseState> GuildHouseStateStorage;
-    private const int UPGRADE_COST = 10000000;
+    private const int GOLD_UPGRADE_COST = 2500000;
+    private const int GP_UPGRADE_COST = 750;
 
     public GuildUpdateHallScript(Dialog subject, IStorage<GuildHouseState> guildHouseStateStorage) : base(subject)
     {
@@ -30,13 +31,13 @@ public class GuildUpdateHallScript : DialogScriptBase
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "tibbs_purchase_tailor_confirm":
-                HandleUpgrade(source, guildName, "tailor", "You do not have enough gold to purchase a tailor.");
+                HandleUpgrade(source, guildName, "tailor", "You do not have enough gold or game points to purchase a tailor.");
                 break;
             case "tibbs_purchase_armory_confirm":
-                HandleUpgrade(source, guildName, "armory", "You do not have enough gold to purchase an armory.");
+                HandleUpgrade(source, guildName, "armory", "You do not have enough gold or game points to purchase an armory.");
                 break;
             case "tibbs_purchase_bank_confirm":
-                HandleUpgrade(source, guildName, "bank", "You do not have enough gold to purchase a bank.");
+                HandleUpgrade(source, guildName, "bank", "You do not have enough gold or game points to purchase a bank.");
                 break;
         }
     }
@@ -51,12 +52,12 @@ public class GuildUpdateHallScript : DialogScriptBase
             return;
         }
 
-        if (!source.TryTakeGold(UPGRADE_COST))
+        if (!source.TryTakeGamePoints(GP_UPGRADE_COST) && !source.TryTakeGold(GOLD_UPGRADE_COST))
         {
             Subject.Reply(source, insufficientFundsMessage);
             return;
         }
-
+        
         guildHouseState.EnableProperty(guildName, property);
         source.MapInstance.Morph(GetMorphCode(guildHouseState, guildName));
     }

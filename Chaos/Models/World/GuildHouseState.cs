@@ -6,7 +6,7 @@ public sealed class GuildHouseState
 {
     private IStorage<GuildHouseState>? Storage;
 
-    public Dictionary<string, Dictionary<string, bool>> GuildProperties { get; set; } = new(StringComparer.OrdinalIgnoreCase);
+    public GuildHousePropertiesObj GuildProperties { get; set; } = new();
 
     public GuildHouseState() { }
 
@@ -17,30 +17,76 @@ public sealed class GuildHouseState
 
     public void SetStorage(IStorage<GuildHouseState> storage)
     {
-        Storage = storage;
+        Storage = storage ?? throw new ArgumentNullException(nameof(storage));
     }
 
     public bool HasProperty(string guildName, string propertyName)
     {
-        return GuildProperties.TryGetValue(guildName, out var properties) &&
-               properties.TryGetValue(propertyName, out var isEnabled) && isEnabled;
+        return GuildProperties.Entries.TryGetValue(guildName, out var properties) &&
+               GetPropertyValue(properties, propertyName);
     }
-    
+
     public void EnableProperty(string guildName, string propertyName)
     {
-        if (!GuildProperties.TryGetValue(guildName, out Dictionary<string, bool>? value))
+        if (!GuildProperties.Entries.TryGetValue(guildName, out var houseProperties))
         {
-            value = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
-            GuildProperties[guildName] = value;
+            houseProperties = new GuildHousePropertiesObj.HouseProperties();
+            GuildProperties.Entries[guildName] = houseProperties;
         }
 
-        value[propertyName] = true;
+        SetPropertyValue(houseProperties, propertyName, true);
 
+        SaveChanges();
+    }
+
+    private static bool GetPropertyValue(GuildHousePropertiesObj.HouseProperties properties, string propertyName)
+    {
+        return propertyName.ToLowerInvariant() switch
+        {
+            "armory" => properties.Armory,
+            "bank" => properties.Bank,
+            "tailor" => properties.Tailor,
+            _ => throw new ArgumentException($"Unknown property: {propertyName}", nameof(propertyName))
+        };
+    }
+
+    private static void SetPropertyValue(GuildHousePropertiesObj.HouseProperties properties, string propertyName, bool value)
+    {
+        switch (propertyName.ToLowerInvariant())
+        {
+            case "armory":
+                properties.Armory = value;
+                break;
+            case "bank":
+                properties.Bank = value;
+                break;
+            case "tailor":
+                properties.Tailor = value;
+                break;
+            default:
+                throw new ArgumentException($"Unknown property: {propertyName}", nameof(propertyName));
+        }
+    }
+
+    private void SaveChanges()
+    {
         if (Storage == null)
         {
             throw new InvalidOperationException("Storage is not set. Call SetStorage() before using.");
         }
 
         Storage.Save();
+    }
+
+    public sealed class GuildHousePropertiesObj
+    {
+        public Dictionary<string, HouseProperties> Entries { get; set; } = new(StringComparer.OrdinalIgnoreCase);
+
+        public class HouseProperties
+        {
+            public bool Armory { get; set; }
+            public bool Bank { get; set; }
+            public bool Tailor { get; set; }
+        }
     }
 }
