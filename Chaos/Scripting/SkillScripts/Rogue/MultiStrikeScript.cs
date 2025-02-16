@@ -92,7 +92,7 @@ public class MultiStrikeScript(Skill subject) : ConfigurableSkillScriptBase(subj
 
         Targets = context.SourceMap
                          .GetEntitiesWithinRange<Creature>(context.Source, 5)
-                         .Where(creature => IsSameSideOrNoWallBetween(context.Source, creature) && creature.IsHostileTo(context.Source))
+                         .Where(creature => IsSameSideOrNoWallBetween(context.Source, creature) && !creature.IsFriendlyTo(context.Source))
                          .OrderBy(creature => creature.ManhattanDistanceFrom(context.Source))
                          .Take(5)
                          .ToList();
