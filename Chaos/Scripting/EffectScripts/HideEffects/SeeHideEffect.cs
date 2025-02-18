@@ -18,9 +18,9 @@ public sealed class SeeHideEffect : EffectBase
     {
         var ani = new Animation
         {
-            TargetAnimation = 1,
+            TargetAnimation = 169,
             AnimationSpeed = 200,
-            Priority = 5
+            Priority = 1
         };
 
         Subject.Animate(ani);

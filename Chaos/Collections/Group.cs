@@ -1,8 +1,8 @@
 #region
-using Chaos.DarkAges.Definitions;
-using Chaos.Extensions.Common;
 using Chaos.Common.Utilities;
+using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
+using Chaos.Extensions.Common;
 using Chaos.Messaging.Abstractions;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
@@ -233,7 +233,7 @@ public sealed class Group : IEnumerable<Aisling>, IDedicatedChannel
 
             // Notify all group members about the loot distribution
             foreach (var member in Members)
-                member.SendServerMessage(ServerMessageType.GroupChat, $"{randomMember.Name} received {item.DisplayName} from loot.");
+                member.SendOrangeBarMessage($"{randomMember.Name} received {item.DisplayName} from loot.");
 
             foreach (var admin in adminOnMap)
                 admin.SendOrangeBarMessage($"{randomMember.Name} received {item.DisplayName}.");

@@ -2,6 +2,7 @@
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Geometry.Abstractions;
 using Chaos.Models.Data;
@@ -120,6 +121,7 @@ public class TerrorOfTheCryptScript : MapScriptBase
                 if (AnimationIndex >= ShapeOutline.Count)
                 {
                     var groupLevel = Subject.GetEntities<Aisling>()
+                                            .Where(x => !x.IsGodModeEnabled())
                                             .Select(aisling => aisling.StatSheet.Level)
                                             .ToList();
                     Monster monster;
