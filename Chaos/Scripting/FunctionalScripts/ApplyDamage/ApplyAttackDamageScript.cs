@@ -1,6 +1,7 @@
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
+using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
 using Chaos.Formulae;
 using Chaos.Formulae.Abstractions;
@@ -154,6 +155,10 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
 
         if (MapsToNotPunishDurability.Contains(aisling.MapInstance.Name) || aisling.IsGodModeEnabled())
             return;
+
+        if (source.MapInstance is { IsShard: true, BaseInstanceId: "guildhallmain" })
+            return;
+        
 
         if (!skillScript.Subject.Template.IsAssail) 
             return;

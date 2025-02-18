@@ -60,7 +60,7 @@ public class WerewolfWoodsWarpScript : ConfigurableReactorTileScriptBase
         
         if (aisling.StatSheet.Level < (targetMap.MinimumLevel ?? 0))
         {
-            aisling?.SendOrangeBarMessage($"You must be at least level {targetMap.MinimumLevel} to enter this area.");
+            aisling.SendOrangeBarMessage($"You must be at least level {targetMap.MinimumLevel} to enter this area.");
             var point = source.DirectionalOffset(aisling.Direction.Reverse());
             aisling.WarpTo(source.Trackers.LastPosition as IPoint ?? point);
 
@@ -69,7 +69,7 @@ public class WerewolfWoodsWarpScript : ConfigurableReactorTileScriptBase
 
         if (aisling.StatSheet.Level > (targetMap.MaximumLevel ?? int.MaxValue))
         {
-            aisling?.SendOrangeBarMessage($"You must be at most level {targetMap.MaximumLevel} to enter this area.");
+            aisling.SendOrangeBarMessage($"You must be at most level {targetMap.MaximumLevel} to enter this area.");
 
             var point = source.DirectionalOffset(aisling.Direction.Reverse());
             aisling.WarpTo(source.Trackers.LastPosition as IPoint ?? point);

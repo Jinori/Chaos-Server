@@ -138,8 +138,6 @@ public class DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistri
             return false;
         }
 
-        amount = amount;
-
         if (aisling.UserStatSheet.TotalExp < amount)
             return false;
 

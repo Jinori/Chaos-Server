@@ -12,20 +12,18 @@ namespace Chaos.Scripting.ReactorTileScripts;
 
 public class PitFightLeaderboardScript : ReactorTileScriptBase
 {
-    private static IStorage<PitFightLeaderboardObj> Leaderboard { get; set; }
+    private static IStorage<PitFightLeaderboardObj>? Leaderboard { get; set; }
 
     /// <inheritdoc />
-    public PitFightLeaderboardScript(ReactorTile subject, IStorage<PitFightLeaderboardObj> storage)
-        : base(subject)
-    {
+    public PitFightLeaderboardScript(ReactorTile subject, IStorage<PitFightLeaderboardObj>? storage)
+        : base(subject) =>
         Leaderboard = storage;
-    }
 
     /// <inheritdoc />
     public override void OnClicked(Aisling source)
     {
         // Retrieve leaderboard entries
-        var leaderboard = Leaderboard.Value.Entries;
+        var leaderboard = Leaderboard?.Value.Entries;
 
         // Build the leaderboard display
         var builder = new StringBuilder();
@@ -36,19 +34,21 @@ public class PitFightLeaderboardScript : ReactorTileScriptBase
 
         // Order by victories (descending), then losses (ascending)
         var isSilver = true;
-        foreach (var entry in leaderboard
-                     .OrderByDescending(kvp => kvp.Value.Victories)
-                     .ThenBy(kvp => kvp.Value.Losses))
-        {
-            var stats = entry.Value;
 
-            // Alternate colors
-            var currentColor = isSilver ? MessageColor.Silver : MessageColor.Gainsboro;
-            builder.AppendLineFColored(currentColor, $"{entry.Key,-15} {stats.Victories,-10} {stats.Losses,-10}");
-        
-            // Toggle the color for the next entry
-            isSilver = !isSilver;
-        }
+        if (leaderboard != null)
+            foreach (var entry in leaderboard
+                                  .OrderByDescending(kvp => kvp.Value.Victories)
+                                  .ThenBy(kvp => kvp.Value.Losses))
+            {
+                var stats = entry.Value;
+
+                // Alternate colors
+                var currentColor = isSilver ? MessageColor.Silver : MessageColor.Gainsboro;
+                builder.AppendLineFColored(currentColor, $"{entry.Key,-15} {stats.Victories,-10} {stats.Losses,-10}");
+
+                // Toggle the color for the next entry
+                isSilver = !isSilver;
+            }
 
         // Send leaderboard to the player
         source.SendServerMessage(ServerMessageType.ScrollWindow, builder.ToString());
@@ -76,7 +76,7 @@ public class PitFightLeaderboardScript : ReactorTileScriptBase
             {
                 Entries[playerName] = new PlayerStats { Victories = 1 };
             }
-            Leaderboard.Save();
+            Leaderboard?.Save();
         }
 
         // Add a loss to a player
@@ -90,7 +90,7 @@ public class PitFightLeaderboardScript : ReactorTileScriptBase
             {
                 Entries[playerName] = new PlayerStats { Losses = 1 };
             }
-            Leaderboard.Save();
+            Leaderboard?.Save();
         }
     }
 }

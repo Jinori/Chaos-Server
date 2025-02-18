@@ -66,7 +66,7 @@ public class MountEffect : EffectBase, NonOverwritableEffectComponent.INonOverwr
 
             AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
             
-            if (!AislingSubject.Trackers.TimedEvents.HasActiveEvent("mount", out _) && !AislingSubject.IsGodModeEnabled())
+            if ((AislingSubject != null) && !AislingSubject.Trackers.TimedEvents.HasActiveEvent("mount", out _) && !AislingSubject.IsGodModeEnabled())
                 AislingSubject.Trackers.TimedEvents.AddEvent("mount", TimeSpan.FromSeconds(5), true);
         }
     }

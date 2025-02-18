@@ -5,7 +5,7 @@ using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.ReactorTileScripts.Arena
 {
-    public class BattleRingWarpScript(ReactorTile subject, IDialogFactory dialogFactory, IMerchantFactory merchantFactory)
+    public class BattleRingWarpScript(ReactorTile subject, IDialogFactory dialogFactory)
         : ReactorTileScriptBase(subject)
     {
         public override void OnWalkedOn(Creature source)

@@ -27,7 +27,7 @@ public class GuildUpdateHallScript : DialogScriptBase
             return;
         }
 
-        string guildName = source.Guild.Name;
+        var guildName = source.Guild.Name;
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "tibbs_purchase_tailor_confirm":

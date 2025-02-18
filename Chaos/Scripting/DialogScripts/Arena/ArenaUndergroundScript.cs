@@ -363,7 +363,7 @@ public class ArenaUndergroundScript : DialogScriptBase
 
         var aisling = source.MapInstance
                             .GetEntities<Aisling>()
-                            .FirstOrDefault(x => x.Name.EqualsI(playerToPlace));
+                            .FirstOrDefault(x => (playerToPlace != null) && x.Name.EqualsI(playerToPlace));
 
         if ((aisling == null) || (aisling.MapInstance.InstanceId != "arena_underground"))
             return;

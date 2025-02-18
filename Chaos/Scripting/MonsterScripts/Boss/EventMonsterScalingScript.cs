@@ -1,7 +1,6 @@
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using Chaos.Services.Factories.Abstractions;
 using System.Linq;
 
 namespace Chaos.Scripting.MonsterScripts.Boss;
@@ -9,16 +8,15 @@ namespace Chaos.Scripting.MonsterScripts.Boss;
 /// <summary>
 /// Script that scales the boss monster based on the number and average level of non-admin Aislings on the map.
 /// </summary>
-public sealed class EventMonsterScalingScript(Monster subject, ISpellFactory spellFactory) : MonsterScriptBase(subject)
+public sealed class EventMonsterScalingScript(Monster subject) : MonsterScriptBase(subject)
 {
     private static bool MapBonusApplied;
     
     /// <summary>
     /// Creates bonus attributes for the boss based on the number and average level of Aislings on the map.
     /// </summary>
-    private Attributes CreateBonusAttributes(int aislingCount, double averageLevel)
-    {
-        return new Attributes
+    private Attributes CreateBonusAttributes(int aislingCount, double averageLevel) =>
+        new()
         {
             Con = ((int)averageLevel + Subject.StatSheet.Level) * aislingCount / 50,
             Dex = ((int)averageLevel + Subject.StatSheet.Level) * aislingCount / 50,
@@ -31,7 +29,6 @@ public sealed class EventMonsterScalingScript(Monster subject, ISpellFactory spe
             SkillDamagePct = (int)(averageLevel + Subject.StatSheet.Level) * aislingCount / 75,
             SpellDamagePct = (int)(averageLevel + Subject.StatSheet.Level) * aislingCount / 75
         };
-    }
 
     /// <summary>
     /// Updates the boss' stats and applies scaling based on non-admin Aislings present on the map.

@@ -833,6 +833,9 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
         if (MapsToNotPunishDeathOn.Contains(Subject.MapInstance.Name))
             return;
+        
+        if (Subject.MapInstance is { IsShard: true, BaseInstanceId: "guildhallmain" })
+            return;
 
         foreach (var client in ClientRegistry)
             client.SendServerMessage(

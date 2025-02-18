@@ -234,9 +234,9 @@ public class RestrictionBehavior
             }
         }
 
-        if (creature.IsDead && (spell.Template.Name == "Self Revive"))
+        if (creature is { IsDead: true } && (spell.Template.Name == "Self Revive"))
             return true;
 
-        return creature.IsAlive;
+        return creature is { IsAlive: true };
     }
 }

@@ -5,13 +5,12 @@ using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
-using Chaos.Scripting.DialogScripts.Quests.MilethQuest;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Class_Related;
 
-public class DarkPriestScript(Dialog subject, ILogger<CrudeLeatherQuestScript> logger, ISpellFactory spellFactory)
+public class DarkPriestScript(Dialog subject, ISpellFactory spellFactory)
     : DialogScriptBase(subject)
 {
     public override void OnDisplaying(Aisling source)

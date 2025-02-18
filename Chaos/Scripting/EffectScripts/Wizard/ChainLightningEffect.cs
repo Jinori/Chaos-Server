@@ -18,8 +18,6 @@ public sealed class ChainLightningEffect : ContinuousAnimationEffectBase
     private readonly IEffectFactory EffectFactory;
     private HashSet<uint> HitTargetIds = new(); // Using HashSet<uint> to track target IDs
 
-    private int Number;
-
     /// <inheritdoc />
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(1);
 
@@ -36,7 +34,7 @@ public sealed class ChainLightningEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromHours(1000), false);
 
-    protected IApplyDamageScript ApplyDamageScript { get; }
+    private IApplyDamageScript ApplyDamageScript { get; }
 
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(200), false);

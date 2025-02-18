@@ -9,7 +9,7 @@ using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Events.Thanksgiving;
 
-public class ThanksgivingTreasureHuntScript(Dialog subject, ILogger<ThanksgivingTreasureHuntScript> logger, IItemFactory itemFactory)
+public class ThanksgivingTreasureHuntScript(Dialog subject, IItemFactory itemFactory)
     : DialogScriptBase(subject)
 {
     private const int REQUIRED_HUNTS = 5;

@@ -1,21 +1,68 @@
 using Chaos.Collections;
+using Chaos.Extensions.Geometry;
+using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Storage.Abstractions;
+using Chaos.Time;
+using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.MapScripts.GuildHall;
 
-public class GuildHallScript(MapInstance subject, IStorage<GuildHouseState> guildHouseStateStorage)
-    : MapScriptBase(subject)
+public class GuildHallScript : MapScriptBase
 {
+    
+    private readonly IIntervalTimer UpdateTimer;
+    private readonly IStorage<GuildHouseState> GuildHouseStateStorage;
+    public GuildHallScript(MapInstance subject, IStorage<GuildHouseState> guildHouseStateStorage)
+        : base(subject)
+    {
+        UpdateTimer = new IntervalTimer(TimeSpan.FromMilliseconds(500), false);
+        GuildHouseStateStorage = guildHouseStateStorage;
+    }
+
+    /// <inheritdoc />
+    public override void Update(TimeSpan delta)
+    {
+        UpdateTimer.Update(delta);
+
+        if (!UpdateTimer.IntervalElapsed)
+            return;
+
+        var rect = new Rectangle(59, 25, 11, 10);
+        
+        var mobs = Subject.GetEntities<Monster>().ToList();
+
+        if (mobs.Count == 0)
+            return;
+        
+        foreach (var mob in mobs)
+        {
+            var mobPosition = new Point(mob.X, mob.Y);
+            
+            if (!rect.GetPoints().Contains(mobPosition))
+                HandleMobOutsideRectangle(mob);
+        }
+    }
+
+    private void HandleMobOutsideRectangle(Monster mob)
+    {
+        foreach (var aisling in Subject.GetEntities<Aisling>())
+        {
+            aisling.SendOrangeBarMessage($"{mob.Name} removed for leaving combat sim!");
+        }
+        Subject.RemoveEntity(mob);
+    }
+
+
     public override void OnEntered(Creature creature)
     {
         if (creature is not Aisling aisling || !Subject.IsShard || aisling.Guild is null)
             return;
 
-        string guildName = aisling.Guild.Name;
-        Subject.Morph(GetMorphCode(guildHouseStateStorage.Value, guildName));
+        var guildName = aisling.Guild.Name;
+        Subject.Morph(GetMorphCode(GuildHouseStateStorage.Value, guildName));
     }
 
     private string GetMorphCode(GuildHouseState guildHouseState, string guildName)
