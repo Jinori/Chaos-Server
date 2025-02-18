@@ -14,6 +14,8 @@ public class FuryEffectScript : ConfigurableSpellScriptBase,
                                 SpellComponent<Creature>.ISpellComponentOptions,
                                 FuryEffectAbilityComponent.IApplyEffectComponentOptions
 {
+    public List<string>? EffectKeysToBreak { get; set; }
+
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
@@ -30,9 +32,6 @@ public class FuryEffectScript : ConfigurableSpellScriptBase,
                                          ?.Execute<FuryEffectAbilityComponent>();
 
     #region ScriptVars
-    /// <inheritdoc />
-    public bool ShouldNotBreakHide { get; init; }
-
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
 
@@ -86,6 +85,7 @@ public class FuryEffectScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }
+
     /// <inheritdoc />
     public bool IgnoreMagicResistance { get; init; }
     #endregion

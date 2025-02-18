@@ -34,6 +34,8 @@ public class PullSkillScript : ConfigurableSkillScriptBase,
     public TimeSpan? EffectDurationOverride { get; init; }
     public IEffectFactory EffectFactory { get; init; }
     public string? EffectKey { get; init; }
+
+    public List<string>? EffectKeysToBreak { get; set; }
     public Element? Element { get; init; }
 
     public int? ExclusionRange { get; init; }
@@ -50,7 +52,6 @@ public class PullSkillScript : ConfigurableSkillScriptBase,
     public int Range { get; init; }
     public bool? ScaleBodyAnimationSpeedByAttackSpeed { get; init; }
     public AoeShape Shape { get; init; }
-    public bool ShouldNotBreakHide { get; init; }
     public bool SingleTarget { get; init; }
     public byte? Sound { get; init; }
 

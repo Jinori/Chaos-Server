@@ -29,6 +29,8 @@ public class CascadingEffectScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public string? EffectKey { get; init; }
 
+    public List<string>? EffectKeysToBreak { get; set; }
+
     /// <inheritdoc />
     public CascadingEffectScript(Spell subject, IReactorTileFactory reactorTileFactory, IEffectFactory effectFactory)
         : base(subject)
@@ -97,7 +99,5 @@ public class CascadingEffectScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }
-    /// <inheritdoc />
-    public bool ShouldNotBreakHide { get; init; }
     #endregion
 }

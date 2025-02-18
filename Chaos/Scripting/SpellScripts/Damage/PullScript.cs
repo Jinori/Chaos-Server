@@ -14,11 +14,11 @@ public class PullScript : ConfigurableSpellScriptBase,
                           PullAggroComponent.IAddAggroComponentOptions,
                           NotifyTargetComponent.INotifyTargetComponentOptions
 {
+    public List<string>? EffectKeysToBreak { get; set; }
+
     /// <inheritdoc />
     public PullScript(Spell subject)
-        : base(subject)
-    {
-    }
+        : base(subject) { }
 
     /// <inheritdoc />
     public override void OnUse(SpellContext context)
@@ -49,9 +49,7 @@ public class PullScript : ConfigurableSpellScriptBase,
     public Animation? Animation { get; init; }
     public int? ManaCost { get; init; }
     public decimal PctManaCost { get; init; }
-    public bool ShouldNotBreakHide { get; init; }
     public int? AggroAmount { get; init; }
     public Stat? AggroMultiplier { get; init; }
-
     #endregion
 }

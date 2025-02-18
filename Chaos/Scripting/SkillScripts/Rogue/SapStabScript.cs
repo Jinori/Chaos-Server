@@ -3,7 +3,6 @@ using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -43,6 +42,8 @@ public class SapStabScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public decimal? DamageStatMultiplier { get; init; }
+
+    public List<string>? EffectKeysToBreak { get; set; }
 
     /// <inheritdoc />
     public Element? Element { get; init; }
@@ -96,14 +97,11 @@ public class SapStabScript : ConfigurableSkillScriptBase,
     public AoeShape Shape { get; init; }
 
     /// <inheritdoc />
-    public bool ShouldNotBreakHide { get; init; }
-
-    /// <inheritdoc />
     public bool SingleTarget { get; init; }
 
     /// <inheritdoc />
     public byte? Sound { get; init; }
-    
+
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
@@ -115,9 +113,7 @@ public class SapStabScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public SapStabScript(Skill subject)
         : base(subject)
-    {
-        ApplyDamageScript = ApplyAttackDamageScript.Create();
-    }
+        => ApplyDamageScript = ApplyAttackDamageScript.Create();
 
     public override void OnUse(ActivationContext context)
         => new ComponentExecutor(context).WithOptions(this)

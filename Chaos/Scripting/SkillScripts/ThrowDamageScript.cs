@@ -23,6 +23,8 @@ public class ThrowDamageScript : ConfigurableSkillScriptBase,
     public IEffectFactory EffectFactory { get; init; }
     public string? EffectKey { get; init; }
 
+    public List<string>? EffectKeysToBreak { get; set; }
+
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
@@ -104,7 +106,7 @@ public class ThrowDamageScript : ConfigurableSkillScriptBase,
 
     public decimal? PctOfHealthMultiplier { get; init; }
     public decimal? PctOfHealth { get; init; }
-    
+
     public bool? SurroundingTargets { get; init; }
     public decimal? DamageMultiplierPerTarget { get; init; }
     public decimal? PctOfMana { get; init; }
@@ -115,8 +117,5 @@ public class ThrowDamageScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }
-
-    /// <inheritdoc />
-    public bool ShouldNotBreakHide { get; init; }
     #endregion
 }

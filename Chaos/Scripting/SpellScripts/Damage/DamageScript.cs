@@ -1,17 +1,12 @@
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
-using Chaos.Extensions;
-using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
-using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyDamage;
-using Chaos.Scripting.ReactorTileScripts.Creants.Shamensyth;
 using Chaos.Scripting.SpellScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
@@ -27,6 +22,7 @@ public class DamageScript : ConfigurableSpellScriptBase,
     public TimeSpan? EffectDurationOverride { get; init; }
     public IEffectFactory EffectFactory { get; init; }
     public string? EffectKey { get; init; }
+    public List<string>? EffectKeysToBreak { get; set; }
 
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
@@ -47,11 +43,8 @@ public class DamageScript : ConfigurableSpellScriptBase,
                                          ?.Execute<DamageAbilityComponent>()
                                          .Execute<ApplyEffectAbilityComponent>()
                                          .Execute<NotifyTargetComponent>();
-    
-    #region ScriptVars
-    /// <inheritdoc />
-    public bool ShouldNotBreakHide { get; init; }
 
+    #region ScriptVars
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
 
@@ -112,7 +105,7 @@ public class DamageScript : ConfigurableSpellScriptBase,
 
     public decimal? PctOfHealthMultiplier { get; init; }
     public decimal? PctOfHealth { get; init; }
-    
+
     public bool? SurroundingTargets { get; init; }
     public decimal? DamageMultiplierPerTarget { get; init; }
     public decimal? PctOfMana { get; init; }

@@ -16,6 +16,7 @@ public class CritDamageScript : ConfigurableSpellScriptBase,
                                 CritDamageComponent.IDamageComponentOptions,
                                 NotifyTargetComponent.INotifyTargetComponentOptions
 {
+    public List<string>? EffectKeysToBreak { get; set; }
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
@@ -23,9 +24,7 @@ public class CritDamageScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public CritDamageScript(Spell subject)
         : base(subject)
-    {
-        ApplyDamageScript = ApplyAttackDamageScript.Create();
-    }
+        => ApplyDamageScript = ApplyAttackDamageScript.Create();
 
     /// <inheritdoc />
     public override void OnUse(SpellContext context)
@@ -35,9 +34,6 @@ public class CritDamageScript : ConfigurableSpellScriptBase,
                                          .Execute<NotifyTargetComponent>();
 
     #region ScriptVars
-    /// <inheritdoc />
-    public bool ShouldNotBreakHide { get; init; }
-
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
 
@@ -97,7 +93,7 @@ public class CritDamageScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public decimal? PctHpDamage { get; init; }
-    
+
     /// <inheritdoc />
     public int? ManaCost { get; init; }
 

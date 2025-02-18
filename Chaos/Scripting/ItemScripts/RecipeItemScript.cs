@@ -4393,7 +4393,11 @@ public class RecipeItemScript : ItemScriptBase
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BronzeHeartstoneRing);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BronzeEmeraldRing);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BronzeBerylRing);
+
+                    return;
                 }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
 
                 break;
             }
@@ -4420,7 +4424,11 @@ public class RecipeItemScript : ItemScriptBase
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronHeartstoneRing);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronEmeraldRing);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronBerylRing);
+
+                    return;
                 }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
 
                 break;
             }
@@ -4447,7 +4455,11 @@ public class RecipeItemScript : ItemScriptBase
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilHeartstoneRing);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilEmeraldRing);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilBerylRing);
+
+                    return;
                 }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
 
                 break;
             }
@@ -4474,7 +4486,11 @@ public class RecipeItemScript : ItemScriptBase
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylHeartstoneRing);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylEmeraldRing);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylBerylRing);
+
+                    return;
                 }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
 
                 break;
             }
@@ -4502,7 +4518,11 @@ public class RecipeItemScript : ItemScriptBase
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicHeartstoneEarrings);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicSapphireEarrings);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BasicRubyEarrings);
+
+                    return;
                 }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
 
                 break;
             }
@@ -4530,7 +4550,11 @@ public class RecipeItemScript : ItemScriptBase
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronHeartstoneEarrings);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronRubyEarrings);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.IronSapphireEarrings);
+
+                    return;
                 }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
 
                 break;
             }
@@ -4557,7 +4581,11 @@ public class RecipeItemScript : ItemScriptBase
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilHeartstoneEarrings);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilRubyEarrings);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.MythrilSapphireEarrings);
+
+                    return;
                 }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
 
                 break;
             }
@@ -4584,7 +4612,11 @@ public class RecipeItemScript : ItemScriptBase
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylHeartstoneEarrings);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylRubyEarrings);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.HybrasylSapphireEarrings);
+
+                    return;
                 }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
 
                 break;
             }
@@ -4611,7 +4643,11 @@ public class RecipeItemScript : ItemScriptBase
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BoneFireNecklace);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BoneSeaNecklace);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.BoneWindNecklace);
+
+                    return;
                 }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
 
                 break;
             }
@@ -4638,7 +4674,11 @@ public class RecipeItemScript : ItemScriptBase
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.KannaFireNecklace);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.KannaSeaNecklace);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.KannaWindNecklace);
+
+                    return;
                 }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
 
                 break;
             }
@@ -4664,7 +4704,11 @@ public class RecipeItemScript : ItemScriptBase
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.PolishedSeaNecklace);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.PolishedFireNecklace);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.PolishedEarthNecklace);
+
+                    return;
                 }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
 
                 break;
             }
@@ -4690,7 +4734,11 @@ public class RecipeItemScript : ItemScriptBase
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.StarFireNecklace);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.StarSeaNecklace);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes.StarWindNecklace);
+
+                    return;
                 }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
 
                 break;
             }
@@ -4718,7 +4766,11 @@ public class RecipeItemScript : ItemScriptBase
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteSapphireRing);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteEmeraldRing);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteHeartstoneRing);
+
+                    return;
                 }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
 
                 break;
             }
@@ -4746,7 +4798,11 @@ public class RecipeItemScript : ItemScriptBase
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumSapphireRing);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumEmeraldRing);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumHeartstoneRing);
+
+                    return;
                 }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
 
                 break;
             }
@@ -4774,7 +4830,11 @@ public class RecipeItemScript : ItemScriptBase
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteSapphireEarrings);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteEmeraldEarrings);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteHeartstoneEarrings);
+
+                    return;
                 }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
 
                 break;
             }
@@ -4802,7 +4862,11 @@ public class RecipeItemScript : ItemScriptBase
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumSapphireEarrings);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumEmeraldEarrings);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumHeartstoneEarrings);
+
+                    return;
                 }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
 
                 break;
             }
@@ -4829,7 +4893,11 @@ public class RecipeItemScript : ItemScriptBase
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteFireNecklace);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteSeaNecklace);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteWindNecklace);
+
+                    return;
                 }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
 
                 break;
             }
@@ -4856,7 +4924,11 @@ public class RecipeItemScript : ItemScriptBase
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumFireNecklace);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumSeaNecklace);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumWindNecklace);
+
+                    return;
                 }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
 
                 break;
             }
@@ -4881,7 +4953,11 @@ public class RecipeItemScript : ItemScriptBase
 
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteLightNecklace);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.CrimsoniteDarkNecklace);
+
+                    return;
                 }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
 
                 break;
             }
@@ -4906,7 +4982,11 @@ public class RecipeItemScript : ItemScriptBase
 
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumLightNecklace);
                     source.Trackers.Flags.AddFlag(JewelcraftingRecipes2.AzuriumDarkNecklace);
+
+                    return;
                 }
+
+                source.SendOrangeBarMessage("You already know this recipe.");
 
                 break;
             }

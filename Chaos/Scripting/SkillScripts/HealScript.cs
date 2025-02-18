@@ -16,6 +16,7 @@ public class HealScript : ConfigurableSkillScriptBase,
                           GenericAbilityComponent<Creature>.IAbilityComponentOptions,
                           HealAbilityComponent.IHealComponentOptions
 {
+    public List<string>? EffectKeysToBreak { get; set; }
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
@@ -92,8 +93,5 @@ public class HealScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }
-
-    /// <inheritdoc />
-    public bool ShouldNotBreakHide { get; init; }
     #endregion
 }

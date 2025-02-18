@@ -31,6 +31,8 @@ public class AddAggroScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public BodyAnimation BodyAnimation { get; init; }
 
+    public List<string>? EffectKeysToBreak { get; set; }
+
     public int? ExclusionRange { get; init; }
 
     /// <inheritdoc />
@@ -42,6 +44,7 @@ public class AddAggroScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public int? ManaCost { get; init; }
+
     /// <inheritdoc />
     public bool MustHaveTargets { get; init; }
 
@@ -55,9 +58,6 @@ public class AddAggroScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
-
-    /// <inheritdoc />
-    public bool ShouldNotBreakHide { get; init; }
 
     /// <inheritdoc />
     public bool SingleTarget { get; init; }

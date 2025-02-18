@@ -24,6 +24,8 @@ public class ThrowWeaponScript : ConfigurableSkillScriptBase,
     public IEffectFactory EffectFactory { get; init; }
     public string? EffectKey { get; init; }
 
+    public List<string>? EffectKeysToBreak { get; set; }
+
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
@@ -118,8 +120,5 @@ public class ThrowWeaponScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }
-
-    /// <inheritdoc />
-    public bool ShouldNotBreakHide { get; init; }
     #endregion
 }

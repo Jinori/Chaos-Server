@@ -25,6 +25,8 @@ public class InspectScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public BodyAnimation BodyAnimation { get; init; }
 
+    public List<string>? EffectKeysToBreak { get; set; }
+
     /// <inheritdoc />
 
     public int? ExclusionRange { get; init; }
@@ -34,6 +36,7 @@ public class InspectScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public int? ManaCost { get; init; }
+
     /// <inheritdoc />
     public bool MustHaveTargets { get; init; }
 
@@ -50,9 +53,6 @@ public class InspectScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
-
-    /// <inheritdoc />
-    public bool ShouldNotBreakHide { get; init; }
 
     /// <inheritdoc />
     public bool SingleTarget { get; init; }

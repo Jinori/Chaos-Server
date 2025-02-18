@@ -29,6 +29,8 @@ public class RemoveAndApplyEffectScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public IEffectFactory EffectFactory { get; init; }
 
+    public List<string>? EffectKeysToBreak { get; set; }
+
     /// <inheritdoc />
     public string? EffectKeyToAddAfterRemoval { get; init; }
 
@@ -63,9 +65,6 @@ public class RemoveAndApplyEffectScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
-
-    /// <inheritdoc />
-    public bool ShouldNotBreakHide { get; init; }
 
     /// <inheritdoc />
     public bool SingleTarget { get; init; }

@@ -49,6 +49,8 @@ public class ChargeScript : ConfigurableSkillScriptBase,
     public IEffectFactory EffectFactory { get; init; }
     public string? EffectKey { get; init; }
 
+    public List<string>? EffectKeysToBreak { get; set; }
+
     /// <inheritdoc />
     public Element? Element { get; init; }
 
@@ -86,9 +88,6 @@ public class ChargeScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
-
-    /// <inheritdoc />
-    public bool ShouldNotBreakHide { get; init; }
 
     /// <inheritdoc />
     public bool SingleTarget { get; init; }
