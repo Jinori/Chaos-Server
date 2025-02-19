@@ -71,7 +71,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         "Nightmare",
         "Cain's Farm",
         "Labyrinth Battle Ring",
-        "Drowned Labyrith - Pit",
+        "Drowned Labyrinth - Pit",
         "Lava Arena",
         "Lava Arena - Teams",
         "Color Clash - Teams",

@@ -1,6 +1,8 @@
+using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
+using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.GuildScripts;
@@ -8,12 +10,14 @@ namespace Chaos.Scripting.DialogScripts.GuildScripts;
 public class GuildUpdateHallScript : DialogScriptBase
 {
     private readonly IStorage<GuildHouseState> GuildHouseStateStorage;
+    private readonly IMerchantFactory MerchantFactory;
     private const int GOLD_UPGRADE_COST = 2500000;
     private const int GP_UPGRADE_COST = 750;
 
-    public GuildUpdateHallScript(Dialog subject, IStorage<GuildHouseState> guildHouseStateStorage) : base(subject)
+    public GuildUpdateHallScript(Dialog subject, IStorage<GuildHouseState> guildHouseStateStorage, IMerchantFactory merchantFactory) : base(subject)
     {
         GuildHouseStateStorage = guildHouseStateStorage;
+        MerchantFactory = merchantFactory;
     }
 
     public override void OnDisplaying(Aisling source)
@@ -62,7 +66,9 @@ public class GuildUpdateHallScript : DialogScriptBase
         }
         
         guildHouseState.EnableProperty(guildName, property);
-        source.MapInstance.Morph(GetMorphCode(guildHouseState, guildName));
+        var morphCode = GetMorphCode(GuildHouseStateStorage.Value, guildName);
+        source.MapInstance.Morph(morphCode);
+        SpawnNPCsForMorphCode(source, morphCode);
     }
 
     private string GetMorphCode(GuildHouseState guildHouseState, string guildName)
@@ -98,4 +104,46 @@ public class GuildUpdateHallScript : DialogScriptBase
             _ => "27000"
         };
     }
+    
+    private void SpawnNPCsForMorphCode(Aisling source, string morphCode)
+    {
+        if (!NpcSpawns.TryGetValue(morphCode, out var spawns))
+            return;
+
+        var existingNPCs = source.MapInstance.GetEntities<Merchant>().ToDictionary(npc => npc.Template.TemplateKey, npc => npc);
+
+        foreach (var spawn in spawns)
+        {
+            if (!existingNPCs.ContainsKey(spawn.Name))
+            {
+                var merch = MerchantFactory.Create(spawn.Name, source.MapInstance, new Point(spawn.X, spawn.Y));
+               source.MapInstance.AddEntity(merch, new Point(spawn.X, spawn.Y));
+            }
+        }
+    }    
+    
+    /// <summary>
+/// Dictionary mapping Morph Codes to NPCs that should spawn.
+/// </summary>
+private static readonly Dictionary<string, List<NPCSpawn>> NpcSpawns = new()
+{
+    { "27000", [ new NPCSpawn("quill", 84, 39, Direction.Right), new NPCSpawn("tibbs", 99, 39, Direction.Left) ] },
+    { "27001", [ new NPCSpawn("quill", 84, 39, Direction.Right), new NPCSpawn("tibbs", 99, 39, Direction.Left), new NPCSpawn("stash", 92, 22, Direction.Right) ] },
+    { "27002", [ new NPCSpawn("quill", 84, 39, Direction.Right), new NPCSpawn("tibbs", 99, 39, Direction.Left), new NPCSpawn("stash", 92, 22, Direction.Right), new NPCSpawn("fixx", 81, 24, Direction.Left) ] },
+    { "27003", [ new NPCSpawn("quill", 84, 39, Direction.Right), new NPCSpawn("tibbs", 99, 39, Direction.Left), new NPCSpawn("fixx", 81, 24, Direction.Left) ] },
+    { "27004", [ new NPCSpawn("quill", 84, 39, Direction.Right), new NPCSpawn("tibbs", 99, 39, Direction.Left), new NPCSpawn("loom", 76, 52, Direction.Right) ] },
+    { "27005", [ new NPCSpawn("quill", 84, 39, Direction.Right), new NPCSpawn("tibbs", 99, 39, Direction.Left), new NPCSpawn("stash", 92, 22, Direction.Right), new NPCSpawn("fixx", 81, 24, Direction.Left), new NPCSpawn("loom", 76, 52, Direction.Right) ] },
+    { "27006", [ new NPCSpawn("quill", 84, 39, Direction.Right), new NPCSpawn("tibbs", 99, 39, Direction.Left), new NPCSpawn("fixx", 81, 24, Direction.Left), new NPCSpawn("loom", 76, 52, Direction.Right) ] },
+    { "27007", [ new NPCSpawn("quill", 84, 39, Direction.Right), new NPCSpawn("tibbs", 99, 39, Direction.Left), new NPCSpawn("stash", 92, 22, Direction.Right), new NPCSpawn("loom", 76, 52, Direction.Right) ] },
+    { "27008", [ new NPCSpawn("quill", 84, 39, Direction.Right), new NPCSpawn("tibbs", 99, 39, Direction.Left), new NPCSpawn("simm", 63, 22, Direction.Left) ] },
+    { "27009", [ new NPCSpawn("quill", 84, 39, Direction.Right), new NPCSpawn("tibbs", 99, 39, Direction.Left), new NPCSpawn("stash", 92, 22, Direction.Right), new NPCSpawn("fixx", 81, 24, Direction.Left), new NPCSpawn("loom", 76, 52, Direction.Right), new NPCSpawn("simm", 63, 22, Direction.Left) ] },
+    { "27010", [ new NPCSpawn("quill", 84, 39, Direction.Right), new NPCSpawn("tibbs", 99, 39, Direction.Left), new NPCSpawn("simm", 63, 22, Direction.Left), new NPCSpawn("fixx", 81, 24, Direction.Left) ] },
+    { "27011", [ new NPCSpawn("quill", 84, 39, Direction.Right), new NPCSpawn("tibbs", 99, 39, Direction.Left), new NPCSpawn("stash", 92, 22, Direction.Right), new NPCSpawn("fixx", 81, 24, Direction.Left), new NPCSpawn("simm", 63, 22, Direction.Left) ] },
+    { "27012", [ new NPCSpawn("quill", 84, 39, Direction.Right), new NPCSpawn("tibbs", 99, 39, Direction.Left), new NPCSpawn("stash", 92, 22, Direction.Right), new NPCSpawn("simm", 63, 22, Direction.Left) ] },
+    { "27013", [ new NPCSpawn("quill", 84, 39, Direction.Right), new NPCSpawn("tibbs", 99, 39, Direction.Left), new NPCSpawn("stash", 92, 22, Direction.Right), new NPCSpawn("loom", 76, 52, Direction.Right), new NPCSpawn("simm", 63, 22, Direction.Left) ] },
+    { "27014", [ new NPCSpawn("quill", 84, 39, Direction.Right), new NPCSpawn("tibbs", 99, 39, Direction.Left), new NPCSpawn("loom", 76, 52, Direction.Right), new NPCSpawn("simm", 63, 22, Direction.Left) ] },
+    { "27015", [ new NPCSpawn("quill", 84, 39, Direction.Right), new NPCSpawn("tibbs", 99, 39, Direction.Left), new NPCSpawn("fixx", 81, 24, Direction.Left), new NPCSpawn("loom", 76, 52, Direction.Right), new NPCSpawn("simm", 63, 22, Direction.Left) ] }
+};
+    
+    public sealed record NPCSpawn(string Name, int X, int Y, Direction FacingDirection);
 }

@@ -107,11 +107,7 @@ public sealed class ChainLightningEffect : ContinuousAnimationEffectBase
 
     /// <inheritdoc />
     protected override void OnIntervalElapsed() => BounceToNextTarget(SourceOfEffect, Target);
-
-    public override void OnTerminated()
-    {
-        // Cleanup logic if needed
-    }
+    
 
     public override bool ShouldApply(Creature source, Creature target)
     {

@@ -1,4 +1,5 @@
 using Chaos.Collections;
+using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
@@ -22,6 +23,8 @@ public class GuildHallEntrance(
         if (aisling.Guild is null)
         {
             aisling.SendOrangeBarMessage("You don't belong to a guild.");
+            var point = source.DirectionalOffset(source.Direction.Reverse());
+            source.WarpTo(point);
             return;
         }
         

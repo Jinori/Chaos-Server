@@ -1,7 +1,6 @@
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
-using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
 using Chaos.Formulae;
 using Chaos.Formulae.Abstractions;
@@ -22,7 +21,7 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
     private readonly List<string> MapsToNotPunishDurability =
     [
         "Labyrinth Battle Ring",
-        "Drowned Labyrith - Pit",
+        "Drowned Labyrinth - Pit",
         "Lava Arena",
         "Lava Arena - Teams",
         "Color Clash - Teams",
