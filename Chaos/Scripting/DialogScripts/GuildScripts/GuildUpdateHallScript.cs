@@ -1,6 +1,8 @@
+using Chaos.DarkAges.Definitions;
 using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
+using Chaos.Networking.Abstractions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
@@ -13,11 +15,12 @@ public class GuildUpdateHallScript : DialogScriptBase
     private readonly IMerchantFactory MerchantFactory;
     private const int GOLD_UPGRADE_COST = 2500000;
     private const int GP_UPGRADE_COST = 750;
-
-    public GuildUpdateHallScript(Dialog subject, IStorage<GuildHouseState> guildHouseStateStorage, IMerchantFactory merchantFactory) : base(subject)
+    private readonly IClientRegistry<IChaosWorldClient> ClientRegistry;
+    public GuildUpdateHallScript(Dialog subject, IStorage<GuildHouseState> guildHouseStateStorage, IMerchantFactory merchantFactory, IClientRegistry<IChaosWorldClient> clientRegistry) : base(subject)
     {
         GuildHouseStateStorage = guildHouseStateStorage;
         MerchantFactory = merchantFactory;
+        ClientRegistry = clientRegistry;
     }
 
     public override void OnDisplaying(Aisling source)
@@ -34,6 +37,9 @@ public class GuildUpdateHallScript : DialogScriptBase
         var guildName = source.Guild.Name;
         switch (Subject.Template.TemplateKey.ToLower())
         {
+            case "tibbs_purchase_house":
+                HandleUpgrade(source, guildName, "deed", "You do not have enough gold or game points to purchase a tailor.");
+                break;
             case "tibbs_purchase_tailor_confirm":
                 HandleUpgrade(source, guildName, "tailor", "You do not have enough gold or game points to purchase a tailor.");
                 break;
@@ -64,11 +70,24 @@ public class GuildUpdateHallScript : DialogScriptBase
             Subject.Reply(source, insufficientFundsMessage);
             return;
         }
+        if (property == "deed")
+        {
+            foreach (var client in ClientRegistry)
+                client.Aisling.SendActiveMessage($"{{=o{source.Guild?.Name} has purchased a guild house deed!");
+            guildHouseState.EnableProperty(guildName, property);
+        }
+        else
+        {
+            foreach (var client in ClientRegistry)
+                if (client.Aisling.Guild == source.Guild)
+                    client.Aisling.SendActiveMessage($"{{=o{source.Name} has purchased a {property} for the guild hall!");
+            
+            guildHouseState.EnableProperty(guildName, property);
+            var morphCode = GetMorphCode(GuildHouseStateStorage.Value, guildName);
+            source.MapInstance.Morph(morphCode);
+            SpawnNPCsForMorphCode(source, morphCode);
+        }
         
-        guildHouseState.EnableProperty(guildName, property);
-        var morphCode = GetMorphCode(GuildHouseStateStorage.Value, guildName);
-        source.MapInstance.Morph(morphCode);
-        SpawnNPCsForMorphCode(source, morphCode);
     }
 
     private string GetMorphCode(GuildHouseState guildHouseState, string guildName)

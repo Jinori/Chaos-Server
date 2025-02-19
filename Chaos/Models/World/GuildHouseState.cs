@@ -39,22 +39,24 @@ public sealed class GuildHouseState
         SaveChanges();
     }
 
-    private static bool GetPropertyValue(GuildHousePropertiesObj.HouseProperties properties, string propertyName)
-    {
-        return propertyName.ToLowerInvariant() switch
+    private static bool GetPropertyValue(GuildHousePropertiesObj.HouseProperties properties, string propertyName) =>
+        propertyName.ToLowerInvariant() switch
         {
-            "armory" => properties.Armory,
-            "bank" => properties.Bank,
-            "tailor" => properties.Tailor,
+            "deed"       => properties.Deed,
+            "armory"     => properties.Armory,
+            "bank"       => properties.Bank,
+            "tailor"     => properties.Tailor,
             "combatroom" => properties.Combatroom,
-            _ => throw new ArgumentException($"Unknown property: {propertyName}", nameof(propertyName))
+            _            => throw new ArgumentException($"Unknown property: {propertyName}", nameof(propertyName))
         };
-    }
 
     private static void SetPropertyValue(GuildHousePropertiesObj.HouseProperties properties, string propertyName, bool value)
     {
         switch (propertyName.ToLowerInvariant())
         {
+            case "deed":
+                properties.Deed = value;
+                break;
             case "armory":
                 properties.Armory = value;
                 break;
@@ -88,6 +90,7 @@ public sealed class GuildHouseState
 
         public class HouseProperties
         {
+            public bool Deed { get; set; }
             public bool Armory { get; set; }
             public bool Bank { get; set; }
             public bool Tailor { get; set; }

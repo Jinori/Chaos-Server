@@ -3,19 +3,34 @@ using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
+using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.ReactorTileScripts.GuildHall;
 
-public class GuildHallEntrance(
-    ReactorTile subject,
-    ISimpleCache simpleCache)
-    : ConfigurableReactorTileScriptBase(subject)
+
+
+public class GuildHallEntrance : ConfigurableReactorTileScriptBase
 {
+    
+    private readonly IStorage<GuildHouseState> GuildHouseStateStorage;
+    private readonly IMerchantFactory MerchantFactory;
+    private readonly ISimpleCache SimpleCache;
+    private readonly IDialogFactory DialogFactory;
+    public GuildHallEntrance(ReactorTile subject,
+        ISimpleCache simpleCache, IStorage<GuildHouseState> guildHouseStateStorage, IDialogFactory dialogFactory, IMerchantFactory merchantFactory)
+        : base(subject)
+    {
+        MerchantFactory = merchantFactory;
+        GuildHouseStateStorage = guildHouseStateStorage;
+        SimpleCache = simpleCache;
+        DialogFactory = dialogFactory;
+    }
+
     /// <inheritdoc />
     public override void OnWalkedOn(Creature source)
     {
-        var targetMap = simpleCache.Get<MapInstance>(Destination.Map);
+        var targetMap = SimpleCache.Get<MapInstance>(Destination.Map);
         
         if (source is not Aisling aisling) 
             return;
@@ -23,8 +38,22 @@ public class GuildHallEntrance(
         if (aisling.Guild is null)
         {
             aisling.SendOrangeBarMessage("You don't belong to a guild.");
-            var point = source.DirectionalOffset(source.Direction.Reverse());
-            source.WarpTo(point);
+            var point = source.DirectionalOffset(aisling.Direction.Reverse());
+            aisling.WarpTo(point);
+            return;
+        }
+        
+        var guildHouseState = GuildHouseStateStorage.Value;
+        guildHouseState.SetStorage(GuildHouseStateStorage);
+        
+        
+        if (!guildHouseState.HasProperty(aisling.Guild.Name, "deed"))
+        {
+            var point = source.DirectionalOffset(aisling.Direction.Reverse());
+            aisling.WarpTo(point);
+            var merchant = MerchantFactory.Create("tibbs", aisling.MapInstance, aisling);
+            var dialog = DialogFactory.Create("tibbs_buyhouse", merchant);
+            dialog.Display(aisling);
             return;
         }
         
