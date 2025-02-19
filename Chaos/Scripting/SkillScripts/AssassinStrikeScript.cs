@@ -18,6 +18,8 @@ public class AssassinStrikeScript : ConfigurableSkillScriptBase,
                                     GenericAbilityComponent<Creature>.IAbilityComponentOptions,
                                     AssassinStrikeComponent.IDamageComponentOptions
 {
+    public List<string>? EffectKeysToBreak { get; set; }
+
     /// <inheritdoc />
     public AssassinStrikeScript(Skill subject, IEffectFactory effectFactory)
         : base(subject)
@@ -97,9 +99,6 @@ public class AssassinStrikeScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }
-
-    /// <inheritdoc />
-    public bool ShouldNotBreakHide { get; init; }
 
     public TimeSpan? EffectDurationOverride { get; init; }
     public IEffectFactory EffectFactory { get; init; }

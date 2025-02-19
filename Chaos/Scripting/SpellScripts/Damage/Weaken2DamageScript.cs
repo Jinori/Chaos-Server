@@ -25,6 +25,8 @@ public class Weaken2DamageScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public BodyAnimation BodyAnimation { get; init; }
 
+    public List<string>? EffectKeysToBreak { get; set; }
+
     public int? ExclusionRange { get; init; }
 
     /// <inheritdoc />
@@ -50,9 +52,6 @@ public class Weaken2DamageScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
-
-    /// <inheritdoc />
-    public bool ShouldNotBreakHide { get; init; }
 
     /// <inheritdoc />
     public bool SingleTarget { get; init; }

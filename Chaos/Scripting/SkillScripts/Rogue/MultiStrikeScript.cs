@@ -15,9 +15,9 @@ using Chaos.Time.Abstractions;
 namespace Chaos.Scripting.SkillScripts.Rogue;
 
 public class MultiStrikeScript(Skill subject) : ConfigurableSkillScriptBase(subject),
-    MultistrikeAbilityComponent<Creature>.IAbilityComponentOptions,
-    DamageAbilityComponent.IDamageComponentOptions,
-    AssassinStrikeComponent.IDamageComponentOptions
+                                                MultistrikeAbilityComponent<Creature>.IAbilityComponentOptions,
+                                                DamageAbilityComponent.IDamageComponentOptions,
+                                                AssassinStrikeComponent.IDamageComponentOptions
 {
     public bool AnimatePoints { get; init; }
     public Animation? Animation { get; init; }
@@ -30,6 +30,8 @@ public class MultiStrikeScript(Skill subject) : ConfigurableSkillScriptBase(subj
     public decimal? DamageMultiplierPerTarget { get; init; }
     public Stat? DamageStat { get; init; }
     public decimal? DamageStatMultiplier { get; init; }
+
+    public List<string>? EffectKeysToBreak { get; set; }
     public Element? Element { get; init; }
 
     public int? ExclusionRange { get; init; }
@@ -46,7 +48,6 @@ public class MultiStrikeScript(Skill subject) : ConfigurableSkillScriptBase(subj
     public int Range { get; init; }
     public bool? ScaleBodyAnimationSpeedByAttackSpeed { get; init; }
     public AoeShape Shape { get; init; }
-    public bool ShouldNotBreakHide { get; init; }
     public bool SingleTarget { get; init; }
     public byte? Sound { get; init; }
     public bool StopOnFirstHit { get; init; }

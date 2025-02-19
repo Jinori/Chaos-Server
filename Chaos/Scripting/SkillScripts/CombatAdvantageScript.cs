@@ -45,6 +45,8 @@ public class CombatAdvantageScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public int? DistanceToAmbush { get; init; }
 
+    public List<string>? EffectKeysToBreak { get; set; }
+
     /// <inheritdoc />
     public Element? Element { get; init; }
 
@@ -85,9 +87,6 @@ public class CombatAdvantageScript : ConfigurableSkillScriptBase,
     public AoeShape Shape { get; init; }
 
     /// <inheritdoc />
-    public bool ShouldNotBreakHide { get; init; }
-
-    /// <inheritdoc />
     public bool SingleTarget { get; init; }
 
     /// <inheritdoc />
@@ -104,9 +103,7 @@ public class CombatAdvantageScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public CombatAdvantageScript(Skill subject)
         : base(subject)
-    {
-        ApplyDamageScript = ApplyAttackDamageScript.Create();
-    }
+        => ApplyDamageScript = ApplyAttackDamageScript.Create();
 
     /// <inheritdoc />
     public override void OnUse(ActivationContext context)

@@ -15,6 +15,8 @@ public class ManaBasedDamageScript : ConfigurableSpellScriptBase,
                                      SpellComponent<Creature>.ISpellComponentOptions,
                                      ManaBasedDamageAbilityComponent.IManaBasedDamageComponentOptions
 {
+    public List<string>? EffectKeysToBreak { get; set; }
+
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
@@ -22,9 +24,7 @@ public class ManaBasedDamageScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public ManaBasedDamageScript(Spell subject)
         : base(subject)
-    {
-        ApplyDamageScript = ApplyAttackDamageScript.Create();
-    }
+        => ApplyDamageScript = ApplyAttackDamageScript.Create();
 
     /// <inheritdoc />
     public override void OnUse(SpellContext context)
@@ -78,9 +78,6 @@ public class ManaBasedDamageScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }
-
-    /// <inheritdoc />
-    public bool ShouldNotBreakHide { get; init; }
 
     /// <inheritdoc />
     public IApplyDamageScript ApplyDamageScript { get; init; }

@@ -28,6 +28,8 @@ public class RemoveEffectScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public string? EffectKey { get; init; }
 
+    public List<string>? EffectKeysToBreak { get; set; }
+
     /// <inheritdoc />
 
     public int? ExclusionRange { get; init; }
@@ -56,9 +58,6 @@ public class RemoveEffectScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
-
-    /// <inheritdoc />
-    public bool ShouldNotBreakHide { get; init; }
 
     /// <inheritdoc />
     public bool SingleTarget { get; init; }

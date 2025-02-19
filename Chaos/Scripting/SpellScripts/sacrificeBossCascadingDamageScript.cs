@@ -4,7 +4,6 @@ using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -20,6 +19,8 @@ public class SacrificeBossCascadingDamageScript : ConfigurableSpellScriptBase,
                                                   DamageAbilityComponent.IDamageComponentOptions,
                                                   CascadingComponent<CascadingDamageTileScript>.ICascadingComponentOptions
 {
+    public List<string>? EffectKeysToBreak { get; set; }
+
     /// <inheritdoc />
     public SacrificeBossCascadingDamageScript(Spell subject, IReactorTileFactory reactorTileFactory)
         : base(subject)
@@ -117,8 +118,5 @@ public class SacrificeBossCascadingDamageScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }
-
-    /// <inheritdoc />
-    public bool ShouldNotBreakHide { get; init; }
     #endregion
 }

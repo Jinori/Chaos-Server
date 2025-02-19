@@ -23,6 +23,8 @@ public class HideGroupScript : ConfigurableSpellScriptBase,
     public IEffectFactory EffectFactory { get; init; }
     public string? EffectKey { get; init; }
 
+    public List<string>? EffectKeysToBreak { get; set; }
+
     public int? ExclusionRange { get; init; }
 
     public TargetFilter Filter { get; init; }
@@ -33,7 +35,6 @@ public class HideGroupScript : ConfigurableSpellScriptBase,
     public int Range { get; init; }
     public bool? ScaleBodyAnimationSpeedByAttackSpeed { get; init; }
     public AoeShape Shape { get; init; }
-    public bool ShouldNotBreakHide { get; init; }
     public bool SingleTarget { get; init; }
     public byte? Sound { get; init; }
     public int SplashChance { get; init; }

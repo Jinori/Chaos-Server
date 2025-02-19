@@ -16,6 +16,7 @@ public class HealScript : ConfigurableSpellScriptBase,
                           SpellComponent<Creature>.ISpellComponentOptions,
                           HealAbilityComponent.IHealComponentOptions
 {
+    public List<string>? EffectKeysToBreak { get; set; }
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
@@ -32,9 +33,6 @@ public class HealScript : ConfigurableSpellScriptBase,
                                          ?.Execute<HealAbilityComponent>();
 
     #region ScriptVars
-    /// <inheritdoc />
-    public bool ShouldNotBreakHide { get; init; }
-
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
 

@@ -26,6 +26,8 @@ public class StudyCreatureScript : ConfigurableSkillScriptBase, GenericAbilityCo
     /// <inheritdoc />
     public BodyAnimation BodyAnimation { get; init; }
 
+    public List<string>? EffectKeysToBreak { get; set; }
+
     /// <inheritdoc />
 
     public int? ExclusionRange { get; init; }
@@ -49,9 +51,6 @@ public class StudyCreatureScript : ConfigurableSkillScriptBase, GenericAbilityCo
 
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
-
-    /// <inheritdoc />
-    public bool ShouldNotBreakHide { get; init; }
 
     /// <inheritdoc />
     public bool SingleTarget { get; init; }

@@ -17,6 +17,7 @@ public class ToggleEffectScript : ConfigurableSpellScriptBase,
                                   SpellComponent<Creature>.ISpellComponentOptions,
                                   ToggleEffectAbilityComponent.IToggleEffectComponentOptions
 {
+    public List<string>? EffectKeysToBreak { get; set; }
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
@@ -33,9 +34,6 @@ public class ToggleEffectScript : ConfigurableSpellScriptBase,
                                          ?.Execute<ToggleEffectAbilityComponent>();
 
     #region ScriptVars
-    /// <inheritdoc />
-    public bool ShouldNotBreakHide { get; init; }
-
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
 

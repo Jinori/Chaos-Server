@@ -8,22 +8,18 @@ namespace Chaos.Scripting.Components.AbilityComponents;
 public class SpellComponent<TEntity> : IConditionalComponent where TEntity: MapEntity
 {
     /// <inheritdoc />
-    public virtual bool Execute(ActivationContext context, ComponentVars vars) =>
-        new ComponentExecutor(context, vars)
-            .ExecuteAndCheck<ManaCostAbilityComponent>()
-            ?
-            .Execute<BreaksHideAbilityComponent>()
-            .ExecuteAndCheck<GetTargetsAbilityComponent<TEntity>>()
-            ?
-            .ExecuteAndCheck<SplashComponent<TEntity>>()
-            ?
-            .Execute<MagicResistanceComponent>()
-            .Execute<CooldownComponent>()
-            .Execute<BodyAnimationAbilityComponent>()
-            .Execute<AnimationAbilityComponent>()
-            .Execute<SoundAbilityComponent>()
-            .Execute<RemoveShamBurningGroundComponent>()
-        != null;
+    public virtual bool Execute(ActivationContext context, ComponentVars vars)
+        => new ComponentExecutor(context, vars).ExecuteAndCheck<ManaCostAbilityComponent>()
+                                               ?.Execute<BreaksSpecificEffectsAbilityComponent>()
+                                               .ExecuteAndCheck<GetTargetsAbilityComponent<TEntity>>()
+                                               ?.ExecuteAndCheck<SplashComponent<TEntity>>()
+                                               ?.Execute<MagicResistanceComponent>()
+                                               .Execute<CooldownComponent>()
+                                               .Execute<BodyAnimationAbilityComponent>()
+                                               .Execute<AnimationAbilityComponent>()
+                                               .Execute<SoundAbilityComponent>()
+                                               .Execute<RemoveShamBurningGroundComponent>()
+           != null;
 
     // ReSharper disable once PossibleInterfaceMemberAmbiguity
     public interface ISpellComponentOptions : GetTargetsAbilityComponent<TEntity>.IGetTargetsComponentOptions,
@@ -33,5 +29,5 @@ public class SpellComponent<TEntity> : IConditionalComponent where TEntity: MapE
                                               BodyAnimationAbilityComponent.IBodyAnimationComponentOptions,
                                               AnimationAbilityComponent.IAnimationComponentOptions,
                                               ManaCostAbilityComponent.IManaCostComponentOptions,
-                                              BreaksHideAbilityComponent.IBreaksHideComponentOptions { }
+                                              BreaksSpecificEffectsAbilityComponent.IBreaksSpecificEffectsComponentOptions { }
 }

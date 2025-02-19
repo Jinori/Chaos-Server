@@ -10,13 +10,12 @@ public struct GenericAbilityComponent<TEntity> : IConditionalComponent where TEn
     /// <inheritdoc />
     public bool Execute(ActivationContext context, ComponentVars vars)
         => new ComponentExecutor(context, vars).ExecuteAndCheck<ManaCostAbilityComponent>()
-                                               ?.Execute<BreaksHideAbilityComponent>()
+                                               ?.Execute<BreaksSpecificEffectsAbilityComponent>()
                                                .ExecuteAndCheck<GetTargetsAbilityComponent<TEntity>>()
                                                ?.Execute<BodyAnimationAbilityComponent>()
                                                .Execute<AnimationAbilityComponent>()
                                                .Execute<SoundAbilityComponent>()
                                                .Execute<CooldownComponent>()
-                                               
            != null;
 
     public interface IAbilityComponentOptions : GetTargetsAbilityComponent<TEntity>.IGetTargetsComponentOptions,
@@ -24,5 +23,5 @@ public struct GenericAbilityComponent<TEntity> : IConditionalComponent where TEn
                                                 BodyAnimationAbilityComponent.IBodyAnimationComponentOptions,
                                                 AnimationAbilityComponent.IAnimationComponentOptions,
                                                 ManaCostAbilityComponent.IManaCostComponentOptions,
-                                                BreaksHideAbilityComponent.IBreaksHideComponentOptions { }
+                                                BreaksSpecificEffectsAbilityComponent.IBreaksSpecificEffectsComponentOptions { }
 }

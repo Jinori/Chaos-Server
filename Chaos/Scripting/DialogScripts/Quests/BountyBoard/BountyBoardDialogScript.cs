@@ -582,7 +582,7 @@ public class BountyBoardDialogScript : DialogScriptBase
                         }
 
                         source.GiveItemOrSendToBank(secondItemReward);
-                        
+
                         if (secondItemReward.DisplayName.ContainsI("Nyx"))
                             source.Trackers.Counters.AddOrIncrement($"NyxItem{secondItemReward.UniqueId}");
 
@@ -624,7 +624,7 @@ public class BountyBoardDialogScript : DialogScriptBase
 
                     Subject.Reply(
                         source,
-                        $"You haven't completed this bounty. You're current progress is {killCount}/{selectedBounty.KillRequirement}!",
+                        $"You haven't completed this bounty. Your current progress is {killCount}/{selectedBounty.KillRequirement}!",
                         "bountyboard_initial");
                 }
 

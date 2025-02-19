@@ -16,6 +16,7 @@ public class LayReactorTileScript : ConfigurableSpellScriptBase,
                                     SpellComponent<MapEntity>.ISpellComponentOptions,
                                     LayReactorAbilityComponent.ILayReactorComponentOptions
 {
+    public List<string>? EffectKeysToBreak { get; set; }
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
@@ -31,9 +32,6 @@ public class LayReactorTileScript : ConfigurableSpellScriptBase,
                                          ?.Execute<LayReactorAbilityComponent>();
 
     #region ScriptVars
-    /// <inheritdoc />
-    public bool ShouldNotBreakHide { get; init; }
-
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
 

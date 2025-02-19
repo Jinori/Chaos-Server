@@ -10,7 +10,7 @@ public struct MultistrikeAbilityComponent<TEntity> : IConditionalComponent where
     /// <inheritdoc />
     public bool Execute(ActivationContext context, ComponentVars vars)
         => new ComponentExecutor(context, vars).ExecuteAndCheck<ManaCostAbilityComponent>()
-                                               ?.Execute<BreaksHideAbilityComponent>()
+                                               ?.Execute<BreaksSpecificEffectsAbilityComponent>()
                                                .ExecuteAndCheck<GetMultistrikeTargetsAbilityComponent<TEntity>>()
                                                ?.Execute<BodyAnimationAbilityComponent>()
                                                .Execute<AnimationAbilityComponent>()
@@ -23,5 +23,5 @@ public struct MultistrikeAbilityComponent<TEntity> : IConditionalComponent where
                                                 BodyAnimationAbilityComponent.IBodyAnimationComponentOptions,
                                                 AnimationAbilityComponent.IAnimationComponentOptions,
                                                 ManaCostAbilityComponent.IManaCostComponentOptions,
-                                                BreaksHideAbilityComponent.IBreaksHideComponentOptions { }
+                                                BreaksSpecificEffectsAbilityComponent.IBreaksSpecificEffectsComponentOptions { }
 }

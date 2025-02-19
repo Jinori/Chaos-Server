@@ -11,9 +11,11 @@ using Chaos.Scripting.SkillScripts.Abstractions;
 namespace Chaos.Scripting.SkillScripts;
 
 public class TransferHealthScript(Skill subject) : ConfigurableSkillScriptBase(subject),
-    GenericAbilityComponent<Creature>.IAbilityComponentOptions,
-    TransferBloodAbilityComponent.IHealthTransferComponentOptions
+                                                   GenericAbilityComponent<Creature>.IAbilityComponentOptions,
+                                                   TransferBloodAbilityComponent.IHealthTransferComponentOptions
 {
+    public List<string>? EffectKeysToBreak { get; set; }
+
     /// <inheritdoc />
     public override void OnUse(ActivationContext context)
         => new ComponentExecutor(context).WithOptions(this)
@@ -66,8 +68,5 @@ public class TransferHealthScript(Skill subject) : ConfigurableSkillScriptBase(s
 
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }
-
-    /// <inheritdoc />
-    public bool ShouldNotBreakHide { get; init; }
     #endregion
 }

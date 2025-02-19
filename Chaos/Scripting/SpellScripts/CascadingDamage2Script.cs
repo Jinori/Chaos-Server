@@ -19,6 +19,8 @@ public class CascadingDamage2Script : ConfigurableSpellScriptBase,
                                       DamageAbilityComponent.IDamageComponentOptions,
                                       CascadingComponent<CascadingDamageTile2Script>.ICascadingComponentOptions
 {
+    public List<string>? EffectKeysToBreak { get; set; }
+
     /// <inheritdoc />
     public CascadingDamage2Script(Spell subject, IReactorTileFactory reactorTileFactory)
         : base(subject)
@@ -115,8 +117,5 @@ public class CascadingDamage2Script : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }
-
-    /// <inheritdoc />
-    public bool ShouldNotBreakHide { get; init; }
     #endregion
 }

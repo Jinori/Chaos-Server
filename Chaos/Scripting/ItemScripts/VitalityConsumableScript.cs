@@ -28,6 +28,8 @@ public class VitalityConsumableScript : ConfigurableItemScriptBase,
 {
     public bool AllAggro { get; set; }
 
+    public List<string>? EffectKeysToBreak { get; set; }
+
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
@@ -139,8 +141,6 @@ public class VitalityConsumableScript : ConfigurableItemScriptBase,
     public decimal PctManaCost { get; init; }
 
     public decimal? PctMptoHpHeal { get; init; }
-    /// <inheritdoc />
-    public bool ShouldNotBreakHide { get; init; }
 
     /// <inheritdoc />
     public IApplyDamageScript ApplyDamageScript { get; init; }

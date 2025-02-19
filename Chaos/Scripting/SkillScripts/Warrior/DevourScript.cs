@@ -43,6 +43,8 @@ public class DevourScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public decimal DmgHealthPct { get; init; }
 
+    public List<string>? EffectKeysToBreak { get; set; }
+
     public Element? Element { get; init; }
 
     /// <inheritdoc />
@@ -73,9 +75,6 @@ public class DevourScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
-
-    /// <inheritdoc />
-    public bool ShouldNotBreakHide { get; init; }
 
     /// <inheritdoc />
     public bool SingleTarget { get; init; }

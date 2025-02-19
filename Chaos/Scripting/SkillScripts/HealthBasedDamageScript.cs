@@ -3,7 +3,6 @@ using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -30,6 +29,8 @@ public class HealthBasedDamageScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public BodyAnimation BodyAnimation { get; init; }
+
+    public List<string>? EffectKeysToBreak { get; set; }
 
     /// <inheritdoc />
     public Element? Element { get; init; }
@@ -65,14 +66,11 @@ public class HealthBasedDamageScript : ConfigurableSkillScriptBase,
     public AoeShape Shape { get; init; }
 
     /// <inheritdoc />
-    public bool ShouldNotBreakHide { get; init; }
-
-    /// <inheritdoc />
     public bool SingleTarget { get; init; }
 
     /// <inheritdoc />
     public byte? Sound { get; init; }
-    
+
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
@@ -85,9 +83,7 @@ public class HealthBasedDamageScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public HealthBasedDamageScript(Skill subject)
         : base(subject)
-    {
-        ApplyDamageScript = ApplyAttackDamageScript.Create();
-    }
+        => ApplyDamageScript = ApplyAttackDamageScript.Create();
 
     /// <inheritdoc />
     public override void OnUse(ActivationContext context)

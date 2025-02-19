@@ -16,6 +16,8 @@ public class ApplyEffectScript : ConfigurableSpellScriptBase,
                                  SpellComponent<Creature>.ISpellComponentOptions,
                                  ApplyEffectAbilityComponent.IApplyEffectComponentOptions
 {
+    public List<string>? EffectKeysToBreak { get; set; }
+
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
@@ -32,9 +34,6 @@ public class ApplyEffectScript : ConfigurableSpellScriptBase,
                                          ?.Execute<ApplyEffectAbilityComponent>();
 
     #region ScriptVars
-    /// <inheritdoc />
-    public bool ShouldNotBreakHide { get; init; }
-
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
 

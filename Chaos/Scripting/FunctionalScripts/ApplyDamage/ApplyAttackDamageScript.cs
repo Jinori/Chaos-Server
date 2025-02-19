@@ -46,7 +46,7 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
             script,
             damage,
             elementOverride);
-
+        
         if (damage <= 0)
             return;
 
@@ -86,6 +86,11 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
                         damage = (int)(damage * 1.25);
                 }
 
+                if (source is Aisling rogue && rogue.HasClass(BaseClass.Rogue) && (relation == aisling.Direction.Reverse()))
+                {
+                    damage = (int)(damage * 1.1);
+                }
+
                 if (ReflectDamage(source, aisling, damage))
                     return;
 
@@ -101,6 +106,11 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
 
                 else if (relation1 != target.Direction)
                     damage = (int)(damage * 1.25);
+                
+                if (source is Aisling rogue1 && rogue1.HasClass(BaseClass.Rogue) && (relation1 == target.Direction.Reverse()))
+                {
+                    damage = (int)(damage * 1.1);
+                }
 
                 if (ReflectDamage(source, monster, damage))
                     return;

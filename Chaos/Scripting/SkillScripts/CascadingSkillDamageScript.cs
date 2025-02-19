@@ -19,6 +19,8 @@ public class CascadingSkillDamageScript : ConfigurableSkillScriptBase,
                                           DamageAbilityComponent.IDamageComponentOptions,
                                           CascadingComponent<CascadingDamageTileScript>.ICascadingComponentOptions
 {
+    public List<string>? EffectKeysToBreak { get; set; }
+
     /// <inheritdoc />
     public CascadingSkillDamageScript(Skill subject, IReactorTileFactory reactorTileFactory)
         : base(subject)
@@ -53,7 +55,6 @@ public class CascadingSkillDamageScript : ConfigurableSkillScriptBase,
     public Animation? Animation { get; init; }
     public int? ManaCost { get; init; }
     public decimal PctManaCost { get; init; }
-    public bool ShouldNotBreakHide { get; init; }
     public IApplyDamageScript ApplyDamageScript { get; init; }
     public int? BaseDamage { get; init; }
     public decimal? DamageMultiplierPerTarget { get; init; }

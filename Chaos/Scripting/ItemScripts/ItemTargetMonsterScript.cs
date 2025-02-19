@@ -34,6 +34,8 @@ public class ItemTargetMonsterScript(Item subject, IEffectFactory effectFactory)
     public IEffectFactory EffectFactory { get; init; } = effectFactory;
     public string? EffectKey { get; init; }
 
+    public List<string>? EffectKeysToBreak { get; set; }
+
     public int? ExclusionRange { get; init; }
     public TargetFilter Filter { get; init; }
     public string ItemName { get; init; } = null!;
@@ -44,7 +46,6 @@ public class ItemTargetMonsterScript(Item subject, IEffectFactory effectFactory)
     public int Range { get; init; }
     public bool? ScaleBodyAnimationSpeedByAttackSpeed { get; init; }
     public AoeShape Shape { get; init; }
-    public bool ShouldNotBreakHide { get; init; }
 
     /// <inheritdoc />
     public bool SingleTarget { get; init; }
