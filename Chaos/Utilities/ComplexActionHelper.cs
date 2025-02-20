@@ -282,7 +282,7 @@ public static class ComplexActionHelper
             return DepositGoldResult.DontHaveThatMany;
 
         source.Bank.AddGold((uint)amount);
-
+        source.Client.SendSound(171, false);
         return DepositGoldResult.Success;
     }
 
@@ -389,7 +389,10 @@ public static class ComplexActionHelper
             return LearnSkillResult.NoRoom;
 
         if (source.SkillBook.TryAddToNextSlot(skill))
+        {
+            source.Client.SendSound(170, false);
             return LearnSkillResult.Success;
+        }
 
         return LearnSkillResult.NoRoom;
     }
@@ -403,7 +406,10 @@ public static class ComplexActionHelper
             return LearnSpellResult.NoRoom;
 
         if (source.SpellBook.TryAddToNextSlot(spell))
+        {
+            source.Client.SendSound(170, false);
             return LearnSpellResult.Success;
+        }
 
         return LearnSpellResult.NoRoom;
     }
@@ -540,6 +546,7 @@ public static class ComplexActionHelper
             return WithdrawGoldResult.TooMuchGold;
 
         source.Bank.RemoveGold((uint)amount);
+        source.Client.SendSound(171, false);
 
         return WithdrawGoldResult.Success;
     }

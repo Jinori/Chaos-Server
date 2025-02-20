@@ -18,7 +18,7 @@ public sealed class UserOptions
             UserOption.Option2 => typeof(UserOptions).GetDescription(nameof(ListenToHitSounds)),
             UserOption.Option3 => typeof(UserOptions).GetDescription(nameof(PriorityAnimations)),
             UserOption.Option4 => typeof(UserOptions).GetDescription(nameof(LockHands)),
-            UserOption.Option5 => typeof(UserOptions).GetDescription(nameof(Option5)),
+            UserOption.Option5 => typeof(UserOptions).GetDescription(nameof(WhisperSound)),
             UserOption.Option6 => typeof(UserOptions).GetDescription(nameof(AllowExchange)),
             UserOption.Option7 => string.Empty,
             UserOption.Option8 => typeof(UserOptions).GetDescription(nameof(Option8)),
@@ -32,7 +32,7 @@ public sealed class UserOptions
             UserOption.Option2 => ListenToHitSounds,
             UserOption.Option3 => PriorityAnimations,
             UserOption.Option4 => LockHands,
-            UserOption.Option5 => Option5,
+            UserOption.Option5 => WhisperSound,
             UserOption.Option6 => AllowExchange,
             UserOption.Option7 => false,
             UserOption.Option8 => Option8,
@@ -66,7 +66,7 @@ public sealed class UserOptions
 
                 break;
             case UserOption.Option5:
-                Option5 = !Option5;
+                WhisperSound = !WhisperSound;
 
                 break;
             case UserOption.Option6:
@@ -156,16 +156,16 @@ public sealed class UserOptions
     public bool PriorityAnimations { get; set; } = true;
 
     /// <summary>
-    ///     Unused option 4
+    ///     Allows the user to disable equipping weapons and shields
     /// </summary>
     [Description("Lock Hands")]
     public bool LockHands { get; set; }
 
     /// <summary>
-    ///     Unused option 5
+    ///     Makes a noise when someone whispers you
     /// </summary>
-    [Description("Option 5")]
-    public bool Option5 { get; set; } = true;
+    [Description("Sound on Whisper")]
+    public bool WhisperSound { get; set; } = true;
 
     /// <summary>
     ///     Whether to allow exchanges

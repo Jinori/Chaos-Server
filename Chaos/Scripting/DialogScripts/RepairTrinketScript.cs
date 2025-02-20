@@ -117,6 +117,7 @@ internal class RepairTrinketScript : DialogScriptBase
         if (source.Name != aisling.Name)
             aisling.SendActiveMessage($"{source.Name}'s mastery of smithing has restored your items.");
         
+        aisling.Client.SendSound(172, false);
         aisling.Animate(RepairAnimation, aisling.Id);
     }
 }

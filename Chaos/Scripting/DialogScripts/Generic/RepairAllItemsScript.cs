@@ -117,6 +117,7 @@ public class RepairAllItemsScript(Dialog subject, ILogger<RepairAllItemsScript> 
 
         source.SendOrangeBarMessage("Your items have been repaired.");
         Subject.InjectTextParameters((int)RepairCost);
+        source.Client.SendSound(172, false);
     }
 
     private void OnDisplayingInitial(Aisling source)

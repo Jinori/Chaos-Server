@@ -104,6 +104,7 @@ public class RepairSingleItemScript(Dialog subject, ILogger<RepairSingleItemScri
 
             source.SendOrangeBarMessage($"Your {item.DisplayName} has been repaired.");
             Subject.InjectTextParameters(item.DisplayName, RepairCost);
+            source.Client.SendSound(172, false);
         }
     }
 

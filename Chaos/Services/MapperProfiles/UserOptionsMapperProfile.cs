@@ -13,7 +13,7 @@ public sealed class UserOptionsMapperProfile : IMapperProfile<UserOptions, UserO
             ListenToHitSounds = obj.ListenToHitSounds,
             PriorityAnimations = obj.PriorityAnimations,
             LockHands = obj.LockHands,
-            Option5 = obj.Option5,
+            WhisperSound = obj.Option5,
             AllowExchange = obj.AllowExchange,
 
             //option 7 not used
@@ -30,7 +30,7 @@ public sealed class UserOptionsMapperProfile : IMapperProfile<UserOptions, UserO
             ListenToHitSounds = obj.ListenToHitSounds,
             PriorityAnimations = obj.PriorityAnimations,
             LockHands = obj.LockHands,
-            Option5 = obj.Option5,
+            Option5 = obj.WhisperSound,
             AllowExchange = obj.AllowExchange,
 
             //option 7 not used

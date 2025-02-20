@@ -1617,7 +1617,8 @@ public sealed class WorldServer : ServerBase<IChaosWorldClient>, IWorldServer<IC
                       targetAisling.Name);
 
             targetAisling.Client.SendServerMessage(ServerMessageType.Whisper, $"[{fromAisling.Name}]: {localArgs.Message}");
-            targetAisling.Client.SendSound(169, false);
+            if (targetAisling.Options.WhisperSound) 
+                targetAisling.Client.SendSound(169, false);
 
             return default;
         }
