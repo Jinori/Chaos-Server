@@ -33,7 +33,7 @@ public class LastStandEffect : ContinuousAnimationEffectBase
         base.OnApplied();
 
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your body resists all damage.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your body now resists death.");
     }
 
     public override void OnDispelled() => OnTerminated();

@@ -16,7 +16,7 @@ public class HairstyleScript : DialogScriptBase
         "female_hairstyle_1", "female_hairstyle_2", "female_hairstyle_3", "female_hairstyle_4", "female_hairstyle_5", "female_hairstyle_6",
         "female_hairstyle_7", "female_hairstyle_8", "female_hairstyle_9", "female_hairstyle_10", "female_hairstyle_11",
         "female_hairstyle_12", "female_hairstyle_13", "female_hairstyle_14", "female_hairstyle_15", "female_hairstyle_16",
-        "female_hairstyle_17",
+        "female_hairstyle_17", "female_hairstyle_18",
         "female_hairstyle_19", "female_hairstyle_20", "female_hairstyle_21", "female_hairstyle_22", "female_hairstyle_23",
         "female_hairstyle_24", "female_hairstyle_25",
         "female_hairstyle_26", "female_hairstyle_27", "female_hairstyle_28", "female_hairstyle_29", "female_hairstyle_30",
@@ -41,7 +41,7 @@ public class HairstyleScript : DialogScriptBase
     {
         "male_hairstyle_1", "male_hairstyle_2", "male_hairstyle_3", "male_hairstyle_4", "male_hairstyle_5", "male_hairstyle_6",
         "male_hairstyle_7", "male_hairstyle_8", "male_hairstyle_9", "male_hairstyle_10", "male_hairstyle_11",
-        "male_hairstyle_12", "male_hairstyle_13", "male_hairstyle_14", "male_hairstyle_15", "male_hairstyle_16", "male_hairstyle_17",
+        "male_hairstyle_12", "male_hairstyle_13", "male_hairstyle_14", "male_hairstyle_15", "male_hairstyle_16", "male_hairstyle_17", "male_hairstyle_18",
         "male_hairstyle_19", "male_hairstyle_20", "male_hairstyle_21", "male_hairstyle_22", "male_hairstyle_23", "male_hairstyle_24",
         "male_hairstyle_25",
         "male_hairstyle_26", "male_hairstyle_27", "male_hairstyle_28", "male_hairstyle_29", "male_hairstyle_30", "male_hairstyle_31",

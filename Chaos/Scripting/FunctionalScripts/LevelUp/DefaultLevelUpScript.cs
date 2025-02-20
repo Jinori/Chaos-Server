@@ -32,6 +32,10 @@ public class DefaultLevelUpScript : ScriptBase, ILevelUpScript
         aisling.UserStatSheet.AddLevel();
         aisling.SendOrangeBarMessage("You level up!");
 
+        var notifyNear = aisling.MapInstance.GetEntitiesWithinRange<Aisling>(aisling, 12);
+        foreach (var player in notifyNear)
+            player.Client.SendSound(168, false);
+        
         var pointsToGive = 2;
         aisling.UserStatSheet.GivePoints(pointsToGive);
 
@@ -46,7 +50,8 @@ public class DefaultLevelUpScript : ScriptBase, ILevelUpScript
         var ani = new Animation
         {
             AnimationSpeed = 100,
-            TargetAnimation = 79
+            TargetAnimation = 79,
+            Priority = 100
         };
 
         aisling.UserStatSheet.Add(levelUpAttribs);

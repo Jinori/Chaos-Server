@@ -10,30 +10,36 @@ namespace Chaos.Scripting.DialogScripts.Generic;
 public class RepairSingleItemScript(Dialog subject, ILogger<RepairSingleItemScript> logger) : DialogScriptBase(subject)
 {
     private double RepairCost { get; set; }
-
-    private int CalculateNewRepairCostForItem(Item item)
+    
+    private int CalculateNewRepairCostForItem(Aisling aisling, Item item)
     {
         // Skip if item is not damaged
-        if ((item.Template.MaxDurability == null)
-            || (item.CurrentDurability == null)
-            || (item.CurrentDurability.Value == item.Template.MaxDurability.Value))
+        if ((item.Template.MaxDurability == null) || (item.CurrentDurability == null) ||
+            (item.CurrentDurability.Value == item.Template.MaxDurability.Value))
             return 0;
+
+        const double REPAIR_FACTOR = 0.8;
+        const double GUILD_HALL_DISCOUNT = 0.9;
 
         double sellValue = item.Template.SellValue;
         var damageProportion = 1 - (double)item.CurrentDurability.Value / item.Template.MaxDurability.Value;
-        const double REPAIR_FACTOR = 0.8;
 
         var repairCost = sellValue * damageProportion * REPAIR_FACTOR;
 
+        // Apply multiplier for mythic items
         if (item.Template.TemplateKey.StartsWith("mythic", StringComparison.OrdinalIgnoreCase))
             repairCost *= 10;
 
         if (item.Template.TemplateKey.EndsWith("glove", StringComparison.OrdinalIgnoreCase))
             repairCost *= 126;
+        
+        // Apply guild hall discount
+        if (aisling.MapInstance.BaseInstanceId == "guildhallmain")
+            repairCost *= GUILD_HALL_DISCOUNT;
 
         return Convert.ToInt32(repairCost);
     }
-
+    
     public override void OnDisplaying(Aisling source)
     {
         switch (Subject.Template.TemplateKey.ToLower())
@@ -64,7 +70,7 @@ public class RepairSingleItemScript(Dialog subject, ILogger<RepairSingleItemScri
 
         if (item is { CurrentDurability: not null, Template.MaxDurability: not null })
         {
-            RepairCost = CalculateNewRepairCostForItem(item);
+            RepairCost = CalculateNewRepairCostForItem(source, item);
 
             if (!source.TryTakeGold((int)RepairCost))
             {
@@ -112,7 +118,7 @@ public class RepairSingleItemScript(Dialog subject, ILogger<RepairSingleItemScri
 
         if (item is { CurrentDurability: not null, Template.MaxDurability: not null })
         {
-            RepairCost = CalculateNewRepairCostForItem(item);
+            RepairCost = CalculateNewRepairCostForItem(source, item);
 
             Subject.InjectTextParameters(item.DisplayName, RepairCost);
         }

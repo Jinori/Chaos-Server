@@ -1,4 +1,3 @@
-using Chaos.DarkAges.Definitions;
 using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
@@ -38,7 +37,7 @@ public class GuildUpdateHallScript : DialogScriptBase
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "tibbs_purchase_house":
-                HandleUpgrade(source, guildName, "deed", "You do not have enough gold or game points to purchase a tailor.");
+                HandleUpgrade(source, guildName, "deed", "You do not have enough gold or game points to purchase a deed.");
                 break;
             case "tibbs_purchase_tailor_confirm":
                 HandleUpgrade(source, guildName, "tailor", "You do not have enough gold or game points to purchase a tailor.");
@@ -129,17 +128,21 @@ public class GuildUpdateHallScript : DialogScriptBase
         if (!NpcSpawns.TryGetValue(morphCode, out var spawns))
             return;
 
-        var existingNPCs = source.MapInstance.GetEntities<Merchant>().ToDictionary(npc => npc.Template.TemplateKey, npc => npc);
+        // Get all existing merchants and store them in a dictionary by their unique TemplateKey
+        var existingNPCs = source.MapInstance.GetEntities<Merchant>()
+                                  .GroupBy(npc => npc.Template.TemplateKey) // Group duplicates
+                                  .ToDictionary(g => g.Key, g => g.First()); // Keep only one instance
 
         foreach (var spawn in spawns)
         {
-            if (!existingNPCs.ContainsKey(spawn.Name))
+            if (!existingNPCs.ContainsKey(spawn.Name)) // Only spawn if not already present
             {
                 var merch = MerchantFactory.Create(spawn.Name, source.MapInstance, new Point(spawn.X, spawn.Y));
-               source.MapInstance.AddEntity(merch, new Point(spawn.X, spawn.Y));
+                source.MapInstance.AddEntity(merch, new Point(spawn.X, spawn.Y));
             }
         }
-    }    
+    }
+
     
     /// <summary>
 /// Dictionary mapping Morph Codes to NPCs that should spawn.

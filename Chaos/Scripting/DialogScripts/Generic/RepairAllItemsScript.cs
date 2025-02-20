@@ -11,27 +11,32 @@ public class RepairAllItemsScript(Dialog subject, ILogger<RepairAllItemsScript> 
 {
     private double RepairCost;
 
-    private int CalculateNewRepairCostForItem(Item item)
+    private int CalculateNewRepairCostForItem(Aisling aisling, Item item)
     {
         // Skip if item is not damaged
-        if ((item.Template.MaxDurability == null)
-            || (item.CurrentDurability == null)
-            || (item.CurrentDurability.Value == item.Template.MaxDurability.Value))
+        if ((item.Template.MaxDurability == null) || (item.CurrentDurability == null) ||
+            (item.CurrentDurability.Value == item.Template.MaxDurability.Value))
             return 0;
+
+        const double REPAIR_FACTOR = 0.8;
+        const double GUILD_HALL_DISCOUNT = 0.9;
 
         double sellValue = item.Template.SellValue;
         var damageProportion = 1 - (double)item.CurrentDurability.Value / item.Template.MaxDurability.Value;
-        const double REPAIR_FACTOR = 0.8;
-        
+
         var repairCost = sellValue * damageProportion * REPAIR_FACTOR;
-        
+
+        // Apply multiplier for mythic items
         if (item.Template.TemplateKey.StartsWith("mythic", StringComparison.OrdinalIgnoreCase))
-        {
             repairCost *= 10;
-        }
+
+        // Apply guild hall discount
+        if (aisling.MapInstance.BaseInstanceId == "guildhallmain")
+            repairCost *= GUILD_HALL_DISCOUNT;
 
         return Convert.ToInt32(repairCost);
     }
+
     
     private double CalculateOldRepairCostForItem(Item item)
     {
@@ -55,10 +60,10 @@ public class RepairAllItemsScript(Dialog subject, ILogger<RepairAllItemsScript> 
         RepairCost = 0;
 
         foreach (var item in source.Equipment)
-            RepairCost += CalculateNewRepairCostForItem(item);
+            RepairCost += CalculateNewRepairCostForItem(source, item);
 
         foreach (var item in source.Inventory)
-            RepairCost += CalculateNewRepairCostForItem(item);
+            RepairCost += CalculateNewRepairCostForItem(source, item);
     }
 
     public override void OnDisplaying(Aisling source)

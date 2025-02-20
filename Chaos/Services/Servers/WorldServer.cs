@@ -26,6 +26,7 @@ using Chaos.NLog.Logging.Definitions;
 using Chaos.NLog.Logging.Extensions;
 using Chaos.Packets;
 using Chaos.Packets.Abstractions;
+using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Services.Other;
 using Chaos.Services.Other.Abstractions;
@@ -89,7 +90,6 @@ public sealed class WorldServer : ServerBase<IChaosWorldClient>, IWorldServer<IC
         MailStore = mailStore;
         BulletinBoardKeyMapper = bulletinBoardKeyMapper;
         BulletinBoardStore = bulletinBoardStore;
-
         IndexHandlers();
     }
 
@@ -1617,6 +1617,7 @@ public sealed class WorldServer : ServerBase<IChaosWorldClient>, IWorldServer<IC
                       targetAisling.Name);
 
             targetAisling.Client.SendServerMessage(ServerMessageType.Whisper, $"[{fromAisling.Name}]: {localArgs.Message}");
+            targetAisling.Client.SendSound(169, false);
 
             return default;
         }
@@ -1845,6 +1846,7 @@ public sealed class WorldServer : ServerBase<IChaosWorldClient>, IWorldServer<IC
         Logger.WithTopics(Topics.Servers.WorldServer, Topics.Entities.Client, Topics.Actions.Connect)
               .WithProperty(client)
               .LogInformation("Connection established with {@ClientIp}", client.RemoteIp);
+        
 
         if (!ClientRegistry.TryAdd(client))
         {

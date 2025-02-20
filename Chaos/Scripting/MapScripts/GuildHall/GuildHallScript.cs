@@ -67,25 +67,32 @@ public class GuildHallScript : MapScriptBase
             return;
 
         var guildName = aisling.Guild.Name;
+
+        if (aisling.IsAdmin && !aisling.MapInstance.Name.StartsWith(guildName, StringComparison.Ordinal))
+            return;
+        
         var morphCode = GetMorphCode(GuildHouseStateStorage.Value, guildName);
 
         Subject.Morph(morphCode);
-        SpawnNPCsForMorphCode(morphCode);
+        SpawnNPCsForMorphCode(aisling, morphCode);
     }
 
-    private void SpawnNPCsForMorphCode(string morphCode)
+    private void SpawnNPCsForMorphCode(Aisling source, string morphCode)
     {
         if (!NpcSpawns.TryGetValue(morphCode, out var spawns))
             return;
 
-        var existingNPCs = Subject.GetEntities<Merchant>().ToDictionary(npc => npc.Template.TemplateKey, npc => npc);
+        // Get all existing merchants and store them in a dictionary by their unique TemplateKey
+        var existingNPCs = source.MapInstance.GetEntities<Merchant>()
+                                 .GroupBy(npc => npc.Template.TemplateKey) // Group duplicates
+                                 .ToDictionary(g => g.Key, g => g.First()); // Keep only one instance
 
         foreach (var spawn in spawns)
         {
-            if (!existingNPCs.ContainsKey(spawn.Name))
+            if (!existingNPCs.ContainsKey(spawn.Name)) // Only spawn if not already present
             {
-                var merch = MerchantFactory.Create(spawn.Name, Subject, new Point(spawn.X, spawn.Y));
-                Subject.AddEntity(merch, new Point(spawn.X, spawn.Y));
+                var merch = MerchantFactory.Create(spawn.Name, source.MapInstance, new Point(spawn.X, spawn.Y));
+                source.MapInstance.AddEntity(merch, new Point(spawn.X, spawn.Y));
             }
         }
     }

@@ -181,6 +181,11 @@ public sealed class AislingMapperProfile(
 
     DisplayAislingArgs IMapperProfile<Aisling, DisplayAislingArgs>.Map(Aisling obj)
     {
+        if (obj == null)
+        {
+            throw new ArgumentNullException(nameof(obj), "Aisling object cannot be null.");
+        }
+
         var hasArenaTeam = obj.Trackers.Enums.TryGetValue(out ArenaTeam arenaTeam);
         var weapon = obj.Equipment[EquipmentSlot.Weapon];
         var armor = obj.Equipment[EquipmentSlot.Armor];
@@ -194,121 +199,120 @@ public sealed class AislingMapperProfile(
         var overcoat = obj.Equipment[EquipmentSlot.Overcoat];
         var pantsColor = overcoat?.Template.PantsColor ?? armor?.Template.PantsColor;
 
-        ushort headSprite;
-            byte bootsSprite;
-            DisplayColor headColor;
-            DisplayColor bootsColor;
+        ushort headSprite = 0;
+        ushort shieldSprite = 0;
+        byte bootsSprite = 0;
+        DisplayColor headColor = DisplayColor.Default;
+        DisplayColor bootsColor = DisplayColor.Default;
 
-            //determine if we should override head/boots sprite
-            var shouldOverrideHeadSprite = obj.Equipment.Any(item => item.Template.OverridesHeadSprite);
-            var shouldOverrideBootsSprite = obj.Equipment.Any(item => item.Template.OverridesBootsSprite);
+        var shouldOverrideHeadSprite = obj.Equipment?.Any(item => item?.Template?.OverridesHeadSprite == true) ?? false;
+        var shouldOverrideBootsSprite = obj.Equipment?.Any(item => item?.Template?.OverridesBootsSprite == true) ?? false;
 
-            //if we have a helmet or armor that overrides head sprite, but an overcoat or overhelm that does not
-            //then we should not override the head sprite
-            if (shouldOverrideHeadSprite)
-                if (armor is not null
-                    && overcoat is not null
-                    && armor.Template.OverridesHeadSprite
-                    && !overcoat.Template.OverridesHeadSprite)
-                    shouldOverrideHeadSprite = false;
-                else if (helmet is not null
-                         && overHelm is not null
-                         && helmet.Template.OverridesHeadSprite
-                         && !overHelm.Template.OverridesHeadSprite)
-                    shouldOverrideHeadSprite = false;
+        var hasInvisibleShield = (acc1?.Template?.TemplateKey == "invisibleshield")
+                                 || (acc2?.Template?.TemplateKey == "invisibleshield")
+                                 || (acc3?.Template?.TemplateKey == "invisibleshield");
 
-            //if we have a helmet or armor that overrides boots sprite, but an overcoat or overhelm that does not
-            //then we should not override the boots sprite
-            if (shouldOverrideBootsSprite)
-                if (armor is not null
-                    && overcoat is not null
-                    && armor.Template.OverridesBootsSprite
-                    && !overcoat.Template.OverridesBootsSprite)
-                    shouldOverrideBootsSprite = false;
-                else if (helmet is not null
-                         && overHelm is not null
-                         && helmet.Template.OverridesBootsSprite
-                         && !overHelm.Template.OverridesBootsSprite)
-                    shouldOverrideBootsSprite = false;
-            //determine which head sprite we should use
-            // this value is shared amongst helmet, overhelm, and hair
-            if (shouldOverrideHeadSprite)
-                headSprite = 0;
-            else if (overHelm?.ItemSprite.DisplaySprite is not null && overHelm?.Template.TemplateKey is "invisiblehelmet")
-                headSprite = (ushort)obj.HairStyle;
-            else if (overHelm?.ItemSprite.DisplaySprite is not null)
-                headSprite = overHelm.ItemSprite.DisplaySprite;
-            else if (helmet?.ItemSprite.DisplaySprite is not null)
-                headSprite = helmet.ItemSprite.DisplaySprite;
-            else
-                headSprite = (ushort)obj.HairStyle;
+        // Handle overrides for head sprite
+        if (shouldOverrideHeadSprite)
+        {
+            if (armor?.Template?.OverridesHeadSprite == true && overcoat?.Template?.OverridesHeadSprite == false)
+                shouldOverrideHeadSprite = false;
+            else if (helmet?.Template?.OverridesHeadSprite == true && overHelm?.Template?.OverridesHeadSprite == false)
+                shouldOverrideHeadSprite = false;
+        }
 
-            //if we have a head sprite, we need to determine the color
-            //prefer overhelm over helmet
-            //helmet over hairstyle
-            if (headSprite != 0)
+        // Handle overrides for boots sprite
+        if (shouldOverrideBootsSprite)
+        {
+            if (armor?.Template?.OverridesBootsSprite == true && overcoat?.Template?.OverridesBootsSprite == false)
+                shouldOverrideBootsSprite = false;
+            else if (helmet?.Template?.OverridesBootsSprite == true && overHelm?.Template?.OverridesBootsSprite == false)
+                shouldOverrideBootsSprite = false;
+        }
+
+        // Determine head sprite
+        if (shouldOverrideHeadSprite)
+            headSprite = 0;
+        else if (overHelm?.ItemSprite?.DisplaySprite is not null && overHelm.Template?.TemplateKey == "invisiblehelmet")
+            headSprite = (ushort)obj.HairStyle;
+        else if (overHelm?.ItemSprite?.DisplaySprite is not null)
+            headSprite = overHelm.ItemSprite.DisplaySprite;
+        else if (helmet?.ItemSprite?.DisplaySprite is not null)
+            headSprite = helmet.ItemSprite.DisplaySprite;
+        else
+            headSprite = (ushort)obj.HairStyle;
+
+        // Determine shield sprite, ensuring it always has a value
+        if (hasArenaTeam)
+        {
+            shieldSprite = shield?.ItemSprite.DisplaySprite ?? 0;
+        }
+        else if (shield?.ItemSprite != null && shield.ItemSprite.DisplaySprite != 0 && !hasInvisibleShield)
+        {
+            shieldSprite = shield.ItemSprite.DisplaySprite;
+        }
+        else
+        {
+            shieldSprite = 0;
+        }
+
+
+        // Determine head color
+        if (headSprite != 0)
+        {
+            if ((overHelm?.Template?.IsDyeable == true) || (overHelm?.Color != DisplayColor.Default))
             {
-                //use overhelm color if it is dyeable or if it is not default
-                if ((overHelm != null) && (overHelm.Template.IsDyeable || (overHelm.Color != DisplayColor.Default)))
+                if (overHelm != null)
                     headColor = overHelm.Color;
-
-                //use helmet color if it is dyeable or if it is not default
-                else if ((helmet != null) && (helmet.Template.IsDyeable || (helmet.Color != DisplayColor.Default)))
-                    headColor = helmet.Color;
-                else
-                    headColor = obj.HairColor;
-            } else
-                headColor = DisplayColor.Default;
-
-            //determine boots sprite to use
-            if (shouldOverrideBootsSprite)
-                bootsSprite = 0;
-            else if (boots?.ItemSprite.DisplaySprite is not null)
-                bootsSprite = (byte)boots.ItemSprite.DisplaySprite;
-            else
-                bootsSprite = 0;
-
-            //if we have a boots sprite, we need to determine the color
-            if (bootsSprite != 0)
-                bootsColor = boots?.Color ?? DisplayColor.Default;
-            else
-                bootsColor = DisplayColor.Default;
-
-            if (hasArenaTeam)
-            {
-                headSprite = (ushort)obj.HairStyle;
-                switch (arenaTeam)
-                {
-                    case ArenaTeam.Blue:
-                        headColor = DisplayColor.Cyan;
-                        break;
-                    case ArenaTeam.Green:
-                        headColor = DisplayColor.Lime;
-                        break;
-                    case ArenaTeam.Gold:
-                        headColor = DisplayColor.NeonYellow;
-                        break;
-                    case ArenaTeam.Red:
-                        headColor = DisplayColor.Fire;
-                        break;
-                }
-
-                overcoat = null;
-                acc1 = null;
-                acc2 = null;
-                acc3 = null;
             }
-            
+            else if ((helmet?.Template?.IsDyeable == true) || (helmet?.Color != DisplayColor.Default))
+            {
+                if (helmet != null)
+                    headColor = helmet.Color;
+            }
+            else
+                headColor = obj.HairColor;
+        }
+
+        // Determine boots sprite
+        if (shouldOverrideBootsSprite)
+            bootsSprite = 0;
+        else if (boots?.ItemSprite?.DisplaySprite is not null)
+            bootsSprite = (byte)boots.ItemSprite.DisplaySprite;
+
+        // Determine boots color
+        bootsColor = bootsSprite != 0 ? boots?.Color ?? DisplayColor.Default : DisplayColor.Default;
+
+        // Handle arena team overrides
+        if (hasArenaTeam)
+        {
+            headSprite = (ushort)obj.HairStyle;
+
+            headColor = arenaTeam switch
+            {
+                ArenaTeam.Blue  => DisplayColor.Cyan,
+                ArenaTeam.Green => DisplayColor.Lime,
+                ArenaTeam.Gold  => DisplayColor.NeonYellow,
+                ArenaTeam.Red   => DisplayColor.Fire,
+                _               => headColor
+            };
+
+            overcoat = null;
+            acc1 = null;
+            acc2 = null;
+            acc3 = null;
+        }
+
         return new DisplayAislingArgs
         {
             AccessoryColor1 = acc1?.Color ?? DisplayColor.Default,
             AccessoryColor2 = acc2?.Color ?? DisplayColor.Default,
             AccessoryColor3 = acc3?.Color ?? DisplayColor.Default,
-            AccessorySprite1 = acc1?.ItemSprite.DisplaySprite ?? 0,
-            AccessorySprite2 = acc2?.ItemSprite.DisplaySprite ?? 0,
-            AccessorySprite3 = acc3?.ItemSprite.DisplaySprite ?? 0,
-            ArmorSprite1 = armor?.ItemSprite.DisplaySprite ?? 0,
-            ArmorSprite2 = armor?.ItemSprite.DisplaySprite ?? 0,
+            AccessorySprite1 = acc1?.ItemSprite?.DisplaySprite ?? 0,
+            AccessorySprite2 = acc2?.ItemSprite?.DisplaySprite ?? 0,
+            AccessorySprite3 = acc3?.ItemSprite?.DisplaySprite ?? 0,
+            ArmorSprite1 = armor?.ItemSprite?.DisplaySprite ?? 0,
+            ArmorSprite2 = armor?.ItemSprite?.DisplaySprite ?? 0,
             BodyColor = obj.BodyColor,
             BodySprite = obj.BodySprite,
             PantsColor = pantsColor,
@@ -322,23 +326,21 @@ public sealed class AislingMapperProfile(
             HeadSprite = headSprite,
             Id = obj.Id,
             IsDead = obj.IsDead,
-            IsHidden = false, // "Hidden" people are unobservable, so this packet won't even be sent
-            IsTransparent =
-                obj.Visibility is not VisibilityType.Normal,
+            IsHidden = false,
+            IsTransparent = obj.Visibility is not VisibilityType.Normal,
             LanternSize = obj.LanternSize,
             Name = obj.Name,
-            NameTagStyle = NameTagStyle.NeutralHover, // this is a default value
+            NameTagStyle = NameTagStyle.NeutralHover,
             OvercoatColor = overcoat?.Color ?? DisplayColor.Default,
-            OvercoatSprite = overcoat?.ItemSprite.DisplaySprite ?? 0,
+            OvercoatSprite = overcoat?.ItemSprite?.DisplaySprite ?? 0,
             X = obj.X,
             Y = obj.Y,
             RestPosition = obj.RestPosition,
-            ShieldSprite = (byte)(shield?.ItemSprite.DisplaySprite ?? 0),
+            ShieldSprite = (byte)shieldSprite,
             Sprite = obj.Sprite == 0 ? null : obj.Sprite,
-            WeaponSprite = weapon?.ItemSprite.DisplaySprite ?? 0
+            WeaponSprite = weapon?.ItemSprite?.DisplaySprite ?? 0
         };
     }
-
 
     public Aisling Map(OtherProfileArgs obj) => throw new NotImplementedException();
 
