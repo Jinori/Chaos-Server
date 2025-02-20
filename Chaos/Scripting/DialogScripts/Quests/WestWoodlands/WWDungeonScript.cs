@@ -311,7 +311,7 @@ public class WWDungeonScript(
                             break;
                         }
                     }
-
+                } else
                     switch (roll)
                     {
                         case < 10:
@@ -389,10 +389,9 @@ public class WWDungeonScript(
                             break;
                         }
                     }
-                }
 
                 break;
-            }
+        }
 
             case "wwdungeon_turnin2":
             {

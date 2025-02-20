@@ -50,5 +50,5 @@ public abstract class GuildScriptBase : DialogScriptBase
 
     protected static bool IsOfficer(GuildRank rank) => rank.Tier <= 1;
 
-    protected static bool IsSuperiorRank(GuildRank rank, GuildRank other) => rank.Tier < (other.Tier);
+    protected static bool IsSuperiorRank(GuildRank rank, GuildRank other) => rank.Tier < other.Tier;
 }
