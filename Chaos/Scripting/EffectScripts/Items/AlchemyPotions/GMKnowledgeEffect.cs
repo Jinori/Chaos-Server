@@ -19,7 +19,7 @@ public class GMKnowledgeEffect : EffectBase, NonOverwritableEffectComponent.INon
         AnimationSpeed = 100
     };
 
-    public override byte Icon => 10;
+    public override byte Icon => 96;
     public override string Name => "GM Knowledge";
     protected byte? Sound => 115;
 
