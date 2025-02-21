@@ -12,7 +12,7 @@ public class FabricRefiningScript(Dialog subject, IItemFactory itemFactory, IDia
 {
     protected override string LegendMarkKey => "FabricRefining";
     protected override string ItemCounterPrefix => "[Refine]";
-    protected override double BaseSucessRate => 60;
+    protected override double BaseSucessRate => 80;
     protected override double SuccessRateMax => 90;
 
     private readonly string[] FabricTemplateKeys =
@@ -76,6 +76,20 @@ public class FabricRefiningScript(Dialog subject, IItemFactory itemFactory, IDia
             return;
         }
         
+        if (item.DisplayName.ContainsI("torn"))
+        {
+            Subject.Reply(source, $"This fabric is torn already.", "fabric_refining_initial");
+
+            return;
+        }
+        
+        if (item.DisplayName.ContainsI("exquisite"))
+        {
+            Subject.Reply(source, $"This fabric is exquisite already.", "fabric_refining_initial");
+
+            return;
+        }
+        
         if (!FabricTemplateKeys.ContainsI(item.Template.TemplateKey))
         {
             Subject.Reply(source, "This item cannot be refined. Please select a valid material.", "fabric_refining_initial");
@@ -97,6 +111,20 @@ public class FabricRefiningScript(Dialog subject, IItemFactory itemFactory, IDia
         if (item.Count < 1)
         {
             Subject.Reply(source, $"You ran out of {item.DisplayName} to refine.", "fabric_refining_initial");
+            return;
+        }
+
+        if (item.DisplayName.ContainsI("torn"))
+        {
+            Subject.Reply(source, $"This fabric is torn already.", "fabric_refining_initial");
+
+            return;
+        }
+        
+        if (item.DisplayName.ContainsI("exquisite"))
+        {
+            Subject.Reply(source, $"This fabric is exquisite already.", "fabric_refining_initial");
+
             return;
         }
 

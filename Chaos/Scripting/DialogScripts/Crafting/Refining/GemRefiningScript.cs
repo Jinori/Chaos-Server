@@ -104,6 +104,20 @@ public class GemRefiningScript : CraftingBaseScript
             Subject.Reply(source, "This item cannot be refined. Please select a valid material.", "gem_refining_initial");
             return;
         }
+        
+        if (item.DisplayName.ContainsI("chipped"))
+        {
+            Subject.Reply(source, $"This gem is chipped already.", "fabric_refining_initial");
+
+            return;
+        }
+        
+        if (item.DisplayName.ContainsI("pristine"))
+        {
+            Subject.Reply(source, $"This gem is pristine already.", "fabric_refining_initial");
+
+            return;
+        }
 
         var successRate = CalculateRefiningSuccessRate(source, item);
         Subject.InjectTextParameters(item.DisplayName, successRate.ToString("N2"));
@@ -116,6 +130,20 @@ public class GemRefiningScript : CraftingBaseScript
             || (item.Count < RequiredQuantity(item.Template.TemplateKey)))
         {
             Subject.Reply(source, $"You ran out of gems to refine.", "gem_refining_initial");
+            return;
+        }
+        
+        if (item.DisplayName.ContainsI("chipped"))
+        {
+            Subject.Reply(source, $"This gem is chipped already.", "fabric_refining_initial");
+
+            return;
+        }
+        
+        if (item.DisplayName.ContainsI("pristine"))
+        {
+            Subject.Reply(source, $"This gem is pristine already.", "fabric_refining_initial");
+
             return;
         }
 

@@ -34,11 +34,11 @@ public class DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistri
     public virtual void DistributeExperience(Creature killedCreature, params ICollection<Aisling> aislings)
     {
         var baseExp = ExperienceFormula.Calculate(killedCreature, aislings);
-        var totalBonus = 1m; // Start with 1 (no bonus)
 
         // Distribute the experience to each Aisling
         foreach (var aisling in aislings)
         {
+            var totalBonus = 1m; // Start with 1 (no bonus)
             // Apply a 5% experience bonus for "Knowledge"
             if (HasKnowledgeEffect(aisling))
                 totalBonus += 0.05m;

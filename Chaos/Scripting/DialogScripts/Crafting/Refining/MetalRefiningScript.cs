@@ -92,6 +92,20 @@ public class MetalRefiningScript : CraftingBaseScript
             Subject.Reply(source, $"You need at least {requiredCount} units of the material to proceed.", "metal_refining_initial");
             return;
         }
+        
+        if (item.DisplayName.ContainsI("ruined"))
+        {
+            Subject.Reply(source, $"This metal is ruined already.", "fabric_refining_initial");
+
+            return;
+        }
+        
+        if (item.DisplayName.ContainsI("polished"))
+        {
+            Subject.Reply(source, $"This metal is polished already.", "fabric_refining_initial");
+
+            return;
+        }
 
         if (!MetalTemplateKeys.ContainsI(item.Template.TemplateKey))
         {
