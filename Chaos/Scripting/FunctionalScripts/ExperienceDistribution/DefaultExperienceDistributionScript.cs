@@ -172,7 +172,7 @@ public class DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistri
     private bool HasGMKnowledgeEffect(Aisling aisling)
     {
         // Check if any of the Aislings have the "Strong Knowledge" effect
-        if (aisling.Effects.Contains("GM Knowledge"))
+        if (aisling.Effects.Contains("GMKnowledge"))
             return true;
 
         return false;

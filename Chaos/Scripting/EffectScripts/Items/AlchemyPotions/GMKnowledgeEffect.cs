@@ -20,14 +20,14 @@ public class GMKnowledgeEffect : EffectBase, NonOverwritableEffectComponent.INon
     };
 
     public override byte Icon => 96;
-    public override string Name => "GM Knowledge";
+    public override string Name => "GMKnowledge";
     protected byte? Sound => 115;
 
     public override void OnApplied()
     {
         base.OnApplied();
 
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You gain %25 increased experience.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You gain 25% increased experience for monster kills.");
     }
 
     public override void OnDispelled() => OnTerminated();

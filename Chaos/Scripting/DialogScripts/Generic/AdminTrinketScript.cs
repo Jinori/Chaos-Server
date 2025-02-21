@@ -3,6 +3,7 @@ using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
+using Chaos.Models.Data;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
@@ -26,6 +27,7 @@ public class AdminTrinketScript : DialogScriptBase
     private readonly IClientRegistry<IChaosWorldClient> ClientRegistry;
     private readonly ISimpleCache SimpleCache;
     private readonly IMonsterFactory MonsterFactory;
+    private readonly IEffectFactory EffectFactory;
 
     public AdminTrinketScript(
         Dialog subject,
@@ -33,7 +35,8 @@ public class AdminTrinketScript : DialogScriptBase
         ISimpleCacheProvider cacheProvider,
         IClientRegistry<IChaosWorldClient> clientRegistry,
         ISimpleCache simpleCache,
-        IMonsterFactory monsterFactory
+        IMonsterFactory monsterFactory,
+        IEffectFactory effectFactory
     )
         : base(subject)
     {
@@ -42,8 +45,15 @@ public class AdminTrinketScript : DialogScriptBase
         ClientRegistry = clientRegistry;
         SimpleCache = simpleCache;
         MonsterFactory = monsterFactory;
+        EffectFactory = effectFactory;
     }
 
+    protected Animation ExpAnimation { get; } = new()
+    {
+        TargetAnimation = 157,
+        AnimationSpeed = 100
+    };
+    
     private Aisling? GetPlayerByName(string playerName) =>
         ClientRegistry
             .Select(c => c.Aisling)
@@ -61,6 +71,10 @@ public class AdminTrinketScript : DialogScriptBase
         {
             case "admintrinket_displaymapinfo":
                 DisplayMapInfo(source);
+                break;
+            
+            case "admintrinket_expbuff":
+                HandleExpBuff(source);
                 break;
         }
     }
@@ -140,7 +154,7 @@ public class AdminTrinketScript : DialogScriptBase
             case "admintrinket_spawn41darkwizardconfirm":
                 HandleMobSpawnRequest(source, "arenawizard41", 41);
                 break;
-
+            
             case "admintrinket_adminmessage":
                 HandleAdminMessage(source);
                 break;
@@ -152,11 +166,28 @@ public class AdminTrinketScript : DialogScriptBase
             case "admintrinket_summonplayer":
                 HandleSummonPlayerRequest(source);
                 break;
+            
+            case "admintrinket_summongroup":
+                HandleSummonGroupRequest(source);
+                break;
 
             case "admintrinket_jailplayer":
                 HandleJailPlayerRequest(source);
                 break;
         }
+    }
+
+    private void HandleExpBuff(Aisling source)
+    {
+        var players = ClientRegistry.Select(c => c.Aisling);
+        foreach (var player in players)
+        {
+            var eff = EffectFactory.Create("GMKnowledge");
+            player.Effects.Apply(source, eff);
+            player.Animate(ExpAnimation);
+            player.SendServerMessage(ServerMessageType.OrangeBar2, $"{source.Name} cast 25% monster kill exp bonus on everyone!");
+        }
+        Subject.Close(source);
     }
     
     private void HandleMobSpawnRequest(Aisling source, string mobType, int level)
@@ -254,6 +285,40 @@ public class AdminTrinketScript : DialogScriptBase
         player.TraverseMap(source.MapInstance, source, true);
         source.SendOrangeBarMessage($"You teleported {playerName} to you.");
         ReportActivity(source, player, "Summon");
+        Subject.Close(source);
+    }
+    
+    private void HandleSummonGroupRequest(Aisling source)
+    {
+        if (!Subject.MenuArgs.TryGetNext<string>(out var playerName))
+        {
+            Subject.ReplyToUnknownInput(source);
+            return;
+        }
+
+        var player = GetPlayerByName(playerName);
+        if (player == null)
+        {
+            source.SendOrangeBarMessage($"{playerName} is not online.");
+            Subject.Close(source);
+            return;
+        }
+
+        if (player.Group is null)
+        {
+            source.SendOrangeBarMessage($"{playerName} is not in a group.");
+            Subject.Close(source);
+            return;
+        }
+
+        foreach (var teammate in player.Group)
+        {
+            teammate.TraverseMap(source.MapInstance, source, true);
+            teammate.SendOrangeBarMessage($"{source.Name} teleported your group to them.");
+            source.SendOrangeBarMessage($"You teleported {playerName} to you.");
+            ReportActivity(source, player, "SummonGroup");
+        }
+        
         Subject.Close(source);
     }
 

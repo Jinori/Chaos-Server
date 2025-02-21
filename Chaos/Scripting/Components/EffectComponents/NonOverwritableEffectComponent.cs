@@ -25,12 +25,12 @@ public class NonOverwritableEffectComponent : IConditionalComponent
         {
             if (target is Aisling aisling)
                 if ((context.SourceAisling?.Name != aisling.Name)
-                    && (options.Name != "GM Knowledge")
+                    && (options.Name != "GMKnowledge")
                     && !target.Effects.Contains("GM Hide"))
                 {
                     context.SourceAisling?.SendActiveMessage($"You cast {options.Name} on {aisling.Name}.");
                     aisling.SendActiveMessage($"{context.Source.Name} casted {options.Name} on you.");
-                } else if ((options.Name != "Mount") && (options.Name != "GM Knowledge"))
+                } else if ((options.Name != "Mount") && (options.Name != "GMKnowledge"))
                     aisling.SendActiveMessage($"You casted {options.Name} on yourself.");
 
             return true;

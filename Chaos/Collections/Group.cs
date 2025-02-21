@@ -200,7 +200,7 @@ public sealed class Group : IEnumerable<Aisling>, IDedicatedChannel
         foreach (var member in eligibleMembers)
         {
             member.GiveGoldOrSendToBank(amountPerMember);
-            member.SendOrangeBarMessage($"Your split of the group gold is {amountPerMember}.");
+            member.SendServerMessage(ServerMessageType.ActiveMessage, $"Your split of the group gold is {amountPerMember}.");
         }
     }
 
@@ -233,10 +233,10 @@ public sealed class Group : IEnumerable<Aisling>, IDedicatedChannel
 
             // Notify all group members about the loot distribution
             foreach (var member in Members)
-                member.SendOrangeBarMessage($"{randomMember.Name} received {item.DisplayName} from loot.");
+                member.SendServerMessage(ServerMessageType.ActiveMessage, $"{randomMember.Name} received {item.DisplayName} from loot.");
 
             foreach (var admin in adminOnMap)
-                admin.SendOrangeBarMessage($"{randomMember.Name} received {item.DisplayName}.");
+                admin.SendServerMessage(ServerMessageType.ActiveMessage, $"{randomMember.Name} received {item.DisplayName}.");
         }
     }
 

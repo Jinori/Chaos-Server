@@ -39,8 +39,7 @@ public class VillagerScript : MerchantScriptBase
         IgnoreBlockingReactors = true
     };
 
-
-
+    
     private readonly IIntervalTimer ActionTimer;
     private readonly IIntervalTimer DialogueTimer;
     private readonly IIntervalTimer EatingTimer;
@@ -629,7 +628,7 @@ public class VillagerScript : MerchantScriptBase
         UpdateWalkTimer(delta);
 
         if (WalkTimer.IntervalElapsed)
-            Subject.Pathfind(destination, 0);
+            Subject.Pathfind(destination, 0, Options);
     }
 
     #region TrackedLegendMarks

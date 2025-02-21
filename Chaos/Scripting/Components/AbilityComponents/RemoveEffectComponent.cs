@@ -26,7 +26,7 @@ public class RemoveEffectComponent : IComponent
         "Cunning6",
         "Invulnerability",
         "Mount",
-        "GM Knowledge",
+        "GMKnowledge",
         "Strong Knowledge",
         "Stoned",
         "Knowledge",

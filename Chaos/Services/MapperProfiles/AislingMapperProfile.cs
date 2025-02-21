@@ -258,26 +258,29 @@ public sealed class AislingMapperProfile(
 
 
         // Determine head color
+        //if we have a head sprite, we need to determine the color
+        //prefer overhelm over helmet
+        //helmet over hairstyle
+        
         if (headSprite != 0)
         {
-            if ((overHelm?.Template?.IsDyeable == true) || (overHelm?.Color != DisplayColor.Default))
-            {
-                if (overHelm != null)
-                    headColor = overHelm.Color;
-            }
-            else if ((helmet?.Template?.IsDyeable == true) || (helmet?.Color != DisplayColor.Default))
-            {
-                if (helmet != null)
-                    headColor = helmet.Color;
-            }
+            //use overhelm color if it is dyeable or if it is not default
+            if ((overHelm?.Template != null) && (overHelm.Template.IsDyeable || (overHelm.Color != DisplayColor.Default)))
+                headColor = overHelm.Color;
+
+            //use helmet color if it is dyeable or if it is not default
+            else if ((helmet != null) && (helmet.Template.IsDyeable || (helmet.Color != DisplayColor.Default)))
+                headColor = helmet.Color;
             else
                 headColor = obj.HairColor;
-        }
+        } 
+        else
+            headColor = DisplayColor.Default;
 
         // Determine boots sprite
         if (shouldOverrideBootsSprite)
             bootsSprite = 0;
-        else if (boots?.ItemSprite?.DisplaySprite is not null)
+        else if (boots?.ItemSprite.DisplaySprite is not null)
             bootsSprite = (byte)boots.ItemSprite.DisplaySprite;
 
         // Determine boots color

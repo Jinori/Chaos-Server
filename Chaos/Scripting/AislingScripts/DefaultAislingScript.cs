@@ -52,7 +52,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     
     private static readonly HashSet<string> SkippedEffects =
     [
-        "Hot Chocolate", "ValentinesCandy", "GM Knowledge", "Strong Knowledge", "Knowledge", "Werewolf"
+        "Hot Chocolate", "ValentinesCandy", "GMKnowledge", "Strong Knowledge", "Knowledge", "Werewolf"
     ];
     
     private readonly IStore<BulletinBoard> BoardStore;
