@@ -35,7 +35,7 @@ public class ExecuteComponent : IComponent
                     context.Source,
                     target,
                     vars.GetSourceScript(),
-                    99999999);
+                    target.StatSheet.CurrentHp + 1);
 
                 var healAmount = MathEx.GetPercentOf<int>((int)context.Source.StatSheet.EffectiveMaximumHp, options.HealAmountIfExecuted);
 
@@ -58,16 +58,19 @@ public class ExecuteComponent : IComponent
             {
                 if (!target.Script.Is<ThisIsABossScript>())
                 {
-                    var tenPercent = MathEx.GetPercentOf<int>((int)context.Source.StatSheet.EffectiveMaximumHp, options.DmgHealthPct);
+                    var damagePct = MathEx.GetPercentOf<int>((int)context.Source.StatSheet.EffectiveMaximumHp, options.DmgHealthPct);
 
                     options.ApplyDamageScript.ApplyDamage(
                         context.Source,
                         target,
                         vars.GetSourceScript(),
-                        tenPercent);
+                        damagePct);
                 } else
                 {
                     var onepercent = MathEx.GetPercentOf<int>((int)context.Source.StatSheet.EffectiveMaximumHp, options.DmgHealthPct);
+                    
+                    if (onepercent >= 100000)
+                        onepercent = 100000;
 
                     options.ApplyDamageScript.ApplyDamage(
                         context.Source,

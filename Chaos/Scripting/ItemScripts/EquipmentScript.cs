@@ -49,14 +49,6 @@ public class EquipmentScript(Item subject) : ConfigurableItemScriptBase(subject)
             return;
         }
 
-        if (template.Name.ContainsI("Nyx"))
-            if (!source.Trackers.Counters.ContainsKey($"NyxItem{Subject.UniqueId}") && !source.IsAdmin)
-            {
-                source.SendOrangeBarMessage($"{Subject.DisplayName} is not yours.");
-
-                return;
-            }
-
         if (template.Category.Contains("Staff"))
 
             // Check for shield usage which prevents staff wielding

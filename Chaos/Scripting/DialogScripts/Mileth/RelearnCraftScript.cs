@@ -43,21 +43,18 @@ public class RelearnCraftScript : DialogScriptBase
                     source.Trackers.Flags.RemoveFlag(CreantEnums.CompletedTauren);
                     source.Trackers.Flags.RemoveFlag(CreantEnums.CompletedPhoenix);
                 }
-                
-                if (source.Name == "Star" && !source.Legend.ContainsKey("frostyrunnerup"))
-                {
-                        source.Legend.AddUnique(
-                            new LegendMark(
-                                "Frosty Challenge Runner-Up: So Close So Cool!",
-                                "frostyrunnerup",
-                                MarkIcon.Heart,
-                                MarkColor.Cyan,
-                                1,
-                                GameTime.Now));
-                }
-                
-                if (source.Name == "Dood" && !source.Legend.ContainsKey("frostyfirstplace"))
-                {
+
+                if ((source.Name == "Star") && !source.Legend.ContainsKey("frostyrunnerup"))
+                    source.Legend.AddUnique(
+                        new LegendMark(
+                            "Frosty Challenge Runner-Up: So Close So Cool!",
+                            "frostyrunnerup",
+                            MarkIcon.Heart,
+                            MarkColor.Cyan,
+                            1,
+                            GameTime.Now));
+
+                if ((source.Name == "Dood") && !source.Legend.ContainsKey("frostyfirstplace"))
                     source.Legend.AddUnique(
                         new LegendMark(
                             "Frosty Challenge First Place: The best of the best!",
@@ -66,10 +63,8 @@ public class RelearnCraftScript : DialogScriptBase
                             MarkColor.Cyan,
                             1,
                             GameTime.Now));
-                }
-                
-                if (source.Name == "Path" && !source.Legend.ContainsKey("frostythirdplace"))
-                {
+
+                if ((source.Name == "Path") && !source.Legend.ContainsKey("frostythirdplace"))
                     source.Legend.AddUnique(
                         new LegendMark(
                             "Frosty Challenge Third Place: Just made it!",
@@ -78,8 +73,7 @@ public class RelearnCraftScript : DialogScriptBase
                             MarkColor.Cyan,
                             1,
                             GameTime.Now));
-                }
-                
+
                 if (source.Trackers.Enums.HasValue(MainstoryMasterEnums.CompletedCreants)
                     && !source.Trackers.Flags.HasFlag(MainstoryFlags.CreantRewards))
                 {
@@ -503,6 +497,12 @@ public class RelearnCraftScript : DialogScriptBase
                         source.Trackers.Flags.AddFlag(AlchemyCategories.StrongVitalityBrew);
                         source.Trackers.Flags.AddFlag(AlchemyRecipes.StrongJuggernautBrew);
                         source.Trackers.Flags.AddFlag(AlchemyRecipes.StrongAstralBrew);
+                    }
+
+                    if (source.Trackers.Flags.HasFlag(AlchemyCategories.PotentVitalityBrew))
+                    {
+                        source.Trackers.Flags.AddFlag(AlchemyRecipes.PotentJuggernautBrew);
+                        source.Trackers.Flags.AddFlag(AlchemyRecipes.PotentAstralBrew);
                     }
 
                     source.SendOrangeBarMessage("You have learned all your Alchemy Recipes.");

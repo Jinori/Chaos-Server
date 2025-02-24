@@ -86,7 +86,7 @@ public class BeagSalSplashEffect : ContinuousAnimationEffectBase
         // Retrieve and filter targets at those points
         var targets = Subject.MapInstance
                              .GetEntitiesAtPoints<Creature>(points.Cast<IPoint>())
-                             .WithFilter(Subject, TargetFilter.NonHostileOnly)
+                             .WithFilter(SourceOfEffect, TargetFilter.HostileOnly)
                              .WithFilter(Subject, TargetFilter.AliveOnly)
                              .Where(x => !x.Equals(Subject) && !x.MapInstance.IsWall(x))
                              .ToList();
