@@ -2270,3 +2270,17 @@ public enum FlourentineQuest
     SpeakWithFlourentineAfterZappy = 5,
     FinishedQuest = 6
 }
+
+[Flags]
+public enum InvisibleGear
+{
+    None = 0,
+    HideHelmet = 1 << 1,
+    HideWeapon = 1 << 2,
+    HideShield = 1 << 3,
+    HideBoots = 1 << 4,
+    HideArmor = 1 << 5,
+    HideAccessoryOne = 1 << 6,
+    HideAccessoryTwo = 1 << 7,
+    HideAccessoryThree = 1 << 8,
+}

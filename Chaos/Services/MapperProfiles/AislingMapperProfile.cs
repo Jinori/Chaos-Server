@@ -187,6 +187,8 @@ public sealed class AislingMapperProfile(
         }
 
         var hasArenaTeam = obj.Trackers.Enums.TryGetValue(out ArenaTeam arenaTeam);
+        var gearFlags = obj.Trackers.Flags.TryGetFlag(out InvisibleGear invisibleGear);
+
         var weapon = obj.Equipment[EquipmentSlot.Weapon];
         var armor = obj.Equipment[EquipmentSlot.Armor];
         var shield = obj.Equipment[EquipmentSlot.Shield];
@@ -202,39 +204,27 @@ public sealed class AislingMapperProfile(
         ushort headSprite = 0;
         ushort shieldSprite = 0;
         byte bootsSprite = 0;
-        DisplayColor headColor = DisplayColor.Default;
-        DisplayColor bootsColor = DisplayColor.Default;
+        DisplayColor headColor;
+        DisplayColor bootsColor;
 
         var shouldOverrideHeadSprite = obj.Equipment?.Any(item => item?.Template?.OverridesHeadSprite == true) ?? false;
         var shouldOverrideBootsSprite = obj.Equipment?.Any(item => item?.Template?.OverridesBootsSprite == true) ?? false;
 
-        var hasInvisibleShield = (acc1?.Template?.TemplateKey == "invisibleshield")
-                                 || (acc2?.Template?.TemplateKey == "invisibleshield")
-                                 || (acc3?.Template?.TemplateKey == "invisibleshield");
-
-        // Handle overrides for head sprite
-        if (shouldOverrideHeadSprite)
-        {
-            if (armor?.Template?.OverridesHeadSprite == true && overcoat?.Template?.OverridesHeadSprite == false)
-                shouldOverrideHeadSprite = false;
-            else if (helmet?.Template?.OverridesHeadSprite == true && overHelm?.Template?.OverridesHeadSprite == false)
-                shouldOverrideHeadSprite = false;
-        }
-
-        // Handle overrides for boots sprite
-        if (shouldOverrideBootsSprite)
-        {
-            if (armor?.Template?.OverridesBootsSprite == true && overcoat?.Template?.OverridesBootsSprite == false)
-                shouldOverrideBootsSprite = false;
-            else if (helmet?.Template?.OverridesBootsSprite == true && overHelm?.Template?.OverridesBootsSprite == false)
-                shouldOverrideBootsSprite = false;
-        }
+        // Apply invisible gear flags only if the player is NOT in an arena team
+        var hideHelmet = !hasArenaTeam && invisibleGear.HasFlag(InvisibleGear.HideHelmet);
+        var hideWeapon = !hasArenaTeam && invisibleGear.HasFlag(InvisibleGear.HideWeapon);
+        var hideShield = !hasArenaTeam && invisibleGear.HasFlag(InvisibleGear.HideShield);
+        var hideBoots = !hasArenaTeam && invisibleGear.HasFlag(InvisibleGear.HideBoots);
+        var hideArmor = !hasArenaTeam && invisibleGear.HasFlag(InvisibleGear.HideArmor);
+        var hideAcc1 = !hasArenaTeam && invisibleGear.HasFlag(InvisibleGear.HideAccessoryOne);
+        var hideAcc2 = !hasArenaTeam && invisibleGear.HasFlag(InvisibleGear.HideAccessoryTwo);
+        var hideAcc3 = !hasArenaTeam && invisibleGear.HasFlag(InvisibleGear.HideAccessoryThree);
 
         // Determine head sprite
-        if (shouldOverrideHeadSprite)
-            headSprite = 0;
-        else if (overHelm?.ItemSprite?.DisplaySprite is not null && overHelm.Template?.TemplateKey == "invisiblehelmet")
+        if (hideHelmet)
             headSprite = (ushort)obj.HairStyle;
+        else if (shouldOverrideHeadSprite)
+            headSprite = 0;
         else if (overHelm?.ItemSprite?.DisplaySprite is not null)
             headSprite = overHelm.ItemSprite.DisplaySprite;
         else if (helmet?.ItemSprite?.DisplaySprite is not null)
@@ -242,43 +232,27 @@ public sealed class AislingMapperProfile(
         else
             headSprite = (ushort)obj.HairStyle;
 
-        // Determine shield sprite, ensuring it always has a value
-        if (hasArenaTeam)
-        {
-            shieldSprite = shield?.ItemSprite.DisplaySprite ?? 0;
-        }
-        else if (shield?.ItemSprite != null && shield.ItemSprite.DisplaySprite != 0 && !hasInvisibleShield)
-        {
-            shieldSprite = shield.ItemSprite.DisplaySprite;
-        }
-        else
-        {
+        // Determine shield sprite
+        if (hideShield)
             shieldSprite = 0;
-        }
-
+        else
+            shieldSprite = shield?.ItemSprite?.DisplaySprite ?? 0;
 
         // Determine head color
-        //if we have a head sprite, we need to determine the color
-        //prefer overhelm over helmet
-        //helmet over hairstyle
-        
         if (headSprite != 0)
         {
-            //use overhelm color if it is dyeable or if it is not default
             if ((overHelm?.Template != null) && (overHelm.Template.IsDyeable || (overHelm.Color != DisplayColor.Default)))
                 headColor = overHelm.Color;
-
-            //use helmet color if it is dyeable or if it is not default
             else if ((helmet != null) && (helmet.Template.IsDyeable || (helmet.Color != DisplayColor.Default)))
                 headColor = helmet.Color;
             else
                 headColor = obj.HairColor;
-        } 
+        }
         else
             headColor = DisplayColor.Default;
 
         // Determine boots sprite
-        if (shouldOverrideBootsSprite)
+        if (hideBoots || shouldOverrideBootsSprite)
             bootsSprite = 0;
         else if (boots?.ItemSprite.DisplaySprite is not null)
             bootsSprite = (byte)boots.ItemSprite.DisplaySprite;
@@ -304,21 +278,24 @@ public sealed class AislingMapperProfile(
             acc1 = null;
             acc2 = null;
             acc3 = null;
+
+            // Reset any hidden gear to make sure arena team members display everything
+            hideHelmet = hideWeapon = hideShield = hideBoots = hideArmor = hideAcc1 = hideAcc2 = hideAcc3 = false;
         }
 
         return new DisplayAislingArgs
         {
-            AccessoryColor1 = acc1?.Color ?? DisplayColor.Default,
-            AccessoryColor2 = acc2?.Color ?? DisplayColor.Default,
-            AccessoryColor3 = acc3?.Color ?? DisplayColor.Default,
-            AccessorySprite1 = acc1?.ItemSprite?.DisplaySprite ?? 0,
-            AccessorySprite2 = acc2?.ItemSprite?.DisplaySprite ?? 0,
-            AccessorySprite3 = acc3?.ItemSprite?.DisplaySprite ?? 0,
-            ArmorSprite1 = armor?.ItemSprite?.DisplaySprite ?? 0,
-            ArmorSprite2 = armor?.ItemSprite?.DisplaySprite ?? 0,
+            AccessoryColor1 = hideAcc1 ? DisplayColor.Default : acc1?.Color ?? DisplayColor.Default,
+            AccessoryColor2 = hideAcc2 ? DisplayColor.Default : acc2?.Color ?? DisplayColor.Default,
+            AccessoryColor3 = hideAcc3 ? DisplayColor.Default : acc3?.Color ?? DisplayColor.Default,
+            AccessorySprite1 = hideAcc1 ? (ushort)0 : acc1?.ItemSprite?.DisplaySprite ?? 0,
+            AccessorySprite2 = hideAcc2 ? (ushort)0 : acc2?.ItemSprite?.DisplaySprite ?? 0,
+            AccessorySprite3 = hideAcc3 ? (ushort)0 : acc3?.ItemSprite?.DisplaySprite ?? 0,
+            ArmorSprite1 = (ushort)(hideArmor ? 0 : armor?.ItemSprite?.DisplaySprite ?? 0),
+            ArmorSprite2 = (ushort)(hideArmor ? 0 : armor?.ItemSprite?.DisplaySprite ?? 0),
             BodyColor = obj.BodyColor,
             BodySprite = obj.BodySprite,
-            PantsColor = pantsColor,
+            PantsColor = hideArmor ? DisplayColor.Default : pantsColor,
             BootsColor = bootsColor,
             BootsSprite = bootsSprite,
             Direction = obj.Direction,
@@ -341,7 +318,7 @@ public sealed class AislingMapperProfile(
             RestPosition = obj.RestPosition,
             ShieldSprite = (byte)shieldSprite,
             Sprite = obj.Sprite == 0 ? null : obj.Sprite,
-            WeaponSprite = weapon?.ItemSprite?.DisplaySprite ?? 0
+            WeaponSprite = (ushort)(hideWeapon ? 0 : weapon?.ItemSprite?.DisplaySprite ?? 0)
         };
     }
 
