@@ -565,9 +565,6 @@ public class BountyBoardDialogScript : DialogScriptBase
                         var firstItemDefinition = EpicRewards.PickRandomWeighted();
                         var firstItemReward = ItemFactory.Create(firstItemDefinition);
 
-                        if (firstItemReward.DisplayName.ContainsI("Nyx"))
-                            source.Trackers.Counters.AddOrIncrement($"NyxItem{firstItemReward.UniqueId}");
-
                         source.GiveItemOrSendToBank(firstItemReward);
 
                         // Keep picking the second item until it's different from the first

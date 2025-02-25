@@ -165,7 +165,8 @@ public class PortalTrinketScript : DialogScriptBase
         "Undine Field Entrance",
         "Porte Forest Entrance",
         "Road to House Macabre",
-        "Nobis Maze Entrance"
+        "Nobis Maze Entrance",
+        "Limbo"
     ];
 
     private readonly IReactorTileFactory ReactorTileFactory;

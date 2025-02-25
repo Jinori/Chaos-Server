@@ -827,6 +827,7 @@ public static class CraftingRequirements
                 TemplateKey = "aquaedoncalming",
                 Ingredients = [new Ingredient("essenceofaquaedon", "Essence of Aquaedon", 3)],
                 Rank = "Basic",
+                Prefix = "Serene",
                 Level = 40,
                 Difficulty = 2,
                 Modification = item => item.AddScript<SerenePrefixScript>()
@@ -839,6 +840,7 @@ public static class CraftingRequirements
                 TemplateKey = "aquaedonclarity",
                 Ingredients = [new Ingredient("essenceofaquaedon", "Essence of Aquaedon", 1)],
                 Rank = "Beginner",
+                Prefix = "Meager",
                 Level = 5,
                 Difficulty = 1,
                 Modification = item => item.AddScript<MeagerPrefixScript>()
@@ -851,6 +853,7 @@ public static class CraftingRequirements
                 TemplateKey = "aquaedonresolve",
                 Ingredients = [new Ingredient("essenceofaquaedon", "Essence of Aquaedon", 10)],
                 Rank = "Adept",
+                Prefix = "Soothing",
                 Level = 90,
                 Difficulty = 5,
                 Modification = item => item.AddScript<SoothingPrefixScript>()
@@ -863,6 +866,7 @@ public static class CraftingRequirements
                 TemplateKey = "aquaedonwill",
                 Ingredients = [new Ingredient("essenceofaquaedon", "Essence of Aquaedon", 7)],
                 Rank = "Artisan",
+                Prefix = "Potent",
                 Level = 71,
                 Difficulty = 4,
                 Modification = item => item.AddScript<PotentPrefixScript>()
@@ -875,6 +879,7 @@ public static class CraftingRequirements
                 TemplateKey = "aquaedonwisdom",
                 Ingredients = [new Ingredient("essenceofaquaedon", "Essence of Aquaedon", 5)],
                 Rank = "Initiate",
+                Prefix = "Wise",
                 Level = 50,
                 Difficulty = 3,
                 Modification = item => item.AddScript<WisePrefixScript>()
@@ -887,6 +892,7 @@ public static class CraftingRequirements
                 TemplateKey = "ignatardestruction",
                 Ingredients = [new Ingredient("essenceofignatar", "Essence of Ignatar", 7)],
                 Rank = "Artisan",
+                Prefix = "Ruthless",
                 Level = 80,
                 Difficulty = 4,
                 Modification = item => item.AddScript<RuthlessPrefixScript>()
@@ -899,6 +905,7 @@ public static class CraftingRequirements
                 TemplateKey = "ignatarenvy",
                 Ingredients = [new Ingredient("essenceofignatar", "Essence of Ignatar", 1)],
                 Rank = "Beginner",
+                Prefix = "Swift",
                 Level = 3,
                 Difficulty = 1,
                 Modification = item => item.AddScript<SwiftPrefixScript>()
@@ -911,6 +918,7 @@ public static class CraftingRequirements
                 TemplateKey = "ignatargrief",
                 Ingredients = [new Ingredient("essenceofignatar", "Essence of Ignatar", 1)],
                 Rank = "Basic",
+                Prefix = "Minor",
                 Level = 24,
                 Difficulty = 2,
                 Modification = item => item.AddScript<MinorPrefixScript>()
@@ -923,6 +931,7 @@ public static class CraftingRequirements
                 TemplateKey = "ignatarjealousy",
                 Ingredients = [new Ingredient("essenceofignatar", "Essence of Ignatar", 5)],
                 Rank = "Initiate",
+                Prefix = "Crippling",
                 Level = 60,
                 Difficulty = 3,
                 Modification = item => item.AddScript<CripplingPrefixScript>()
@@ -935,6 +944,7 @@ public static class CraftingRequirements
                 TemplateKey = "ignatarregret",
                 Ingredients = [new Ingredient("essenceofignatar", "Essence of Ignatar", 3)],
                 Rank = "Initiate",
+                Prefix = "Hasty",
                 Level = 48,
                 Difficulty = 3,
                 Modification = item => item.AddScript<HastyPrefixScript>()
@@ -947,6 +957,7 @@ public static class CraftingRequirements
                 TemplateKey = "geolithconstitution",
                 Ingredients = [new Ingredient("essenceofgeolith", "Essence of Geolith", 5)],
                 Rank = "Initiate",
+                Prefix = "Hale",
                 Level = 50,
                 Difficulty = 3,
                 Modification = item => item.AddScript<HalePrefixScript>()
@@ -959,6 +970,7 @@ public static class CraftingRequirements
                 TemplateKey = "geolithfortitude",
                 Ingredients = [new Ingredient("essenceofgeolith", "Essence of Geolith", 7)],
                 Rank = "Artisan",
+                Prefix = "Eternal",
                 Level = 83,
                 Difficulty = 4,
                 Modification = item => item.AddScript<EternalPrefixScript>()
@@ -971,6 +983,7 @@ public static class CraftingRequirements
                 TemplateKey = "geolithgratitude",
                 Ingredients = [new Ingredient("essenceofgeolith", "Essence of Geolith", 1)],
                 Rank = "Beginner",
+                Prefix = "Skillful",
                 Level = 3,
                 Difficulty = 1,
                 Modification = item => item.AddScript<SkillfulPrefixScript>()
@@ -983,6 +996,7 @@ public static class CraftingRequirements
                 TemplateKey = "geolithpride",
                 Ingredients = [new Ingredient("essenceofgeolith", "Essence of Geolith", 3)],
                 Rank = "Basic",
+                Prefix = "Modest",
                 Level = 28,
                 Difficulty = 2,
                 Modification = item => item.AddScript<ModestPrefixScript>()
@@ -995,6 +1009,7 @@ public static class CraftingRequirements
                 TemplateKey = "geolithobsession",
                 Ingredients = [new Ingredient("essenceofgeolith", "Essence of Geolith", 5)],
                 Rank = "Initiate",
+                Prefix = "Powerful",
                 Level = 65,
                 Difficulty = 3,
                 Modification = item => item.AddScript<PowerfulPrefixScript>()
@@ -1007,6 +1022,7 @@ public static class CraftingRequirements
                 TemplateKey = "miraelisblessing",
                 Ingredients = [new Ingredient("essenceofmiraelis", "Essence of Miraelis", 3)],
                 Rank = "Basic",
+                Prefix = "Tiny",
                 Level = 34,
                 Difficulty = 2,
                 Modification = item => item.AddScript<TinyPrefixScript>()
@@ -1019,6 +1035,7 @@ public static class CraftingRequirements
                 TemplateKey = "miraelisharmony",
                 Ingredients = [new Ingredient("essenceofmiraelis", "Essence of Miraelis", 5)],
                 Rank = "Initiate",
+                Prefix = "Bright",
                 Level = 69,
                 Difficulty = 3,
                 Modification = item => item.AddScript<BrightPrefixScript>()
@@ -1031,6 +1048,7 @@ public static class CraftingRequirements
                 TemplateKey = "miraelisintellect",
                 Ingredients = [new Ingredient("essenceofmiraelis", "Essence of Miraelis", 5)],
                 Rank = "Initiate",
+                Prefix = "Brilliant",
                 Level = 50,
                 Difficulty = 3,
                 Modification = item => item.AddScript<BrilliantPrefixScript>()
@@ -1043,6 +1061,7 @@ public static class CraftingRequirements
                 TemplateKey = "miraelisnurturing",
                 Ingredients = [new Ingredient("essenceofmiraelis", "Essence of Miraelis", 7)],
                 Rank = "Artisan",
+                Prefix = "Ancient",
                 Level = 88,
                 Difficulty = 4,
                 Modification = item => item.AddScript<AncientPrefixScript>()
@@ -1055,6 +1074,7 @@ public static class CraftingRequirements
                 TemplateKey = "miraelisserenity",
                 Ingredients = [new Ingredient("essenceofmiraelis", "Essence of Miraelis", 1)],
                 Rank = "Beginner",
+                Prefix = "Mystical",
                 Level = 5,
                 Difficulty = 1,
                 Modification = item => item.AddScript<MysticalPrefixScript>()
@@ -1067,6 +1087,7 @@ public static class CraftingRequirements
                 TemplateKey = "serendaeladdiction",
                 Ingredients = [new Ingredient("essenceofserendael", "Essence of Serendael", 10)],
                 Rank = "Adept",
+                Prefix = "Persisting",
                 Level = 90,
                 Difficulty = 5,
                 Modification = item => item.AddScript<PersistingPrefixScript>()
@@ -1079,6 +1100,7 @@ public static class CraftingRequirements
                 TemplateKey = "serendaelchance",
                 Ingredients = [new Ingredient("essenceofserendael", "Essence of Serendael", 5)],
                 Rank = "Initiate",
+                Prefix = "Focused",
                 Level = 55,
                 Difficulty = 3,
                 Modification = item => item.AddScript<FocusedPrefixScript>()
@@ -1091,6 +1113,7 @@ public static class CraftingRequirements
                 TemplateKey = "serendaelluck",
                 Ingredients = [new Ingredient("essenceofserendael", "Essence of Serendael", 1)],
                 Rank = "Basic",
+                Prefix = "Lucky",
                 Level = 11,
                 Difficulty = 2,
                 Modification = item => item.AddScript<LuckyPrefixScript>()
@@ -1103,6 +1126,7 @@ public static class CraftingRequirements
                 TemplateKey = "serendaelmagic",
                 Ingredients = [new Ingredient("essenceofserendael", "Essence of Serendael", 3)],
                 Rank = "Initiate",
+                Prefix = "Airy",
                 Level = 41,
                 Difficulty = 3,
                 Modification = item => item.AddScript<AiryPrefixScript>()
@@ -1115,6 +1139,7 @@ public static class CraftingRequirements
                 TemplateKey = "serendaelroll",
                 Ingredients = [new Ingredient("essenceofserendael", "Essence of Serendael", 7)],
                 Rank = "Artisan",
+                Prefix = "Precision",
                 Level = 71,
                 Difficulty = 4,
                 Modification = item => item.AddScript<PrecisionPrefixScript>()
@@ -1127,6 +1152,7 @@ public static class CraftingRequirements
                 TemplateKey = "skandaradrive",
                 Ingredients = [new Ingredient("essenceofskandara", "Essence of Skandara", 7)],
                 Rank = "Artisan",
+                Prefix = "Savage",
                 Level = 75,
                 Difficulty = 4,
                 Modification = item => item.AddScript<SavagePrefixScript>()
@@ -1139,6 +1165,7 @@ public static class CraftingRequirements
                 TemplateKey = "skandaramight",
                 Ingredients = [new Ingredient("essenceofskandara", "Essence of Skandara", 1)],
                 Rank = "Basic",
+                Prefix = "Mighty",
                 Level = 16,
                 Difficulty = 2,
                 Modification = item => item.AddScript<MightyPrefixScript>()
@@ -1151,6 +1178,7 @@ public static class CraftingRequirements
                 TemplateKey = "skandarapierce",
                 Ingredients = [new Ingredient("essenceofskandara", "Essence of Skandara", 10)],
                 Rank = "Adept",
+                Prefix = "Blazing",
                 Level = 95,
                 Difficulty = 5,
                 Modification = item => item.AddScript<BlazingPrefixScript>()
@@ -1163,6 +1191,7 @@ public static class CraftingRequirements
                 TemplateKey = "skandarastrength",
                 Ingredients = [new Ingredient("essenceofskandara", "Essence of Skandara", 5)],
                 Rank = "Initiate",
+                Prefix = "Tough",
                 Level = 50,
                 Difficulty = 3,
                 Modification = item => item.AddScript<ToughPrefixScript>()
@@ -1175,6 +1204,7 @@ public static class CraftingRequirements
                 TemplateKey = "skandaratriumph",
                 Ingredients = [new Ingredient("essenceofskandara", "Essence of Skandara", 3)],
                 Rank = "Initiate",
+                Prefix = "Valiant",
                 Level = 44,
                 Difficulty = 3,
                 Modification = item => item.AddScript<ValiantPrefixScript>()
@@ -1187,6 +1217,7 @@ public static class CraftingRequirements
                 TemplateKey = "theselenebalance",
                 Ingredients = [new Ingredient("essenceoftheselene", "Essence of Theselene", 7)],
                 Rank = "Artisan",
+                Prefix = "Tight",
                 Level = 71,
                 Difficulty = 4,
                 Modification = item => item.AddScript<TightPrefixScript>()
@@ -1199,6 +1230,7 @@ public static class CraftingRequirements
                 TemplateKey = "theselenedexterity",
                 Ingredients = [new Ingredient("essenceoftheselene", "Essence of Theselene", 5)],
                 Rank = "Initiate",
+                Prefix = "Nimble",
                 Level = 50,
                 Difficulty = 3,
                 Modification = item => item.AddScript<NimblePrefixScript>()
@@ -1211,6 +1243,7 @@ public static class CraftingRequirements
                 TemplateKey = "theseleneelusion",
                 Ingredients = [new Ingredient("essenceoftheselene", "Essence of Theselene", 1)],
                 Rank = "Beginner",
+                Prefix = "Shrouded",
                 Level = 5,
                 Difficulty = 1,
                 Modification = item => item.AddScript<ShroudedPrefixScript>()
@@ -1223,6 +1256,7 @@ public static class CraftingRequirements
                 TemplateKey = "theselenerisk",
                 Ingredients = [new Ingredient("essenceoftheselene", "Essence of Theselene", 10)],
                 Rank = "Adept",
+                Prefix = "Cursed",
                 Level = 90,
                 Difficulty = 5,
                 Modification = item => item.AddScript<CursedPrefixScript>()
@@ -1235,6 +1269,7 @@ public static class CraftingRequirements
                 TemplateKey = "theseleneshadow",
                 Ingredients = [new Ingredient("essenceoftheselene", "Essence of Theselene", 3)],
                 Rank = "Basic",
+                Prefix = "Darkened",
                 Level = 37,
                 Difficulty = 2,
                 Modification = item => item.AddScript<DarkenedPrefixScript>()
@@ -1247,6 +1282,7 @@ public static class CraftingRequirements
                 TemplateKey = "zephyragust",
                 Ingredients = [new Ingredient("essenceofzephyra", "Essence of Zephyra", 10)],
                 Rank = "Adept",
+                Prefix = "Howling",
                 Level = 97,
                 Difficulty = 5,
                 Modification = item => item.AddScript<HowlingPrefixScript>()
@@ -1259,6 +1295,7 @@ public static class CraftingRequirements
                 TemplateKey = "zephyramist",
                 Ingredients = [new Ingredient("essenceofzephyra", "Essence of Zephyra", 3)],
                 Rank = "Initiate",
+                Prefix = "Soft",
                 Level = 45,
                 Difficulty = 3,
                 Modification = item => item.AddScript<SoftPrefixScript>()
@@ -1271,6 +1308,7 @@ public static class CraftingRequirements
                 TemplateKey = "zephyraspirit",
                 Ingredients = [new Ingredient("essenceofzephyra", "Essence of Zephyra", 1)],
                 Rank = "Basic",
+                Prefix = "Breezy",
                 Level = 20,
                 Difficulty = 2,
                 Modification = item => item.AddScript<BreezyPrefixScript>()
@@ -1283,6 +1321,7 @@ public static class CraftingRequirements
                 TemplateKey = "zephyravortex",
                 Ingredients = [new Ingredient("essenceofzephyra", "Essence of Zephyra", 7)],
                 Rank = "Artisan",
+                Prefix = "Whirling",
                 Level = 78,
                 Difficulty = 4,
                 Modification = item => item.AddScript<WhirlingPrefixScript>()
@@ -1295,6 +1334,7 @@ public static class CraftingRequirements
                 TemplateKey = "zephyrawind",
                 Ingredients = [new Ingredient("essenceofzephyra", "Essence of Zephyra", 5)],
                 Rank = "Initiate",
+                Prefix = "Hazy",
                 Level = 58,
                 Difficulty = 3,
                 Modification = item => item.AddScript<HazyPrefixScript>()
@@ -1307,6 +1347,7 @@ public static class CraftingRequirements
                 TemplateKey = "ignatardominance",
                 Ingredients = [new Ingredient("essenceofignatar", "Essence of Ignatar", 10)],
                 Rank = "Advanced",
+                Prefix = "Fury",
                 Level = 99,
                 Difficulty = 6,
                 Modification = item => item.AddScript<FuryPrefixScript>()
@@ -1319,6 +1360,7 @@ public static class CraftingRequirements
                 TemplateKey = "geolithtestimony",
                 Ingredients = [new Ingredient("essenceofgeolith", "Essence of Geolith", 10)],
                 Rank = "Advanced",
+                Prefix = "Sturdy",
                 Level = 99,
                 Difficulty = 6,
                 Modification = item => item.AddScript<SturdyPrefixScript>()
@@ -1331,6 +1373,7 @@ public static class CraftingRequirements
                 TemplateKey = "miraelisbrace",
                 Ingredients = [new Ingredient("essenceofmiraelis", "Essence of Miraelis", 10)],
                 Rank = "Advanced",
+                Prefix = "Resilient",
                 Level = 99,
                 Difficulty = 6,
                 Modification = item => item.AddScript<ResilientPrefixScript>()
@@ -1343,6 +1386,7 @@ public static class CraftingRequirements
                 TemplateKey = "aquaedoncommitment",
                 Ingredients = [new Ingredient("essenceofaquaedon", "Essence of Aquaedon", 10)],
                 Rank = "Advanced",
+                Prefix = "Spirited",
                 Level = 99,
                 Difficulty = 6,
                 Modification = item => item.AddScript<SpiritedPrefixScript>()
@@ -1355,6 +1399,7 @@ public static class CraftingRequirements
                 TemplateKey = "serendaelsuccess",
                 Ingredients = [new Ingredient("essenceofserendael", "Essence of Serendael", 10)],
                 Rank = "Advanced",
+                Prefix = "Pristine",
                 Level = 99,
                 Difficulty = 6,
                 Modification = item => item.AddScript<PristinePrefixScript>()
@@ -1367,6 +1412,7 @@ public static class CraftingRequirements
                 TemplateKey = "theselenesorrow",
                 Ingredients = [new Ingredient("essenceoftheselene", "Essence of Theselene", 10)],
                 Rank = "Advanced",
+                Prefix = "Shaded",
                 Level = 99,
                 Difficulty = 6,
                 Modification = item => item.AddScript<ShadedPrefixScript>()
@@ -1379,6 +1425,7 @@ public static class CraftingRequirements
                 TemplateKey = "skandaraoffense",
                 Ingredients = [new Ingredient("essenceofskandara", "Essence of Skandara", 15)],
                 Rank = "Expert",
+                Prefix = "Sinister",
                 Level = 99,
                 Difficulty = 7,
                 Modification = item => item.AddScript<SinisterPrefixScript>()
@@ -1391,6 +1438,7 @@ public static class CraftingRequirements
                 TemplateKey = "zephyrapower",
                 Ingredients = [new Ingredient("essenceofzephyra", "Essence of Zephyra", 15)],
                 Rank = "Expert",
+                Prefix = "Gleaming",
                 Level = 99,
                 Difficulty = 7,
                 Modification = item => item.AddScript<GleamingPrefixScript>()
@@ -1403,6 +1451,7 @@ public static class CraftingRequirements
                 TemplateKey = "ignatardeficit",
                 Ingredients = [new Ingredient("essenceofignatar", "Essence of Ignatar", 15)],
                 Rank = "Expert",
+                Prefix = "Infernal",
                 Level = 99,
                 Difficulty = 7,
                 Modification = item => item.AddScript<InfernalPrefixScript>()
@@ -1415,6 +1464,7 @@ public static class CraftingRequirements
                 TemplateKey = "geolithbarrier",
                 Ingredients = [new Ingredient("essenceofgeolith", "Essence of Geolith", 15)],
                 Rank = "Expert",
+                Prefix = "Primal",
                 Level = 99,
                 Difficulty = 7,
                 Modification = item => item.AddScript<PrimalPrefixScript>()
@@ -1427,6 +1477,7 @@ public static class CraftingRequirements
                 TemplateKey = "miraelisroots",
                 Ingredients = [new Ingredient("essenceofmiraelis", "Essence of Miraelis", 15)],
                 Rank = "Expert",
+                Prefix = "Thick",
                 Level = 99,
                 Difficulty = 7,
                 Modification = item => item.AddScript<ThickPrefixScript>()
@@ -1449,6 +1500,8 @@ public static class CraftingRequirements
         public int Level { get; set; }
         public Action<Item>? Modification { get; set; }
         public string Name { get; set; } = null!;
+
+        public string Prefix { get; set; } = null!;
         public string Rank { get; set; } = null!;
         public string TemplateKey { get; set; } = null!;
     }

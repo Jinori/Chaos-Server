@@ -38,6 +38,16 @@ namespace Chaos.Scripting.AislingScripts;
 
 public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHealComponentOptions
 {
+    private static readonly HashSet<string> SkippedEffects =
+    [
+        "Hot Chocolate",
+        "ValentinesCandy",
+        "GMKnowledge",
+        "Strong Knowledge",
+        "Knowledge",
+        "Werewolf"
+    ];
+
     private readonly HashSet<string> ArenaKeys = new(StringComparer.OrdinalIgnoreCase)
     {
         "arena_battle_ring",
@@ -49,12 +59,6 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         "arena_pitfight"
     };
 
-    
-    private static readonly HashSet<string> SkippedEffects =
-    [
-        "Hot Chocolate", "ValentinesCandy", "GMKnowledge", "Strong Knowledge", "Knowledge", "Werewolf"
-    ];
-    
     private readonly IStore<BulletinBoard> BoardStore;
     private readonly IIntervalTimer CleanupSkillsSpellsTimer;
     private readonly IIntervalTimer ClearOrangeBarTimer;
@@ -184,7 +188,9 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         "Nobis Weapon Shop",
         "Mileth Tailor",
         "Thanksgiving Challenge",
-        "Santa's Challenge"
+        "Santa's Challenge",
+        "Training Grounds",
+        "Damage Game"
     ];
 
     private readonly IMerchantFactory MerchantFactory;
@@ -328,33 +334,33 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             "Skandara"  => BoardStore.Load("skandaraShrine"),
             "Serendael" => BoardStore.Load("serendaelShrine"),
             "Theselene" => BoardStore.Load("theseleneShrine"),
-            null => null,
-            _ => throw new ArgumentOutOfRangeException()
+            null        => null,
+            _           => throw new ArgumentOutOfRangeException()
         };
 
-        if (board != null) 
+        if (board != null)
             yield return board;
 
         var nationBoard = Subject.Nation switch
         {
-            Nation.Exile => null,
-            Nation.Suomi => BoardStore.Load("nation_board_suomi"),
-            Nation.Ellas => BoardStore.Load("nation_board_ellas"),
-            Nation.Loures => BoardStore.Load("nation_board_loures"),
-            Nation.Mileth => BoardStore.Load("nation_board_mileth"),
-            Nation.Tagor => BoardStore.Load("nation_board_tagor"),
-            Nation.Rucesion => BoardStore.Load("nation_board_rucesion"),
-            Nation.Noes => BoardStore.Load("nation_board_noes"),
+            Nation.Exile      => null,
+            Nation.Suomi      => BoardStore.Load("nation_board_suomi"),
+            Nation.Ellas      => BoardStore.Load("nation_board_ellas"),
+            Nation.Loures     => BoardStore.Load("nation_board_loures"),
+            Nation.Mileth     => BoardStore.Load("nation_board_mileth"),
+            Nation.Tagor      => BoardStore.Load("nation_board_tagor"),
+            Nation.Rucesion   => BoardStore.Load("nation_board_rucesion"),
+            Nation.Noes       => BoardStore.Load("nation_board_noes"),
             Nation.Illuminati => BoardStore.Load("nation_board_illuminati"),
-            Nation.Piet => BoardStore.Load("nation_board_piet"),
-            Nation.Atlantis => BoardStore.Load("nation_board_atlantis"),
-            Nation.Abel => BoardStore.Load("nation_board_abel"),
-            Nation.Undine => BoardStore.Load("nation_board_undine"),
-            Nation.Labyrinth => BoardStore.Load("nation_board_labyrinth"),
-            _ => throw new ArgumentOutOfRangeException()
+            Nation.Piet       => BoardStore.Load("nation_board_piet"),
+            Nation.Atlantis   => BoardStore.Load("nation_board_atlantis"),
+            Nation.Abel       => BoardStore.Load("nation_board_abel"),
+            Nation.Undine     => BoardStore.Load("nation_board_undine"),
+            Nation.Labyrinth  => BoardStore.Load("nation_board_labyrinth"),
+            _                 => throw new ArgumentOutOfRangeException()
         };
 
-        if (nationBoard != null) 
+        if (nationBoard != null)
             yield return nationBoard;
     }
 
@@ -693,7 +699,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         {
             if (SkippedEffects.Contains(effect.Name))
                 continue;
-            
+
             Subject.Effects.Dispel(effect.Name);
         }
 
@@ -833,7 +839,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
         if (MapsToNotPunishDeathOn.Contains(Subject.MapInstance.Name))
             return;
-        
+
         if (Subject.MapInstance is { IsShard: true, BaseInstanceId: "guildhallmain" })
             return;
 
@@ -1127,6 +1133,11 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             var equipment = Subject.Equipment.ToList();
             var inventory = Subject.Inventory.ToList();
             var bank = Subject.Bank.ToList();
+            var counters = Subject.Trackers.Counters.ToList();
+
+            foreach (var counter in counters)
+                if (counter.Key.ContainsI("NyxItem"))
+                    Subject.Trackers.Counters.Remove(counter.Key, out _);
 
             foreach (var item in equipment)
             {
@@ -1442,6 +1453,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             RemoveAndNotifyIfBothExist("dragonstrike", "eaglestrike");
             RemoveAndNotifyIfBothExist("dragonstrike", "phoenixstrike");
             RemoveAndNotifyIfBothExist("phoenixstrike", "eaglestrike");
+            RemoveAndNotifyIfBothExist("battlefieldsweep", "relentlessdraw");
             RemoveAndNotifyIfBothExist("roundhousekick", "kick");
             RemoveAndNotifyIfBothExist("mantiskick", "highkick");
             RemoveAndNotifyIfBothExist("smokescreen", "throwsmokebomb");
