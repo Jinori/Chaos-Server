@@ -641,7 +641,7 @@ public static class CraftingRequirements
                 TemplateKey = "potentjuggernautbrewformula",
                 Ingredients =
                 [
-                    new Ingredient("blossomofbetrayal", "blossomofbetrayal", 1),
+                    new Ingredient("blossomofbetrayal", "Blossom of Betrayal", 1),
                     new Ingredient("superiormonsterextract", "Superior Monster Extract", 3),
                     new Ingredient("emptybottle", "Empty Bottle", 1)
                 ],
