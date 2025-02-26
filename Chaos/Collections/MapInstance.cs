@@ -746,6 +746,7 @@ public sealed class MapInstance : IScripted<IMapScript>, IDeltaUpdatable
                     return;
                 }
 
+                //if the limit is 1, do not re-use instances
                 if (ShardingOptions.Limit == 1) { } else
                     foreach (var instance in Shards.Values.Prepend(this))
                     {
@@ -770,19 +771,16 @@ public sealed class MapInstance : IScripted<IMapScript>, IDeltaUpdatable
 
                 break;
             }
-            case ShardingType.GuildHouse:
+            case ShardingType.AbsoluteGuildLimit:
             {
-                if (aisling.Guild == null)
-                {
-                    aisling.SendOrangeBarMessage("You are not in a guild.");
-                    var exitMapInstance = SimpleCache.Get<MapInstance>(ShardingOptions.ExitLocation.Map);
-                    aisling.TraverseMap(exitMapInstance, ShardingOptions.ExitLocation);
-                    return;
-                }
-                
                 //if any guild member is already in this instance or a shard of this instance
-                var shard = aisling.Guild?.GetOnlineMembers().Where(a => a.Guild?.Name == aisling.Guild.Name && !a.Equals(aisling)).Select(m => m.MapInstance).FirstOrDefault(m => m.InstanceId.EqualsI(InstanceId) || (m.IsShard && m.BaseInstanceId!.EqualsI(InstanceId)));
-                
+                var shard = aisling.Guild
+                                   ?.GetOnlineMembers()
+                                   .Where(a => !a.Equals(aisling))
+                                   .Select(m => m.MapInstance)
+                                   .FirstOrDefault(
+                                       m => m.InstanceId.EqualsI(InstanceId) || (m.IsShard && m.BaseInstanceId!.EqualsI(InstanceId)));
+
                 if (shard != null)
                 {
                     //add this player to that instance or shard
@@ -790,9 +788,29 @@ public sealed class MapInstance : IScripted<IMapScript>, IDeltaUpdatable
 
                     return;
                 }
-                
+
+                //if the limit is 1, do not re-use instances
+                if (ShardingOptions.Limit == 1) { } else
+                    foreach (var instance in Shards.Values.Prepend(this))
+                    {
+                        //get the number of guilds in this instance
+                        var guildCount = instance.Objects
+                                                 .Values<Aisling>()
+                                                 .GroupBy(a => a.Guild)
+                                                 .Sum(gld => gld.Key == null ? gld.Count() : 1);
+
+                        //if this instance isnt at the guild limit
+                        if (guildCount < ShardingOptions.Limit)
+                        {
+                            //add this player to that instance and return
+                            instance.InnerAddEntity(aisling, point);
+
+                            return;
+                        }
+                    }
+
                 //if we couldnt find a suitable instance to place the player, generate a new one and add them to it
-                AddToNewGuildShard(aisling, point);
+                AddToNewShard(aisling, point);
 
                 break;
             }
@@ -941,6 +959,84 @@ public sealed class MapInstance : IScripted<IMapScript>, IDeltaUpdatable
                             message => newAisling.SendActiveMessage(message)));
 
                     newAisling.SendActiveMessage("The map has reached it's group limit");
+                    newAisling.SendActiveMessage("You will be removed from the map in 15 seconds");
+                }
+
+                //for each timer that has expired
+                //move the player to the exit and remove the timer
+                foreach (var kvp in ShardLimiterTimers.IntersectBy(aislingsToRemove, kvp => kvp.Key)
+                                                      .ToList())
+                    if (kvp.Value.IntervalElapsed)
+                    {
+                        var exitMapInstance = SimpleCache.Get<MapInstance>(ShardingOptions.ExitLocation.Map);
+                        kvp.Key.TraverseMap(exitMapInstance, ShardingOptions.ExitLocation);
+                        ShardLimiterTimers.Remove(kvp.Key, out _);
+                    }
+
+                break;
+            }
+            case ShardingType.AbsoluteGuildLimit:
+            {
+                var aislings = Objects.Values<Aisling>()
+                                      .Where(aisling => !aisling.IsAdmin)
+                                      .ToList();
+
+                //number of unique groups in the zone
+                var guilds = aislings.GroupBy(a => a.Guild)
+                                     .SelectMany(
+                                         gld =>
+                                         {
+                                             if (gld.Key == null)
+                                                 return gld.Select(
+                                                     m => new List<Aisling>
+                                                     {
+                                                         m
+                                                     });
+
+                                             return
+                                             [
+                                                 gld.Where(m => m.MapInstance == this)
+                                                    .ToList()
+                                             ];
+                                         })
+                                     .ToList();
+
+                var guildCount = guilds.Count;
+
+                var amountOverLimit = guildCount - limit;
+
+                //if we're not over the limit, do nothing
+                if (amountOverLimit <= 0)
+                    return;
+
+                var guildsToRemove = guilds.OrderByDescending(gld => gld.Max(a => a.Id))
+                                           .ThenBy(gld => gld.Count)
+                                           .Take(amountOverLimit)
+                                           .ToList();
+
+                var aislingsToRemove = guildsToRemove.SelectMany(l => l)
+                                                     .ToList();
+
+                //for each timer that isnt for one of these aislings
+                //remove that timer
+                foreach (var aislingToRemove in ShardLimiterTimers.Keys.Except(aislingsToRemove))
+                    ShardLimiterTimers.Remove(aislingToRemove, out _);
+
+                //for each aisling that doesnt have a timer
+                //create a timer and send an initial warning
+                foreach (var newAisling in aislingsToRemove.Except(ShardLimiterTimers.Keys))
+                {
+                    ShardLimiterTimers.TryAdd(
+                        newAisling,
+                        new PeriodicMessageTimer(
+                            TimeSpan.FromSeconds(15),
+                            TimeSpan.FromSeconds(5),
+                            TimeSpan.FromSeconds(5),
+                            TimeSpan.FromSeconds(1),
+                            "You will be removed from the map in {Time}",
+                            message => newAisling.SendActiveMessage(message)));
+
+                    newAisling.SendActiveMessage("The map has reached it's guild limit");
                     newAisling.SendActiveMessage("You will be removed from the map in 15 seconds");
                 }
 

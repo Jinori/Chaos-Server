@@ -83,9 +83,13 @@ public class GuildMemberPromoteScript : GuildScriptBase
             return;
         }
 
-        //ensure the player has permission to promote members (Tier 1+)
+        //ensure the player has permission to promote members
         if (!IsOfficer(sourceRank))
+        {
             Subject.Reply(source, "You do not have permission to promote members.", "generic_guild_members_initial");
+
+            return;
+        }
 
         //ensure the player to promote is in the guild
         if (!guild.HasMember(name))
@@ -96,9 +100,11 @@ public class GuildMemberPromoteScript : GuildScriptBase
         }
 
         var targetCurrentRank = guild.RankOf(name);
-        
+        //leader can promote anyone that is currently 1 tier higher than them (can promote TO their own tier, from 1 rank away)
+        //officer can promote anyone that is currently 2 tiers higher than them (can promote TO 1 tier higher than them, from 2 ranks away)
+        var factor = IsLeader(sourceRank) ? 1 : 2;
         //ensure the player to promote is not the same or higher rank (same or lower tier)
-        if (!IsSuperiorRank(sourceRank, targetCurrentRank))
+        if (!IsSuperiorRank(sourceRank, targetCurrentRank, factor))
         {
             Subject.Reply(source, $"You do not have permission to promote {name}.", "generic_guild_members_initial");
 
@@ -112,19 +118,8 @@ public class GuildMemberPromoteScript : GuildScriptBase
             return;
         }
 
-        //grab the aisling to promote
-        var aislingToPromote = ClientRegistry.FirstOrDefault(cli => cli.Aisling.Name.EqualsI(name))
-                                             ?.Aisling;
-
-        //ensure the aisling is online
-        if (aislingToPromote is null)
-        {
-            Subject.Reply(source, $"{name} is not online.", "generic_guild_members_initial");
-
-            return;
-        }
         
-        guild.ChangeRank(aislingToPromote, targetCurrentRank.Tier - 1, source);
+        guild.ChangeRank(name, targetCurrentRank.Tier - 1, source);
         
         GuildStore.Save(guild);
 
@@ -133,11 +128,10 @@ public class GuildMemberPromoteScript : GuildScriptBase
               .WithProperty(Subject.DialogSource)
               .WithProperty(source)
               .WithProperty(guild)
-              .WithProperty(aislingToPromote)
               .LogInformation(
                   "Aisling {@AislingName} promoted {@TargetAislingName} to {@RankName} in {@GuildName}",
                   source.Name,
-                  aislingToPromote.Name,
+                  name,
                   sourceRank.Name,
                   guild.Name);
     }
@@ -211,17 +205,18 @@ public class GuildMemberPromoteScript : GuildScriptBase
         source.SendOrangeBarMessage($"You give leadership over to {aislingToPromote.Name}.");
         
         GuildStore.Save(guild);
+        //change the rank of the aisling
+        guild.ChangeRank(name, targetCurrentRank.Tier - 1, source);
 
         Logger.WithTopics(Topics.Entities.Guild, Topics.Actions.Promote)
               .WithProperty(Subject)
               .WithProperty(Subject.DialogSource)
               .WithProperty(source)
               .WithProperty(guild)
-              .WithProperty(aislingToPromote)
               .LogInformation(
                   "Aisling {@AislingName} promoted {@TargetAislingName} to {@RankName} in {@GuildName}",
                   source.Name,
-                  aislingToPromote.Name,
+                  name,
                   sourceRank.Name,
                   guild.Name);
     }
