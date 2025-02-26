@@ -835,7 +835,6 @@ public sealed class MapInstance : IScripted<IMapScript>, IDeltaUpdatable
         {
             case ShardingType.None:
             case ShardingType.PlayerLimit:
-            case ShardingType.GuildHouse:
                 break;
             case ShardingType.AbsolutePlayerLimit:
             {

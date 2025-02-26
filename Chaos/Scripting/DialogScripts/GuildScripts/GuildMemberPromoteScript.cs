@@ -190,18 +190,18 @@ public class GuildMemberPromoteScript : GuildScriptBase
 
         if (targetCurrentRank.Tier == 3)
         {
-            guild.ChangeRank(aislingToPromote, targetCurrentRank.Tier - 3, source);
+            guild.ChangeRank(name, targetCurrentRank.Tier - 3, source);
         }
         if (targetCurrentRank.Tier == 2)
         {
-            guild.ChangeRank(aislingToPromote, targetCurrentRank.Tier - 2, source);
+            guild.ChangeRank(name, targetCurrentRank.Tier - 2, source);
         }
         if (targetCurrentRank.Tier == 1)
         {
-            guild.ChangeRank(aislingToPromote, targetCurrentRank.Tier - 1, source);
+            guild.ChangeRank(name, targetCurrentRank.Tier - 1, source);
         }
         
-        guild.ChangeRank(source, sourceRank.Tier + 1, source);
+        guild.ChangeRank(name, sourceRank.Tier + 1, source);
         source.SendOrangeBarMessage($"You give leadership over to {aislingToPromote.Name}.");
         
         GuildStore.Save(guild);

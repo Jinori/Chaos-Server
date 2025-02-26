@@ -199,6 +199,8 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     private readonly ISkillFactory SkillFactory;
     private readonly IIntervalTimer SleepAnimationTimer;
     private readonly ISpellFactory SpellFactory;
+    private readonly IDialogFactory DialogFactory;
+    
     public IApplyDamageScript ApplyDamageScript { get; init; }
 
     /// <inheritdoc />
@@ -263,7 +265,8 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         ILogger<DefaultAislingScript> logger,
         IItemFactory itemFactory,
         ISpellFactory spellFactory,
-        ISkillFactory skillFactory)
+        ISkillFactory skillFactory,
+        IDialogFactory dialogFactory)
         : base(subject)
     {
         MailStore = mailStore;
@@ -272,6 +275,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         ItemFactory = itemFactory;
         SpellFactory = spellFactory;
         SkillFactory = skillFactory;
+        DialogFactory = dialogFactory;
         OneSecondTimer = new IntervalTimer(TimeSpan.FromSeconds(1));
         RestrictionBehavior = new RestrictionBehavior();
         VisibilityBehavior = new VisibilityBehavior();
@@ -315,6 +319,19 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
     /// <inheritdoc />
     public override bool CanUseSpell(Spell spell) => RestrictionBehavior.CanUseSpell(Subject, spell);
+
+    
+    public override void OnLogin()
+    {
+        if (Subject.Trackers.LastLogout is { } lastLogout && (lastLogout.AddSeconds(2) <= DateTime.UtcNow))
+        {
+            // Two hours have passed since the last login.
+            var merch = MerchantFactory.Create("terminus", Subject.MapInstance, Subject);
+            var dialog = DialogFactory.Create("terminus_homeoptions", merch);
+            dialog.Display(Subject);
+        }
+    }
+    
 
     /// <inheritdoc />
     public override IEnumerable<BoardBase> GetBoardList()

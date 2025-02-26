@@ -3,6 +3,7 @@ using Chaos.IO.Memory;
 using Chaos.Networking.Abstractions.Definitions;
 using Chaos.Networking.Entities.Server;
 using Chaos.Packets.Abstractions;
+using System.Linq;
 
 namespace Chaos.Networking.Converters.Server;
 
@@ -29,9 +30,7 @@ public sealed class RedirectConverter : PacketConverterBase<RedirectArgs>
         return new RedirectArgs
         {
             EndPoint = new IPEndPoint(
-                new IPAddress(
-                    address.Reverse()
-                           .ToArray()),
+                new IPAddress(address.AsEnumerable().Reverse().ToArray()),
                 port),
             Seed = seed,
             Key = key,
@@ -46,7 +45,7 @@ public sealed class RedirectConverter : PacketConverterBase<RedirectArgs>
         writer.WriteBytes(
             args.EndPoint
                 .Address
-                .GetAddressBytes()
+                .GetAddressBytes().AsEnumerable()
                 .Reverse()
                 .ToArray());
         writer.WriteUInt16((ushort)args.EndPoint.Port);
