@@ -323,9 +323,8 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     
     public override void OnLogin()
     {
-        if (Subject.Trackers.LastLogout is { } lastLogout && (lastLogout.AddSeconds(2) <= DateTime.UtcNow))
+        if (Subject.Trackers.LastLogout is { } lastLogout && (lastLogout.AddHours(2) <= DateTime.UtcNow))
         {
-            // Two hours have passed since the last login.
             var merch = MerchantFactory.Create("terminus", Subject.MapInstance, Subject);
             var dialog = DialogFactory.Create("terminus_homeoptions", merch);
             dialog.Display(Subject);

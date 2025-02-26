@@ -23,7 +23,7 @@ public class ArmorPierceEffect : EffectBase, NonOverwritableEffectComponent.INon
         "Armor Pierce"
     ];
 
-    public override byte Icon => 65;
+    public override byte Icon => 63;
 
     public override string Name => "Armor Pierce";
 

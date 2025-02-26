@@ -5,6 +5,7 @@ using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Storage.Abstractions;
+using Humanizer;
 
 namespace Chaos.Scripting.DialogScripts.Generic;
 
@@ -48,6 +49,8 @@ public class TerminusHomeOptionsScript : DialogScriptBase
 
         if (!Subject.HasOption(option.OptionText))
             Subject.Options.Add(option);
+        
+        Subject.InjectTextParameters(source.Trackers.LastLogout.Humanize());
     }
 
     /// <inheritdoc />
@@ -63,6 +66,7 @@ public class TerminusHomeOptionsScript : DialogScriptBase
             {
                 var map = _simpleCache.Get<MapInstance>("guildhallmain");
                 source.TraverseMap(map, new Point(98, 46));
+                Subject.Close(source);
                 return;
             }
             case 2:
@@ -73,7 +77,7 @@ public class TerminusHomeOptionsScript : DialogScriptBase
                     var map = _simpleCache.Get<MapInstance>(location.DestinationMapKey);
                     source.TraverseMap(map, location.Origin);
                 }
-
+                Subject.Close(source);
                 break;
             }
         }

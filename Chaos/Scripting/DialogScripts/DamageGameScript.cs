@@ -1,46 +1,137 @@
 using System.Text;
-using System.Text.Json;
 using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.DarkAges.Extensions;
-using Chaos.Extensions.Common;
-using Chaos.IO.FileSystem;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Storage.Abstractions;
+using Humanizer;
 
 namespace Chaos.Scripting.DialogScripts;
 
 public class DamageGameScript : DialogScriptBase
 {
-    private readonly IConfiguration Configuration;
     private readonly ISimpleCache SimpleCache;
+    public readonly IStorage<DamageGameObj> DamageLeaderboard;
 
     /// <inheritdoc />
-    public DamageGameScript(Dialog subject, ISimpleCache simpleCache)
+    public DamageGameScript(Dialog subject, ISimpleCache simpleCache, IStorage<DamageGameObj> damageGameStorage)
         : base(subject)
     {
         SimpleCache = simpleCache;
-        Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", true, true).Build();
+        DamageLeaderboard = damageGameStorage;
     }
 
-    public static void DamageGame(Aisling player, IConfiguration configuration)
+    public void DamageGame(Aisling source)
     {
-        var stagingDirectory = configuration.GetSection("Options:ChaosOptions:StagingDirectory").Value;
-        var aislingDirectory = configuration.GetSection("Options:DamageGameOptions:Directory").Value;
+        // Retrieve leaderboard entries
+        var leaderboard = DamageLeaderboard.Value.Entries;
 
-        var directory = stagingDirectory + aislingDirectory;
-        var filePath = Path.Combine(stagingDirectory + aislingDirectory, "soloDamageGame.json");
+        // Build the leaderboard display
+        var builder = new StringBuilder();
+        builder.AppendLineFColored(MessageColor.Silver, "Damage Game Leaderboard:");
+        builder.AppendLine();
+        builder.AppendLineFColored(MessageColor.Orange, $"{"Name",-15} {"Damage",-10} {"DPS",-10} {"Class",-10}");
+        builder.AppendLineFColored(MessageColor.Gainsboro, new string('-', 45));
 
-        directory.SafeExecute(
-            _ =>
+        // Order by victories (descending), then losses (ascending)
+        var isSilver = true;
+        
+            foreach (var entry in leaderboard
+                                  .OrderByDescending(kvp => kvp.Value.Damage)
+                                  .ThenBy(kvp => kvp.Value.DamagePerSecond))
             {
-                Save(filePath, player);
-            });
+                var stats = entry.Value;
+                var newClass = "";
+
+                if (stats.SubbedClass != BaseClass.Peasant)
+                {
+                    //Priest Sub
+                    if (stats.SubbedClass is BaseClass.Priest && stats.BaseClass is BaseClass.Warrior)
+                        newClass = "Faithblade";
+                
+                    if (stats.SubbedClass is BaseClass.Priest && stats.BaseClass is BaseClass.Monk)
+                        newClass = "Druid";
+                
+                    if (stats.SubbedClass is BaseClass.Priest && stats.BaseClass is BaseClass.Wizard)
+                        newClass = "Prizard";
+                
+                    if (stats.SubbedClass is BaseClass.Priest && stats.BaseClass is BaseClass.Rogue)
+                        newClass = "Shadowmender";   
+                    
+                    //Warrior Sub
+                    if (stats.SubbedClass is BaseClass.Warrior && stats.BaseClass is BaseClass.Rogue)
+                        newClass = "Shadowblade";   
+                    
+                    if (stats.SubbedClass is BaseClass.Warrior && stats.BaseClass is BaseClass.Wizard)
+                        newClass = "Spellblade"; 
+                    
+                    if (stats.SubbedClass is BaseClass.Warrior && stats.BaseClass is BaseClass.Monk)
+                        newClass = "Iron Fist"; 
+                    
+                    if (stats.SubbedClass is BaseClass.Warrior && stats.BaseClass is BaseClass.Priest)
+                        newClass = "Paladin"; 
+                    
+                    //Monk Sub
+                    if (stats.SubbedClass is BaseClass.Monk && stats.BaseClass is BaseClass.Wizard)
+                        newClass = "Spellfist"; 
+                    
+                    if (stats.SubbedClass is BaseClass.Monk && stats.BaseClass is BaseClass.Priest)
+                        newClass = "Spiritwalker"; 
+                    
+                    if (stats.SubbedClass is BaseClass.Monk && stats.BaseClass is BaseClass.Rogue)
+                        newClass = "Shadowhand"; 
+                    
+                    if (stats.SubbedClass is BaseClass.Monk && stats.BaseClass is BaseClass.Warrior)
+                        newClass = "Titan"; 
+                    
+                    //Wizard Sub
+                    if (stats.SubbedClass is BaseClass.Wizard && stats.BaseClass is BaseClass.Warrior)
+                        newClass = "Arcane Knight"; 
+                    
+                    if (stats.SubbedClass is BaseClass.Wizard && stats.BaseClass is BaseClass.Monk)
+                        newClass = "Arcane Striker";
+                    
+                    if (stats.SubbedClass is BaseClass.Wizard && stats.BaseClass is BaseClass.Priest)
+                        newClass = "Arcane Mystic"; 
+                    
+                    if (stats.SubbedClass is BaseClass.Wizard && stats.BaseClass is BaseClass.Rogue)
+                        newClass = "Arcane Stalker"; 
+                    
+                    if (stats.SubbedClass is BaseClass.Wizard && stats.BaseClass is BaseClass.Rogue)
+                        newClass = "Arcane Stalker"; 
+                    
+                    //Rogue Sub
+                    if (stats.SubbedClass is BaseClass.Rogue && stats.BaseClass is BaseClass.Warrior)
+                        newClass = "Blade Dancer"; 
+                    
+                    if (stats.SubbedClass is BaseClass.Rogue && stats.BaseClass is BaseClass.Monk)
+                        newClass = "Silent Fist"; 
+                    
+                    if (stats.SubbedClass is BaseClass.Rogue && stats.BaseClass is BaseClass.Wizard)
+                        newClass = "Spellthief"; 
+                    
+                    if (stats.SubbedClass is BaseClass.Rogue && stats.BaseClass is BaseClass.Priest)
+                        newClass = "Veilwalker"; 
+                }
+                else
+                    newClass = stats.BaseClass.ToString();
+
+                // Alternate colors
+                var currentColor = isSilver ? MessageColor.Silver : MessageColor.Gainsboro;
+                builder.AppendLineFColored(currentColor, $"{entry.Key.Humanize(),-15} {stats.Damage,-10} {stats.DamagePerSecond,-10} {newClass,-10}");
+
+                // Toggle the color for the next entry
+                isSilver = !isSilver;
+            }
+
+        // Send leaderboard to the player
+        source.SendServerMessage(ServerMessageType.ScrollWindow, builder.ToString());
     }
 
+    
+    
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
@@ -50,34 +141,13 @@ public class DamageGameScript : DialogScriptBase
             {
                 var mapInstance = SimpleCache.Get<MapInstance>("hm_damagegame");
                 source.TraverseMap(mapInstance, new Point(4, 2));
-
                 break;
             }
             case "hazel_topscores":
             {
-                DamageGame(source, Configuration);
-
+                DamageGame(source);
                 break;
             }
-        }
-    }
-
-    public static void Save(string filePath, Aisling player)
-    {
-        var existingJson = File.ReadAllText(filePath);
-        var damageData = JsonSerializer.Deserialize<Dictionary<string, int>>(existingJson);
-
-        if (damageData != null)
-        {
-            // Sort the scores by damage and send them to the player
-            var sortedScores = damageData.OrderByDescending(kv => kv.Value).ToList();
-            var sb = new StringBuilder();
-            sb.AppendLineFColored(MessageColor.White, "Damage Game Leaderboard:\n");
-
-            foreach (var score in sortedScores)
-                sb.AppendLineFColored(MessageColor.Orange, $"{score.Key}: {score.Value}");
-
-            player.Client.SendServerMessage(ServerMessageType.ScrollWindow, sb.ToString());
         }
     }
 }
