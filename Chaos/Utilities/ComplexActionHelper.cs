@@ -388,6 +388,13 @@ public static class ComplexActionHelper
         if (source.SkillBook.AvailableSlots == 0)
             return LearnSkillResult.NoRoom;
 
+        if (skill.Template.TemplateKey is "nis" or "inspect")
+        {
+            source.SkillBook.TryAddToNextSlot(PageType.Page3, skill);
+            source.Client.SendSound(170, false);
+            return LearnSkillResult.Success;
+        }
+        
         if (source.SkillBook.TryAddToNextSlot(skill))
         {
             source.Client.SendSound(170, false);
