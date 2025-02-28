@@ -387,13 +387,22 @@ public class EnchantingScript : DialogScriptBase
     // ------------------------------------------------------
     private void OnDisplayingShowRecipes(Aisling source)
     {
-        // If GodMode, display all possible recipes
+        var sortedRecipes = new List<ItemDetails>();
+
+        // If GodMode, display all possible recipes sorted by rank
         if (source.IsGodModeEnabled())
-            foreach (var recipe in CraftingRequirements.EnchantingRequirements)
-            {
-                var fauxItem = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
-                Subject.Items.Add(ItemDetails.DisplayRecipe(fauxItem));
-            }
+        {
+            sortedRecipes = CraftingRequirements.EnchantingRequirements
+                                                .Select(
+                                                    recipe => ItemDetails.DisplayRecipe(ItemFactory.CreateFaux(recipe.Value.TemplateKey)))
+                                                .OrderBy(
+                                                    recipe => GetStatusAsInt(
+                                                        CraftingRequirements.EnchantingRequirements.First(
+                                                                                x => x.Value.TemplateKey
+                                                                                     == recipe.Item.Template.TemplateKey)
+                                                                            .Value.Rank))
+                                                .ToList();
+        }
         else
         {
             // Get the user's legend mark for enchanting
@@ -410,26 +419,31 @@ public class EnchantingScript : DialogScriptBase
 
                 // If the user has any recipe flags, show matching recipes
                 if (source.Trackers.Flags.TryGetFlag(out EnchantingRecipes recipes))
-                    foreach (var kv in CraftingRequirements.EnchantingRequirements)
-                    {
-                        var recipeKey = kv.Key;
-                        var recipeVal = kv.Value;
-
-                        if (recipes.HasFlag(recipeKey) && (playerRank >= GetStatusAsInt(recipeVal.Rank)))
-                        {
-                            var fauxItem = ItemFactory.CreateFaux(recipeVal.TemplateKey);
-
-                            if (source.UserStatSheet.Level >= fauxItem.Level)
-                                Subject.Items.Add(ItemDetails.DisplayRecipe(fauxItem));
-                        }
-                    }
+                {
+                    sortedRecipes = CraftingRequirements.EnchantingRequirements
+                                                        .Where(kv => recipes.HasFlag(kv.Key) && playerRank >= GetStatusAsInt(kv.Value.Rank))
+                                                        .Select(
+                                                            kv => ItemDetails.DisplayRecipe(ItemFactory.CreateFaux(kv.Value.TemplateKey)))
+                                                        .Where(item => source.UserStatSheet.Level >= item.Item.Level)
+                                                        .OrderBy(
+                                                            item => GetStatusAsInt(
+                                                                CraftingRequirements.EnchantingRequirements.First(
+                                                                                        x => x.Value.TemplateKey
+                                                                                            == item.Item.Template.TemplateKey)
+                                                                                    .Value.Rank))
+                                                        .ToList();
+                }
             }
-
-            // If no items were added, no known recipes
-            if (Subject.Items.Count == 0)
-                Subject.Reply(source, "You do not have any recipes to craft. Check your recipe book (F1 Menu) for requirements.", "Close");
         }
+
+        // Assign sorted items
+        Subject.Items = sortedRecipes;
+
+        // If no items were added, notify the user
+        if (Subject.Items.Count == 0)
+            Subject.Reply(source, "You do not have any recipes to craft. Check your recipe book (F1 Menu) for requirements.", "Close");
     }
+
 
     private void UpdateLegendmark(Aisling source)
     {
