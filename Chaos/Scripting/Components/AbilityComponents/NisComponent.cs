@@ -31,12 +31,32 @@ public class NisComponent : IComponent
         var hour12 = gameTime.Hour % 12 == 0 ? 12 : gameTime.Hour % 12;
         var amPm = gameTime.Hour >= 12 ? "PM" : "AM";
 
-        return $"Year {gameTime.Year}, {gameTime.Month}{GetMonthSuffix(gameTime.Month)} Month, " +
-               $"{gameTime.Day}{gameTime.GetDaySuffix} Day, " +
+        var fantasyMonth = GetFantasyMonthName(gameTime.Month);
+
+        return $"Year {gameTime.Year}, {gameTime.Day}{gameTime.GetDaySuffix} of {fantasyMonth}, " +
                $"{hour12:00}:{gameTime.Minute:00} {amPm} ({season}) - {moonPhase}";
     }
 
-
+    /// <summary>
+    ///     Converts a numeric month into a fantasy month name.
+    /// </summary>
+    private string GetFantasyMonthName(int month) =>
+        month switch
+        {
+            1  => "Embris",
+            2  => "Ironveil",
+            3  => "Galesyn",
+            4  => "Tidesol",
+            5  => "Crimarc",
+            6  => "Halcyra",
+            7  => "Veilren",
+            8  => "Whimris",
+            9  => "Withren",
+            10 => "Duskrun",
+            11 => "Noctis",
+            12 => "Aurelia",
+            _  => "Unknown" // Fallback in case of invalid input
+        };
 
     /// <summary>
     ///     Determines the current season based on the in-game day.

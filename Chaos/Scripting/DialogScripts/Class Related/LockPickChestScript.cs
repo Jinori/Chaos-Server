@@ -11,7 +11,7 @@ namespace Chaos.Scripting.DialogScripts.Class_Related;
 
 public class LockPickChestScript(Dialog subject) : DialogScriptBase(subject)
 {
-    private const int LOCKPICK_FAILURE_CHANCE = 50;
+    private const int LOCKPICK_FAILURE_CHANCE = 38;
 
     public override void OnDisplaying(Aisling source)
     {
