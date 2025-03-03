@@ -93,6 +93,20 @@ public class RelearnCraftScript : DialogScriptBase
                     source.SpellBook.TryAddToNextSlot(auraoftorment);
                 }
 
+                if (source.Legend.ContainsKey("dedicated") && source.Legend.ContainsKey("rogueClass"))
+                {
+                    if (!source.SkillBook.ContainsByTemplateKey("peek"))
+                    {
+                        var peek = SkillFactory.Create("peek");
+                        source.SkillBook.TryAddToNextSlot(PageType.Page3, peek);
+                    }
+                    if (!source.SkillBook.ContainsByTemplateKey("sense"))
+                    {
+                        var sense = SkillFactory.Create("sense");
+                        source.SkillBook.TryAddToNextSlot(PageType.Page3, sense);
+                    }
+                }
+                
                 if (source.SpellBook.ContainsByTemplateKey("morcradh")
                     && !source.SpellBook.ContainsByTemplateKey("ardcradh")
                     && (source.UserStatSheet.BaseClass != BaseClass.Wizard))

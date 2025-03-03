@@ -1016,9 +1016,26 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
         if (Subject.Bank.Contains("Invisible Helmet"))
         {
-            Subject.Bank.TryWithdraw("Invisible Helmet", 1, out _);
-            Subject.Inventory.Remove("Invisible Helmet");
+            if (Subject.Bank.TryWithdraw("Invisible Helmet", 1, out _))
+            {
+                Subject.Inventory.Remove("Invisible Helmet");
+                Subject.TryGiveGamePoints(100);   
+            }
+        }
+        
+        if (Subject.Inventory.Contains("Invisible Shield"))
+        {
+            Subject.Inventory.Remove("Invisible Shield");
             Subject.TryGiveGamePoints(100);
+        }
+
+        if (Subject.Bank.Contains("Invisible Shield"))
+        {
+            if (Subject.Bank.TryWithdraw("Invisible Shield", 1, out _))
+            {
+                Subject.Inventory.Remove("Invisible Shield");
+                Subject.TryGiveGamePoints(100);   
+            }
         }
         
         if (Subject.IsGodModeEnabled())
