@@ -58,8 +58,8 @@ public readonly struct GameTime : IComparable, IComparable<GameTime>, IEquatable
     /// </summary>
     public string ToLegendFormat()
     {
-        var fantasyMonth = GetFantasyMonthName(Month);
-        return $"Year {Year}, {fantasyMonth} {Day}{GetDaySuffix}";
+        var season = GetCurrentSeason();
+        return $"Termina {Year}, {season}";
     }
 
     /// <summary>
