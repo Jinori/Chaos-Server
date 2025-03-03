@@ -1008,6 +1008,19 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
     private void RemoveAndNotifyIfBothExist(string keyToKeep, string keyToRemove)
     {
+        if (Subject.Inventory.Contains("Invisible Helmet"))
+        {
+            Subject.Inventory.Remove("Invisible Helmet");
+            Subject.TryGiveGamePoints(100);
+        }
+
+        if (Subject.Bank.Contains("Invisible Helmet"))
+        {
+            Subject.Bank.TryWithdraw("Invisible Helmet", 1, out _);
+            Subject.Inventory.Remove("Invisible Helmet");
+            Subject.TryGiveGamePoints(100);
+        }
+        
         if (Subject.IsGodModeEnabled())
             return;
 

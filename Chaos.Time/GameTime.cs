@@ -61,7 +61,7 @@ public readonly struct GameTime : IComparable, IComparable<GameTime>, IEquatable
     /// <summary>
     ///     Gets the proper suffix for a day, based on the number.
     /// </summary>
-    private string GetDaySuffix
+    public string GetDaySuffix
         => ((Day % 10) == 1) && (Day != 11)
             ? "st"
             : ((Day % 10) == 2) && (Day != 12)

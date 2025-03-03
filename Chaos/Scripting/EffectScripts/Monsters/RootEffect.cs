@@ -45,7 +45,7 @@ public sealed class RootEffect : ContinuousAnimationEffectBase, HierarchicalEffe
 
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (target.Script.Is<ThisIsABossScript>())
+        if (target.Script.Is<ThisIsABossScript>() || target.IsGodModeEnabled())
             return false;
 
         var execution = new ComponentExecutor(source, target).WithOptions(this)
