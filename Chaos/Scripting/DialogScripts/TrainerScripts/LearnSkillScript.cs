@@ -19,7 +19,7 @@ public class LearnSkillScript : DialogScriptBase
     private readonly IItemFactory ItemFactory;
     private readonly ILogger<LearnSkillScript> Logger;
 
-    private readonly Dictionary<string, List<string>> PureAbilities = new()
+    private readonly Dictionary<string, List<string>> PureAbilities = new(StringComparer.OrdinalIgnoreCase)
     {
         {
             "annihilate", new List<string>
@@ -86,8 +86,9 @@ public class LearnSkillScript : DialogScriptBase
     private readonly ISkillFactory SkillFactory;
     private readonly ISkillTeacherSource SkillTeacherSource;
 
-    private readonly Dictionary<string, List<string>> SkillUpgrades = new()
-    {
+    private readonly Dictionary<string, List<string>> SkillUpgrades 
+        = new(StringComparer.OrdinalIgnoreCase)
+        {
         //Warrior
         {
             "scathe", new List<string>

@@ -19,7 +19,7 @@ public class LearnSpellScript : DialogScriptBase
     private readonly IItemFactory ItemFactory;
     private readonly ILogger<LearnSpellScript> Logger;
 
-    private readonly Dictionary<string, List<string>> PureAbilities = new()
+    private readonly Dictionary<string, List<string>> PureAbilities = new(StringComparer.OrdinalIgnoreCase)
     {
         {
             "magmasurge", new List<string>
