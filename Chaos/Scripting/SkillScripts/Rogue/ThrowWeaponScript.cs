@@ -1,4 +1,3 @@
-#region
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
@@ -10,29 +9,45 @@ using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.SkillScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
-#endregion
 
-namespace Chaos.Scripting.SkillScripts;
+namespace Chaos.Scripting.SkillScripts.Rogue;
 
-public class AssassinStrikeScript : ConfigurableSkillScriptBase,
-                                    GenericAbilityComponent<Creature>.IAbilityComponentOptions,
-                                    AssassinStrikeComponent.IDamageComponentOptions
+public class ThrowWeaponScript : ConfigurableSkillScriptBase,
+                                 GenericAbilityComponent<Creature>.IAbilityComponentOptions,
+                                 DamageAbilityComponent.IDamageComponentOptions,
+                                 ApplyEffectAbilityComponent.IApplyEffectComponentOptions,
+                                 ThrowWeaponComponent.IThrowWeaponComponentOptions
 {
+    public int DistanceToThrow { get; init; }
+    public int? EffectApplyChance { get; init; }
+    public TimeSpan? EffectDurationOverride { get; init; }
+    public IEffectFactory EffectFactory { get; init; }
+    public string? EffectKey { get; init; }
+
     public List<string>? EffectKeysToBreak { get; set; }
 
+    public int SplashChance { get; init; }
+    public int SplashDistance { get; init; }
+    public TargetFilter SplashFilter { get; init; }
+
     /// <inheritdoc />
-    public AssassinStrikeScript(Skill subject, IEffectFactory effectFactory)
+    public ThrowWeaponScript(Skill subject, IEffectFactory effectFactory)
         : base(subject)
     {
         EffectFactory = effectFactory;
         ApplyDamageScript = ApplyAttackDamageScript.Create();
+
+        if (Subject.Template.IsAssail)
+            ScaleBodyAnimationSpeedByAttackSpeed = true;
     }
 
     /// <inheritdoc />
     public override void OnUse(ActivationContext context)
         => new ComponentExecutor(context).WithOptions(this)
                                          .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
-                                         ?.Execute<AssassinStrikeComponent>();
+                                         ?.Execute<DamageAbilityComponent>()
+                                         .Execute<ThrowWeaponComponent>()
+                                         .Execute<ApplyEffectAbilityComponent>();
 
     #region ScriptVars
     /// <inheritdoc />
@@ -42,14 +57,12 @@ public class AssassinStrikeScript : ConfigurableSkillScriptBase,
     public bool SingleTarget { get; init; }
 
     /// <inheritdoc />
-    public int? ExclusionRange { get; init; }
-
-    /// <inheritdoc />
     public TargetFilter Filter { get; init; }
 
     /// <inheritdoc />
     public int Range { get; init; }
 
+    public int? ExclusionRange { get; init; }
     public bool StopOnWalls { get; init; }
     public bool StopOnFirstHit { get; init; }
 
@@ -81,6 +94,9 @@ public class AssassinStrikeScript : ConfigurableSkillScriptBase,
     public int? BaseDamage { get; init; }
 
     /// <inheritdoc />
+    public bool? MoreDmgLowTargetHp { get; init; }
+
+    /// <inheritdoc />
     public Stat? DamageStat { get; init; }
 
     /// <inheritdoc />
@@ -89,20 +105,20 @@ public class AssassinStrikeScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public Element? Element { get; init; }
 
-    public bool? MoreDmgHighTargetHp { get; init; }
-
     /// <inheritdoc />
     public decimal? PctHpDamage { get; init; }
+
+    public decimal? PctOfHealthMultiplier { get; init; }
+    public decimal? PctOfHealth { get; init; }
+    public bool? SurroundingTargets { get; init; }
+    public decimal? DamageMultiplierPerTarget { get; init; }
+    public decimal? PctOfMana { get; init; }
+    public decimal? PctOfManaMultiplier { get; init; }
 
     /// <inheritdoc />
     public int? ManaCost { get; init; }
 
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }
-
-    public TimeSpan? EffectDurationOverride { get; init; }
-    public IEffectFactory EffectFactory { get; init; }
-    public string? EffectKey { get; init; }
-    public int? EffectApplyChance { get; init; }
     #endregion
 }

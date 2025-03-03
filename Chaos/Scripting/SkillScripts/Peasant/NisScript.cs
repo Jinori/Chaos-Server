@@ -7,10 +7,10 @@ using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.SkillScripts.Abstractions;
 
-namespace Chaos.Scripting.SkillScripts;
+namespace Chaos.Scripting.SkillScripts.Peasant;
 
-public class InspectScript : ConfigurableSkillScriptBase,
-                             InspectItemComponent.IInspectItemComponentOptions,
+public class NisScript : ConfigurableSkillScriptBase,
+                             NisComponent.INisComponentOptions,
                              GenericAbilityComponent<Creature>.IAbilityComponentOptions
 {
     /// <inheritdoc />
@@ -67,12 +67,12 @@ public class InspectScript : ConfigurableSkillScriptBase,
     public bool StopOnWalls { get; init; }
 
     /// <inheritdoc />
-    public InspectScript(Skill subject)
+    public NisScript(Skill subject)
         : base(subject) { }
 
     /// <inheritdoc />
     public override void OnUse(ActivationContext context)
         => new ComponentExecutor(context).WithOptions(this)
                                          .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
-                                         ?.Execute<InspectItemComponent>();
+                                         ?.Execute<NisComponent>();
 }

@@ -7,10 +7,10 @@ using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.SkillScripts.Abstractions;
 
-namespace Chaos.Scripting.SkillScripts;
+namespace Chaos.Scripting.SkillScripts.Rogue;
 
-public class NisScript : ConfigurableSkillScriptBase,
-                             NisComponent.INisComponentOptions,
+public class SenseScript : ConfigurableSkillScriptBase,
+                             SenseComponent.ISenseComponentOptions,
                              GenericAbilityComponent<Creature>.IAbilityComponentOptions
 {
     /// <inheritdoc />
@@ -67,12 +67,12 @@ public class NisScript : ConfigurableSkillScriptBase,
     public bool StopOnWalls { get; init; }
 
     /// <inheritdoc />
-    public NisScript(Skill subject)
+    public SenseScript(Skill subject)
         : base(subject) { }
 
     /// <inheritdoc />
     public override void OnUse(ActivationContext context)
         => new ComponentExecutor(context).WithOptions(this)
                                          .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
-                                         ?.Execute<NisComponent>();
+                                         ?.Execute<SenseComponent>();
 }

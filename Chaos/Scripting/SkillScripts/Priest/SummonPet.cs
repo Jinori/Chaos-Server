@@ -6,7 +6,7 @@ using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.SkillScripts.Abstractions;
 
-namespace Chaos.Scripting.SkillScripts;
+namespace Chaos.Scripting.SkillScripts.Priest;
 
 public class SummonPet : ConfigurableSkillScriptBase, GenericAbilityComponent<Creature>.IAbilityComponentOptions
 {

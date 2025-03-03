@@ -10,15 +10,14 @@ using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.SkillScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.SkillScripts;
+namespace Chaos.Scripting.SkillScripts.Monk;
 
-public class ThrowWeaponScript : ConfigurableSkillScriptBase,
+public class ThrowDamageScript : ConfigurableSkillScriptBase,
                                  GenericAbilityComponent<Creature>.IAbilityComponentOptions,
                                  DamageAbilityComponent.IDamageComponentOptions,
-                                 ApplyEffectAbilityComponent.IApplyEffectComponentOptions,
-                                 ThrowWeaponComponent.IThrowWeaponComponentOptions
+                                 ThrowCreatureComponent.IDamageComponentOptions,
+                                 ApplyEffectAbilityComponent.IApplyEffectComponentOptions
 {
-    public int DistanceToThrow { get; init; }
     public int? EffectApplyChance { get; init; }
     public TimeSpan? EffectDurationOverride { get; init; }
     public IEffectFactory EffectFactory { get; init; }
@@ -29,16 +28,14 @@ public class ThrowWeaponScript : ConfigurableSkillScriptBase,
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
+    public int? ThrowRange { get; init; }
 
     /// <inheritdoc />
-    public ThrowWeaponScript(Skill subject, IEffectFactory effectFactory)
+    public ThrowDamageScript(Skill subject, IEffectFactory effectFactory)
         : base(subject)
     {
         EffectFactory = effectFactory;
         ApplyDamageScript = ApplyAttackDamageScript.Create();
-
-        if (Subject.Template.IsAssail)
-            ScaleBodyAnimationSpeedByAttackSpeed = true;
     }
 
     /// <inheritdoc />
@@ -46,7 +43,7 @@ public class ThrowWeaponScript : ConfigurableSkillScriptBase,
         => new ComponentExecutor(context).WithOptions(this)
                                          .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
                                          ?.Execute<DamageAbilityComponent>()
-                                         .Execute<ThrowWeaponComponent>()
+                                         .Execute<ThrowCreatureComponent>()
                                          .Execute<ApplyEffectAbilityComponent>();
 
     #region ScriptVars
@@ -76,7 +73,6 @@ public class ThrowWeaponScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public BodyAnimation BodyAnimation { get; init; }
 
-    /// <inheritdoc />
     public bool? ScaleBodyAnimationSpeedByAttackSpeed { get; init; }
 
     /// <inheritdoc />
@@ -110,6 +106,7 @@ public class ThrowWeaponScript : ConfigurableSkillScriptBase,
 
     public decimal? PctOfHealthMultiplier { get; init; }
     public decimal? PctOfHealth { get; init; }
+
     public bool? SurroundingTargets { get; init; }
     public decimal? DamageMultiplierPerTarget { get; init; }
     public decimal? PctOfMana { get; init; }

@@ -3,47 +3,47 @@ using Chaos.DarkAges.Definitions;
 namespace Chaos.Time;
 
 /// <summary>
-///     A <see cref="System.DateTime" /> replacement that runs at 24x speed, to be used for in-game time measurement
+///     A <see cref="System.DateTime" /> replacement that runs at 24x speed, to be used for in-game time measurement.
 /// </summary>
 public readonly struct GameTime : IComparable, IComparable<GameTime>, IEquatable<GameTime>
 {
     private readonly DateTime DateTime;
 
     /// <summary>
-    ///     Gets the day component of the GameTime.
+    ///     Gets the day component of the game time.
     /// </summary>
     public int Day => DateTime.Day;
 
     /// <summary>
-    ///     Gets the hour component of the GameTime.
-    /// </summary>
-    public int Hour => DateTime.Hour;
-
-    /// <summary>
-    ///     Gets the minute component of the GameTime.
-    /// </summary>
-    public int Minute => DateTime.Minute;
-
-    /// <summary>
-    ///     Gets the month component of the GameTime.
+    ///     Gets the month component of the game time.
     /// </summary>
     public int Month => DateTime.Month;
 
     /// <summary>
-    ///     Gets the current ingame time.
+    ///     Gets the year component of the game time.
+    /// </summary>
+    public int Year => DateTime.Year;
+
+    /// <summary>
+    ///     Gets the hour component of the game time.
+    /// </summary>
+    public int Hour => DateTime.Hour;
+
+    /// <summary>
+    ///     Gets the minute component of the game time.
+    /// </summary>
+    public int Minute => DateTime.Minute;
+
+    /// <summary>
+    ///     Gets the current in-game time.
     /// </summary>
     public static GameTime Now => FromDateTime(DateTime.UtcNow);
 
     /// <summary>
-    ///     Gets the number of ticks that represent the value of the GameTime.
+    ///     Returns the appropriate level of light for the time of day.
     /// </summary>
-    public long Ticks => DateTime.Ticks;
-
-    /// <summary>
-    ///     Gets the appropriate level of light for the time of day.
-    /// </summary>
-    public LightLevel TimeOfDay
-        => Hour switch
+    public LightLevel TimeOfDay =>
+        Hour switch
         {
             >= 10 and <= 17 => LightLevel.Lightest_A,
             >= 9 and <= 18  => LightLevel.Lighter_A,
@@ -54,126 +54,120 @@ public readonly struct GameTime : IComparable, IComparable<GameTime>, IEquatable
         };
 
     /// <summary>
-    ///     Gets the year component of the GameTime.
+    ///     Returns the in-game time formatted to match the LEGEND log style.
     /// </summary>
-    public int Year => DateTime.Year;
-
-    /// <summary>
-    ///     Gets the proper suffix for a day, based on the number.
-    /// </summary>
-    public string GetDaySuffix
-        => ((Day % 10) == 1) && (Day != 11)
-            ? "st"
-            : ((Day % 10) == 2) && (Day != 12)
-                ? "nd"
-                : ((Day % 10) == 3) && (Day != 13)
-                    ? "rd"
-                    : "th";
-
-    /// <summary>
-    ///     Starting date of the server.
-    /// </summary>
-    private static DateTime Origin { get; } = new(
-        2024,
-        4,
-        26,
-        23,
-        0,
-        0,
-        DateTimeKind.Utc);
-
-    /// <summary>
-    ///     Adds a TimeSpan to a GameTime, returning a new GameTime.
-    /// </summary>
-    /// <param name="g">
-    ///     The GameTime to add the TimeSpan to.
-    /// </param>
-    /// <param name="t">
-    ///     The TimeSpan to add to the GameTime.
-    /// </param>
-    /// <returns>
-    ///     A new GameTime that is the sum of the specified GameTime and TimeSpan.
-    /// </returns>
-    public static GameTime operator +(GameTime g, TimeSpan t) => new(g.DateTime + t);
-
-    /// <summary>
-    ///     Determines whether two specified instances of GameTime are equal.
-    /// </summary>
-    public static bool operator ==(GameTime d1, GameTime d2) => d1.DateTime.Ticks == d2.DateTime.Ticks;
-
-    /// <summary>
-    ///     Determines whether one specified GameTime is greater than another specified GameTime.
-    /// </summary>
-    public static bool operator >(GameTime t1, GameTime t2) => t1.DateTime.Ticks > t2.DateTime.Ticks;
-
-    /// <summary>
-    ///     Determines whether one specified GameTime is greater than or equal to another specified GameTime.
-    /// </summary>
-    public static bool operator >=(GameTime t1, GameTime t2) => t1.DateTime.Ticks >= t2.DateTime.Ticks;
-
-    /// <summary>
-    ///     Determines whether two specified instances of GameTime are not equal.
-    /// </summary>
-    public static bool operator !=(GameTime d1, GameTime d2) => d1.DateTime.Ticks != d2.DateTime.Ticks;
-
-    /// <summary>
-    ///     Determines whether one specified GameTime is less than another specified GameTime.
-    /// </summary>
-    public static bool operator <(GameTime t1, GameTime t2) => t1.DateTime.Ticks < t2.DateTime.Ticks;
-
-    /// <summary>
-    ///     Determines whether one specified GameTime is less than or equal to another specified GameTime.
-    /// </summary>
-    public static bool operator <=(GameTime t1, GameTime t2) => t1.DateTime.Ticks <= t2.DateTime.Ticks;
-
-    /// <summary>
-    ///     Subtracts a specified GameTime from another specified GameTime and returns a TimeSpan.
-    /// </summary>
-    public static TimeSpan operator -(GameTime a, GameTime b) => a.DateTime - b.DateTime;
-
-    /// <summary>
-    ///     Subtracts a TimeSpan from a GameTime, returning a new GameTime.
-    /// </summary>
-    /// <param name="g">
-    ///     The GameTime to subtract the TimeSpan from.
-    /// </param>
-    /// <param name="t">
-    ///     The TimeSpan to subtract from the GameTime.
-    /// </param>
-    /// <returns>
-    ///     A new GameTime that is the result of subtracting the specified TimeSpan from the GameTime.
-    /// </returns>
-    public static GameTime operator -(GameTime g, TimeSpan t) => new(g.DateTime - t);
-
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="GameTime" /> struct with the specified ticks.
-    /// </summary>
-    /// <param name="ticks">
-    ///     The number of ticks that represent the game time.
-    /// </param>
-    public GameTime(long ticks)
-        : this(new DateTime(ticks)) { }
-
-    // Add XML comment for the constructor
-    /// <summary>
-    ///     Initializes a new instance of the <see cref="GameTime" /> struct with the specified <see cref="DateTime" />.
-    /// </summary>
-    /// <param name="time">
-    ///     The DateTime object that represents the game time.
-    /// </param>
-    public GameTime(DateTime time) => DateTime = time;
-
-    /// <inheritdoc />
-    public int CompareTo(object? obj)
+    public string ToLegendFormat()
     {
-        if (obj == null)
-            return 1;
-
-        if (obj is not GameTime gameTime)
-            throw new ArgumentException();
-
-        return CompareTo(gameTime);
+        var fantasyMonth = GetFantasyMonthName(Month);
+        return $"Year {Year}, {fantasyMonth} {Day}{GetDaySuffix}";
     }
+
+    /// <summary>
+    ///     Generates a detailed time string including season, moon phase, and formatted date.
+    /// </summary>
+    public string GetDetailedTimeInfo()
+    {
+        var season = GetCurrentSeason();
+        var moonPhase = GetMoonPhase();
+    
+        var hour12 = Hour % 12 == 0 ? 12 : Hour % 12;
+        var amPm = Hour >= 12 ? "PM" : "AM";
+        var fantasyMonth = GetFantasyMonthName(Month);
+
+        return $"Termina {Year}, {Day}{GetDaySuffix} of {fantasyMonth}, " +
+               $"{hour12:00}:{Minute:00} {amPm} ({season}) - {moonPhase}";
+    }
+
+    /// <summary>
+    ///     Converts a numeric month into a fantasy month name.
+    /// </summary>
+    /// <param name="month">The numeric representation of the month (1-12).</param>
+    /// <returns>The corresponding fantasy month name.</returns>
+    private string GetFantasyMonthName(int month) =>
+        month switch
+        {
+            1  => "Embris",
+            2  => "Ironveil",
+            3  => "Galesyn",
+            4  => "Tidesol",
+            5  => "Crimarc",
+            6  => "Halcyra",
+            7  => "Veilren",
+            8  => "Whimris",
+            9  => "Withren",
+            10 => "Duskrun",
+            11 => "Noctis",
+            12 => "Aurelia",
+            _  => "Unknown"
+        };
+
+    /// <summary>
+    ///     Determines the current season based on the in-game month.
+    /// </summary>
+    /// <returns>The name of the current season.</returns>
+    private string GetCurrentSeason() =>
+        Month switch
+        {
+            1 or 2 or 3 => "Spring",
+            4 or 5 or 6 => "Summer",
+            7 or 8 or 9 => "Autumn",
+            _           => "Winter"
+        };
+
+    /// <summary>
+    ///     Determines the current moon phase based on the in-game day.
+    /// </summary>
+    /// <returns>The name of the current moon phase.</returns>
+    private string GetMoonPhase()
+    {
+        var moonCycle = (Now.ToDateTime() - Origin).TotalDays % 28; // 28-day moon cycle
+        return moonCycle switch
+        {
+            < 7  => "Veiled Moon",
+            < 14 => "Crescent Ascent",
+            < 21 => "High Moon",
+            _    => "Fading Crescent"
+        };
+    }
+
+    /// <summary>
+    ///     Returns the proper suffix for a day.
+    /// </summary>
+    public string GetDaySuffix =>
+        (((Day % 10) == 1) && (Day != 11)) ? "st" :
+        (((Day % 10) == 2) && (Day != 12)) ? "nd" :
+        (((Day % 10) == 3) && (Day != 13)) ? "rd" : "th";
+
+    /// <summary>
+    ///     Converts a GameTime object to a real-world DateTime.
+    /// </summary>
+    /// <returns>A DateTime representation of the GameTime.</returns>
+    public DateTime ToDateTime() => new(DateTime.Ticks / 24 + Origin.Ticks, DateTimeKind.Utc);
+
+    /// <summary>
+    ///     Converts a DateTime object to GameTime.
+    /// </summary>
+    /// <param name="dTime">The DateTime object to be converted.</param>
+    /// <returns>A GameTime instance representing the same point in time.</returns>
+    public static GameTime FromDateTime(DateTime dTime)
+        => new(dTime.Subtract(Origin).Ticks * 24);
+
+    /// <summary>
+    ///     The starting date of the game world.
+    /// </summary>
+    private static DateTime Origin { get; } = new(2024, 4, 26, 23, 0, 0, DateTimeKind.Utc);
+    
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="GameTime"/> struct using ticks.
+    /// </summary>
+    /// <param name="ticks">The number of ticks representing the time.</param>
+    public GameTime(long ticks) : this(new DateTime(ticks)) { }
+
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="GameTime"/> struct using a DateTime object.
+    /// </summary>
+    /// <param name="time">The DateTime object representing the game time.</param>
+    public GameTime(DateTime time) => DateTime = time;
 
     /// <inheritdoc />
     public int CompareTo(GameTime other) => DateTime.CompareTo(other.DateTime);
@@ -184,32 +178,16 @@ public readonly struct GameTime : IComparable, IComparable<GameTime>, IEquatable
     /// <inheritdoc />
     public override bool Equals(object? obj) => obj is GameTime time && Equals(time);
 
-    /// <summary>
-    ///     Converts a DateTime object to GameTime.
-    /// </summary>
-    /// <param name="dTime">
-    ///     DateTimeobject to be converted.
-    /// </param>
-    public static GameTime FromDateTime(DateTime dTime)
-        => new(
-            dTime.Subtract(Origin)
-                 .Ticks
-            * 24);
-
     /// <inheritdoc />
     public override int GetHashCode() => DateTime.GetHashCode();
 
-    /// <summary>
-    ///     Converts a GameTime object to DateTime.
-    /// </summary>
-    public DateTime ToDateTime() => new(DateTime.Ticks / 24 + Origin.Ticks, DateTimeKind.Utc);
-
-    /// <summary>
-    ///     Custom method that will print the current time like DateTime does.
-    /// </summary>
-    /// <param name="format">
-    ///     Optional string format guide.
-    /// </param>
-    public string ToString(string? format = null)
-        => $"Year {(!string.IsNullOrEmpty(format) ? DateTime.ToString(format) : DateTime.ToString("y, MMM d"))}{GetDaySuffix}";
+    /// <inheritdoc />
+    public int CompareTo(object? obj)
+    {
+        if (obj is GameTime gameTime)
+        {
+            return CompareTo(gameTime);
+        }
+        throw new ArgumentException("Object is not a GameTime instance.");
+    }
 }

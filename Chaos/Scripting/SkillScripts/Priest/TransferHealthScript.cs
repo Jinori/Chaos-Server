@@ -8,7 +8,7 @@ using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.SkillScripts.Abstractions;
 
-namespace Chaos.Scripting.SkillScripts;
+namespace Chaos.Scripting.SkillScripts.Priest;
 
 public class TransferHealthScript(Skill subject) : ConfigurableSkillScriptBase(subject),
                                                    GenericAbilityComponent<Creature>.IAbilityComponentOptions,

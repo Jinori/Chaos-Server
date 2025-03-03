@@ -8,7 +8,7 @@ using Chaos.Models.World;
 using Chaos.Scripting.SkillScripts.Abstractions;
 #endregion
 
-namespace Chaos.Scripting.SkillScripts;
+namespace Chaos.Scripting.SkillScripts.Monk;
 
 public class ThrowScript : SkillScriptBase
 {

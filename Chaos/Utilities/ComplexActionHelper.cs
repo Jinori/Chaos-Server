@@ -388,7 +388,7 @@ public static class ComplexActionHelper
         if (source.SkillBook.AvailableSlots == 0)
             return LearnSkillResult.NoRoom;
 
-        if (skill.Template.TemplateKey is "nis" or "inspect")
+        if (skill.Template.TemplateKey.ToLowerInvariant() is "peek" or "inspect" or "nis")
         {
             source.SkillBook.TryAddToNextSlot(PageType.Page3, skill);
             source.Client.SendSound(170, false);
@@ -411,7 +411,7 @@ public static class ComplexActionHelper
 
         if (source.SpellBook.AvailableSlots == 0)
             return LearnSpellResult.NoRoom;
-
+        
         if (source.SpellBook.TryAddToNextSlot(spell))
         {
             source.Client.SendSound(170, false);
