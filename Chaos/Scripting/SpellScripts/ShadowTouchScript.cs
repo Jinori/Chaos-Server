@@ -1,3 +1,4 @@
+using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Scripting.SpellScripts.Abstractions;
@@ -16,7 +17,13 @@ public class ShadowTouchScript : SpellScriptBase
     /// <inheritdoc />
     public override void OnUse(SpellContext context)
     {
-        context.SourceAisling?.StatSheet.SubtractMp(1200);
+        if ((context.SourceAisling != null) && !context.SourceAisling.StatSheet.TrySubtractMp(1200))
+        {
+            context.SourceAisling.SendMessage("You don't have enough mana.");
+            return;
+        }
+        
+        context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
         var newMonster = MonsterFactory.Create("shadowPet", context.SourceMap, context.Source);
         newMonster.PetOwner = context.SourceAisling;
         

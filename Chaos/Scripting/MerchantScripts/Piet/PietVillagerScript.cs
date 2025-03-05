@@ -419,7 +419,7 @@ public class PietVillagerScript : MerchantScriptBase
                 var point = new Point(RandomAisling.X, RandomAisling.Y);
                 var location = new Location(Subject.MapInstance.InstanceId, point);
 
-                if (ShouldWalkTo(location))
+                if (ShouldWalkToPlayer(location))
                     WalkTowardsPlayer(location, delta);
                 else
                 {
@@ -615,6 +615,10 @@ public class PietVillagerScript : MerchantScriptBase
 
     private bool ShouldWalkTo(Location destination) =>
         (Subject.ManhattanDistanceFrom(destination) > 0) && Subject.OnSameMapAs(destination);
+    
+    private bool ShouldWalkToPlayer(Location destination) =>
+        (Subject.ManhattanDistanceFrom(destination) > 1) && Subject.OnSameMapAs(destination);
+    
     private bool ShouldWalkToSpawnPoint() => Subject.ManhattanDistanceFrom(Spawnpoint) > 0;
 
     /// <inheritdoc />

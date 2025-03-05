@@ -30,7 +30,6 @@ public class GuildHallEntrance : ConfigurableReactorTileScriptBase
     /// <inheritdoc />
     public override void OnWalkedOn(Creature source)
     {
-        var targetMap = SimpleCache.Get<MapInstance>(Destination.Map);
         
         if (source is not Aisling aisling) 
             return;
@@ -58,7 +57,7 @@ public class GuildHallEntrance : ConfigurableReactorTileScriptBase
         }
         
         Subject.MapInstance.RemoveEntity(aisling);
-
+        var targetMap = SimpleCache.Get<MapInstance>(Destination.Map);
         targetMap.AddEntity(aisling, new Point(98, 46));
         aisling.SendOrangeBarMessage($"You've entered {aisling.Guild?.Name}'s Guild Hall.");
     }

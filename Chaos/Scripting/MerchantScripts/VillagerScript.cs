@@ -338,7 +338,7 @@ public class VillagerScript : MerchantScriptBase
                 var point = new Point(RandomAisling.X, RandomAisling.Y);
                 var location = new Location(Subject.MapInstance.InstanceId, point);
 
-                if (ShouldWalkTo(location))
+                if (ShouldWalkToPlayer(location))
                     WalkTowardsPlayer(location, delta);
                 else
                 {
@@ -531,8 +531,9 @@ public class VillagerScript : MerchantScriptBase
     private bool ShouldWalkTo(Location destination) =>
         (Subject.ManhattanDistanceFrom(destination) > 0) && Subject.OnSameMapAs(destination);
 
-    private bool ShouldWalkTo(Point destination) => Subject.ManhattanDistanceFrom(destination) > 0;
-    private bool ShouldWalkToSpawnPoint() => Subject.ManhattanDistanceFrom(Spawnpoint) > 0;
+    private bool ShouldWalkToPlayer(Location destination) =>
+        (Subject.ManhattanDistanceFrom(destination) > 1) && Subject.OnSameMapAs(destination);
+    private bool ShouldWalkToSpawnPoint() => Subject.ManhattanDistanceFrom(Spawnpoint) > 1;
 
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
@@ -628,7 +629,7 @@ public class VillagerScript : MerchantScriptBase
         UpdateWalkTimer(delta);
 
         if (WalkTimer.IntervalElapsed)
-            Subject.Pathfind(destination, 0, Options);
+            Subject.Pathfind(destination, 1, Options);
     }
 
     #region TrackedLegendMarks
