@@ -27,6 +27,9 @@ public class FaceShapeScript : DialogScriptBase
     {
         foreach (var s in FaceStyles)
         {
+            if (source.Gender is Gender.Male && s.EqualsI("restingbitchfaceshape"))
+                continue;
+            
             var item = _itemFactory.CreateFaux(s);
             Subject.Items.Add(ItemDetails.BuyWithGold(item));
         }

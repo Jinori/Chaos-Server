@@ -947,6 +947,9 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 MarkColor.White,
                 1,
                 GameTime.Now));
+
+        if (Subject.UserStatSheet.Level <= 41)
+            Subject.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You have died. Press F1 to revive.");
     }
 
     /// <inheritdoc />
