@@ -39,18 +39,22 @@ public class TerminusHomeOptionsScript : DialogScriptBase
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
-        if (source.Guild == null) return;
-
-        var option = new DialogOption
+        if (source.Guild != null)
         {
-            DialogKey = "terminus_homeoptions",
-            OptionText = "Guild Hall",
-        };
+            var option = new DialogOption
+            {
+                DialogKey = "terminus_homeoptions",
+                OptionText = "Guild Hall",
+            };
 
-        if (!Subject.HasOption(option.OptionText))
-            Subject.Options.Add(option);
+            if (!Subject.HasOption(option.OptionText))
+                Subject.Options.Add(option);    
+        }
         
-        Subject.InjectTextParameters(source.Trackers.LastLogout.Humanize());
+        Subject.InjectTextParameters(
+            source.Trackers.LastLogout != null
+                ? source.Trackers.LastLogout.Humanize()
+                : source.Trackers.LastLogin.Humanize());
     }
 
     /// <inheritdoc />
