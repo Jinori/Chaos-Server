@@ -6,7 +6,7 @@ using Chaos.Scripting.Components.Execution;
 
 namespace Chaos.Scripting.Components.AbilityComponents;
 
-public sealed class MagicResistanceComponent : IComponent
+public sealed class MagicResistanceComponent : IConditionalComponent
 {
     private static readonly Animation MissAnimation = new()
     {
@@ -14,7 +14,7 @@ public sealed class MagicResistanceComponent : IComponent
         AnimationSpeed = 100
     };
 
-    public void Execute(ActivationContext context, ComponentVars vars)
+    public bool Execute(ActivationContext context, ComponentVars vars)
     {
         var userHit = context.Source.StatSheet.EffectiveHit;
 
@@ -24,7 +24,7 @@ public sealed class MagicResistanceComponent : IComponent
 
         // Immediately cast spell if ignoring magic resistance
         if (options.IgnoreMagicResistance)
-            return;
+            return true;
 
         foreach (var target in targets.ToList())
         {
@@ -53,6 +53,9 @@ public sealed class MagicResistanceComponent : IComponent
 
         // Update the target list with valid hits
         vars.SetTargets(targets);
+        
+        // If no targets were found, return false
+        return targets.Count != 0;
     }
 
     public interface IMagicResistanceComponentOptions
