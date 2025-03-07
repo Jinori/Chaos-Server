@@ -6,16 +6,16 @@ using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.Components.AbilityComponents;
 
-public class RemoveAndApplyEffectComponent : IComponent
+public class RemoveAndApplyEffectComponent : IConditionalComponent
 {
     /// <inheritdoc />
-    public void Execute(ActivationContext context, ComponentVars vars)
+    public bool Execute(ActivationContext context, ComponentVars vars)
     {
         var options = vars.GetOptions<IRemoveAndApplyEffectComponentOptions>();
         var targets = vars.GetTargets<Creature>();
 
         if (string.IsNullOrEmpty(options.EffectKeyToRemove))
-            return;
+            return false;
 
         if (options.RemoveAllEffects.HasValue)
             foreach (var target in targets)
@@ -25,7 +25,7 @@ public class RemoveAndApplyEffectComponent : IComponent
             }
 
         if (string.IsNullOrEmpty(options.EffectKeyToAddAfterRemoval))
-            return;
+            return false;
 
         foreach (var target in targets)
         {
@@ -35,28 +35,28 @@ public class RemoveAndApplyEffectComponent : IComponent
                 {
                     context.SourceAisling?.SendOrangeBarMessage($"Target is already under another effect. [Cradh]");
 
-                    return;
+                    return false;
                 }
                 
                 if (target.Effects.Contains("Mor Cradh"))
                 {
                     context.SourceAisling?.SendOrangeBarMessage($"Target is already under another effect. [Mor Cradh]");
 
-                    return;
+                    return false;
                 }
                 
                 if (target.Effects.Contains("Ard Cradh"))
                 {
                     context.SourceAisling?.SendOrangeBarMessage($"Target is already under another effect. [Ard Cradh]");
 
-                    return;
+                    return false;
                 }
                 
                 if (target.Effects.Contains("Dia Cradh"))
                 {
                     context.SourceAisling?.SendOrangeBarMessage($"Target is already under another effect. [Dia Cradh]");
 
-                    return;
+                    return false;
                 }
                 
                 if (target.Effects.Contains("Beag Cradh") && options.EffectKeyToAddAfterRemoval is "preventrecradh")
@@ -65,8 +65,9 @@ public class RemoveAndApplyEffectComponent : IComponent
                     target.Effects.Apply(context.Source, effect);
                     target.Effects.Dispel(options.EffectKeyToRemove);
                     context.SourceAisling?.SendOrangeBarMessage($"{target.Name}'s curse healed and prevent recradh is now active.");
-                } else
-                    return;
+
+                    return true;
+                }
             }
 
             if (options.EffectKeyToRemove is "cradh")
@@ -75,21 +76,21 @@ public class RemoveAndApplyEffectComponent : IComponent
                 {
                     context.SourceAisling?.SendOrangeBarMessage($"Target is already under another effect. [Mor Cradh]");
 
-                    return;
+                    return false;
                 }
                 
                 if (target.Effects.Contains("Ard Cradh"))
                 {
                     context.SourceAisling?.SendOrangeBarMessage($"Target is already under another effect. [Ard Cradh]");
 
-                    return;
+                    return false;
                 }
                 
                 if (target.Effects.Contains("Dia Cradh"))
                 {
                     context.SourceAisling?.SendOrangeBarMessage($"Target is already under another effect. [Dia Cradh]");
 
-                    return;
+                    return false;
                 }
                 
                 if ((target.Effects.Contains("Cradh") || target.Effects.Contains("Beag Cradh") && options.EffectKeyToAddAfterRemoval is "preventrecradh"))
@@ -99,8 +100,9 @@ public class RemoveAndApplyEffectComponent : IComponent
                     target.Effects.Dispel("Beag Cradh");
                     target.Effects.Dispel(options.EffectKeyToRemove);
                     context.SourceAisling?.SendOrangeBarMessage($"{target.Name}'s curse healed and prevent recradh is now active.");
-                } else
-                    return;
+
+                    return true;
+                }
             }
 
             if (options.EffectKeyToRemove is "mor cradh")
@@ -109,14 +111,14 @@ public class RemoveAndApplyEffectComponent : IComponent
                 {
                     context.SourceAisling?.SendOrangeBarMessage($"Target is already under another effect. [Ard Cradh]");
 
-                    return;
+                    return false;
                 }
                 
                 if (target.Effects.Contains("Dia Cradh"))
                 {
                     context.SourceAisling?.SendOrangeBarMessage($"Target is already under another effect. [Dia Cradh]");
 
-                    return;
+                    return false;
                 }
                 
                 if (target.Effects.Contains("Mor Cradh") || target.Effects.Contains("Cradh") || (target.Effects.Contains("Beag Cradh") && options.EffectKeyToAddAfterRemoval is "preventrecradh"))
@@ -127,8 +129,8 @@ public class RemoveAndApplyEffectComponent : IComponent
                     target.Effects.Dispel("Cradh");
                     target.Effects.Dispel(options.EffectKeyToRemove);
                     context.SourceAisling?.SendOrangeBarMessage($"{target.Name}'s curse healed and prevent recradh is now active.");
-                } else
-                    return;
+                    return true;
+                }
             }
 
             if (options.EffectKeyToRemove is "ard cradh")
@@ -137,7 +139,7 @@ public class RemoveAndApplyEffectComponent : IComponent
                 {
                     context.SourceAisling?.SendOrangeBarMessage($"Target is already under another effect. [Dia Cradh]");
 
-                    return;
+                    return false;
                 }
                 
                 if (target.Effects.Contains("Ard Cradh") || target.Effects.Contains("Mor Cradh") || target.Effects.Contains("Cradh") || (target.Effects.Contains("Beag Cradh") && options.EffectKeyToAddAfterRemoval is "preventrecradh"))
@@ -149,8 +151,8 @@ public class RemoveAndApplyEffectComponent : IComponent
                     target.Effects.Dispel("Mor Cradh");
                     target.Effects.Dispel(options.EffectKeyToRemove);
                     context.SourceAisling?.SendOrangeBarMessage($"{target.Name}'s curse healed and prevent recradh is now active.");
-                } else
-                    return;
+                    return true;
+                }
             } 
             if (options.EffectKeyToRemove is "dia cradh")
             {
@@ -164,16 +166,19 @@ public class RemoveAndApplyEffectComponent : IComponent
                     target.Effects.Dispel("Ard Cradh");
                     target.Effects.Dispel(options.EffectKeyToRemove);
                     context.SourceAisling?.SendOrangeBarMessage($"{target.Name}'s curse healed and prevent recradh is now active.");
-                } else
-                    return;
+                    return true;
+                }
             }
             else
             {
                 target.Effects.Dispel(options.EffectKeyToRemove);
                 var effect = options.EffectFactory.Create(options.EffectKeyToAddAfterRemoval);
                 target.Effects.Apply(context.Source, effect);
+                return true;
             }
         }
+
+        return true;
     }
 
     public interface IRemoveAndApplyEffectComponentOptions

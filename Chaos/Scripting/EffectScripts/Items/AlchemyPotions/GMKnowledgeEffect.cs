@@ -39,9 +39,6 @@ public class GMKnowledgeEffect : EffectBase, NonOverwritableEffectComponent.INon
     {
         var execution = new ComponentExecutor(source, target).WithOptions(this)
                                                              .ExecuteAndCheck<NonOverwritableEffectComponent>();
-
-        (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You cast {Name} on {Subject.Name}.");
-
         return execution is not null;
     }
 }

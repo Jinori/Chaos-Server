@@ -87,5 +87,5 @@ public class RemoveAndApplyEffectScript : ConfigurableSpellScriptBase,
     public override void OnUse(SpellContext context)
         => new ComponentExecutor(context).WithOptions(this)
                                          .ExecuteAndCheck<SpellComponent<Creature>>()
-                                         ?.Execute<RemoveAndApplyEffectComponent>();
+                                         ?.ExecuteAndCheck<RemoveAndApplyEffectComponent>();
 }

@@ -23,7 +23,7 @@ public class DmgTrinketEffect : EffectBase
 
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A weaponsmith blesses your instrument of battle.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Claiomh Thugann Anam's fire burns bright within you.");
     }
 
     public override void OnDispelled() => OnTerminated();
@@ -39,6 +39,6 @@ public class DmgTrinketEffect : EffectBase
 
         Subject.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "The blessing of the weaponsmith has subsided.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "The blessing of Claoimh Thugann Anam has subsided.");
     }
 }

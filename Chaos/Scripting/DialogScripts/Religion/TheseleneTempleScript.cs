@@ -13,8 +13,8 @@ public class TheseleneTempleScript : ReligionScriptBase
     private const string GODNAME = "Theselene";
 
     /// <inheritdoc />
-    public TheseleneTempleScript(Dialog subject, IClientRegistry<IChaosWorldClient> clientRegistry, IItemFactory itemFactory)
-        : base(subject, clientRegistry, itemFactory) { }
+    public TheseleneTempleScript(Dialog subject, IClientRegistry<IChaosWorldClient> clientRegistry, IItemFactory itemFactory, IEffectFactory effectFactory)
+        : base(subject, clientRegistry, itemFactory, effectFactory) { }
 
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
@@ -39,6 +39,31 @@ public class TheseleneTempleScript : ReligionScriptBase
                 break;
             case "theselene_temple_createscroll":
                 CreateTempleScroll(source, GODNAME);
+
+                break;
+
+            case "theselene_temple_divineblessing25":
+                BuffGroup(source, GODNAME, 25);
+                
+                break;
+            
+            case "theselene_temple_divineblessing50":
+                BuffGroup(source, GODNAME, 50);
+                
+                break;
+            
+            case "theselene_temple_divineblessing75":
+                BuffGroup(source, GODNAME, 75);
+                
+                break;
+            
+            case "theselene_temple_divineblessing100":
+                BuffGroup(source, GODNAME, 100);
+
+                break;
+            
+            case "theselene_temple_divineblessing300":
+                BuffGroup(source, GODNAME, 300);
 
                 break;
             

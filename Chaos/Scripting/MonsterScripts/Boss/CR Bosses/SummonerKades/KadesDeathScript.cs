@@ -91,7 +91,7 @@ namespace Chaos.Scripting.MonsterScripts.Boss.CR_Bosses.SummonerKades
                     rewardTarget.Group.DistributeRandomized(Subject.Items, Subject);
     
                     // Ensure only members on the same map as the Subject receive gold
-                    rewardTarget.Group.DistributeEvenGold(Subject.Gold, Subject);
+                    rewardTarget.Group.DistributeEvenGold(Subject.Gold, Subject, false);
     
                     // Distribute experience only to members on the same map as the monster
                     ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);

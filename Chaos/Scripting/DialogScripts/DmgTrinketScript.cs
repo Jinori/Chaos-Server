@@ -46,6 +46,28 @@ internal class DmgTrinketScript : DialogScriptBase
                 break;
             }
             
+            case "dmgtrinket_dmgbuffgroupyes":
+            {
+                if (source.Trackers.TimedEvents.HasActiveEvent("dmgTrinket", out var dmgTime))
+                {
+                    Subject.Reply(source, $"The mystical energies need time to restore. You must wait {dmgTime.Remaining.ToReadableString()} before attempting to buff again.");
+                    return;
+                }
+
+                if (source.Group == null)
+                {
+                    Subject.Reply(source, "You're not in a group.");
+                    return;
+                }
+
+                source.Trackers.TimedEvents.AddEvent("dmgTrinket", TimeSpan.FromHours(4), true);
+                
+                foreach (var player in source.Group)
+                    DamageBoost(player);
+
+                break;
+            }
+            
             case "dmgtrinket_dmgbuffyourselfyes":
             {
                 if (source.Trackers.TimedEvents.HasActiveEvent("dmgTrinket", out var dmgTime))
@@ -53,9 +75,12 @@ internal class DmgTrinketScript : DialogScriptBase
                     Subject.Reply(source, $"The mystical energies need time to restore. You must wait {dmgTime.Remaining.ToReadableString()} before attempting to buff again.");
                     return;
                 }
-                DamageBoost(source, source);
+                
+                source.Trackers.TimedEvents.AddEvent("dmgTrinket", TimeSpan.FromHours(2), true);
+                DamageBoost(source);
                 break;
             }
+            
             
             case "dmgtrinket_portalforge":
             {
@@ -67,46 +92,12 @@ internal class DmgTrinketScript : DialogScriptBase
             }
         }
     }
+    
 
-    /// <inheritdoc />
-    public override void OnNext(Aisling source, byte? optionIndex = null)
+    private void DamageBoost(Aisling target)
     {
-        if (Subject.Template.TemplateKey.Equals("dmgtrinket_dmgbuffanother", StringComparison.CurrentCultureIgnoreCase))
-        {
-            if (source.Trackers.TimedEvents.HasActiveEvent("dmgTrinket", out var dmgTime))
-            {
-                Subject.Reply(source, $"The mystical energies need time to restore. You must wait {dmgTime.Remaining.ToReadableString()} before attempting to buff another.");
-                return;
-            }
-            if (!TryFetchArgs<string>(out var name))
-            {
-                Subject.ReplyToUnknownInput(source);
-
-                return;
-            }
-
-            var aisling = source.MapInstance.GetEntitiesWithinRange<Aisling>(source, 12).FirstOrDefault(x => x.Name == name);
-
-            if (aisling != null)
-                DamageBoost(source, aisling);
-            else
-                source.SendActiveMessage("No aisling by that name can be sensed in your vicinity.");   
-        }
-    }
-
-    private void DamageBoost(Aisling source, Aisling target)
-    {
-        source.Trackers.TimedEvents.AddEvent("dmgTrinket", TimeSpan.FromHours(3), true);
-
         var effect = EffectFactory.Create("dmgtrinket");
-
-
-        if (source.Name == target.Name)
-            target.Effects.Apply(target, effect);
-
-        if (source.Name != target.Name)
-            target.Effects.Apply(target, effect);
-        
+        target.Effects.Apply(target, effect);
         target.Animate(DmgAnimation, target.Id);
     }
 }

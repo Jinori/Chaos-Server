@@ -180,7 +180,7 @@ public sealed class Group : IEnumerable<Aisling>, IDedicatedChannel
         Members.Clear();
     }
 
-    public void DistributeEvenGold(int gold, Monster monster)
+    public void DistributeEvenGold(int gold, Monster monster, bool boosted)
     {
         if ((Members.Count == 0) || (gold <= 1))
             return;
@@ -200,7 +200,12 @@ public sealed class Group : IEnumerable<Aisling>, IDedicatedChannel
         foreach (var member in eligibleMembers)
         {
             member.GiveGoldOrSendToBank(amountPerMember);
-            member.SendServerMessage(ServerMessageType.ActiveMessage, $"Your split of the group gold is {amountPerMember}.");
+
+            member.SendServerMessage(
+                ServerMessageType.ActiveMessage,
+                boosted
+                    ? $"Your split of the group gold is {amountPerMember}, boosted by Serendael!"
+                    : $"Your split of the group gold is {amountPerMember}.");
         }
     }
 

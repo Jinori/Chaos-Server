@@ -51,6 +51,7 @@ public class ReligionScriptBase : DialogScriptBase
             Rank.Worshipper, new List<string>
             {
                 "Pray",
+                "Divine Blessing",
                 "A Path Home",
                 "The Gods",
                 "Leave Faith"
@@ -60,6 +61,7 @@ public class ReligionScriptBase : DialogScriptBase
             Rank.Acolyte, new List<string>
             {
                 "Pray",
+                "Divine Blessing",
                 "A Path Home",
                 "The Gods",
                 "Leave Faith"
@@ -69,6 +71,7 @@ public class ReligionScriptBase : DialogScriptBase
             Rank.Emissary, new List<string>
             {
                 "Pray",
+                "Divine Blessing",
                 "A Path Home",
                 "The Gods",
                 "Leave Faith"
@@ -78,6 +81,7 @@ public class ReligionScriptBase : DialogScriptBase
             Rank.Seer, new List<string>
             {
                 "Pray",
+                "Divine Blessing",
                 "A Path Home",
                 "Hold Mass",
                 "The Gods",
@@ -88,6 +92,7 @@ public class ReligionScriptBase : DialogScriptBase
             Rank.Favor, new List<string>
             {
                 "Pray",
+                "Divine Blessing",
                 "A Path Home",
                 "Hold Mass",
                 "The Gods",
@@ -98,6 +103,7 @@ public class ReligionScriptBase : DialogScriptBase
             Rank.Champion, new List<string>
             {
                 "Pray",
+                "Divine Blessing",
                 "A Path Home",
                 "Hold Mass",
                 "The Gods",
@@ -293,6 +299,7 @@ public class ReligionScriptBase : DialogScriptBase
 
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
     protected IItemFactory ItemFactory { get; }
+    protected IEffectFactory EffectFactory { get; }
 
     protected Animation PrayerSuccess { get; } = new()
     {
@@ -301,11 +308,12 @@ public class ReligionScriptBase : DialogScriptBase
     };
 
     /// <inheritdoc />
-    public ReligionScriptBase(Dialog subject, IClientRegistry<IChaosWorldClient> clientRegistry, IItemFactory itemFactory)
+    public ReligionScriptBase(Dialog subject, IClientRegistry<IChaosWorldClient> clientRegistry, IItemFactory itemFactory, IEffectFactory effectFactory)
         : base(subject)
     {
         ClientRegistry = clientRegistry;
         ItemFactory = itemFactory;
+        EffectFactory = effectFactory;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
     }
 
@@ -565,6 +573,121 @@ public class ReligionScriptBase : DialogScriptBase
         source.Inventory.RemoveQuantity($"Essence of {deity}", 3);
         source.SendActiveMessage($"You have joined the temple of {deity} as a Worshipper!");
     }
+
+    public void BuffGroup(Aisling source, string deity, int faithCost)
+    {
+        if (!HasSufficientFaith(source, faithCost))
+        {
+            Subject.Reply(source, "Your faith is too low to receive the goddesses' blessing.", $"{deity}_temple_initial");
+
+            return;
+        }
+
+        if (faithCost == 300)
+        {
+            ApplyGlobalBlessing(source, deity);
+        }
+        else
+        {
+            if (source.Group is null)
+            {
+                Subject.Reply(source, "You are not in a group.", $"{deity}_temple_initial");
+
+                return;
+            }
+            
+            ApplyGroupBlessing(source, deity, faithCost);
+        }
+    }
+
+    private bool HasSufficientFaith(Aisling source, int faithCost) => (CheckCurrentFaith(source) > faithCost) && TrySubtractFaith(source, faithCost);
+
+    private void ApplyGlobalBlessing(Aisling source, string deity)
+    {
+        (var effect, var duration, var description) = deity switch
+        {
+            "Serendael" => ("goldboost", TimeSpan.FromMinutes(60), "+25% monster gold drops!"),
+            "Skandara"  => ("gmknowledge", TimeSpan.FromMinutes(60), "+25% monster experience."),
+            "Theselene" => ("preventrecradh", TimeSpan.FromMinutes(8), "protection from cradhs."),
+            "Miraelis"  => ("LastStand", TimeSpan.FromSeconds(60), "protection from death."),
+            _           => (null, TimeSpan.Zero, null)
+        };
+
+        if (effect is null || description is null)
+            return;
+
+        foreach (var player in ClientRegistry)
+        {
+            var buff = EffectFactory.Create(effect);
+            buff.Remaining = duration;
+
+            player.Aisling.Effects.Apply(source, buff);
+            player.Aisling.SendServerMessage(ServerMessageType.ActiveMessage, 
+                $"{source.Name} has blessed Unora with {description}");
+        }
+    }
+
+    private void ApplyGroupBlessing(Aisling source, string deity, int faithCost)
+    {
+        var effect = deity switch
+        {
+            "Serendael" => "goldboost",
+            "Skandara"  => "gmknowledge",
+            "Theselene" => "preventrecradh",
+            "Miraelis"  => "LastStand",
+            _           => null
+        };
+
+        if (effect is null)
+            return;
+
+        foreach (var player in source.Group)
+        {
+            var buff = EffectFactory.Create(effect);
+            buff.Remaining = GetBuffDuration(deity, faithCost);
+            player.Effects.Apply(source, buff);
+        }
+    }
+
+    private TimeSpan GetBuffDuration(string deity, int faithCost) =>
+        deity switch
+        {
+            "Serendael" => faithCost switch
+            {
+                25  => TimeSpan.FromMinutes(5),
+                50  => TimeSpan.FromMinutes(10),
+                75  => TimeSpan.FromMinutes(15),
+                100 => TimeSpan.FromMinutes(25),
+                _   => TimeSpan.FromMinutes(5)
+            },
+            "Skandara" => faithCost switch
+            {
+                25  => TimeSpan.FromMinutes(5),
+                50  => TimeSpan.FromMinutes(10),
+                75  => TimeSpan.FromMinutes(15),
+                100 => TimeSpan.FromMinutes(25),
+                _   => TimeSpan.FromMinutes(5)
+            },
+            "Theselene" => faithCost switch
+            {
+                25  => TimeSpan.FromSeconds(30),
+                50  => TimeSpan.FromMinutes(1),
+                75  => TimeSpan.FromMinutes(1.5),
+                100 => TimeSpan.FromMinutes(2),
+                _   => TimeSpan.FromSeconds(30)
+            },
+            "Miraelis" => faithCost switch
+            {
+                25  => TimeSpan.FromSeconds(10),
+                50  => TimeSpan.FromSeconds(15),
+                75  => TimeSpan.FromSeconds(20),
+                100 => TimeSpan.FromSeconds(30),
+                _   => TimeSpan.FromSeconds(10)
+            },
+            _ => TimeSpan.Zero
+        };
+
+    private string GetRandomEffect(List<string> effects) => effects[new Random().Next(effects.Count)];
 
     public void CreateTempleScroll(Aisling source, string deity)
     {

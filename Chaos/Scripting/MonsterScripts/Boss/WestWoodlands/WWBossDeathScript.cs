@@ -87,7 +87,7 @@ public class WWBossDeathScript : MonsterScriptBase
                     rewardTarget.Group.DistributeRandomized(Subject.Items, Subject);
 
                     // Ensure only members on the same map as the Subject receive gold
-                    rewardTarget.Group.DistributeEvenGold(Subject.Gold, Subject);
+                    rewardTarget.Group.DistributeEvenGold(Subject.Gold, Subject, false);
 
                     // Distribute experience only to members on the same map as the monster
                     if (rewardTargets != null)

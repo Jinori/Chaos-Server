@@ -37,13 +37,11 @@ namespace Chaos.Scripting.MonsterScripts
             }
         }
 
-        private Aisling? GetHighestContributor()
-        {
-            return Subject.Contribution
-                .OrderByDescending(kvp => kvp.Value)
-                .Select(kvp => Map.TryGetEntity<Aisling>(kvp.Key, out var a) ? a : null)
-                .FirstOrDefault(a => a != null);
-        }
+        private Aisling? GetHighestContributor() =>
+            Subject.Contribution
+                   .OrderByDescending(kvp => kvp.Value)
+                   .Select(kvp => Map.TryGetEntity<Aisling>(kvp.Key, out var a) ? a : null)
+                   .FirstOrDefault(a => a != null);
 
         private Aisling? GetLastDamagerFromTrap()
         {
@@ -80,8 +78,15 @@ namespace Chaos.Scripting.MonsterScripts
                     // Ensure only members on the same map as the Subject (monster) receive loot
                     rewardTarget.Group.DistributeRandomized(Subject.Items, Subject);
     
+                    var hasGoldBoost = rewardTarget.Group.Any(a => a.Effects.Contains("GoldBoost"));
+                    var goldAmount = Subject.Gold;
+
+                    // Apply gold boost if it's `true`
+                    if (hasGoldBoost)
+                        goldAmount = (int)(goldAmount * 1.25);
+
                     // Ensure only members on the same map as the Subject receive gold
-                    rewardTarget.Group.DistributeEvenGold(Subject.Gold, Subject);
+                    rewardTarget.Group.DistributeEvenGold(goldAmount, Subject, hasGoldBoost);
     
                     // Distribute experience only to members on the same map as the monster
                     ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
@@ -103,10 +108,19 @@ namespace Chaos.Scripting.MonsterScripts
                 ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
             }
         }
-
+        
+        
         private void HandleLootDrop(Aisling[]? rewardTargets, bool lockToTargets = false, Aisling? lockToLeader = null)
         {
-            var droppedGold = Subject.TryDropGold(Subject, Subject.Gold, out var money);
+            var hasGoldBoost = rewardTargets?.Any(a => a.Effects.Contains("GoldBoost"));
+            var goldAmount = Subject.Gold;
+
+            // Apply gold boost if it's `true`
+            if (hasGoldBoost == true)
+            {
+                goldAmount = (int)(goldAmount * 1.25);
+            }
+            var droppedGold = Subject.TryDropGold(Subject, goldAmount, out var money);
             var droppedItems = Subject.TryDrop(Subject, Subject.Items, out var groundItems);
 
             if (WorldOptions.Instance.LootDropsLockToRewardTargetSecs.HasValue)
@@ -141,5 +155,6 @@ namespace Chaos.Scripting.MonsterScripts
                 }
             }
         }
+
     }
 }

@@ -13,8 +13,8 @@ public class SkandaraTempleScript : ReligionScriptBase
     private const string GODNAME = "Skandara";
 
     /// <inheritdoc />
-    public SkandaraTempleScript(Dialog subject, IClientRegistry<IChaosWorldClient> clientRegistry, IItemFactory itemFactory)
-        : base(subject, clientRegistry, itemFactory) { }
+    public SkandaraTempleScript(Dialog subject, IClientRegistry<IChaosWorldClient> clientRegistry, IItemFactory itemFactory, IEffectFactory effectFactory)
+        : base(subject, clientRegistry, itemFactory, effectFactory) { }
 
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
@@ -29,6 +29,7 @@ public class SkandaraTempleScript : ReligionScriptBase
                 PrayToSkandara(source);
 
                 break;
+            
             case "skandara_temple_joinquest":
                 SendOnJoinQuest(source, GODNAME);
 
@@ -39,6 +40,31 @@ public class SkandaraTempleScript : ReligionScriptBase
                 break;
             case "skandara_temple_createscroll":
                 CreateTempleScroll(source, GODNAME);
+                
+                break;
+            
+            case "skandara_temple_divineblessing25":
+                BuffGroup(source, GODNAME, 25);
+                
+                break;
+            
+            case "skandara_temple_divineblessing50":
+                BuffGroup(source, GODNAME, 50);
+                
+                break;
+            
+            case "skandara_temple_divineblessing75":
+                BuffGroup(source, GODNAME, 75);
+                
+                break;
+            
+            case "skandara_temple_divineblessing100":
+                BuffGroup(source, GODNAME, 100);
+                
+                break;
+            
+            case "skandara_temple_divineblessing300":
+                BuffGroup(source, GODNAME, 300);
                 
                 break;
             
