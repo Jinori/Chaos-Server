@@ -171,7 +171,7 @@ public class IceWallQuestScript : DialogScriptBase
 
             case "lilia_quest9":
             {
-                if (!source.Inventory.HasCount("Pristine Ruby", 1) && !source.Inventory.HasCount("Polished Bronze Bar", 1))
+                if (!source.Inventory.HasCount("Pristine Ruby", 1) || !source.Inventory.HasCount("Polished Bronze Bar", 1))
                 {
                     source.SendOrangeBarMessage("You are missing an item.");
                     Subject.Close(source);
