@@ -45,7 +45,9 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         "GMKnowledge",
         "Strong Knowledge",
         "Knowledge",
-        "Werewolf"
+        "Werewolf",
+        "GoldBoost",
+        "DmgTrinket"
     ];
 
     private readonly HashSet<string> ArenaKeys = new(StringComparer.OrdinalIgnoreCase)
