@@ -35,7 +35,7 @@ public class RemoveEffectComponent : IComponent
         "Foraging",
         "Celebration",
         "Marriage",
-        "GoldBoost",
+        "DropBoost",
         "DmgTrinket"
     ];
 

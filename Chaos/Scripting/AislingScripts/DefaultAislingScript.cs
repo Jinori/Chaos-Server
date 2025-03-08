@@ -46,7 +46,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         "Strong Knowledge",
         "Knowledge",
         "Werewolf",
-        "GoldBoost",
+        "DropBoost",
         "DmgTrinket"
     ];
 

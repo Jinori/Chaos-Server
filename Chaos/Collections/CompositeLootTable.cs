@@ -17,7 +17,8 @@ public sealed class CompositeLootTable(IEnumerable<ILootTable> lootTables) : ILo
 
     /// <inheritdoc />
     public IEnumerable<Item> GenerateLoot() => LootTables.SelectMany(table => table.GenerateLoot());
-
+    public IEnumerable<Item> GenerateLoot(bool serendaelBuff) => LootTables.SelectMany(table => table.GenerateLoot(serendaelBuff));
+    
     /// <summary>
     ///     Gets all loot tables contained within this loot table
     /// </summary>

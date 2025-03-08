@@ -314,11 +314,13 @@ public class EnchantingScript : DialogScriptBase
         foreach (var reagent in recipe.Ingredients)
             source.Inventory.RemoveQuantity(reagent.DisplayName, reagent.Amount);
 
+        var adjustedSuccessRate = AdjustSuccessRateForEffects(BASE_SUCCESS_RATE, source);
+        
         // Calculate success chance
         var successChance = (int)CalculateSuccessRate(
             legendMarkCount,
             timesCraftedThisItem,
-            BASE_SUCCESS_RATE,
+            adjustedSuccessRate,
             GetStatusAsInt(recipe.Rank),
             recipe.Difficulty);
 
@@ -519,5 +521,13 @@ public class EnchantingScript : DialogScriptBase
         }
 
         source.Client.SendSelfProfile();
+    }
+    
+    private double AdjustSuccessRateForEffects(double baseSuccessRate, Aisling source)
+    {
+        if (source.Effects.Contains("Miracle"))
+            return baseSuccessRate + 15.0;
+
+        return baseSuccessRate;
     }
 }

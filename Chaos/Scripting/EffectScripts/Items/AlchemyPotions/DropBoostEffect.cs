@@ -4,7 +4,7 @@ using Chaos.Scripting.EffectScripts.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Items.AlchemyPotions;
 
-public class GoldBoostEffect : EffectBase
+public class DropBoostEffect : EffectBase
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(60);
 
@@ -15,7 +15,7 @@ public class GoldBoostEffect : EffectBase
     };
 
     public override byte Icon => 123;
-    public override string Name => "GoldBoost";
+    public override string Name => "DropBoost";
     protected byte? Sound => 115;
 
     public override void OnApplied()
@@ -23,11 +23,11 @@ public class GoldBoostEffect : EffectBase
         base.OnApplied();
 
         AislingSubject?.Animate(Animation);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You gain 25% increased gold for monster kills.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You gain 25% increased gold and items for monster kills.");
     }
 
     public override void OnDispelled() => OnTerminated();
 
     public override void OnTerminated()
-        => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your gold gain has returned to normal.");
+        => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your gold and item gain has returned to normal.");
 }

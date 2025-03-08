@@ -13,4 +13,5 @@ public interface ILootTable
     ///     Generates loot
     /// </summary>
     IEnumerable<Item> GenerateLoot();
+    IEnumerable<Item> GenerateLoot(bool serendaelBuff);
 }
