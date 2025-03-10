@@ -15,12 +15,14 @@ public class DCMediumLockedChestScript(Dialog subject, IItemFactory itemFactory)
     
     private static readonly List<KeyValuePair<string, decimal>> ChestPrizes =
     [
-        new("nyxtwilightband", 10),
-        new("nyxumbralshield", 6),
-        new("nyxwhisper", 8),
-        new("nyxembrace", 8),
-        new("radiantpearl", 15),
-        new("eclipsepearl", 15),
+        new("blackstonering", 8),
+        new("ringoffire", 8),
+        new("largeemeraldring", 8),
+        new("scurvygauntlet", 8),
+        new("scurvygreaves", 8),
+        new("amorphousgauntlet", 8),
+        new("radiantpearl", 10),
+        new("eclipsepearl", 10),
         new("largejewelcraftingbox", 15),
         new("largeenchantingbox", 15),
         new("artisanweaponsmithingbox", 15),

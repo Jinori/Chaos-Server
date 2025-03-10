@@ -15,10 +15,9 @@ public class DCHardLockedChestScript(Dialog subject, IItemFactory itemFactory) :
     
     private static readonly List<KeyValuePair<string, decimal>> ChestPrizes =
     [
-        new("nyxtwilightband", 10),
-        new("nyxumbralshield", 6),
-        new("nyxwhisper", 8),
-        new("nyxembrace", 8),
+        new("shinguards", 10),
+        new("mythrildice", 6),
+        new("blooddiamond", 3),
         new("radiantpearl", 15),
         new("eclipsepearl", 15),
         new("largejewelcraftingbox", 15),

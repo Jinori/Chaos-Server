@@ -15,12 +15,14 @@ public class DCEasyLockedChestScript(Dialog subject, IItemFactory itemFactory) :
     
     private static readonly List<KeyValuePair<string, decimal>> ChestPrizes =
     [
-        new("nyxtwilightband", 10),
-        new("nyxumbralshield", 6),
-        new("nyxwhisper", 8),
-        new("nyxembrace", 8),
-        new("radiantpearl", 15),
-        new("eclipsepearl", 15),
+        new("leafnecklace", 3),
+        new("salveearrings", 8),
+        new("powerearrings", 8),
+        new("hybrasylbattleaxe", 2),
+        new("nunchaku", 2),
+        new("oakstaff", 2),
+        new("nagetierdagger", 2),
+        new("staffofwisdom", 2),
         new("largejewelcraftingbox", 15),
         new("largeenchantingbox", 15),
         new("artisanweaponsmithingbox", 15),
