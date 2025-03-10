@@ -30,10 +30,9 @@ public class QuakeEffect : ContinuousAnimationEffectBase
         TargetAnimation = 550
     };
 
-    /// <inheritdoc />
-    protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(20000), false);
+    protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromSeconds(20), false);
 
-    protected IApplyDamageScript ApplyDamageScript { get; }
+    protected IApplyDamageScript ApplyDamageScript { get; } = ApplyAttackDamageScript.Create();
 
     protected Animation CreatureAnimation { get; } = new()
     {
@@ -41,59 +40,28 @@ public class QuakeEffect : ContinuousAnimationEffectBase
         TargetAnimation = 55
     };
 
-    /// <inheritdoc />
-    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000), false);
+    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromSeconds(1), false);
 
-    /// <inheritdoc />
     public override byte Icon => 98;
-
-    /// <inheritdoc />
     public override string Name => "Quake";
-
-    public QuakeEffect() => ApplyDamageScript = ApplyAttackDamageScript.Create();
 
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
     {
-        if ((AislingSubject == null) && !Subject.Script.Is<PetScript>())
+        if (SourceOfEffect is Aisling aisling && (AislingSubject != null))
         {
-            Subject.Effects.Terminate("quake");
-
-            return;
-        }
-
-        if (Subject.MapInstance != SourceOfEffect.MapInstance)
-        {
-            Subject.Effects.Terminate("quake");
-
-            return;
-        }
-
-        var options = new AoeShapeOptions
+            if (!aisling.Equals(AislingSubject))
             {
-                Source = new Point(Subject.X, Subject.Y),
-                Range = 1,
-                Direction = Direction.All
-            };
+                if (aisling.Group is null || !aisling.Group.Contains(AislingSubject))
+                {
+                    Subject.Effects.Terminate(Name);
+                    SendMessage(AislingSubject, $"{aisling.Name}'s quake effect fades as they are not grouped.", ServerMessageType.ActiveMessage);
+                    return;                    
+                }
+            }
+        }
 
-            var points = AoeShape.AllAround.ResolvePoints(options);
-
-        var targets = Subject.MapInstance
-                             .GetEntitiesAtPoints<Creature>(points.Cast<IPoint>())
-                             .WithFilter(Subject, TargetFilter.HostileOnly)
-                             .WithFilter(Subject, TargetFilter.AliveOnly)
-                             .Where(x => !x.MapInstance.IsWall(Subject))
-                             .ToList();
-
-        if (((AislingSubject?.Group == null)
-             && (AislingSubject?.Name != SourceOfEffect.Name)
-             && !Subject.Script.Is<PetScript>()
-             && !Subject.Script.Is<NightmareTeammateScript>())
-            || ((AislingSubject?.Group != null)
-                && !AislingSubject.Group.Contains(SourceOfEffect)
-                && !Subject.Script.Is<PetScript>()
-                && !Subject.Script.Is<NightmareTeammateScript>()))
-            Subject.Effects.Terminate("Quake");
+        var targets = GetAffectedTargets();
 
         foreach (var target in targets)
         {
@@ -101,7 +69,7 @@ public class QuakeEffect : ContinuousAnimationEffectBase
                 SourceOfEffect,
                 target,
                 this,
-                (SourceOfEffect.StatSheet.Level + SourceOfEffect.StatSheet.EffectiveInt) * 6 + 200,
+                CalculateDamage(),
                 Element.None);
 
             target.ShowHealth();
@@ -109,45 +77,57 @@ public class QuakeEffect : ContinuousAnimationEffectBase
         }
     }
 
-    public override void OnTerminated() => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Quake has worn off.");
+    public override void OnTerminated() => SendMessage(AislingSubject, "Quake has worn off.", ServerMessageType.OrangeBar1);
 
     /// <inheritdoc />
     public override bool ShouldApply(Creature source, Creature target)
     {
         SourceOfEffect = source;
 
-        if (!target.IsFriendlyTo(source))
+        // Allow only pets and teammates to receive the effect
+        if (target is Monster monster && !monster.Script.Is<PetScript>() && !monster.Script.Is<NightmareTeammateScript>())
         {
-            if (target.Name.Contains("Teammate") || target.Script.Is<PetScript>())
-            {
-                Subject.Animate(Animation);
-
-                return true;
-            }
-
-            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is not an ally.");
-
+            SendMessage(source, "Cannot be cast on monsters.", ServerMessageType.OrangeBar1);
             return false;
         }
 
-        if (target.Effects.Contains("Quake"))
+        if (target.Effects.Contains("Quake") || target.Effects.Contains("Vortex"))
         {
-            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target has already has Quake.");
-
+            SendMessage(source, "Target already has Quake or Vortex.", ServerMessageType.OrangeBar1);
             return false;
         }
 
-        if (target.Effects.Contains("Vortex"))
-        {
-            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target has already has Vortex.");
-
-            return false;
-        }
-
-        Subject.Animate(Animation);
-        (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You cast {Name} on {target.Name}.");
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{source.Name} casted {Name} on you.");
+        target.Animate(Animation);
+        SendMessage(source, $"You cast {Name} on {target.Name}.", ServerMessageType.OrangeBar1);
+        SendMessage(AislingSubject, $"{source.Name} cast {Name} on you.", ServerMessageType.OrangeBar1);
 
         return true;
+    }
+
+    private IEnumerable<Creature> GetAffectedTargets()
+    {
+        var options = new AoeShapeOptions
+        {
+            Source = new Point(Subject.X, Subject.Y),
+            Range = 1,
+            Direction = Direction.All
+        };
+
+        var points = AoeShape.AllAround.ResolvePoints(options);
+
+        return Subject.MapInstance
+                      .GetEntitiesAtPoints<Creature>(points.Cast<IPoint>())
+                      .WithFilter(Subject, TargetFilter.HostileOnly)
+                      .WithFilter(Subject, TargetFilter.AliveOnly)
+                      .Where(x => !x.MapInstance.IsWall(Subject))
+                      .ToList();
+    }
+
+    private int CalculateDamage() => (SourceOfEffect.StatSheet.Level + SourceOfEffect.StatSheet.EffectiveInt) * 6 + 200;
+
+    private void SendMessage(Creature? target, string message, ServerMessageType type)
+    {
+        if (target is Aisling aisling)
+            aisling.Client.SendServerMessage(type, message);
     }
 }

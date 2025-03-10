@@ -21,7 +21,7 @@ public class VortexEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(20);
 
-    private Creature? SourceOfEffect { get; set; }
+    private Creature SourceOfEffect { get; set; } = null!;
 
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()
@@ -30,8 +30,7 @@ public class VortexEffect : ContinuousAnimationEffectBase
         TargetAnimation = 587
     };
 
-    /// <inheritdoc />
-    protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(20000), false);
+    protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromSeconds(20), false);
 
     protected IApplyDamageScript ApplyDamageScript { get; } = ApplyAttackDamageScript.Create();
 
@@ -41,39 +40,74 @@ public class VortexEffect : ContinuousAnimationEffectBase
         TargetAnimation = 283
     };
 
-    /// <inheritdoc />
-    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000), false);
+    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromSeconds(1), false);
 
-    /// <inheritdoc />
     public override byte Icon => 98;
-
-    /// <inheritdoc />
     public override string Name => "Vortex";
 
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
     {
-        if (SourceOfEffect == null)
+        if (SourceOfEffect is Aisling aisling && (AislingSubject != null))
         {
-            AislingSubject?.Effects.Terminate(Name);
-
-            return;
+            if (!aisling.Equals(AislingSubject))
+            {
+                if (aisling.Group is null || !aisling.Group.Contains(AislingSubject))
+                {
+                    Subject.Effects.Terminate(Name);
+                    SendMessage(AislingSubject, $"{aisling.Name}'s vortex effect fades as they are not grouped.", ServerMessageType.ActiveMessage);
+                    return;                    
+                }
+            }
         }
 
-        if ((AislingSubject == null) && !Subject.Script.Is<PetScript>())
+        foreach (var target in GetAffectedTargets())
         {
-            Subject.Effects.Terminate("Vortex");
+            ApplyDamageScript.ApplyDamage(
+                SourceOfEffect,
+                target,
+                this,
+                CalculateDamage(),
+                Element.None);
 
-            return;
+            target.ShowHealth();
+            target.Animate(CreatureAnimation);
+        }
+    }
+
+    public override void OnTerminated() => SendMessage(AislingSubject, "Vortex has worn off.", ServerMessageType.OrangeBar1);
+
+    /// <inheritdoc />
+    public override bool ShouldApply(Creature source, Creature target)
+    {
+        SourceOfEffect = source;
+
+        // Allow only pets and teammates to receive the effect
+        if (target is Monster { Script: not PetScript and not NightmareTeammateScript })
+        {
+            SendMessage(source, "Cannot be cast on this monster.", ServerMessageType.OrangeBar1);
+            return false;
         }
 
-        if (Subject.MapInstance != SourceOfEffect.MapInstance)
+        if (target.Effects.Contains("Vortex"))
         {
-            Subject.Effects.Terminate("Vortex");
-
-            return;
+            SendMessage(source, "Target already has Vortex.", ServerMessageType.OrangeBar1);
+            return false;
         }
 
+        // If the target has "Quake", remove it before applying Vortex
+        if (target.Effects.Contains("Quake"))
+            target.Effects.Terminate("Quake");
+
+        target.Animate(Animation);
+        SendMessage(source, $"You cast {Name} on {target.Name}.", ServerMessageType.OrangeBar1);
+        SendMessage(AislingSubject, $"{source.Name} cast {Name} on you.", ServerMessageType.OrangeBar1);
+
+        return true;
+    }
+
+    private IEnumerable<Creature> GetAffectedTargets()
+    {
         var options = new AoeShapeOptions
         {
             Source = new Point(Subject.X, Subject.Y),
@@ -83,79 +117,19 @@ public class VortexEffect : ContinuousAnimationEffectBase
 
         var points = AoeShape.AllAround.ResolvePoints(options);
 
-        var targets = Subject.MapInstance
-                             .GetEntitiesAtPoints<Creature>(points.Cast<IPoint>())
-                             .WithFilter(Subject, TargetFilter.HostileOnly)
-                             .WithFilter(Subject, TargetFilter.AliveOnly)
-                             .Where(x => !x.Equals(Subject) && !x.MapInstance.IsWall(Subject))
-                             .ToList();
-
-        if (((AislingSubject?.Group == null)
-             && (AislingSubject?.Name != SourceOfEffect.Name)
-             && !Subject.Script.Is<PetScript>()
-             && !Subject.Script.Is<NightmareTeammateScript>())
-            || ((AislingSubject?.Group != null)
-                && !AislingSubject.Group.Contains(SourceOfEffect)
-                && !Subject.Script.Is<PetScript>()
-                && !Subject.Script.Is<NightmareTeammateScript>()))
-            Subject.Effects.Terminate("Vortex");
-
-        foreach (var target in targets)
-        {
-            ApplyDamageScript.ApplyDamage(
-                SourceOfEffect,
-                target,
-                this,
-                (SourceOfEffect.StatSheet.Level + SourceOfEffect.StatSheet.EffectiveInt) * 24 + 500,
-                Element.None);
-
-            target.ShowHealth();
-            target.Animate(CreatureAnimation);
-        }
+        return Subject.MapInstance
+                      .GetEntitiesAtPoints<Creature>(points.Cast<IPoint>())
+                      .WithFilter(Subject, TargetFilter.HostileOnly)
+                      .WithFilter(Subject, TargetFilter.AliveOnly)
+                      .Where(x => !x.Equals(Subject) && !x.MapInstance.IsWall(Subject))
+                      .ToList();
     }
 
-    public override void OnTerminated() => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Vortex has worn off.");
+    private int CalculateDamage() => (SourceOfEffect.StatSheet.Level + SourceOfEffect.StatSheet.EffectiveInt) * 24 + 500;
 
-    /// <inheritdoc />
-    public override bool ShouldApply(Creature source, Creature target)
+    private void SendMessage(Creature? target, string message, ServerMessageType type)
     {
-        SourceOfEffect = source;
-
-        if (!target.IsFriendlyTo(source))
-        {
-            if (target.Name.Contains("Teammate") || target.Script.Is<PetScript>())
-            {
-                Subject.Animate(Animation);
-
-                return true;
-            }
-
-            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target is not an ally.");
-
-            return false;
-        }
-
-        if (target.Effects.Contains("Quake"))
-        {
-            target.Effects.Terminate("Quake");
-            Subject.Animate(Animation);
-            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You cast {Name} on {target.Name}.");
-            AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{source.Name} casted {Name} on you.");
-
-            return true;
-        }
-
-        if (target.Effects.Contains("Vortex"))
-        {
-            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Target has already has Vortex.");
-
-            return false;
-        }
-
-        Subject.Animate(Animation);
-        (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You cast {Name} on {target.Name}.");
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"{source.Name} casted {Name} on you.");
-
-        return true;
+        if (target is Aisling aisling)
+            aisling.Client.SendServerMessage(type, message);
     }
 }

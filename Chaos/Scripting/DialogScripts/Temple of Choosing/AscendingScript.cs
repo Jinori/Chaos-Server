@@ -1,3 +1,4 @@
+using System.Globalization;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
@@ -8,6 +9,7 @@ using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
+using Humanizer;
 
 namespace Chaos.Scripting.DialogScripts.Temple_of_Choosing;
 
@@ -88,7 +90,10 @@ public class AscendingScript(Dialog subject, ILogger<AscendingScript> logger) : 
         source.Client.SendAttributes(StatUpdateType.Full);
 
         source.SendOrangeBarMessage(
-            $"Your {attributeType.ToLower()} is now {newBaseValue} base from {statBeforeStarting}, spending {totalExpSpent} Exp.");
+            $"Your {attributeType.ToLower()} is now {newBaseValue} base from {statBeforeStarting}, spending {totalExpSpent:N0} Exp.");
+
+        var totalExp = totalExpSpent.ToString("N0");
+        Subject.InjectTextParameters(attributeType, newBaseValue, statBeforeStarting, totalExp);
     }
 
     public override void OnDisplaying(Aisling source)
