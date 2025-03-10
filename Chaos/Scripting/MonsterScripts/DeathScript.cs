@@ -25,9 +25,11 @@ namespace Chaos.Scripting.MonsterScripts
                 ? GetRewardTargets(rewardTarget)
                 : null;
 
-            Subject.Items.AddRange(Subject.LootTable.GenerateLoot());
+            var serendaelBuff = (rewardTargets != null) && rewardTargets.Any(x => x.Effects.Contains("dropboost"));
+            
+            Subject.Items.AddRange(Subject.LootTable.GenerateLoot(serendaelBuff));
 
-            if (rewardTarget != null && rewardTarget.Group != null)
+            if (rewardTarget is { Group: not null })
             {
                 DistributeLootAndExperience(rewardTarget, rewardTargets);
             }
@@ -78,15 +80,15 @@ namespace Chaos.Scripting.MonsterScripts
                     // Ensure only members on the same map as the Subject (monster) receive loot
                     rewardTarget.Group.DistributeRandomized(Subject.Items, Subject);
     
-                    var hasGoldBoost = rewardTarget.Group.Any(a => a.Effects.Contains("GoldBoost"));
+                    var hasDropBoost = rewardTarget.Group.Any(a => a.Effects.Contains("dropboost"));
                     var goldAmount = Subject.Gold;
 
                     // Apply gold boost if it's `true`
-                    if (hasGoldBoost)
+                    if (hasDropBoost)
                         goldAmount = (int)(goldAmount * 1.25);
 
                     // Ensure only members on the same map as the Subject receive gold
-                    rewardTarget.Group.DistributeEvenGold(goldAmount, Subject, hasGoldBoost);
+                    rewardTarget.Group.DistributeEvenGold(goldAmount, Subject, hasDropBoost);
     
                     // Distribute experience only to members on the same map as the monster
                     ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
@@ -112,7 +114,7 @@ namespace Chaos.Scripting.MonsterScripts
         
         private void HandleLootDrop(Aisling[]? rewardTargets, bool lockToTargets = false, Aisling? lockToLeader = null)
         {
-            var hasGoldBoost = rewardTargets?.Any(a => a.Effects.Contains("GoldBoost"));
+            var hasGoldBoost = rewardTargets?.Any(a => a.Effects.Contains("DropBoost"));
             var goldAmount = Subject.Gold;
 
             // Apply gold boost if it's `true`

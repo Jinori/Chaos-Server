@@ -606,10 +606,10 @@ public class ReligionScriptBase : DialogScriptBase
     {
         (var effect, var duration, var description) = deity switch
         {
-            "Serendael" => ("goldboost", TimeSpan.FromMinutes(60), "+25% monster gold drops!"),
+            "Serendael" => ("dropboost", TimeSpan.FromMinutes(60), "+25% gold and item drops!"),
             "Skandara"  => ("gmknowledge", TimeSpan.FromMinutes(60), "+25% monster experience."),
-            "Theselene" => ("preventrecradh", TimeSpan.FromMinutes(8), "protection from cradhs."),
-            "Miraelis"  => ("LastStand", TimeSpan.FromSeconds(60), "protection from death."),
+            "Theselene" => ("preventrecradh", TimeSpan.FromMinutes(60), "protection from cradhs."),
+            "Miraelis"  => ("miracle", TimeSpan.FromMinutes(60), "+15% crafting & +10% healing."),
             _           => (null, TimeSpan.Zero, null)
         };
 
@@ -631,10 +631,10 @@ public class ReligionScriptBase : DialogScriptBase
     {
         var effect = deity switch
         {
-            "Serendael" => "goldboost",
+            "Serendael" => "dropboost",
             "Skandara"  => "gmknowledge",
             "Theselene" => "preventrecradh",
-            "Miraelis"  => "LastStand",
+            "Miraelis"  => "miracle",
             _           => null
         };
 
@@ -670,19 +670,19 @@ public class ReligionScriptBase : DialogScriptBase
             },
             "Theselene" => faithCost switch
             {
-                25  => TimeSpan.FromSeconds(30),
-                50  => TimeSpan.FromMinutes(1),
-                75  => TimeSpan.FromMinutes(1.5),
-                100 => TimeSpan.FromMinutes(2),
-                _   => TimeSpan.FromSeconds(30)
+                25  => TimeSpan.FromMinutes(10),
+                50  => TimeSpan.FromMinutes(15),
+                75  => TimeSpan.FromMinutes(20),
+                100 => TimeSpan.FromMinutes(30),
+                _   => TimeSpan.FromMinutes(5)
             },
             "Miraelis" => faithCost switch
             {
-                25  => TimeSpan.FromSeconds(10),
-                50  => TimeSpan.FromSeconds(15),
-                75  => TimeSpan.FromSeconds(20),
-                100 => TimeSpan.FromSeconds(30),
-                _   => TimeSpan.FromSeconds(10)
+                25  => TimeSpan.FromMinutes(5),
+                50  => TimeSpan.FromMinutes(10),
+                75  => TimeSpan.FromMinutes(15),
+                100 => TimeSpan.FromMinutes(25),
+                _   => TimeSpan.FromMinutes(5)
             },
             _ => TimeSpan.Zero
         };

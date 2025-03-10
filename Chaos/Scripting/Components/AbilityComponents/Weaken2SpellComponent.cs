@@ -30,7 +30,7 @@ public sealed class Weaken2SpellComponent : IComponent
 
             target.StatSheet.SetHp(halfhealth);
             target.Client.SendAttributes(StatUpdateType.Vitality);
-            target.SendOrangeBarMessage("Mantis weakens your body.");
+            target.SendOrangeBarMessage($"{context.Source.Name} weakens your body.");
             target.Animate(Animation, target.Id);
         }
     }

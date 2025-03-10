@@ -4,6 +4,7 @@ using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
+using Chaos.Models.World;
 using Chaos.Services.Factories.Abstractions;
 #endregion
 
@@ -18,6 +19,7 @@ namespace Chaos.Collections;
 public sealed class LootTable(IItemFactory itemFactory) : ILootTable
 {
     private const double DROPCHANCE_MULTIPLIER = 1.0;
+    private const double SERENDAEL_MULTIPLIER = 1.25;
     private readonly IItemFactory ItemFactory = itemFactory;
 
     /// <summary>
@@ -56,6 +58,44 @@ public sealed class LootTable(IItemFactory itemFactory) : ILootTable
             {
                 var itemTemplateKey = LootDrops.ToDictionary(drop => drop.ItemTemplateKey, drop => drop.DropChance)
                                                .PickRandomWeightedSingleOrDefault();
+
+                if (itemTemplateKey is not null)
+                    yield return ItemFactory.Create(itemTemplateKey);
+
+                break;
+            }
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
+
+    /// <inheritdoc />
+    public IEnumerable<Item> GenerateLoot(bool hasSerendaelBuff)
+    {
+        var dropMultiplier = hasSerendaelBuff ? SERENDAEL_MULTIPLIER : DROPCHANCE_MULTIPLIER;
+
+        switch (Mode)
+        {
+            case LootTableMode.ChancePerItem:
+            {
+                foreach (var drop in LootDrops)
+                {
+                    var adjustedDropChance = drop.DropChance * (decimal)dropMultiplier;
+
+                    if (DecimalRandomizer.RollChance(adjustedDropChance))
+                        yield return ItemFactory.Create(drop.ItemTemplateKey);
+                }
+
+                break;
+            }
+            case LootTableMode.PickSingleOrDefault:
+            {
+                var weightedDrops = LootDrops.ToDictionary(
+                    drop => drop.ItemTemplateKey, 
+                    drop => drop.DropChance * (decimal)dropMultiplier
+                );
+
+                var itemTemplateKey = weightedDrops.PickRandomWeightedSingleOrDefault();
 
                 if (itemTemplateKey is not null)
                     yield return ItemFactory.Create(itemTemplateKey);

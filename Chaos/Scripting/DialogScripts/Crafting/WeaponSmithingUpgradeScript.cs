@@ -255,11 +255,13 @@ public class WeaponSmithingUpgradeScript : DialogScriptBase
 
         var timesCraftedThisItem = source.Trackers.Counters.TryGetValue(ITEM_COUNTER_PREFIX + recipe.Name, out var value) ? value : 0;
 
+        var adjustedSuccessRate = AdjustSuccessRateForEffects(BASE_SUCCESS_RATE, source);
+        
         if (!IntegerRandomizer.RollChance(
                 (int)CalculateSuccessRate(
                     legendMarkCount,
                     timesCraftedThisItem,
-                    BASE_SUCCESS_RATE,
+                    adjustedSuccessRate,
                     GetStatusAsInt(recipe.Rank),
                     recipe.Difficulty)))
         {
@@ -523,5 +525,13 @@ public class WeaponSmithingUpgradeScript : DialogScriptBase
                     break;
                 }
         }
+    }
+    
+    private double AdjustSuccessRateForEffects(double baseSuccessRate, Aisling source)
+    {
+        if (source.Effects.Contains("Miracle"))
+            return baseSuccessRate + 15.0;
+
+        return baseSuccessRate;
     }
 }
