@@ -1,8 +1,10 @@
+using System.Text;
 using Chaos.Collections;
 using Chaos.Collections.Abstractions;
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
+using Chaos.DarkAges.Extensions;
 using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Common;
@@ -867,43 +869,30 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 $"{Subject.Name} was killed at {Subject.MapInstance.Name} by {source?.Name ?? "The Guardians"}.");
 
         var itemsToBreak = Subject.Equipment
-                                  .Where(
-                                      x => !x.Template.AccountBound
-                                           && (x.Template.EquipmentType != EquipmentType.Accessory)
-                                           && (x.Template.EquipmentType != EquipmentType.OverArmor)
-                                           && (x.Template.EquipmentType != EquipmentType.OverHelmet))
+                                  .Where(x => !x.Template.AccountBound
+                                              && (x.Template.EquipmentType != EquipmentType.Accessory)
+                                              && (x.Template.EquipmentType != EquipmentType.OverArmor)
+                                              && (x.Template.EquipmentType != EquipmentType.OverHelmet))
                                   .ToList();
+        
+        var savedItems = new List<string>();
+        var lostItems = new List<string>();
 
         foreach (var item in itemsToBreak)
         {
             if (!IntegerRandomizer.RollChance(2))
+            {
                 continue;
+            }
 
-            if (Subject.Inventory.ContainsByTemplateKey("mithrildice") && (Subject.Inventory.CountOfByTemplateKey("mithrildice") > 0))
+            var diceCount = Subject.Inventory.CountOfByTemplateKey("mithrildice");
+
+            if (diceCount > 0)
             {
-                // Notify player that Mithril Dice saved their item
-                Logger.WithTopics(
-                          Topics.Entities.Aisling,
-                          Topics.Entities.Item,
-                          Topics.Actions.Death,
-                          Topics.Actions.Penalty)
-                      .WithProperty(Subject)
-                      .WithProperty(item)
-                      .LogInformation(
-                          "{@AislingName}'s {@ItemName} was saved by Mithril Dice (Dice Count:{@DiceCount})",
-                          Subject.Name,
-                          item.DisplayName,
-                          Subject.Inventory.CountOfByTemplateKey("mithrildice"));
-
-                // Consume one Mithril Dice (remove one from inventory)
+                // Use one Mithril Dice
                 Subject.Inventory.RemoveQuantityByTemplateKey("mithrildice", 1);
+                savedItems.Add(item.DisplayName);
 
-                Subject.Client.SendServerMessage(
-                    ServerMessageType.GroupChat,
-                    $"Dice has saved your {item.DisplayName} from being consumed.");
-            } else
-            {
-                // Log and notify the player that they lost an item
                 Logger.WithTopics(
                           Topics.Entities.Aisling,
                           Topics.Entities.Item,
@@ -912,18 +901,68 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                       .WithProperty(Subject)
                       .WithProperty(item)
                       .LogInformation(
-                          "{@AislingName} has lost {@ItemName} to death. (Dice Count:{@DiceCount})",
-                          Subject.Name,
-                          item.DisplayName,
-                          Subject.Inventory.CountOfByTemplateKey("mithrildice"));
-
-                Subject.Client.SendServerMessage(ServerMessageType.GroupChat, $"{item.DisplayName} has been consumed by death.");
-
+                          "{@AislingName}'s {@ItemName} was saved by Mithril Dice (Remaining Dice: {@DiceCount})",
+                          Subject.Name, item.DisplayName, diceCount - 1);
+            }
+            else
+            {
                 // Remove the item from the player's equipment
                 Subject.Equipment.TryGetRemove(item.Slot, out _);
+                lostItems.Add(item.DisplayName);
+
+                Logger.WithTopics(
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Item,
+                          Topics.Actions.Death,
+                          Topics.Actions.Penalty)
+                      .WithProperty(Subject)
+                      .WithProperty(item)
+                      .LogInformation(
+                          "{@AislingName} has lost {@ItemName} to death. (No dice remaining)",
+                          Subject.Name, item.DisplayName);
             }
         }
+        
+        var sb = new StringBuilder();
 
+        if (savedItems.Any() && lostItems.Any())
+        {
+            sb.AppendLineFColored(MessageColor.Yellow, "You lost the following items:");
+            foreach (var item in lostItems)
+                sb.AppendLineFColored(MessageColor.Gainsboro, $"{item}");
+
+            sb.AppendLine("");
+            
+            sb.AppendLineFColored(MessageColor.NeonGreen, "Mithril Dice saved the following items:");
+            foreach (var item in savedItems)
+                sb.AppendLineFColored(MessageColor.Gainsboro, $"{item}");
+            
+            sb.AppendLine("");
+            sb.AppendLineFColored(MessageColor.Orange, "Revive with Terminus or wait to be revived.");
+        }
+        else if (savedItems.Any())
+        {
+            sb.AppendLineFColored(MessageColor.NeonGreen, "Mithril Dice saved your items:");
+            foreach (var item in savedItems)
+                sb.AppendLineFColored(MessageColor.Gainsboro, $"{item}");
+            
+            sb.AppendLine("");
+            sb.AppendLineFColored(MessageColor.Orange, "Revive with Terminus or wait to be revived.");
+        }
+        else if (lostItems.Any())
+        {
+            sb.AppendLineFColored(MessageColor.Yellow, "You lost the following items:");
+            foreach (var item in lostItems)
+                sb.AppendLineFColored(MessageColor.Gainsboro, $"{item}");
+            
+            sb.AppendLine("");
+            sb.AppendLineFColored(MessageColor.Orange, "Revive with Terminus or wait to be revived.");
+        }
+        
+        if (sb.Length > 0)
+            Subject.Client.SendServerMessage(ServerMessageType.ScrollWindow, sb.ToString());
+
+        
         var tenPercent = MathEx.GetPercentOf<int>((int)Subject.UserStatSheet.TotalExp, 10);
 
         if (ExperienceDistributionScript.TryTakeExp(Subject, tenPercent))
