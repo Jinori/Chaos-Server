@@ -45,66 +45,7 @@ public class VortexEffect : ContinuousAnimationEffectBase
     public override byte Icon => 98;
     public override string Name => "Vortex";
 
-    /// <inheritdoc />
-    protected override void OnIntervalElapsed()
-    {
-        if (SourceOfEffect is Aisling aisling && (AislingSubject != null))
-        {
-            if (!aisling.Equals(AislingSubject))
-            {
-                if (aisling.Group is null || !aisling.Group.Contains(AislingSubject))
-                {
-                    Subject.Effects.Terminate(Name);
-                    SendMessage(AislingSubject, $"{aisling.Name}'s vortex effect fades as they are not grouped.", ServerMessageType.ActiveMessage);
-                    return;                    
-                }
-            }
-        }
-
-        foreach (var target in GetAffectedTargets())
-        {
-            ApplyDamageScript.ApplyDamage(
-                SourceOfEffect,
-                target,
-                this,
-                CalculateDamage(),
-                Element.None);
-
-            target.ShowHealth();
-            target.Animate(CreatureAnimation);
-        }
-    }
-
-    public override void OnTerminated() => SendMessage(AislingSubject, "Vortex has worn off.", ServerMessageType.OrangeBar1);
-
-    /// <inheritdoc />
-    public override bool ShouldApply(Creature source, Creature target)
-    {
-        SourceOfEffect = source;
-
-        // Allow only pets and teammates to receive the effect
-        if (target is Monster { Script: not PetScript and not NightmareTeammateScript })
-        {
-            SendMessage(source, "Cannot be cast on this monster.", ServerMessageType.OrangeBar1);
-            return false;
-        }
-
-        if (target.Effects.Contains("Vortex"))
-        {
-            SendMessage(source, "Target already has Vortex.", ServerMessageType.OrangeBar1);
-            return false;
-        }
-
-        // If the target has "Quake", remove it before applying Vortex
-        if (target.Effects.Contains("Quake"))
-            target.Effects.Terminate("Quake");
-
-        target.Animate(Animation);
-        SendMessage(source, $"You cast {Name} on {target.Name}.", ServerMessageType.OrangeBar1);
-        SendMessage(AislingSubject, $"{source.Name} cast {Name} on you.", ServerMessageType.OrangeBar1);
-
-        return true;
-    }
+    private int CalculateDamage() => (SourceOfEffect.StatSheet.Level + SourceOfEffect.StatSheet.EffectiveInt) * 24 + 500;
 
     private IEnumerable<Creature> GetAffectedTargets()
     {
@@ -125,11 +66,73 @@ public class VortexEffect : ContinuousAnimationEffectBase
                       .ToList();
     }
 
-    private int CalculateDamage() => (SourceOfEffect.StatSheet.Level + SourceOfEffect.StatSheet.EffectiveInt) * 24 + 500;
+    /// <inheritdoc />
+    protected override void OnIntervalElapsed()
+    {
+        if (SourceOfEffect is Aisling aisling && (AislingSubject != null))
+            if (!aisling.Equals(AislingSubject))
+                if (aisling.Group is null || !aisling.Group.Contains(AislingSubject))
+                {
+                    Subject.Effects.Terminate(Name);
+
+                    SendMessage(
+                        AislingSubject,
+                        $"{aisling.Name}'s vortex effect fades as they are not grouped.",
+                        ServerMessageType.ActiveMessage);
+
+                    return;
+                }
+
+        foreach (var target in GetAffectedTargets())
+        {
+            ApplyDamageScript.ApplyDamage(
+                SourceOfEffect,
+                target,
+                this,
+                CalculateDamage(),
+                Element.None);
+
+            target.ShowHealth();
+            target.Animate(CreatureAnimation);
+        }
+    }
+
+    public override void OnTerminated() => SendMessage(AislingSubject, "Vortex has worn off.", ServerMessageType.OrangeBar1);
 
     private void SendMessage(Creature? target, string message, ServerMessageType type)
     {
         if (target is Aisling aisling)
             aisling.Client.SendServerMessage(type, message);
+    }
+
+    /// <inheritdoc />
+    public override bool ShouldApply(Creature source, Creature target)
+    {
+        SourceOfEffect = source;
+
+        // Allow only pets and teammates to receive the effect
+        if (target is Monster { Script: not PetScript and not NightmareTeammateScript })
+        {
+            SendMessage(source, "Cannot be cast on this monster.", ServerMessageType.OrangeBar1);
+
+            return false;
+        }
+
+        if (target.Effects.Contains("Vortex"))
+        {
+            SendMessage(source, "Target already has Vortex.", ServerMessageType.OrangeBar1);
+
+            return false;
+        }
+
+        // If the target has "Quake", remove it before applying Vortex
+        if (target.Effects.Contains("Quake"))
+            target.Effects.Terminate("Quake");
+
+        target.Animate(Animation);
+        SendMessage(source, $"You cast {Name} on {target.Name}.", ServerMessageType.OrangeBar1);
+        SendMessage(AislingSubject, $"{source.Name} cast {Name} on you.", ServerMessageType.OrangeBar1);
+
+        return true;
     }
 }

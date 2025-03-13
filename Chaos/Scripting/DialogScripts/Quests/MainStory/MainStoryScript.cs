@@ -898,7 +898,7 @@ public class MainStoryScript(
                             var item = itemFactory.Create(version);
 
                             if (source.Inventory.ContainsByTemplateKey(version)
-                                || source.Bank.Contains(item.Template.TemplateKey)
+                                || source.Bank.Contains(version)
                                 || source.Equipment.ContainsByTemplateKey(version))
                             {
                                 hasMasterWeapon = true;
@@ -927,7 +927,7 @@ public class MainStoryScript(
                     }
                 }
 
-                if (source.Trackers.Flags.HasFlag(MainstoryFlags.FinishedDungeon))
+                if (source.UserStatSheet.Master)
                 {
                     var hasEnchantedOrEmpoweredWeapon = false;
 

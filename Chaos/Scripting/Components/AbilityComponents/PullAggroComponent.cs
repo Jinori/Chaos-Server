@@ -1,12 +1,11 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
+using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
-using Chaos.Extensions.Geometry;
 using Chaos.Scripting.MonsterScripts.Boss;
 
 namespace Chaos.Scripting.Components.AbilityComponents;
@@ -26,6 +25,14 @@ public class PullAggroComponent : IComponent
             if (target is Aisling or Merchant)
             {
                 context.SourceAisling?.SendOrangeBarMessage("That target cannot be grasped.");
+
+                break;
+            }
+
+            if (target.Script.Is<ThisIsABossScript>())
+            {
+                context.SourceAisling?.SendOrangeBarMessage("That target cannot be grasped.");
+
                 break;
             }
 
@@ -46,16 +53,19 @@ public class PullAggroComponent : IComponent
     {
         if (source.MapInstance == target.MapInstance)
         {
-            var pointsAroundSource = source.GenerateCardinalPoints().Concat(source.GenerateIntercardinalPoints()).ToList();
+            var pointsAroundSource = source.GenerateCardinalPoints()
+                                           .Concat(source.GenerateIntercardinalPoints())
+                                           .ToList();
 
             if (target.StatSheet.CurrentHp < 1)
                 return;
-            
+
             if (target.Name.Contains("Dummy") || target.Script.Is<ThisIsABossScript>())
             {
                 var player = source as Aisling;
-                
+
                 player?.SendOrangeBarMessage("That target cannot be grasped.");
+
                 return;
             }
 
@@ -63,14 +73,14 @@ public class PullAggroComponent : IComponent
                 return;
 
             foreach (var point in pointsAroundSource)
-            {
+
                 // Check if there's a direct line of sight and the point is walkable
                 if (source.MapInstance.IsWalkable(point, CreatureType.Normal, false))
                 {
                     target.WarpTo(point);
+
                     return;
                 }
-            }
         }
     }
 

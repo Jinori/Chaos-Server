@@ -485,7 +485,6 @@ public class MasteringScript : DialogScriptBase
         source.Trackers.Flags.AddFlag(WizardElement.Water);
         source.Trackers.Flags.AddFlag(WizardElement.Fire);
         source.Trackers.Flags.AddFlag(WizardElement.Wind);
-        source.SkillBook.Remove("Rumination");
         source.SpellBook.TryAddToNextSlot(fasspiorad);
         
         
