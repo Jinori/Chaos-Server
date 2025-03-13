@@ -14,9 +14,7 @@ public class AbominationSummonTileScript : ReactorTileScriptBase
     /// <inheritdoc />
     public AbominationSummonTileScript(ReactorTile subject, IMonsterFactory monsterFactory)
         : base(subject)
-    {
-        MonsterFactory = monsterFactory;
-    }
+        => MonsterFactory = monsterFactory;
 
     /// <inheritdoc />
     public override void OnWalkedOn(Creature source)
@@ -26,27 +24,31 @@ public class AbominationSummonTileScript : ReactorTileScriptBase
 
         var hasStage = aisling.Trackers.Enums.TryGetValue(out IceWallQuest stage);
 
-        if (hasStage && stage is not IceWallQuest.KillBoss)
+        if ((hasStage && stage is not IceWallQuest.KillBoss) || (hasStage && stage is not IceWallQuest.Complete))
             return;
 
-        if (Subject.MapInstance.GetEntities<Monster>().Any(x => x.Template.TemplateKey.EqualsI("wilderness_frozen_cave")))
+        if (Subject.MapInstance
+                   .GetEntities<Monster>()
+                   .Any(x => x.Template.TemplateKey.EqualsI("wilderness_frozen_cave")))
         {
             aisling.SendOrangeBarMessage("The abomination is already lurking about.");
+
             return;
         }
-        
+
         if (aisling.Trackers.TimedEvents.HasActiveEvent("abominationcd", out _))
         {
             aisling.SendOrangeBarMessage("You look around and don't see anything.");
+
             return;
         }
 
         if (aisling.Inventory.HasCountByTemplateKey("charm", 1))
         {
             var point = new Point(7, 4);
-            
+
             var abomination = MonsterFactory.Create("wilderness_abomination", Subject.MapInstance, point);
-            
+
             aisling.SendOrangeBarMessage("The snow around you shakes and you hear a loud roar...");
             Subject.MapInstance.AddEntity(abomination, point);
             aisling.Trackers.TimedEvents.AddEvent("abominationcd", TimeSpan.FromHours(22), true);
