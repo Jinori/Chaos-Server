@@ -174,4 +174,6 @@ public record ActivationContext : IActivationContext
         SnapshotTargetPoint = Point.From(Target);
         SnapshotSourceDirection = Source.Direction;
     }
+
+    public ActivationContext WithUpdatedOrigin() => new(Source, Target, SourceMap);
 }

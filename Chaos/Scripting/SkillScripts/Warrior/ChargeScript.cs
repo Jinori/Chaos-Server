@@ -114,57 +114,50 @@ public class ChargeScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public override void OnUse(ActivationContext context)
     {
-        // Get the endpoint 4 tiles away from the source in the same direction
         var endPoint = context.Source.DirectionalOffset(context.Source.Direction, 4);
 
-        // Get all points between the source and the endpoint, skipping the first one
         var points = context.Source
                             .GetDirectPath(endPoint)
-                            .Skip(1);
+                            .Skip(1)
+                            .ToArray();
 
-        // Iterate through each point
-        foreach (var point in points)
+        var newPoint = context.SourcePoint;
+        
+        for(var i = 0; i < points.Length; i++)
         {
-            // If there is a wall at this point, return
-            if (context.SourceMap.IsWall(point) || context.SourceMap.IsBlockingReactor(point))
+            var point = points[i];
+            
+            //if the point we're looking at is not walkable
+            if (!context.SourceMap.IsWalkable(point, context.Source.Type, false))
             {
-                var distance = point.ManhattanDistanceFrom(context.Source);
-
-                if (distance == 1)
-                    return;
-
-                var newPoint = point.OffsetTowards(context.Source);
-                context.Source.WarpTo(newPoint);
-
-                return;
+                //if it's the first point, just break
+                //we're already standing on the point to charge to
+                if (i == 0)
+                    break;
+                
+                //otherwise set the new point to the previous point
+                newPoint = points[i - 1];
+                break;
             }
-
-            // Get the closest creature to the source at this point
-            var entity = context.SourceMap
-                                .GetEntitiesAtPoints<Creature>(point)
-                                .OrderBy(creature => creature.ManhattanDistanceFrom(context.Source))
-                                .FirstOrDefault(creature => context.Source.WillCollideWith(creature));
-
-            // If there is a creature at this point
-            if (entity != null)
-            {
-                // Get the point towards the source from the creature
-                var newPoint = entity.OffsetTowards(context.Source);
-
-                // Warp the source to the new point
-                context.Source.WarpTo(newPoint);
-
-                // Needs Damage & Ability Component or a new Movement Component
-                new ComponentExecutor(context).WithOptions(this)
-                                              .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
-                                              ?.Execute<DamageAbilityComponent>()
-                                              .Execute<ApplyEffectAbilityComponent>();
-
-                return;
-            }
+            
+            //if we reach here on the last point (it's walkable)
+            //set the new point to the last point
+            if(i == (points.Length - 1))
+                newPoint = points.Last();
         }
 
-        // If no creature was found, warp the source to the endpoint
-        context.Source.WarpTo(endPoint);
+        //if the new point is not the same as the source point
+        if (newPoint != context.SourcePoint)
+        {
+            //warp the source to the new point and update the context
+            context.Source.WarpTo(newPoint);
+            context = context.WithUpdatedOrigin();
+        }
+        
+        //deal damage according to selected options
+        new ComponentExecutor(context).WithOptions(this)
+                                             .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
+                                             ?.Execute<DamageAbilityComponent>()
+                                             .Execute<ApplyEffectAbilityComponent>();
     }
 }
