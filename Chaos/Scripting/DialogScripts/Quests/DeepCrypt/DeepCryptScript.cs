@@ -92,7 +92,7 @@ public class DeepCryptScript(
                 
                 var option = new DialogOption
                 {
-                    DialogKey = "deepcrypteasy_start",
+                    DialogKey = "deepcrypteasy_start1",
                     OptionText = "I'd like to try easy."
                 };
 
@@ -175,7 +175,7 @@ public class DeepCryptScript(
                 
                 var option = new DialogOption
                 {
-                    DialogKey = "deepcrypteasy_start",
+                    DialogKey = "deepcryptmedium_start1",
                     OptionText = "I'd like to try easy."
                 };
 
@@ -258,7 +258,7 @@ public class DeepCryptScript(
                 
                 var option = new DialogOption
                 {
-                    DialogKey = "deepcrypteasy_start",
+                    DialogKey = "deepcrypthard_start1",
                     OptionText = "I'd like to try easy."
                 };
 
