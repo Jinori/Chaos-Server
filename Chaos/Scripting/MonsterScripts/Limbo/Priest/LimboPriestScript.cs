@@ -30,6 +30,7 @@ public class LimboPriestScript : MonsterScriptBase
     private readonly Spell Nuadhaich;
     private readonly Spell Pramh;
     private readonly ISpellFactory SpellFactory;
+    private readonly Spell[] AllSpells;
 
     public LimboPriestScript(Monster subject, ISpellFactory spellFactory)
         : base(subject)
@@ -43,10 +44,14 @@ public class LimboPriestScript : MonsterScriptBase
         Dinarcoli = SpellFactory.Create("dinarcoli");
         AoArdCradh = SpellFactory.Create("aoardcradh");
         ActionTimer = new RandomizedIntervalTimer(TimeSpan.FromMilliseconds(1000), 10, startAsElapsed: false);
+        AllSpells = [Nuadhaich, Pramh, AoDall, AoPoison, AoSuain, Dinarcoli, AoArdCradh];
     }
 
     public override void Update(TimeSpan delta)
     {
+        foreach (var spell in AllSpells)
+            spell.Update(delta);
+        
         ActionTimer.Update(delta);
 
         if (!ActionTimer.IntervalElapsed)
@@ -77,7 +82,7 @@ public class LimboPriestScript : MonsterScriptBase
         //always heal lowest monster on screen
         var lowestNearbyMonster = nearbyMonsters.MinBy(monster => monster.StatSheet.HealthPercent);
 
-        if (lowestNearbyMonster is not null)
+        if (lowestNearbyMonster is not null && (lowestNearbyMonster.StatSheet.HealthPercent < 100))
             Subject.TryUseSpell(Nuadhaich, lowestNearbyMonster.Id);
 
         //dont return, priests always heal on top of any other spells

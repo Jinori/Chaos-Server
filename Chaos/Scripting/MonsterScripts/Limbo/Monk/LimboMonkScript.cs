@@ -24,6 +24,7 @@ public class LimboMonkScript : MonsterScriptBase
 
     public override void Update(TimeSpan delta)
     {
+        CureAilments.Update(delta);
         ActionTimer.Update(delta);
 
         if (!ActionTimer.IntervalElapsed)

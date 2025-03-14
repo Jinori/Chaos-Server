@@ -36,7 +36,7 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
     public Trackers Trackers { get; set; }
 
     public string TypingWord { get; set; }
-
+    public int TypingWave { get; set; }
     public VisionType Vision { get; protected set; }
     public Dictionary<VisibleEntity, DateTime> ApproachTime { get; }
     public abstract int AssailIntervalMs { get; }

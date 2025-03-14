@@ -15,6 +15,7 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Scripting.MapScripts.Arena.Arena_Modes;
+using Chaos.Scripting.MapScripts.Arena.Arena_Modules;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Services.Storage.Abstractions;
 using Chaos.Storage.Abstractions;
@@ -301,6 +302,11 @@ public class ArenaUndergroundScript : DialogScriptBase
 
                 break;
 
+            case "ophie_starttypingarena":
+                StartTypingArena(source);
+                
+                break;
+            
             case "ophie_starthiddenhavochostnotplayingstart":
                 StartHiddenHavoc(source, false);
 
@@ -578,6 +584,20 @@ public class ArenaUndergroundScript : DialogScriptBase
         Subject.Close(source);
     }
 
+    private void StartTypingArena(Aisling source)
+    {
+        var shard = ShardGenerator.CreateShardOfInstance("arena_typing");
+        shard.Shards.TryAdd(shard.InstanceId, shard);
+        FreeForAll = true;
+        var script = shard.Script.As<TypingArenaMapScript>();
+
+        if (script == null)
+            shard.AddScript<TypingArenaMapScript>();
+
+        TeleportParticipants(source, shard, shard.Template.Bounds);
+        Subject.Close(source);
+    }
+    
     private void StartHiddenHavoc(Aisling source, bool hostPlaying)
     {
         source.Trackers.Enums.Set(hostPlaying ? ArenaHostPlaying.Yes : ArenaHostPlaying.No);

@@ -9,5 +9,5 @@ public class LimboLightScript : MapScriptBase
     /// <inheritdoc />
     public LimboLightScript(MapInstance subject)
         : base(subject) =>
-        Subject.CurrentLightLevel = LightLevel.Darkest_A;
+        Subject.CurrentLightLevel = LightLevel.Dark_A;
 }

@@ -33,6 +33,10 @@ public class LimboWarriorScript : MonsterScriptBase
 
     public override void Update(TimeSpan delta)
     {
+        Charge.Update(delta);
+        Sever.Update(delta);
+        Shockwave.Update(delta);
+        
         ActionTimer.Update(delta);
 
         if (!ActionTimer.IntervalElapsed)

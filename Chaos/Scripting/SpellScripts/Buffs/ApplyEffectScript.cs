@@ -1,11 +1,14 @@
 #region
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
+using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
+using Chaos.Scripting.MonsterScripts.Pet;
 using Chaos.Scripting.SpellScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 #endregion
@@ -32,6 +35,18 @@ public class ApplyEffectScript : ConfigurableSpellScriptBase,
         => new ComponentExecutor(context).WithOptions(this)
                                          .ExecuteAndCheck<SpellComponent<Creature>>()
                                          ?.Execute<ApplyEffectAbilityComponent>();
+
+    /// <inheritdoc />
+    public override bool CanUse(SpellContext context)
+    {
+        if (Subject.Template.Name.Equals("quake", StringComparison.CurrentCultureIgnoreCase)
+            || Subject.Template.Name.Equals("vortex", StringComparison.CurrentCultureIgnoreCase)
+            || Subject.Template.Name.Equals("dark storm", StringComparison.CurrentCultureIgnoreCase))
+            if (context.TargetCreature is Monster monster && !monster.Script.Is<PetScript>())
+                return false;
+
+        return true;
+    }
 
     #region ScriptVars
     /// <inheritdoc />

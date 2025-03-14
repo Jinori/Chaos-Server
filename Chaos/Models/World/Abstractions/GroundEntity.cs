@@ -28,7 +28,7 @@ public abstract class GroundEntity : NamedEntity
             point)
         => GroundTimer = new IntervalTimer(TimeSpan.FromMinutes(WorldOptions.Instance.GroundItemDespawnTimeMins), false);
 
-    public virtual bool CanPickUp(Aisling source) => Owners.IsNullOrEmpty() || source.IsAdmin || Owners!.Contains(source.Name);
+    public virtual bool CanPickUp(Aisling source) => (Owners.IsNullOrEmpty() || source.IsAdmin || Owners!.Contains(source.Name)) && !source.IsDead;
 
     public void LockToAislings(int seconds, params IEnumerable<Aisling> aislings)
     {

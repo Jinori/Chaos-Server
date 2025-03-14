@@ -28,10 +28,15 @@ public class LimboRogueScript : MonsterScriptBase
         ShadowFigure = SkillFactory.Create("shadowfigure");
         Throw = SkillFactory.Create("throw");
         PitfallTrap = SpellFactory.Create("pitfalltrap");
+        
     }
 
     public override void Update(TimeSpan delta)
     {
+        PitfallTrap.Update(delta);
+        ShadowFigure.Update(delta);
+        Throw.Update(delta);
+        
         ActionTimer.Update(delta);
 
         if (!ActionTimer.IntervalElapsed)

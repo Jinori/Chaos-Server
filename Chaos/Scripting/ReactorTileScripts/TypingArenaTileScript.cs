@@ -40,7 +40,6 @@ public class TypingArenaTileScript : ReactorTileScriptBase
         var randomMonster = MonsterFactory.Create("typingmonster", Subject.MapInstance, Subject);
         var randomWord = GetRandomWord();
         randomMonster.TypingWord = randomWord;
-        randomMonster.Chant(randomWord);
         Subject.MapInstance.AddEntity(randomMonster, Subject);
     }
 }

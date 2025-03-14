@@ -13,7 +13,7 @@ public class LimboWizardScript : MonsterScriptBase
 {
     private readonly IIntervalTimer ActionTimer;
     private readonly Spell ArdAtharMeall;
-    private readonly Spell ArdCradh;
+    private readonly Spell DiaCradh;
     private readonly Spell ArdCreagMeall;
     private readonly Spell ArdSalMeall;
     private readonly Spell ArdSradMeall;
@@ -23,15 +23,16 @@ public class LimboWizardScript : MonsterScriptBase
     private readonly Spell[] MeallSpells;
     private readonly ISpellFactory SpellFactory;
     private readonly Dictionary<Func<List<Aisling>, bool>, int> WeightedActions;
+    private readonly Spell[] AllSpells;
 
     public LimboWizardScript(Monster subject, ISpellFactory spellFactory)
         : base(subject)
     {
         SpellFactory = spellFactory;
-        ActionTimer = new RandomizedIntervalTimer(TimeSpan.FromMilliseconds(1000), 10, startAsElapsed: false);
+        ActionTimer = new RandomizedIntervalTimer(TimeSpan.FromMilliseconds(1500), 10, startAsElapsed: false);
 
         MagmaSurge = SpellFactory.Create("magmasurge");
-        ArdCradh = SpellFactory.Create("ardCradh");
+        DiaCradh = SpellFactory.Create("diaCradh");
         Dall = SpellFactory.Create("dall");
         ArdSalMeall = SpellFactory.Create("ardSalMeall");
         ArdSradMeall = SpellFactory.Create("ardSradMeall");
@@ -39,6 +40,8 @@ public class LimboWizardScript : MonsterScriptBase
         ArdCreagMeall = SpellFactory.Create("ardCreagMeall");
         ChainLightning = SpellFactory.Create("chainLightning");
 
+        AllSpells = [MagmaSurge, DiaCradh, Dall, ArdSalMeall, ArdSradMeall, ArdAtharMeall, ArdCreagMeall, ChainLightning];
+        
         MeallSpells =
         [
             ArdSalMeall,
@@ -53,7 +56,7 @@ public class LimboWizardScript : MonsterScriptBase
                 DoChainLightning, 2
             },
             {
-                DoArdCradh, 3
+                DoDiaCradh, 3
             },
             {
                 DoDall, 1
@@ -64,17 +67,17 @@ public class LimboWizardScript : MonsterScriptBase
         };
     }
 
-    private bool DoArdCradh(List<Aisling> nearbyAislings)
+    private bool DoDiaCradh(List<Aisling> nearbyAislings)
     {
-        var notArdCradh = nearbyAislings.Where(aisling => !aisling.Effects.Contains("ard cradh"))
+        var notDiaCradh = nearbyAislings.Where(aisling => !aisling.Effects.Contains("dia cradh"))
                                         .ToList();
 
-        if (notArdCradh.Count == 0)
+        if (notDiaCradh.Count == 0)
             return false;
 
-        var target = notArdCradh.PickRandom();
+        var target = notDiaCradh.PickRandom();
 
-        if (Subject.TryUseSpell(ArdCradh, target.Id))
+        if (Subject.TryUseSpell(DiaCradh, target.Id))
             return true;
 
         return false;
@@ -135,6 +138,9 @@ public class LimboWizardScript : MonsterScriptBase
 
     public override void Update(TimeSpan delta)
     {
+        foreach (var spell in AllSpells)
+            spell.Update(delta);
+
         ActionTimer.Update(delta);
 
         if (!ActionTimer.IntervalElapsed)
