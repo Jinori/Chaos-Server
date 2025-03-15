@@ -543,22 +543,22 @@ public class BountyBoardDialogScript : DialogScriptBase
 
                     if (selectedBounty.KillRequirement == 100)
                     {
-                        exp = 50000000;
+                        exp = 25000000;
                         gamepoints = 20;
                         bountyPoints = 1;
                     } else if (selectedBounty.KillRequirement == 250)
                     {
-                        exp = 150000000;
+                        exp = 60000000;
                         gamepoints = 50;
                         bountyPoints = 2;
                     } else if (selectedBounty.KillRequirement == 400)
                     {
-                        exp = 250000000;
+                        exp = 100000000;
                         gamepoints = 75;
                         bountyPoints = 3;
                     } else if (selectedBounty.KillRequirement == 10)
                     {
-                        exp = 300000000;
+                        exp = 175000000;
                         gamepoints = 100;
 
                         // Pick the first item
