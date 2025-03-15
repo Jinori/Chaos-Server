@@ -27,11 +27,13 @@ using Chaos.NLog.Logging.Definitions;
 using Chaos.NLog.Logging.Extensions;
 using Chaos.Packets;
 using Chaos.Packets.Abstractions;
+using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Services.Other;
 using Chaos.Services.Other.Abstractions;
 using Chaos.Services.Servers.Options;
+using Chaos.Services.Storage;
 using Chaos.Services.Storage.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Utilities;
@@ -48,10 +50,12 @@ public sealed class WorldServer : ServerBase<IChaosWorldClient>, IWorldServer<IC
     private readonly IChannelService ChannelService;
     private readonly IFactory<IChaosWorldClient> ClientFactory;
     private readonly ICommandInterceptor<Aisling> CommandInterceptor;
+    private readonly AislingFacadeCache FacadeCache;
     private readonly IGroupService GroupService;
     private readonly IStore<MailBox> MailStore;
     private readonly IMerchantFactory MerchantFactory;
     private readonly IMetaDataStore MetaDataStore;
+    private readonly IMonsterFactory MonsterFactory;
     private new WorldOptions Options { get; }
 
     public IEnumerable<Aisling> Aislings
@@ -73,7 +77,9 @@ public sealed class WorldServer : ServerBase<IChaosWorldClient>, IWorldServer<IC
         IChannelService channelService,
         IStore<MailBox> mailStore,
         BulletinBoardKeyMapper bulletinBoardKeyMapper,
-        IStore<BulletinBoard> bulletinBoardStore)
+        IStore<BulletinBoard> bulletinBoardStore,
+        AislingFacadeCache facadeCache,
+        IMonsterFactory monsterFactory)
         : base(
             redirectManager,
             packetSerializer,
@@ -92,6 +98,9 @@ public sealed class WorldServer : ServerBase<IChaosWorldClient>, IWorldServer<IC
         MailStore = mailStore;
         BulletinBoardKeyMapper = bulletinBoardKeyMapper;
         BulletinBoardStore = bulletinBoardStore;
+        FacadeCache = facadeCache;
+        MonsterFactory = monsterFactory;
+
         IndexHandlers();
     }
 
@@ -100,6 +109,52 @@ public sealed class WorldServer : ServerBase<IChaosWorldClient>, IWorldServer<IC
     #endregion
 
     #region Utility
+    private bool TrySetSource(Aisling aisling, IEffect effect)
+    {
+        var sourceType = effect.SnapshotVars.Get<CreatureType>("sourceType");
+        var sourceIdentifier = effect.SnapshotVars.Get<string>("sourceIdentifier")!;
+
+        if (string.IsNullOrEmpty(sourceIdentifier))
+            return false;
+
+        switch (sourceType)
+        {
+            case CreatureType.Normal:
+            case CreatureType.WalkThrough:
+            {
+                var monster = MonsterFactory.Create(sourceIdentifier, aisling.MapInstance, Point.From(aisling));
+                effect.Source = monster;
+
+                break;
+            }
+            case CreatureType.Merchant:
+            {
+                var merchant = MerchantFactory.Create(sourceIdentifier, aisling.MapInstance, Point.From(aisling));
+                effect.Source = merchant;
+
+                break;
+            }
+            case CreatureType.WhiteSquare:
+                break;
+            case CreatureType.Aisling:
+            {
+                var aislingFacade = FacadeCache.Get(sourceIdentifier);
+
+                if (aislingFacade is null)
+                    return false;
+
+                effect.Source = aislingFacade!;
+
+                break;
+            }
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+        return effect.Source is not null;
+    }
+
     private async ValueTask LoadAislingAsync(IChaosWorldClient client, IRedirect redirect)
     {
         try
@@ -115,6 +170,22 @@ public sealed class WorldServer : ServerBase<IChaosWorldClient>, IWorldServer<IC
 
             try
             {
+                foreach (var effect in aisling.Effects.ToList())
+                {
+                    try
+                    {
+                        effect.Subject = aisling;
+
+                        if (TrySetSource(aisling, effect))
+                            continue;
+                    } catch (Exception e)
+                    {
+                        //ignored
+                    }
+
+                    aisling.Effects.Dispel(effect.Name);
+                }
+
                 aisling.Guild?.Associate(aisling);
                 aisling.MailBox = MailStore.Load(aisling.Name);
                 aisling.BeginObserving();
