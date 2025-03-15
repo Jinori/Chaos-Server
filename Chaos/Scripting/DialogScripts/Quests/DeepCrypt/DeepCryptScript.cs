@@ -140,11 +140,11 @@ public class DeepCryptScript(
                 {
                     var group = source.Group.ThatAreWithinRange(source);
 
-                    var mapinstance = simpleCache.Get<MapInstance>("deepcrypt_easy");
+                    var mapinstance = simpleCache.Get<MapInstance>("deep_crypt1");
 
                     var rectangle = new Rectangle(
-                        83,
-                        143,
+                        5,
+                        190,
                         4,
                         4);
 
@@ -176,7 +176,7 @@ public class DeepCryptScript(
                 var option = new DialogOption
                 {
                     DialogKey = "deepcryptmedium_start1",
-                    OptionText = "I'd like to try easy."
+                    OptionText = "I'd like to try medium."
                 };
 
                 if (!Subject.HasOption(option.OptionText))
@@ -223,11 +223,11 @@ public class DeepCryptScript(
                 {
                     var group = source.Group.ThatAreWithinRange(source);
 
-                    var mapinstance = simpleCache.Get<MapInstance>("deepcrypt_medium");
+                    var mapinstance = simpleCache.Get<MapInstance>("deep_crypt2");
 
                     var rectangle = new Rectangle(
-                        83,
-                        143,
+                        5,
+                        190,
                         4,
                         4);
 
@@ -259,7 +259,7 @@ public class DeepCryptScript(
                 var option = new DialogOption
                 {
                     DialogKey = "deepcrypthard_start1",
-                    OptionText = "I'd like to try easy."
+                    OptionText = "I'd like to try Hard."
                 };
 
                 if (!Subject.HasOption(option.OptionText))
@@ -306,11 +306,11 @@ public class DeepCryptScript(
                 {
                     var group = source.Group.ThatAreWithinRange(source);
 
-                    var mapinstance = simpleCache.Get<MapInstance>("deepcrypt_hard");
+                    var mapinstance = simpleCache.Get<MapInstance>("deep_crypt3");
 
                     var rectangle = new Rectangle(
-                        83,
-                        143,
+                        5,
+                        190,
                         4,
                         4);
 
