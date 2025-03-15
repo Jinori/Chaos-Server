@@ -243,7 +243,7 @@ public abstract class PanelBase<T> : IPanel<T> where T: PanelEntityBase
             if (IsValidSlot(slot))
                 return Objects[slot];
 
-            return default;
+            return null;
         }
     }
 
@@ -321,7 +321,7 @@ public abstract class PanelBase<T> : IPanel<T> where T: PanelEntityBase
     // <inheritdoc />
     public virtual bool TryGetObject(byte slot, [MaybeNullWhen(false)] out T obj)
     {
-        obj = default;
+        obj = null;
 
         if (!IsValidSlot(slot))
             return false;
@@ -362,7 +362,7 @@ public abstract class PanelBase<T> : IPanel<T> where T: PanelEntityBase
     // <inheritdoc />
     public virtual bool TryGetRemove(byte slot, [MaybeNullWhen(false)] out T obj)
     {
-        obj = default;
+        obj = null;
 
         if (!IsValidSlot(slot))
             return false;
@@ -374,7 +374,7 @@ public abstract class PanelBase<T> : IPanel<T> where T: PanelEntityBase
         if (obj == null)
             return false;
 
-        Objects[slot] = default;
+        Objects[slot] = null;
         BroadcastOnRemoved(slot, obj);
 
         return true;
@@ -383,7 +383,7 @@ public abstract class PanelBase<T> : IPanel<T> where T: PanelEntityBase
     /// <inheritdoc />
     public virtual bool TryGetRemove(string name, [MaybeNullWhen(false)] out T obj)
     {
-        obj = default;
+        obj = null;
 
         using var @lock = Sync.EnterScope();
 
@@ -392,7 +392,7 @@ public abstract class PanelBase<T> : IPanel<T> where T: PanelEntityBase
         if (obj == null)
             return false;
 
-        Objects[obj.Slot] = default;
+        Objects[obj.Slot] = null;
         BroadcastOnRemoved(obj.Slot, obj);
 
         return true;
@@ -401,7 +401,7 @@ public abstract class PanelBase<T> : IPanel<T> where T: PanelEntityBase
     /// <inheritdoc />
     public bool TryGetRemoveByTemplateKey(string templateKey, [MaybeNullWhen(false)] out T obj)
     {
-        obj = default;
+        obj = null;
 
         using var @lock = Sync.EnterScope();
 
@@ -410,7 +410,7 @@ public abstract class PanelBase<T> : IPanel<T> where T: PanelEntityBase
         if (obj == null)
             return false;
 
-        Objects[obj.Slot] = default;
+        Objects[obj.Slot] = null;
         BroadcastOnRemoved(obj.Slot, obj);
 
         return true;

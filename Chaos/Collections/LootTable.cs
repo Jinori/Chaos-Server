@@ -2,10 +2,14 @@
 using Chaos.Collections.Abstractions;
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
+using Chaos.Extensions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
+using Chaos.Models.Templates;
 using Chaos.Models.World;
 using Chaos.Services.Factories.Abstractions;
+using Chaos.Storage.Abstractions;
+using Chaos.TypeMapper.Abstractions;
 #endregion
 
 namespace Chaos.Collections;
@@ -16,8 +20,10 @@ namespace Chaos.Collections;
 /// <param name="itemFactory">
 ///     A service used to create items
 /// </param>
-public sealed class LootTable(IItemFactory itemFactory) : ILootTable
+public sealed class LootTable(IItemFactory itemFactory, ISimpleCache cache, ICloningService<Item> itemCloner) : ILootTable
 {
+    private readonly ISimpleCache Cache = cache;
+    private readonly ICloningService<Item> ItemCloner = itemCloner;
     private const double DROPCHANCE_MULTIPLIER = 1.0;
     private const double SERENDAEL_MULTIPLIER = 1.25;
     private readonly IItemFactory ItemFactory = itemFactory;
@@ -44,66 +50,86 @@ public sealed class LootTable(IItemFactory itemFactory) : ILootTable
         {
             case LootTableMode.ChancePerItem:
             {
-                foreach (var drop in LootDrops)
-                {
-                    var adjustedDropChance = drop.DropChance * (decimal)DROPCHANCE_MULTIPLIER;
-
-                    if (DecimalRandomizer.RollChance(adjustedDropChance))
-                        yield return ItemFactory.Create(drop.ItemTemplateKey, drop.ExtraScriptKeys);
-                }
-
-                break;
+                return LootDrops.Where(drop => DecimalRandomizer.RollChance(drop.DropChance * (decimal)DROPCHANCE_MULTIPLIER))
+                                .SelectMany(InnerGenerateLoot)
+                                .FixStacks(ItemCloner);
             }
             case LootTableMode.PickSingleOrDefault:
             {
-                var drop = LootDrops.ToDictionary(drop => drop, drop => drop.DropChance)
+                var drop = LootDrops.ToDictionary(drop => drop, drop => drop.DropChance * (decimal)DROPCHANCE_MULTIPLIER)
                                     .PickRandomWeightedSingleOrDefault();
 
                 if (drop is not null)
-                    yield return ItemFactory.Create(drop.ItemTemplateKey, drop.ExtraScriptKeys);
+                    return InnerGenerateLoot(drop);
 
                 break;
             }
             default:
                 throw new ArgumentOutOfRangeException();
         }
-    }
 
+        return [];
+
+        IEnumerable<Item> InnerGenerateLoot(LootDrop localDrop)
+        {
+            var amount = Random.Shared.Next(localDrop.MinAmount, localDrop.MaxAmount + 1);
+            var template = Cache.Get<ItemTemplate>(localDrop.ItemTemplateKey);
+
+            if (template.Stackable)
+            {
+                var item = ItemFactory.Create(localDrop.ItemTemplateKey, localDrop.ExtraScriptKeys);
+                item.Count = amount;
+
+                return item.FixStacks(ItemCloner);
+            }
+
+            return Enumerable.Repeat(ItemFactory.Create(localDrop.ItemTemplateKey, localDrop.ExtraScriptKeys), amount);
+        }
+    }
+    
     /// <inheritdoc />
     public IEnumerable<Item> GenerateLoot(bool hasSerendaelBuff)
     {
-        var dropMultiplier = hasSerendaelBuff ? SERENDAEL_MULTIPLIER : DROPCHANCE_MULTIPLIER;
-
+        var dropMultiplier = (decimal)(hasSerendaelBuff ? SERENDAEL_MULTIPLIER : DROPCHANCE_MULTIPLIER);
+        
         switch (Mode)
         {
             case LootTableMode.ChancePerItem:
             {
-                foreach (var drop in LootDrops)
-                {
-                    var adjustedDropChance = drop.DropChance * (decimal)dropMultiplier;
-
-                    if (DecimalRandomizer.RollChance(adjustedDropChance))
-                        yield return ItemFactory.Create(drop.ItemTemplateKey);
-                }
-
-                break;
+                return LootDrops.Where(drop => DecimalRandomizer.RollChance(drop.DropChance * dropMultiplier))
+                                .SelectMany(InnerGenerateLoot)
+                                .FixStacks(ItemCloner);
             }
             case LootTableMode.PickSingleOrDefault:
             {
-                var weightedDrops = LootDrops.ToDictionary(
-                    drop => drop.ItemTemplateKey, 
-                    drop => drop.DropChance * (decimal)dropMultiplier
-                );
+                var drop = LootDrops.ToDictionary(drop => drop, drop => drop.DropChance * dropMultiplier)
+                                    .PickRandomWeightedSingleOrDefault();
 
-                var itemTemplateKey = weightedDrops.PickRandomWeightedSingleOrDefault();
-
-                if (itemTemplateKey is not null)
-                    yield return ItemFactory.Create(itemTemplateKey);
+                if (drop is not null)
+                    return InnerGenerateLoot(drop);
 
                 break;
             }
             default:
                 throw new ArgumentOutOfRangeException();
+        }
+
+        return [];
+
+        IEnumerable<Item> InnerGenerateLoot(LootDrop localDrop)
+        {
+            var amount = Random.Shared.Next(localDrop.MinAmount, localDrop.MaxAmount + 1);
+            var template = Cache.Get<ItemTemplate>(localDrop.ItemTemplateKey);
+
+            if (template.Stackable)
+            {
+                var item = ItemFactory.Create(localDrop.ItemTemplateKey, localDrop.ExtraScriptKeys);
+                item.Count = amount;
+
+                return item.FixStacks(ItemCloner);
+            }
+
+            return Enumerable.Repeat(ItemFactory.Create(localDrop.ItemTemplateKey, localDrop.ExtraScriptKeys), amount);
         }
     }
 }

@@ -598,6 +598,16 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
 
     public override void OnGoldDroppedOn(Aisling source, int amount)
     {
+        if (!this.WithinRange(source, WorldOptions.Instance.TradeRange))
+            return;
+
+        if (!Script.CanDropMoneyOn(source, amount))
+        {
+            source.SendActiveMessage("You can't do that right now");
+
+            return;
+        }
+
         if (!TryStartExchange(source, out var exchange))
             return;
 
@@ -606,13 +616,18 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
 
     public override void OnItemDroppedOn(Aisling source, byte slot, byte count)
     {
-        if (source.Inventory.TryGetObject(slot, out var inventoryItem))
-            if (!Script.CanDropItemOn(source, inventoryItem))
-            {
-                source.SendActiveMessage("You can't trade that item");
+        if (!this.WithinRange(source, WorldOptions.Instance.TradeRange))
+            return;
 
-                return;
-            }
+        if (!source.Inventory.TryGetObject(slot, out var inventoryItem) || (inventoryItem.Count < count))
+            return;
+
+        if (!Script.CanDropItemOn(source, inventoryItem) || !inventoryItem.Script.CanBeDroppedOn(source, this))
+        {
+            source.SendActiveMessage("You can't trade that item");
+
+            return;
+        }
 
         if (!TryStartExchange(source, out var exchange))
             return;
@@ -736,8 +751,12 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
 
         var item = Inventory[slot];
 
-        if ((item == null) || (!IsAdmin && item.Template.AccountBound))
+        if ((item == null) || (!IsAdmin && (item.Template.AccountBound || !Script.CanDropItem(item) || !item.Script.CanBeDropped(this, Point.From(point)))))
+        {
+            SendActiveMessage("You can't drop that item");
+
             return false;
+        }
 
         if (amount.HasValue)
         {
@@ -773,6 +792,16 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
     public override bool TryDropGold(IPoint point, int amount, [MaybeNullWhen(false)] out Money money)
     {
         money = null;
+
+        if (!this.WithinRange(point, WorldOptions.Instance.DropRange) || MapInstance.IsWall(point))
+            return false;
+
+        if (!Script.CanDropMoney(amount))
+        {
+            SendActiveMessage("You can't drop that right now");
+
+            return false;
+        }
 
         if (!TryTakeGold(amount))
             return false;
@@ -896,7 +925,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
             return false;
         }
 
-        if (!groundItem.CanPickUp(this))
+        if (!groundItem.CanBePickedUp(this) || !Script.CanPickupItem(groundItem))
         {
             SendActiveMessage("You can't pick that up right now");
 
@@ -933,7 +962,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
 
     public bool TryPickupMoney(Money money)
     {
-        if (!money.CanPickUp(this))
+        if (!money.CanBePickedUp(this) || !Script.CanPickupMoney(money))
         {
             SendActiveMessage("You can't pick that up right now");
 
