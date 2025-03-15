@@ -25,6 +25,9 @@ public abstract class ItemSpawnerScript : MapScriptBase
     public abstract int SpawnChance { get; set; }
     public abstract int SpawnIntervalMs { get; set; }
 
+    private List<string> StPatricksCharmTemplateKeys =
+        ["horseshoecharm", "bluemooncharm", "heartcharm", "clovercharm", "potofgoldcharm", "rainbowcharm", "starcharm", "redballooncharm"];
+
     protected ItemSpawnerScript(MapInstance subject, IItemFactory itemFactory, ISimpleCache simpleCache)
         : base(subject)
     {
@@ -43,8 +46,24 @@ public abstract class ItemSpawnerScript : MapScriptBase
         return point;
     }
 
+    private bool CheckToSpawnEventItems()
+    {
+       var isEventActive = EventPeriod.IsEventActive(DateTime.UtcNow, Subject.InstanceId);
+
+        return isEventActive switch
+        {
+            true when StPatricksCharmTemplateKeys.Contains(ItemTemplateKey)  => true,
+            false when StPatricksCharmTemplateKeys.Contains(ItemTemplateKey) => false,
+            _                                                                => true
+        };
+    }
+    
     public override void Update(TimeSpan delta)
     {
+        if (!CheckToSpawnEventItems())
+            return;
+        
+        
         SpawnTimer ??= new IntervalTimer(TimeSpan.FromMilliseconds(SpawnIntervalMs));
 
         SpawnTimer.Update(delta);

@@ -2284,3 +2284,10 @@ public enum InvisibleGear
     HideAccessoryTwo = 1 << 7,
     HideAccessoryThree = 1 << 8,
 }
+
+public enum LuckyCharmsQuest
+{
+    None = 0,
+    Accepted = 1,
+    TurnedIn = 2
+}

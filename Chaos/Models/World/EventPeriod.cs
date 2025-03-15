@@ -103,8 +103,20 @@ public class EventPeriod
                 "0 6 * 2 1#2", // Second Monday of February at 6 AM
                 "0 6 * 2 1#3", // Third Monday of February at 6 AM
                 ["loures_castle_way", "shinewood_forest_entrance", "loures_1_floor_restaurant", "loures_2_floor_restaurant", "loures_3_floor_office", "loures_3_floor_magic_room"]
-            )
+            ),
             
+            
+            // St. Patrick’s Event (March 14 - March 19)
+            new(
+                "0 6 14 3 *", // March 14th at 6 AM
+                "0 6 19 3 *", // March 19th at 6 AM
+                [
+                    "enchanted_garden", "crossroads", "astrid_center", "astrid_north", "astrid_north_east", "astrid_north_west",
+                    "astrid_south", "astrid_south_east", "astrid_south_west", "mount_giragan1", "mount_giragan2", "mount_giragan3", "mount_giragan4",
+                    "piet_sewer_floor_1", "piet_sewer_floor_2", "piet_sewer_floor_3", "piet_sewer_floor_4", "crypt1", "crypt2", "crypt3", "crypt4", 
+                    "manor_floor_1", "manor_floor_2", "manor_floor_3", "nobis", "lynith_beach_south","lynith_beach_north1", "lynith_beach_north2", "mileth_village_way"
+                ]
+            ),
         ];
 
     /// <summary>

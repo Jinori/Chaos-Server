@@ -33,7 +33,7 @@ public sealed record Dialog : IScripted<IDialogScript>
     public List<byte>? Slots { get; set; }
     public List<Spell> Spells { get; set; }
     public DialogTemplate Template { get; set; }
-    public string Text { get; private set; }
+    public string Text { get; set; }
     public ushort? TextBoxLength { get; set; }
     public string? TextBoxPrompt { get; set; }
     public ChaosDialogType Type { get; set; }
