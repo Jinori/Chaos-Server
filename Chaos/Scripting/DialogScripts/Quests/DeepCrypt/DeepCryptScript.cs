@@ -24,7 +24,7 @@ public class DeepCryptScript(
         {
             case "nyxra_initial":
             {
-                if (source.UserStatSheet.Master && source.Trackers.Enums.HasValue(ClassStatBracket.Grandmaster))
+                if (source.UserStatSheet.Level >= 80)
                 {
                     var option = new DialogOption
                     {
@@ -200,8 +200,8 @@ public class DeepCryptScript(
 
                     foreach (var member in group)
                     {
-                        if (member.UserStatSheet.Level < 80)
-                            Subject.Reply(source, "One of your group members are under level 80.");
+                        if (!member.UserStatSheet.Master)
+                            Subject.Reply(source, "One of your group members are not mastered.");
 
                         if (member.Trackers.TimedEvents.HasActiveEvent("deepcryptcd", out _))
                             Subject.Reply(source, "One of your group members have done this too recently.");
@@ -283,8 +283,8 @@ public class DeepCryptScript(
 
                     foreach (var member in group)
                     {
-                        if (member.UserStatSheet.Level < 80)
-                            Subject.Reply(source, "One of your group members are under level 80.");
+                        if (!member.Trackers.Flags.HasFlag(ClassStatBracket.Grandmaster))
+                            Subject.Reply(source, "One of your group members are not grandmaster.");
 
                         if (member.Trackers.TimedEvents.HasActiveEvent("deepcryptcd", out _))
                             Subject.Reply(source, "One of your group members have done this too recently.");

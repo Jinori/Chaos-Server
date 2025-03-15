@@ -22,23 +22,18 @@ public class AbominationSummonTileScript : ReactorTileScriptBase
         if (source is not Aisling aisling)
             return;
 
-        var hasStage = aisling.Trackers.Enums.TryGetValue(out IceWallQuest stage);
-
-        if ((hasStage && stage is not IceWallQuest.KillBoss) || (hasStage && stage is not IceWallQuest.Complete))
-            return;
-
         if (Subject.MapInstance
                    .GetEntities<Monster>()
-                   .Any(x => x.Template.TemplateKey.EqualsI("wilderness_frozen_cave")))
+                   .Any(x => x.Template.TemplateKey.EqualsI("wilderness_abomination")))
         {
             aisling.SendOrangeBarMessage("The abomination is already lurking about.");
 
             return;
         }
 
-        if (aisling.Trackers.TimedEvents.HasActiveEvent("abominationcd", out _))
+        if (aisling.Trackers.TimedEvents.HasActiveEvent("abominationcd", out var cdtime))
         {
-            aisling.SendOrangeBarMessage("You look around and don't see anything.");
+            aisling.SendOrangeBarMessage($"You look around and don't see anything. ({cdtime.Remaining.ToReadableString()})");
 
             return;
         }
