@@ -31,8 +31,8 @@ public struct AssassinStrikeComponent : IComponent
 
             if (target is Monster monster)
 
-                // 20% chance to kill the target instantly
-                if (IntegerRandomizer.RollChance(15))
+                // 10% chance to kill the target instantly
+                if (IntegerRandomizer.RollChance(10))
                     if (!target.Script.Is<TrainingDummyScript>() && !target.Script.Is<ThisIsABossScript>())
                         damage = target.StatSheet.CurrentHp;
 
@@ -75,11 +75,16 @@ public struct AssassinStrikeComponent : IComponent
 
         if (target is not Monster monster)
             return finalDamage;
+        
+        var multiplier = 1.0m;
 
-        if (monster.AggroList.TryGetValue(source.Id, out _))
-            return finalDamage;
+        if (!monster.AggroList.TryGetValue(source.Id, out _))
+            multiplier += 0.25m;
+        
+        if(source.Effects.TryGetEffect("True Hide", out _))
+            multiplier += 0.25m;
 
-        var bonusDamage = finalDamage * .25;
+        var bonusDamage = finalDamage * multiplier;
         finalDamage += Convert.ToInt32(bonusDamage);
 
         return finalDamage;

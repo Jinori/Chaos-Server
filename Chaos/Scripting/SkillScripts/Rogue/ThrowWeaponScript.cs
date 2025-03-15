@@ -15,8 +15,7 @@ namespace Chaos.Scripting.SkillScripts.Rogue;
 public class ThrowWeaponScript : ConfigurableSkillScriptBase,
                                  GenericAbilityComponent<Creature>.IAbilityComponentOptions,
                                  DamageAbilityComponent.IDamageComponentOptions,
-                                 ApplyEffectAbilityComponent.IApplyEffectComponentOptions,
-                                 ThrowWeaponComponent.IThrowWeaponComponentOptions
+                                 ApplyEffectAbilityComponent.IApplyEffectComponentOptions
 {
     public int DistanceToThrow { get; init; }
     public int? EffectApplyChance { get; init; }

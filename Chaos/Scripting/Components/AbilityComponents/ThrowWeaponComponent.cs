@@ -27,7 +27,6 @@ public class ThrowWeaponComponent : IComponent
     
     public void Execute(ActivationContext context, ComponentVars vars)
     {
-        var options = vars.GetOptions<IThrowWeaponComponentOptions>();
         var targets = vars.GetTargets<Creature>();
         
         foreach (var target in targets)
@@ -84,10 +83,5 @@ public class ThrowWeaponComponent : IComponent
             
             return;
         }
-    }
-    
-    public interface IThrowWeaponComponentOptions
-    {
-        int DistanceToThrow { get; }
     }
 }

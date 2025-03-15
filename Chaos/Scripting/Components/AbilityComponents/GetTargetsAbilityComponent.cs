@@ -43,6 +43,7 @@ public struct GetTargetsAbilityComponent<TEntity> : IConditionalComponent where 
                                                                        .SkipLast(1);
                                                    var entities = targetEntities;
 
+                                                   //there are no entities between the source and the target
                                                    return points.All(
                                                        point => !entities.Any(e => PointEqualityComparer.Instance.Equals(e, point)));
                                                })

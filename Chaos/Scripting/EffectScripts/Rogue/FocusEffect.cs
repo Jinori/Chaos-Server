@@ -9,11 +9,11 @@ namespace Chaos.Scripting.EffectScripts.Rogue;
 
 public class FocusEffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
 {
-    protected int AttackSpeedSaved;
+    protected Attributes SnapshotAttributes;
 
     public List<string> ConflictingEffectNames { get; init; } = ["Focus"];
 
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(25);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(10);
 
     protected Animation Animation { get; } = new()
     {
@@ -31,14 +31,18 @@ public class FocusEffect : EffectBase, NonOverwritableEffectComponent.INonOverwr
     {
         base.OnApplied();
 
-        AttackSpeedSaved = 10 + Subject.StatSheet.EffectiveDex / 10;
+        var atkSpeedBonus = 20 + Subject.StatSheet.EffectiveDex / 20;
+        var skillDamagePctBonus = 10 + Subject.StatSheet.EffectiveDex / 20;
+        var flatSkillDamageBonus = 25 + Subject.StatSheet.EffectiveDex;
 
-        var attributes = new Attributes
+        SnapshotAttributes = new Attributes
         {
-            AtkSpeedPct = AttackSpeedSaved
+            AtkSpeedPct = atkSpeedBonus,
+            SkillDamagePct = skillDamagePctBonus,
+            FlatSkillDamage = flatSkillDamageBonus
         };
 
-        Subject.StatSheet.AddBonus(attributes);
+        Subject.StatSheet.AddBonus(SnapshotAttributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are now focused.");
         Subject.Animate(Animation);
@@ -48,12 +52,7 @@ public class FocusEffect : EffectBase, NonOverwritableEffectComponent.INonOverwr
 
     public override void OnTerminated()
     {
-        var attributes = new Attributes
-        {
-            AtkSpeedPct = AttackSpeedSaved
-        };
-
-        Subject.StatSheet.SubtractBonus(attributes);
+        Subject.StatSheet.SubtractBonus(SnapshotAttributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You lost your focus.");
     }
