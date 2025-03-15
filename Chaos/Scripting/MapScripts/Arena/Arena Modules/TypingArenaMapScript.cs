@@ -28,6 +28,8 @@ public class TypingArenaMapScript(MapInstance subject, IMonsterFactory monsterFa
         new(14, 12)
     ];
     
+    private static readonly List<int> AllowedSprites = [300, 301, 302, 303, 304, 328];
+    
     public override void Update(TimeSpan delta)
     {
         if (!Subject.GetEntities<Aisling>().Any())
@@ -137,6 +139,14 @@ public class TypingArenaMapScript(MapInstance subject, IMonsterFactory monsterFa
     
     public void SortAislingsIntoTiles()
     {
+        var players = Subject.GetEntities<Aisling>().ToList();
+
+        foreach (var player in players)
+            player.WarpTo(new Point(10, 11));
+    }
+    
+    public void SortAislingsIntoTilesTeamBased()
+    {
         // Get all Aislings with valid ArenaTeam assignments
         var aislingTeams = Subject.GetEntities<Aisling>()
                                   .Select(x => new 
@@ -203,7 +213,9 @@ public class TypingArenaMapScript(MapInstance subject, IMonsterFactory monsterFa
         542, 543, 544
     ];
 
-    private int GetValidSprite()
+    private int GetValidSprite() => AllowedSprites[Random.Next(AllowedSprites.Count)];
+
+    private int GetValidSpriteOld()
     {
         int sprite;
         do

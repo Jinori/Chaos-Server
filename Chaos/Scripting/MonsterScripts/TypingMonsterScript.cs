@@ -35,8 +35,6 @@ public class TypingMonsterScript : MonsterScriptBase
 
     public override void OnPublicMessage(Creature source, string message)
     {
-        base.OnPublicMessage(source, message);
-
         if ((source.MapInstance.BaseInstanceId == "arena_typing") && source is Aisling aisling && string.Equals(
                 message,
                 Subject.TypingWord,
@@ -74,8 +72,7 @@ public class TypingMonsterScript : MonsterScriptBase
             }
         }
     }
-
-
+    
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {

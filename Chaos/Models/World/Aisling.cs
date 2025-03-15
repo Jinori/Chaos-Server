@@ -695,11 +695,13 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
             return;
 
         
-        if (publicMessageType == PublicMessageType.Chant && Trackers.LastUsedSkill?.Template.IsAssail == true)
+        if ((publicMessageType == PublicMessageType.Chant) && (Trackers.LastUsedSkill?.Template.IsAssail == true))
         {
             base.ShowPublicMessage(publicMessageType, message);
             return;
         }
+        
+        
         
         Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Message, Topics.Actions.Send)
             .WithProperty(this)

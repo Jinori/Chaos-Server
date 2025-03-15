@@ -370,8 +370,14 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
         switch (publicMessageType)
         {
             case PublicMessageType.Normal:
-                creaturesWithinRange = MapInstance.GetEntitiesWithinRange<Creature>(this)
-                                                  .ThatCanObserve(this);
+
+                if (MapInstance.BaseInstanceId is "arena_typing")
+                    creaturesWithinRange = MapInstance.GetEntitiesWithinRange<Monster>(this)
+                                                      .ThatCanObserve(this);
+                else
+                    creaturesWithinRange = MapInstance.GetEntitiesWithinRange<Creature>(this)
+                                                      .ThatCanObserve(this);
+
                 sendMessage = $"{Name}: {message}";
 
                 break;
@@ -383,7 +389,7 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
             case PublicMessageType.Chant:
                 creaturesWithinRange = MapInstance.GetEntities<Creature>()
                                                   .ThatCanObserve(this);
-
+                
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(publicMessageType), publicMessageType, null);
