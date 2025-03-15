@@ -36,7 +36,7 @@ public class DeepCryptDeathScript : MonsterScriptBase
             aisling.Trackers.Counters.AddOrIncrement("deepcryptcompletions");
         }
 
-        var player = aislings.FirstOrDefault(x => x.Trackers.Enums.HasValue(WestWoodlandsDungeonQuestStage.Completed));
+        var player = aislings.FirstOrDefault();
 
         if (player == null)
             return;
