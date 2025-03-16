@@ -68,7 +68,13 @@ public class RelationshipBehavior
         return false;
     }
 
-    protected virtual bool IsFriendlyTo(Aisling source, Monster target) => false;
+    protected virtual bool IsFriendlyTo(Aisling source, Monster target)
+    {
+        if (target.Script.Is<PetScript>() && target.PetOwner is not null)
+            return true;
+
+        return false;
+    }
 
     protected virtual bool IsFriendlyTo(Merchant source, Aisling target) => true;
 
