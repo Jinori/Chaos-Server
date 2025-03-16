@@ -71,7 +71,10 @@ public enum TargetFilter : ulong
     NonMerchantsOnly = 1 << 13,
     SelfOnly = 1 << 14,
     OthersOnly = 1 << 15,
-    GroupOnly = 1 << 16
+    GroupOnly = 1 << 16,
+    PetOnly = 1 << 17,
+    PetOwnerOnly = 1 << 18,
+    PetOwnerGroupOnly = 1 << 19,
 }
 
 public enum VisibilityType

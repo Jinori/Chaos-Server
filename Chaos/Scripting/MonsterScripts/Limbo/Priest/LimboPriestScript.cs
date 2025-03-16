@@ -2,6 +2,7 @@ using Chaos.Common.Utilities;
 using Chaos.Extensions;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
@@ -31,6 +32,8 @@ public class LimboPriestScript : MonsterScriptBase
     private readonly Spell Pramh;
     private readonly ISpellFactory SpellFactory;
     private readonly Spell[] AllSpells;
+    private TimeSpan TimeSinceLastFizzle;
+    private readonly TimeSpan FizzleCooldown;
 
     public LimboPriestScript(Monster subject, ISpellFactory spellFactory)
         : base(subject)
@@ -44,7 +47,27 @@ public class LimboPriestScript : MonsterScriptBase
         Dinarcoli = SpellFactory.Create("dinarcoli");
         AoArdCradh = SpellFactory.Create("aoardcradh");
         ActionTimer = new RandomizedIntervalTimer(TimeSpan.FromMilliseconds(1000), 10, startAsElapsed: false);
+        TimeSinceLastFizzle = TimeSpan.Zero;
+        FizzleCooldown = TimeSpan.FromSeconds(2);
         AllSpells = [Nuadhaich, Pramh, AoDall, AoPoison, AoSuain, Dinarcoli, AoArdCradh];
+    }
+
+    private void ResetMovementTimer()
+    {
+        Subject.WanderTimer.Reset();
+        Subject.MoveTimer.Reset();
+    }
+
+    /// <inheritdoc />
+    public override void OnAttacked(Creature source, int damage)
+    {
+        if (IntegerRandomizer.RollChance(7) && (TimeSinceLastFizzle > FizzleCooldown))
+        {
+            TimeSinceLastFizzle = TimeSpan.Zero;
+            
+            ActionTimer.Reset();
+            ResetMovementTimer();
+        }
     }
 
     public override void Update(TimeSpan delta)
@@ -53,23 +76,30 @@ public class LimboPriestScript : MonsterScriptBase
             spell.Update(delta);
         
         ActionTimer.Update(delta);
+        TimeSinceLastFizzle += delta;
 
         if (!ActionTimer.IntervalElapsed)
             return;
 
+        //25% of the time it casts nothing
+        if (IntegerRandomizer.RollChance(25))
+            return;
+        
         var shouldPramh = IntegerRandomizer.RollChance(25);
 
         //cure self of control effects
         if (Subject.IsPramhed())
         {
-            Subject.TryUseSpell(Dinarcoli, Subject.Id);
+            if (Subject.TryUseSpell(Dinarcoli, Subject.Id))
+                ResetMovementTimer();
 
             return;
         }
 
         if (Subject.IsSuained())
         {
-            Subject.TryUseSpell(AoSuain, Subject.Id);
+            if (Subject.TryUseSpell(AoSuain, Subject.Id))
+                ResetMovementTimer();
 
             return;
         }
@@ -83,7 +113,8 @@ public class LimboPriestScript : MonsterScriptBase
         var lowestNearbyMonster = nearbyMonsters.MinBy(monster => monster.StatSheet.HealthPercent);
 
         if (lowestNearbyMonster is not null && (lowestNearbyMonster.StatSheet.HealthPercent < 100))
-            Subject.TryUseSpell(Nuadhaich, lowestNearbyMonster.Id);
+            if(Subject.TryUseSpell(Nuadhaich, lowestNearbyMonster.Id))
+                ResetMovementTimer();
 
         //dont return, priests always heal on top of any other spells
 
@@ -118,7 +149,8 @@ public class LimboPriestScript : MonsterScriptBase
         //ao self curse
         if (Subject.Effects.Contains("ard cradh") || Subject.Effects.Contains("Mor Cradh") || Subject.Effects.Contains("Cradh") || Subject.Effects.Contains("Beag Cradh"))
         {
-            Subject.TryUseSpell(AoArdCradh, Subject.Id);
+            if(Subject.TryUseSpell(AoArdCradh, Subject.Id))
+                ResetMovementTimer();
 
             return;
         }
@@ -126,7 +158,8 @@ public class LimboPriestScript : MonsterScriptBase
         //ao self blind
         if (Subject.IsBlind)
         {
-            Subject.TryUseSpell(AoDall, Subject.Id);
+            if(Subject.TryUseSpell(AoDall, Subject.Id))
+                ResetMovementTimer();
 
             return;
         }
@@ -135,28 +168,32 @@ public class LimboPriestScript : MonsterScriptBase
         {
             if (monster.Effects.Contains("ard cradh"))
             {
-                Subject.TryUseSpell(AoArdCradh, monster.Id);
+                if(Subject.TryUseSpell(AoArdCradh, monster.Id))
+                    ResetMovementTimer();
 
                 return;
             }
 
             if (monster.IsPramhed())
             {
-                Subject.TryUseSpell(Dinarcoli, monster.Id);
+                if(Subject.TryUseSpell(Dinarcoli, monster.Id))
+                    ResetMovementTimer();
 
                 return;
             }
 
             if (monster.IsSuained())
             {
-                Subject.TryUseSpell(AoSuain, monster.Id);
+                if(Subject.TryUseSpell(AoSuain, monster.Id))
+                    ResetMovementTimer();
 
                 return;
             }
 
             if (monster.IsBlind)
             {
-                Subject.TryUseSpell(AoDall, monster.Id);
+                if(Subject.TryUseSpell(AoDall, monster.Id))
+                    ResetMovementTimer();
 
                 return;
             }
@@ -164,7 +201,8 @@ public class LimboPriestScript : MonsterScriptBase
 
         if (Subject.Effects.Contains("Poison"))
         {
-            Subject.TryUseSpell(AoPoison, Subject.Id);
+            if(Subject.TryUseSpell(AoPoison, Subject.Id))
+                ResetMovementTimer();
 
             return;
         }
@@ -172,7 +210,8 @@ public class LimboPriestScript : MonsterScriptBase
         foreach (var monster in nearbyMonsters)
             if (monster.Effects.Contains("Poison"))
             {
-                Subject.TryUseSpell(AoPoison, monster.Id);
+                if(Subject.TryUseSpell(AoPoison, monster.Id))
+                    ResetMovementTimer();
 
                 return;
             }

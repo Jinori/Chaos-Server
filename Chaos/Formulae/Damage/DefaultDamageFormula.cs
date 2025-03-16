@@ -100,6 +100,7 @@ public class DefaultDamageFormula : IDamageFormula
 
                 if (skillScript.Subject.Template.IsAssail)
                     addedFromPct = 0;
+                
                 damage += Convert.ToInt32(attacker.StatSheet.EffectiveFlatSkillDamage + addedFromPct);
 
                 break;

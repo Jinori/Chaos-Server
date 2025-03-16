@@ -2,6 +2,7 @@ using Chaos.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
+using Chaos.Scripting.MonsterScripts.Pet;
 
 namespace Chaos.Extensions;
 
@@ -30,6 +31,13 @@ public static class TargetFilterExtensions
             TargetFilter.GroupOnly => source.Equals(target)
                                       || (source is Aisling { Group: not null } aisling
                                           && aisling.Group.Contains(target, WorldEntity.IdComparer)),
+            TargetFilter.PetOnly      => target is Monster monster && target.Script.Is<PetScript>() && Equals(monster.PetOwner, source),
+            TargetFilter.PetOwnerOnly => source is Monster monster && monster.Script.Is<PetScript>() && Equals(monster.PetOwner, target),
+            TargetFilter.PetOwnerGroupOnly => source is Monster monster
+                                              && monster.Script.Is<PetScript>()
+                                              && target is Aisling aisling
+                                              && monster.PetOwner?.Group is not null
+                                              && (aisling.Group == monster.PetOwner.Group),
             _ => throw new ArgumentOutOfRangeException(nameof(filter), filter, null)
         };
 

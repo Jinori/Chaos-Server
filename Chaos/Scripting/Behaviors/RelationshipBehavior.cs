@@ -1,9 +1,11 @@
 using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
+using Chaos.Extensions.Common;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MonsterScripts.Boss.MainStory.TrialOfSacrifice.zoe;
+using Chaos.Scripting.MonsterScripts.Limbo;
 using Chaos.Scripting.MonsterScripts.Nightmare.MonkNightmare;
 using Chaos.Scripting.MonsterScripts.Nightmare.PriestNightmare;
 using Chaos.Scripting.MonsterScripts.Nightmare.RogueNightmare;
@@ -144,6 +146,9 @@ public class RelationshipBehavior
         
         if (source.Script.Is<NightmareSlaveScript>() || target.Script.Is<NightmareSlaveScript>())
             return false;
+
+        if (source.Script.Is<LimboFriendlyScript>() && target.Script.Is<LimboFriendlyScript>())
+            return true;
         
         return false;
     }

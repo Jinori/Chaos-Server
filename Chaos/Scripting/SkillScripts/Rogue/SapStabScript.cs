@@ -12,9 +12,15 @@ using Chaos.Scripting.SkillScripts.Abstractions;
 namespace Chaos.Scripting.SkillScripts.Rogue;
 
 public class SapStabScript : ConfigurableSkillScriptBase,
-                             GenericAbilityComponent<Creature>.IAbilityComponentOptions,
                              DamageAbilityComponent.IDamageComponentOptions,
-                             SapNeedleComponent.ISapNeedleComponentOptions
+                             SapNeedleComponent.ISapNeedleComponentOptions,
+                             GetTargetsAbilityComponent<Creature>.IGetTargetsComponentOptions,
+                             GetTargetsAbilityComponent2<Creature>.IGetTargetsComponentOptions,
+                             SoundAbilityComponent.ISoundComponentOptions,
+                             BodyAnimationAbilityComponent.IBodyAnimationComponentOptions,
+                             AnimationAbilityComponent.IAnimationComponentOptions,
+                             ManaCostAbilityComponent.IManaCostComponentOptions,
+                             BreaksSpecificEffectsAbilityComponent.IBreaksSpecificEffectsComponentOptions
 
 {
     /// <inheritdoc />
@@ -79,6 +85,9 @@ public class SapStabScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public decimal PctManaReplenish { get; init; }
 
+    /// <inheritdoc />
+    public Creature SapTarget { get; set; } = null!;
+
     public decimal? PctOfHealth { get; init; }
 
     public decimal? PctOfHealthMultiplier { get; init; }
@@ -87,10 +96,7 @@ public class SapStabScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public int Range { get; init; }
-
-    /// <inheritdoc />
-    public bool ReplenishGroup { get; init; }
-
+    
     public bool? ScaleBodyAnimationSpeedByAttackSpeed { get; init; }
 
     /// <inheritdoc />
@@ -117,7 +123,53 @@ public class SapStabScript : ConfigurableSkillScriptBase,
 
     public override void OnUse(ActivationContext context)
         => new ComponentExecutor(context).WithOptions(this)
-                                         .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
-                                         ?.Execute<DamageAbilityComponent>()
-                                         .Execute<SapNeedleComponent>();
+                                         .ExecuteAndCheck<ManaCostAbilityComponent>()
+                                         ?.Execute<BreaksSpecificEffectsAbilityComponent>()
+                                         .ExecuteAndCheck<GetTargetsAbilityComponent<Creature>>()
+                                         ?.Check(GetSapTarget)
+                                         ?.Execute<BodyAnimationAbilityComponent>()
+                                         .Execute<SoundAbilityComponent>()
+                                         .Execute<AnimationAbilityComponent>()
+                                         .ClearVars()
+                                         .ExecuteAndCheck<GetTargetsAbilityComponent2<Creature>>()
+                                         ?.Execute<SapNeedleComponent>()
+                                         .Execute<AnimationAbilityComponent>()
+                                         .Execute<CooldownComponent>();
+
+    private bool GetSapTarget(ComponentVars vars)
+    {
+        SapTarget = null!;
+        var targets = vars.GetTargets<Creature>();
+
+        if (targets.Count == 0)
+            return false;
+
+        SapTarget = targets.First();
+
+        return true;
+    }
+
+    /// <inheritdoc />
+    public int? ExclusionRange2 { get; init; }
+
+    /// <inheritdoc />
+    public TargetFilter Filter2 { get; init; }
+
+    /// <inheritdoc />
+    public bool MustHaveTargets2 { get; init; }
+
+    /// <inheritdoc />
+    public int Range2 { get; init; }
+
+    /// <inheritdoc />
+    public AoeShape Shape2 { get; init; }
+
+    /// <inheritdoc />
+    public bool SingleTarget2 { get; init; }
+
+    /// <inheritdoc />
+    public bool StopOnFirstHit2 { get; init; }
+
+    /// <inheritdoc />
+    public bool StopOnWalls2 { get; init; }
 }

@@ -1,8 +1,10 @@
 using Chaos.Common.Utilities;
+using Chaos.Extensions;
 using Chaos.Models.Data;
 using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyDamage;
+using Chaos.Scripting.MonsterScripts.Boss;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
@@ -30,8 +32,11 @@ public class BleedEffect : ContinuousAnimationEffectBase
         var pctDmg = MathEx.GetPercentOf<int>(Subject.StatSheet.CurrentHp, 1);
         var flatDmg = Source.StatSheet.EffectiveDex * (Source.StatSheet.Level / 5);
         var finalDmg = pctDmg + flatDmg;
-        var capDmg = MathEx.GetPercentOf<int>((int)Subject.StatSheet.EffectiveMaximumHp, 3);
+        var capDmg = MathEx.GetPercentOf<int>((int)Subject.StatSheet.EffectiveMaximumHp, 2);
         finalDmg = Math.Min(finalDmg, capDmg);
+
+        if (Subject.Script.Is<ThisIsABossScript>())
+            finalDmg /= 2;
 
         DamageScript.ApplyDamage(
             Source,

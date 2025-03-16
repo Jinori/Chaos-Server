@@ -1,6 +1,7 @@
 using Chaos.Extensions;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
@@ -21,6 +22,9 @@ public class LimboMonkScript : MonsterScriptBase
         ActionTimer = new RandomizedIntervalTimer(TimeSpan.FromMilliseconds(1000), 10, startAsElapsed: false);
         CureAilments = SpellFactory.Create("cureailments");
     }
+
+    /// <inheritdoc />
+    public override bool IsFriendlyTo(Creature creature) => base.IsFriendlyTo(creature);
 
     public override void Update(TimeSpan delta)
     {

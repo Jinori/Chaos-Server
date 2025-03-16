@@ -98,7 +98,7 @@ public class RestrictionBehavior
 
                 return false;
             }
-            case Monster monster when monster.IsSuained() || monster.IsPramhed() || monster.IsBeagSuained():
+            case Monster monster when monster.IsSuained() || monster.IsPramhed() || monster.IsBeagSuained() || monster.IsIntimidated():
             {
                 return false;
             }

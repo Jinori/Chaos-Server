@@ -17,7 +17,8 @@ public class RogueLimboScript : CompositeMonsterScript
         GetScriptKey(typeof(MoveToTargetScript)),
         GetScriptKey(typeof(WanderingScript)),
         GetScriptKey(typeof(DeathScript)),
-        GetScriptKey(typeof(DisplayNameScript))
+        GetScriptKey(typeof(DisplayNameScript)),
+        GetScriptKey(typeof(LimboFriendlyScript))
     };
 
     /// <inheritdoc />

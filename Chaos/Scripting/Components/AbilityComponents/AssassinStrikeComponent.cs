@@ -29,12 +29,16 @@ public struct AssassinStrikeComponent : IComponent
                 options.DamageStat,
                 options.DamageStatMultiplier);
 
-            if (target is Monster monster)
+            damage = (int)(damage * options.DmgMultiplier);
 
-                // 10% chance to kill the target instantly
+            // 10% chance to kill the target instantly
+            if (target is Monster)
                 if (IntegerRandomizer.RollChance(10))
                     if (!target.Script.Is<TrainingDummyScript>() && !target.Script.Is<ThisIsABossScript>())
                         damage = target.StatSheet.CurrentHp;
+
+            if (target.Script.Is<ThisIsABossScript>())
+                damage /= 2;
 
             if (damage > 0)
                 options.ApplyDamageScript.ApplyDamage(
@@ -59,11 +63,7 @@ public struct AssassinStrikeComponent : IComponent
         // Scale damage based on the target's current health.
         if (pctHpDamage.HasValue)
         {
-            var healthDamage = target.StatSheet.CurrentHp * (pctHpDamage.Value / 100m);
-
-            if (healthDamage > 200000)
-                healthDamage = 200000;
-
+            var healthDamage = target.StatSheet.EffectiveMaximumHp * (pctHpDamage.Value / 100m);
             finalDamage += Convert.ToInt32(healthDamage);
         }
 
@@ -75,17 +75,13 @@ public struct AssassinStrikeComponent : IComponent
 
         if (target is not Monster monster)
             return finalDamage;
-        
+
         var multiplier = 1.0m;
 
         if (!monster.AggroList.TryGetValue(source.Id, out _))
             multiplier += 0.25m;
         
-        if(source.Effects.TryGetEffect("True Hide", out _))
-            multiplier += 0.25m;
-
-        var bonusDamage = finalDamage * multiplier;
-        finalDamage += Convert.ToInt32(bonusDamage);
+        finalDamage = (int)(finalDamage * multiplier);
 
         return finalDamage;
     }
@@ -98,5 +94,6 @@ public struct AssassinStrikeComponent : IComponent
         decimal? DamageStatMultiplier { get; init; }
         Element? Element { get; init; }
         decimal? PctHpDamage { get; init; }
+        decimal DmgMultiplier { get; set; }
     }
 }

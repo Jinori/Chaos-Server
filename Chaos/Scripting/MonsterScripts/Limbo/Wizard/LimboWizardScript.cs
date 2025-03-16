@@ -2,6 +2,7 @@ using Chaos.Common.Utilities;
 using Chaos.Extensions;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
@@ -24,13 +25,17 @@ public class LimboWizardScript : MonsterScriptBase
     private readonly ISpellFactory SpellFactory;
     private readonly Dictionary<Func<List<Aisling>, bool>, int> WeightedActions;
     private readonly Spell[] AllSpells;
+    private TimeSpan TimeSinceLastFizzle;
+    private readonly TimeSpan FizzleCooldown;
 
     public LimboWizardScript(Monster subject, ISpellFactory spellFactory)
         : base(subject)
     {
         SpellFactory = spellFactory;
-        ActionTimer = new RandomizedIntervalTimer(TimeSpan.FromMilliseconds(1500), 10, startAsElapsed: false);
-
+        ActionTimer = new RandomizedIntervalTimer(TimeSpan.FromMilliseconds(1000), 10, startAsElapsed: false);
+        TimeSinceLastFizzle = TimeSpan.Zero;
+        FizzleCooldown = TimeSpan.FromSeconds(2);
+        
         MagmaSurge = SpellFactory.Create("magmasurge");
         DiaCradh = SpellFactory.Create("diaCradh");
         Dall = SpellFactory.Create("dall");
@@ -53,20 +58,41 @@ public class LimboWizardScript : MonsterScriptBase
         WeightedActions = new Dictionary<Func<List<Aisling>, bool>, int>
         {
             {
-                DoChainLightning, 2
+                DoChainLightning, 7
             },
             {
-                DoDiaCradh, 3
+                DoDiaCradh, 10
             },
             {
                 DoDall, 1
             },
             {
-                DoMeall, 1
+                DoMeall, 5
+            },
+            {
+                //do nothing
+                _ => true, 5
             }
         };
     }
+    
+    public override void OnAttacked(Creature source, int damage)
+    {
+        if (IntegerRandomizer.RollChance(7) && (TimeSinceLastFizzle > FizzleCooldown))
+        {
+            TimeSinceLastFizzle = TimeSpan.Zero;
+            
+            ActionTimer.Reset();
+            ResetMovementTimer();
+        }
+    }
 
+    private void ResetMovementTimer()
+    {
+        Subject.WanderTimer.Reset();
+        Subject.MoveTimer.Reset();
+    }
+    
     private bool DoDiaCradh(List<Aisling> nearbyAislings)
     {
         var notDiaCradh = nearbyAislings.Where(aisling => !aisling.Effects.Contains("dia cradh"))
@@ -167,7 +193,11 @@ public class LimboWizardScript : MonsterScriptBase
             var randomAction = WeightedActions.PickRandomWeighted();
 
             if (randomAction(nearbyAislings))
+            {
+                ResetMovementTimer();
+                
                 break;
+            }
         }
     }
 }

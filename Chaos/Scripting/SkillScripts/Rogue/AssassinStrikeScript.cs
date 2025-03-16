@@ -30,9 +30,16 @@ public class AssassinStrikeScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public override void OnUse(ActivationContext context)
-        => new ComponentExecutor(context).WithOptions(this)
-                                         .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
-                                         ?.Execute<AssassinStrikeComponent>();
+    {
+        DmgMultiplier = 1.0m;
+        
+        if (context.Source.Effects.Contains("True Hide"))
+            DmgMultiplier = 1.25m;
+        
+        new ComponentExecutor(context).WithOptions(this)
+                                      .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
+                                      ?.Execute<AssassinStrikeComponent>();
+    }
 
     #region ScriptVars
     /// <inheritdoc />
@@ -93,6 +100,8 @@ public class AssassinStrikeScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public decimal? PctHpDamage { get; init; }
+    
+    public decimal DmgMultiplier { get; set; } = 1.0m;
 
     /// <inheritdoc />
     public int? ManaCost { get; init; }

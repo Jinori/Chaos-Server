@@ -23,6 +23,8 @@ public class ComponentVars : StaticVars
     public virtual List<Point> GetAllPoints() => GetRequired<List<Point>>(CASCADE_ALL_POINTS_KEY);
 
     public virtual TOptions GetOptions<TOptions>() => GetRequired<TOptions>(OPTIONS_KEY);
+    
+    public virtual object GetOptions() => GetRequired<object>(OPTIONS_KEY);
 
     public virtual IReadOnlyCollection<Point> GetPoints() => GetRequired<IReadOnlyCollection<Point>>(POINTS_KEY);
     

@@ -40,6 +40,9 @@ public class MultiStrikeScript(Skill subject) : ConfigurableSkillScriptBase(subj
     public bool? MoreDmgLowTargetHp { get; init; }
     public bool MustHaveTargets { get; init; }
     public decimal? PctHpDamage { get; init; }
+
+    /// <inheritdoc />
+    public decimal DmgMultiplier { get; set; } = 1.0m;
     public decimal PctManaCost { get; init; }
     public decimal? PctOfHealth { get; init; }
     public decimal? PctOfHealthMultiplier { get; init; }
@@ -67,7 +70,7 @@ public class MultiStrikeScript(Skill subject) : ConfigurableSkillScriptBase(subj
         var wallPoints = path.Where(point => source.MapInstance.IsWall(point))
                              .ToList();
 
-        if (!wallPoints.Any())
+        if (wallPoints.Count == 0)
 
             // No walls between source and target
             return true;
