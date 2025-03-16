@@ -56,6 +56,8 @@ public static class StatusExtensions
     public static bool IsStoned(this Creature creature) => creature.Effects.Contains("Stoned");
     public static bool IsSuained(this Creature creature) =>
         creature.Effects.Contains("Suain") || creature.Effects.Contains("Wolf Fang Fist");
+
+    public static bool IsIntimidated(this Creature creature) => creature.Effects.Contains("Intimidate");
     public static bool IsThunderStanced(this Creature creature) => creature.Effects.Contains("Thunder Stance");
     public static bool IsTideStanced(this Creature creature) => creature.Effects.Contains("Tide Stance");
     public static bool IsTormented(this Creature creature) => creature.Effects.Contains("Torment");

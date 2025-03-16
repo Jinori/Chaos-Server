@@ -82,7 +82,7 @@ public class RestrictionBehavior
     {
         switch (creature)
         {
-            case Aisling aisling when aisling.IsSuained() || aisling.IsPramhed() || aisling.IsStoned():
+            case Aisling aisling when aisling.IsSuained() || aisling.IsPramhed() || aisling.IsStoned() || aisling.IsIntimidated():
             {
                 aisling.SendOrangeBarMessage("You cannot turn.");
 
