@@ -30,7 +30,9 @@ public static class TargetFilterExtensions
             TargetFilter.OthersOnly       => !source.Equals(target),
             TargetFilter.GroupOnly => source.Equals(target)
                                       || (source is Aisling { Group: not null } aisling
-                                          && aisling.Group.Contains(target, WorldEntity.IdComparer)),
+                                          && (aisling.Group.Contains(target, WorldEntity.IdComparer)
+                                              || (target is Monster { PetOwner: not null } monster
+                                                  && (monster.PetOwner.Group == aisling.Group)))),
             TargetFilter.PetOnly      => target is Monster monster && target.Script.Is<PetScript>() && Equals(monster.PetOwner, source),
             TargetFilter.PetOwnerOnly => source is Monster monster && monster.Script.Is<PetScript>() && Equals(monster.PetOwner, target),
             TargetFilter.PetOwnerGroupOnly => source is Monster monster
