@@ -1,10 +1,12 @@
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
+using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Networking.Abstractions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
+using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Events.StPatricks;
 
@@ -64,6 +66,7 @@ public class LuckyCharmsScript : DialogScriptBase
                     source.Trackers.Enums.Set(LuckyCharmsQuest.TurnedIn);
                     var item = ItemFactory.Create("fannypouch");
                     source.GiveItemOrSendToBank(item);
+                    source.Legend.AddOrAccumulate(new LegendMark("Found Lucky's Charms", "luckycharms", MarkIcon.Yay, MarkColor.LightGreen, 1, GameTime.Now));
 
                     foreach (var aisling in ClientRegistry)
                         aisling.SendServerMessage(ServerMessageType.OrangeBar2, $"{source.Name} has found all eight of Lucky's Charms!");
