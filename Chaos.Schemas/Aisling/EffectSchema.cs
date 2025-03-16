@@ -24,6 +24,5 @@ public sealed record EffectSchema
     /// <summary>
     ///     A snapshot of various variables needed for the effect
     /// </summary>
-    [JsonRequired]
     public StaticVars SnapshotVars { get; set; } = null!;
 }

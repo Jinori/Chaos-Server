@@ -22,7 +22,8 @@ public class EffectMapperProfile(IEffectFactory effectFactory) : IMapperProfile<
     {
         var effect = EffectFactory.Create(obj.EffectKey);
         effect.Remaining = TimeSpan.FromSeconds(obj.RemainingSecs);
-        effect.SnapshotVars = obj.SnapshotVars;
+        // ReSharper disable once NullCoalescingConditionIsAlwaysNotNullAccordingToAPIContract
+        effect.SnapshotVars = obj.SnapshotVars ?? new StaticVars();
 
         return effect;
     }
