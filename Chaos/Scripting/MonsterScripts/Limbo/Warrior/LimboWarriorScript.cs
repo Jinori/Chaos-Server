@@ -15,7 +15,7 @@ namespace Chaos.Scripting.MonsterScripts.Limbo.Warrior;
 public class LimboWarriorScript : MonsterScriptBase
 {
     private readonly Skill Charge;
-    private readonly Skill Sever;
+    private readonly Skill TempestBlade;
     private readonly Skill Shockwave;
     private readonly ISkillFactory SkillFactory;
     private readonly IIntervalTimer ActionTimer;
@@ -26,7 +26,7 @@ public class LimboWarriorScript : MonsterScriptBase
     {
         SkillFactory = skillFactory;
         Charge = SkillFactory.Create("charge");
-        Sever = SkillFactory.Create("sever");
+        TempestBlade = SkillFactory.Create("tempestBlade");
         Shockwave = SkillFactory.Create("shockwave");
         ActionTimer = new RandomizedIntervalTimer(TimeSpan.FromMilliseconds(1000), 25, startAsElapsed: false);
     }
@@ -34,7 +34,7 @@ public class LimboWarriorScript : MonsterScriptBase
     public override void Update(TimeSpan delta)
     {
         Charge.Update(delta);
-        Sever.Update(delta);
+        TempestBlade.Update(delta);
         Shockwave.Update(delta);
         
         ActionTimer.Update(delta);
@@ -58,7 +58,7 @@ public class LimboWarriorScript : MonsterScriptBase
                 return;
         }
 
-        if (Subject.WithinRange(target, 2) && Subject.CanUse(Sever, out _))
+        if (Subject.WithinRange(target, 2) && Subject.CanUse(TempestBlade, out _))
         {
             var targetDirection = target.DirectionalRelationTo(Subject);
             var optimalDirection = GetOptimalDirection(AoeShape.Front, 3, targetDirection);
@@ -66,7 +66,7 @@ public class LimboWarriorScript : MonsterScriptBase
             if(Subject.Direction != optimalDirection)
                 Subject.Turn(optimalDirection);
 
-            if (Subject.TryUseSkill(Sever))
+            if (Subject.TryUseSkill(TempestBlade))
                 return;
         }
 
