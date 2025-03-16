@@ -69,6 +69,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     private readonly IIntervalTimer CleanupSkillsSpellsTimer;
     private readonly IIntervalTimer ClearOrangeBarTimer;
     private readonly IClientRegistry<IChaosWorldClient> ClientRegistry;
+    private readonly IDialogFactory DialogFactory;
     private readonly IEffectFactory EffectFactory;
     private readonly IItemFactory ItemFactory;
     private readonly ILogger<DefaultAislingScript> Logger;
@@ -205,8 +206,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     private readonly ISkillFactory SkillFactory;
     private readonly IIntervalTimer SleepAnimationTimer;
     private readonly ISpellFactory SpellFactory;
-    private readonly IDialogFactory DialogFactory;
-    
+
     public IApplyDamageScript ApplyDamageScript { get; init; }
 
     /// <inheritdoc />
@@ -343,18 +343,6 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
     /// <inheritdoc />
     public override bool CanUseSpell(Spell spell) => RestrictionBehavior.CanUseSpell(Subject, spell);
-
-    
-    public override void OnLogin()
-    {
-        if (Subject.Trackers.LastLogout is { } lastLogout && (lastLogout.AddHours(2) <= DateTime.UtcNow))
-        {
-            var merch = MerchantFactory.Create("terminus", Subject.MapInstance, Subject);
-            var dialog = DialogFactory.Create("terminus_homeoptions", merch);
-            dialog.Display(Subject);
-        }
-    }
-    
 
     /// <inheritdoc />
     public override IEnumerable<BoardBase> GetBoardList()
@@ -889,21 +877,20 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 $"{Subject.Name} was killed at {Subject.MapInstance.Name} by {source?.Name ?? "The Guardians"}.");
 
         var itemsToBreak = Subject.Equipment
-                                  .Where(x => !x.Template.AccountBound
-                                              && (x.Template.EquipmentType != EquipmentType.Accessory)
-                                              && (x.Template.EquipmentType != EquipmentType.OverArmor)
-                                              && (x.Template.EquipmentType != EquipmentType.OverHelmet))
+                                  .Where(
+                                      x => !x.Template.AccountBound
+                                           && (x.Template.EquipmentType != EquipmentType.Accessory)
+                                           && (x.Template.EquipmentType != EquipmentType.OverArmor)
+                                           && (x.Template.EquipmentType != EquipmentType.OverHelmet))
                                   .ToList();
-        
+
         var savedItems = new List<string>();
         var lostItems = new List<string>();
 
         foreach (var item in itemsToBreak)
         {
             if (!IntegerRandomizer.RollChance(2))
-            {
                 continue;
-            }
 
             var diceCount = Subject.Inventory.CountOfByTemplateKey("mithrildice");
 
@@ -922,9 +909,10 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                       .WithProperty(item)
                       .LogInformation(
                           "{@AislingName}'s {@ItemName} was saved by Mithril Dice (Remaining Dice: {@DiceCount})",
-                          Subject.Name, item.DisplayName, diceCount - 1);
-            }
-            else
+                          Subject.Name,
+                          item.DisplayName,
+                          diceCount - 1);
+            } else
             {
                 // Remove the item from the player's equipment
                 Subject.Equipment.TryGetRemove(item.Slot, out _);
@@ -937,52 +925,51 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                           Topics.Actions.Penalty)
                       .WithProperty(Subject)
                       .WithProperty(item)
-                      .LogInformation(
-                          "{@AislingName} has lost {@ItemName} to death. (No dice remaining)",
-                          Subject.Name, item.DisplayName);
+                      .LogInformation("{@AislingName} has lost {@ItemName} to death. (No dice remaining)", Subject.Name, item.DisplayName);
             }
         }
-        
+
         var sb = new StringBuilder();
 
         if (savedItems.Any() && lostItems.Any())
         {
             sb.AppendLineFColored(MessageColor.Yellow, "You lost the following items:");
+
             foreach (var item in lostItems)
                 sb.AppendLineFColored(MessageColor.Gainsboro, $"{item}");
 
             sb.AppendLine("");
-            
+
             sb.AppendLineFColored(MessageColor.NeonGreen, "Mithril Dice saved the following items:");
+
             foreach (var item in savedItems)
                 sb.AppendLineFColored(MessageColor.Gainsboro, $"{item}");
-            
+
             sb.AppendLine("");
             sb.AppendLineFColored(MessageColor.Orange, "Revive with Terminus or wait to be revived.");
-        }
-        else if (savedItems.Any())
+        } else if (savedItems.Any())
         {
             sb.AppendLineFColored(MessageColor.NeonGreen, "Mithril Dice saved your items:");
+
             foreach (var item in savedItems)
                 sb.AppendLineFColored(MessageColor.Gainsboro, $"{item}");
-            
+
             sb.AppendLine("");
             sb.AppendLineFColored(MessageColor.Orange, "Revive with Terminus or wait to be revived.");
-        }
-        else if (lostItems.Any())
+        } else if (lostItems.Any())
         {
             sb.AppendLineFColored(MessageColor.Yellow, "You lost the following items:");
+
             foreach (var item in lostItems)
                 sb.AppendLineFColored(MessageColor.Gainsboro, $"{item}");
-            
+
             sb.AppendLine("");
             sb.AppendLineFColored(MessageColor.Orange, "Revive with Terminus or wait to be revived.");
         }
-        
+
         if (sb.Length > 0)
             Subject.Client.SendServerMessage(ServerMessageType.ScrollWindow, sb.ToString());
 
-        
         var tenPercent = MathEx.GetPercentOf<int>((int)Subject.UserStatSheet.TotalExp, 10);
 
         if (ExperienceDistributionScript.TryTakeExp(Subject, tenPercent))
@@ -1011,6 +998,16 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
         if (Subject.UserStatSheet.Level <= 41)
             Subject.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You have died. Press F1 to revive.");
+    }
+
+    public override void OnLogin()
+    {
+        if (Subject.Trackers.LastLogout is { } lastLogout && (lastLogout.AddHours(2) <= DateTime.UtcNow))
+        {
+            var merch = MerchantFactory.Create("terminus", Subject.MapInstance, Subject);
+            var dialog = DialogFactory.Create("terminus_homeoptions", merch);
+            dialog.Display(Subject);
+        }
     }
 
     /// <inheritdoc />
@@ -1079,14 +1076,12 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         }
 
         if (Subject.Bank.Contains("Invisible Helmet"))
-        {
             if (Subject.Bank.TryWithdraw("Invisible Helmet", 1, out _))
             {
                 Subject.Inventory.Remove("Invisible Helmet");
-                Subject.TryGiveGamePoints(100);   
+                Subject.TryGiveGamePoints(100);
             }
-        }
-        
+
         if (Subject.Inventory.Contains("Invisible Shield"))
         {
             Subject.Inventory.Remove("Invisible Shield");
@@ -1094,14 +1089,12 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         }
 
         if (Subject.Bank.Contains("Invisible Shield"))
-        {
             if (Subject.Bank.TryWithdraw("Invisible Shield", 1, out _))
             {
                 Subject.Inventory.Remove("Invisible Shield");
-                Subject.TryGiveGamePoints(100);   
+                Subject.TryGiveGamePoints(100);
             }
-        }
-        
+
         if (Subject.IsGodModeEnabled())
             return;
 
@@ -1310,6 +1303,50 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                     // Clear all script keys and keep only the valid one
                     bankItem.ScriptKeys.Clear();
                     bankItem.ScriptKeys.Add(validKey);
+                }
+            }
+
+            if (Subject.SkillBook.ContainsByTemplateKey("multistrike"))
+            {
+                Subject.SkillBook.RemoveByTemplateKey("multistrike");
+
+                if (!Subject.SkillBook.ContainsByTemplateKey("rupture"))
+                {
+                    var rupture = SkillFactory.Create("rupture");
+                    Subject.SkillBook.TryAddToNextSlot(rupture);
+                    
+                    Subject.SendOrangeBarMessage("Multistrike has been replaced by Rupture.");
+                }
+            }
+
+            if (Subject.SkillBook.ContainsByTemplateKey("gut"))
+            {
+                Subject.SkillBook.RemoveByTemplateKey("gut");
+
+                if (!Subject.SkillBook.ContainsByTemplateKey("shadowfigure"))
+                {
+                    var backstab = SkillFactory.Create("backstab");
+                    Subject.SkillBook.TryAddToNextSlot(backstab);
+                    Subject.SendOrangeBarMessage("Gut has been replaced by Backstab.");
+                }
+            }
+
+            if (Subject.SkillBook.ContainsByTemplateKey("surigumblitz"))
+            {
+                Subject.SkillBook.RemoveByTemplateKey("surigumblitz");
+
+                if (!Subject.SkillBook.ContainsByTemplateKey("murderousintent"))
+                {
+                    var murderousintent = SkillFactory.Create("murderousintent");
+                    Subject.SkillBook.TryAddToNextSlot(murderousintent);
+                    Subject.SendOrangeBarMessage("Surigum Blitz has been replaced by Murderous Intent.");
+                }
+
+                if (!Subject.SkillBook.ContainsByTemplateKey("killerinstinct"))
+                {
+                    var killerinstinct = SkillFactory.Create("killerinstinct");
+                    Subject.SkillBook.TryAddToNextSlot(killerinstinct);
+                    Subject.SendOrangeBarMessage("Surigum Blitz has been replaced by Killer Instinct.");
                 }
             }
 
@@ -1577,7 +1614,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             RemoveAndNotifyIfBothExist("barrage", "assault");
             RemoveAndNotifyIfBothExist("barrage", "blitz");
             RemoveAndNotifyIfBothExist("barrage", "throwsurigum");
-            RemoveAndNotifyIfBothExist("gut", "stab");
+            RemoveAndNotifyIfBothExist("backstab", "stab");
             RemoveAndNotifyIfBothExist("skewer", "pierce");
             RemoveAndNotifyIfBothExist("midnightslash", "assail");
             RemoveAndNotifyIfBothExist("midnightslash", "barrage");

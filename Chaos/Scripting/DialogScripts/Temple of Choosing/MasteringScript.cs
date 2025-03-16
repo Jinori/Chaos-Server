@@ -3,7 +3,6 @@ using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
-using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Networking.Abstractions;
 using Chaos.NLog.Logging.Definitions;
@@ -19,12 +18,75 @@ public class MasteringScript : DialogScriptBase
     private readonly IClientRegistry<IChaosWorldClient> ClientRegistry;
     private readonly IItemFactory ItemFactory;
     private readonly ILogger<MasteringScript> Logger;
+
+    private readonly Dictionary<BaseClass, (string itemOne, string itemTwo)> MasteringItemRequirements = new()
+    {
+        {
+            BaseClass.Monk, ("goldsand", "cauldron")
+        },
+        {
+            BaseClass.Warrior, ("brokenjackalsword", "jackalhilt")
+        },
+        {
+            BaseClass.Rogue, ("copperfile", "smithhammer")
+        },
+        {
+            BaseClass.Wizard, ("magicink", "magicscroll")
+        },
+        {
+            BaseClass.Priest, ("holyink", "holyscroll")
+        }
+    };
+
+    private readonly Dictionary<BaseClass, (int requiredHealth, int requiredMana)> MasteringRequirements = new()
+    {
+        {
+            BaseClass.Monk, (16000, 7000)
+        },
+        {
+            BaseClass.Warrior, (15000, 7500)
+        },
+        {
+            BaseClass.Rogue, (14000, 8000)
+        },
+        {
+            BaseClass.Wizard, (10000, 12000)
+        },
+        {
+            BaseClass.Priest, (9500, 13000)
+        }
+    };
+
+    private readonly Dictionary<BaseClass, (string skillOne, string skillTwo)> MasteringSkillSpellRequirements = new()
+    {
+        {
+            BaseClass.Monk, ("Wolf Fang Fist", "Rapid Punch")
+        },
+        {
+            BaseClass.Warrior, ("Crasher", "Pulverize")
+        },
+        {
+            BaseClass.Rogue, ("Skewer", "Maiden Trap")
+        },
+        {
+            BaseClass.Wizard, ("Mor Cradh", "Arcane Blast")
+        },
+        {
+            BaseClass.Priest, ("Ard Ioc", "beag pramh")
+        }
+    };
+
     private readonly ISkillFactory SkillFactory;
     private readonly ISpellFactory SpellFactory;
-    
+
     /// <inheritdoc />
-    public MasteringScript(Dialog subject, IClientRegistry<IChaosWorldClient> clientRegistry, IItemFactory itemFactory,
-        ILogger<MasteringScript> logger, ISpellFactory spellFactory, ISkillFactory skillFactory)
+    public MasteringScript(
+        Dialog subject,
+        IClientRegistry<IChaosWorldClient> clientRegistry,
+        IItemFactory itemFactory,
+        ILogger<MasteringScript> logger,
+        ISpellFactory spellFactory,
+        ISkillFactory skillFactory)
         : base(subject)
     {
         ClientRegistry = clientRegistry;
@@ -34,33 +96,256 @@ public class MasteringScript : DialogScriptBase
         SkillFactory = skillFactory;
     }
 
-    private readonly Dictionary<BaseClass, (int requiredHealth, int requiredMana)> MasteringRequirements = new()
+    private void AwardClassSpecificItemsAndAbilities(Aisling source, BaseClass userBaseClass)
     {
-        { BaseClass.Monk, (16000, 7000) },
-        { BaseClass.Warrior, (15000, 7500) },
-        { BaseClass.Rogue, (14000, 8000) },
-        { BaseClass.Wizard, (10000, 12000) },
-        { BaseClass.Priest, (9500, 13000) }
-    };
+        switch (userBaseClass)
+        {
+            case BaseClass.Warrior:
+                AwardWarriorItemsAndAbilities(source);
 
-    private readonly Dictionary<BaseClass, (string skillOne, string skillTwo)> MasteringSkillSpellRequirements = new()
+                break;
+            case BaseClass.Rogue:
+                AwardRogueItemsAndAbilities(source);
+
+                break;
+            case BaseClass.Wizard:
+                AwardWizardItemsAndAbilities(source);
+
+                break;
+            case BaseClass.Priest:
+                AwardPriestItemsAndAbilities(source);
+
+                break;
+            case BaseClass.Monk:
+                AwardMonkItemsAndAbilities(source);
+
+                break;
+        }
+    }
+
+    private void AwardMasterLegendMark(Aisling source, BaseClass baseClass, string classKey)
+        => source.Legend.AddOrAccumulate(
+            new LegendMark(
+                $"Wields the Mantle of {baseClass.ToString()} Master",
+                classKey,
+                MarkIcon.Victory,
+                MarkColor.Blue,
+                1,
+                GameTime.Now));
+
+    private void AwardMonkItemsAndAbilities(Aisling source)
     {
-        { BaseClass.Monk, ("Wolf Fang Fist", "Rapid Punch") },
-        { BaseClass.Warrior, ("Crasher", "Pulverize") },
-        { BaseClass.Rogue, ("Skewer", "Maiden Trap") },
-        { BaseClass.Wizard, ("Mor Cradh", "Arcane Blast") },
-        { BaseClass.Priest, ("Ard Ioc", "beag pramh") }
-    };
+        var armor = source.Gender == Gender.Male ? ItemFactory.Create("monkmastermantle") : ItemFactory.Create("monkmasterdress");
+        var helm = source.Gender == Gender.Male ? ItemFactory.Create("maleSunBaeNimBand") : ItemFactory.Create("femaleSunBaeNimBand");
+        var weapon = ItemFactory.Create("kalkuri");
+        var triplekick = SkillFactory.Create("triplekick");
+        var roar = SpellFactory.Create("roar");
+        var adaptiveskin = SpellFactory.Create("adaptiveskin");
 
-    private readonly Dictionary<BaseClass, (string itemOne, string itemTwo)> MasteringItemRequirements = new()
+        source.SkillBook.Remove("Triple Kick");
+        source.SpellBook.Remove("Howl");
+
+        source.SkillBook.TryAddToNextSlot(triplekick);
+        source.SpellBook.TryAddToNextSlot(roar);
+        source.SpellBook.TryAddToNextSlot(adaptiveskin);
+
+        if (!source.Legend.TryGetValue("dedicated", out _))
+        {
+            var phoenixgrasp = SpellFactory.Create("phoenixgrasp");
+            source.SpellBook.TryAddToNextSlot(phoenixgrasp);
+        }
+
+        var itemsToGive = new[]
+        {
+            armor,
+            helm,
+            weapon
+        };
+
+        foreach (var item in itemsToGive)
+            source.GiveItemOrSendToBank(item);
+
+        Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Item, Topics.Actions.Create)
+              .WithProperty(Subject)
+              .WithProperty(itemsToGive)
+              .LogInformation(
+                  "{@AislingName} has received {@Armor}, {@Helm}, {@Weapon} from mastering",
+                  source.Name,
+                  armor.DisplayName,
+                  helm.DisplayName,
+                  weapon.DisplayName);
+    }
+
+    private void AwardPriestItemsAndAbilities(Aisling source)
     {
-        { BaseClass.Monk, ("goldsand", "cauldron") },
-        { BaseClass.Warrior, ("brokenjackalsword", "jackalhilt") },
-        { BaseClass.Rogue, ("copperfile", "smithhammer") },
-        { BaseClass.Wizard, ("magicink", "magicscroll") },
-        { BaseClass.Priest, ("holyink", "holyscroll") }
-    };
+        var armor = source.Gender == Gender.Male ? ItemFactory.Create("sacredmantle") : ItemFactory.Create("sacreddress");
+        var helm = source.Gender == Gender.Male ? ItemFactory.Create("sacredchief") : ItemFactory.Create("sacredwimple");
+        var weapon = ItemFactory.Create("holyhybrasylgnarl");
+        var pramh = SpellFactory.Create("pramh");
+        var vortex = SpellFactory.Create("vortex");
 
+        source.SpellBook.Remove("beag pramh");
+        source.SpellBook.Remove("quake");
+
+        source.SpellBook.TryAddToNextSlot(pramh);
+        source.SpellBook.TryAddToNextSlot(vortex);
+
+        if (!source.Legend.TryGetValue("dedicated", out _))
+        {
+            source.SpellBook.Remove("revive");
+            var resurrect = SpellFactory.Create("resurrect");
+            source.SpellBook.TryAddToNextSlot(resurrect);
+        }
+
+        var itemsToGive = new[]
+        {
+            armor,
+            helm,
+            weapon
+        };
+
+        foreach (var item in itemsToGive)
+            source.GiveItemOrSendToBank(item);
+
+        Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Item, Topics.Actions.Create)
+              .WithProperty(Subject)
+              .WithProperty(itemsToGive)
+              .LogInformation(
+                  "{@AislingName} has received {@Armor}, {@Helm}, {@Weapon} from mastering",
+                  source.Name,
+                  armor.DisplayName,
+                  helm.DisplayName,
+                  weapon.DisplayName);
+    }
+
+    private void AwardRogueItemsAndAbilities(Aisling source)
+    {
+        var armor = source.Gender == Gender.Male ? ItemFactory.Create("rogueMasterMantle") : ItemFactory.Create("rogueMasterdress");
+        var helm = ItemFactory.Create("shadowMask");
+        var weapon = ItemFactory.Create("hybrasylazoth");
+        var midnightslash = SkillFactory.Create("midnightslash");
+        var assassinstrike = SkillFactory.Create("assassinstrike");
+
+        source.SkillBook.TryAddToNextSlot(midnightslash);
+        source.SkillBook.TryAddToNextSlot(assassinstrike);
+
+        if (!source.Legend.TryGetValue("dedicated", out _))
+        {
+            var shadowfigure = SkillFactory.Create("shadowfigure");
+            source.SkillBook.TryAddToNextSlot(shadowfigure);
+            source.SkillBook.RemoveByTemplateKey("backstab");
+        }
+
+        var itemsToGive = new[]
+        {
+            armor,
+            helm,
+            weapon
+        };
+
+        foreach (var item in itemsToGive)
+            source.GiveItemOrSendToBank(item);
+
+        Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Item, Topics.Actions.Create)
+              .WithProperty(Subject)
+              .WithProperty(itemsToGive)
+              .LogInformation(
+                  "{@AislingName} has received {@Armor}, {@Helm}, {@Weapon} from mastering",
+                  source.Name,
+                  armor.DisplayName,
+                  helm.DisplayName,
+                  weapon.DisplayName);
+    }
+
+    private void AwardWarriorItemsAndAbilities(Aisling source)
+    {
+        var armor = source.Gender == Gender.Male ? ItemFactory.Create("warriormastermantle") : ItemFactory.Create("warriormasterdress");
+
+        var helm = source.Gender == Gender.Male
+            ? ItemFactory.Create("malewarriormasterhelm")
+            : ItemFactory.Create("femalewarriormasterhelm");
+        var weapon = ItemFactory.Create("hybrasylescalon");
+        var thrash = SkillFactory.Create("thrash");
+        var charge = SkillFactory.Create("charge");
+
+        source.SkillBook.Remove("Bull Rush");
+        source.SkillBook.Remove("Pulverize");
+
+        source.SkillBook.TryAddToNextSlot(thrash);
+        source.SkillBook.TryAddToNextSlot(charge);
+
+        if (!source.Legend.TryGetValue("dedicated", out _))
+        {
+            var asgallfaileas = SpellFactory.Create("asgallfaileas");
+            source.SpellBook.TryAddToNextSlot(asgallfaileas);
+        }
+
+        var itemsToGive = new[]
+        {
+            armor,
+            helm,
+            weapon
+        };
+
+        foreach (var item in itemsToGive)
+            source.GiveItemOrSendToBank(item);
+
+        Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Item, Topics.Actions.Create)
+              .WithProperty(Subject)
+              .WithProperty(itemsToGive)
+              .LogInformation(
+                  "{@AislingName} has received {@Armor}, {@Helm}, {@Weapon} from mastering",
+                  source.Name,
+                  armor.DisplayName,
+                  helm.DisplayName,
+                  weapon.DisplayName);
+    }
+
+    private void AwardWizardItemsAndAbilities(Aisling source)
+    {
+        var armor = source.Gender == Gender.Male ? ItemFactory.Create("wizardMasterMantle") : ItemFactory.Create("wizardMasterdress");
+        var helm = source.Gender == Gender.Male ? ItemFactory.Create("gnostichat") : ItemFactory.Create("gnosticumber");
+        var weapon = ItemFactory.Create("magusorb");
+        var fasspiorad = SpellFactory.Create("fasspiorad");
+
+        if (!source.Legend.TryGetValue("dedicated", out _))
+        {
+            var sightoffrailty = SpellFactory.Create("sightoffrailty");
+            source.SpellBook.TryAddToNextSlot(sightoffrailty);
+        }
+
+        source.Trackers.Flags.AddFlag(WizardElement.Earth);
+        source.Trackers.Flags.AddFlag(WizardElement.Water);
+        source.Trackers.Flags.AddFlag(WizardElement.Fire);
+        source.Trackers.Flags.AddFlag(WizardElement.Wind);
+        source.SpellBook.TryAddToNextSlot(fasspiorad);
+
+        var itemsToGive = new[]
+        {
+            armor,
+            helm,
+            weapon
+        };
+
+        foreach (var item in itemsToGive)
+            source.GiveItemOrSendToBank(item);
+
+        Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Item, Topics.Actions.Create)
+              .WithProperty(Subject)
+              .WithProperty(itemsToGive)
+              .LogInformation(
+                  "{@AislingName} has received {@Armor}, {@Helm}, {@Weapon} from mastering",
+                  source.Name,
+                  armor.DisplayName,
+                  helm.DisplayName,
+                  weapon.DisplayName);
+    }
+
+    private void NotifyAllAislingsOfNewMaster(Aisling source, BaseClass userBaseClass)
+    {
+        foreach (var aisling in ClientRegistry)
+            aisling.SendServerMessage(ServerMessageType.OrangeBar2, $"{source.Name} now wields the mantle of Master {userBaseClass}");
+    }
 
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
@@ -71,15 +356,15 @@ public class MasteringScript : DialogScriptBase
             {
                 if (source.UserStatSheet.Master)
                     Subject.Reply(source, "You already wear the Mantle of the Master.");
-                
+
                 if (!source.Trackers.Enums.HasValue(MainStoryEnums.CompletedPreMasterMainStory))
-                {
-                    Subject.Reply(source, "Ah, you aspire to wield the ancient powers of mastery. Yet, the path to such power is not freely given. It is a journey intertwined with the very essence of a main story that shapes your fate. Until you have walked the full length of this path, the arcane secrets of mastery shall remain veiled from your sight. Return to me only when you have faced the core trials, and I shall reveal the way to harness the true might that awaits you.");
-                }
-                
+                    Subject.Reply(
+                        source,
+                        "Ah, you aspire to wield the ancient powers of mastery. Yet, the path to such power is not freely given. It is a journey intertwined with the very essence of a main story that shapes your fate. Until you have walked the full length of this path, the arcane secrets of mastery shall remain veiled from your sight. Return to me only when you have faced the core trials, and I shall reveal the way to harness the true might that awaits you.");
+
                 break;
             }
-            
+
             case "miraelisgod_checkhealth":
             {
                 // Retrieve the base class of the source
@@ -184,9 +469,7 @@ public class MasteringScript : DialogScriptBase
                             break;
 
                         case BaseClass.Diacht:
-                            Subject.Reply(
-                                source,
-                                "You shouldn't be here.");
+                            Subject.Reply(source, "You shouldn't be here.");
 
                             break;
                     }
@@ -254,9 +537,7 @@ public class MasteringScript : DialogScriptBase
                             break;
 
                         case BaseClass.Diacht:
-                            Subject.Reply(
-                                source,
-                                "You shouldn't be here.");
+                            Subject.Reply(source, "You shouldn't be here.");
 
                             break;
                     }
@@ -290,246 +571,41 @@ public class MasteringScript : DialogScriptBase
                 source.Titles.Add($"Master {userBaseClass}");
                 source.UserStatSheet.SetIsMaster(true);
                 AwardClassSpecificItemsAndAbilities(source, userBaseClass);
+
                 switch (userBaseClass)
                 {
                     case BaseClass.Warrior:
                         AwardMasterLegendMark(source, BaseClass.Warrior, "warMaster");
+
                         break;
                     case BaseClass.Rogue:
                         AwardMasterLegendMark(source, BaseClass.Rogue, "rogueMaster");
+
                         break;
                     case BaseClass.Wizard:
                         AwardMasterLegendMark(source, BaseClass.Wizard, "wizMaster");
+
                         break;
                     case BaseClass.Priest:
                         AwardMasterLegendMark(source, BaseClass.Priest, "priestMaster");
+
                         break;
                     case BaseClass.Monk:
                         AwardMasterLegendMark(source, BaseClass.Monk, "monkMaster");
+
                         break;
                 }
-                
+
                 source.SendOrangeBarMessage("You have been awarded a title, weapon, armor and helmet!");
                 source.Client.SendAttributes(StatUpdateType.Full);
                 source.Trackers.Enums.Set(ClassStatBracket.Master);
-                
-                Logger.WithTopics(
-                          [Topics.Entities.Aisling, Topics.Actions.Promote, Topics.Entities.Quest])
+
+                Logger.WithTopics(Topics.Entities.Aisling, Topics.Actions.Promote, Topics.Entities.Quest)
                       .WithProperty(Subject)
                       .LogInformation("{@AislingName} has become a master aisling", source.Name);
-                
+
                 break;
             }
         }
-    }
-
-    private void AwardMasterLegendMark(Aisling source, BaseClass baseClass, string classKey) =>
-        source.Legend.AddOrAccumulate(
-            new LegendMark(
-                $"Wields the Mantle of {baseClass.ToString()} Master",
-                classKey,
-                MarkIcon.Victory,
-                MarkColor.Blue,
-                1,
-                GameTime.Now));
-
-    private void NotifyAllAislingsOfNewMaster(Aisling source, BaseClass userBaseClass)
-    {
-        foreach (var aisling in ClientRegistry)
-            aisling.SendServerMessage(
-                ServerMessageType.OrangeBar2,
-                $"{source.Name} now wields the mantle of Master {userBaseClass}");
-    }
-
-    private void AwardClassSpecificItemsAndAbilities(Aisling source, BaseClass userBaseClass)
-    {
-        switch (userBaseClass)
-        {
-            case BaseClass.Warrior:
-                AwardWarriorItemsAndAbilities(source);
-                break;
-            case BaseClass.Rogue:
-                AwardRogueItemsAndAbilities(source);
-                break;
-            case BaseClass.Wizard:
-                AwardWizardItemsAndAbilities(source);
-                break;
-            case BaseClass.Priest:
-                AwardPriestItemsAndAbilities(source);
-                break;
-            case BaseClass.Monk:
-                AwardMonkItemsAndAbilities(source);
-                break;
-        }
-    }
-
-    private void AwardWarriorItemsAndAbilities(Aisling source)
-    {
-        var armor = source.Gender == Gender.Male ? ItemFactory.Create("warriormastermantle") : ItemFactory.Create("warriormasterdress");
-        var helm = source.Gender == Gender.Male ? ItemFactory.Create("malewarriormasterhelm") : ItemFactory.Create("femalewarriormasterhelm");
-        var weapon = ItemFactory.Create("hybrasylescalon");
-        var thrash = SkillFactory.Create("thrash");
-        var charge = SkillFactory.Create("charge");
-
-        source.SkillBook.Remove("Bull Rush");
-        source.SkillBook.Remove("Pulverize");
-
-        source.SkillBook.TryAddToNextSlot(thrash);
-        source.SkillBook.TryAddToNextSlot(charge);
-        
-        if (!source.Legend.TryGetValue("dedicated", out _))
-        {
-            var asgallfaileas = SpellFactory.Create("asgallfaileas");
-            source.SpellBook.TryAddToNextSlot(asgallfaileas);
-        }
-        
-        var itemsToGive = new[] { armor, helm, weapon };
-        
-        foreach (var item in itemsToGive)
-            source.GiveItemOrSendToBank(item);
-        
-        Logger.WithTopics(
-                  [Topics.Entities.Aisling,
-                  Topics.Entities.Item,
-                  Topics.Actions.Create])
-              .WithProperty(Subject)
-              .WithProperty(itemsToGive)
-              .LogInformation("{@AislingName} has received {@Armor}, {@Helm}, {@Weapon} from mastering", source.Name, armor.DisplayName, helm.DisplayName, weapon.DisplayName);
-    }
-    
-    private void AwardMonkItemsAndAbilities(Aisling source)
-    {
-        var armor = source.Gender == Gender.Male ? ItemFactory.Create("monkmastermantle") : ItemFactory.Create("monkmasterdress");
-        var helm = source.Gender == Gender.Male ? ItemFactory.Create("maleSunBaeNimBand") : ItemFactory.Create("femaleSunBaeNimBand");
-        var weapon = ItemFactory.Create("kalkuri");
-        var triplekick = SkillFactory.Create("triplekick");
-        var roar = SpellFactory.Create("roar");
-        var adaptiveskin = SpellFactory.Create("adaptiveskin");
-
-        source.SkillBook.Remove("Triple Kick");
-        source.SpellBook.Remove("Howl");
-
-        source.SkillBook.TryAddToNextSlot(triplekick);
-        source.SpellBook.TryAddToNextSlot(roar);
-        source.SpellBook.TryAddToNextSlot(adaptiveskin);
-        
-        if (!source.Legend.TryGetValue("dedicated", out _))
-        {
-            var phoenixgrasp = SpellFactory.Create("phoenixgrasp");
-            source.SpellBook.TryAddToNextSlot(phoenixgrasp);
-        }
-        
-        var itemsToGive = new[] { armor, helm, weapon };
-        
-        foreach (var item in itemsToGive)
-            source.GiveItemOrSendToBank(item);
-        
-        Logger.WithTopics(
-                  [Topics.Entities.Aisling,
-                  Topics.Entities.Item,
-                  Topics.Actions.Create])
-              .WithProperty(Subject)
-              .WithProperty(itemsToGive)
-              .LogInformation("{@AislingName} has received {@Armor}, {@Helm}, {@Weapon} from mastering", source.Name, armor.DisplayName, helm.DisplayName, weapon.DisplayName);
-    }
-    
-    private void AwardPriestItemsAndAbilities(Aisling source)
-    {
-        var armor = source.Gender == Gender.Male ? ItemFactory.Create("sacredmantle") : ItemFactory.Create("sacreddress");
-        var helm = source.Gender == Gender.Male ? ItemFactory.Create("sacredchief") : ItemFactory.Create("sacredwimple");
-        var weapon = ItemFactory.Create("holyhybrasylgnarl");
-        var pramh = SpellFactory.Create("pramh");
-        var vortex = SpellFactory.Create("vortex");
-
-        source.SpellBook.Remove("beag pramh");
-        source.SpellBook.Remove("quake");
-
-        source.SpellBook.TryAddToNextSlot(pramh);
-        source.SpellBook.TryAddToNextSlot(vortex);
-        
-        if (!source.Legend.TryGetValue("dedicated", out _))
-        {
-            source.SpellBook.Remove("revive");
-            var resurrect = SpellFactory.Create("resurrect");
-            source.SpellBook.TryAddToNextSlot(resurrect);
-        }
-        
-        var itemsToGive = new[] { armor, helm, weapon };
-        
-        foreach (var item in itemsToGive)
-            source.GiveItemOrSendToBank(item);
-        
-        Logger.WithTopics(
-                  [Topics.Entities.Aisling,
-                  Topics.Entities.Item,
-                  Topics.Actions.Create])
-              .WithProperty(Subject)
-              .WithProperty(itemsToGive)
-              .LogInformation("{@AislingName} has received {@Armor}, {@Helm}, {@Weapon} from mastering", source.Name, armor.DisplayName, helm.DisplayName, weapon.DisplayName);
-    }
-    
-    private void AwardWizardItemsAndAbilities(Aisling source)
-    {
-        var armor = source.Gender == Gender.Male ? ItemFactory.Create("wizardMasterMantle") : ItemFactory.Create("wizardMasterdress");
-        var helm = source.Gender == Gender.Male ? ItemFactory.Create("gnostichat") : ItemFactory.Create("gnosticumber");
-        var weapon = ItemFactory.Create("magusorb");
-        var fasspiorad = SpellFactory.Create("fasspiorad");
-        
-        if (!source.Legend.TryGetValue("dedicated", out _))
-        {
-            var sightoffrailty = SpellFactory.Create("sightoffrailty");
-            source.SpellBook.TryAddToNextSlot(sightoffrailty);
-        }
-
-        source.Trackers.Flags.AddFlag(WizardElement.Earth);
-        source.Trackers.Flags.AddFlag(WizardElement.Water);
-        source.Trackers.Flags.AddFlag(WizardElement.Fire);
-        source.Trackers.Flags.AddFlag(WizardElement.Wind);
-        source.SpellBook.TryAddToNextSlot(fasspiorad);
-        
-        
-        var itemsToGive = new[] { armor, helm, weapon };
-        
-        foreach (var item in itemsToGive)
-            source.GiveItemOrSendToBank(item);
-        
-        Logger.WithTopics(
-                  [Topics.Entities.Aisling,
-                  Topics.Entities.Item,
-                  Topics.Actions.Create])
-              .WithProperty(Subject)
-              .WithProperty(itemsToGive)
-              .LogInformation("{@AislingName} has received {@Armor}, {@Helm}, {@Weapon} from mastering", source.Name, armor.DisplayName, helm.DisplayName, weapon.DisplayName);
-    }
-    
-    private void AwardRogueItemsAndAbilities(Aisling source)
-    {
-        var armor = source.Gender == Gender.Male ? ItemFactory.Create("rogueMasterMantle") : ItemFactory.Create("rogueMasterdress");
-        var helm = ItemFactory.Create("shadowMask");
-        var weapon = ItemFactory.Create("hybrasylazoth");
-        var midnightslash = SkillFactory.Create("midnightslash");
-        var assassinstrike = SkillFactory.Create("assassinstrike");
-
-        source.SkillBook.TryAddToNextSlot(midnightslash);
-        source.SkillBook.TryAddToNextSlot(assassinstrike);
-
-        if (!source.Legend.TryGetValue("dedicated", out _))
-        {
-            var shadowfigure = SkillFactory.Create("shadowfigure");
-            source.SkillBook.TryAddToNextSlot(shadowfigure);
-        }
-        
-        var itemsToGive = new[] { armor, helm, weapon };
-        
-        foreach (var item in itemsToGive)
-            source.GiveItemOrSendToBank(item);
-        
-        Logger.WithTopics(
-                  [Topics.Entities.Aisling,
-                  Topics.Entities.Item,
-                  Topics.Actions.Create])
-              .WithProperty(Subject)
-              .WithProperty(itemsToGive)
-              .LogInformation("{@AislingName} has received {@Armor}, {@Helm}, {@Weapon} from mastering", source.Name, armor.DisplayName, helm.DisplayName, weapon.DisplayName);
     }
 }

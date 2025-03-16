@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Legend;
@@ -41,7 +40,7 @@ public class QueenOctopusQuestScript : DialogScriptBase
                 {
                     if (source.UserStatSheet.Level is < 41 or >= 72)
                         return;
-                    
+
                     var option = new DialogOption
                     {
                         DialogKey = "QueenOctopus_start",
@@ -50,14 +49,13 @@ public class QueenOctopusQuestScript : DialogScriptBase
 
                     if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
-
                 }
 
                 if (hasStage)
                 {
                     if (source.UserStatSheet.Level < 41)
                         return;
-                    
+
                     var option = new DialogOption
                     {
                         DialogKey = "QueenOctopus_start",
@@ -66,7 +64,6 @@ public class QueenOctopusQuestScript : DialogScriptBase
 
                     if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
-
                 }
             }
 
@@ -84,14 +81,29 @@ public class QueenOctopusQuestScript : DialogScriptBase
                         Subject.Reply(source, "skip", "queenoctopus_liver2");
 
                         return;
+                    case QueenOctopusQuest.Pendant2:
+                        Subject.Reply(source, "My brother returned home safe! Thank you Aisling.");
+
+                        return;
                     case QueenOctopusQuest.Pendant3:
                         Subject.Reply(source, "skip", "queenoctopus_Queen");
 
                         return;
-                    
+
                     case QueenOctopusQuest.SpokeToMaria:
-                    Subject.Reply(source, "He said that to summon the Queen, you must bring the Coral Pendant and Red Pearl to the coast line in Karlopos Island North. Good luck!");
-                    return;
+                        Subject.Reply(
+                            source,
+                            "He said that to summon the Queen, you must bring the Coral Pendant and Red Pearl to the coast line in Karlopos Island North. Good luck!");
+
+                        return;
+
+                    case QueenOctopusQuest.QueenSpawning:
+                    case QueenOctopusQuest.QueenSpawned:
+                        Subject.Reply(
+                            source,
+                            "There was a big Octopus? Wow! My brother would've been frightened, I'm glad you got him to return home.");
+
+                        return;
 
                     case QueenOctopusQuest.QueenKilled:
                         Subject.Reply(source, "skip", "queenoctopus_Queenkilled");
@@ -100,6 +112,7 @@ public class QueenOctopusQuestScript : DialogScriptBase
 
                     case QueenOctopusQuest.Complete:
                         Subject.Reply(source, "Welcome Back. Please make yourself comfortable.");
+
                         return;
                 }
 
@@ -131,9 +144,7 @@ public class QueenOctopusQuestScript : DialogScriptBase
             {
                 if (!source.Inventory.RemoveQuantity("liver", 5))
                 {
-                    Subject.Reply(
-                        source,
-                        "Please collect 5 liver for me.");
+                    Subject.Reply(source, "Please collect 5 liver for me.");
 
                     return;
                 }
@@ -141,11 +152,11 @@ public class QueenOctopusQuestScript : DialogScriptBase
                 var redpearl = ItemFactory.Create("redpearl");
 
                 Logger.WithTopics(
-                          [Topics.Entities.Aisling,
+                          Topics.Entities.Aisling,
                           Topics.Entities.Experience,
                           Topics.Entities.Item,
                           Topics.Entities.Dialog,
-                          Topics.Entities.Quest])
+                          Topics.Entities.Quest)
                       .WithProperty(source)
                       .WithProperty(Subject)
                       .LogInformation(
@@ -184,10 +195,10 @@ public class QueenOctopusQuestScript : DialogScriptBase
                 source.Trackers.Enums.Set(QueenOctopusQuest.Complete);
 
                 Logger.WithTopics(
-                          [Topics.Entities.Aisling,
+                          Topics.Entities.Aisling,
                           Topics.Entities.Experience,
                           Topics.Entities.Dialog,
-                          Topics.Entities.Quest])
+                          Topics.Entities.Quest)
                       .WithProperty(source)
                       .WithProperty(Subject)
                       .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 500000);

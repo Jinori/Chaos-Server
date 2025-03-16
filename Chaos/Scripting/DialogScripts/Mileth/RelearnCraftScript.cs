@@ -100,13 +100,20 @@ public class RelearnCraftScript : DialogScriptBase
                         var peek = SkillFactory.Create("peek");
                         source.SkillBook.TryAddToNextSlot(PageType.Page3, peek);
                     }
+
                     if (!source.SkillBook.ContainsByTemplateKey("sense"))
                     {
                         var sense = SkillFactory.Create("sense");
                         source.SkillBook.TryAddToNextSlot(PageType.Page3, sense);
                     }
+
+                    if (!source.SkillBook.ContainsByTemplateKey("trip"))
+                    {
+                        var trip = SkillFactory.Create("trip");
+                        source.SkillBook.TryAddToNextSlot(trip);
+                    }
                 }
-                
+
                 if (source.SpellBook.ContainsByTemplateKey("morcradh")
                     && !source.SpellBook.ContainsByTemplateKey("ardcradh")
                     && (source.UserStatSheet.BaseClass != BaseClass.Wizard))

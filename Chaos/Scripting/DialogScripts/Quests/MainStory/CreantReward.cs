@@ -682,7 +682,7 @@ public class CreantReward : DialogScriptBase
                         {
                             if (source.IsPureRogueMaster())
                             {
-                                var skill1 = SkillFactory.Create("multistrike");
+                                var skill1 = SkillFactory.Create("rupture");
                                 source.SkillBook.TryAddToNextSlot(skill1);
                                 var spell = SpellFactory.Create("cunning");
                                 source.SpellBook.TryAddToNextSlot(spell);
