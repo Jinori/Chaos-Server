@@ -911,7 +911,8 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                           Subject.Name,
                           item.DisplayName,
                           diceCount - 1);
-            } else
+            } 
+            else
             {
                 // Remove the item from the player's equipment
                 Subject.Equipment.TryGetRemove(item.Slot, out _);
@@ -946,7 +947,8 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
             sb.AppendLine("");
             sb.AppendLineFColored(MessageColor.Orange, "Revive with Terminus or wait to be revived.");
-        } else if (savedItems.Any())
+        } 
+        else if (savedItems.Any())
         {
             sb.AppendLineFColored(MessageColor.NeonGreen, "Mithril Dice saved your items:");
 
@@ -955,7 +957,8 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
             sb.AppendLine("");
             sb.AppendLineFColored(MessageColor.Orange, "Revive with Terminus or wait to be revived.");
-        } else if (lostItems.Any())
+        } 
+        else if (lostItems.Any())
         {
             sb.AppendLineFColored(MessageColor.Yellow, "You lost the following items:");
 
@@ -1007,6 +1010,22 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             var dialog = DialogFactory.Create("terminus_homeoptions", merch);
             dialog.Display(Subject);
         }
+
+        if (Subject.Guild != null)
+            foreach (var player in ClientRegistry)
+                if (player.Aisling.Guild == Subject.Guild)
+                    player.Aisling.SendServerMessage(ServerMessageType.ActiveMessage, $"({Subject.Guild.Name}) - {Subject.Name} has appeared online.");
+    }
+
+    /// <inheritdoc />
+    public override void OnLogout()
+    {
+        base.OnLogout();
+        
+        if (Subject.Guild != null)
+            foreach (var player in ClientRegistry)
+                if (player.Aisling.Guild == Subject.Guild)
+                    player.Aisling.SendServerMessage(ServerMessageType.ActiveMessage, $"({Subject.Guild.Name}) - {Subject.Name} has gone offline.");
     }
 
     /// <inheritdoc />

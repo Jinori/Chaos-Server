@@ -188,7 +188,7 @@ public sealed class LoginServer : ServerBase<IChaosLoginClient>, ILoginServer<IC
 
         static ValueTask InnerOnHomepageRequest(IChaosLoginClient localClient)
         {
-            localClient.SendLoginControl(LoginControlsType.Homepage, "https://www.darkages.com");
+            localClient.SendLoginControl(LoginControlsType.Homepage, "https://unora-project.github.io/");
 
             return default;
         }
