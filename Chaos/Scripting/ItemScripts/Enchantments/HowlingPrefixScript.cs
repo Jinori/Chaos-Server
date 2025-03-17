@@ -21,8 +21,9 @@ public sealed class HowlingPrefixScript : ItemScriptBase, IPrefixEnchantmentScri
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        Ac = 1,
-        SpellDamagePct = 5
+        MagicResistance = 4,
+        Hit = -1,
+        Dmg = -1
     };
 
     /// <inheritdoc />

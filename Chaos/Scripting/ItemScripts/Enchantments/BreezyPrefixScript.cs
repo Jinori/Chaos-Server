@@ -19,7 +19,7 @@ public sealed class BreezyPrefixScript : ItemScriptBase, IPrefixEnchantmentScrip
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        SpellDamagePct = 1
+        MagicResistance = 1
     };
 
     /// <inheritdoc />

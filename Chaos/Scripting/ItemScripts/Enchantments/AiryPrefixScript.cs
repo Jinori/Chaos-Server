@@ -19,7 +19,8 @@ public sealed class AiryPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        Hit = 3
+        Hit = 1,
+        MaximumHp = 50
     };
 
     /// <inheritdoc />

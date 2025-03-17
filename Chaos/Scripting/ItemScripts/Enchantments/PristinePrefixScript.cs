@@ -21,8 +21,8 @@ public sealed class PristinePrefixScript : ItemScriptBase, IPrefixEnchantmentScr
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        Hit = 6,
-        SpellDamagePct = 3
+        Hit = 4,
+        MagicResistance = -1
     };
 
     /// <inheritdoc />

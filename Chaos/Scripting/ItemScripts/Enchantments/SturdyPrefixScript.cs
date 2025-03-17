@@ -21,8 +21,9 @@ public sealed class SturdyPrefixScript : ItemScriptBase, IPrefixEnchantmentScrip
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        Ac = -1,
-        MaximumHp = 400
+        MaximumHp = 300,
+        SkillDamagePct = 1,
+        FlatSkillDamage = 20
     };
 
     /// <inheritdoc />

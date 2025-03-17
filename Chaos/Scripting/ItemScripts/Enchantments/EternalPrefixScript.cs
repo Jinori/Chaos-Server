@@ -19,8 +19,8 @@ public sealed class EternalPrefixScript : ItemScriptBase, IPrefixEnchantmentScri
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        Ac = -1,
-        MaximumHp = 200
+        MaximumHp = 200,
+        SkillDamagePct = 1
     };
 
     /// <inheritdoc />

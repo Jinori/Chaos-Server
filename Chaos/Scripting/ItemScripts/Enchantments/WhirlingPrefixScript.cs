@@ -20,8 +20,9 @@ public sealed class WhirlingPrefixScript : ItemScriptBase, IPrefixEnchantmentScr
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        MagicResistance = 5,
-        Hit = -2
+        MagicResistance = 4,
+        Hit = -2,
+        Dmg = -2
     };
 
     /// <inheritdoc />

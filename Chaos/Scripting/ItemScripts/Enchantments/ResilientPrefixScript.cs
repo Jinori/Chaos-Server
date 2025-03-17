@@ -34,8 +34,9 @@ public sealed class ResilientPrefixScript : ItemScriptBase, IPrefixEnchantmentSc
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        MagicResistance = 2,
-        Ac = -1
+        SpellDamagePct = 3,
+        FlatSpellDamage = 50,
+        Ac = 1
     };
 
     /// <inheritdoc />

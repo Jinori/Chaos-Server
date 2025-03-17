@@ -19,7 +19,9 @@ public sealed class FuryPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        SkillDamagePct = 6
+        SkillDamagePct = 3,
+        FlatSkillDamage = 50,
+        Ac = 1
     };
 
     /// <inheritdoc />

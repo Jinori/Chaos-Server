@@ -21,8 +21,9 @@ public sealed class SavagePrefixScript : ItemScriptBase, IPrefixEnchantmentScrip
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        AtkSpeedPct = 1,
-        Dmg = 3
+        Dmg = 5,
+        FlatSkillDamage = 25,
+        Ac = 1
     };
 
     /// <inheritdoc />

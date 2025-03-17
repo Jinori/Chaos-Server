@@ -19,8 +19,8 @@ public sealed class DarkenedPrefixScript : ItemScriptBase, IPrefixEnchantmentScr
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        SpellDamagePct = 2,
-        Ac = 1
+        AtkSpeedPct = 1,
+        Dmg = 1
     };
 
     /// <inheritdoc />

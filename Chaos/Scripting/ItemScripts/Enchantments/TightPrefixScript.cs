@@ -21,8 +21,9 @@ public sealed class TightPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        AtkSpeedPct = 4,
-        MaximumHp = -80
+        AtkSpeedPct = 2,
+        Dmg = 2,
+        MaximumHp = -75
     };
 
     /// <inheritdoc />

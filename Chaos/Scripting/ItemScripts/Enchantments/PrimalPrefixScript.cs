@@ -19,9 +19,13 @@ public sealed class PrimalPrefixScript : ItemScriptBase, IPrefixEnchantmentScrip
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
+        MaximumHp = 400,
+        MaximumMp = 200,
         Ac = -1,
-        MaximumHp = 500,
-        MaximumMp = 250
+        SkillDamagePct = -1,
+        FlatSkillDamage = -25,
+        SpellDamagePct = -1,
+        FlatSpellDamage = -25
     };
 
     /// <inheritdoc />

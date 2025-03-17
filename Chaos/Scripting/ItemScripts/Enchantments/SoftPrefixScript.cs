@@ -21,7 +21,7 @@ public sealed class SoftPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        MagicResistance = 3,
+        MagicResistance = 2,
         Hit = -1
     };
 

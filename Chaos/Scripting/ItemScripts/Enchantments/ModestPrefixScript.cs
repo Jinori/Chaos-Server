@@ -21,7 +21,7 @@ public sealed class ModestPrefixScript : ItemScriptBase, IPrefixEnchantmentScrip
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        MaximumHp = 150
+        MaximumHp = 100
     };
 
     /// <inheritdoc />

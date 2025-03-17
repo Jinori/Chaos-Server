@@ -21,7 +21,7 @@ public sealed class MightyPrefixScript : ItemScriptBase, IPrefixEnchantmentScrip
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        SkillDamagePct = 1
+        Dmg = 2
     };
 
     /// <inheritdoc />

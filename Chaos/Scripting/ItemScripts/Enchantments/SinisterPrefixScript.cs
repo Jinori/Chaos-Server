@@ -21,9 +21,10 @@ public sealed class SinisterPrefixScript : ItemScriptBase, IPrefixEnchantmentScr
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        FlatSkillDamage = 5,
-        MaximumHp = -200,
-        Dmg = 4
+        Dmg = 10,
+        FlatSkillDamage = 100,
+        Ac = 1,
+        MagicResistance = 1
     };
 
     /// <inheritdoc />

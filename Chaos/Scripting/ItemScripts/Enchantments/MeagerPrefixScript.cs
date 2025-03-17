@@ -21,7 +21,7 @@ public sealed class MeagerPrefixScript : ItemScriptBase, IPrefixEnchantmentScrip
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        MaximumMp = 40
+        MaximumMp = 25
     };
 
     /// <inheritdoc />

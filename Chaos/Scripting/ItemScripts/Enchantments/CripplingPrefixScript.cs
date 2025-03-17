@@ -19,8 +19,8 @@ public sealed class CripplingPrefixScript : ItemScriptBase, IPrefixEnchantmentSc
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        AtkSpeedPct = -1,
-        SkillDamagePct = 3
+        SkillDamagePct = 1,
+        FlatSkillDamage = 15
     };
 
     /// <inheritdoc />

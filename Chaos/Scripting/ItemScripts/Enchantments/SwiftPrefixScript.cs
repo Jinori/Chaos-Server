@@ -21,8 +21,8 @@ public sealed class SwiftPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        AtkSpeedPct = 4,
-        MaximumHp = 80
+        FlatSkillDamage = 4,
+        MaximumHp = -20
     };
 
     /// <inheritdoc />

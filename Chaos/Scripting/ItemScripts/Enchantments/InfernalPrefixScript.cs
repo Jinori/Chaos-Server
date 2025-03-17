@@ -21,9 +21,10 @@ public sealed class InfernalPrefixScript : ItemScriptBase, IPrefixEnchantmentScr
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
+        SkillDamagePct = 4,
+        FlatSkillDamage = 75,
         Ac = 1,
-        AtkSpeedPct = 5,
-        FlatSkillDamage = 5
+        MagicResistance = -1
     };
 
     /// <inheritdoc />

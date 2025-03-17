@@ -21,8 +21,7 @@ public sealed class SerenePrefixScript : ItemScriptBase, IPrefixEnchantmentScrip
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        MaximumMp = 40,
-        MaximumHp = 80
+        MaximumMp = 50
     };
 
     /// <inheritdoc />

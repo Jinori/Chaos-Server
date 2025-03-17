@@ -21,7 +21,7 @@ public sealed class LuckyPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        Hit = 2
+        Hit = 1
     };
 
     /// <inheritdoc />

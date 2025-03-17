@@ -19,8 +19,9 @@ public sealed class AncientPrefixScript : ItemScriptBase, IPrefixEnchantmentScri
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        MaximumHp = 300,
-        MaximumMp = 150
+        SpellDamagePct = 1,
+        FlatSpellDamage = 30,
+        Ac = 1
     };
 
     /// <inheritdoc />

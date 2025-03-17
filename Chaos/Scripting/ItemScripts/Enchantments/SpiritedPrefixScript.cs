@@ -21,7 +21,9 @@ public sealed class SpiritedPrefixScript : ItemScriptBase, IPrefixEnchantmentScr
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        MaximumMp = 500
+        MaximumMp = 150,
+        SpellDamagePct = 1,
+        FlatSpellDamage = 20
     };
 
     /// <inheritdoc />

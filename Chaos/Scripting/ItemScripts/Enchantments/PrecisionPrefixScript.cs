@@ -21,7 +21,7 @@ public sealed class PrecisionPrefixScript : ItemScriptBase, IPrefixEnchantmentSc
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        Hit = 4
+        Hit = 2
     };
 
     /// <inheritdoc />
