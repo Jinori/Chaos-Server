@@ -19,9 +19,8 @@ public sealed class CursedPrefixScript : ItemScriptBase, IPrefixEnchantmentScrip
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        MagicResistance = -5,
         AtkSpeedPct = 3,
-        Dmg = 5
+        Dmg = 3
     };
 
     /// <inheritdoc />

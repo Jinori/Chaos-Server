@@ -22,7 +22,7 @@ public sealed class ShadedPrefixScript : ItemScriptBase, IPrefixEnchantmentScrip
     public static Attributes Modifiers { get; } = new()
     {
         AtkSpeedPct = 4,
-        Dmg = 3
+        Dmg = 4
     };
 
     /// <inheritdoc />

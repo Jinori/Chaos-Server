@@ -19,8 +19,9 @@ public sealed class HazyPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        SpellDamagePct = 3,
-        Ac = 1
+        MagicResistance = 3,
+        Ac = 1,
+        Hit = -1
     };
 
     /// <inheritdoc />

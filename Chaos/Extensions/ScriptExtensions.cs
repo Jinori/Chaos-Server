@@ -58,6 +58,13 @@ public static class ScriptExtensions
             _                                => default
         };
 
+    public static IEnumerable GetScripts(this IScript script, Type scriptType)
+    {
+        var method = typeof(ScriptExtensions).GetMethod(nameof(GetScripts), [typeof(IScript)])!.MakeGenericMethod(scriptType);
+
+        return (IEnumerable)method.Invoke(null, [script])!;
+    }
+
     public static IEnumerable<TScript> GetScripts<TScript>(this IScript script) where TScript: IScript
     {
         if (script is ICompositeScript compositeScript)
@@ -80,14 +87,23 @@ public static class ScriptExtensions
         return outScript is not null;
     }
 
+    public static void RemoveScript(this IScripted<IScript> scripted, Type scriptType)
+    {
+        var method = typeof(ScriptExtensions).GetMethod(nameof(RemoveScript), [typeof(IScripted<IScript>)])!.MakeGenericMethod(scriptType);
+        
+        method.Invoke(null, [scripted]);
+    }
+    
     public static void RemoveScript<TScriptToRemove>(this IScripted<IScript> scripted) where TScriptToRemove: IScript
     {
         if (!scripted.Script.Is<TScriptToRemove>(out var scriptToRemove))
             return;
 
         if (scripted.Script is ICompositeScript composite)
+        {
             composite.Remove(scriptToRemove);
-        else
+            scripted.ScriptKeys.Remove(ScriptBase.GetScriptKey(typeof(TScriptToRemove)));
+        } else
             throw new UnreachableException("All scripted objects should have a composite script at the top level");
     }
 }

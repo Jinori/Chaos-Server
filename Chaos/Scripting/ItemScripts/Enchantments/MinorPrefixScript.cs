@@ -21,7 +21,8 @@ public sealed class MinorPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        Dmg = 2
+        FlatSkillDamage = 6,
+        Ac = 1
     };
 
     /// <inheritdoc />

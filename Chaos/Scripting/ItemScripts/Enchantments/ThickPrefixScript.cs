@@ -21,8 +21,10 @@ public sealed class ThickPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        MaximumHp = 800,
-        MaximumMp = 400
+        SpellDamagePct = 4,
+        FlatSpellDamage = 75,
+        Ac = 1,
+        MagicResistance = -1
     };
 
     /// <inheritdoc />

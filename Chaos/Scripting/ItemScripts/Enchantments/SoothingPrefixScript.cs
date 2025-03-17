@@ -21,7 +21,8 @@ public sealed class SoothingPrefixScript : ItemScriptBase, IPrefixEnchantmentScr
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        MaximumMp = 300
+        SpellDamagePct = 1,
+        MaximumMp = 125
     };
 
     /// <inheritdoc />

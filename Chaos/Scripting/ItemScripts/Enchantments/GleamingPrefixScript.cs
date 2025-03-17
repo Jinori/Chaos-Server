@@ -21,8 +21,9 @@ public sealed class GleamingPrefixScript : ItemScriptBase, IPrefixEnchantmentScr
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        SpellDamagePct = 6,
-        Hit = 2
+        MagicResistance = 5,
+        Hit = -2,
+        Dmg = -2
     };
 
     /// <inheritdoc />

@@ -19,8 +19,8 @@ public sealed class HastyPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        AtkSpeedPct = 3,
-        MaximumHp = -40
+        AtkSpeedPct = 2,
+        FlatSkillDamage = 10
     };
 
     /// <inheritdoc />

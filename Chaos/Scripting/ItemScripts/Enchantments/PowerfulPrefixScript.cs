@@ -21,7 +21,8 @@ public sealed class PowerfulPrefixScript : ItemScriptBase, IPrefixEnchantmentScr
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        Dmg = 4
+        MaximumHp = 150,
+        MaximumMp = -20
     };
 
     /// <inheritdoc />

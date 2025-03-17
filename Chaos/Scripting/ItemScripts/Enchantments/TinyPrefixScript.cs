@@ -21,7 +21,8 @@ public sealed class TinyPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        MaximumMp = 75
+        FlatSpellDamage = 10,
+        Ac = 1
     };
 
     /// <inheritdoc />

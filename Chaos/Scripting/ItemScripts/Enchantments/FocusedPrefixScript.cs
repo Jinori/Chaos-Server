@@ -20,7 +20,7 @@ public sealed class FocusedPrefixScript : ItemScriptBase, IPrefixEnchantmentScri
     public static Attributes Modifiers { get; } = new()
     {
         Hit = 1,
-        AtkSpeedPct = 2
+        MaximumMp = 25
     };
 
     /// <inheritdoc />

@@ -21,7 +21,8 @@ public sealed class ValiantPrefixScript : ItemScriptBase, IPrefixEnchantmentScri
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        SkillDamagePct = 2
+        Dmg = 3,
+        FlatSkillDamage = 10
     };
 
     /// <inheritdoc />

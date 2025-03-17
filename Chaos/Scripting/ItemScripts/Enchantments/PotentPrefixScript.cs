@@ -21,8 +21,7 @@ public sealed class PotentPrefixScript : ItemScriptBase, IPrefixEnchantmentScrip
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        SpellDamagePct = 2,
-        FlatSpellDamage = 20
+        MaximumMp = 75
     };
 
     /// <inheritdoc />

@@ -21,7 +21,7 @@ public sealed class ShroudedPrefixScript : ItemScriptBase, IPrefixEnchantmentScr
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        Dmg = 1
+        AtkSpeedPct = 1
     };
 
     /// <inheritdoc />

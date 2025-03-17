@@ -21,7 +21,8 @@ public sealed class PersistingPrefixScript : ItemScriptBase, IPrefixEnchantmentS
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        Hit = 5
+        Hit = 3,
+        MagicResistance = -1
     };
 
     /// <inheritdoc />

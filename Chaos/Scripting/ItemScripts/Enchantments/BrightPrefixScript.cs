@@ -19,7 +19,8 @@ public sealed class BrightPrefixScript : ItemScriptBase, IPrefixEnchantmentScrip
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        MaximumMp = 150
+        SpellDamagePct = 1,
+        FlatSpellDamage = 15
     };
 
     /// <inheritdoc />

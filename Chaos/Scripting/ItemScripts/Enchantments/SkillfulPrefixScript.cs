@@ -21,8 +21,7 @@ public sealed class SkillfulPrefixScript : ItemScriptBase, IPrefixEnchantmentScr
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        AtkSpeedPct = 2,
-        MaximumHp = -20
+        MaximumHp = 50
     };
 
     /// <inheritdoc />

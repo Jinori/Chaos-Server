@@ -19,8 +19,9 @@ public sealed class BlazingPrefixScript : ItemScriptBase, IPrefixEnchantmentScri
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        Ac = 1,
-        SkillDamagePct = 5
+        Dmg = 7,
+        FlatSkillDamage = 50,
+        Ac = 1
     };
 
     /// <inheritdoc />

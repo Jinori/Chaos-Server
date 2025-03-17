@@ -21,8 +21,9 @@ public sealed class RuthlessPrefixScript : ItemScriptBase, IPrefixEnchantmentScr
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        AtkSpeedPct = 3,
-        SkillDamagePct = 2
+        SkillDamagePct = 2,
+        FlatSkillDamage = 30,
+        Ac = 1
     };
 
     /// <inheritdoc />
