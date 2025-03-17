@@ -1,4 +1,3 @@
-using Chaos.Extensions.Common;
 using Chaos.MetaData.ItemMetaData;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
@@ -7,27 +6,23 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public sealed class AncientPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class AncientPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
     /// <inheritdoc />
     public AncientPrefixScript(Item subject)
-        : base(subject)
-    {
-        Subject.Prefix = "Ancient";
-
-        var attributes = new Attributes
-        {
-            MaximumHp = 300,
-            MaximumMp = 150
-        };
-
-        subject.Modifiers.Add(attributes);
-    }
+        : base(subject) => IPrefixEnchantmentScript.ApplyPrefix<AncientPrefixScript>(subject);
 
     /// <inheritdoc />
     public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
+        => IPrefixEnchantmentScript.Mutate<AncientPrefixScript>(node, template);
+
+    /// <inheritdoc />
+    public static Attributes Modifiers { get; } = new()
     {
-        if (!node.Name.StartsWithI("Ancient"))
-            yield return node with { Name = $"Ancient {node.Name}" };
-    }
+        MaximumHp = 300,
+        MaximumMp = 150
+    };
+
+    /// <inheritdoc />
+    public static string PrefixStr => "Ancient";
 }

@@ -1,6 +1,9 @@
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Common;
+using Chaos.Models.Data;
 using Chaos.Models.Menu;
+using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
@@ -219,13 +222,23 @@ public class EnchantingScrollScript : DialogScriptBase
         }
 
         // Clear prefix & scripts from the item
-        if (source.Inventory.TryGetObject(item.Slot, out var itemToDisenchant))
+        if (!source.Inventory.TryGetObject(item.Slot, out var itemToDisenchant))
         {
-            itemToDisenchant.Prefix = string.Empty;
-            itemToDisenchant.ScriptKeys.Clear();
-            source.Inventory.Update(itemToDisenchant.Slot);
+            Subject.Reply(source, "Something went wrong.");
+            return;
         }
 
+        itemToDisenchant.Prefix = string.Empty;
+        itemToDisenchant.ScriptKeys.Clear();
+
+        // Restore default modifiers
+        if (itemToDisenchant.Template.Modifiers != null)
+            itemToDisenchant.Modifiers = itemToDisenchant.Template.Modifiers;
+        else
+            itemToDisenchant.Modifiers = new Attributes();
+
+        source.Inventory.Update(itemToDisenchant.Slot);
+        
         // Show them a message
         Subject.InjectTextParameters(item.DisplayName);
     }

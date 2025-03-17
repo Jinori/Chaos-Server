@@ -29,7 +29,6 @@ using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.FunctionalScripts.ApplyHealing;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Scripting.MonsterScripts.Boss;
-using Chaos.Scripting.MonsterScripts.Pet;
 using Chaos.Scripting.ReactorTileScripts.Jobs;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Services.Servers.Options;
@@ -1106,11 +1105,12 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             Logger.WithTopics(Topics.Entities.Creature, Topics.Entities.Skill, Topics.Actions.Update)
                   .WithProperty(Subject)
                   .LogInformation(
-                      "Aisling {@AislingName}'s ability {keyToKeep} removed an old ability {@keyToRemove}",
+                      "Aisling {@AislingName}'s ability {KeyToKeep} removed an old ability {@KeyToRemove}",
                       Subject.Name,
                       keyToKeep,
                       keyToRemove);
-        } else if (Subject.SkillBook.ContainsByTemplateKey(keyToKeep) && Subject.SkillBook.ContainsByTemplateKey(keyToRemove))
+        } 
+        else if (Subject.SkillBook.ContainsByTemplateKey(keyToKeep) && Subject.SkillBook.ContainsByTemplateKey(keyToRemove))
         {
             Subject.SkillBook.RemoveByTemplateKey(keyToRemove);
             NotifyPlayerSkills(keyToRemove, keyToKeep);
@@ -1118,7 +1118,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             Logger.WithTopics(Topics.Entities.Creature, Topics.Entities.Skill, Topics.Actions.Update)
                   .WithProperty(Subject)
                   .LogInformation(
-                      "Aisling {@AislingName}'s ability {keyToKeep} removed an old ability {@keyToRemove}",
+                      "Aisling {@AislingName}'s ability {KeyToKeep} removed an old ability {@KeyToRemove}",
                       Subject.Name,
                       keyToKeep,
                       keyToRemove);
@@ -1194,7 +1194,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
             Logger.WithTopics(Topics.Entities.Creature, Topics.Entities.Skill, Topics.Actions.Update)
                   .WithProperty(Subject)
-                  .LogInformation("Aisling {@AislingName}'s ability {keyToKeep} removed.", Subject.Name, keyToRemove);
+                  .LogInformation("Aisling {@AislingName}'s pure only skill {KeyToRemove} removed", Subject.Name, keyToRemove);
         }
     }
 
@@ -1211,7 +1211,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
             Logger.WithTopics(Topics.Entities.Creature, Topics.Entities.Skill, Topics.Actions.Update)
                   .WithProperty(Subject)
-                  .LogInformation("Aisling {@AislingName}'s ability {keyToKeep} removed.", Subject.Name, keyToRemove);
+                  .LogInformation("Aisling {@AislingName}'s pure only spell {KeyToRemove} removed", Subject.Name, keyToRemove);
         }
     }
 
@@ -1233,471 +1233,233 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
         if (CleanupSkillsSpellsTimer.IntervalElapsed && !Subject.IsDiacht())
         {
-            var equipment = Subject.Equipment.ToList();
-            var inventory = Subject.Inventory.ToList();
-            var bank = Subject.Bank.ToList();
-            var counters = Subject.Trackers.Counters.ToList();
-
-            foreach (var counter in counters)
-                if (counter.Key.ContainsI("NyxItem"))
-                    Subject.Trackers.Counters.Remove(counter.Key, out _);
-
-            foreach (var item in equipment)
-            {
-                if (item.CurrentDurability > item.Template.MaxDurability)
-                {
-                    item.CurrentDurability = item.Template.MaxDurability;
-                    Subject.Client.SendAttributes(StatUpdateType.Full);
-                }
-
-                if (item.ScriptKeys.Count > 1)
-                {
-                    // Find the script key that starts with the item's prefix
-                    var validKey = item.ScriptKeys.FirstOrDefault(
-                        key => (item.Prefix != null) && key.StartsWith(item.Prefix, StringComparison.OrdinalIgnoreCase));
-
-                    if (validKey != null)
-                    {
-                        // Clear all script keys and keep only the valid one
-                        item.ScriptKeys.Clear();
-                        item.ScriptKeys.Add(validKey);
-                        Subject.Client.SendAttributes(StatUpdateType.Vitality);
-                    }
-                }
-            }
-
-            foreach (var inventoryItem in inventory)
-            {
-                if (inventoryItem.CurrentDurability > inventoryItem.Template.MaxDurability)
-                {
-                    inventoryItem.CurrentDurability = inventoryItem.Template.MaxDurability;
-                    Subject.Client.SendAttributes(StatUpdateType.Full);
-                }
-
-                if (inventoryItem.ScriptKeys.Count > 1)
-                {
-                    // Find the script key that starts with the item's prefix
-                    var validKey = inventoryItem.ScriptKeys.FirstOrDefault(
-                        key => (inventoryItem.Prefix != null) && key.StartsWith(inventoryItem.Prefix, StringComparison.OrdinalIgnoreCase));
-
-                    if (validKey != null)
-                    {
-                        // Clear all script keys and keep only the valid one
-                        inventoryItem.ScriptKeys.Clear();
-                        inventoryItem.ScriptKeys.Add(validKey);
-                    }
-                }
-            }
-
-            foreach (var bankItem in bank)
-            {
-                if (bankItem.CurrentDurability > bankItem.Template.MaxDurability)
-                    bankItem.CurrentDurability = bankItem.Template.MaxDurability;
-
-                // Find the script key that starts with the item's prefix
-                var validKey = bankItem.ScriptKeys.FirstOrDefault(
-                    key => (bankItem.Prefix != null) && key.StartsWith(bankItem.Prefix, StringComparison.OrdinalIgnoreCase));
-
-                if (validKey != null)
-                {
-                    // Clear all script keys and keep only the valid one
-                    bankItem.ScriptKeys.Clear();
-                    bankItem.ScriptKeys.Add(validKey);
-                }
-            }
-
-            if (Subject.SkillBook.ContainsByTemplateKey("multistrike"))
-            {
-                Subject.SkillBook.RemoveByTemplateKey("multistrike");
-
-                if (!Subject.SkillBook.ContainsByTemplateKey("rupture"))
-                {
-                    var rupture = SkillFactory.Create("rupture");
-                    Subject.SkillBook.TryAddToNextSlot(rupture);
-                    
-                    Subject.SendOrangeBarMessage("Multistrike has been replaced by Rupture.");
-                }
-            }
-
-            if (Subject.SkillBook.ContainsByTemplateKey("gut"))
-            {
-                Subject.SkillBook.RemoveByTemplateKey("gut");
-
-                if (!Subject.SkillBook.ContainsByTemplateKey("shadowfigure"))
-                {
-                    var backstab = SkillFactory.Create("backstab");
-                    Subject.SkillBook.TryAddToNextSlot(backstab);
-                    Subject.SendOrangeBarMessage("Gut has been replaced by Backstab.");
-                }
-            }
-
-            if (Subject.SkillBook.ContainsByTemplateKey("surigumblitz"))
-            {
-                Subject.SkillBook.RemoveByTemplateKey("surigumblitz");
-
-                if (!Subject.SkillBook.ContainsByTemplateKey("murderousintent"))
-                {
-                    var murderousintent = SkillFactory.Create("murderousintent");
-                    Subject.SkillBook.TryAddToNextSlot(murderousintent);
-                    Subject.SendOrangeBarMessage("Surigum Blitz has been replaced by Murderous Intent.");
-                }
-
-                if (!Subject.SkillBook.ContainsByTemplateKey("killerinstinct"))
-                {
-                    var killerinstinct = SkillFactory.Create("killerinstinct");
-                    Subject.SkillBook.TryAddToNextSlot(killerinstinct);
-                    Subject.SendOrangeBarMessage("Surigum Blitz has been replaced by Killer Instinct.");
-                }
-            }
-
-            if (Subject.UserStatSheet.Level < 99)
-            {
-                // Calculate the target AC based on level
-                var targetAc = 100 - Subject.UserStatSheet.Level / 3;
-
-                // Calculate the difference in AC (amount to subtract)
-                var acDifference = Subject.UserStatSheet.Ac - targetAc;
-
-                // Calculate the new attack speed percentage: 1% for every 3 Dex minus the initial 3 Dex
-                var newAtkSpeedPct = Math.Max(0, (Subject.UserStatSheet.Dex - 3) / 3);
-
-                // Calculate the attack speed difference (amount to subtract)
-                var atkSpeedPctDifference = Subject.UserStatSheet.AtkSpeedPct - newAtkSpeedPct;
-
-                // Create the attributes object for the new values
-                var newAttributes = new Attributes
-                {
-                    Ac = acDifference, // Pass the AC difference to subtract the correct value
-                    AtkSpeedPct = atkSpeedPctDifference // Pass the attack speed percentage difference
-                };
-
-                // Apply the new stats
-                Subject.UserStatSheet.Subtract(newAttributes);
-            } else if (Subject.UserStatSheet.Level == 99)
-            {
-                // Set target AC for level 99
-                var targetAc = 67;
-
-                // Calculate the difference in AC (amount to subtract)
-                var acDifference = Subject.UserStatSheet.Ac - targetAc;
-
-                // Calculate the new attack speed percentage: 1% for every 3 Dex minus the initial 3 Dex
-                var newAtkSpeedPct = Math.Max(0, (Subject.UserStatSheet.Dex - 3) / 3);
-
-                // Calculate the attack speed difference (amount to subtract)
-                var atkSpeedPctDifference = Subject.UserStatSheet.AtkSpeedPct - newAtkSpeedPct;
-
-                // Create the attributes object for the new values
-                var newAttributes = new Attributes
-                {
-                    Ac = acDifference, // Pass the AC difference to subtract the correct value
-                    AtkSpeedPct = atkSpeedPctDifference // Pass the attack speed percentage difference
-                };
-
-                // Apply the new stats
-                Subject.UserStatSheet.Subtract(newAttributes);
-
-                // Send full attribute update
-                Subject.Client.SendAttributes(StatUpdateType.Full);
-            }
-
-            if (!Subject.Titles.ContainsI("Expert Enchanter") && !Subject.Titles.ContainsI("Master Enchanter") && !Subject.IsAdmin)
-                Subject.Inventory.RemoveQuantityByTemplateKey("portaltrinket", 1);
-
-            if (!Subject.Titles.ContainsI("Expert Weaponsmith") && !Subject.Titles.ContainsI("Master Weaponsmith") && !Subject.IsAdmin)
-                Subject.Inventory.RemoveQuantityByTemplateKey("dmgtrinket", 1);
-
-            if (!Subject.Titles.ContainsI("Expert Armorsmith") && !Subject.Titles.ContainsI("Master Armorsmith") && !Subject.IsAdmin)
-                Subject.Inventory.RemoveQuantityByTemplateKey("repairtrinket", 1);
-
-            if (!Subject.Titles.ContainsI("Expert Jewelcrafter") && !Subject.Titles.ContainsI("Master Jewelcrafter") && !Subject.IsAdmin)
-                Subject.Inventory.RemoveQuantityByTemplateKey("exptrinket", 1);
-
-            RemovePureOnlySpells("magmasurge");
-            RemovePureOnlySpells("tidalbreeze");
-            RemovePureOnlySpells("sightoffrailty");
-            RemovePureOnlySpells("diacradh");
-            RemovePureOnlySpells("hidegroup");
-            RemovePureOnlySpells("healingaura");
-            RemovePureOnlySpells("darkstorm");
-            RemovePureOnlySpells("resurrect");
-            RemovePureOnlySpells("evasion");
-            RemovePureOnlySkills("annihilate");
-            RemovePureOnlySkills("dragonstrike");
-            RemovePureOnlySkills("chaosfist");
-            RemovePureOnlySkills("madsoul");
-            RemovePureOnlySkills("onslaught");
-            RemovePureOnlySkills("sneakattack");
-            RemovePureOnlySkills("shadowfigure");
-            RemovePureOnlySkills("multistrike");
-            RemovePureOnlySkills("battlefieldsweep");
-            RemovePureOnlySkills("paralyzeforce");
-            RemovePureOnlySkills("shadowfigure");
-            RemoveOldMonkFormSkillsSpells(Subject);
-            RemoveAndNotifyIfBothExist("athar", "beagathar");
-            RemoveAndNotifyIfBothExist("morathar", "athar");
-            RemoveAndNotifyIfBothExist("morathar", "beagathar");
-            RemoveAndNotifyIfBothExist("ardathar", "morathar");
-            RemoveAndNotifyIfBothExist("ardathar", "athar");
-            RemoveAndNotifyIfBothExist("ardathar", "beagathar");
-            RemoveAndNotifyIfBothExist("moratharmeall", "atharmeall");
-            RemoveAndNotifyIfBothExist("ardatharmeall", "ardathar");
-            RemoveAndNotifyIfBothExist("ardatharmeall", "morathar");
-            RemoveAndNotifyIfBothExist("ardatharmeall", "beagathar");
-            RemoveAndNotifyIfBothExist("ardatharmeall", "athar");
-            RemoveAndNotifyIfBothExist("ardatharmeall", "moratharmeall");
-            RemoveAndNotifyIfBothExist("ardatharmeall", "atharmeall");
-            RemoveAndNotifyIfBothExist("atharlamh", "beagatharlamh");
-            RemoveAndNotifyIfBothExist("moratharlamh", "atharlamh");
-            RemoveAndNotifyIfBothExist("moratharlamh", "beagatharlamh");
-            RemoveAndNotifyIfBothExist("creag", "beagcreag");
-            RemoveAndNotifyIfBothExist("morcreag", "creag");
-            RemoveAndNotifyIfBothExist("morcreag", "beagcreag");
-            RemoveAndNotifyIfBothExist("ardcreag", "morcreag");
-            RemoveAndNotifyIfBothExist("ardcreag", "creag");
-            RemoveAndNotifyIfBothExist("ardcreag", "beagcreag");
-            RemoveAndNotifyIfBothExist("morcreagmeall", "creagmeall");
-            RemoveAndNotifyIfBothExist("ardcreagmeall", "ardcreag");
-            RemoveAndNotifyIfBothExist("ardcreagmeall", "morcreag");
-            RemoveAndNotifyIfBothExist("ardcreagmeall", "beagcreag");
-            RemoveAndNotifyIfBothExist("ardcreagmeall", "creag");
-            RemoveAndNotifyIfBothExist("ardcreagmeall", "creagmeall");
-            RemoveAndNotifyIfBothExist("ardcreagmeall", "morcreagmeall");
-            RemoveAndNotifyIfBothExist("creaglamh", "beagcreaglamh");
-            RemoveAndNotifyIfBothExist("morcreaglamh", "creaglamh");
-            RemoveAndNotifyIfBothExist("morcreaglamh", "beagcreaglamh");
-            RemoveAndNotifyIfBothExist("sal", "beagsal");
-            RemoveAndNotifyIfBothExist("morsal", "sal");
-            RemoveAndNotifyIfBothExist("morsal", "beagsal");
-            RemoveAndNotifyIfBothExist("ardsal", "morsal");
-            RemoveAndNotifyIfBothExist("ardsal", "sal");
-            RemoveAndNotifyIfBothExist("ardsal", "beagsal");
-            RemoveAndNotifyIfBothExist("morsalmeall", "salmeall");
-            RemoveAndNotifyIfBothExist("ardsalmeall", "ardsal");
-            RemoveAndNotifyIfBothExist("ardsalmeall", "morsal");
-            RemoveAndNotifyIfBothExist("ardsalmeall", "beagsal");
-            RemoveAndNotifyIfBothExist("ardsalmeall", "sal");
-            RemoveAndNotifyIfBothExist("ardsalmeall", "salmeall");
-            RemoveAndNotifyIfBothExist("ardsalmeall", "morsalmeall");
-            RemoveAndNotifyIfBothExist("sallamh", "beagsallamh");
-            RemoveAndNotifyIfBothExist("morsallamh", "sallamh");
-            RemoveAndNotifyIfBothExist("morsallamh", "beagsallamh");
-            RemoveAndNotifyIfBothExist("srad", "beagsrad");
-            RemoveAndNotifyIfBothExist("morsrad", "srad");
-            RemoveAndNotifyIfBothExist("morsrad", "beagsrad");
-            RemoveAndNotifyIfBothExist("ardsrad", "morsrad");
-            RemoveAndNotifyIfBothExist("ardsrad", "srad");
-            RemoveAndNotifyIfBothExist("ardsrad", "beagsrad");
-            RemoveAndNotifyIfBothExist("morsradmeall", "sradmeall");
-            RemoveAndNotifyIfBothExist("ardsradmeall", "ardsrad");
-            RemoveAndNotifyIfBothExist("ardsradmeall", "morsrad");
-            RemoveAndNotifyIfBothExist("ardsradmeall", "beagsrad");
-            RemoveAndNotifyIfBothExist("ardsradmeall", "srad");
-            RemoveAndNotifyIfBothExist("ardsradmeall", "sradmeall");
-            RemoveAndNotifyIfBothExist("ardsradmeall", "morsradmeall");
-            RemoveAndNotifyIfBothExist("sradlamh", "beagsradlamh");
-            RemoveAndNotifyIfBothExist("morsradlamh", "sradlamh");
-            RemoveAndNotifyIfBothExist("morsradlamh", "beagsradlamh");
-            RemoveAndNotifyIfBothExist("arcanemissile", "arcanebolt");
-            RemoveAndNotifyIfBothExist("arcaneblast", "arcanemissile");
-            RemoveAndNotifyIfBothExist("arcaneblast", "arcanebolt");
-            RemoveAndNotifyIfBothExist("arcaneexplosion", "arcaneblast");
-            RemoveAndNotifyIfBothExist("arcaneexplosion", "arcanemissile");
-            RemoveAndNotifyIfBothExist("arcaneexplosion", "arcanebolt");
-            RemoveAndNotifyIfBothExist("stilettotrap", "needletrap");
-            RemoveAndNotifyIfBothExist("bolttrap", "needletrap");
-            RemoveAndNotifyIfBothExist("bolttrap", "stilettotrap");
-            RemoveAndNotifyIfBothExist("coiledbolttrap", "needletrap");
-            RemoveAndNotifyIfBothExist("coiledbolttrap", "stilettotrap");
-            RemoveAndNotifyIfBothExist("coiledbolttrap", "bolttrap");
-            RemoveAndNotifyIfBothExist("springtrap", "needletrap");
-            RemoveAndNotifyIfBothExist("springtrap", "stilettotrap");
-            RemoveAndNotifyIfBothExist("springtrap", "bolttrap");
-            RemoveAndNotifyIfBothExist("springtrap", "coiledbolttrap");
-            RemoveAndNotifyIfBothExist("maidentrap", "needletrap");
-            RemoveAndNotifyIfBothExist("maidentrap", "stilettotrap");
-            RemoveAndNotifyIfBothExist("maidentrap", "bolttrap");
-            RemoveAndNotifyIfBothExist("maidentrap", "coiledbolttrap");
-            RemoveAndNotifyIfBothExist("maidentrap", "springtrap");
-            RemoveAndNotifyIfBothExist("pitfalltrap", "needletrap");
-            RemoveAndNotifyIfBothExist("pitfalltrap", "stilettotrap");
-            RemoveAndNotifyIfBothExist("pitfalltrap", "bolttrap");
-            RemoveAndNotifyIfBothExist("pitfalltrap", "coiledbolttrap");
-            RemoveAndNotifyIfBothExist("pitfalltrap", "springtrap");
-            RemoveAndNotifyIfBothExist("pitfalltrap", "maidentrap");
-            RemoveAndNotifyIfBothExist("pramh", "beagpramh");
-            RemoveAndNotifyIfBothExist("revive", "beothaich");
-            RemoveAndNotifyIfBothExist("resurrection", "beothaich");
-            RemoveAndNotifyIfBothExist("resurrection", "revive");
-            RemoveAndNotifyIfBothExist("warcry", "battlecry");
-            RemoveAndNotifyIfBothExist("howl", "goad");
-            RemoveAndNotifyIfBothExist("roar", "goad");
-            RemoveAndNotifyIfBothExist("roar", "howl");
-            RemoveAndNotifyIfBothExist("vortex", "quake");
-            RemoveAndNotifyIfBothExist("rockstance", "earthenstance");
-            RemoveAndNotifyIfBothExist("thunderstance", "lightningstance");
-            RemoveAndNotifyIfBothExist("miststance", "tidestance");
-            RemoveAndNotifyIfBothExist("smokestance", "earthenstance");
-            RemoveAndNotifyIfBothExist("whirlwind", "wrath");
-            RemoveAndNotifyIfBothExist("inferno", "wrath");
-            RemoveAndNotifyIfBothExist("inferno", "whirlwind");
-            RemoveAndNotifyIfBothExist("fury", "berserk");
-
-            // SkillBook removals with the new methods
-            RemoveAndNotifyIfBothExist("energybolt", "assail");
-            RemoveAndNotifyIfBothExist("blessedbolt", "assail");
-            RemoveAndNotifyIfBothExist("sunder", "slash");
-            RemoveAndNotifyIfBothExist("bullrush", "slash");
-            RemoveAndNotifyIfBothExist("bullrush", "sunder");
-            RemoveAndNotifyIfBothExist("charge", "bullrush");
-            RemoveAndNotifyIfBothExist("charge", "sunder");
-            RemoveAndNotifyIfBothExist("charge", "slash");
-            RemoveAndNotifyIfBothExist("cleave", "scathe");
-            RemoveAndNotifyIfBothExist("devour", "scathe");
-            RemoveAndNotifyIfBothExist("devour", "cleave");
-            RemoveAndNotifyIfBothExist("clobber", "strike");
-            RemoveAndNotifyIfBothExist("clobber", "assail");
-            RemoveAndNotifyIfBothExist("flank", "assail");
-            RemoveAndNotifyIfBothExist("flank", "clobber");
-            RemoveAndNotifyIfBothExist("flank", "strike");
-            RemoveAndNotifyIfBothExist("wallop", "assail");
-            RemoveAndNotifyIfBothExist("wallop", "flank");
-            RemoveAndNotifyIfBothExist("wallop", "strike");
-            RemoveAndNotifyIfBothExist("wallop", "clobber");
-            RemoveAndNotifyIfBothExist("pulverize", "assail");
-            RemoveAndNotifyIfBothExist("pulverize", "strike");
-            RemoveAndNotifyIfBothExist("pulverize", "clobber");
-            RemoveAndNotifyIfBothExist("pulverize", "flank");
-            RemoveAndNotifyIfBothExist("pulverize", "wallop");
-            RemoveAndNotifyIfBothExist("thrash", "assail");
-            RemoveAndNotifyIfBothExist("thrash", "strike");
-            RemoveAndNotifyIfBothExist("thrash", "clobber");
-            RemoveAndNotifyIfBothExist("thrash", "flank");
-            RemoveAndNotifyIfBothExist("thrash", "wallop");
-            RemoveAndNotifyIfBothExist("thrash", "pulverize");
-            RemoveAndNotifyIfBothExist("slaughter", "assail");
-            RemoveAndNotifyIfBothExist("slaughter", "strike");
-            RemoveAndNotifyIfBothExist("slaughter", "clobber");
-            RemoveAndNotifyIfBothExist("slaughter", "flank");
-            RemoveAndNotifyIfBothExist("slaughter", "wallop");
-            RemoveAndNotifyIfBothExist("slaughter", "pulverize");
-            RemoveAndNotifyIfBothExist("slaughter", "thrash");
-            RemoveAndNotifyIfBothExist("tempestblade", "windblade");
-            RemoveAndNotifyIfBothExist("sever", "windblade");
-            RemoveAndNotifyIfBothExist("sever", "tempestblade");
-            RemoveAndNotifyIfBothExist("paralyzeforce", "groundstomp");
-            RemoveAndNotifyIfBothExist("groundshattering", "groundstomp");
-            RemoveAndNotifyIfBothExist("madsoul", "flurry");
-            RemoveAndNotifyIfBothExist("doublepunch", "assail");
-            RemoveAndNotifyIfBothExist("doublepunch", "punch");
-            RemoveAndNotifyIfBothExist("rapidpunch", "punch");
-            RemoveAndNotifyIfBothExist("rapidpunch", "assail");
-            RemoveAndNotifyIfBothExist("rapidpunch", "doublepunch");
-            RemoveAndNotifyIfBothExist("triplekick", "assail");
-            RemoveAndNotifyIfBothExist("triplekick", "doublepunch");
-            RemoveAndNotifyIfBothExist("triplekick", "punch");
-            RemoveAndNotifyIfBothExist("triplekick", "rapidpunch");
-            RemoveAndNotifyIfBothExist("dragonstrike", "eaglestrike");
-            RemoveAndNotifyIfBothExist("dragonstrike", "phoenixstrike");
-            RemoveAndNotifyIfBothExist("phoenixstrike", "eaglestrike");
-            RemoveAndNotifyIfBothExist("battlefieldsweep", "relentlessdraw");
-            RemoveAndNotifyIfBothExist("roundhousekick", "kick");
-            RemoveAndNotifyIfBothExist("mantiskick", "highkick");
-            RemoveAndNotifyIfBothExist("smokescreen", "throwsmokebomb");
-            RemoveAndNotifyIfBothExist("assault", "assail");
-            RemoveAndNotifyIfBothExist("throwsurigum", "assault");
-            RemoveAndNotifyIfBothExist("throwsurigum", "assail");
-            RemoveAndNotifyIfBothExist("blitz", "assail");
-            RemoveAndNotifyIfBothExist("blitz", "assault");
-            RemoveAndNotifyIfBothExist("blitz", "throwsurigum");
-            RemoveAndNotifyIfBothExist("barrage", "assail");
-            RemoveAndNotifyIfBothExist("barrage", "assault");
-            RemoveAndNotifyIfBothExist("barrage", "blitz");
-            RemoveAndNotifyIfBothExist("barrage", "throwsurigum");
-            RemoveAndNotifyIfBothExist("backstab", "stab");
-            RemoveAndNotifyIfBothExist("skewer", "pierce");
-            RemoveAndNotifyIfBothExist("midnightslash", "assail");
-            RemoveAndNotifyIfBothExist("midnightslash", "barrage");
-            RemoveAndNotifyIfBothExist("midnightslash", "throwsurigum");
-            RemoveAndNotifyIfBothExist("midnightslash", "blitz");
-            RemoveAndNotifyIfBothExist("midnightslash", "assault");
+            CleanupSubjectItems();
+            UpdateSkillBook();
+            AdjustCharacterAttributes();
+            RemoveRestrictedTrinkets();
+            RemoveInvalidSpellsAndSkills();
+            HandleSkillReplacements();
         }
 
         if (OneSecondTimer.IntervalElapsed)
             HandleWerewolfEffect();
 
         if (SleepAnimationTimer.IntervalElapsed)
-        {
-            var lastManualAction = Subject.Trackers.LastManualAction;
-
-            var isAfk = !lastManualAction.HasValue
-                        || (DateTime.UtcNow.Subtract(lastManualAction.Value)
-                                    .TotalMinutes
-                            > WorldOptions.Instance.SleepAnimationTimerMins);
-
-            if (isAfk)
-            {
-                if (Subject.IsAlive)
-                    Subject.AnimateBody(BodyAnimation.Snore);
-
-                if (Subject.UserStatSheet.BaseClass is BaseClass.Priest)
-                {
-                    var pets = Subject.MapInstance
-                                      .GetEntities<Monster>()
-                                      .Where(x => x.Script.Is<PetScript>() && x.Name.Contains(Subject.Name));
-
-                    foreach (var pet in pets)
-                        pet.MapInstance.RemoveEntity(pet);
-                }
-
-                if (Subject.Effects.Contains("mount"))
-                    Subject.Effects.Dispel("mount");
-
-                var trap = Subject.MapInstance
-                                  .GetDistinctReactorsAtPoint(Subject)
-                                  .Where(x => x.Script.Is<ForagingSpotScript>() || x.Script.Is<FishingSpotScript>());
-
-                if (trap.Any())
-                {
-                    if (Subject.Options.SocialStatus != SocialStatus.Gathering)
-                    {
-                        PreAfkSocialStatus = Subject.Options.SocialStatus;
-                        Subject.Options.SocialStatus = SocialStatus.Gathering;
-                    }
-                } else
-                {
-                    //set player to daydreaming if they are currently set to awake
-                    if (Subject.Options.SocialStatus != SocialStatus.DayDreaming)
-                    {
-                        PreAfkSocialStatus = Subject.Options.SocialStatus;
-                        Subject.Options.SocialStatus = SocialStatus.DayDreaming;
-                    }
-                }
-            } else if (Subject.Options.SocialStatus is SocialStatus.DayDreaming or SocialStatus.Gathering)
-                Subject.Options.SocialStatus = PreAfkSocialStatus;
-        }
+            HandleSleepAnimation();
 
         if (ClearOrangeBarTimer.IntervalElapsed)
+            ClearOrangeBarMessage();
+    }
+
+    private void CleanupSubjectItems()
+    {
+        RemoveNyxItemCounters();
+        ProcessItemDurabilityAndScripts(Subject.Equipment);
+        ProcessItemDurabilityAndScripts(Subject.Inventory);
+        ProcessItemDurabilityAndScripts(Subject.Bank);
+    }
+
+    private void RemoveNyxItemCounters()
+    {
+        foreach (var counter in Subject.Trackers.Counters.ToList())
+            if (counter.Key.ContainsI("NyxItem"))
+                Subject.Trackers.Counters.Remove(counter.Key, out _);
+    }
+
+    private void ProcessItemDurabilityAndScripts(IEnumerable<Item> items)
+    {
+        foreach (var item in items)
         {
-            var lastOrangeBarMessage = Subject.Trackers.LastOrangeBarMessage;
-            var now = DateTime.UtcNow;
+            EnsureDurabilityWithinLimits(item);
+            EnsureValidScriptKeys(item);
+        }
+    }
 
-            //clear if
-            //an orange bar message has ever been sent
-            //and the last message was sent after the last clear
-            //and the time since the last message is greater than the clear timer
-            var shouldClear = lastOrangeBarMessage.HasValue
-                              && (lastOrangeBarMessage > (Subject.Trackers.LastOrangeBarMessageClear ?? DateTime.MinValue))
-                              && (now.Subtract(lastOrangeBarMessage.Value)
-                                     .TotalSeconds
-                                  > WorldOptions.Instance.ClearOrangeBarTimerSecs);
+    private void EnsureDurabilityWithinLimits(Item item)
+    {
+        if (item.CurrentDurability > item.Template.MaxDurability)
+        {
+            item.CurrentDurability = item.Template.MaxDurability;
+            Subject.Client.SendAttributes(StatUpdateType.Full);
+        }
+    }
 
-            if (shouldClear)
+    private void EnsureValidScriptKeys(Item item)
+    {
+        if (item.ScriptKeys.Count > 1)
+        {
+            var validKey = item.ScriptKeys.FirstOrDefault(
+                key => (item.Prefix != null) && key.StartsWith(item.Prefix, StringComparison.OrdinalIgnoreCase));
+
+            if (validKey != null)
             {
-                Subject.SendServerMessage(ServerMessageType.OrangeBar1, string.Empty);
-                Subject.Trackers.LastOrangeBarMessage = lastOrangeBarMessage;
-                Subject.Trackers.LastOrangeBarMessageClear = now;
+                item.ScriptKeys.Clear();
+                item.ScriptKeys.Add(validKey);
+                Subject.Client.SendAttributes(StatUpdateType.Vitality);
             }
+        }
+    }
+
+    private void UpdateSkillBook()
+    {
+        ReplaceSkill("multistrike", "rupture");
+        ReplaceSkill("gut", "backstab");
+        ReplaceMultipleSkills("surigumblitz", ["murderousintent", "killerinstinct"]);
+    }
+
+    private void ReplaceSkill(string oldSkill, string newSkill)
+    {
+        if (Subject.SkillBook.ContainsByTemplateKey(oldSkill))
+        {
+            Subject.SkillBook.RemoveByTemplateKey(oldSkill);
+
+            if (!Subject.SkillBook.ContainsByTemplateKey(newSkill))
+            {
+                Subject.SkillBook.TryAddToNextSlot(SkillFactory.Create(newSkill));
+                Subject.SendOrangeBarMessage($"{oldSkill} has been replaced by {newSkill}.");
+            }
+        }
+    }
+
+    private void ReplaceMultipleSkills(string oldSkill, string[] newSkills)
+    {
+        if (Subject.SkillBook.ContainsByTemplateKey(oldSkill))
+        {
+            Subject.SkillBook.RemoveByTemplateKey(oldSkill);
+
+            foreach (var newSkill in newSkills)
+            {
+                if (!Subject.SkillBook.ContainsByTemplateKey(newSkill))
+                {
+                    Subject.SkillBook.TryAddToNextSlot(SkillFactory.Create(newSkill));
+                    Subject.SendOrangeBarMessage($"{oldSkill} has been replaced by {newSkill}.");
+                }
+            }
+        }
+    }
+
+    private void AdjustCharacterAttributes()
+    {
+        switch (Subject.UserStatSheet.Level)
+        {
+            case < 99:
+                AdjustAttributesBasedOnLevel(100 - Subject.UserStatSheet.Level / 3);
+
+                break;
+            case 99:
+                AdjustAttributesBasedOnLevel(67);
+                Subject.Client.SendAttributes(StatUpdateType.Full);
+
+                break;
+        }
+    }
+
+    private void AdjustAttributesBasedOnLevel(int targetAc)
+    {
+        var acDifference = Subject.UserStatSheet.Ac - targetAc;
+        var newAtkSpeedPct = Math.Max(0, (Subject.UserStatSheet.Dex - 3) / 3);
+        var atkSpeedPctDifference = Subject.UserStatSheet.AtkSpeedPct - newAtkSpeedPct;
+
+        Subject.UserStatSheet.Subtract(
+            new Attributes
+            {
+                Ac = acDifference,
+                AtkSpeedPct = atkSpeedPctDifference
+            });
+    }
+
+    private void RemoveRestrictedTrinkets()
+    {
+        RemoveItemIfTitleMissing("Expert Enchanter", "Master Enchanter", "portaltrinket");
+        RemoveItemIfTitleMissing("Expert Weaponsmith", "Master Weaponsmith", "dmgtrinket");
+        RemoveItemIfTitleMissing("Expert Armorsmith", "Master Armorsmith", "repairtrinket");
+        RemoveItemIfTitleMissing("Expert Jewelcrafter", "Master Jewelcrafter", "exptrinket");
+    }
+
+    private void RemoveItemIfTitleMissing(string title1, string title2, string itemKey)
+    {
+        if (!Subject.Titles.ContainsI(title1) && !Subject.Titles.ContainsI(title2) && !Subject.IsAdmin)
+            Subject.Inventory.RemoveQuantityByTemplateKey(itemKey, 1);
+    }
+
+    private void RemoveInvalidSpellsAndSkills()
+    {
+        string[] pureOnlySpells =
+        {
+            "magmasurge", "tidalbreeze", "sightoffrailty", "diacradh", "hidegroup",
+            "healingaura", "darkstorm", "resurrect", "evasion"
+        };
+
+        string[] pureOnlySkills =
+        {
+            "annihilate", "dragonstrike", "chaosfist", "madsoul", "onslaught",
+            "sneakattack", "shadowfigure", "multistrike", "battlefieldsweep",
+            "paralyzeforce", "shadowfigure"
+        };
+
+        foreach (var spell in pureOnlySpells)
+            RemovePureOnlySpells(spell);
+
+        foreach (var skill in pureOnlySkills)
+            RemovePureOnlySkills(skill);
+
+        RemoveOldMonkFormSkillsSpells(Subject);
+    }
+
+    private void HandleSkillReplacements()
+    {
+        string[,] skillsToReplace =
+        {
+            { "athar", "beagathar" }, { "morathar", "athar" }, { "morathar", "beagathar" },
+            { "ardathar", "morathar" }, { "ardathar", "athar" }, { "ardathar", "beagathar" },
+            { "arcanemissile", "arcanebolt" }, { "arcaneblast", "arcanemissile" },
+            { "arcaneblast", "arcanebolt" }, { "arcaneexplosion", "arcaneblast" },
+            { "arcaneexplosion", "arcanemissile" }, { "arcaneexplosion", "arcanebolt" }
+        };
+
+        for (var i = 0; i < skillsToReplace.GetLength(0); i++)
+        {
+            RemoveAndNotifyIfBothExist(skillsToReplace[i, 0], skillsToReplace[i, 1]);
+        }
+    }
+
+    private void HandleSleepAnimation()
+    {
+        var lastManualAction = Subject.Trackers.LastManualAction;
+
+        var isAfk = !lastManualAction.HasValue
+                    || ((DateTime.UtcNow - lastManualAction.Value).TotalMinutes > WorldOptions.Instance.SleepAnimationTimerMins);
+
+        if (isAfk)
+        {
+            if (Subject.IsAlive)
+                Subject.AnimateBody(BodyAnimation.Snore);
+
+            HandleAfkEffects();
+        }
+        else if (Subject.Options.SocialStatus is SocialStatus.DayDreaming or SocialStatus.Gathering)
+            Subject.Options.SocialStatus = PreAfkSocialStatus;
+    }
+
+    private void HandleAfkEffects()
+    {
+        if (Subject.Effects.Contains("mount"))
+            Subject.Effects.Dispel("mount");
+
+        var isGathering = Subject.MapInstance.GetDistinctReactorsAtPoint(Subject)
+                                 .Any(x => x.Script.Is<ForagingSpotScript>() || x.Script.Is<FishingSpotScript>());
+
+        Subject.Options.SocialStatus = isGathering ? SocialStatus.Gathering : SocialStatus.DayDreaming;
+    }
+
+    private void ClearOrangeBarMessage()
+    {
+        if (Subject.Trackers.LastOrangeBarMessage.HasValue
+            && (DateTime.UtcNow.Subtract(Subject.Trackers.LastOrangeBarMessage.Value).TotalSeconds
+                > WorldOptions.Instance.ClearOrangeBarTimerSecs))
+        {
+            Subject.SendServerMessage(ServerMessageType.OrangeBar1, string.Empty);
+            Subject.Trackers.LastOrangeBarMessageClear = DateTime.UtcNow;
         }
     }
 }

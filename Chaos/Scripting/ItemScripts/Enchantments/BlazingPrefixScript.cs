@@ -1,4 +1,3 @@
-using Chaos.Extensions.Common;
 using Chaos.MetaData.ItemMetaData;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
@@ -7,27 +6,23 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public sealed class BlazingPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class BlazingPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
     /// <inheritdoc />
     public BlazingPrefixScript(Item subject)
-        : base(subject)
-    {
-        Subject.Prefix = "Blazing";
-
-        var attributes = new Attributes
-        {
-            Ac = 1,
-            SkillDamagePct = 5
-        };
-
-        subject.Modifiers.Add(attributes);
-    }
+        : base(subject) => IPrefixEnchantmentScript.ApplyPrefix<BlazingPrefixScript>(subject);
 
     /// <inheritdoc />
     public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
+        => IPrefixEnchantmentScript.Mutate<BlazingPrefixScript>(node, template);
+
+    /// <inheritdoc />
+    public static Attributes Modifiers { get; } = new()
     {
-        if (!node.Name.StartsWithI("Blazing"))
-            yield return node with { Name = $"Blazing {node.Name}" };
-    }
+        Ac = 1,
+        SkillDamagePct = 5
+    };
+
+    /// <inheritdoc />
+    public static string PrefixStr => "Blazing";
 }

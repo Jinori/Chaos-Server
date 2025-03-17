@@ -1,4 +1,3 @@
-using Chaos.Extensions.Common;
 using Chaos.MetaData.ItemMetaData;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
@@ -7,27 +6,23 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public sealed class EternalPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class EternalPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
     /// <inheritdoc />
     public EternalPrefixScript(Item subject)
-        : base(subject)
-    {
-        Subject.Prefix = "Eternal";
-
-        var attributes = new Attributes
-        {
-            Ac = -1,
-            MaximumHp = 200
-        };
-
-        subject.Modifiers.Add(attributes);
-    }
+        : base(subject) => IPrefixEnchantmentScript.ApplyPrefix<EternalPrefixScript>(subject);
 
     /// <inheritdoc />
     public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
+        => IPrefixEnchantmentScript.Mutate<EternalPrefixScript>(node, template);
+    
+    /// <inheritdoc />
+    public static Attributes Modifiers { get; } = new()
     {
-        if (!node.Name.StartsWithI("Eternal"))
-            yield return node with { Name = $"Eternal {node.Name}" };
-    }
+        Ac = -1,
+        MaximumHp = 200
+    };
+
+    /// <inheritdoc />
+    public static string PrefixStr => "Eternal";
 }
