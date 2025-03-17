@@ -7,26 +7,21 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public sealed class FuryPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class FuryPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
     /// <inheritdoc />
     public FuryPrefixScript(Item subject)
-        : base(subject)
-    {
-        Subject.Prefix = "Fury";
-
-        var attributes = new Attributes
-        {
-            SkillDamagePct = 6
-        };
-
-        subject.Modifiers.Add(attributes);
-    }
+        : base(subject) => IPrefixEnchantmentScript.ApplyPrefix<FuryPrefixScript>(subject);
 
     /// <inheritdoc />
-    public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
+    public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template) => IPrefixEnchantmentScript.Mutate<FuryPrefixScript>(node, template);
+
+    /// <inheritdoc />
+    public static Attributes Modifiers { get; } = new()
     {
-        if (!node.Name.StartsWithI("Fury"))
-            yield return node with { Name = $"Fury {node.Name}" };
-    }
+        SkillDamagePct = 6
+    };
+
+    /// <inheritdoc />
+    public static string PrefixStr => "Fury";
 }

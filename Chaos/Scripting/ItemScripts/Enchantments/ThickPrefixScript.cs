@@ -7,27 +7,24 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public sealed class ThickPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class ThickPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
     /// <inheritdoc />
     public ThickPrefixScript(Item subject)
         : base(subject)
-    {
-        Subject.Prefix = "Thick";
-
-        var attributes = new Attributes
-        {
-            MaximumHp = 800,
-            MaximumMp = 400
-        };
-
-        subject.Modifiers.Add(attributes);
-    }
+        => IPrefixEnchantmentScript.ApplyPrefix<ThickPrefixScript>(subject);
 
     /// <inheritdoc />
     public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
+        => IPrefixEnchantmentScript.Mutate<ThickPrefixScript>(node, template);
+
+    /// <inheritdoc />
+    public static Attributes Modifiers { get; } = new()
     {
-        if (!node.Name.StartsWithI("Thick"))
-            yield return node with { Name = $"Thick {node.Name}" };
-    }
+        MaximumHp = 800,
+        MaximumMp = 400
+    };
+
+    /// <inheritdoc />
+    public static string PrefixStr => "Thick";
 }

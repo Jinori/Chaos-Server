@@ -7,26 +7,23 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public sealed class ShroudedPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class ShroudedPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
     /// <inheritdoc />
     public ShroudedPrefixScript(Item subject)
         : base(subject)
-    {
-        Subject.Prefix = "Shrouded";
-
-        var attributes = new Attributes
-        {
-            Dmg = 1
-        };
-
-        subject.Modifiers.Add(attributes);
-    }
+        => IPrefixEnchantmentScript.ApplyPrefix<ShroudedPrefixScript>(subject);
 
     /// <inheritdoc />
     public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
+        => IPrefixEnchantmentScript.Mutate<ShroudedPrefixScript>(node, template);
+
+    /// <inheritdoc />
+    public static Attributes Modifiers { get; } = new()
     {
-        if (!node.Name.StartsWithI("Shrouded"))
-            yield return node with { Name = $"Shrouded {node.Name}" };
-    }
+        Dmg = 1
+    };
+
+    /// <inheritdoc />
+    public static string PrefixStr => "Shrouded";
 }

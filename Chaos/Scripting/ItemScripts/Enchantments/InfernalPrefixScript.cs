@@ -7,28 +7,25 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public sealed class InfernalPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class InfernalPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
     /// <inheritdoc />
     public InfernalPrefixScript(Item subject)
         : base(subject)
-    {
-        Subject.Prefix = "Infernal";
-
-        var attributes = new Attributes
-        {
-            Ac = 1,
-            AtkSpeedPct = 5,
-            FlatSkillDamage = 5
-        };
-
-        subject.Modifiers.Add(attributes);
-    }
+        => IPrefixEnchantmentScript.ApplyPrefix<InfernalPrefixScript>(subject);
 
     /// <inheritdoc />
     public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
+        => IPrefixEnchantmentScript.Mutate<InfernalPrefixScript>(node, template);
+
+    /// <inheritdoc />
+    public static Attributes Modifiers { get; } = new()
     {
-        if (!node.Name.StartsWithI("Infernal"))
-            yield return node with { Name = $"Infernal {node.Name}" };
-    }
+        Ac = 1,
+        AtkSpeedPct = 5,
+        FlatSkillDamage = 5
+    };
+
+    /// <inheritdoc />
+    public static string PrefixStr => "Infernal";
 }

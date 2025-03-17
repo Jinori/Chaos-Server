@@ -7,26 +7,22 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public sealed class WisePrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class WisePrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
     /// <inheritdoc />
     public WisePrefixScript(Item subject)
-        : base(subject)
-    {
-        Subject.Prefix = "Wise";
-
-        var attributes = new Attributes
-        {
-            Wis = 1
-        };
-
-        subject.Modifiers.Add(attributes);
-    }
+        : base(subject)=> IPrefixEnchantmentScript.ApplyPrefix<WisePrefixScript>(subject);
 
     /// <inheritdoc />
     public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
+        => IPrefixEnchantmentScript.Mutate<WisePrefixScript>(node, template);
+
+    /// <inheritdoc />
+    public static Attributes Modifiers { get; } = new()
     {
-        if (!node.Name.StartsWithI("Wise"))
-            yield return node with { Name = $"Wise {node.Name}" };
-    }
+        Wis = 1
+    };
+
+    /// <inheritdoc />
+    public static string PrefixStr => "Wise";
 }
