@@ -28,8 +28,8 @@ public class DefaultDamageFormula : IDamageFormula
         /* F    Water*/    new[] { 2.00m, 1.50m, 0.50m,  1.00m, 1.00m, 0.75m, 0.75m,     1.25m, 1.25m,  1.00m }.ToImmutableArray(), 
         /* F    Wind*/     new[] { 2.00m, 1.00m, 1.00m,  0.50m, 1.50m, 0.75m, 0.75m,     0.75m, 0.75m,  1.00m }.ToImmutableArray(),
         /* E    Earth*/    new[] { 2.00m, 1.00m, 1.50m,  1.00m, 0.50m, 0.75m, 0.75m,     0.75m, 0.75m,  1.00m }.ToImmutableArray(),
-        /* N    Holy*/     new[] { 2.00m, 0.75m, 0.75m,  0.75m, 0.75m, 0.50m, 1.50m,     1.20m, 1.20m,  1.00m }.ToImmutableArray(),
-        /* S    Darkness*/ new[] { 2.00m, 0.75m, 0.75m,  0.75m, 0.75m, 1.50m, 0.50m,     1.20m, 1.20m,  1.00m }.ToImmutableArray(),
+        /* N    Holy*/     new[] { 2.00m, 1.00m, 1.00m,  1.00m, 1.00m, 0.50m, 1.50m,     1.20m, 1.20m,  1.00m }.ToImmutableArray(),
+        /* S    Darkness*/ new[] { 2.00m, 1.00m, 1.00m,  1.00m, 1.00m, 1.50m, 0.50m,     1.20m, 1.20m,  1.00m }.ToImmutableArray(),
         /* E    Wood*/     new[] { 2.00m, 0.75m, 0.75m,  1.20m, 1.20m, 1.00m, 1.00m,     1.00m, 1.00m,  1.00m }.ToImmutableArray(),
         /*      Metal*/    new[] { 2.00m, 0.75m, 0.75m,  1.25m, 1.25m, 0.80m, 0.80m,     1.00m, 1.00m,  1.00m }.ToImmutableArray(),
         /*      Undead*/   new[] { 2.00m, 1.25m, 1.25m,  0.75m, 0.75m, 0.80m, 0.80m,     1.00m, 1.00m,  1.00m }.ToImmutableArray() 

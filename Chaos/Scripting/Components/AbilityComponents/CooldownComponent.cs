@@ -1,3 +1,4 @@
+using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.Panel.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
@@ -7,6 +8,26 @@ namespace Chaos.Scripting.Components.AbilityComponents;
 
 public class CooldownComponent : IComponent
 {
+
+    private static readonly Dictionary<string, string> SpellPairs 
+        = new(StringComparer.OrdinalIgnoreCase)
+        {
+            // Sal
+            { "ardsal", "morsalmeall" },
+            { "morsalmeall", "ardsal" },
+
+            // Srad
+            { "ardsrad", "morsradmeall" },
+            { "morsradmeall", "ardsrad" },
+
+            // Creag
+            { "ardcreag", "morcreagmeall" },
+            { "morcreagmeall", "ardcreag" },
+
+            // Athar
+            { "ardathar", "moratharmeall" },
+            { "moratharmeall", "ardathar" }
+        };
     /// <inheritdoc />
     public void Execute(ActivationContext context, ComponentVars vars)
     {
@@ -49,9 +70,22 @@ public class CooldownComponent : IComponent
             
             if (amountReduced < 0)
                 amountReduced = 0;
+            
+            var finalCooldown = TimeSpan.FromSeconds(subject.Cooldown.Value.TotalSeconds - amountReduced);
+
+            var usedSpellKey = subject.Template.TemplateKey; // the exact key (case-insensitive match)
+            if (SpellPairs.TryGetValue(usedSpellKey, out var partnerKey))
+            {
+                // Find the partner in the caster’s spellbook
+                var partnerSpell = aisling?.SpellBook
+                                          .FirstOrDefault(s => s.Template.TemplateKey.Equals(partnerKey, StringComparison.OrdinalIgnoreCase));
+
+                // If they have the partner, set that cooldown as well
+                partnerSpell?.BeginCooldown(context.Source, finalCooldown);
+            }
 
             // Set the new reduced cooldown (in milliseconds) for the ability
-            subject.SetTemporaryCooldown(TimeSpan.FromSeconds(subject.Cooldown.Value.TotalSeconds - amountReduced));
+            subject.SetTemporaryCooldown(finalCooldown);
         }
     }
 }

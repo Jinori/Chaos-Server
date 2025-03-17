@@ -24,7 +24,7 @@ public class SacredSetBonusScript : SetBonusItemScriptBase
         {
             4, new Attributes
             {
-                CooldownReductionPct = 10
+                CooldownReductionPct = 5
             }
         }
     };

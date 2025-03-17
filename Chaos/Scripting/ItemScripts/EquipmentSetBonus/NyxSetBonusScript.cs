@@ -18,7 +18,7 @@ public class NyxSetBonusScript : SetBonusItemScriptBase
             3, new Attributes
             {
                 AtkSpeedPct = 12,
-                CooldownReductionPct = 8
+                CooldownReductionPct = 3
             }
         },
         {

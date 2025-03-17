@@ -47,7 +47,7 @@ public class TormentEffect : EffectBase, HierarchicalEffectComponent.IHierarchic
             Dmg = 14,
             Hit = 22,
             AtkSpeedPct = 45,
-            CooldownReductionPct = 25
+            CooldownReductionPct = 5
         };
 
         Subject.Animate(Animation!);
@@ -64,7 +64,7 @@ public class TormentEffect : EffectBase, HierarchicalEffectComponent.IHierarchic
             Dmg = 14,
             Hit = 22,
             AtkSpeedPct = 45,
-            CooldownReductionPct = 25
+            CooldownReductionPct = 5
         };
 
         Subject.StatSheet.SubtractBonus(attributes);

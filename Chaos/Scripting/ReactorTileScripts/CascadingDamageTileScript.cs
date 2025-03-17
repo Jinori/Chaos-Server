@@ -19,6 +19,7 @@ namespace Chaos.Scripting.ReactorTileScripts;
 public sealed class CascadingDamageTileScript : ConfigurableReactorTileScriptBase,
                                                 ICascadingTileScript,
                                                 GetCascadingTargetsAbilityComponent<Creature>.IGetCascadingTargetsComponentOptions,
+                                                MagicResistanceComponent.IMagicResistanceComponentOptions,
                                                 DamageAbilityComponent.IDamageComponentOptions,
                                                 ApplyEffectAbilityComponent.IApplyEffectComponentOptions,
                                                 SoundAbilityComponent.ISoundComponentOptions,
@@ -117,8 +118,9 @@ public sealed class CascadingDamageTileScript : ConfigurableReactorTileScriptBas
         if (CascadeTimer.IntervalElapsed)
         {
             Executor.ExecuteAndCheck<GetCascadingTargetsAbilityComponent<Creature>>()
+                    ?.Execute<AnimationAbilityComponent>()
+                    .ExecuteAndCheck<MagicResistanceComponent>()
                     ?.Execute<DamageAbilityComponent>()
-                    .Execute<AnimationAbilityComponent>()
                     .Execute<ApplyEffectAbilityComponent>()
                     .Execute<RemoveShamBurningGroundComponent>()
                     .Check(ShouldPlaySound)
@@ -198,5 +200,9 @@ public sealed class CascadingDamageTileScript : ConfigurableReactorTileScriptBas
 
     /// <inheritdoc />
     public bool AnimatePoints { get; init; }
+    
+    public bool IgnoreMagicResistance { get; init; }
     #endregion
+
+    
 }
