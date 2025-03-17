@@ -7,26 +7,23 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public sealed class PrecisionPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class PrecisionPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
     /// <inheritdoc />
     public PrecisionPrefixScript(Item subject)
         : base(subject)
-    {
-        Subject.Prefix = "Precision";
-
-        var attributes = new Attributes
-        {
-            Hit = 4
-        };
-
-        subject.Modifiers.Add(attributes);
-    }
+        => IPrefixEnchantmentScript.ApplyPrefix<PrecisionPrefixScript>(subject);
 
     /// <inheritdoc />
     public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
+        => IPrefixEnchantmentScript.Mutate<PrecisionPrefixScript>(node, template);
+
+    /// <inheritdoc />
+    public static Attributes Modifiers { get; } = new()
     {
-        if (!node.Name.StartsWithI("Precision"))
-            yield return node with { Name = $"Precision {node.Name}" };
-    }
+        Hit = 4
+    };
+
+    /// <inheritdoc />
+    public static string PrefixStr => "Precision";
 }

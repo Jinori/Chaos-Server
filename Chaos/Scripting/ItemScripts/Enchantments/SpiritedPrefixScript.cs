@@ -7,26 +7,23 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public sealed class SpiritedPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class SpiritedPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
     /// <inheritdoc />
     public SpiritedPrefixScript(Item subject)
         : base(subject)
-    {
-        Subject.Prefix = "Spirited";
-
-        var attributes = new Attributes
-        {
-            MaximumMp = 500
-        };
-
-        subject.Modifiers.Add(attributes);
-    }
+        => IPrefixEnchantmentScript.ApplyPrefix<SpiritedPrefixScript>(subject);
 
     /// <inheritdoc />
     public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
+        => IPrefixEnchantmentScript.Mutate<SpiritedPrefixScript>(node, template);
+
+    /// <inheritdoc />
+    public static Attributes Modifiers { get; } = new()
     {
-        if (!node.Name.StartsWithI("Spirited"))
-            yield return node with { Name = $"Spirited {node.Name}" };
-    }
+        MaximumMp = 500
+    };
+
+    /// <inheritdoc />
+    public static string PrefixStr => "Spirited";
 }

@@ -7,30 +7,24 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public sealed class GleamingPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class GleamingPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
     /// <inheritdoc />
     public GleamingPrefixScript(Item subject)
         : base(subject)
-    {
-        Subject.Prefix = "Gleaming";
-
-        var attributes = new Attributes
-        {
-            SpellDamagePct = 6,
-            Hit = 2
-        };
-
-        subject.Modifiers.Add(attributes);
-    }
+        => IPrefixEnchantmentScript.ApplyPrefix<GleamingPrefixScript>(subject);
 
     /// <inheritdoc />
     public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
+        => IPrefixEnchantmentScript.Mutate<GleamingPrefixScript>(node, template);
+
+    /// <inheritdoc />
+    public static Attributes Modifiers { get; } = new()
     {
-        if (!node.Name.StartsWithI("Gleaming"))
-            yield return node with
-            {
-                Name = $"Gleaming {node.Name}"
-            };
-    }
+        SpellDamagePct = 6,
+        Hit = 2
+    };
+
+    /// <inheritdoc />
+    public static string PrefixStr => "Gleaming";
 }

@@ -7,26 +7,23 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public sealed class NimblePrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class NimblePrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
     /// <inheritdoc />
     public NimblePrefixScript(Item subject)
         : base(subject)
-    {
-        Subject.Prefix = "Nimble";
-
-        var attributes = new Attributes
-        {
-            Dex = 1
-        };
-
-        subject.Modifiers.Add(attributes);
-    }
+        => IPrefixEnchantmentScript.ApplyPrefix<NimblePrefixScript>(subject);
 
     /// <inheritdoc />
     public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
+        => IPrefixEnchantmentScript.Mutate<NimblePrefixScript>(node, template);
+
+    /// <inheritdoc />
+    public static Attributes Modifiers { get; } = new()
     {
-        if (!node.Name.StartsWithI("Nimble"))
-            yield return node with { Name = $"Nimble {node.Name}" };
-    }
+        Dex = 1
+    };
+
+    /// <inheritdoc />
+    public static string PrefixStr => "Nimble";
 }

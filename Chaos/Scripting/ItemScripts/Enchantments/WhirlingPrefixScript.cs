@@ -7,27 +7,23 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public sealed class WhirlingPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class WhirlingPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
     /// <inheritdoc />
     public WhirlingPrefixScript(Item subject)
-        : base(subject)
-    {
-        Subject.Prefix = "Whirling";
-
-        var attributes = new Attributes
-        {
-            MagicResistance = 5,
-            Hit = -2
-        };
-
-        subject.Modifiers.Add(attributes);
-    }
+        : base(subject) => IPrefixEnchantmentScript.ApplyPrefix<WhirlingPrefixScript>(subject);
 
     /// <inheritdoc />
     public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
+        => IPrefixEnchantmentScript.Mutate<WhirlingPrefixScript>(node, template);
+
+    /// <inheritdoc />
+    public static Attributes Modifiers { get; } = new()
     {
-        if (!node.Name.StartsWithI("Whirling"))
-            yield return node with { Name = $"Whirling {node.Name}" };
-    }
+        MagicResistance = 5,
+        Hit = -2
+    };
+
+    /// <inheritdoc />
+    public static string PrefixStr => "Whirling";
 }

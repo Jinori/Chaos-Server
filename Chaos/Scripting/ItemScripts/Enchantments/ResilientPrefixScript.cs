@@ -7,7 +7,7 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public sealed class ResilientPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class ResilientPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
     /// <inheritdoc />
     public ResilientPrefixScript(Item subject)
@@ -30,4 +30,14 @@ public sealed class ResilientPrefixScript : ItemScriptBase, IEnchantmentScript
         if (!node.Name.StartsWithI("Resilient"))
             yield return node with { Name = $"Resilient {node.Name}" };
     }
+
+    /// <inheritdoc />
+    public static Attributes Modifiers { get; } = new()
+    {
+        MagicResistance = 2,
+        Ac = -1
+    };
+
+    /// <inheritdoc />
+    public static string PrefixStr => "Resilient";
 }

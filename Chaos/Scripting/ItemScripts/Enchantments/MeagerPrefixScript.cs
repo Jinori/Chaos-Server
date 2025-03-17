@@ -7,26 +7,23 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public sealed class MeagerPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class MeagerPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
     /// <inheritdoc />
     public MeagerPrefixScript(Item subject)
         : base(subject)
-    {
-        Subject.Prefix = "Meager";
-
-        var attributes = new Attributes
-        {
-            MaximumMp = 40
-        };
-
-        subject.Modifiers.Add(attributes);
-    }
+        => IPrefixEnchantmentScript.ApplyPrefix<MeagerPrefixScript>(subject);
 
     /// <inheritdoc />
     public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
+        => IPrefixEnchantmentScript.Mutate<MeagerPrefixScript>(node, template);
+
+    /// <inheritdoc />
+    public static Attributes Modifiers { get; } = new()
     {
-        if (!node.Name.StartsWithI("Meager"))
-            yield return node with { Name = $"Meager {node.Name}" };
-    }
+        MaximumMp = 40
+    };
+
+    /// <inheritdoc />
+    public static string PrefixStr => "Meager";
 }

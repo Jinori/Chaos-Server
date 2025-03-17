@@ -7,27 +7,22 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public sealed class FocusedPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class FocusedPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
     /// <inheritdoc />
     public FocusedPrefixScript(Item subject)
-        : base(subject)
-    {
-        Subject.Prefix = "Focused";
-
-        var attributes = new Attributes
-        {
-            Hit = 1,
-            AtkSpeedPct = 2
-        };
-
-        subject.Modifiers.Add(attributes);
-    }
+        : base(subject) => IPrefixEnchantmentScript.ApplyPrefix<FocusedPrefixScript>(subject);
 
     /// <inheritdoc />
-    public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
+    public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template) => IPrefixEnchantmentScript.Mutate<FocusedPrefixScript>(node, template);
+
+    /// <inheritdoc />
+    public static Attributes Modifiers { get; } = new()
     {
-        if (!node.Name.StartsWithI("Focused"))
-            yield return node with { Name = $"Focused {node.Name}" };
-    }
+        Hit = 1,
+        AtkSpeedPct = 2
+    };
+
+    /// <inheritdoc />
+    public static string PrefixStr => "Focused";
 }

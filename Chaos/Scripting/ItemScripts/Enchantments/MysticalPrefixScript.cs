@@ -7,27 +7,24 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public sealed class MysticalPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class MysticalPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
     /// <inheritdoc />
     public MysticalPrefixScript(Item subject)
         : base(subject)
-    {
-        Subject.Prefix = "Mystical";
-
-        var attributes = new Attributes
-        {
-            FlatSpellDamage = 8,
-            MaximumHp = -20
-        };
-
-        subject.Modifiers.Add(attributes);
-    }
+        => IPrefixEnchantmentScript.ApplyPrefix<MysticalPrefixScript>(subject);
 
     /// <inheritdoc />
     public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
+        => IPrefixEnchantmentScript.Mutate<MysticalPrefixScript>(node, template);
+
+    /// <inheritdoc />
+    public static Attributes Modifiers { get; } = new()
     {
-        if (!node.Name.StartsWithI("Mystical"))
-            yield return node with { Name = $"Mystical {node.Name}" };
-    }
+        FlatSpellDamage = 8,
+        MaximumHp = -20
+    };
+
+    /// <inheritdoc />
+    public static string PrefixStr => "Mystical";
 }

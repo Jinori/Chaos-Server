@@ -7,26 +7,24 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public sealed class SwiftPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class SwiftPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
     /// <inheritdoc />
     public SwiftPrefixScript(Item subject)
         : base(subject)
-    {
-        Subject.Prefix = "Swift";
-
-        var attributes = new Attributes
-        {
-            MaximumHp = 80
-        };
-
-        subject.Modifiers.Add(attributes);
-    }
+        => IPrefixEnchantmentScript.ApplyPrefix<SwiftPrefixScript>(subject);
 
     /// <inheritdoc />
     public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
+        => IPrefixEnchantmentScript.Mutate<SwiftPrefixScript>(node, template);
+
+    /// <inheritdoc />
+    public static Attributes Modifiers { get; } = new()
     {
-        if (!node.Name.StartsWithI("Swift"))
-            yield return node with { Name = $"Swift {node.Name}" };
-    }
+        AtkSpeedPct = 4,
+        MaximumHp = 80
+    };
+
+    /// <inheritdoc />
+    public static string PrefixStr => "Swift";
 }

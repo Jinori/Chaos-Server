@@ -7,26 +7,23 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public sealed class ValiantPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class ValiantPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
     /// <inheritdoc />
     public ValiantPrefixScript(Item subject)
         : base(subject)
-    {
-        Subject.Prefix = "Valiant";
-
-        var attributes = new Attributes
-        {
-            SkillDamagePct = 2
-        };
-
-        subject.Modifiers.Add(attributes);
-    }
+        => IPrefixEnchantmentScript.ApplyPrefix<ValiantPrefixScript>(subject);
 
     /// <inheritdoc />
     public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
+        => IPrefixEnchantmentScript.Mutate<ValiantPrefixScript>(node, template);
+
+    /// <inheritdoc />
+    public static Attributes Modifiers { get; } = new()
     {
-        if (!node.Name.StartsWithI("Valiant"))
-            yield return node with { Name = $"Valiant {node.Name}" };
-    }
+        SkillDamagePct = 2
+    };
+
+    /// <inheritdoc />
+    public static string PrefixStr => "Valiant";
 }

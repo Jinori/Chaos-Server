@@ -7,27 +7,24 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public sealed class RuthlessPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class RuthlessPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
     /// <inheritdoc />
     public RuthlessPrefixScript(Item subject)
         : base(subject)
-    {
-        Subject.Prefix = "Ruthless";
-
-        var attributes = new Attributes
-        {
-            AtkSpeedPct = 3,
-            SkillDamagePct = 2
-        };
-
-        subject.Modifiers.Add(attributes);
-    }
+        => IPrefixEnchantmentScript.ApplyPrefix<RuthlessPrefixScript>(subject);
 
     /// <inheritdoc />
     public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
+        => IPrefixEnchantmentScript.Mutate<RuthlessPrefixScript>(node, template);
+
+    /// <inheritdoc />
+    public static Attributes Modifiers { get; } = new()
     {
-        if (!node.Name.StartsWithI("Ruthless"))
-            yield return node with { Name = $"Ruthless {node.Name}" };
-    }
+        AtkSpeedPct = 3,
+        SkillDamagePct = 2
+    };
+
+    /// <inheritdoc />
+    public static string PrefixStr => "Ruthless";
 }

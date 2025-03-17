@@ -7,27 +7,24 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public sealed class SoftPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class SoftPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
     /// <inheritdoc />
     public SoftPrefixScript(Item subject)
         : base(subject)
-    {
-        Subject.Prefix = "Soft";
-
-        var attributes = new Attributes
-        {
-            MagicResistance = 3,
-            Hit = -1
-        };
-
-        subject.Modifiers.Add(attributes);
-    }
+        => IPrefixEnchantmentScript.ApplyPrefix<SoftPrefixScript>(subject);
 
     /// <inheritdoc />
     public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
+        => IPrefixEnchantmentScript.Mutate<SoftPrefixScript>(node, template);
+
+    /// <inheritdoc />
+    public static Attributes Modifiers { get; } = new()
     {
-        if (!node.Name.StartsWithI("Soft"))
-            yield return node with { Name = $"Soft {node.Name}" };
-    }
+        MagicResistance = 3,
+        Hit = -1
+    };
+
+    /// <inheritdoc />
+    public static string PrefixStr => "Soft";
 }

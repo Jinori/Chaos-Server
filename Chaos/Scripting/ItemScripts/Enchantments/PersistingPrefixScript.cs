@@ -7,26 +7,23 @@ using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.Enchantments;
 
-public sealed class PersistingPrefixScript : ItemScriptBase, IEnchantmentScript
+public sealed class PersistingPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
     /// <inheritdoc />
     public PersistingPrefixScript(Item subject)
         : base(subject)
-    {
-        Subject.Prefix = "Persisting";
-
-        var attributes = new Attributes
-        {
-            Hit = 5
-        };
-
-        subject.Modifiers.Add(attributes);
-    }
+        => IPrefixEnchantmentScript.ApplyPrefix<PersistingPrefixScript>(subject);
 
     /// <inheritdoc />
     public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
+        => IPrefixEnchantmentScript.Mutate<PersistingPrefixScript>(node, template);
+
+    /// <inheritdoc />
+    public static Attributes Modifiers { get; } = new()
     {
-        if (!node.Name.StartsWithI("Persisting"))
-            yield return node with { Name = $"Persisting {node.Name}" };
-    }
+        Hit = 5
+    };
+
+    /// <inheritdoc />
+    public static string PrefixStr => "Persisting";
 }
