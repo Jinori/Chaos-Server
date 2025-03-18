@@ -122,6 +122,7 @@ public class SwapEnchantsScript : DialogScriptBase
         // Find items that already have an enchant (prefix) we can swap
         var enchantedItems = source.Inventory
             .Where(HasSwappableEnchant)
+            .Where(i => !i.DisplayName.Contains("Scroll", StringComparison.OrdinalIgnoreCase))
             .ToList();
 
         if (!enchantedItems.Any())
@@ -178,10 +179,6 @@ public class SwapEnchantsScript : DialogScriptBase
             });
         }
     }
-
-    // ─────────────────────────────────────────────────────────────────
-    // STEP 3: Confirm the Swap
-    // ─────────────────────────────────────────────────────────────────
     private void OnDisplayingConfirmSwap(Aisling source)
     {
         // We expect 2 args: the item slot, and the new enchant index
@@ -224,10 +221,6 @@ public class SwapEnchantsScript : DialogScriptBase
             OptionText = "No, cancel"
         });
     }
-
-    // ─────────────────────────────────────────────────────────────────
-    // STEP 4: Finalize the Swap
-    // ─────────────────────────────────────────────────────────────────
     private void OnDisplayingFinalizeSwap(Aisling source)
     {
         // Same 2 args as Step 3
