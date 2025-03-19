@@ -130,7 +130,7 @@ public class GoldExchangeScript : DialogScriptBase
         if (source.TryTakeGold(15000000))
         {
             var cheque = ItemFactory.Create("carmesicheque");
-            source.Inventory.TryAddToNextSlot(cheque);
+            source.GiveItemOrSendToBank(cheque);
         }
     }
 
@@ -153,7 +153,7 @@ public class GoldExchangeScript : DialogScriptBase
         if (source.TryTakeGold(10000000))
         {
             var cheque = ItemFactory.Create("verdecheque");
-            source.Inventory.TryAddToNextSlot(cheque);
+            source.GiveItemOrSendToBank(cheque);
         }
     }
 
@@ -176,7 +176,7 @@ public class GoldExchangeScript : DialogScriptBase
         if (source.TryTakeGold(5000000))
         {
             var cheque = ItemFactory.Create("platacheque");
-            source.Inventory.TryAddToNextSlot(cheque);
+            source.GiveItemOrSendToBank(cheque);
         }
     }
 }

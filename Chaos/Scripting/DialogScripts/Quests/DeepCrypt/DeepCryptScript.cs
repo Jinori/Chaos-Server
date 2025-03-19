@@ -283,7 +283,7 @@ public class DeepCryptScript(
 
                     foreach (var member in group)
                     {
-                        if (!member.Trackers.Flags.HasFlag(ClassStatBracket.Grandmaster))
+                        if (!member.Trackers.Enums.HasValue(ClassStatBracket.Grandmaster))
                             Subject.Reply(source, "One of your group members are not grandmaster.");
 
                         if (member.Trackers.TimedEvents.HasActiveEvent("deepcryptcd", out _))

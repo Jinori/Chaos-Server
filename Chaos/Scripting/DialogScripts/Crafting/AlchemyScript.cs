@@ -287,7 +287,7 @@ public class AlchemyScript : DialogScriptBase
                 source.SendOrangeBarMessage("You have no space. It was sent to your bank.");
             }
             else
-                source.Inventory.TryAddToNextSlot(newCraft);
+                source.GiveItemOrSendToBank(newCraft);
 
             Subject.InjectTextParameters(newCraft.DisplayName);
         }

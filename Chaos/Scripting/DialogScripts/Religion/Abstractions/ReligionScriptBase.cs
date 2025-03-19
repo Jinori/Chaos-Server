@@ -569,7 +569,7 @@ public class ReligionScriptBase : DialogScriptBase
                 GameTime.Now));
 
         var trinket = ItemFactory.Create($"{deity}Stone");
-        source.Inventory.TryAddToNextSlot(trinket);
+        source.GiveItemOrSendToBank(trinket);
         source.Inventory.RemoveQuantity($"Essence of {deity}", 3);
         source.SendActiveMessage($"You have joined the temple of {deity} as a Worshipper!");
     }
@@ -708,7 +708,7 @@ public class ReligionScriptBase : DialogScriptBase
         source.SendActiveMessage($"In gratitude for your loyalty, {deity} hands you a passport.");
 
         var scroll = ItemFactory.Create("passport");
-        source.Inventory.TryAddToNextSlot(scroll);
+        source.GiveItemOrSendToBank(scroll);
     }
 
     private Rank DetermineRank(int faithCount)
@@ -899,7 +899,7 @@ public class ReligionScriptBase : DialogScriptBase
             if (IntegerRandomizer.RollChance(10))
             {
                 var essence = ItemFactory.Create($"essenceof{deity}");
-                source.Inventory.TryAddToNextSlot(essence);
+                source.GiveItemOrSendToBank(essence);
                 source.SendActiveMessage($"Through prayer, you receive a Essence of {deity}!");
             }
         } else
