@@ -268,7 +268,7 @@ public class LearnSpellScript : DialogScriptBase
             "sradmeall", new List<string>
             {
                 "morsradmeall",
-                "ardatharmeall"
+                "ardsradmeall"
             }
         },
         {

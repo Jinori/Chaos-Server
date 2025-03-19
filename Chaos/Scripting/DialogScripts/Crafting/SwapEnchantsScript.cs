@@ -106,11 +106,6 @@ public class SwapEnchantsScript : DialogScriptBase
                 // Step 3: Confirm swap
                 OnDisplayingConfirmSwap(source);
                 break;
-
-            case "enchant_swap_finalize":
-                // Step 4: Execute swap and finalize
-                OnDisplayingFinalizeSwap(source);
-                break;
         }
     }
 
@@ -183,7 +178,7 @@ public class SwapEnchantsScript : DialogScriptBase
     {
         // We expect 2 args: the item slot, and the new enchant index
         if (!TryFetchArg<byte>(0, out var chosenSlot)
-            || !TryFetchArg<byte>(1, out var enchantIndex))
+            || Subject.Context is not byte optionIndex)
         {
             Subject.ReplyToUnknownInput(source);
             return;
@@ -196,9 +191,9 @@ public class SwapEnchantsScript : DialogScriptBase
         }
 
         var currentPrefix = chosenItem.Prefix;
-        if (currentPrefix == null 
+        if ((currentPrefix == null)
             || !PrefixSwapOptions.TryGetValue(currentPrefix, out var possibleEnchants)
-            || enchantIndex >= possibleEnchants.Count)
+            || (optionIndex >= possibleEnchants.Count))
         {
             Subject.Reply(source,
                 "Invalid enchant selection. Please try again.",
@@ -206,26 +201,15 @@ public class SwapEnchantsScript : DialogScriptBase
             return;
         }
 
-        var newPrefix = possibleEnchants[enchantIndex];
-
-        // We'll prompt the user: "Are you sure? Yes/No"
-        Subject.Options.Clear();
-        Subject.Options.Add(new DialogOption
-        {
-            DialogKey = "enchant_swap_finalize",
-            OptionText = "Yes, swap it",
-        });
-        Subject.Options.Add(new DialogOption
-        {
-            DialogKey = "enchant_swap_initial",
-            OptionText = "No, cancel"
-        });
+        var newPrefix = possibleEnchants[optionIndex];
+        
+        Subject.InjectTextParameters(currentPrefix, newPrefix);
     }
     private void OnDisplayingFinalizeSwap(Aisling source)
     {
         // Same 2 args as Step 3
         if (!TryFetchArg<byte>(0, out var chosenSlot)
-            || !TryFetchArg<byte>(1, out var enchantIndex))
+            || Subject.Context is not byte optionIndex)
         {
             Subject.ReplyToUnknownInput(source);
             return;
@@ -241,7 +225,7 @@ public class SwapEnchantsScript : DialogScriptBase
         var currentPrefix = chosenItem.Prefix;
         if ((currentPrefix == null) 
             || !PrefixSwapOptions.TryGetValue(currentPrefix, out var possibleEnchants)
-            || (enchantIndex >= possibleEnchants.Count))
+            || (optionIndex >= possibleEnchants.Count))
         {
             Subject.Reply(source,
                 "Invalid enchant selection. Please try again.",
@@ -249,7 +233,7 @@ public class SwapEnchantsScript : DialogScriptBase
             return;
         }
 
-        var newPrefix = possibleEnchants[enchantIndex];
+        var newPrefix = possibleEnchants[optionIndex];
 
         // 1) Remove the current prefix (and any relevant scripts/stats)
         RemoveEnchant(source, chosenItem);
@@ -310,5 +294,25 @@ public class SwapEnchantsScript : DialogScriptBase
         recipe.Modification?.Invoke(item);
         source.Inventory.Update(item.Slot);
         Subject.InjectTextParameters(recipe.Prefix, item.Template.Name);
+    }
+
+    public override void OnNext(Aisling source, byte? optionIndex = null)
+    {
+        switch (Subject.Template.TemplateKey.ToLower())
+        {
+            case "enchant_swap_choose":
+            {
+                Subject.Context = (byte)(optionIndex!.Value - 1);
+                break;
+            }
+
+            case "enchant_swap_confirm":
+            {
+                if (optionIndex == 1)
+                    OnDisplayingFinalizeSwap(source);
+
+                break;
+            }
+        }
     }
 }

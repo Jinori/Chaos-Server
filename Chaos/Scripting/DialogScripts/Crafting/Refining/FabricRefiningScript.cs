@@ -12,7 +12,7 @@ public class FabricRefiningScript(Dialog subject, IItemFactory itemFactory, IDia
 {
     protected override string LegendMarkKey => "FabricRefining";
     protected override string ItemCounterPrefix => "[Refine]";
-    protected override double BaseSucessRate => 80;
+    protected override double BaseSucessRate => 60;
     protected override double SuccessRateMax => 90;
 
     private readonly string[] FabricTemplateKeys =

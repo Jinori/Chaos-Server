@@ -43,7 +43,7 @@ public class MythicFrogWarpScript(Dialog subject, ISimpleCache simpleCache) : Di
 
                 if (source.UserStatSheet.Level < 50)
                 {
-                    source.SendOrangeBarMessage("You must be atleast level 50 to enter frogs.");
+                    source.SendOrangeBarMessage("You must be at least level 50 to enter frogs.");
                     Subject.Close(source);
                     var point2 = source.DirectionalOffset(source.Direction.Reverse());
                     source.WarpTo(point2);

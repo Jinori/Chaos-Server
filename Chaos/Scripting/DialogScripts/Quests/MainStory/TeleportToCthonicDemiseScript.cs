@@ -146,7 +146,7 @@ public class TeleportToCthonicDemiseScript : DialogScriptBase
     private void SendNoGroupMembersMessage(Aisling source)
     {
         source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Facing the army requires at least four members of the group.");
-        Subject.Reply(source, "You do not have enough group members nearby. To face the army, you must have atleast four group members.");
+        Subject.Reply(source, "You do not have enough group members nearby. To face the army, you must have at least four group members.");
     }
 
     private void TeleportGroupToCthonicDemise(Aisling source, List<Aisling> group)

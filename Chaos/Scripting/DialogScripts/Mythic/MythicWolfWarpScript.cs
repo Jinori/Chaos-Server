@@ -45,7 +45,7 @@ public class MythicWolfWarpScript(Dialog subject, ISimpleCache simpleCache) : Di
 
                 if (source.UserStatSheet.Level < 30)
                 {
-                    source.SendOrangeBarMessage("You must be atleast level 30 to enter wolf.");
+                    source.SendOrangeBarMessage("You must be at least level 30 to enter wolf.");
                     Subject.Close(source);
                     var point2 = source.DirectionalOffset(source.Direction.Reverse());
                     source.WarpTo(point2);

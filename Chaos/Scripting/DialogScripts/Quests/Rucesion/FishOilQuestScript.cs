@@ -36,7 +36,7 @@ public class FishOilQuestScript(Dialog subject, IItemFactory itemFactory, ILogge
                 var option = new DialogOption
                 {
                     DialogKey = "fishoil_initial",
-                    OptionText = "*Antonio's Vault squeeks*"
+                    OptionText = "*Antonio's Vault squeaks*"
                 };
 
                 if (!Subject.HasOption(option.OptionText))
