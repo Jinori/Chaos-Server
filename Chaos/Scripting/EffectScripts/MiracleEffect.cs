@@ -21,9 +21,8 @@ public class MiracleEffect : EffectBase
 
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Miraelis' miracle has worn off.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Miraelis' miracle expands your crafting and healing.");
     }
-
     public override void OnDispelled() => OnTerminated();
 
     public override void OnTerminated()
@@ -35,6 +34,6 @@ public class MiracleEffect : EffectBase
 
         Subject.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Miraelis' miracle expands your crafting and healing.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Miraelis' miracle has worn off.");
     }
 }
