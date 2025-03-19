@@ -43,7 +43,7 @@ public class MythicBunnyWarpScript(Dialog subject, ISimpleCache simpleCache) : D
 
                 if (source.UserStatSheet.Level < 9)
                 {
-                    source.SendOrangeBarMessage("You must be atleast level 9 to enter bunnys.");
+                    source.SendOrangeBarMessage("You must be at least level 9 to enter bunnys.");
                     Subject.Close(source);
                     var point2 = source.DirectionalOffset(source.Direction.Reverse());
                     source.WarpTo(point2);

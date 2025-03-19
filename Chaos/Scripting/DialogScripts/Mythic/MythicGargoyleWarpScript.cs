@@ -45,7 +45,7 @@ public class MythicGargoyleWarpScript(Dialog subject, ISimpleCache simpleCache) 
 
                 if (source.UserStatSheet.Level < 93)
                 {
-                    source.SendOrangeBarMessage("You must be atleast level 93 to enter gargoyles.");
+                    source.SendOrangeBarMessage("You must be at least level 93 to enter gargoyles.");
                     Subject.Close(source);
                     var point2 = source.DirectionalOffset(source.Direction.Reverse());
                     source.WarpTo(point2);

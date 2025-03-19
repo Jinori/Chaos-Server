@@ -68,7 +68,7 @@ public class WarpScript : ConfigurableReactorTileScriptBase
             {
                 var point = source.DirectionalOffset(source.Direction.Reverse());
                 source.WarpTo(source.Trackers.LastPosition as IPoint ?? point);
-                aisling?.SendOrangeBarMessage($"You must be atleast {MinVitality} Vitality to enter this area.");
+                aisling?.SendOrangeBarMessage($"You must be at least {MinVitality} Vitality to enter this area.");
             }
 
             if (MaxVitality.HasValue && (MaxVitality.Value < vitality))

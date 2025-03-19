@@ -73,6 +73,9 @@ public class CooldownComponent : IComponent
             
             var finalCooldown = TimeSpan.FromSeconds(subject.Cooldown.Value.TotalSeconds - amountReduced);
 
+            if (finalCooldown.TotalSeconds < 0)
+                finalCooldown = TimeSpan.FromSeconds(0);
+
             var usedSpellKey = subject.Template.TemplateKey; // the exact key (case-insensitive match)
             if (SpellPairs.TryGetValue(usedSpellKey, out var partnerKey))
             {

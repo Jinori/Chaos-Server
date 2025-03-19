@@ -45,7 +45,7 @@ public class MythicMantisWarpScript(Dialog subject, ISimpleCache simpleCache) : 
 
                 if (source.UserStatSheet.Level < 21)
                 {
-                    source.SendOrangeBarMessage("You must be atleast level 21 to enter mantis.");
+                    source.SendOrangeBarMessage("You must be at least level 21 to enter mantis.");
                     Subject.Close(source);
                     var point2 = source.DirectionalOffset(source.Direction.Reverse());
                     source.WarpTo(point2);

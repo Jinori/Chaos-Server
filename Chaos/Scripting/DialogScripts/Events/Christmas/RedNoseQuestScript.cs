@@ -140,7 +140,7 @@ public class RedNoseQuestScript(Dialog subject, ILogger<RedNose> logger, IItemFa
 
                             Subject.Reply(
                                 source,
-                                $"There's not enough red noses here, you only have {redNoseCount}. I need atleast 20 red noses for the reindeer.");
+                                $"There's not enough red noses here, you only have {redNoseCount}. I need at least 20 red noses for the reindeer.");
 
                             break;
                         }

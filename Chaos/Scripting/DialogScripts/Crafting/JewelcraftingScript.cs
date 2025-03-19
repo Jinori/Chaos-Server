@@ -344,7 +344,7 @@ public class JewelcraftingScript : DialogScriptBase
                 source.Bank.Deposit(newCraft);
                 source.SendOrangeBarMessage("You have no space. It was sent to your bank.");
             } else
-                source.Inventory.TryAddToNextSlot(newCraft);
+                source.GiveItemOrSendToBank(newCraft);
 
             Subject.InjectTextParameters(newCraft.DisplayName);
         } else

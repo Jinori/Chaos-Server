@@ -23,7 +23,7 @@ public sealed class PetFollowScript : MonsterScriptBase
             return;
 
         source.SendMessage("You dropped an item on a pet but they returned it.");
-        source.Inventory.TryAddToNextSlot(item);
+        source.GiveItemOrSendToBank(item);
     }
 
     /// <inheritdoc />

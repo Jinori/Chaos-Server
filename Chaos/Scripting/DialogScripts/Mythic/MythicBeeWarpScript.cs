@@ -43,7 +43,7 @@ public class MythicBeeWarpScript(Dialog subject, ISimpleCache simpleCache) : Dia
 
                 if (source.UserStatSheet.Level < 14)
                 {
-                    source.SendOrangeBarMessage("You must be atleast level 14 to enter bees.");
+                    source.SendOrangeBarMessage("You must be at least level 14 to enter bees.");
                     Subject.Close(source);
                     var point2 = source.DirectionalOffset(source.Direction.Reverse());
                     source.WarpTo(point2);

@@ -164,9 +164,9 @@ public class CdBossDeathScript : MonsterScriptBase
 
                     if (Subject.Template.TemplateKey == "darkmasterray")
                         if (target.UserStatSheet.BaseClass == BaseClass.Rogue)
-                            if (!target.SkillBook.ContainsByTemplateKey("surigumblitz"))
+                            if (!target.SkillBook.ContainsByTemplateKey("murderousintent"))
                             {
-                                var skill = SkillFactory.Create("surigumblitz");
+                                var skill = SkillFactory.Create("murderousintent");
                                 target.SkillBook.TryAddToNextSlot(skill);
                                 target.SendOrangeBarMessage("You've learned a new ability.");
                             }

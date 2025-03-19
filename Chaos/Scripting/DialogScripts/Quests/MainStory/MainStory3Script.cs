@@ -174,7 +174,7 @@ public class MainStory3Script(Dialog subject, IItemFactory itemFactory) : Dialog
             case "mainstory_miraelis_creantinitial7":
             {
                 source.Trackers.Enums.Set(MainstoryMasterEnums.StartedCreants);
-                source.SendOrangeBarMessage("To survive the Creants, you'll need atleast 25,000 Health.");
+                source.SendOrangeBarMessage("To survive the Creants, you'll need at least 25,000 Health.");
 
                 return;
             }

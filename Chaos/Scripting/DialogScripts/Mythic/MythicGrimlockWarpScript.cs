@@ -45,7 +45,7 @@ public class MythicGrimlockWarpScript(Dialog subject, ISimpleCache simpleCache) 
 
                 if (source.UserStatSheet.Level < 71)
                 {
-                    source.SendOrangeBarMessage("You must be atleast level 71 to enter grimlocks.");
+                    source.SendOrangeBarMessage("You must be at least level 71 to enter grimlocks.");
                     Subject.Close(source);
                     var point2 = source.DirectionalOffset(source.Direction.Reverse());
                     source.WarpTo(point2);

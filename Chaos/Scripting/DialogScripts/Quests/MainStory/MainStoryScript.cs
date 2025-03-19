@@ -531,7 +531,7 @@ public class MainStoryScript(
                 Subject.Close(source);
 
                 source.Trackers.Enums.Set(LuckTrial.StartedTrial);
-                source.Trackers.TimedEvents.AddEvent("lucktrialcd", TimeSpan.FromHours(1), true);
+                source.Trackers.TimedEvents.AddEvent("lucktrialcd", TimeSpan.FromMinutes(30), true);
                 source.Trackers.Enums.Set(MainStoryEnums.StartedSecondTrial);
                 var mapinstance = simpleCache.Get<MapInstance>("trialofluck");
                 var point = new Point(8, 71);
@@ -555,7 +555,7 @@ public class MainStoryScript(
                 Subject.Close(source);
                 source.Trackers.Enums.Set(LuckTrial.StartedTrial);
                 source.Trackers.Enums.Set(MainStoryEnums.StartedSecondTrial);
-                source.Trackers.TimedEvents.AddEvent("lucktrialcd", TimeSpan.FromHours(1), true);
+                source.Trackers.TimedEvents.AddEvent("lucktrialcd", TimeSpan.FromMinutes(30), true);
                 var mapinstance = simpleCache.Get<MapInstance>("trialofluck");
                 var point = new Point(8, 71);
                 source.TraverseMap(mapinstance, point);

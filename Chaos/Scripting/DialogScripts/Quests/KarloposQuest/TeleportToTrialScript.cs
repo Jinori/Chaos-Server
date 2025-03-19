@@ -101,7 +101,7 @@ public class TeleportToTrialScript : DialogScriptBase
         }
 
         if (group.Any(
-                x => !x.Trackers.Enums.HasValue(QueenOctopusQuest.Pendant2) || !x.Trackers.Enums.HasValue(QueenOctopusQuest.Complete)))
+                x => !x.Trackers.Enums.HasValue(QueenOctopusQuest.Pendant2) && !x.Trackers.Enums.HasValue(QueenOctopusQuest.Complete)))
         {
             SendMessageAndReply(
                 source,

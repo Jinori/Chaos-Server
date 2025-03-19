@@ -45,7 +45,7 @@ public class MythicHorseWarpScript(Dialog subject, ISimpleCache simpleCache) : D
 
                 if (source.UserStatSheet.Level < 80)
                 {
-                    source.SendOrangeBarMessage("You must be atleast level 80 to enter horses.");
+                    source.SendOrangeBarMessage("You must be at least level 80 to enter horses.");
                     Subject.Close(source);
                     var point2 = source.DirectionalOffset(source.Direction.Reverse());
                     source.WarpTo(point2);

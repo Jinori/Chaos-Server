@@ -76,9 +76,9 @@ public class LearnSkillScript : DialogScriptBase
             }
         },
         {
-            "multistrike", new List<string>
+            "rupture", new List<string>
             {
-                "multistrike"
+                "rupture"
             }
         }
     };
@@ -287,7 +287,7 @@ public class LearnSkillScript : DialogScriptBase
         {
             "stab", new List<string>
             {
-                "gut"
+                "backstab"
             }
         },
         {

@@ -45,7 +45,7 @@ public class MythicKoboldWarpScript(Dialog subject, ISimpleCache simpleCache) : 
 
                 if (source.UserStatSheet.Level < 60)
                 {
-                    source.SendOrangeBarMessage("You must be atleast level 60 to enter kobolds.");
+                    source.SendOrangeBarMessage("You must be at least level 60 to enter kobolds.");
                     Subject.Close(source);
                     var point2 = source.DirectionalOffset(source.Direction.Reverse());
                     source.WarpTo(point2);

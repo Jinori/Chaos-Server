@@ -43,7 +43,7 @@ public class MythicZombieWarpScript(Dialog subject, ISimpleCache simpleCache) : 
 
                 if (source.UserStatSheet.Level < 41)
                 {
-                    source.SendOrangeBarMessage("You must be atleast level 41 to enter zombies.");
+                    source.SendOrangeBarMessage("You must be at least level 41 to enter zombies.");
                     Subject.Close(source);
                     var point2 = source.DirectionalOffset(source.Direction.Reverse());
                     source.WarpTo(point2);
