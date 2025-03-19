@@ -39,7 +39,16 @@ public sealed class AislingDeathTouchScript : MapScriptBase
 
         if (!AislingDeathTouchTimer.IntervalElapsed)
             return;
-        
+
+        foreach (var ghost in Subject.GetEntities<Aisling>().Where(x => x.IsDead || !x.IsAlive))
+            ghost.WarpTo(new Point(20, 10));
+
+        foreach (var person in Subject.GetEntities<Aisling>().Where(x => x.Group != null))
+        {
+            person.Group?.Kick(person);
+            person.SendMessage("Removed from group to prevent seeing group members.");
+        }
+
         if (!AislingsTouching)
         {
             var aislings = Subject.GetEntities<Aisling>().Where(x => x.IsAlive).ToList();
@@ -76,7 +85,7 @@ public sealed class AislingDeathTouchScript : MapScriptBase
 
                 Subject.ShowAnimation(BlowupAnimation.GetPointAnimation(TouchOne));
                 Subject.ShowAnimation(BlowupAnimation.GetPointAnimation(TouchTwo));
-
+                
                 TouchOne = null;
                 TouchTwo = null;
                 AislingsTouching = false;

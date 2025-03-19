@@ -343,7 +343,8 @@ public class ArmorsmithingGearScript : DialogScriptBase
             source.GiveItemOrSendToBank(newCraft);
 
             Subject.InjectTextParameters(newCraft.DisplayName);
-        } else
+        } 
+        else
         {
             var newCraft = ItemFactory.Create(recipe.TemplateKey);
 
