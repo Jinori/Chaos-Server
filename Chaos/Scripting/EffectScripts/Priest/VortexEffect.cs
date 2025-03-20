@@ -111,10 +111,9 @@ public class VortexEffect : ContinuousAnimationEffectBase
         SourceOfEffect = source;
 
         // Allow only pets and teammates to receive the effect
-        if (target is Monster { Script: not PetScript and not NightmareTeammateScript })
+        if (target is Monster monster && !monster.Script.Is<PetScript>() && !monster.Script.Is<NightmareTeammateScript>())
         {
-            SendMessage(source, "Cannot be cast on this monster.", ServerMessageType.OrangeBar1);
-
+            SendMessage(source, "Cannot be cast on monsters.", ServerMessageType.OrangeBar1);
             return false;
         }
 

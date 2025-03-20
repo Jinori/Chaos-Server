@@ -14,7 +14,7 @@ public class FaceShapeScript : DialogScriptBase
 {
     private static readonly string[] FaceStyles =
     {
-        "defaultfaceshape", "blushfaceshape", "derpyfaceshape", "bugfaceshape", "suprisedfaceshape", "squintfaceshape", "fishfaceshape", "oldmanfaceshape",
+        "defaultfaceshape", "blushfaceshape", "derpyfaceshape", "bugfaceshape", "surprisedfaceshape", "squintfaceshape", "fishfaceshape", "oldmanfaceshape",
         "meanfaceshape", "beautyfaceshape", "soullessfaceshape", "possessedfaceshape", "deepeyesfaceshape", "closedeyesfaceshape", "sleepyeyesfaceshape", "fakesmilefaceshape",  "steppedonalegofaceshape","restingbitchfaceshape",
     };
 
