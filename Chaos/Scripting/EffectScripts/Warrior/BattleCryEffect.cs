@@ -8,22 +8,29 @@ namespace Chaos.Scripting.EffectScripts.Warrior;
 
 public class BattleCryEffect : EffectBase
 {
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(18);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(20);
     public override byte Icon => 88;
     public override string Name => "Battle Cry";
+    
+    private int _damageSaved;
 
     public override void OnApplied()
     {
         base.OnApplied();
 
+        var buff = 15 + (Subject.StatSheet.EffectiveStr / 10);
+        
         var attributes = new Attributes
         {
-            AtkSpeedPct = 20
+            AtkSpeedPct = buff,
+            Dmg = buff
         };
 
+        _damageSaved = buff;
+        
         AislingSubject?.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your feel your body accelerate faster.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your accelerate faster as your damage rises.");
     }
 
     public override void OnDispelled() => OnTerminated();
@@ -32,7 +39,8 @@ public class BattleCryEffect : EffectBase
     {
         var attributes = new Attributes
         {
-            AtkSpeedPct = 20
+            AtkSpeedPct = _damageSaved,
+            Dmg = _damageSaved
         };
 
         AislingSubject?.StatSheet.SubtractBonus(attributes);
@@ -44,7 +52,7 @@ public class BattleCryEffect : EffectBase
     {
         if (target.Effects.Contains("Battle Cry"))
         {
-            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your muscles are at their maximum speed.");
+            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your muscles are at their maximum.");
 
             return false;
         }
