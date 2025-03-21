@@ -50,7 +50,9 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         "Knowledge",
         "Werewolf",
         "DropBoost",
-        "DmgTrinket"
+        "DmgTrinket",
+        "Prevent Recradh",
+        "Miracle"
     ];
 
     private readonly HashSet<string> ArenaKeys = new(StringComparer.OrdinalIgnoreCase)
@@ -1144,6 +1146,12 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         }
     }
 
+    private static void RemoveOldWarriorSkillsSpells(Aisling aisling)
+    {
+        if (aisling.SpellBook.ContainsByTemplateKey("rage"))
+            aisling.SpellBook.RemoveByTemplateKey("rage");
+    }
+    
     private static void RemoveOldMonkFormSkillsSpells(Aisling aisling)
     {
         if (aisling.UserStatSheet.BaseClass is not BaseClass.Monk)
@@ -1423,6 +1431,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             RemovePureOnlySkills(skill);
 
         RemoveOldMonkFormSkillsSpells(Subject);
+        RemoveOldWarriorSkillsSpells(Subject);
     }
 
     private void HandleSkillReplacements()

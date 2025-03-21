@@ -36,7 +36,9 @@ public class RemoveEffectComponent : IComponent
         "Celebration",
         "Marriage",
         "DropBoost",
-        "DmgTrinket"
+        "DmgTrinket",
+        "Prevent Recradh",
+        "Miracle"
     ];
 
     private static readonly HashSet<string> NegativeEffects = new()
