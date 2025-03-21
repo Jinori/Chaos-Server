@@ -12,37 +12,41 @@ public class BattleCryEffect : EffectBase
     public override byte Icon => 88;
     public override string Name => "Battle Cry";
     
-    private int _damageSaved;
-
     public override void OnApplied()
     {
         base.OnApplied();
 
-        var buff = 15 + (Subject.StatSheet.EffectiveStr / 10);
-        
-        var attributes = new Attributes
-        {
-            AtkSpeedPct = buff,
-            Dmg = buff
-        };
-
-        _damageSaved = buff;
+        var attributes = GetSnapshotAttributes;
         
         AislingSubject?.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your accelerate faster as your damage rises.");
     }
 
+    /// <inheritdoc />
+    public override void PrepareSnapshot(Creature source)
+    {
+        var buff = 15 + source.StatSheet.EffectiveStr / 10;
+        var flat = 25 + source.StatSheet.EffectiveStr;
+        
+        SnapshotVars.Set("dmg", buff);
+        SnapshotVars.Set("atkSpeedPct", buff);
+        SnapshotVars.Set("flatSkillDmg", flat);
+    }
+    
+    private Attributes GetSnapshotAttributes => new()
+    {
+        AtkSpeedPct = SnapshotVars.Get<int>("atkSpeedPct"),
+        Dmg = SnapshotVars.Get<int>("dmg"),
+        FlatSkillDamage = SnapshotVars.Get<int>("flatSkillDmg")
+    };
+
     public override void OnDispelled() => OnTerminated();
 
     public override void OnTerminated()
     {
-        var attributes = new Attributes
-        {
-            AtkSpeedPct = _damageSaved,
-            Dmg = _damageSaved
-        };
-
+        var attributes = GetSnapshotAttributes;
+        
         AislingSubject?.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your body has returned to normal.");

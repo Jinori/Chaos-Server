@@ -9,8 +9,6 @@ namespace Chaos.Scripting.EffectScripts.Rogue;
 
 public class FocusEffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
 {
-    protected Attributes SnapshotAttributes;
-
     public List<string> ConflictingEffectNames { get; init; } = ["Focus"];
 
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(10);
@@ -27,22 +25,29 @@ public class FocusEffect : EffectBase, NonOverwritableEffectComponent.INonOverwr
 
     protected byte? Sound => 140;
 
+    /// <inheritdoc />
+    public override void PrepareSnapshot(Creature source)
+    {
+        var skillDamagePctBonus = 10 + Subject.StatSheet.EffectiveDex / 20;
+        var flatSkillDamageBonus = 25 + Subject.StatSheet.EffectiveDex;
+        
+        SnapshotVars.Set("skillDmgPct", skillDamagePctBonus);
+        SnapshotVars.Set("flatSkillDmg", flatSkillDamageBonus);
+    }
+
+    private Attributes GetSnapshotAttributes => new()
+    {
+        SkillDamagePct = SnapshotVars.Get<int>("skillDmgPct"),
+        FlatSkillDamage = SnapshotVars.Get<int>("flatSkillDmg")
+    };
+    
     public override void OnApplied()
     {
         base.OnApplied();
+        
+        var attributes = GetSnapshotAttributes;
 
-        var atkSpeedBonus = 20 + Subject.StatSheet.EffectiveDex / 20;
-        var skillDamagePctBonus = 10 + Subject.StatSheet.EffectiveDex / 20;
-        var flatSkillDamageBonus = 25 + Subject.StatSheet.EffectiveDex;
-
-        SnapshotAttributes = new Attributes
-        {
-            AtkSpeedPct = atkSpeedBonus,
-            SkillDamagePct = skillDamagePctBonus,
-            FlatSkillDamage = flatSkillDamageBonus
-        };
-
-        Subject.StatSheet.AddBonus(SnapshotAttributes);
+        Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are now focused.");
         Subject.Animate(Animation);
@@ -52,7 +57,9 @@ public class FocusEffect : EffectBase, NonOverwritableEffectComponent.INonOverwr
 
     public override void OnTerminated()
     {
-        Subject.StatSheet.SubtractBonus(SnapshotAttributes);
+        var attributes = GetSnapshotAttributes;
+        
+        Subject.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You lost your focus.");
     }
