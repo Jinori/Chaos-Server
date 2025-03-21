@@ -121,68 +121,7 @@ public struct DamageAbilityComponent : IComponent
         if (numberOfTargets > 1)
             finalDamage = (int)(finalDamage * (1 + damageMultiplierPerTarget * (numberOfTargets - 1)));
 
-        ApplyFuryEffects(source, ref finalDamage);
-        ApplyCunningEffects(source, ref finalDamage);
-
         return finalDamage;
-    }
-
-    private void ApplyFuryEffects(Creature source, ref int finalDamage)
-    {
-        var furyMultipliers = new Dictionary<string, double>
-        {
-            {
-                "Fury1", 1.10
-            },
-            {
-                "Fury2", 1.20
-            },
-            {
-                "Fury3", 1.35
-            },
-            {
-                "Fury4", 1.50
-            },
-            {
-                "Fury5", 1.75
-            },
-            {
-                "Fury6", 2.00
-            }
-        };
-
-        foreach (var fury in furyMultipliers)
-            if (source.Effects.Contains(fury.Key))
-                finalDamage = (int)(finalDamage * fury.Value);
-    }
-
-    private void ApplyCunningEffects(Creature source, ref int finalDamage)
-    {
-        var cunningMultipliers = new Dictionary<string, double>
-        {
-            {
-                "Cunning1", 1.08
-            },
-            {
-                "Cunning2", 1.16
-            },
-            {
-                "Cunning3", 1.28
-            },
-            {
-                "Cunning4", 1.40
-            },
-            {
-                "Cunning5", 1.60
-            },
-            {
-                "Cunning6", 1.80
-            }
-        };
-
-        foreach (var cunning in cunningMultipliers)
-            if (source.Effects.Contains(cunning.Key))
-                finalDamage = (int)(finalDamage * cunning.Value);
     }
 
     public interface IDamageComponentOptions

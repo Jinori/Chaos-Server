@@ -110,7 +110,9 @@ public class DarkPriestScript(Dialog subject, ISpellFactory spellFactory)
 
                 source.SpellBook.Remove("zap");
                 var spell = spellFactory.Create("voidjolt");
+                var spell2 = spellFactory.Create("auraoftorment");
                 source.SpellBook.TryAddToNextSlot(spell);
+                source.SpellBook.TryAddToNextSlot(spell2);
                 source.SendOrangeBarMessage("You feel a surge of power, Darkness has consumed your body.");
                 source.UserStatSheet.SetHp(1);
                 source.UserStatSheet.SetMp(1);

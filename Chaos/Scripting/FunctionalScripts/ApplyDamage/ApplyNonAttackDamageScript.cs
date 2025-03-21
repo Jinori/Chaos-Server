@@ -1,4 +1,5 @@
 using Chaos.DarkAges.Definitions;
+using Chaos.Extensions;
 using Chaos.Formulae;
 using Chaos.Formulae.Abstractions;
 using Chaos.Models.World;
@@ -29,6 +30,9 @@ public class ApplyNonAttackDamageScript : ScriptBase, IApplyDamageScript
 
         if (damage <= 0)
             return;
+        
+        if ((damage > target.StatSheet.CurrentHp) && target.IsInLastStand())
+            damage = target.StatSheet.CurrentHp - 1;
 
         target.Trackers.LastDamagedBy = source;
 

@@ -22,6 +22,13 @@ public class Cunning4Effect : EffectBase
     public override void OnApplied()
     {
         base.OnApplied();
+        var attributes = new Attributes
+        {
+            Dmg = 40,
+            SkillDamagePct = 40
+        };
+
+        Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.StatSheet.SubtractMp(64000);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "{=bCunning 4 builds up inside you.");
@@ -37,8 +44,17 @@ public class Cunning4Effect : EffectBase
     }
 
     public override void OnTerminated()
-        => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your cunning returns to normal.");
+    {
+        var attributes = new Attributes
+        {
+            Dmg = 40,
+            SkillDamagePct = 40
+        };
 
+        Subject.StatSheet.SubtractBonus(attributes);
+        AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your cunning returns to normal.");
+    }
     public override bool ShouldApply(Creature source, Creature target)
     {
         if (!target.Effects.Contains("Cunning4") && (target.StatSheet.CurrentMp <= 64000))

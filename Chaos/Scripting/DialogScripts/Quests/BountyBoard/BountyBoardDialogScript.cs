@@ -26,11 +26,6 @@ public class BountyBoardDialogScript : DialogScriptBase
         new("nyxembrace", 8),
         new("radiantpearl", 15),
         new("eclipsepearl", 15),
-        new("largejewelcraftingbox", 15),
-        new("largeenchantingbox", 15),
-        new("artisanweaponsmithingbox", 15),
-        new("artisanarmorsmithingbox", 15),
-        new("artisanalchemybox", 15)
     ];
 
     private readonly IItemFactory ItemFactory;
@@ -560,28 +555,11 @@ public class BountyBoardDialogScript : DialogScriptBase
                     {
                         exp = 175000000;
                         gamepoints = 100;
-
-                        // Pick the first item
+                        
                         var firstItemDefinition = EpicRewards.PickRandomWeighted();
                         var firstItemReward = ItemFactory.Create(firstItemDefinition);
 
                         source.GiveItemOrSendToBank(firstItemReward);
-
-                        // Keep picking the second item until it's different from the first
-                        var secondItemDefinition = EpicRewards.PickRandomWeighted();
-                        var secondItemReward = ItemFactory.Create(secondItemDefinition);
-
-                        // Compare the actual reward objects (or names) to ensure they differ
-                        while (secondItemReward.DisplayName == firstItemReward.DisplayName)
-                        {
-                            secondItemDefinition = EpicRewards.PickRandomWeighted();
-                            secondItemReward = ItemFactory.Create(secondItemDefinition);
-                        }
-
-                        source.GiveItemOrSendToBank(secondItemReward);
-
-                        if (secondItemReward.DisplayName.ContainsI("Nyx"))
-                            source.Trackers.Counters.AddOrIncrement($"NyxItem{secondItemReward.UniqueId}");
 
                         source.Legend.AddOrAccumulate(
                             new LegendMark(

@@ -22,6 +22,14 @@ public class Fury1Effect : EffectBase
     public override void OnApplied()
     {
         base.OnApplied();
+        
+        var attributes = new Attributes
+        {
+            Dmg = 10,
+            SkillDamagePct = 10
+        };
+
+        Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.StatSheet.SubtractHp(8000);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "{=bFury 1 builds up inside you.");
@@ -37,7 +45,17 @@ public class Fury1Effect : EffectBase
     }
 
     public override void OnTerminated()
-        => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your fury returns to normal.");
+    {
+        var attributes = new Attributes
+        {
+            Dmg = 10,
+            SkillDamagePct = 10
+        };
+
+        Subject.StatSheet.SubtractBonus(attributes);
+        AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your fury returns to normal.");
+    }
 
     public override bool ShouldApply(Creature source, Creature target)
     {

@@ -135,6 +135,9 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
 
         if (!creature.IsAlive || creature.IsDead)
             return;
+        
+        if ((damage > creature.StatSheet.CurrentHp) && creature.IsInLastStand())
+            damage = creature.StatSheet.CurrentHp - 1;
 
         creature.StatSheet.SubtractHp(damage);
         creature.ShowHealth();

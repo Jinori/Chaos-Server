@@ -655,13 +655,6 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             }
         }
 
-        if (Subject.IsInLastStand())
-            if (damage >= Subject.StatSheet.CurrentHp)
-            {
-                Subject.StatSheet.SetHp(1);
-                Subject.Client.SendAttributes(StatUpdateType.Vitality);
-            }
-
         if (Subject.Effects.Contains("Mount"))
         {
             Subject.Effects.Dispel("Mount");
@@ -1420,7 +1413,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         string[] pureOnlySkills =
         {
             "annihilate", "dragonstrike", "chaosfist", "madsoul", "onslaught",
-            "sneakattack", "shadowfigure", "multistrike", "battlefieldsweep",
+            "sneakattack", "shadowfigure", "rupture", "battlefieldsweep",
             "paralyzeforce", "shadowfigure"
         };
 

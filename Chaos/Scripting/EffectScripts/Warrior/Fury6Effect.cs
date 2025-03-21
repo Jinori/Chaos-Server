@@ -23,6 +23,13 @@ public class Fury6Effect : EffectBase
     {
         base.OnApplied();
         AislingSubject?.Effects.Terminate("Fury5");
+        var attributes = new Attributes
+        {
+            Dmg = 100,
+            SkillDamagePct = 100
+        };
+
+        Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.StatSheet.SubtractHp(256000);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "{=bFury 6 builds up inside you.");
@@ -38,8 +45,17 @@ public class Fury6Effect : EffectBase
     }
 
     public override void OnTerminated()
-        => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your fury returns to normal.");
+    {
+        var attributes = new Attributes
+        {
+            Dmg = 100,
+            SkillDamagePct = 100
+        };
 
+        Subject.StatSheet.SubtractBonus(attributes);
+        AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your fury returns to normal.");
+    }
     public override bool ShouldApply(Creature source, Creature target)
     {
         if (target.Effects.Contains("Fury6"))

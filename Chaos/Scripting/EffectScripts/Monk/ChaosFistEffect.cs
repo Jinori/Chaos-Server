@@ -30,7 +30,13 @@ public class ChaosFistEffect : ContinuousAnimationEffectBase
     public override void OnApplied()
     {
         base.OnApplied();
+        
+        var attributes = new Attributes
+        {
+            Dmg = 90
+        };
 
+        Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your fists rush with a burst of energy.");
     }
@@ -41,6 +47,12 @@ public class ChaosFistEffect : ContinuousAnimationEffectBase
 
     public override void OnTerminated()
     {
+        var attributes = new Attributes
+        {
+            Dmg = 90
+        };
+
+        Subject.StatSheet.SubtractBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your hands return to normal.");
     }
