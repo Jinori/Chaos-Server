@@ -42,7 +42,7 @@ public class WhirlwindEffect : EffectBase
         // 3% of health per second
         // but as we gain attack speed, this will tick faster
         // so we need to adjust the health subtraction based on attack speed to maintain 3% per second
-        var healthPercentToSubtract = 3.0m;
+        var healthPercentToSubtract = 4.0m;
         var effectiveAtkSpeedPct = 1.0m + (decimal)(Subject.StatSheet.EffectiveAttackSpeedPct / 100.0);
         
         healthPercentToSubtract /= effectiveAtkSpeedPct;
