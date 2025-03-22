@@ -64,6 +64,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
     public Collections.Legend Legend { get; private set; }
     public MailBox MailBox { get; set; } = null!;
     public string MonsterRacingLane { get; set; } = null!;
+    public bool Muted { get; set; }
     public Nation Nation { get; set; }
     public bool OnTwentyOneTile { get; set; }
     public UserOptions Options { get; init; }

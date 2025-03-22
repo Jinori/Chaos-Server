@@ -109,6 +109,15 @@ public sealed class ChannelService : IChannelService
     }
 
     /// <inheritdoc />
+    public void MuteChannel(string channelName)
+    {
+        channelName = PrependPrefix(channelName);
+
+        if (Channels.TryGetValue(channelName, out var channelDetails))
+            channelDetails.Muted = true;
+    }
+
+    /// <inheritdoc />
     public string PrependPrefix(string channelName)
     {
         if (IsChannel(channelName))
@@ -275,6 +284,15 @@ public sealed class ChannelService : IChannelService
         }
 
         subDetails.MessageColorOverride = messageColor;
+    }
+
+    /// <inheritdoc />
+    public void UnmuteChannel(string channelName)
+    {
+        channelName = PrependPrefix(channelName);
+
+        if (Channels.TryGetValue(channelName, out var channelDetails))
+            channelDetails.Muted = false;
     }
 
     /// <inheritdoc />

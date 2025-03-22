@@ -79,7 +79,7 @@ public class GuildMemberAdmitScript : GuildScriptBase
             return;
         }
 
-        if (!IsOfficer(sourceRank))
+        if (!sourceRank.IsOfficerRank)
         {
             Subject.Reply(source, "You do not have permission to admit members", "generic_guild_members_initial");
             return;
@@ -91,12 +91,13 @@ public class GuildMemberAdmitScript : GuildScriptBase
             return;
         }
 
-        var aislingToAdmit = ClientRegistry.FirstOrDefault(cli => cli.Aisling.Name.EqualsI(name))
-                                           ?.Aisling;
+        var aislingToAdmit = source.MapInstance
+                                   .GetEntities<Aisling>()
+                                   .FirstOrDefault(aisling => aisling.Name.EqualsI(name));
 
         if (aislingToAdmit is null)
         {
-            Subject.Reply(source, $"{name} is not online", "generic_guild_members_initial");
+            Subject.Reply(source, $"{name} is not nearby", "generic_guild_members_initial");
             return;
         }
         
