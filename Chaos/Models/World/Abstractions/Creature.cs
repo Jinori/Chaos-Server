@@ -369,6 +369,7 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
     public virtual void ShowHealth(byte? sound = null)
     {
         foreach (var aisling in MapInstance.GetEntitiesWithinRange<Aisling>(this)
+                                           .ThatCanObserve(this)
 
                                            //intentional... if you're observable but still invisible, health bar shouldnt show
                                            .ThatCanSee(this))
