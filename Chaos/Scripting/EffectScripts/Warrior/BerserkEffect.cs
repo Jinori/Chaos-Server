@@ -26,9 +26,8 @@ public class BerserkEffect : EffectBase
         var attributes = new Attributes
         {
             Ac = 10,
-            AtkSpeedPct = 10,
-            Dmg = 15,
-            SkillDamagePct = 15
+            AtkSpeedPct = 25,
+            FlatSkillDamage = 150
         };
 
         AislingSubject?.StatSheet.AddBonus(attributes);
@@ -45,9 +44,8 @@ public class BerserkEffect : EffectBase
         var attributes = new Attributes
         {
             Ac = 10,
-            AtkSpeedPct = 10,
-            Dmg = 15,
-            SkillDamagePct = 15
+            AtkSpeedPct = 25,
+            FlatSkillDamage = 150
         };
 
         AislingSubject?.StatSheet.SubtractBonus(attributes);
