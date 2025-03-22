@@ -18,7 +18,8 @@ public sealed class MagicResistanceComponent : IConditionalComponent
     {
         var userHit = context.Source.StatSheet.EffectiveHit;
 
-        var targets = vars.GetTargets<Creature>()
+        //must have MapEntity here, because targets can be anything
+        var targets = vars.GetTargets<MapEntity>()
                           .ToList();
         var options = vars.GetOptions<IMagicResistanceComponentOptions>();
 
@@ -26,7 +27,8 @@ public sealed class MagicResistanceComponent : IConditionalComponent
         if (options.IgnoreMagicResistance)
             return true;
 
-        foreach (var target in targets.ToList())
+        //OfType<Creature> here because MR only applies to creatures
+        foreach (var target in targets.OfType<Creature>().ToList())
         {
             // Step 1: Calculate the difference between base magic resistance and user's hit
             var baseMagicResistance = target.StatSheet.EffectiveMagicResistance;
