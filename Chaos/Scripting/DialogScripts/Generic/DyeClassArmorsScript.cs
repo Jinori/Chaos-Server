@@ -7,15 +7,15 @@ namespace Chaos.Scripting.DialogScripts.Generic;
 
 public class DyeClassArmorsScript : DialogScriptBase
 {
-    private readonly List<string> DyeAbleClassArmors = new()
-    {
+    private readonly List<string> DyeAbleClassArmors =
+    [
         "earthbodice", "lotusbodice", "moonbodice", "lightninggarb", "seagarb", "dobok", "culotte", "earthgarb", "windgarb", "mountaingarb",
         "gorgetgown", "mysticgown", "elle", "dolman", "bansagart", "cowl", "galuchatcoat", "mantle", "hierophant", "dalmatica",
         "cotte", "brigandine", "corsette", "pebblerose", "kagum", "scoutleather", "dwarvishleather", "paluten", "keaton", "bardocle",
         "leatherbliaut", "cuirass", "cotehardie", "kasmaniumhauberk", "labyrinthmail", "leathertunic", "jupe", "lorica", "chainmail",
-        "platemail",
+        "platemail", "platemailhelmet",
         "magiskirt", "benusta", "stoller", "clymouth", "clamyth", "gardcorp", "journeyman", "lorum", "mane", "duinuasal"
-    };
+    ];
     private readonly IItemFactory ItemFactory;
 
     public DyeClassArmorsScript(Dialog subject, IItemFactory itemFactory)
