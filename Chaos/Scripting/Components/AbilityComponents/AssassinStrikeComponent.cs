@@ -76,12 +76,8 @@ public struct AssassinStrikeComponent : IComponent
         if (target is not Monster monster)
             return finalDamage;
 
-        var multiplier = 1.0m;
-
         if (!monster.AggroList.TryGetValue(source.Id, out _))
-            multiplier += 0.25m;
-        
-        finalDamage = (int)(finalDamage * multiplier);
+            finalDamage = (int)(finalDamage * 1.25);
 
         return finalDamage;
     }

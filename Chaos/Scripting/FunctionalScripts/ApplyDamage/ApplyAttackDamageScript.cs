@@ -55,80 +55,27 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
 
         target.Trackers.LastDamagedBy = source;
 
-        switch (target)
-        {
-            case Aisling aisling:
-
-                var relation = source.DirectionalRelationTo(target);
-
-                if (aisling.Effects.Contains("Dodge") || aisling.Effects.Contains("Evasion"))
-                {
-                    if (aisling.Effects.Contains("Dodge"))
-                    {
-                        if (relation == target.Direction.Reverse())
-                            damage = (int)(damage * 1.4);
-                        else if (relation != target.Direction)
-                            damage = (int)(damage * 1.2);
-                    }
-
-                    if (aisling.Effects.Contains("Evasion"))
-                    {
-                        if (relation == target.Direction.Reverse())
-                            damage = (int)(damage * 1.3);
-                        else if (relation != target.Direction)
-                            damage = (int)(damage * 1.1);
-                    }
-                } else
-                {
-                    if (relation == target.Direction.Reverse())
-                        damage = (int)(damage * 1.5);
-                    else if (relation != target.Direction)
-                        damage = (int)(damage * 1.25);
-                }
-
-                if (source is Aisling rogue && rogue.HasClass(BaseClass.Rogue) && (relation == aisling.Direction.Reverse()))
-                {
-                    damage = (int)(damage * 1.1);
-                }
-
-                if (ReflectDamage(source, aisling, damage))
-                    return;
-
-                ApplyDamageAndTriggerEvents(aisling, damage, source);
-                ApplyDurabilityDamage(aisling, source, script);
-
-                break;
-            case Monster monster:
-                var relation1 = source.DirectionalRelationTo(target);
-
-                if (relation1 == target.Direction.Reverse())
-                    damage = (int)(damage * 1.5);
-
-                else if (relation1 != target.Direction)
-                    damage = (int)(damage * 1.25);
-                
-                if (source is Aisling rogue1 && rogue1.HasClass(BaseClass.Rogue) && (relation1 == target.Direction.Reverse()))
-                {
-                    damage = (int)(damage * 1.1);
-                }
-
-                if (ReflectDamage(source, monster, damage))
-                    return;
-
-                ApplyDamageAndTriggerEvents(monster, damage, source);
-
-                break;
-            case Merchant merchant:
-                merchant.Script.OnAttacked(source, damage);
-
-                break;
-        }
+        if (ReflectDamage(source, target, damage))
+            return;
+        
+        if(target is Aisling aislingTarget)
+            ApplyDurabilityDamage(aislingTarget, source, script);
+        
+        ApplyDamageAndTriggerEvents(target, damage, source);
     }
 
     public static IApplyDamageScript Create() => FunctionalScriptRegistry.Instance.Get<IApplyDamageScript>(Key);
 
     private void ApplyDamageAndTriggerEvents(Creature creature, int damage, Creature source)
     {
+        // ReSharper disable once ConvertIfStatementToSwitchStatement
+        if (creature is Merchant)
+        {
+            creature.Script.OnAttacked(source, damage);
+
+            return;
+        }
+
         //Pets cannot be damaged by Aislings
         if (creature is Monster { PetOwner: not null } && source is Aisling)
             return;

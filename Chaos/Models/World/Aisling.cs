@@ -716,8 +716,6 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
             return;
         }
         
-        
-        
         Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Message, Topics.Actions.Send)
             .WithProperty(this)
             .LogInformation(

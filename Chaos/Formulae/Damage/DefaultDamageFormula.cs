@@ -1,11 +1,13 @@
 using System.Collections.Immutable;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
+using Chaos.Extensions.Geometry;
 using Chaos.Formulae.Abstractions;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Abstractions;
+using Chaos.Scripting.EffectScripts.Warrior;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
 using Chaos.Scripting.SkillScripts.Abstractions;
 using Chaos.Scripting.SpellScripts.Abstractions;
@@ -56,24 +58,15 @@ public class DefaultDamageFormula : IDamageFormula
                 return 0;
             }
 
-        ApplySkillSpellModifier(ref damage, script, source);
-
-        var defenderAc = GetDefenderAc(target);
-
-        ApplyAcModifier(ref damage, defenderAc);
-
+        ApplySourceModifiers(ref damage, script, source);
+        
         ApplyElementalModifier(
             ref damage,
             elementOverride ?? source.StatSheet.OffenseElement,
             target.StatSheet.DefenseElement,
             script);
-
-        HandleClawFist(ref damage, script, source);
-        HandleChaosFist(ref damage, script, source);
-        HandleAite(ref damage, target);
-        HandleWeaponDamage(ref damage, source);
-        HandleDmgStat(ref damage, script, source);
-        HandleEffectDmg(ref damage, target, script);
+        
+        ApplyTargetModifiers(ref damage, source, target, script);
 
         return damage;
     }
@@ -87,22 +80,22 @@ public class DefaultDamageFormula : IDamageFormula
         IScript script)
         => damage = Convert.ToInt32(damage * ElementalModifierLookup[(int)attackElement][(int)defenseElement]);
 
-    protected virtual void ApplySkillSpellModifier(ref int damage, IScript source, Creature attacker)
+    protected virtual void ApplySourceModifiers(ref int damage, IScript source, Creature attacker)
     {
         switch (source)
         {
-            case ISkillScript:
+            case ISkillScript or WrathEffect or WhirlwindEffect:
             {
-                if (source is not SubjectiveScriptBase<Skill> skillScript)
-                    return;
-
                 var addedFromPct = damage * (attacker.StatSheet.EffectiveSkillDamagePct / 100m);
 
-                if (skillScript.Subject.Template.IsAssail)
+                if (IsAssail(source))
+                {
                     addedFromPct = 0;
+                    HandleDmgStat(ref damage, source, attacker);
+                }
                 
                 damage += Convert.ToInt32(attacker.StatSheet.EffectiveFlatSkillDamage + addedFromPct);
-
+                
                 break;
             }
             case ISpellScript:
@@ -120,7 +113,7 @@ public class DefaultDamageFormula : IDamageFormula
 
                     // ReSharper disable once TailRecursiveCall
                     if (sourceScript is not null && sourceScript is not IReactorTileScript)
-                        ApplySkillSpellModifier(ref damage, sourceScript, attacker);
+                        ApplySourceModifiers(ref damage, sourceScript, attacker);
                 }
 
                 break;
@@ -159,75 +152,80 @@ public class DefaultDamageFormula : IDamageFormula
             damage = (int)(damage * 0.68);
     }
 
-    protected virtual void HandleChaosFist(ref int damage, IScript source, Creature attacker)
+    protected virtual bool IsAssail(IScript source)
     {
-        if (!attacker.Effects.Contains("Chaos Fist"))
-            return;
+        if (source is SubjectiveScriptBase<Skill> { Subject.Template.IsAssail: true } or WrathEffect or WhirlwindEffect)
+            return true;
 
-        if (source is not SubjectiveScriptBase<Skill> skillScript)
-            return;
-
-        if (skillScript.Subject.Template.IsAssail)
-            damage = Convert.ToInt32(damage * 1.9);
-    }
-
-    protected virtual void HandleClawFist(ref int damage, IScript source, Creature attacker)
-    {
-        if (!attacker.Effects.Contains("Claw Fist"))
-            return;
-
-        if (source is not SubjectiveScriptBase<Skill> skillScript)
-            return;
-
-        if (skillScript.Subject.Template.IsAssail)
-            damage = Convert.ToInt32(damage * 1.2);
+        return false;
     }
 
     protected virtual void HandleDmgStat(ref int damage, IScript source, Creature attacker)
     {
-        if (source is not SubjectiveScriptBase<Skill> skillScript)
-            return;
-
-        if (!skillScript.Subject.Template.IsAssail)
-            return;
-
         var damageMultiplier = 1 + attacker.StatSheet.EffectiveDmg * 0.01;
         damage = (int)(damage * damageMultiplier);
     }
 
-    protected virtual void HandleEffectDmg(ref int damage, Creature defender, IScript script)
+    protected virtual void ApplyTargetModifiers(
+        ref int damage,
+        Creature attacker,
+        Creature defender,
+        IScript script)
     {
+        //defensive things are multiplicative
+        var defenderAc = GetDefenderAc(defender);
+
+        ApplyAcModifier(ref damage, defenderAc);
+        HandleAite(ref damage, defender);
+
+        //offensive things are additive
         var damageMultiplier = 1.0;
 
         if (defender.Effects.Contains("Beag Pramh"))
-            damageMultiplier *= 1.25;
+            damageMultiplier += .25;
+        else if (defender.Effects.Contains("Wolf Fang Fist") || defender.Effects.Contains("Pramh"))
+            damageMultiplier += 1;
 
         if (defender.Effects.Contains("Crit"))
-        {
-            if (script is SubjectiveScriptBase<Skill> skillScript && !skillScript.Subject.Template.IsAssail)
+            if (script is SubjectiveScriptBase<Skill> { Subject.Template.IsAssail: false } or SubjectiveScriptBase<Spell>)
             {
-                damageMultiplier *= 2; // Double damage for Crit
-                defender.Effects.Dispel("Crit"); // ✅ Remove Crit effect
-            } else if (script is SubjectiveScriptBase<Spell>)
-            {
-                damageMultiplier *= 2; // ✅ Double damage for non-Assail spells too
-                defender.Effects.Dispel("Crit"); // ✅ Remove Crit effect
+                damageMultiplier += 1;
+                defender.Effects.Dispel("Crit");
             }
+
+        var relation = attacker.DirectionalRelationTo(defender);
+        var reverse = defender.Direction.Reverse();
+        var isBehind = relation == reverse;
+        var isFlank = (relation != defender.Direction) && !isBehind;
+
+        if (defender.Effects.Contains("dodge"))
+        {
+            if (isBehind)
+                damageMultiplier += 0.4;
+            else if (isFlank)
+                damageMultiplier += 0.2;
+        } else if (defender.Effects.Contains("evasion"))
+        {
+            if (isBehind)
+                damageMultiplier += 0.3;
+            else if (isFlank)
+                damageMultiplier += 0.1;
+        } else
+        {
+            if (isBehind)
+                damageMultiplier += 0.5;
+            else if (isFlank)
+                damageMultiplier += 0.25;
         }
 
-        if (defender.Effects.Contains("Wolf Fang Fist") || defender.Effects.Contains("Pramh"))
-            damageMultiplier *= 2.0;
+        if (attacker is Aisling { UserStatSheet.BaseClass: BaseClass.Rogue })
+            if (isBehind)
+                damageMultiplier += 0.25;
+            else if (isFlank)
+                damageMultiplier += 0.25 / 2.0;
+
         var modifiedDamage = damage * damageMultiplier;
 
-        // Round the modified damage to the nearest whole number.
-        damage = (int)Math.Round(modifiedDamage);
-    }
-
-    protected virtual void HandleWeaponDamage(ref int damage, Creature attacker)
-    {
-        if (attacker is not Aisling aisling || !aisling.Equipment.TryGetObject((byte)EquipmentSlot.Weapon, out var obj))
-            return;
-
-        damage += obj.Modifiers.FlatSkillDamage;
+        damage = (int)modifiedDamage;
     }
 }
