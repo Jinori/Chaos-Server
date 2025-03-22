@@ -69,7 +69,7 @@ public class WrathEffect : EffectBase
                              .GetEntitiesAtPoints<Creature>(points)
                              .WithFilter(Subject, TargetFilter.HostileOnly | TargetFilter.AliveOnly);
 
-        var damage = (Subject.StatSheet.EffectiveStr + 10) * 2;
+        var damage = 15 + Subject.StatSheet.EffectiveStr;
 
         foreach (var target in targets)
         {
@@ -89,7 +89,7 @@ public class WrathEffect : EffectBase
     /// <inheritdoc />
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (target.StatSheet.HealthPercent <= 3)
+        if (target.StatSheet.HealthPercent <= 33)
             return false;
 
         return true;

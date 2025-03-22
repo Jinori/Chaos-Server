@@ -64,7 +64,7 @@ public class WhirlwindEffect : EffectBase
                              .WithFilter(Subject, TargetFilter.HostileOnly)
                              .ToList();
 
-        var damage = Subject.StatSheet.EffectiveStr * 3;
+        var damage = 15 + Subject.StatSheet.EffectiveStr * 2;
 
         foreach (var target in targets)
         {
@@ -85,7 +85,7 @@ public class WhirlwindEffect : EffectBase
     /// <inheritdoc />
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (target.StatSheet.HealthPercent <= 5)
+        if (target.StatSheet.HealthPercent <= 33)
             return false;
 
         return true;

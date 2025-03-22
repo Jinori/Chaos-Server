@@ -1,4 +1,5 @@
 ﻿using Chaos.Common.Definitions;
+using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
@@ -13,52 +14,65 @@ using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.EffectScripts.Warrior;
 
-public class InfernoEffect : ContinuousAnimationEffectBase
+public class InfernoEffect : EffectBase
 {
     /// <inheritdoc />
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(1);
-    /// <inheritdoc />
-    protected override Animation Animation { get; } = new()
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromDays(1);
+
+    protected Animation Animation { get; } = new()
     {
         AnimationSpeed = 10000,
         TargetAnimation = 847
     };
-    /// <inheritdoc />
-    protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1500), false);
+
+    protected IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1500), false);
     protected IApplyDamageScript ApplyDamageScript { get; } = ApplyAttackDamageScript.Create();
+
     /// <inheritdoc />
     public override byte Icon => 98;
-    /// <inheritdoc />
-    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000), false);
+
+    protected IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000), false);
+
     /// <inheritdoc />
     public override string Name => "Inferno";
 
-    /// <inheritdoc />
-    protected override void OnIntervalElapsed()
+    protected void OnIntervalElapsed()
     {
-            if (Subject.StatSheet.HealthPercent < 10)
-            {
-                Subject.Effects.Terminate(Name);
-                return;
-            }
+        if (Subject.StatSheet.HealthPercent < 33)
+        {
+            Subject.Effects.Terminate(Name);
 
-            Subject.StatSheet.SubtractHealthPct(1);
+            return;
+        }
+
+        // 3% of health per second
+        // but as we gain attack speed, this will tick faster
+        // so we need to adjust the health subtraction based on attack speed to maintain 3% per second
+        var healthPercentToSubtract = 3.0m;
+        var effectiveAtkSpeedPct = 1.0m + (decimal)(Subject.StatSheet.EffectiveAttackSpeedPct / 100.0);
         
+        healthPercentToSubtract /= effectiveAtkSpeedPct;
+        
+        Subject.StatSheet.SubtractHealthPct(healthPercentToSubtract);
+        AislingSubject?.ShowHealth();
         AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
 
         var options = new AoeShapeOptions
-            {
-                Source = new Point(Subject.X, Subject.Y),
-                Range = 1
-            };
+        {
+            Source = new Point(Subject.X, Subject.Y),
+            Range = 1
+        };
 
-            var points = AoeShape.AllAround.ResolvePoints(options);
+        var points = AoeShape.AllAround.ResolvePoints(options);
 
-        var targets =
-            Subject.MapInstance.GetEntitiesAtPoints<Creature>(points.Cast<IPoint>()).WithFilter(Subject, TargetFilter.HostileOnly).ToList();
+        var targets = Subject.MapInstance
+                             .GetEntitiesAtPoints<Creature>(points.Cast<IPoint>())
+                             .WithFilter(Subject, TargetFilter.HostileOnly)
+                             .ToList();
 
-        var damage = (int)(Subject.StatSheet.EffectiveMaximumHp * .03);
-        
+        var damage = 15 + Subject.StatSheet.EffectiveStr * 2;
+        damage += MathEx.GetPercentOf<int>((int)Subject.StatSheet.EffectiveMaximumHp, 0.5m);
+
         foreach (var target in targets)
         {
             ApplyDamageScript.ApplyDamage(
@@ -71,16 +85,37 @@ public class InfernoEffect : ContinuousAnimationEffectBase
         }
     }
 
-    public override void OnTerminated() => AislingSubject?.Client.SendServerMessage(
-        ServerMessageType.OrangeBar1,
-        "Your body cools off.");
+    public override void OnTerminated() => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your body cools off.");
 
     /// <inheritdoc />
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (target.StatSheet.HealthPercent <= 10)
+        if (target.StatSheet.HealthPercent <= 33)
             return false;
 
         return true;
+    }
+    
+    /// <inheritdoc />
+    public override void Update(TimeSpan delta)
+    {
+        //scale animation and effect with attack speed
+        var effectiveAttackSpeedPct = Subject.StatSheet.EffectiveAttackSpeedPct;
+        var modifier = 1.0 + effectiveAttackSpeedPct / 100.0;
+        var modifiedDelta = delta.Multiply(modifier);
+        
+        AnimationInterval.Update(modifiedDelta);
+        Interval.Update(modifiedDelta);
+
+        if (AnimationInterval.IntervalElapsed)
+        {
+            Animation.AnimationSpeed = (ushort)(100 / modifier);
+            Subject.Animate(Animation);
+        }
+        
+        if(Interval.IntervalElapsed)
+            OnIntervalElapsed();
+
+        base.Update(delta);
     }
 }
