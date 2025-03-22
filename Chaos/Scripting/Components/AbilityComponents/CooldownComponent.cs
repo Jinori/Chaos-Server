@@ -8,33 +8,9 @@ namespace Chaos.Scripting.Components.AbilityComponents;
 
 public class CooldownComponent : IComponent
 {
-
-    private static readonly Dictionary<string, string> SpellPairs 
-        = new(StringComparer.OrdinalIgnoreCase)
-        {
-            // Sal
-            { "ardsal", "morsalmeall" },
-            { "morsalmeall", "ardsal" },
-
-            // Srad
-            { "ardsrad", "morsradmeall" },
-            { "morsradmeall", "ardsrad" },
-
-            // Creag
-            { "ardcreag", "morcreagmeall" },
-            { "morcreagmeall", "ardcreag" },
-
-            // Athar
-            { "ardathar", "moratharmeall" },
-            { "moratharmeall", "ardathar" }
-        };
-    /// <inheritdoc />
     public void Execute(ActivationContext context, ComponentVars vars)
     {
         var subject = vars.GetSubject<PanelEntityBase>();
-
-        if ((context.SourceAisling != null) && !context.SourceAisling.SpellBook.ContainsByTemplateKey(subject.Template.TemplateKey))
-            return;
 
         var aisling = context.SourceAisling;
 
@@ -75,18 +51,7 @@ public class CooldownComponent : IComponent
 
             if (finalCooldown.TotalSeconds < 0)
                 finalCooldown = TimeSpan.FromSeconds(0);
-
-            var usedSpellKey = subject.Template.TemplateKey; // the exact key (case-insensitive match)
-            if (SpellPairs.TryGetValue(usedSpellKey, out var partnerKey))
-            {
-                // Find the partner in the caster’s spellbook
-                var partnerSpell = aisling?.SpellBook
-                                          .FirstOrDefault(s => s.Template.TemplateKey.Equals(partnerKey, StringComparison.OrdinalIgnoreCase));
-
-                // If they have the partner, set that cooldown as well
-                partnerSpell?.BeginCooldown(context.Source, finalCooldown);
-            }
-
+            
             // Set the new reduced cooldown (in milliseconds) for the ability
             subject.SetTemporaryCooldown(finalCooldown);
         }
