@@ -149,7 +149,7 @@ public class GuildMemberDemoteScript : GuildScriptBase
 
         var targetCurrentRank = guild.RankOf(name);
         
-        if (!CanBeDemoted(targetCurrentRank))
+        if (!targetCurrentRank.CanBeDemoted)
         {
             Subject.Reply(source, $"{name} is already the lowest rank and can not be further demoted.", "generic_guild_members_initial");
 

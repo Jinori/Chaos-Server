@@ -23,11 +23,11 @@ public sealed class GuildRank
     /// <summary>
     ///     The tier of the rank. Lower is better
     /// </summary>
-    public int Tier { get; private set; }
+    public int Tier { get; }
 
     public bool CanBeDemoted => Tier < 3;
 
-    public bool CanBePromoted => Tier > 0;
+    public bool CanBePromoted => Tier > 1;
 
     /// <summary>
     ///     The number of members in this rank
