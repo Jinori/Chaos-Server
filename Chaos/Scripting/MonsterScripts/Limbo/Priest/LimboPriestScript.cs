@@ -48,7 +48,7 @@ public class LimboPriestScript : MonsterScriptBase
         AoArdCradh = SpellFactory.Create("aoardcradh");
         ActionTimer = new RandomizedIntervalTimer(TimeSpan.FromMilliseconds(1000), 10, startAsElapsed: false);
         TimeSinceLastFizzle = TimeSpan.Zero;
-        FizzleCooldown = TimeSpan.FromSeconds(2);
+        FizzleCooldown = TimeSpan.FromSeconds(5);
         AllSpells = [Nuadhaich, Pramh, AoDall, AoPoison, AoSuain, Dinarcoli, AoArdCradh];
     }
 
@@ -61,7 +61,7 @@ public class LimboPriestScript : MonsterScriptBase
     /// <inheritdoc />
     public override void OnAttacked(Creature source, int damage)
     {
-        if (IntegerRandomizer.RollChance(7) && (TimeSinceLastFizzle > FizzleCooldown))
+        if (TimeSinceLastFizzle > FizzleCooldown)
         {
             TimeSinceLastFizzle = TimeSpan.Zero;
             
@@ -104,7 +104,7 @@ public class LimboPriestScript : MonsterScriptBase
             return;
         }
 
-        var nearbyMonsters = Map.GetEntitiesWithinRange<Monster>(Subject)
+        var nearbyMonsters = Map.GetEntitiesWithinRange<Monster>(Subject, 8)
                                 .ThatAreObservedBy(Subject)
                                 .ThatAreVisibleTo(Subject)
                                 .ToList();

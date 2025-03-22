@@ -34,7 +34,7 @@ public class LimboWizardScript : MonsterScriptBase
         SpellFactory = spellFactory;
         ActionTimer = new RandomizedIntervalTimer(TimeSpan.FromMilliseconds(1000), 10, startAsElapsed: false);
         TimeSinceLastFizzle = TimeSpan.Zero;
-        FizzleCooldown = TimeSpan.FromSeconds(2);
+        FizzleCooldown = TimeSpan.FromSeconds(5);
         
         MagmaSurge = SpellFactory.Create("magmasurge");
         DiaCradh = SpellFactory.Create("diaCradh");
@@ -58,27 +58,27 @@ public class LimboWizardScript : MonsterScriptBase
         WeightedActions = new Dictionary<Func<List<Aisling>, bool>, int>
         {
             {
-                DoChainLightning, 7
+                DoChainLightning, 30
             },
             {
-                DoDiaCradh, 10
+                DoDiaCradh, 35
             },
             {
                 DoDall, 1
             },
             {
-                DoMeall, 5
+                DoMeall, 25
             },
             {
                 //do nothing
-                _ => true, 5
+                _ => true, 9
             }
         };
     }
     
     public override void OnAttacked(Creature source, int damage)
     {
-        if (IntegerRandomizer.RollChance(7) && (TimeSinceLastFizzle > FizzleCooldown))
+        if (TimeSinceLastFizzle > FizzleCooldown)
         {
             TimeSinceLastFizzle = TimeSpan.Zero;
             
@@ -131,7 +131,11 @@ public class LimboWizardScript : MonsterScriptBase
         var target = notDalled.PickRandom();
 
         if (Subject.TryUseSpell(Dall, target.Id))
+        {
+            Dall.SetTemporaryCooldown(TimeSpan.FromSeconds(25));
+            
             return true;
+        }
 
         return false;
     }
@@ -172,7 +176,7 @@ public class LimboWizardScript : MonsterScriptBase
         if (!ActionTimer.IntervalElapsed)
             return;
 
-        var nearbyAislings = Map.GetEntitiesWithinRange<Aisling>(Subject)
+        var nearbyAislings = Map.GetEntitiesWithinRange<Aisling>(Subject, 8)
                                 .ThatAreObservedBy(Subject)
                                 .ThatAreVisibleTo(Subject)
                                 .ToList();
@@ -187,8 +191,8 @@ public class LimboWizardScript : MonsterScriptBase
 
         var counter = 0;
 
-        //try up to 10 times picking random actions until one of them succeeds
-        while (counter++ < 10)
+        //try up to 5 times picking random actions until one of them succeeds
+        while (counter++ < 5)
         {
             var randomAction = WeightedActions.PickRandomWeighted();
 
