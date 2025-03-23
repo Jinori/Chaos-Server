@@ -88,6 +88,9 @@ public class SapStabScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public Creature SapTarget { get; set; } = null!;
 
+    /// <inheritdoc />
+    public bool DealDamageEqualToSappedMana { get; init; }
+
     public decimal? PctOfHealth { get; init; }
 
     public decimal? PctOfHealthMultiplier { get; init; }
@@ -126,7 +129,8 @@ public class SapStabScript : ConfigurableSkillScriptBase,
                                          .ExecuteAndCheck<ManaCostAbilityComponent>()
                                          ?.Execute<BreaksSpecificEffectsAbilityComponent>()
                                          .ExecuteAndCheck<GetTargetsAbilityComponent<Creature>>()
-                                         ?.Check(GetSapTarget)
+                                         ?.Execute<DamageAbilityComponent>()
+                                         .Check(GetSapTarget)
                                          ?.Execute<BodyAnimationAbilityComponent>()
                                          .Execute<SoundAbilityComponent>()
                                          .Execute<AnimationAbilityComponent>()

@@ -5,6 +5,7 @@ using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
+using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 
 namespace Chaos.Scripting.Components.AbilityComponents;
 
@@ -15,13 +16,25 @@ public class SapNeedleComponent : IComponent
     {
         var options = vars.GetOptions<ISapNeedleComponentOptions>();
         var targets = vars.GetTargets<Creature>();
+        var sapTarget = options.SapTarget;
+        var damageScript = ApplyAttackDamageScript.Create();
+        var baseReplenish = options.ManaReplenish ?? 0;
+        var percentageBasedReplenish = MathEx.GetPercentOf<int>((int)sapTarget.StatSheet.EffectiveMaximumMp, options.PctManaReplenish);
         
         foreach (var target in targets)
-        {
-            var baseReplenish = options.ManaReplenish ?? 0;
-            var percentageBasedReplenish = MathEx.GetPercentOf<int>((int)options.SapTarget.StatSheet.EffectiveMaximumMp, options.PctManaReplenish);
-            
             ApplyManaReplenish(target, baseReplenish, percentageBasedReplenish, context.Source, options);
+
+        if (options.DealDamageEqualToSappedMana)
+        {
+            var maxReplenishAllowed = (int)(context.Source.StatSheet.EffectiveMaximumMp * 0.20);
+            var finalReplenish = Math.Min(baseReplenish + percentageBasedReplenish, maxReplenishAllowed);
+
+            damageScript.ApplyDamage(
+                context.Source,
+                sapTarget,
+                vars.GetSourceScript(),
+                finalReplenish,
+                Element.None);
         }
     }
 
@@ -48,5 +61,6 @@ public class SapNeedleComponent : IComponent
         int? ManaReplenish { get; init; }
         decimal PctManaReplenish { get; init; }
         Creature SapTarget { get; set; }
+        bool DealDamageEqualToSappedMana { get; init; }
     }
 }
