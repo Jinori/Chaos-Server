@@ -8,7 +8,7 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 
-namespace Chaos.Scripting.DialogScripts;
+namespace Chaos.Scripting.DialogScripts.Professions;
 
 internal class DmgTrinketScript : DialogScriptBase
 {

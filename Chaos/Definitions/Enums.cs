@@ -2294,3 +2294,65 @@ public enum LuckyCharmsQuest
     Accepted = 1,
     TurnedIn = 2
 }
+
+public enum AlchemyTrinketUsage
+{
+    None = 0,
+    SelectedPotion = 1
+}
+
+public enum AlchemyTrinketSelection
+{
+    None = 0,
+    Hemloch = 1,
+    SmallHealthPotion = 2,
+    SmallManaPotion = 3,
+    SmallRejuvenationPotion = 4,
+    SmallHasteBrew = 5,
+    SmallPowerBrew = 6,
+    SmallAccuracyPotion = 7,
+    JuggernautBrew = 8,
+    AstralBrew = 9,
+    AntidotePotion = 10,
+    SmallFirestormTonic = 11,
+    SmallStunTonic = 12,
+    HealthPotion = 13,
+    ManaPotion = 14,
+    RejuvenationPotion = 15,
+    HasteBrew = 16,
+    PowerBrew = 17,
+    AccuracyPotion = 18,
+    RevivePotion = 19,
+    StrongJuggernautBrew = 20,
+    StrongAstralBrew = 21,
+    CleansingBrew = 22,
+    FirestormTonic = 23,
+    StunTonic = 24,
+    WarmthPotion = 25,
+    AmnesiaBrew = 26,
+    StrongHealthPotion = 27,
+    StrongManaPotion = 28,
+    StrongHasteBrew = 29,
+    StrongPowerBrew = 30,
+    StrongAccuracyPotion = 31,
+    StatBoostElixir = 32,
+    KnowledgeElixir = 33,
+    StrongRejuvenationPotion = 34,
+    PotentHealthPotion = 35,
+    PotentManaPotion = 36,
+    PotentRejuvenationPotion = 37,
+    PotentHasteBrew = 38,
+    PotentPowerBrew = 39,
+    PotentAccuracyPotion = 40,
+    InvisibilityPotion = 41,
+    PoisonImmunityElixir = 42,
+    PotionOfStrength = 43,
+    PotionOfIntellect = 44,
+    PotionOfWisdom = 45,
+    PotionOfConstitution = 46,
+    PotionOfDexterity = 47,
+    StrongStatBoostElixir = 48,
+    StrongKnowledgeElixir = 49,
+    PotentJuggernautBrew = 50,
+    PotentAstralBrew = 51
+}

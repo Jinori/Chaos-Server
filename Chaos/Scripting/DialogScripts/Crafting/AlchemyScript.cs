@@ -100,7 +100,7 @@ public class AlchemyScript : DialogScriptBase
         };
 
     // Converts the rank string to an integer value
-    private int GetRankAsInt(string rank)
+    public int GetRankAsInt(string rank)
     {
         var rankMappings = new Dictionary<string, int>
         {
@@ -393,56 +393,104 @@ public class AlchemyScript : DialogScriptBase
         {
             var rankThresholds = new[]
             {
-                25, 75, 150, 300, 500, 1000, 1500
+                25,
+                75,
+                150,
+                300,
+                500,
+                1000,
+                1500
             };
 
             var rankTitles = new[]
             {
-                RANK_TWO_TITLE, RANK_THREE_TITLE, RANK_FOUR_TITLE, RANK_FIVE_TITLE, RANK_SIX_TITLE,
-                RANK_SEVEN_TITLE, RANK_EIGHT_TITLE
+                RANK_TWO_TITLE,
+                RANK_THREE_TITLE,
+                RANK_FOUR_TITLE,
+                RANK_FIVE_TITLE,
+                RANK_SIX_TITLE,
+                RANK_SEVEN_TITLE,
+                RANK_EIGHT_TITLE
             };
 
-            var currentRankIndex = Array.IndexOf(rankTitles, existingMark.Text);
+            // Ensure existingMark.Text aligns with rankTitles
+            var currentRankIndex = Array.IndexOf(rankTitles, existingMark.Text.Trim());
+
+            if (currentRankIndex == -1)
+                currentRankIndex = 0; // Default to the first rank if the title is not found
 
             existingMark.Count++;
 
-            for (var i = currentRankIndex + 1; i < rankThresholds.Length; i++)
-            {
-                if (legendMarkCount >= rankThresholds[i])
+            var newLegendMarkCount = existingMark.Count;
+
+            // Check all thresholds, including previously achieved ones
+            for (var i = 0; i < rankThresholds.Length; i++)
+
+                // Check if the player meets the threshold for this rank
+                if (newLegendMarkCount >= rankThresholds[i])
                 {
                     var newTitle = rankTitles[i];
 
-                    // Remove the previous title of the rank
-                    if (source.Titles.Contains(existingMark.Text))
-                    {
-                        source.Titles.Remove(existingMark.Text);
-                    }
+                    // Update title if this is the current rank
+                    if (i == (currentRankIndex + 1))
+                        UpdatePlayerTitle(source, existingMark, newTitle);
 
-                    // Add the new title
-                    source.Titles.Add(newTitle);
-
-                    existingMark.Text = newTitle;
-                    source.SendOrangeBarMessage($"You have reached the rank of {newTitle}");
-
-                    // Ensure the new title is at the front of the titles list
-                    if (source.Titles.Any())
-                    {
-                        var firstTitle = source.Titles.First();
-                        if (firstTitle != newTitle)
-                        {
-                            source.Titles.Remove(newTitle);
-                            source.Titles.Insert(0, newTitle);
-                        }
-                    }
-
-                    // Send the updated profile to the client
-                    source.Client.SendSelfProfile();
-
-                    break;
+                    // Grant rank reward if it hasn't already been granted
+                    if ((i >= 5) && !source.Legend.ContainsKey("alchemytrinket"))
+                        GiveRankReward(source, newTitle);
                 }
-            }
         }
     }
+    
+    /// <summary>
+    ///     Gives the player a reward when reaching Rank 7 or above.
+    /// </summary>
+    private void GiveRankReward(Aisling source, string title)
+    {
+        const string ITEM_KEY = "alchemytrinket";
+        const string REWARD_LEGEND_KEY = "alchemytrinket";
+
+        if (!source.Legend.ContainsKey(REWARD_LEGEND_KEY))
+        {
+            var rewardLegendMark = new LegendMark(
+                "Obtained the legendary Bialann Sruthmhor",
+                REWARD_LEGEND_KEY,
+                MarkIcon.Victory,
+                MarkColor.Yellow,
+                1,
+                GameTime.Now);
+
+            source.Legend.AddOrAccumulate(rewardLegendMark);
+            var trinket = ItemFactory.Create(ITEM_KEY);
+            source.GiveItemOrSendToBank(trinket);
+            source.SendOrangeBarMessage($"You have received Bialann Sruthmhor for reaching {title}!");
+        }
+    }
+    
+    /// <summary>
+    ///     Updates the player's title and sends a profile update.
+    /// </summary>
+    private void UpdatePlayerTitle(Aisling source, LegendMark existingMark, string newTitle)
+    {
+        if (source.Titles.Contains(existingMark.Text))
+            source.Titles.Remove(existingMark.Text);
+
+        source.Titles.Add(newTitle);
+        existingMark.Text = newTitle;
+
+        source.SendOrangeBarMessage($"You have reached the rank of {newTitle}");
+
+        // Move the new title to the front
+        if (source.Titles.Any())
+        {
+            source.Titles.Remove(newTitle);
+            source.Titles.Insert(0, newTitle);
+        }
+
+        source.Client.SendSelfProfile();
+    }
+    
+    
     private double AdjustSuccessRateForEffects(double baseSuccessRate, Aisling source)
     {
         if (source.Effects.Contains("Miracle"))

@@ -16,9 +16,9 @@ public class DmgTrinketEffect : EffectBase
 
         var attributes = new Attributes
         {
-            Dmg = 10,
-            SkillDamagePct = 5,
-            SpellDamagePct = 5
+            Dmg = 20,
+            SkillDamagePct = 7,
+            SpellDamagePct = 7
         };
 
         Subject.StatSheet.AddBonus(attributes);
@@ -32,9 +32,9 @@ public class DmgTrinketEffect : EffectBase
     {
         var attributes = new Attributes
         {
-            Dmg = 10,
-            SkillDamagePct = 5,
-            SpellDamagePct = 5
+            Dmg = 20,
+            SkillDamagePct = 7,
+            SpellDamagePct = 7
         };
 
         Subject.StatSheet.SubtractBonus(attributes);
