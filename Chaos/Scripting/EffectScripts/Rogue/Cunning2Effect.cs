@@ -29,7 +29,7 @@ public class Cunning2Effect : EffectBase
         };
 
         Subject.StatSheet.AddBonus(attributes);
-        AislingSubject?.StatSheet.SubtractMp(16000);
+        AislingSubject?.StatSheet.SubtractMp(8000);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "{=bCunning 2 builds up inside you.");
         AislingSubject?.Animate(Animation);
@@ -58,7 +58,7 @@ public class Cunning2Effect : EffectBase
 
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (!target.Effects.Contains("Cunning2") && (target.StatSheet.CurrentMp <= 16000))
+        if (!target.Effects.Contains("Cunning2") && (target.StatSheet.CurrentMp <= 8000))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You need 16000 mana to enter Cunning 2.");
 
