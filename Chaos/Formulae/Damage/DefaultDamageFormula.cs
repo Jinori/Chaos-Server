@@ -84,7 +84,7 @@ public class DefaultDamageFormula : IDamageFormula
     {
         switch (source)
         {
-            case ISkillScript or WrathEffect or WhirlwindEffect:
+            case ISkillScript or WrathEffect or WhirlwindEffect or InfernoEffect:
             {
                 var addedFromPct = damage * (attacker.StatSheet.EffectiveSkillDamagePct / 100m);
 
@@ -154,7 +154,7 @@ public class DefaultDamageFormula : IDamageFormula
 
     protected virtual bool IsAssail(IScript source)
     {
-        if (source is SubjectiveScriptBase<Skill> { Subject.Template.IsAssail: true } or WrathEffect or WhirlwindEffect)
+        if (source is SubjectiveScriptBase<Skill> { Subject.Template.IsAssail: true } or WrathEffect or WhirlwindEffect or InfernoEffect)
             return true;
 
         return false;
