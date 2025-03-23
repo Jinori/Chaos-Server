@@ -13,7 +13,7 @@ public class KillerInstinctEffect : IntervalEffectBase
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromDays(1);
 
     /// <inheritdoc />
-    public override byte Icon => 69;
+    public override byte Icon => 40;
 
     /// <inheritdoc />
     public override string Name => "KillerInstinct";
