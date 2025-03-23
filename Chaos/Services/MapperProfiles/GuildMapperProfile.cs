@@ -25,7 +25,7 @@ public class GuildMapperProfile(IChannelService channelService, IClientRegistry<
         => new()
         {
             Name = obj.Name, 
-            Guid = obj.Guid
+            Guid = obj.Guid,
         };
 
     /// <inheritdoc />

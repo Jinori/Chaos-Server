@@ -21,6 +21,7 @@ public sealed class Guild : IDedicatedChannel, IEquatable<Guild>
     private readonly IClientRegistry<IChaosWorldClient> ClientRegistry;
     private readonly List<GuildRank> GuildHierarchy;
     private readonly Lock Sync;
+    public Bank Bank { get; private set; }
 
     /// <summary>
     ///     The name of the channel associated with this guild
@@ -63,6 +64,7 @@ public sealed class Guild : IDedicatedChannel, IEquatable<Guild>
         ChannelName = $"!guild-{Name}-{Guid}";
         ChannelService = channelService;
         ClientRegistry = clientRegistry;
+        Bank = new Bank();
         Sync = new Lock();
 
         GuildHierarchy =
@@ -363,12 +365,13 @@ public sealed class Guild : IDedicatedChannel, IEquatable<Guild>
     /// <param name="guildHierarchy">
     ///     The rank information for the guild
     /// </param>
-    public void Initialize(IEnumerable<GuildRank> guildHierarchy)
+    public void Initialize(IEnumerable<GuildRank> guildHierarchy, Bank bank)
     {
         using var @lock = Sync.EnterScope();
 
         GuildHierarchy.Clear();
         GuildHierarchy.AddRange(guildHierarchy);
+        Bank = bank;
     }
 
     /// <summary>

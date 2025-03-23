@@ -3,6 +3,7 @@ using Chaos.Collections;
 using Chaos.IO.FileSystem;
 using Chaos.NLog.Logging.Definitions;
 using Chaos.NLog.Logging.Extensions;
+using Chaos.Schemas.Aisling;
 using Chaos.Schemas.Guilds;
 using Chaos.Services.Storage.Abstractions;
 using Chaos.Services.Storage.Options;
@@ -31,6 +32,7 @@ public class GuildStore : PeriodicSaveStoreBase<Guild, GuildStoreOptions>
         var tier1Path = Path.Combine(directory, "tier1.json");
         var tier2Path = Path.Combine(directory, "tier2.json");
         var tier3Path = Path.Combine(directory, "tier3.json");
+        var bankPath = Path.Combine(directory, "bank.json");
 
         if (!guild.TryGetRank(0, out var tier0))
             throw new InvalidOperationException("The guild does not have a tier 0 rank");
@@ -49,6 +51,7 @@ public class GuildStore : PeriodicSaveStoreBase<Guild, GuildStoreOptions>
         EntityRepository.SaveAndMap<GuildRank, GuildRankSchema>(tier1, tier1Path);
         EntityRepository.SaveAndMap<GuildRank, GuildRankSchema>(tier2, tier2Path);
         EntityRepository.SaveAndMap<GuildRank, GuildRankSchema>(tier3, tier3Path);
+        EntityRepository.SaveAndMap<Bank, BankSchema>(guild.Bank, bankPath);
     }
 
     private Task InnerSaveAsync(string directory, Guild guild)
@@ -61,6 +64,7 @@ public class GuildStore : PeriodicSaveStoreBase<Guild, GuildStoreOptions>
         var tier1Path = Path.Combine(directory, "tier1.json");
         var tier2Path = Path.Combine(directory, "tier2.json");
         var tier3Path = Path.Combine(directory, "tier3.json");
+        var bankPath = Path.Combine(directory, "bank.json");
 
         if (!guild.TryGetRank(0, out var tier0))
             throw new InvalidOperationException("The guild does not have a tier 0 rank");
@@ -79,7 +83,8 @@ public class GuildStore : PeriodicSaveStoreBase<Guild, GuildStoreOptions>
             EntityRepository.SaveAndMapAsync<GuildRank, GuildRankSchema>(tier0, tier0Path),
             EntityRepository.SaveAndMapAsync<GuildRank, GuildRankSchema>(tier1, tier1Path),
             EntityRepository.SaveAndMapAsync<GuildRank, GuildRankSchema>(tier2, tier2Path),
-            EntityRepository.SaveAndMapAsync<GuildRank, GuildRankSchema>(tier3, tier3Path));
+            EntityRepository.SaveAndMapAsync<GuildRank, GuildRankSchema>(tier3, tier3Path),
+            EntityRepository.SaveAndMapAsync<Bank, BankSchema>(guild.Bank, bankPath));
     }
 
     /// <inheritdoc />
@@ -99,12 +104,22 @@ public class GuildStore : PeriodicSaveStoreBase<Guild, GuildStoreOptions>
         var tier1Path = Path.Combine(dir, "tier1.json");
         var tier2Path = Path.Combine(dir, "tier2.json");
         var tier3Path = Path.Combine(dir, "tier3.json");
+        var bankPath = Path.Combine(dir, "bank.json");
 
         var guild = EntityRepository.LoadAndMap<Guild, GuildSchema>(guildPath);
         var tier0 = EntityRepository.LoadAndMap<GuildRank, GuildRankSchema>(tier0Path);
         var tier1 = EntityRepository.LoadAndMap<GuildRank, GuildRankSchema>(tier1Path);
         var tier2 = EntityRepository.LoadAndMap<GuildRank, GuildRankSchema>(tier2Path);
         var tier3 = EntityRepository.LoadAndMap<GuildRank, GuildRankSchema>(tier3Path);
+        var bank = new Bank();
+
+        try
+        {
+            bank = EntityRepository.LoadAndMap<Bank, BankSchema>(bankPath);
+        } catch (Exception e)
+        {
+            //ignored
+        }
 
         guild.Initialize(
             [
@@ -112,7 +127,8 @@ public class GuildStore : PeriodicSaveStoreBase<Guild, GuildStoreOptions>
                 tier1,
                 tier2,
                 tier3
-            ]);
+            ],
+            bank);
 
         metricsLogger.LogDebug("Loaded new {@TypeName} entry with {@Key}", nameof(Guild), key);
 
