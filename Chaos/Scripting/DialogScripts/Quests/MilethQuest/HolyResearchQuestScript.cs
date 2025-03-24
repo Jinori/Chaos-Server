@@ -41,7 +41,7 @@ public class HolyResearchQuestScript : DialogScriptBase
         ExperienceDistributionScript.GiveExp(source, 2000);
         source.Trackers.Enums.Set(HolyResearchStage.None);
         source.TryGiveGamePoints(5);
-        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You receive five gamepoints and 2000 exp!");
+        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You receive 5 gamepoints and 2000 exp!");
         Subject.Close(source);
         source.Trackers.TimedEvents.AddEvent("HolyResearchCd", TimeSpan.FromHours(3), true);
     }

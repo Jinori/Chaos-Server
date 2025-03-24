@@ -5,6 +5,7 @@ using Chaos.Models.Menu;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
+using Chaos.Scripting.DialogScripts.Crafting;
 using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Generic;
@@ -296,23 +297,29 @@ public class RecipeLibraryScript : DialogScriptBase
             #endregion
 
             #region Enchanting Book
+
+                
             case "enchantingbook":
             {
-                // Checking if the Alchemy recipe is available or not.
+                // If the user has any recipe flags, show matching recipes
                 if (source.Trackers.Flags.TryGetFlag(out EnchantingRecipes recipes))
-
-                    // Iterating through the Alchemy recipe requirements.
-                    foreach (var recipe in CraftingRequirements.EnchantingRequirements)
-
-                        // Checking if the recipe is available or not.
-                        if (recipes.HasFlag(recipe.Key))
-                        {
-                            // Creating a faux item for the recipe.
-                            var item = ItemFactory.CreateFaux(recipe.Value.TemplateKey);
-
-                            // Adding the recipe to the subject's dialog window.
-                            Subject.Items.Add(ItemDetails.DisplayRecipe(item));
-                        }
+                {
+                    var sortedRecipes = CraftingRequirements.EnchantingRequirements
+                                                        .Where(kv => recipes.HasFlag(kv.Key))
+                                                        .Select(
+                                                            kv => ItemDetails.DisplayRecipe(ItemFactory.CreateFaux(kv.Value.TemplateKey)))
+                                                        .Where(item => source.UserStatSheet.Level >= item.Item.Level)
+                                                        .OrderBy(
+                                                            item => EnchantingScript.GetStatusAsInt(
+                                                                CraftingRequirements.EnchantingRequirements.First(
+                                                                                        x => x.Value.TemplateKey
+                                                                                            == item.Item.Template.TemplateKey)
+                                                                                    .Value.Rank))
+                                                        .ToList();
+                    
+                    Subject.Items = sortedRecipes;
+                }
+                
 
                 break;
             }

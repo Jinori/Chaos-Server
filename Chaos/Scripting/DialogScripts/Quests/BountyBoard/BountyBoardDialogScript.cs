@@ -591,7 +591,7 @@ public class BountyBoardDialogScript : DialogScriptBase
 
                     Subject.Reply(
                         source,
-                        $"Congratulations! You've completed {selectedBounty.QuestText}! You received {exp} experience and {gamepoints} gamepoints!",
+                        $"Congratulations! You've completed {selectedBounty.QuestText}! You received {gamepoints} gamepoints and {exp} experience!",
                         "bountyboard_initial");
                 } else
                 {

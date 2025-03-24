@@ -17,11 +17,13 @@ public class GuildHallScript : MapScriptBase
     private readonly IIntervalTimer UpdateTimer;
     private readonly IStorage<GuildHouseState> GuildHouseStateStorage;
     private readonly IMerchantFactory MerchantFactory;
+    private bool MorphHappened;
+    private string? GuildName;
     
     public GuildHallScript(MapInstance subject, IStorage<GuildHouseState> guildHouseStateStorage, IMerchantFactory merchantFactory)
         : base(subject)
     {
-        UpdateTimer = new IntervalTimer(TimeSpan.FromMilliseconds(500), false);
+        UpdateTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
         GuildHouseStateStorage = guildHouseStateStorage;
         MerchantFactory = merchantFactory;
     }
@@ -34,6 +36,8 @@ public class GuildHallScript : MapScriptBase
         if (!UpdateTimer.IntervalElapsed)
             return;
 
+        CheckIfNeedMorph();
+        
         var rect = new Rectangle(59, 25, 11, 10);
         
         var mobs = Subject.GetEntities<Monster>().Where(x => x.Template.TemplateKey != "trainingDummy0").ToList();
@@ -60,30 +64,56 @@ public class GuildHallScript : MapScriptBase
         Subject.RemoveEntity(mob);
     }
 
+    public void CheckIfNeedMorph()
+    {
+        if (GuildName is null)
+        {
+            var aisling = Subject.GetEntities<Aisling>()
+                                 .FirstOrDefault(x => (x.Guild?.Name != null) && !x.IsAdmin);
 
+            GuildName = aisling?.Guild?.Name;
+        }
+        
+        if (GuildName != null)
+        {
+            Subject.Name = GuildName + "'s Hall";
+            var morphCode = GetMorphCode(GuildHouseStateStorage.Value, GuildName);
+            if (Subject.Template.TemplateKey != GetMorphCode(GuildHouseStateStorage.Value, GuildName))
+            {
+                Subject.Morph(morphCode);
+                SpawnNPCsForMorphCode(morphCode);
+            }   
+        }
+    }
+    
     public override void OnEntered(Creature creature)
     {
         if (creature is not Aisling aisling || !Subject.IsShard || aisling.Guild is null)
             return;
 
-        var guildName = aisling.Guild.Name;
-
-        if (aisling.IsAdmin && !aisling.MapInstance.Name.StartsWith(guildName, StringComparison.Ordinal))
+        GuildName = aisling.Guild.Name;
+        Subject.Name = GuildName + "'s Hall";
+        
+        if (aisling.IsAdmin && !aisling.MapInstance.Name.StartsWith(GuildName, StringComparison.Ordinal))
             return;
         
-        var morphCode = GetMorphCode(GuildHouseStateStorage.Value, guildName);
+        var morphCode = GetMorphCode(GuildHouseStateStorage.Value, GuildName);
 
-        Subject.Morph(morphCode);
-        SpawnNPCsForMorphCode(aisling, morphCode);
+        if (!MorphHappened)
+        {
+            Subject.Morph(morphCode);  
+            MorphHappened = true;
+            SpawnNPCsForMorphCode(morphCode);
+        }
     }
 
-    private void SpawnNPCsForMorphCode(Aisling source, string morphCode)
+    private void SpawnNPCsForMorphCode(string morphCode)
     {
         if (!NpcSpawns.TryGetValue(morphCode, out var spawns))
             return;
 
         // Get all existing merchants and store them in a dictionary by their unique TemplateKey
-        var existingNPCs = source.MapInstance.GetEntities<Merchant>()
+        var existingNPCs = Subject.GetEntities<Merchant>()
                                  .GroupBy(npc => npc.Template.TemplateKey) // Group duplicates
                                  .ToDictionary(g => g.Key, g => g.First()); // Keep only one instance
 
@@ -91,8 +121,8 @@ public class GuildHallScript : MapScriptBase
         {
             if (!existingNPCs.ContainsKey(spawn.Name)) // Only spawn if not already present
             {
-                var merch = MerchantFactory.Create(spawn.Name, source.MapInstance, new Point(spawn.X, spawn.Y));
-                source.MapInstance.AddEntity(merch, new Point(spawn.X, spawn.Y));
+                var merch = MerchantFactory.Create(spawn.Name, Subject, new Point(spawn.X, spawn.Y));
+                Subject.AddEntity(merch, new Point(spawn.X, spawn.Y));
             }
         }
     }

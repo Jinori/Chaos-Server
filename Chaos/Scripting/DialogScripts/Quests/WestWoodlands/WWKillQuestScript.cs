@@ -40,7 +40,7 @@ public class WWKillQuestScript(Dialog subject, ILogger<WWKillQuestScript> logger
                     var option = new DialogOption
                     {
                         DialogKey = "wwkillquest_initial",
-                        OptionText = "Westwoodlands Slayer"
+                        OptionText = "West Woodlands Slayer"
                     };
 
                     if (!Subject.HasOption(option.OptionText))

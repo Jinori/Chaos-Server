@@ -761,7 +761,7 @@ public sealed class ChaosWorldClient : WorldClientBase, IChaosWorldClient
 
     public void SendSound(byte sound, bool isMusic)
     {
-        if (Aisling is { Options.ListenToHitSounds: false } && !isMusic && (sound == 1))
+        if ((Aisling is { Options.ListenToHitSounds: false } && !isMusic && sound is 1 or 53 or 16))
             return;
 
         var args = new SoundArgs

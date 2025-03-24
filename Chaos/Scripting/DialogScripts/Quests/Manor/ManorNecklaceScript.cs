@@ -108,7 +108,7 @@ public class ManorNecklaceScript : DialogScriptBase
 
                 source.Client.SendServerMessage(
                     ServerMessageType.OrangeBar1,
-                    "You receive twenty gamepoints, legend mark and 150,000 exp!");
+                    "You receive 20 gamepoints, legend mark and 150,000 exp!");
 
                 break;
             }

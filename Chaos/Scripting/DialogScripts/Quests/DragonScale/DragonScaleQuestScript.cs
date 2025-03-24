@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Models.Legend;
@@ -63,38 +62,38 @@ public class DragonScaleQuestScript : DialogScriptBase
                     return;
                 }
 
-                if (hasStage && stage == Definitions.DragonScale.TurnedInScaleSword)
+                if (hasStage && (stage == Definitions.DragonScale.TurnedInScaleSword))
                 {
                     Subject.Reply(source, "Skip", "dragonscale_pickup");
                     return;
                 }
                 
-                if (hasStage && stage == Definitions.DragonScale.DroppedScale)
+                if (hasStage && (stage == Definitions.DragonScale.DroppedScale))
                 {
                     Subject.Reply(source, "Did you get scared? Go back and wait for it to summon.");
                     return;
                 }
 
-                if (hasStage && stage == Definitions.DragonScale.TurnedInScaleClaws || stage == Definitions.DragonScale.TurnedInScaleGauntlet ||
+                if (hasStage && (stage == Definitions.DragonScale.TurnedInScaleClaws) || stage == Definitions.DragonScale.TurnedInScaleGauntlet ||
                     stage == Definitions.DragonScale.TurnedInScaleRing || stage == Definitions.DragonScale.TurnedInScaleDagger)
                 {
                     Subject.Reply(source, "I see you already gave someone else the Dragon Scale. Well, I hope you made the right decision.");
                     return;
                 }
 
-                if (hasStage && stage == Definitions.DragonScale.CompletedDragonScale)
+                if (hasStage && (stage == Definitions.DragonScale.CompletedDragonScale))
                 {
                     Subject.Reply(source, $"You have conquered the power of the Dragon Scale. Use it wisely.");
                     return;
                 }
 
-                if (source.Trackers.Flags.HasFlag(DragonScaleFlags.Callo) || hasStage && stage == Definitions.DragonScale.FoundAllClues || stage == Definitions.DragonScale.SpawnedDragon)
+                if (source.Trackers.Flags.HasFlag(DragonScaleFlags.Callo) || hasStage && (stage == Definitions.DragonScale.FoundAllClues) || (stage == Definitions.DragonScale.SpawnedDragon))
                 {
                     Subject.Reply(source, "Skip", "dragonscalecallo_return");
                     return;
                 }
 
-                if (hasStage && stage == Definitions.DragonScale.KilledDragon)
+                if (hasStage && (stage == Definitions.DragonScale.KilledDragon))
                 {
                     Subject.Reply(source, "Skip", "dragonscalesword_turnin");
                 }
@@ -137,9 +136,17 @@ public class DragonScaleQuestScript : DialogScriptBase
                 var hasRequiredDragonScale = source.Inventory.HasCount("Dragon's Scale", 1);
 
 
-                if (hasStage && stage == Definitions.DragonScale.KilledDragon)
+                if (hasStage && (stage == Definitions.DragonScale.KilledDragon))
                 {
-                    if (hasRequiredDragonScale && source.Gold >= 75000)
+                    if (!hasRequiredDragonScale || (source.Gold < 75000))
+                    {
+                        Subject.Reply(source,
+                            "You are missing the Dragon Scale or my fee of 75,000 gold. I require both to forge the Dragon Scale Sword.");
+
+                        return;
+                    }
+                    
+                    if (hasRequiredDragonScale && (source.Gold >= 75000))
                     {
                         source.TryTakeGold(75000);
                         source.Inventory.RemoveQuantity("Dragon's Scale", 1, out _);
@@ -178,13 +185,6 @@ public class DragonScaleQuestScript : DialogScriptBase
                                 1,
                                 GameTime.Now));
                     }
-
-                    if (!hasRequiredDragonScale || source.Gold < 75000)
-                    {
-                        Subject.Reply(source,
-                            "You are missing the Dragon Scale or my fee of 75,000 gold. I require both to forge the Dragon Scale Sword.");
-                        return;
-                    }
                 }
 
                 break;
@@ -192,7 +192,7 @@ public class DragonScaleQuestScript : DialogScriptBase
 
             case "dragonscale_pickup":
             {
-                if (hasStage && stage == Definitions.DragonScale.TurnedInScaleSword)
+                if (hasStage && (stage == Definitions.DragonScale.TurnedInScaleSword))
                 {
                     source.Trackers.Enums.Set(Definitions.DragonScale.CompletedDragonScale);
                     Subject.Reply(source, "Thank you for waiting, here is your Dragon Scale Sword.");
@@ -202,7 +202,7 @@ public class DragonScaleQuestScript : DialogScriptBase
                     return;
                 }
 
-                if (hasStage && stage == Definitions.DragonScale.TurnedInScaleRing)
+                if (hasStage && (stage == Definitions.DragonScale.TurnedInScaleRing))
                 {
                     source.Trackers.Enums.Set(Definitions.DragonScale.CompletedDragonScale);
                     Subject.Reply(source, "Thank you for waiting, here is your Dragon Scale Ring.");
@@ -212,7 +212,7 @@ public class DragonScaleQuestScript : DialogScriptBase
                     return;
                 }
 
-                if (hasStage && stage == Definitions.DragonScale.TurnedInScaleClaws)
+                if (hasStage && (stage == Definitions.DragonScale.TurnedInScaleClaws))
                 {
                     source.Trackers.Enums.Set(Definitions.DragonScale.CompletedDragonScale);
                     Subject.Reply(source, "Thank you for waiting, here is your Dragon Scale Claws.");
@@ -222,7 +222,7 @@ public class DragonScaleQuestScript : DialogScriptBase
                     return;
                 }
 
-                if (hasStage && stage == Definitions.DragonScale.TurnedInScaleGauntlet)
+                if (hasStage && (stage == Definitions.DragonScale.TurnedInScaleGauntlet))
                 {
                     source.Trackers.Enums.Set(Definitions.DragonScale.CompletedDragonScale);
                     Subject.Reply(source, "Thank you for waiting, here is your Dragon Scale Gauntlet.");
@@ -232,14 +232,13 @@ public class DragonScaleQuestScript : DialogScriptBase
                     return;
                 }
 
-                if (hasStage && stage == Definitions.DragonScale.TurnedInScaleDagger)
+                if (hasStage && (stage == Definitions.DragonScale.TurnedInScaleDagger))
                 {
                     source.Trackers.Enums.Set(Definitions.DragonScale.CompletedDragonScale);
                     Subject.Reply(source, "Thank you for waiting, here is your Dragon Scale Dagger.");
                     var dragonScaleDagger = ItemFactory.Create("dragonscaledagger");
 
                     source.GiveItemOrSendToBank(dragonScaleDagger);
-                    return;
                 }
 
 
@@ -345,9 +344,16 @@ public class DragonScaleQuestScript : DialogScriptBase
                 var hasRequiredDragonScale = source.Inventory.HasCount("Dragon's Scale", 1);
 
 
-                if (hasStage && stage == Definitions.DragonScale.KilledDragon)
+                if (hasStage && (stage == Definitions.DragonScale.KilledDragon))
                 {
-                    if (hasRequiredDragonScale && source.Gold >= 75000)
+                    if (!hasRequiredDragonScale || (source.Gold < 75000))
+                    {
+                        Subject.Reply(source,
+                            "You are missing the Dragon Scale or my fee of 75,000 gold. I require both to forge the Dragon Scale Ring.");
+                        return;
+                    }
+                    
+                    if (hasRequiredDragonScale && (source.Gold >= 75000))
                     {
                         source.TryTakeGold(75000);
                         source.Inventory.RemoveQuantity("Dragon's Scale", 1, out _);
@@ -385,13 +391,6 @@ public class DragonScaleQuestScript : DialogScriptBase
                                 MarkColor.White,
                                 1,
                                 GameTime.Now));
-                    }
-
-                    if (!hasRequiredDragonScale || source.Gold < 75000)
-                    {
-                        Subject.Reply(source,
-                            "You are missing the Dragon Scale or my fee of 75,000 gold. I require both to forge the Dragon Scale Ring.");
-                        return;
                     }
                 }
 
@@ -496,9 +495,16 @@ public class DragonScaleQuestScript : DialogScriptBase
                 var hasRequiredDragonScale = source.Inventory.HasCount("Dragon's Scale", 1);
 
 
-                if (hasStage && stage == Definitions.DragonScale.KilledDragon)
+                if (hasStage && (stage == Definitions.DragonScale.KilledDragon))
                 {
-                    if (hasRequiredDragonScale && source.Gold >= 75000)
+                    if (!hasRequiredDragonScale || (source.Gold < 75000))
+                    {
+                        Subject.Reply(source,
+                            "You are missing the Dragon Scale or my fee of 75,000 gold. I require both to forge the Dragon Scale Claws.");
+                        return;
+                    }
+                    
+                    if (hasRequiredDragonScale && (source.Gold >= 75000))
                     {
                         source.TryTakeGold(75000);
                         source.Inventory.RemoveQuantity("Dragon's Scale", 1, out _);
@@ -536,13 +542,6 @@ public class DragonScaleQuestScript : DialogScriptBase
                                 MarkColor.White,
                                 1,
                                 GameTime.Now));
-                    }
-
-                    if (!hasRequiredDragonScale || source.Gold < 75000)
-                    {
-                        Subject.Reply(source,
-                            "You are missing the Dragon Scale or my fee of 75,000 gold. I require both to forge the Dragon Scale Claws.");
-                        return;
                     }
                 }
 
@@ -648,9 +647,16 @@ public class DragonScaleQuestScript : DialogScriptBase
                 var hasRequiredDragonScale = source.Inventory.HasCount("Dragon's Scale", 1);
 
 
-                if (hasStage && stage == Definitions.DragonScale.KilledDragon)
+                if (hasStage && (stage == Definitions.DragonScale.KilledDragon))
                 {
-                    if (hasRequiredDragonScale && source.Gold >= 75000)
+                    if (!hasRequiredDragonScale || source.Gold < 75000)
+                    {
+                        Subject.Reply(source,
+                            "You are missing the Dragon Scale or my fee of 75,000 gold. I require both to forge the Dragon Scale Gauntlet.");
+                        return;
+                    }
+                    
+                    if (hasRequiredDragonScale && (source.Gold >= 75000))
                     {
                         source.TryTakeGold(75000);
                         source.Inventory.RemoveQuantity("Dragon's Scale", 1, out _);
@@ -688,13 +694,6 @@ public class DragonScaleQuestScript : DialogScriptBase
                                 MarkColor.White,
                                 1,
                                 GameTime.Now));
-                    }
-
-                    if (!hasRequiredDragonScale || source.Gold < 75000)
-                    {
-                        Subject.Reply(source,
-                            "You are missing the Dragon Scale or my fee of 75,000 gold. I require both to forge the Dragon Scale Gauntlet.");
-                        return;
                     }
                 }
 
@@ -799,9 +798,16 @@ public class DragonScaleQuestScript : DialogScriptBase
                 var hasRequiredDragonScale = source.Inventory.HasCount("Dragon's Scale", 1);
 
 
-                if (hasStage && stage == Definitions.DragonScale.KilledDragon)
+                if (hasStage && (stage == Definitions.DragonScale.KilledDragon))
                 {
-                    if (hasRequiredDragonScale && source.Gold >= 75000)
+                    if (!hasRequiredDragonScale || (source.Gold < 75000))
+                    {
+                        Subject.Reply(source,
+                            "You are missing the Dragon Scale or my fee of 75,000 gold. I require both to forge the Dragon Scale Dagger.");
+                        return;
+                    }
+                    
+                    if (hasRequiredDragonScale && (source.Gold >= 75000))
                     {
                         source.TryTakeGold(75000);
                         source.Inventory.RemoveQuantity("Dragon's Scale", 1, out _);
@@ -839,13 +845,6 @@ public class DragonScaleQuestScript : DialogScriptBase
                                 MarkColor.White,
                                 1,
                                 GameTime.Now));
-                    }
-
-                    if (!hasRequiredDragonScale || source.Gold < 75000)
-                    {
-                        Subject.Reply(source,
-                            "You are missing the Dragon Scale or my fee of 75,000 gold. I require both to forge the Dragon Scale Dagger.");
-                        return;
                     }
                 }
 

@@ -6,82 +6,69 @@ using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.Components.AbilityComponents;
 
+/// <summary>
+/// Handles the application of "Cunning" effects based on the target's mana threshold.
+/// </summary>
 public struct CunningEffectAbilityComponent : IComponent
 {
+    private readonly IEffectFactory _effectFactory;
 
-    private readonly IEffectFactory EffectFactory;
-
-    public CunningEffectAbilityComponent(IEffectFactory effectFactory)
-    {
-        EffectFactory = effectFactory;
-    }
+    public CunningEffectAbilityComponent(IEffectFactory effectFactory) => _effectFactory = effectFactory ?? throw new ArgumentNullException(nameof(effectFactory));
 
     /// <inheritdoc />
     public void Execute(ActivationContext context, ComponentVars vars)
     {
-
         var targets = vars.GetTargets<Creature>();
-        var effect1 = EffectFactory.Create("Cunning1");
-        var effect2 = EffectFactory.Create("Cunning2");
-        var effect3 = EffectFactory.Create("Cunning3");
-        var effect4 = EffectFactory.Create("Cunning4");
-        var effect5 = EffectFactory.Create("Cunning5");
-        var effect6 = EffectFactory.Create("Cunning6");
-        
-        
+
+        // Define the Cunning effects and their corresponding MP thresholds.
+        var cunningEffects = new Dictionary<string, int>
+        {
+            { "Cunning1", 4000 },
+            { "Cunning2", 8000 },
+            { "Cunning3", 16000 },
+            { "Cunning4", 32000 },
+            { "Cunning5", 64000 },
+            { "Cunning6", 128000 }
+        };
+
         foreach (var target in targets)
         {
-            if (!target.Effects.Contains("Cunning1")
-                || !target.Effects.Contains("Cunning2")
-                || !target.Effects.Contains("Cunning3")
-                || !target.Effects.Contains("Cunning4")
-                || !target.Effects.Contains("Cunning5")
-                || (!target.Effects.Contains("Cunning6") 
-                    && (target.StatSheet.EffectiveMaximumMp >= 4000)))
-            {
-                target.Effects.Apply(context.Source, effect1);
-                return;
-            }
-            if (target.Effects.Contains("Cunning1") && (target.StatSheet.EffectiveMaximumMp >= 8000))
-            {
-                target.Effects.Terminate("Cunning1");
-                target.Effects.Apply(context.Source, effect2);
-                return;
-            }
-            
-            if (target.Effects.Contains("Cunning2") && (target.StatSheet.EffectiveMaximumMp >= 16000))
-            {
-                target.Effects.Terminate("Cunning2");
-                target.Effects.Apply(context.Source, effect3);
-                return;
-            }
-            if (target.Effects.Contains("Cunning3") && (target.StatSheet.EffectiveMaximumMp >= 32000))
-            {
-                target.Effects.Terminate("Cunning3");
-                target.Effects.Apply(context.Source, effect4);
-                return;
-            }
-            if (target.Effects.Contains("Cunning4") && (target.StatSheet.EffectiveMaximumMp >= 64000))
-            {
-                target.Effects.Terminate("Cunning4");
-                target.Effects.Apply(context.Source, effect5);
-                return;
-            }
-            if (target.Effects.Contains("Cunning5") && (target.StatSheet.EffectiveMaximumMp >= 128000))
-            {
-                target.Effects.Terminate("Cunning5");
-                target.Effects.Apply(context.Source, effect6);
-                return;
-            }
-            context.SourceAisling?.SendOrangeBarMessage("You do not have the mana to increase your Cunning.");
+            ApplyCunningEffect(target, context, cunningEffects);
         }
     }
 
-    public interface IApplyEffectComponentOptions
+    /// <summary>
+    /// Applies the appropriate "Cunning" effect based on the target's current MP.
+    /// </summary>
+    private void ApplyCunningEffect(Creature target, ActivationContext context, Dictionary<string, int> cunningEffects)
     {
-        TimeSpan? EffectDurationOverride { get; init; }
-        IEffectFactory EffectFactory { get; init; }
-        string? EffectKey { get; init; }
-        int? EffectApplyChance { get; init; }
+        var currentMp = target.StatSheet.EffectiveMaximumMp;
+        var activeEffect = cunningEffects.Keys.FirstOrDefault(target.Effects.Contains);
+
+        // Determine the next effect to apply
+        foreach ((var effect, var mpThreshold) in cunningEffects)
+        {
+            if (currentMp < mpThreshold) break;
+
+            if (activeEffect == null)
+            {
+                target.Effects.Apply(context.Source, _effectFactory.Create(effect));
+                return;
+            }
+
+            if (effect == activeEffect)
+            {
+                target.Effects.Terminate(effect);
+                continue;
+            }
+
+            if (cunningEffects.TryGetValue(activeEffect, out var value) && (value < mpThreshold))
+            {
+                target.Effects.Apply(context.Source, _effectFactory.Create(effect));
+                return;
+            }
+        }
+
+        context.SourceAisling?.SendOrangeBarMessage("You do not have the mana to increase your Cunning.");
     }
 }

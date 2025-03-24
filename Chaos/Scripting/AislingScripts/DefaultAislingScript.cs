@@ -1538,12 +1538,24 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
     private void ClearOrangeBarMessage()
     {
-        if (Subject.Trackers.LastOrangeBarMessage.HasValue
-            && (DateTime.UtcNow.Subtract(Subject.Trackers.LastOrangeBarMessage.Value).TotalSeconds
-                > WorldOptions.Instance.ClearOrangeBarTimerSecs))
+        var lastOrangeBarMessage = Subject.Trackers.LastOrangeBarMessage;
+        var now = DateTime.UtcNow;
+
+        //clear if
+        //an orange bar message has ever been sent
+        //and the last message was sent after the last clear
+        //and the time since the last message is greater than the clear timer
+        var shouldClear = lastOrangeBarMessage.HasValue
+                          && (lastOrangeBarMessage > (Subject.Trackers.LastOrangeBarMessageClear ?? DateTime.MinValue))
+                          && (now.Subtract(lastOrangeBarMessage.Value)
+                                 .TotalSeconds
+                              > WorldOptions.Instance.ClearOrangeBarTimerSecs);
+
+        if (shouldClear)
         {
             Subject.SendServerMessage(ServerMessageType.OrangeBar1, string.Empty);
-            Subject.Trackers.LastOrangeBarMessageClear = DateTime.UtcNow;
+            Subject.Trackers.LastOrangeBarMessage = lastOrangeBarMessage;
+            Subject.Trackers.LastOrangeBarMessageClear = now;
         }
     }
 }
