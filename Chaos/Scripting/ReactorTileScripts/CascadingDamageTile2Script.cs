@@ -117,6 +117,7 @@ public sealed class CascadingDamageTile2Script : ConfigurableReactorTileScriptBa
         {
             Executor.ExecuteAndCheck<GetCascadingTargetsAbilityComponent<Creature>>()
                     ?.Execute<AnimationAbilityComponent>()
+                    .Execute<RemoveShamBurningGroundComponent>()
                     .ExecuteAndCheck<MagicResistanceComponent>()
                     ?.Execute<DamageAbilityComponent>()
                     .Execute<ApplyEffectAbilityComponent>()

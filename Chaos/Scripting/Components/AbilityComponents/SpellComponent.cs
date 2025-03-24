@@ -12,13 +12,14 @@ public class SpellComponent<TEntity> : IConditionalComponent where TEntity: MapE
         => new ComponentExecutor(context, vars).ExecuteAndCheck<ManaCostAbilityComponent>()
                                                ?.Execute<BreaksSpecificEffectsAbilityComponent>()
                                                .ExecuteAndCheck<GetTargetsAbilityComponent<TEntity>>()
-                                               ?.ExecuteAndCheck<SplashComponent<TEntity>>()
+                                               ?.Execute<RemoveShamBurningGroundComponent>()
+                                               .ExecuteAndCheck<SplashComponent<TEntity>>()
                                                ?.Execute<CooldownComponent>()
                                                .ExecuteAndCheck<MagicResistanceComponent>()
                                                ?.Execute<BodyAnimationAbilityComponent>()
                                                .Execute<AnimationAbilityComponent>()
                                                .Execute<SoundAbilityComponent>()
-                                               .Execute<RemoveShamBurningGroundComponent>()
+                                               
            != null;
 
     // ReSharper disable once PossibleInterfaceMemberAmbiguity

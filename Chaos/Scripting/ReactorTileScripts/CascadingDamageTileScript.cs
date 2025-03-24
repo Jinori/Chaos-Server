@@ -119,10 +119,10 @@ public sealed class CascadingDamageTileScript : ConfigurableReactorTileScriptBas
         {
             Executor.ExecuteAndCheck<GetCascadingTargetsAbilityComponent<Creature>>()
                     ?.Execute<AnimationAbilityComponent>()
+                    .Execute<RemoveShamBurningGroundComponent>()
                     .ExecuteAndCheck<MagicResistanceComponent>()
                     ?.Execute<DamageAbilityComponent>()
                     .Execute<ApplyEffectAbilityComponent>()
-                    .Execute<RemoveShamBurningGroundComponent>()
                     .Check(ShouldPlaySound)
                     ?.Execute<SoundAbilityComponent>();
             
