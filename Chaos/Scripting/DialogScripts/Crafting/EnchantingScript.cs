@@ -141,7 +141,7 @@ public class EnchantingScript : DialogScriptBase
         return -1;
     }
 
-    private int GetStatusAsInt(string status)
+    public static int GetStatusAsInt(string status)
     {
         var statusMappings = new Dictionary<string, int>
         {

@@ -149,11 +149,10 @@ public class MasteringScript : DialogScriptBase
         source.SpellBook.TryAddToNextSlot(roar);
         source.SpellBook.TryAddToNextSlot(adaptiveskin);
 
-        if (!source.Legend.TryGetValue("dedicated", out _))
-        {
-            var phoenixgrasp = SpellFactory.Create("phoenixgrasp");
-            source.SpellBook.TryAddToNextSlot(phoenixgrasp);
-        }
+
+        var phoenixgrasp = SpellFactory.Create("phoenixgrasp");
+        source.SpellBook.TryAddToNextSlot(phoenixgrasp);
+
 
         var itemsToGive = new[]
         {

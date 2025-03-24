@@ -366,7 +366,7 @@ public class CryptSlayerScript : DialogScriptBase
 
                 ExperienceDistributionScript.GiveExp(source, tenPercent);
                 source.TryGiveGamePoints(5);
-                source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive five gamepoints and {tenPercent} exp!");
+                source.Client.SendServerMessage(ServerMessageType.OrangeBar1, $"You receive 5 gamepoints and {tenPercent} exp!");
                 source.Trackers.Enums.Remove(typeof(CryptSlayerStage));
                 Subject.Reply(source, "Thank you so much for killing those. That's enough for today, come back soon.");
                 source.Trackers.Counters.Remove("CryptSlayer", out _);

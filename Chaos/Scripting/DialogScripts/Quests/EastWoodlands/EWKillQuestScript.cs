@@ -31,7 +31,7 @@ public class EwKillQuestScript(Dialog subject, ILogger<TheSacrificeQuestScript> 
                     var option = new DialogOption
                     {
                         DialogKey = "ewkillquest_initial",
-                        OptionText = "Eastwoodlands Slayer"
+                        OptionText = "East Woodlands Slayer"
                     };
                     
                     if (!Subject.HasOption(option.OptionText))
