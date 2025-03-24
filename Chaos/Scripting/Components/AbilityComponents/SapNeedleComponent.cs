@@ -33,8 +33,7 @@ public class SapNeedleComponent : IComponent
                 context.Source,
                 sapTarget,
                 vars.GetSourceScript(),
-                finalReplenish,
-                Element.None);
+                finalReplenish);
         }
     }
 
