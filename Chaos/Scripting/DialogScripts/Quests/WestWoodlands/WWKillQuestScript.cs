@@ -62,6 +62,7 @@ public class WWKillQuestScript(Dialog subject, ILogger<WWKillQuestScript> logger
 
                 if (source.UserStatSheet.Level >= 71)
                 {
+                    source.Trackers.Enums.Set(WestWoodlandsKillQuestStage.None);
                     source.Trackers.Counters.Remove("wwgoblinguardcounter", out _);
                     source.Trackers.Counters.Remove("wwgoblinwarriorcounter", out _);
                     source.Trackers.Counters.Remove("wwhobgoblincounter", out _);
