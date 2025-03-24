@@ -19,13 +19,15 @@ public class RionaTutorialQuestScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
     private readonly ILogger<RionaTutorialQuestScript> Logger;
+    private readonly ISkillFactory SkillFactory;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     /// <inheritdoc />
-    public RionaTutorialQuestScript(Dialog subject, IItemFactory itemFactory, ILogger<RionaTutorialQuestScript> logger)
+    public RionaTutorialQuestScript(Dialog subject, IItemFactory itemFactory, ILogger<RionaTutorialQuestScript> logger, ISkillFactory skillFactory)
         : base(subject)
     {
         ItemFactory = itemFactory;
+        SkillFactory = skillFactory;
         Logger = logger;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
     }
@@ -278,6 +280,12 @@ public class RionaTutorialQuestScript : DialogScriptBase
             case "ratquest_initial":
                 if (!hasStage || (stage == RionaTutorialQuestStage.None))
                     return;
+
+                if (!source.SkillBook.ContainsByTemplateKey("assail"))
+                {
+                    var assail = SkillFactory.Create("assail");
+                    source.SkillBook.TryAddToNextSlot(assail);
+                }
 
                 if (stage == RionaTutorialQuestStage.StartedRatQuest)
                     Subject.Reply(source, "Skip", "ratquest_turninstart");

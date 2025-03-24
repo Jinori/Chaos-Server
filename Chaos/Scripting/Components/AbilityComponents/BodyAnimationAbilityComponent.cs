@@ -1,4 +1,5 @@
 using Chaos.DarkAges.Definitions;
+using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Scripting.Abstractions;
@@ -38,7 +39,7 @@ public struct BodyAnimationAbilityComponent : IComponent
                 }
         
         if ((aisling != null) && aisling.Equipment.TryGetObject((byte)EquipmentSlot.Weapon, out var item2))
-            if ((item2.Template.Name == "Nunchaku") && (options.BodyAnimation == BodyAnimation.Punch))
+            if (item2.Template.Name.ContainsI("Nunchaku") && (options.BodyAnimation == BodyAnimation.Punch))
                 if (sourceScript is SubjectiveScriptBase<Skill> { Subject.Template.IsAssail: true })
                 {
                     context.Source.AnimateBody(BodyAnimation.Assail, animationSpeed);

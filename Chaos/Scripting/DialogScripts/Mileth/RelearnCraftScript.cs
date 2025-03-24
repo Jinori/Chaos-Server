@@ -36,6 +36,13 @@ public class RelearnCraftScript : DialogScriptBase
         {
             case "riona_relearnrecipes":
             {
+                if (!source.Bank.Contains("Mount") && !source.Inventory.Contains("Mount") && source.Trackers.Enums.HasValue(RionaTutorialQuestStage.CompletedTutorialQuest))
+                {
+                    var mount = ItemFactory.Create("Mount");
+                    source.GiveItemOrSendToBank(mount);
+                    source.SendOrangeBarMessage("Riona hands you replacement mount.");
+                }
+                
                 if (source.Trackers.Flags.HasFlag(MainstoryFlags.CreantRewards))
                 {
                     source.Trackers.Flags.RemoveFlag(CreantEnums.CompletedMedusa);

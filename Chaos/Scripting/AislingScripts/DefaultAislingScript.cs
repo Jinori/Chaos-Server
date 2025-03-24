@@ -731,7 +731,23 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             Subject.IsDead = false;
             Subject.StatSheet.AddHp(1);
             Subject.Client.SendAttributes(StatUpdateType.Vitality);
-            Subject.SendOrangeBarMessage("You are knocked out. Be more careful.");
+            Subject.SendOrangeBarMessage("You were knocked out. Be more careful.");
+            Subject.TraverseMap(mapInstance, pointS);
+
+            Subject.Refresh(true);
+
+            return;
+        }
+        
+        if (source?.MapInstance.Name.Equals("Mileth Inn") == true)
+        {
+            var mapInstance = SimpleCache.Get<MapInstance>("mileth_inn_room1");
+            var pointS = new Point(3, 2);
+
+            Subject.IsDead = false;
+            Subject.StatSheet.AddHp(1);
+            Subject.Client.SendAttributes(StatUpdateType.Vitality);
+            Subject.SendOrangeBarMessage("You were knocked out. Be more careful.");
             Subject.TraverseMap(mapInstance, pointS);
 
             Subject.Refresh(true);

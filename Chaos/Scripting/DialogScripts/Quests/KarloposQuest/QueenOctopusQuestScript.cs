@@ -38,7 +38,7 @@ public class QueenOctopusQuestScript : DialogScriptBase
             {
                 if (!hasStage || (stage == QueenOctopusQuest.None))
                 {
-                    if (source.UserStatSheet.Level is < 41 or >= 72)
+                    if (source.UserStatSheet.Level < 41)
                         return;
 
                     var option = new DialogOption
