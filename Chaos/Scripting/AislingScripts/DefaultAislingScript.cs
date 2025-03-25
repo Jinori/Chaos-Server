@@ -1024,7 +1024,10 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             sb.AppendLineFColored(MessageColor.Yellow, "You lost the following items:");
 
             foreach (var item in lostItems)
+            {
                 sb.AppendLineFColored(MessageColor.Gainsboro, $"{item}");
+                Subject.SendActiveMessage($"{item} broke.");
+            }
 
             sb.AppendLine("");
             sb.AppendLineFColored(MessageColor.Orange, "Revive with Terminus or wait to be revived.");

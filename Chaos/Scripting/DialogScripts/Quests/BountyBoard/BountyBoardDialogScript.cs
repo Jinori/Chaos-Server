@@ -20,12 +20,12 @@ public class BountyBoardDialogScript : DialogScriptBase
 {
     private static readonly List<KeyValuePair<string, decimal>> EpicRewards =
     [
-        new("nyxtwilightband", 10),
-        new("nyxumbralshield", 6),
-        new("nyxwhisper", 8),
-        new("nyxembrace", 8),
-        new("radiantpearl", 15),
-        new("eclipsepearl", 15),
+        new("nyxtwilightband", 16),
+        new("nyxumbralshield", 10),
+        new("nyxwhisper", 13),
+        new("nyxembrace", 13),
+        new("radiantpearl", 24),
+        new("eclipsepearl", 24),
     ];
 
     private readonly IItemFactory ItemFactory;
@@ -128,7 +128,8 @@ public class BountyBoardDialogScript : DialogScriptBase
                     Subject.Context = currentAvailableBounties;
                     var options = currentAvailableBounties.Select(bounty => (bounty.QuestText, "bountyboard_acceptbounty"));
                     Subject.AddOptions(options);
-                } else
+                } 
+                else
                 {
                     var possibleBounties = SelectRandomBounties(source);
 
@@ -281,7 +282,7 @@ public class BountyBoardDialogScript : DialogScriptBase
                           Topics.Entities.Quest)
                       .WithProperty(source)
                       .WithProperty(Subject)
-                      .LogInformation("{@AislingName} has received Bounty Master title.", source.Name);
+                      .LogInformation("{@AislingName} has received Bounty Master title", source.Name);
 
                 break;
             }
@@ -320,7 +321,7 @@ public class BountyBoardDialogScript : DialogScriptBase
                                   Topics.Entities.Quest)
                               .WithProperty(source)
                               .WithProperty(Subject)
-                              .LogInformation("{@AislingName} has accepted {@QuestText} bounty.", source.Name, selectedBounty.QuestText);
+                              .LogInformation("{@AislingName} has accepted {@QuestText} bounty", source.Name, selectedBounty.QuestText);
 
                         break;
                     }
@@ -348,7 +349,7 @@ public class BountyBoardDialogScript : DialogScriptBase
                                   Topics.Entities.Quest)
                               .WithProperty(source)
                               .WithProperty(Subject)
-                              .LogInformation("{@AislingName} has accepted {@QuestText} bounty.", source.Name, selectedBounty.QuestText);
+                              .LogInformation("{@AislingName} has accepted {@QuestText} bounty", source.Name, selectedBounty.QuestText);
 
                         break;
                     }
@@ -376,7 +377,7 @@ public class BountyBoardDialogScript : DialogScriptBase
                                   Topics.Entities.Quest)
                               .WithProperty(source)
                               .WithProperty(Subject)
-                              .LogInformation("{@AislingName} has accepted {@QuestText} bounty.", source.Name, selectedBounty.QuestText);
+                              .LogInformation("{@AislingName} has accepted {@QuestText} bounty", source.Name, selectedBounty.QuestText);
 
                         break;
                     }
@@ -404,7 +405,7 @@ public class BountyBoardDialogScript : DialogScriptBase
                                   Topics.Entities.Quest)
                               .WithProperty(source)
                               .WithProperty(Subject)
-                              .LogInformation("{@AislingName} has accepted {@QuestText} bounty.", source.Name, selectedBounty.QuestText);
+                              .LogInformation("{@AislingName} has accepted {@QuestText} bounty", source.Name, selectedBounty.QuestText);
 
                         break;
                     }
@@ -432,7 +433,7 @@ public class BountyBoardDialogScript : DialogScriptBase
                                   Topics.Entities.Quest)
                               .WithProperty(source)
                               .WithProperty(Subject)
-                              .LogInformation("{@AislingName} has accepted {@QuestText} bounty.", source.Name, selectedBounty.QuestText);
+                              .LogInformation("{@AislingName} has accepted {@QuestText} bounty", source.Name, selectedBounty.QuestText);
                     }
 
                         break;
@@ -480,7 +481,7 @@ public class BountyBoardDialogScript : DialogScriptBase
                               Topics.Entities.Quest)
                           .WithProperty(source)
                           .WithProperty(Subject)
-                          .LogInformation("{@AislingName} has abandoned {@QuestText} bounty.", source.Name, bountyDetails.QuestText);
+                          .LogInformation("{@AislingName} has abandoned {@QuestText} bounty", source.Name, bountyDetails.QuestText);
 
                     Subject.Reply(source, $"You've abandoned {bountyDetails.QuestText}", "bountyboard_initial");
                 }
@@ -506,7 +507,7 @@ public class BountyBoardDialogScript : DialogScriptBase
                     Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Dialog, Topics.Entities.Quest)
                           .WithProperty(source)
                           .WithProperty(Subject)
-                          .LogInformation("{@AislingName} has accepted {@QuestText} bounty.", source.Name, selectedBounty.QuestText);
+                          .LogInformation("{@AislingName} has accepted {@QuestText} bounty", source.Name, selectedBounty.QuestText);
 
                     Subject.Reply(source, $"You've accepted {selectedBounty.QuestText}!", "bountyboard_initial");
                 }
@@ -541,17 +542,20 @@ public class BountyBoardDialogScript : DialogScriptBase
                         exp = 25000000;
                         gamepoints = 20;
                         bountyPoints = 1;
-                    } else if (selectedBounty.KillRequirement == 250)
+                    } 
+                    else if (selectedBounty.KillRequirement == 250)
                     {
                         exp = 60000000;
                         gamepoints = 50;
                         bountyPoints = 2;
-                    } else if (selectedBounty.KillRequirement == 400)
+                    } 
+                    else if (selectedBounty.KillRequirement == 400)
                     {
                         exp = 100000000;
                         gamepoints = 75;
                         bountyPoints = 3;
-                    } else if (selectedBounty.KillRequirement == 10)
+                    } 
+                    else if (selectedBounty.KillRequirement == 10)
                     {
                         exp = 175000000;
                         gamepoints = 100;
@@ -569,6 +573,11 @@ public class BountyBoardDialogScript : DialogScriptBase
                                 MarkColor.DarkPurple,
                                 1,
                                 GameTime.Now));
+                        
+                        Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Dialog, Topics.Entities.Quest, Topics.Entities.Item)
+                              .WithProperty(source)
+                              .WithProperty(Subject)
+                              .LogInformation("{@AislingName} completed an Epic Bounty and received {@ItemName}", source.Name, firstItemReward.DisplayName);
                     }
 
                     ExperienceDistributionScript.GiveExp(source, exp);
@@ -583,7 +592,7 @@ public class BountyBoardDialogScript : DialogScriptBase
                           .WithProperty(source)
                           .WithProperty(Subject)
                           .LogInformation(
-                              "{@AislingName} has received {@ExpAmount} exp and {@GamePoints} from {@QuestText} bounty.",
+                              "{@AislingName} has received {@ExpAmount} exp and {@GamePoints} from {@QuestText} bounty",
                               source.Name,
                               exp,
                               gamepoints,

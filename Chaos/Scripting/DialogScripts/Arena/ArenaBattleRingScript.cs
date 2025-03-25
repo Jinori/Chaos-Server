@@ -77,6 +77,10 @@ public class ArenaBattleRingScript : DialogScriptBase
                     return;
                 }
 
+                source.StatSheet.SetHealthPct(100);
+                source.StatSheet.SetManaPct(100);
+                source.Client.SendAttributes(StatUpdateType.Vitality);
+                
                 var mapInstance = SimpleCache.Get<MapInstance>("arena_battle_ring");
                 source.TraverseMap(mapInstance, new Point(3, 3));
 
@@ -93,6 +97,10 @@ public class ArenaBattleRingScript : DialogScriptBase
                     return;
                 }
 
+                source.StatSheet.SetHealthPct(100);
+                source.StatSheet.SetManaPct(100);
+                source.Client.SendAttributes(StatUpdateType.Vitality);
+                
                 var mapInstance = SimpleCache.Get<MapInstance>("arena_battle_ring");
                 source.TraverseMap(mapInstance, new Point(53, 3));
 
@@ -109,6 +117,10 @@ public class ArenaBattleRingScript : DialogScriptBase
                     return;
                 }
 
+                source.StatSheet.SetHealthPct(100);
+                source.StatSheet.SetManaPct(100);
+                source.Client.SendAttributes(StatUpdateType.Vitality);
+                
                 var mapInstance = SimpleCache.Get<MapInstance>("arena_battle_ring");
                 source.TraverseMap(mapInstance, new Point(53, 53));
 
@@ -125,6 +137,10 @@ public class ArenaBattleRingScript : DialogScriptBase
                     return;
                 }
 
+                source.StatSheet.SetHealthPct(100);
+                source.StatSheet.SetManaPct(100);
+                source.Client.SendAttributes(StatUpdateType.Vitality);
+                
                 var mapInstance = SimpleCache.Get<MapInstance>("arena_battle_ring");
                 source.TraverseMap(mapInstance, new Point(3, 53));
 

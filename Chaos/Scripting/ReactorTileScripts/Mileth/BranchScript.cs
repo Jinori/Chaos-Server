@@ -2,6 +2,7 @@
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
+using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
@@ -31,6 +32,11 @@ public class BranchScript : ReactorTileScriptBase
             aisling.Client.SendServerMessage(
                 ServerMessageType.OrangeBar1,
                 $"Oh, you've found a sturdy branch! That makes {branchcount} branches!");
+            aisling.Animate(new Animation
+            {
+                AnimationSpeed = 100,
+                TargetAnimation = 10
+            });
         }
     }
 }
