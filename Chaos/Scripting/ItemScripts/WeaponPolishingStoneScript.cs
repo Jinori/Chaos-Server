@@ -79,7 +79,10 @@ public class WeaponPolishingStoneScript : ItemScriptBase
             "greatstaffoftheselene",
             "staffofgeolith",
             "goodstaffofgeolith",
-            "greatstaffofgeolith"
+            "greatstaffofgeolith",
+            "nyxumbralshield",
+            "goodnyxumbralshield",
+            "greatnyxumbralshield",
         };
 
         // Check if any item in the dictionary is in the player's inventory
@@ -88,7 +91,7 @@ public class WeaponPolishingStoneScript : ItemScriptBase
         if (matchingItem == null)
 
             // Send an orange bar message if no matching item is found
-            source.SendOrangeBarMessage("You do not have a master weapon to upgrade.");
+            source.SendOrangeBarMessage("You do not have a master item to upgrade.");
         else
         {
             // Create a dialog using the matching item
