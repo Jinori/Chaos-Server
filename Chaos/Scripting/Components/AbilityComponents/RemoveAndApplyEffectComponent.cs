@@ -169,11 +169,16 @@ public class RemoveAndApplyEffectComponent : IConditionalComponent
                     return true;
                 }
             }
-            else
+            else if (!string.IsNullOrEmpty(options.EffectKeyToRemove) && target.Effects.Contains(options.EffectKeyToRemove))
             {
                 target.Effects.Dispel(options.EffectKeyToRemove);
-                var effect = options.EffectFactory.Create(options.EffectKeyToAddAfterRemoval);
-                target.Effects.Apply(context.Source, effect);
+    
+                if (!string.IsNullOrEmpty(options.EffectKeyToAddAfterRemoval))
+                {
+                    var effect = options.EffectFactory.Create(options.EffectKeyToAddAfterRemoval);
+                    target.Effects.Apply(context.Source, effect);
+                }
+    
                 return true;
             }
         }
