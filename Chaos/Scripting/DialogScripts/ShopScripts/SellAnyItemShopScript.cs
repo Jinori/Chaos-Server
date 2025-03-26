@@ -162,15 +162,12 @@ public class SellAnyItemShopScript : DialogScriptBase
     
     private static string GetDisplayNameWithPlural(string baseName, int amount)
     {
-        if (amount == 1)
+        if ((amount == 1) || string.IsNullOrWhiteSpace(baseName))
             return baseName;
 
-        // If name already ends in 's', assume it's plural enough
-        if (baseName.EndsWith("s", StringComparison.OrdinalIgnoreCase))
-            return baseName;
-
-        return baseName + "s";
+        return baseName.Pluralize();
     }
+
 
     
     private void OnDisplayingInitial(Aisling source)

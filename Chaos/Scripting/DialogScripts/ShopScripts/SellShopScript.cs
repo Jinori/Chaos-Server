@@ -6,6 +6,7 @@ using Chaos.NLog.Logging.Definitions;
 using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Utilities;
+using Humanizer;
 #endregion
 
 namespace Chaos.Scripting.DialogScripts.ShopScripts;
@@ -158,14 +159,10 @@ public class SellShopScript : DialogScriptBase
     
     private static string GetDisplayNameWithPlural(string baseName, int amount)
     {
-        if (amount == 1)
+        if ((amount == 1) || string.IsNullOrWhiteSpace(baseName))
             return baseName;
 
-        // If name already ends in 's', assume it's plural enough
-        if (baseName.EndsWith("s", StringComparison.OrdinalIgnoreCase))
-            return baseName;
-
-        return baseName + "s";
+        return baseName.Pluralize();
     }
     
     private void OnDisplayingInitial(Aisling source)
