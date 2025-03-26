@@ -151,13 +151,28 @@ public class SellAnyItemShopScript : DialogScriptBase
             || !source.Inventory.TryGetObject(slot, out var item))
         {
             Subject.ReplyToUnknownInput(source);
-
             return;
         }
 
-        Subject.InjectTextParameters(amount.ToWords(), item.DisplayName, amount * (item.Template.SellValue / 3));
+        var itemName = GetDisplayNameWithPlural(item.DisplayName, amount);
+        var totalValue = amount * (item.Template.SellValue / 3);
+
+        Subject.InjectTextParameters(amount.ToWords(), itemName, totalValue);
+    }
+    
+    private static string GetDisplayNameWithPlural(string baseName, int amount)
+    {
+        if (amount == 1)
+            return baseName;
+
+        // If name already ends in 's', assume it's plural enough
+        if (baseName.EndsWith("s", StringComparison.OrdinalIgnoreCase))
+            return baseName;
+
+        return baseName + "s";
     }
 
+    
     private void OnDisplayingInitial(Aisling source)
         => Subject.Slots = source.Inventory
                                  .Where(x => x.Template.SellValue >= 2)

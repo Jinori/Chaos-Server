@@ -5805,7 +5805,7 @@ public static class CraftingRequirements
         {
             ArmorsmithingRecipes.SeaHybrasylBraidBelt, new Recipe
             {
-                Name = "Sea Hybrasyl Braid Belt",
+                Name = "Sea Hy-brasyl Braid Belt",
                 TemplateKey = "seahybrasylbraidbelt",
                 Ingredients =
                 [

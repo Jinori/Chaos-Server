@@ -243,9 +243,9 @@ public sealed class AislingMapperProfile(
         {
             if ((overHelm?.Template != null) && (overHelm.Template.IsDyeable || (overHelm.Color != DisplayColor.Default)))
                 headColor = overHelm.Color;
-            else if ((helmet != null) && !hideHelmet && (helmet.Template.IsDyeable || (helmet.Color != DisplayColor.Default)))
+            else if ((helmet != null) && (helmet.Template.IsDyeable || (helmet.Color != DisplayColor.Default)))
                 headColor = helmet.Color;
-            else if ((helmet != null) && hideHelmet && (helmet.Template.IsDyeable || (helmet.Color != DisplayColor.Default)))
+            else if ((helmet != null) && (helmet.Template.IsDyeable || (helmet.Color != DisplayColor.Default)))
                 headColor = obj.HairColor;
             else
                 headColor = obj.HairColor;
@@ -253,6 +253,9 @@ public sealed class AislingMapperProfile(
         else
             headColor = DisplayColor.Default;
 
+        if (hideHelmet)
+            headColor = obj.HairColor;
+        
         // Determine boots sprite
         if (hideBoots || shouldOverrideBootsSprite)
             bootsSprite = 0;

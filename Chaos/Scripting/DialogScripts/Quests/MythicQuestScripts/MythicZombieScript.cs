@@ -157,7 +157,7 @@ public class MythicZombieScript : DialogScriptBase
 
                 Subject.Reply(
                     source,
-                    "Thas what i like to watch! A goooood smack to them Quirky Dunans does them right! You make uss look better when yous fight on our side.");
+                    "Thas what I like to watch! A goooood smack to them Quirky Dunans does them right! You make us look better when yous fight on our side.");
 
                 break;
             }

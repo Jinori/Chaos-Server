@@ -167,7 +167,7 @@ public class MythicMantisScript : DialogScriptBase
             {
                 Subject.Reply(
                     source,
-                    "Show me how you do it. Good luck Aisling, they can be awefully tricky to kill. Make sure you slay 20 of the Violent Bees.");
+                    "Show me how you do it. Good luck Aisling, they can be awfully tricky to kill. Make sure you slay 20 of the Violent Bees.");
 
                 source.SendOrangeBarMessage("Kill 20 Violent Bees for King Mantis");
                 source.Trackers.Enums.Set(MythicMantis.HigherMantis);

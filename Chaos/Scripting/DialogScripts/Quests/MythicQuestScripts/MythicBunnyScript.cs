@@ -225,7 +225,7 @@ public class MythicBunnyScript : DialogScriptBase
                     source,
                     "Don't let us down, Warren Wanderer. We're counting on you to hop to it and bring back the horse hair we need. And remember, the early bunny gets the hair!");
 
-                source.SendOrangeBarMessage("Collect 25 horse hair for Big Bunny");
+                source.SendOrangeBarMessage("Collect 25 Horse Hair for Big Bunny");
                 source.Trackers.Enums.Set(MythicBunny.ItemBunny);
 
                 return;

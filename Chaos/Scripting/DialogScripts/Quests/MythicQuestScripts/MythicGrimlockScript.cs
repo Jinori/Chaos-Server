@@ -325,7 +325,7 @@ public class MythicGrimlockScript : DialogScriptBase
             {
                 Subject.Reply(
                     source,
-                    "Oh, Aisling. Remember you must defeat him 3 times! Thank you again for handling this, I don't know what we would do without you.");
+                    "Oh, Aisling. Remember, you must defeat him 3 times! Thank you again for handling this, I don't know what we would do without you.");
 
                 source.Trackers.Enums.Set(MythicGrimlock.BossGrimlockStarted);
                 source.SendOrangeBarMessage("Kill Shank three times.");
