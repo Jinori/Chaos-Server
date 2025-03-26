@@ -25,7 +25,7 @@
         <PackageTags>darkages; doomvas; private server;</PackageTags>
         <Version>1.0.0</Version>
     </PropertyGroup>
-
+    
     <ItemGroup>
         <PackageReference Include="Nerdbank.GitVersioning" Condition="!Exists('packages.config')">
             <PrivateAssets>all</PrivateAssets>

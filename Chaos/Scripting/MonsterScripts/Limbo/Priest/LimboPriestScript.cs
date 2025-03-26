@@ -120,7 +120,7 @@ public class LimboPriestScript : MonsterScriptBase
 
         if (shouldPramh)
         {
-            var possibleTargets = Map.GetEntitiesWithinRange<Aisling>(Subject)
+            var possibleTargets = Map.GetEntitiesWithinRange<Aisling>(Subject, 10)
                                      .Where(aisling => !aisling.IsPramhed())
                                      .ThatAreObservedBy(Subject)
                                      .ThatAreVisibleTo(Subject)
@@ -147,9 +147,12 @@ public class LimboPriestScript : MonsterScriptBase
         }
 
         //ao self curse
-        if (Subject.Effects.Contains("ard cradh") || Subject.Effects.Contains("Mor Cradh") || Subject.Effects.Contains("Cradh") || Subject.Effects.Contains("Beag Cradh"))
+        if (Subject.Effects.Contains("ard cradh")
+            || Subject.Effects.Contains("mor cradh")
+            || Subject.Effects.Contains("cradh")
+            || Subject.Effects.Contains("beag cradh"))
         {
-            if(Subject.TryUseSpell(AoArdCradh, Subject.Id))
+            if (Subject.TryUseSpell(AoArdCradh, Subject.Id))
                 ResetMovementTimer();
 
             return;
@@ -166,9 +169,12 @@ public class LimboPriestScript : MonsterScriptBase
 
         foreach (var monster in nearbyMonsters)
         {
-            if (monster.Effects.Contains("ard cradh"))
+            if (monster.Effects.Contains("ard cradh")
+                || monster.Effects.Contains("mor cradh")
+                || monster.Effects.Contains("cradh")
+                || monster.Effects.Contains("beag cradh"))
             {
-                if(Subject.TryUseSpell(AoArdCradh, monster.Id))
+                if (Subject.TryUseSpell(AoArdCradh, monster.Id))
                     ResetMovementTimer();
 
                 return;
