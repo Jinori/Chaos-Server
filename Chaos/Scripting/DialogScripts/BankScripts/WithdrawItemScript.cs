@@ -60,7 +60,7 @@ public class WithdrawItemScript : DialogScriptBase
         Subject.InjectTextParameters(item.DisplayName, item.Count);
     }
 
-    private void OnDisplayingInitial(Aisling source) => Subject.Items.AddRange(source.Bank.Select(ItemDetails.WithdrawItem));
+    private void OnDisplayingInitial(Aisling source) => Subject.Items.AddRange(source.Bank.Select(ItemDetails.WithdrawItem).OrderBy(x => x.Item.Template.Category));
 
     /// <inheritdoc />
     public override void OnNext(Aisling source, byte? optionIndex = null)
