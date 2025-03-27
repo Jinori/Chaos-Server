@@ -308,7 +308,6 @@ public class RecipeLibraryScript : DialogScriptBase
                                                         .Where(kv => recipes.HasFlag(kv.Key))
                                                         .Select(
                                                             kv => ItemDetails.DisplayRecipe(ItemFactory.CreateFaux(kv.Value.TemplateKey)))
-                                                        .Where(item => source.UserStatSheet.Level >= item.Item.Level)
                                                         .OrderBy(
                                                             item => EnchantingScript.GetStatusAsInt(
                                                                 CraftingRequirements.EnchantingRequirements.First(
