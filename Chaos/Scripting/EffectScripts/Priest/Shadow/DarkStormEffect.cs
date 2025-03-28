@@ -11,6 +11,7 @@ using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.MonsterScripts.Boss;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
+using Chaos.Utilities;
 
 namespace Chaos.Scripting.EffectScripts.Priest.Shadow
 {
@@ -67,12 +68,9 @@ namespace Chaos.Scripting.EffectScripts.Priest.Shadow
 
                     // Damage calculation
                     var damage = (int)(Subject.StatSheet.EffectiveInt * DAMAGE_SCALING_FACTOR);
-                    if (target.Script.Is<ThisIsABossScript>()) 
-                        damage = Math.Max(damage, (int)(target.StatSheet.EffectiveMaximumHp * 0.01)); // Min damage: 1% of max HP
-                    else
-                    {
-                        damage = Math.Max(damage, (int)(target.StatSheet.EffectiveMaximumHp * 0.02)); // Min damage: 2% of max HP
-                    }
+                    var pctDmg = DamageHelper.CalculatePercentDamage(Source, Subject, 2);
+
+                    damage = Math.Max(damage, pctDmg);
 
                     ApplyDamageScript.ApplyDamage(SourceOfEffect, target, this, damage);
                     target.ShowHealth();

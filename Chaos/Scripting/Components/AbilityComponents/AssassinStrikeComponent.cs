@@ -9,6 +9,7 @@ using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.MonsterScripts;
 using Chaos.Scripting.MonsterScripts.Boss;
+using Chaos.Utilities;
 
 namespace Chaos.Scripting.Components.AbilityComponents;
 
@@ -32,14 +33,10 @@ public struct AssassinStrikeComponent : IComponent
             damage = (int)(damage * options.DmgMultiplier);
 
             // 10% chance to kill the target instantly
-            if (target is Monster)
+            if (target is Monster && !target.Script.Is<TrainingDummyScript>() && !target.Script.Is<ThisIsABossScript>())
                 if (IntegerRandomizer.RollChance(10))
-                    if (!target.Script.Is<TrainingDummyScript>() && !target.Script.Is<ThisIsABossScript>())
-                        damage = target.StatSheet.CurrentHp;
-
-            if (target.Script.Is<ThisIsABossScript>())
-                damage /= 2;
-
+                    damage = target.StatSheet.CurrentHp;
+            
             if (damage > 0)
                 options.ApplyDamageScript.ApplyDamage(
                     context.Source,
@@ -63,7 +60,7 @@ public struct AssassinStrikeComponent : IComponent
         // Scale damage based on the target's current health.
         if (pctHpDamage.HasValue)
         {
-            var healthDamage = target.StatSheet.EffectiveMaximumHp * (pctHpDamage.Value / 100m);
+            var healthDamage = DamageHelper.CalculatePercentDamage(source, target, pctHpDamage.Value);
             finalDamage += Convert.ToInt32(healthDamage);
         }
 
