@@ -111,7 +111,7 @@ public class GuardianDeathScript : MonsterScriptBase
                     {
                         var artifact = ItemFactory.Create("seaartifact");
                         member.GiveItemOrSendToBank(artifact);
-                        member.SendOrangeBarMessage("You pull the Sea Artifact from the puddle.");
+                        member.SendOrangeBarMessage("You pull the Sea Artifact from the sand.");
                     }
                 }
             }
