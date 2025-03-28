@@ -103,11 +103,36 @@ namespace Chaos.Scripting.MapScripts.Arena.Arena_Modes
             if (!CheckOnMissingPlayersTimer.IntervalElapsed || !MissingPlayer)
                 return;
 
-            MovePlayerOut(PlayerStillActive);
+            var players = Subject.GetEntities<Aisling>().ToList();
+
+            // If only one player remains in the map and it's the active one
+            if ((players.Count == 1) && (players[0].Equals(PlayerStillActive)))
+            {
+                RecordVictory(PlayerStillActive);
+
+                PlayerStillActive.Legend.AddOrAccumulate(
+                    new LegendMark(
+                        "Pit Fight Victory (Opponent Forfeit)",
+                        "pitfightwinforfeit",
+                        MarkIcon.Victory,
+                        MarkColor.Gray,
+                        1,
+                        GameTime.Now));
+
+                PlayerStillActive.SendMessage("Your opponent has left or disconnected. You are declared the winner!");
+                foreach (var client in ClientRegistry)
+                    client.SendServerMessage(
+                        ServerMessageType.OrangeBar1,
+                        $"{PlayerStillActive.Name} wins the Pit Fight by forfeit!");
+
+                MovePlayerToEntrance(PlayerStillActive, new Point(6, 9));
+                RevivePlayer(PlayerStillActive);
+            }
+
             MissingPlayer = false;
             PlayerStillActive = null!;
         }
-
+        
         private void HandleTwoPlayers(List<Aisling> players)
         {
             MissingPlayer = false;

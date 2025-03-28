@@ -39,7 +39,7 @@ namespace Chaos.Scripting.ItemScripts.CraftingMaterialBox
             }
 
             // Notify the player
-            source.SendOrangeBarMessage($"You received {totalEssences +1} random essences of the gods!");
+            source.SendOrangeBarMessage($"You received {totalEssences} random essences of the gods!");
         }
     }
 }
