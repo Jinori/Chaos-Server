@@ -1,4 +1,5 @@
 #region
+using Chaos.DarkAges.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
@@ -41,6 +42,7 @@ public abstract class SetBonusItemScriptBase : ItemScriptBase
 
         aisling.UserStatSheet.SubtractBonus(previousBonus);
         aisling.UserStatSheet.AddBonus(newBonus);
+        aisling.Client.SendAttributes(StatUpdateType.Full);
     }
 
     public override void OnUnEquipped(Aisling aisling)
@@ -58,5 +60,6 @@ public abstract class SetBonusItemScriptBase : ItemScriptBase
 
         aisling.UserStatSheet.SubtractBonus(previousBonus);
         aisling.UserStatSheet.AddBonus(newBonus);
+        aisling.Client.SendAttributes(StatUpdateType.Full);
     }
 }
