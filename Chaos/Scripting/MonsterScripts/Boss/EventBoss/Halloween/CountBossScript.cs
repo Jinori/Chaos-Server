@@ -18,7 +18,7 @@ public class CountBossScript : CompositeMonsterScript
         GetScriptKey(typeof(WanderingScript)),
         GetScriptKey(typeof(CountDeathScript)),
         GetScriptKey(typeof(DisplayNameScript)),
-        GetScriptKey(typeof(ThisIsABossScript))
+        GetScriptKey(typeof(ThisIsAWorldBossScript))
     };
 
     //If you are not using BossMoveToTargetScript, you need: MoveToTargetScript.
