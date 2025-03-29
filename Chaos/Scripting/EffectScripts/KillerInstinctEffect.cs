@@ -1,7 +1,9 @@
 using Chaos.Definitions;
 using Chaos.Extensions;
+using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
+using Chaos.Scripting.MapScripts.Arena.Non_Combat;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
@@ -16,7 +18,7 @@ public class KillerInstinctEffect : IntervalEffectBase
     public override byte Icon => 40;
 
     /// <inheritdoc />
-    public override string Name => "KillerInstinct";
+    public override string Name => "Killer Instinct";
 
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromSeconds(1));
@@ -24,6 +26,16 @@ public class KillerInstinctEffect : IntervalEffectBase
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
     {
+        if (Subject.MapInstance.Script.Is<ArenaMapTagScript>())
+        {
+            if (Subject is Aisling aisling)
+                aisling.SendOrangeBarMessage("Killer Instinct cannot be used in the arena.");
+            
+            Subject.Effects.Dispel("Killer Instinct");
+
+            return;
+        }
+        
         var targets = Subject.MapInstance
                              .GetEntitiesWithinRange<Creature>(Subject, 3)
                              .ThatAreObservedBy(Subject)

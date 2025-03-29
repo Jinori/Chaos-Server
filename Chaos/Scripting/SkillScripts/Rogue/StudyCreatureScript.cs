@@ -1,4 +1,5 @@
 using Chaos.DarkAges.Definitions;
+using Chaos.DarkAges.Extensions;
 using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Geometry.Abstractions;
@@ -71,16 +72,32 @@ public class StudyCreatureScript : ConfigurableSkillScriptBase, GenericAbilityCo
     private string GetElementColor(Element element)
         => element switch
         {
-            Element.Fire     => "{=bFIRE{=s",
-            Element.Water    => "{=eWATER{=s",
-            Element.Earth    => "{=tEARTH{=s",
-            Element.Wind     => "{=qWIND{=s",
-            Element.None     => "{=gNONE{=s",
-            Element.Holy     => "{=aHOLY{=s",
-            Element.Darkness => "{=nDARK{=s",
-            Element.Wood     => "{=tWOOD{=s",
-            Element.Metal    => "{=iMETAL{=s",
-            Element.Undead   => "{=dUNDEAD{=s",
+            Element.Fire     => $"{MessageColor.Red.ToPrefix()}FIRE{MessageColor.Orange.ToPrefix()}",
+            Element.Water    => $"{MessageColor.Blue.ToPrefix()}WATER{MessageColor.Orange.ToPrefix()}",
+            Element.Earth    => $"{MessageColor.Yellow.ToPrefix()}EARTH{MessageColor.Orange.ToPrefix()}",
+            Element.Wind     => $"{MessageColor.NeonGreen.ToPrefix()}WIND{MessageColor.Orange.ToPrefix()}",
+            Element.None     => $"{MessageColor.Gray.ToPrefix()}NONE{MessageColor.Orange.ToPrefix()}",
+            Element.Holy     => $"{MessageColor.HotPink.ToPrefix()}HOLY{MessageColor.Orange.ToPrefix()}",
+            Element.Darkness => $"{MessageColor.Black.ToPrefix()}DARK{MessageColor.Orange.ToPrefix()}",
+            Element.Wood     => $"{MessageColor.Brown.ToPrefix()}WOOD{MessageColor.Orange.ToPrefix()}",
+            Element.Metal    => $"{MessageColor.Silver.ToPrefix()}METAL{MessageColor.Orange.ToPrefix()}",
+            Element.Undead   => $"{MessageColor.DarkGreen.ToPrefix()}UNDEAD{MessageColor.Orange.ToPrefix()}",
+            _                => throw new ArgumentOutOfRangeException(nameof(element), element, null)
+        };
+    
+    private string GetElementScrollWindowColor(Element element)
+        => element switch
+        {
+            Element.Fire     => $"{MessageColor.Red.ToPrefix()}FIRE{MessageColor.Gray.ToPrefix()}",
+            Element.Water    => $"{MessageColor.Blue.ToPrefix()}WATER{MessageColor.Gray.ToPrefix()}",
+            Element.Earth    => $"{MessageColor.Yellow.ToPrefix()}EARTH{MessageColor.Gray.ToPrefix()}",
+            Element.Wind     => $"{MessageColor.NeonGreen.ToPrefix()}WIND{MessageColor.Gray.ToPrefix()}",
+            Element.None     => $"{MessageColor.Gray.ToPrefix()}NONE{MessageColor.Gray.ToPrefix()}",
+            Element.Holy     => $"{MessageColor.HotPink.ToPrefix()}HOLY{MessageColor.Gray.ToPrefix()}",
+            Element.Darkness => $"{MessageColor.Black.ToPrefix()}DARK{MessageColor.Gray.ToPrefix()}",
+            Element.Wood     => $"{MessageColor.Brown.ToPrefix()}WOOD{MessageColor.Gray.ToPrefix()}",
+            Element.Metal    => $"{MessageColor.Silver.ToPrefix()}METAL{MessageColor.Gray.ToPrefix()}",
+            Element.Undead   => $"{MessageColor.DarkGreen.ToPrefix()}UNDEAD{MessageColor.Gray.ToPrefix()}",
             _                => throw new ArgumentOutOfRangeException(nameof(element), element, null)
         };
 
@@ -104,15 +121,18 @@ public class StudyCreatureScript : ConfigurableSkillScriptBase, GenericAbilityCo
 
             if (mob is not null)
             {
+                var offenseColor = GetElementColor(mob.StatSheet.OffenseElement);
+                var defenseColor = GetElementColor(mob.StatSheet.DefenseElement);
+                var offenseScrollColor = GetElementScrollWindowColor(mob.StatSheet.OffenseElement);
+                var defenseScrollColor = GetElementScrollWindowColor(mob.StatSheet.DefenseElement);
+                
                 context.SourceAisling?.Client.SendServerMessage(
                     ServerMessageType.ScrollWindow,
                     $"Name: {mob.Name}\nLevel: {mob.StatSheet.Level}\nHealth: {mob.StatSheet.CurrentHp}\nArmor Class: {
-                        mob.StatSheet.EffectiveAc}\nCurrent Mana: {mob.StatSheet.CurrentMp}\nOffensive Element: {mob.StatSheet.OffenseElement
-                        }\nDefensive Element: {mob.StatSheet.DefenseElement}");
+                        mob.StatSheet.EffectiveAc}\nCurrent Mana: {mob.StatSheet.CurrentMp}\nOffensive Element: {offenseScrollColor
+                        }\nDefensive Element: {defenseScrollColor}");
 
                 var group = context.SourceAisling?.Group?.Where(x => x.WithinRange(context.SourcePoint));
-                var offenseColor = GetElementColor(mob.StatSheet.OffenseElement);
-                var defenseColor = GetElementColor(mob.StatSheet.DefenseElement);
                 var message = $"{mob.Name}: Hp:{mob.StatSheet.HealthPercent:F0}% OFF: {offenseColor} DEF: {defenseColor}";
 
                 if (group == null)

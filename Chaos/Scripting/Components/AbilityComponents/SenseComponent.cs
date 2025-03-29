@@ -19,10 +19,12 @@ public sealed class SenseComponent : IComponent
         {
             if (options.OutputType != null)
             {
+                var offenseColor = GetElementColor(target.StatSheet.OffenseElement);
+                var defenseColor = GetElementColor(target.StatSheet.DefenseElement);
                 var sb = new StringBuilder();
                 var vitality = target.UserStatSheet.MaximumHp + target.UserStatSheet.MaximumMp * 2;
-                sb.AppendLineFColored(MessageColor.Silver, $"{target.Name}'s Stats");
-                sb.Append(Environment.NewLine);
+                sb.AppendLineFColored(MessageColor.Silver, $"{target.Name}'s Stats{MessageColor.Gray.ToPrefix()}");
+                sb.AppendLine($"Defense: {defenseColor} Offense: {offenseColor}");
                 
                 sb.AppendLineFColored(MessageColor.Yellow, "Base Vitality", MessageColor.Gray);
                 sb.Append($"Vitality: {vitality} ");
@@ -90,6 +92,22 @@ public sealed class SenseComponent : IComponent
             }
         }
     }
+    
+    private string GetElementColor(Element element)
+        => element switch
+        {
+            Element.Fire     => $"{MessageColor.Red.ToPrefix()}FIRE{MessageColor.Gray.ToPrefix()}",
+            Element.Water    => $"{MessageColor.Blue.ToPrefix()}WATER{MessageColor.Gray.ToPrefix()}",
+            Element.Earth    => $"{MessageColor.Yellow.ToPrefix()}EARTH{MessageColor.Gray.ToPrefix()}",
+            Element.Wind     => $"{MessageColor.NeonGreen.ToPrefix()}WIND{MessageColor.Gray.ToPrefix()}",
+            Element.None     => $"{MessageColor.Gray.ToPrefix()}NONE{MessageColor.Gray.ToPrefix()}",
+            Element.Holy     => $"{MessageColor.HotPink.ToPrefix()}HOLY{MessageColor.Gray.ToPrefix()}",
+            Element.Darkness => $"{MessageColor.Black.ToPrefix()}DARK{MessageColor.Gray.ToPrefix()}",
+            Element.Wood     => $"{MessageColor.Brown.ToPrefix()}WOOD{MessageColor.Gray.ToPrefix()}",
+            Element.Metal    => $"{MessageColor.Silver.ToPrefix()}METAL{MessageColor.Gray.ToPrefix()}",
+            Element.Undead   => $"{MessageColor.DarkGreen.ToPrefix()}UNDEAD{MessageColor.Gray.ToPrefix()}",
+            _                => throw new ArgumentOutOfRangeException(nameof(element), element, null)
+        };
 
     public interface ISenseComponentOptions
     {

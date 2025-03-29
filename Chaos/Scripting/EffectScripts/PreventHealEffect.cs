@@ -18,6 +18,7 @@ public class PreventHealEffect : EffectBase, NonOverwritableEffectComponent.INon
     public override void OnTerminated()
     {
         AislingSubject?.SendOrangeBarMessage("You don't resist heals anymore.");
+        AislingSubject?.ShowHealth();
     }
     public override bool ShouldApply(Creature source, Creature target)
     {
