@@ -24,7 +24,7 @@ public sealed class HopocalypseScript : MapScriptBase
         MessageTimer = new PeriodicMessageTimer(
             TimeSpan.FromSeconds(15),
             TimeSpan.FromSeconds(5),
-            TimeSpan.FromSeconds(5),
+            TimeSpan.FromSeconds(10),
             TimeSpan.FromSeconds(1),
             "Get ready to collect eggs in {Time}!",
             SendMessage);

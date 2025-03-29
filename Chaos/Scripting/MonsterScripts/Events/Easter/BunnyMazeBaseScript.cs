@@ -27,6 +27,13 @@ public abstract class BunnyMazeBaseScript(Monster subject) : MonsterScriptBase(s
         IgnoreWalls = false
     };
     
+    private IPathOptions FrightOptions => PathOptions.Default with
+    {
+        LimitRadius = null,
+        IgnoreBlockingReactors = true,
+        IgnoreWalls = true
+    };
+    
     private BunnyState CurrentState = BunnyState.Chase;
     
     private readonly IIntervalTimer ChaseTimer = new IntervalTimer(TimeSpan.FromSeconds(20), false);
@@ -137,7 +144,7 @@ public abstract class BunnyMazeBaseScript(Monster subject) : MonsterScriptBase(s
     protected virtual void DoFrightened()
     {
         if (Subject.MoveTimer.IntervalElapsed && (Subject.ManhattanDistanceFrom(HomePoint) >= 1))
-            Subject.Pathfind(HomePoint, 0, Options);
+            Subject.Pathfind(HomePoint, 0, FrightOptions);
     }
 
     protected abstract void DoChase();

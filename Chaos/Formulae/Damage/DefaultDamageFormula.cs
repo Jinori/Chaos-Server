@@ -183,7 +183,7 @@ public class DefaultDamageFormula : IDamageFormula
 
         if (defender.Effects.Contains("Beag Pramh"))
             damageMultiplier += .25;
-        else if (defender.Effects.Contains("Wolf Fang Fist") || defender.Effects.Contains("Pramh"))
+        else if (defender.Effects.Contains("Wolf Fang Fist") || defender.Effects.Contains("Pramh") || (defender.Effects.TryGetEffect("FourfoldSeal", out var seal) && (seal.Source.Equals(attacker))))
             damageMultiplier += 1;
 
         if (defender.Effects.Contains("Crit"))

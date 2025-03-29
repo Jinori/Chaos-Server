@@ -19,10 +19,7 @@ internal class EventMerchantScript : MapScriptBase
     /// <summary>
     /// Initializes a new instance of the class.
     /// </summary>
-    public EventMerchantScript(MapInstance subject, IMerchantFactory merchantFactory) : base(subject)
-    {
-        MerchantFactory = merchantFactory;
-    }
+    public EventMerchantScript(MapInstance subject, IMerchantFactory merchantFactory) : base(subject) => MerchantFactory = merchantFactory;
 
     /// <summary>
     /// Dictionary mapping map IDs to the merchants that should spawn during events.
@@ -42,7 +39,8 @@ internal class EventMerchantScript : MapScriptBase
         { "santas_room", [ new MerchantSpawn("santa", 3, 6, Direction.Down) ] },
         { "toy_shop", [ new MerchantSpawn("elf1", 6, 6, Direction.Down) ] },
         { "rucesion", [ new MerchantSpawn("slytherin", 32, 35, Direction.Down) ] },
-        { "mileth_village_way", [ new MerchantSpawn("lucky", 5, 9, Direction.Down) ] }
+        { "mileth_village_way", [ new MerchantSpawn("lucky", 5, 9, Direction.Down) ] },
+        { "undine", [ new MerchantSpawn("cadburry", 17, 25, Direction.Down) ] },
     };
 
     public override void Update(TimeSpan delta)

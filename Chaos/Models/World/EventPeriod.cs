@@ -117,6 +117,16 @@ public class EventPeriod
                     "manor_floor_1", "manor_floor_2", "manor_floor_3", "nobis", "lynith_beach_south","lynith_beach_north1", "lynith_beach_north2", "mileth_village_way"
                 ]
             ),
+            
+            // Easter Event (April 14 - April 28)
+            // Easter Event (Testing: March 28 - March 31)
+            new(
+                "0 6 28 3 *", // March 28th at 6 AM
+                "0 6 31 3 *", // March 31st at 6 AM
+                [
+                    "undine", "hopmaze"
+                ]
+            ),
         ];
 
     /// <summary>

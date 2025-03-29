@@ -7,7 +7,7 @@ namespace Chaos.Scripting.MonsterScripts.Events.Easter;
 
 public class WhiskerflipScript(Monster subject) : BunnyMazeBaseScript(subject)
 {
-    private const int CHASE_DISTANCE_THRESHOLD = 3;
+    private const int CHASE_DISTANCE_THRESHOLD = 2;
     private IPathOptions Options => PathOptions.Default with
     {
         LimitRadius = null,
@@ -20,13 +20,14 @@ public class WhiskerflipScript(Monster subject) : BunnyMazeBaseScript(subject)
     {
         if (Target == null)
             return;
+        
+        var distance = Subject.ManhattanDistanceFrom(Target);
 
-        var playerPos = new Point(Target.X, Target.Y);
-        var myPos = new Point(Subject.X, Subject.Y);
-        var distance = myPos.EuclideanDistanceFrom(playerPos);
-
-        if ((distance >= CHASE_DISTANCE_THRESHOLD) && Subject.MoveTimer.IntervalElapsed)
-            Subject.Pathfind(Target, 0, Options);
+        if ((distance >= CHASE_DISTANCE_THRESHOLD))
+        {
+            if (Subject.MoveTimer.IntervalElapsed) 
+                Subject.Pathfind(Target, 0, Options);   
+        }
         else
             if (Subject.WanderTimer.IntervalElapsed) 
                 Subject.Wander(Options);
