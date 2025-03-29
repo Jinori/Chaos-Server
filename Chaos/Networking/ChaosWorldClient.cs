@@ -93,7 +93,7 @@ public sealed class ChaosWorldClient : WorldClientBase, IChaosWorldClient
         //check if the current animation is null
         var currentAnimation = Interlocked.CompareExchange(ref CurrentAnimation, animation, null);
         
-        if (currentAnimation is null)
+        if (currentAnimation is null || animation.TargetPoint.HasValue || Aisling is { Options.PriorityAnimations: false })
         {
             InnerSendAnimation();
 

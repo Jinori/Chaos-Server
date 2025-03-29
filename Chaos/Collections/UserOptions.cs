@@ -150,7 +150,7 @@ public sealed class UserOptions
     public bool ListenToHitSounds { get; set; } = true;
 
     /// <summary>
-    ///     Unused option 3
+    ///     Whether to use priority animations
     /// </summary>
     [Description("Use Priority Animations")]
     public bool PriorityAnimations { get; set; } = true;

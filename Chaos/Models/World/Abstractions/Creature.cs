@@ -189,8 +189,10 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
 
     public Stack<IPoint> FindPath(IPoint target, IPathOptions? pathOptions = null)
     {
-        pathOptions ??= PathOptions.Default;
-        pathOptions.IgnoreWalls |= Type == CreatureType.WalkThrough;
+        pathOptions ??= PathOptions.Default with
+        {
+            IgnoreWalls = Type == CreatureType.WalkThrough
+        };
 
         var nearbyDoors = MapInstance.GetEntitiesWithinRange<Door>(this)
                                      .Where(door => door.Closed);
@@ -330,8 +332,10 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
 
     public void Pathfind(IPoint target, int distance = 1, IPathOptions? pathOptions = null)
     {
-        pathOptions ??= PathOptions.Default;
-        pathOptions.IgnoreWalls |= Type == CreatureType.WalkThrough;
+        pathOptions ??= PathOptions.Default with
+        {
+            IgnoreWalls = Type == CreatureType.WalkThrough
+        };
 
         //if we're within distance, no need to pathfind
         if (this.ManhattanDistanceFrom(target) <= distance)
@@ -770,8 +774,10 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
 
     public virtual void Wander(IPathOptions? pathOptions = null)
     {
-        pathOptions ??= PathOptions.Default;
-        pathOptions.IgnoreWalls |= Type == CreatureType.WalkThrough;
+        pathOptions ??= PathOptions.Default with
+        {
+            IgnoreWalls = Type == CreatureType.WalkThrough
+        };
 
         var nearbyDoors = MapInstance.GetEntitiesWithinRange<Door>(this, 1)
                                      .Where(door => door.Closed);
