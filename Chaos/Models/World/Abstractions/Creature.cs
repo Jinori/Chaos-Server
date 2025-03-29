@@ -388,7 +388,7 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
         {
             case PublicMessageType.Normal:
 
-                if (MapInstance.BaseInstanceId is "arena_typing")
+                if (MapInstance.LoadedFromInstanceId is "arena_typing")
                     creaturesWithinRange = MapInstance.GetEntitiesWithinRange<Monster>(this)
                                                       .ThatCanObserve(this);
                 else

@@ -62,7 +62,6 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
     {
         source.Trackers.Flags.TryGetFlag(out Hobbies _);
         var hasCraft = source.Trackers.Enums.TryGetValue(out Crafts craft);
-        var hasPenta = source.Trackers.Enums.TryGetValue(out PentagramQuestStage stage);
         
 
         switch (Subject.Template.TemplateKey.ToLower())

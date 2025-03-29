@@ -115,7 +115,7 @@ public class VerbalRepairAllScript : MerchantScriptBase
             repairCost *= 10;
 
         // Apply guild hall discount
-        if (aisling.MapInstance.BaseInstanceId == "guildhallmain")
+        if (aisling.MapInstance.LoadedFromInstanceId == "guildhallmain")
             repairCost *= GUILD_HALL_DISCOUNT;
 
         return Convert.ToInt32(repairCost);

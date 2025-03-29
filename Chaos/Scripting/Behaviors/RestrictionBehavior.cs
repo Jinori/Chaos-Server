@@ -111,7 +111,7 @@ public class RestrictionBehavior
     {
         if (aisling.IsAlive)
         {
-            if (aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out _))
+            if (aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out _) || aisling.MapInstance.LoadedFromInstanceId.EqualsI("hopmaze"))
             {
                 aisling.SendOrangeBarMessage("You can't do that now.");
 
@@ -160,7 +160,7 @@ public class RestrictionBehavior
                                       || aisling.IsPramhed()
                                       || aisling.IsStoned()
                                       || aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out _)
-                                      || aisling.MapInstance.Name.EqualsI("Frosty's Challenge") || (aisling.MapInstance.Name.EqualsI("Snaggles Secret Sweetroom") && !aisling.IsGodModeEnabled()):
+                                      || aisling.MapInstance.Name.EqualsI("Frosty's Challenge") || (aisling.MapInstance.Name.EqualsI("Snaggles Secret Sweetroom") || (aisling.MapInstance.LoadedFromInstanceId.EqualsI("hopmaze") && !aisling.IsGodModeEnabled())):
             {
                 aisling.SendOrangeBarMessage("You cannot use skills.");
 
@@ -215,7 +215,7 @@ public class RestrictionBehavior
                                       || aisling.IsPramhed()
                                       || aisling.IsStoned()
                                       || aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out _)
-                                      || aisling.MapInstance.Name.EqualsI("Frosty's Challenge") || (aisling.MapInstance.Name.EqualsI("Snaggles Secret Sweetroom") && !aisling.IsGodModeEnabled()):
+                                      || aisling.MapInstance.Name.EqualsI("Frosty's Challenge") || (aisling.MapInstance.Name.EqualsI("Snaggles Secret Sweetroom") || (aisling.MapInstance.LoadedFromInstanceId.EqualsI("hopmaze") && !aisling.IsGodModeEnabled())):
             {
                 aisling.SendOrangeBarMessage("You cannot use spells.");
 

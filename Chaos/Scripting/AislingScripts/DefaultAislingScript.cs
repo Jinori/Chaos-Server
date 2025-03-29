@@ -118,6 +118,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
     private readonly IStore<BulletinBoard> BoardStore;
     private readonly IIntervalTimer CleanupSkillsSpellsTimer;
+    private readonly IIntervalTimer PickupUndineEggsTimer;
     private readonly IIntervalTimer ClearOrangeBarTimer;
     private readonly IClientRegistry<IChaosWorldClient> ClientRegistry;
     private readonly IDialogFactory DialogFactory;
@@ -340,6 +341,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
         SleepAnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(5), false);
         ClearOrangeBarTimer = new IntervalTimer(TimeSpan.FromSeconds(WorldOptions.Instance.ClearOrangeBarTimerSecs), false);
+        PickupUndineEggsTimer = new IntervalTimer(TimeSpan.FromMilliseconds(300), false);
 
         CleanupSkillsSpellsTimer = new RandomizedIntervalTimer(
             TimeSpan.FromMinutes(3),
@@ -928,7 +930,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         if (MapsToNotPunishDeathOn.Contains(Subject.MapInstance.Name))
             return;
 
-        if (Subject.MapInstance is { IsShard: true, BaseInstanceId: "guildhallmain" })
+        if (Subject.MapInstance is { IsShard: true, LoadedFromInstanceId: "guildhallmain" })
             return;
 
         foreach (var client in ClientRegistry)
@@ -1319,7 +1321,53 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         ClearOrangeBarTimer.Update(delta);
         OneSecondTimer.Update(delta);
         CleanupSkillsSpellsTimer.Update(delta);
+        
+        //if (EventPeriod.IsEventActive(DateTime.Now, "hopmaze"))
+        PickupUndineEggsTimer.Update(delta);
 
+
+        if (PickupUndineEggsTimer.IntervalElapsed)
+        {
+            var egg = Subject.MapInstance.GetEntitiesAtPoints<GroundItem>(Subject).FirstOrDefault(x => x.Name is "Undine Chicken Egg" or "Undine Golden Chicken Egg");
+
+            switch (egg?.Item.DisplayName)
+            {
+                case "Undine Chicken Egg":
+                {
+                    var item = ItemFactory.Create("undinechickenegg");
+
+                    if (!Subject.Inventory.TryAddToNextSlot(item))
+                    {
+                        Subject.SendOrangeBarMessage("You need space to pickup eggs!");
+                        return;
+                    }
+                    
+                    Subject.MapInstance.RemoveEntity(egg);
+                    Subject.SendPersistentMessage($"{Subject.Inventory.CountOf("Undine Chicken Egg")} eggs!");
+                    
+                    break;
+                }
+                case "Undine Golden Chicken Egg":
+                {
+                    var item = ItemFactory.Create("undinegoldenchickenegg");
+
+                    if (!Subject.Inventory.TryAddToNextSlot(item))
+                    {
+                        Subject.SendOrangeBarMessage("You need space to pickup Golden eggs!");
+                        return;
+                    }
+
+                    Subject.MapInstance.RemoveEntity(egg);
+                    Subject.SendPersistentMessage($"{Subject.Inventory.CountOf("Undine Golden Chicken Egg")} golden eggs!");
+
+                    foreach (var bunny in Subject.MapInstance.GetEntities<Monster>())
+                        bunny.Trackers.Counters.AddOrIncrement("Frightened");
+
+                    break;
+                }
+            }
+        }
+        
         if (CleanupSkillsSpellsTimer.IntervalElapsed && !Subject.IsDiacht())
         {
             CleanupSubjectItems();

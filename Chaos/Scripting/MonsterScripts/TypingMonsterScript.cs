@@ -35,7 +35,7 @@ public class TypingMonsterScript : MonsterScriptBase
 
     public override void OnPublicMessage(Creature source, string message)
     {
-        if ((source.MapInstance.BaseInstanceId == "arena_typing") && source is Aisling aisling && string.Equals(
+        if ((source.MapInstance.LoadedFromInstanceId == "arena_typing") && source is Aisling aisling && string.Equals(
                 message,
                 Subject.TypingWord,
                 StringComparison.Ordinal))

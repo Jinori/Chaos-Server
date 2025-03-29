@@ -115,7 +115,7 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
         if (MapsToNotPunishDurability.Contains(aisling.MapInstance.Name) || aisling.IsGodModeEnabled())
             return;
 
-        if (source.MapInstance is { IsShard: true, BaseInstanceId: "guildhallmain" })
+        if (source.MapInstance is { IsShard: true, LoadedFromInstanceId: "guildhallmain" })
             return;
         
 

@@ -34,7 +34,7 @@ public class RepairSingleItemScript(Dialog subject, ILogger<RepairSingleItemScri
             repairCost *= 126;
         
         // Apply guild hall discount
-        if (aisling.MapInstance.BaseInstanceId == "guildhallmain")
+        if (aisling.MapInstance.LoadedFromInstanceId == "guildhallmain")
             repairCost *= GUILD_HALL_DISCOUNT;
 
         return Convert.ToInt32(repairCost);
