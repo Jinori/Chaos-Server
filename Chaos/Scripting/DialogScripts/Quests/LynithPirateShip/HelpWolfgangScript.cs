@@ -19,11 +19,7 @@ public class HelpWolfgangScript : DialogScriptBase
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     /// <inheritdoc />
-    public HelpWolfgangScript(
-        Dialog subject,
-        ISimpleCache simpleCache,
-        ILogger<PFQuestScript> logger
-    )
+    public HelpWolfgangScript(Dialog subject, ISimpleCache simpleCache, ILogger<PFQuestScript> logger)
         : base(subject)
     {
         SimpleCache = simpleCache;
@@ -40,18 +36,18 @@ public class HelpWolfgangScript : DialogScriptBase
             {
                 if (source.StatSheet.Level < 99)
                     return;
+
                 var hasStage = source.Trackers.Enums.TryGetValue(out HelpSable stage);
 
-                if (!hasStage 
+                if (!hasStage
                     || source.Trackers.Enums.HasValue(HelpSable.FinishedCaptain)
                     || source.Trackers.Enums.HasValue(HelpSable.StartedDoltoo)
                     || source.Trackers.Enums.HasValue(HelpSable.EscortingDoltooFailed)
                     || source.Trackers.Enums.HasValue(HelpSable.EscortingDoltooStart)
                     || source.Trackers.Enums.HasValue(HelpSable.CompletedEscort)
-                    || source.Trackers.Enums.HasValue(HelpSable.FinishedDoltoo)
-                   )
+                    || source.Trackers.Enums.HasValue(HelpSable.FinishedDoltoo))
                     return;
-                
+
                 if (source.Trackers.Enums.HasValue(HelpSable.StartedCaptain))
                 {
                     var option1 = new DialogOption
@@ -62,10 +58,10 @@ public class HelpWolfgangScript : DialogScriptBase
 
                     if (!Subject.HasOption(option1.OptionText))
                         Subject.Options.Insert(0, option1);
-                    
+
                     return;
                 }
-                
+
                 var option = new DialogOption
                 {
                     DialogKey = "helpwolfgang_initial",
@@ -75,27 +71,29 @@ public class HelpWolfgangScript : DialogScriptBase
                 if (!Subject.HasOption(option.OptionText))
                     Subject.Options.Insert(0, option);
             }
+
                 break;
-                
-                case "helpwolfgang_initial":
+
+            case "helpwolfgang_initial":
             {
                 if (source.Trackers.Enums.HasValue(HelpSable.FinishedRoger))
                 {
                     Subject.Reply(source, "Skip", "helpwolfgang_initial2");
+
                     return;
                 }
 
                 if (source.Trackers.Enums.HasValue(HelpSable.StartedCaptain))
-                {
                     Subject.Reply(source, "Skip", "helpwolfgang_return");
-                }
             }
+
                 break;
 
             case "helpwolfgang_initial4":
             {
-               source.Trackers.Enums.Set(HelpSable.StartedCaptain);
-               break;
+                source.Trackers.Enums.Set(HelpSable.StartedCaptain);
+
+                break;
             }
 
             case "helpwolfgang_return":
@@ -111,39 +109,46 @@ public class HelpWolfgangScript : DialogScriptBase
                         {
                             var mapinstance1 = SimpleCache.Get<MapInstance>("lynith_pirate_brig1");
                             source.TraverseMap(mapinstance1, point);
+
                             return;
                         }
                         case >= 25 and < 41:
                         {
                             var mapinstance1 = SimpleCache.Get<MapInstance>("lynith_pirate_brig2");
                             source.TraverseMap(mapinstance1, point);
+
                             return;
                         }
                         case >= 41 and < 55:
                         {
                             var mapinstance1 = SimpleCache.Get<MapInstance>("lynith_pirate_brig3");
                             source.TraverseMap(mapinstance1, point);
+
                             return;
                         }
                         case >= 55 and < 71:
                         {
                             var mapinstance1 = SimpleCache.Get<MapInstance>("lynith_pirate_brig4");
                             source.TraverseMap(mapinstance1, point);
+
                             return;
                         }
                         case >= 71 and < 99:
                         {
                             var mapinstance1 = SimpleCache.Get<MapInstance>("lynith_pirate_brig5");
                             source.TraverseMap(mapinstance1, point);
+
                             return;
                         }
                         case >= 99:
                         {
                             var mapinstance1 = SimpleCache.Get<MapInstance>("lynith_pirate_brig6");
                             source.TraverseMap(mapinstance1, point);
+
                             return;
                         }
                     }
+
                     return;
                 }
 
@@ -152,20 +157,18 @@ public class HelpWolfgangScript : DialogScriptBase
                 source.TryGiveGamePoints(10);
                 ExperienceDistributionScript.GiveExp(source, 1500000);
                 source.SendOrangeBarMessage("Captain Wolfgang seems more outgoing now.");
-                
+
                 Logger.WithTopics(
-                        [Topics.Entities.Aisling,
-                        Topics.Entities.Experience,
-                        Topics.Entities.Item,
-                        Topics.Entities.Dialog,
-                        Topics.Entities.Quest])
-                    .WithProperty(source)
-                    .WithProperty(Subject)
-                    .LogInformation(
-                        "{@AislingName} has received {@ExpAmount} exp from Helping Captain Wolfgang.",
-                        source.Name,
-                        1500000);
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Experience,
+                          Topics.Entities.Item,
+                          Topics.Entities.Dialog,
+                          Topics.Entities.Quest)
+                      .WithProperty(source)
+                      .WithProperty(Subject)
+                      .LogInformation("{@AislingName} has received {@ExpAmount} exp from Helping Captain Wolfgang.", source.Name, 1500000);
             }
+
                 break;
         }
     }

@@ -43,10 +43,7 @@ public sealed class ArenaHostBoardScript : ConfigurableBulletinBoardScriptBase
         PostRetentionTime = TimeSpan.FromHours(PostRetentionHours);
         PostRetentionTimer = new IntervalTimer(TimeSpan.FromMinutes(5));
     }
-    
-    private bool IsHost(Aisling aisling) => aisling.Trackers.Enums.TryGetValue(out ArenaHost value)
-    && value is ArenaHost.Host or ArenaHost.MasterHost;
-    
+
     public override bool AllowedToDelete(Aisling aisling, Post post)
         => aisling.Name.EqualsI(post.Author) || aisling.IsAdmin || IsHost(aisling);
 
@@ -58,6 +55,9 @@ public sealed class ArenaHostBoardScript : ConfigurableBulletinBoardScriptBase
 
     /// <inheritdoc />
     public override bool AllowedToView(Aisling aisling) => true;
+
+    private bool IsHost(Aisling aisling)
+        => aisling.Trackers.Enums.TryGetValue(out ArenaHost value) && value is ArenaHost.Host or ArenaHost.MasterHost;
 
     /// <inheritdoc />
     public override bool ShouldRejectPost(Aisling aisling, Post post, [MaybeNullWhen(false)] out string reason)

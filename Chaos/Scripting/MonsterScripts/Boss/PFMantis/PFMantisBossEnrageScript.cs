@@ -33,7 +33,12 @@ public sealed class PFMantisBossEnrageScript : MonsterScriptBase
         SpellFactory = spellFactory;
         SpellToCast = SpellFactory.Create("weaken");
         MonsterFactory = monsterFactory;
-        SpellCastTimer = new RandomizedIntervalTimer(TimeSpan.FromSeconds(15), 20, RandomizationType.Balanced, false);
+
+        SpellCastTimer = new RandomizedIntervalTimer(
+            TimeSpan.FromSeconds(15),
+            20,
+            RandomizationType.Balanced,
+            false);
     }
 
     public override void Update(TimeSpan delta)
@@ -41,16 +46,13 @@ public sealed class PFMantisBossEnrageScript : MonsterScriptBase
         SpellCastTimer.Update(delta);
 
         if (SpellCastTimer.IntervalElapsed)
-        {
             foreach (var target in Subject.MapInstance.GetEntities<Aisling>())
             {
                 if (target.IsDead)
                     continue;
-                
+
                 Subject.TryUseSpell(SpellToCast, target.Id);
             }
-        }
-        
 
         if (!Bonus90Applied && (Subject.StatSheet.HealthPercent <= 90))
         {

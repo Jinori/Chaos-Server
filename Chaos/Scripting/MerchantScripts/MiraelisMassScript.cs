@@ -19,6 +19,184 @@ public class MiraelisMassScript : MerchantScriptBase
     private const int SERMON_DELAY_SECONDS = 5;
     private const int MASS_SERMON_COUNT = 10;
 
+    private IEnumerable<Aisling>? AislingsAtStart { get; set; }
+    private bool AnnouncedMassBegin { get; set; }
+
+    private bool AnnouncedMassFiveMinutes { get; set; }
+    private bool AnnouncedMassOneMinute { get; set; }
+    private DateTime? LastSermonTime { get; set; }
+    private DateTime? MassAnnouncementTime { get; set; }
+    private bool MassCompleted { get; set; }
+    private int SermonCount { get; set; }
+    protected IClientRegistry<IChaosWorldClient> ClientRegistry { get; }
+    private IExperienceDistributionScript ExperienceDistributionScript { get; }
+
+    protected IItemFactory ItemFactory { get; }
+
+    protected Animation PrayerSuccess { get; } = new()
+    {
+        AnimationSpeed = 60,
+        TargetAnimation = 5
+    };
+
+    private HashSet<string> SpokenMessages { get; } = new();
+
+    private void AnnounceMassBeginning()
+    {
+        foreach (var client in ClientRegistry)
+            client.Aisling.SendActiveMessage("Mass held by Miraelis at the temple is starting now.");
+
+        AislingsAtStart = Subject.MapInstance
+                                 .GetEntities<Aisling>()
+                                 .ToList();
+
+        Subject.Say($"{AislingsAtStart.Count().ToWords().Humanize(LetterCasing.Title)} aislings bless me with their presence.");
+    }
+
+    public void AnnounceMassFiveMinuteStart()
+    {
+        foreach (var client in ClientRegistry)
+            client.Aisling.SendActiveMessage("Miraelis will be holding mass at her temple in five minutes.");
+    }
+
+    public void AnnounceMassOneMinuteStart()
+    {
+        foreach (var client in ClientRegistry)
+            client.Aisling.SendActiveMessage("Miraelis will be holding mass at her temple in one minute.");
+    }
+
+    public static string? CheckDeity(Aisling source)
+    {
+        if (source.Legend.ContainsKey("Miraelis"))
+            return "Miraelis";
+
+        return null;
+    }
+
+    private void ConductMass()
+    {
+        if (SermonCount >= MASS_SERMON_COUNT)
+        {
+            MassCompleted = true; // Set flag to true when mass is finished
+
+            return;
+        }
+
+        // Check if it's time to say the next sermon
+        if (LastSermonTime.HasValue
+            && (DateTime.UtcNow.Subtract(LastSermonTime.Value)
+                        .TotalSeconds
+                < SERMON_DELAY_SECONDS))
+            return;
+
+        // Check if we have said all sermons
+        if (SermonCount >= MASS_SERMON_COUNT)
+            return;
+
+        var random = new Random();
+        int index;
+
+        do
+            index = random.Next(MiraelisMassMessages.Count);
+        while (SpokenMessages.Contains(MiraelisMassMessages[index]));
+
+        var message = MiraelisMassMessages[index];
+        Subject.Say(message);
+        SpokenMessages.Add(message);
+        LastSermonTime = DateTime.UtcNow;
+        SermonCount++;
+    }
+
+    private void PostMassActions()
+    {
+        Subject.Say("Mass is complete!");
+
+        var aislingsAtEnd = Subject.MapInstance
+                                   .GetEntities<Aisling>()
+                                   .ToList();
+
+        var aislingsStillHere = AislingsAtStart!.Intersect(aislingsAtEnd)
+                                                .ToList();
+
+        foreach (var player in aislingsStillHere)
+        {
+            player.Animate(PrayerSuccess);
+
+            if (IntegerRandomizer.RollChance(ESSENCE_CHANCE))
+            {
+                var item = ItemFactory.Create("essenceofMiraelis");
+                player.Inventory.TryAddToNextSlot(item);
+                player.SendActiveMessage("You received an Essence of Miraelis");
+            }
+
+            TryAddFaith(player, FAITH_REWARD);
+            var tnl = LevelUpFormulae.Default.CalculateTnl(player);
+            var twentyFivePercent = Convert.ToInt32(.25 * tnl);
+
+            ExperienceDistributionScript.GiveExp(player, twentyFivePercent);
+        }
+
+        foreach (var latePlayers in aislingsAtEnd.Except(aislingsStillHere))
+        {
+            latePlayers.SendActiveMessage("You must be present from start to finish to receive full benefits.");
+            TryAddFaith(latePlayers, LATE_FAITH_REWARD);
+            var tnl = LevelUpFormulae.Default.CalculateTnl(latePlayers);
+            var twentyFivePercent = Convert.ToInt32(.20 * tnl);
+
+            ExperienceDistributionScript.GiveExp(latePlayers, twentyFivePercent);
+        }
+
+        Subject.CurrentlyHostingMass = false;
+    }
+
+    public static bool TryAddFaith(Aisling source, int amount)
+    {
+        var key = CheckDeity(source);
+
+        if ((key != null) && source.Legend.TryGetValue(key, out var faith))
+        {
+            faith.Count += amount;
+            source.SendActiveMessage($"You received {amount} faith!");
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public override void Update(TimeSpan delta)
+    {
+        if (Subject.CurrentlyHostingMass)
+        {
+            if (!AnnouncedMassFiveMinutes)
+            {
+                AnnounceMassFiveMinuteStart();
+                MassAnnouncementTime = DateTime.UtcNow;
+                AnnouncedMassFiveMinutes = true;
+            } else if (MassAnnouncementTime.HasValue
+                       && (DateTime.UtcNow.Subtract(MassAnnouncementTime.Value)
+                                   .TotalMinutes
+                           >= 4)
+                       && !AnnouncedMassOneMinute)
+            {
+                AnnounceMassOneMinuteStart();
+                AnnouncedMassOneMinute = true;
+            } else if (MassAnnouncementTime.HasValue
+                       && (DateTime.UtcNow.Subtract(MassAnnouncementTime.Value)
+                                   .TotalMinutes
+                           >= 5)
+                       && !AnnouncedMassBegin)
+            {
+                AnnounceMassBeginning();
+                AnnouncedMassBegin = true;
+                MassAnnouncementTime = null; // Resetting the timer
+            } else if (AnnouncedMassBegin && !MassCompleted)
+                ConductMass();
+            else if (MassCompleted)
+                PostMassActions();
+        }
+    }
+
     #region MassMessages
     private readonly List<string> MiraelisMassMessages =
     [
@@ -103,180 +281,12 @@ public class MiraelisMassScript : MerchantScriptBase
         "The embrace offers solace, renewal."
     ];
 
-    public MiraelisMassScript(Merchant subject,
-        IClientRegistry<IChaosWorldClient> clientRegistry,
-        IItemFactory itemFactory) : base(subject)
+    public MiraelisMassScript(Merchant subject, IClientRegistry<IChaosWorldClient> clientRegistry, IItemFactory itemFactory)
+        : base(subject)
     {
         ClientRegistry = clientRegistry;
         ItemFactory = itemFactory;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
     }
-
     #endregion MassMessages
-
-    private IEnumerable<Aisling>? AislingsAtStart { get; set; }
-    private IExperienceDistributionScript ExperienceDistributionScript { get; }
-    private bool AnnouncedMassBegin { get; set; }
-
-    private bool AnnouncedMassFiveMinutes { get; set; }
-    private bool AnnouncedMassOneMinute { get; set; }
-    private DateTime? LastSermonTime { get; set; }
-    private DateTime? MassAnnouncementTime { get; set; }
-    private bool MassCompleted { get; set; }
-    private int SermonCount { get; set; }
-    protected IClientRegistry<IChaosWorldClient> ClientRegistry { get; }
-
-    protected IItemFactory ItemFactory { get; }
-
-    protected Animation PrayerSuccess { get; } = new()
-    {
-        AnimationSpeed = 60,
-        TargetAnimation = 5
-    };
-    private HashSet<string> SpokenMessages { get; } = new();
-
-    private void AnnounceMassBeginning()
-    {
-        foreach (var client in ClientRegistry)
-            client.Aisling.SendActiveMessage("Mass held by Miraelis at the temple is starting now.");
-
-        AislingsAtStart = Subject.MapInstance.GetEntities<Aisling>().ToList();
-
-        Subject.Say($"{AislingsAtStart.Count().ToWords().Humanize(LetterCasing.Title)} aislings bless me with their presence.");
-    }
-
-    public void AnnounceMassFiveMinuteStart()
-    {
-        foreach (var client in ClientRegistry)
-            client.Aisling.SendActiveMessage("Miraelis will be holding mass at her temple in five minutes.");
-    }
-
-    public void AnnounceMassOneMinuteStart()
-    {
-        foreach (var client in ClientRegistry)
-            client.Aisling.SendActiveMessage("Miraelis will be holding mass at her temple in one minute.");
-    }
-
-    public static string? CheckDeity(Aisling source)
-    {
-        if (source.Legend.ContainsKey("Miraelis"))
-            return "Miraelis";
-
-        return null;
-    }
-
-    private void ConductMass()
-    {
-        if (SermonCount >= MASS_SERMON_COUNT)
-        {
-            MassCompleted = true; // Set flag to true when mass is finished
-
-            return;
-        }
-
-        // Check if it's time to say the next sermon
-        if (LastSermonTime.HasValue && (DateTime.UtcNow.Subtract(LastSermonTime.Value).TotalSeconds < SERMON_DELAY_SECONDS))
-            return;
-
-        // Check if we have said all sermons
-        if (SermonCount >= MASS_SERMON_COUNT)
-            return;
-
-        var random = new Random();
-        int index;
-
-        do
-            index = random.Next(MiraelisMassMessages.Count);
-        while (SpokenMessages.Contains(MiraelisMassMessages[index]));
-
-        var message = MiraelisMassMessages[index];
-        Subject.Say(message);
-        SpokenMessages.Add(message);
-        LastSermonTime = DateTime.UtcNow;
-        SermonCount++;
-    }
-
-    private void PostMassActions()
-    {
-        Subject.Say("Mass is complete!");
-        var aislingsAtEnd = Subject.MapInstance.GetEntities<Aisling>().ToList();
-        var aislingsStillHere = AislingsAtStart!.Intersect(aislingsAtEnd).ToList();
-
-        foreach (var player in aislingsStillHere)
-        {
-            player.Animate(PrayerSuccess);
-
-            if (IntegerRandomizer.RollChance(ESSENCE_CHANCE))
-            {
-                var item = ItemFactory.Create("essenceofMiraelis");
-                player.Inventory.TryAddToNextSlot(item);
-                player.SendActiveMessage("You received an Essence of Miraelis");
-            }
-
-            TryAddFaith(player, FAITH_REWARD);
-            var tnl = LevelUpFormulae.Default.CalculateTnl(player);
-            var twentyFivePercent = Convert.ToInt32(.25 * tnl);
-                
-            ExperienceDistributionScript.GiveExp(player, twentyFivePercent);
-        }
-
-        foreach (var latePlayers in aislingsAtEnd.Except(aislingsStillHere))
-        {
-            latePlayers.SendActiveMessage("You must be present from start to finish to receive full benefits.");
-            TryAddFaith(latePlayers, LATE_FAITH_REWARD);
-            var tnl = LevelUpFormulae.Default.CalculateTnl(latePlayers);
-            var twentyFivePercent = Convert.ToInt32(.20 * tnl);
-                
-            ExperienceDistributionScript.GiveExp(latePlayers, twentyFivePercent);
-        }
-        
-        Subject.CurrentlyHostingMass = false;
-    }
-
-    public static bool TryAddFaith(Aisling source, int amount)
-    {
-        var key = CheckDeity(source);
-
-        if ((key != null) && source.Legend.TryGetValue(key, out var faith))
-        {
-            faith.Count += amount;
-            source.SendActiveMessage($"You received {amount} faith!");
-
-            return true;
-        }
-
-        return false;
-    }
-
-    public override void Update(TimeSpan delta)
-    {
-        if (Subject.CurrentlyHostingMass)
-        {
-            if (!AnnouncedMassFiveMinutes)
-            {
-                AnnounceMassFiveMinuteStart();
-                MassAnnouncementTime = DateTime.UtcNow;
-                AnnouncedMassFiveMinutes = true;
-            }
-            else if (MassAnnouncementTime.HasValue
-                     && (DateTime.UtcNow.Subtract(MassAnnouncementTime.Value).TotalMinutes >= 4)
-                     && !AnnouncedMassOneMinute)
-            {
-                AnnounceMassOneMinuteStart();
-                AnnouncedMassOneMinute = true;
-            }
-            else if (MassAnnouncementTime.HasValue
-                     && (DateTime.UtcNow.Subtract(MassAnnouncementTime.Value).TotalMinutes >= 5)
-                     && !AnnouncedMassBegin)
-            {
-                AnnounceMassBeginning();
-                AnnouncedMassBegin = true;
-                MassAnnouncementTime = null; // Resetting the timer
-            }
-            else if (AnnouncedMassBegin && !MassCompleted)
-                ConductMass();
-            else if (MassCompleted)
-                PostMassActions();
-        }
-    }
 }

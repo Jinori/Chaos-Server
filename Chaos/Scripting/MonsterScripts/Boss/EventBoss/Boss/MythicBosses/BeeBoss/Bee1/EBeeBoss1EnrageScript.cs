@@ -21,19 +21,24 @@ public sealed class EBeeBoss1EnrageScript : MonsterScriptBase
 
     /// <inheritdoc />
     public EBeeBoss1EnrageScript(Monster subject, IMonsterFactory monsterFactory)
-        : base(subject) =>
-        MonsterFactory = monsterFactory;
+        : base(subject)
+        => MonsterFactory = monsterFactory;
 
     public override void Update(TimeSpan delta)
     {
         if (!Bonus75Applied && (Subject.StatSheet.HealthPercent <= 75))
         {
             Bonus75Applied = true;
+
             //Give Bonuses
-            var attrib = new Attributes { AtkSpeedPct = 10 };
+            var attrib = new Attributes
+            {
+                AtkSpeedPct = 10
+            };
             Subject.StatSheet.SetHealthPct(90);
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
+
             //Spawn Monsters
             var rectangle = new Rectangle(Subject, 5, 5);
 
@@ -41,7 +46,7 @@ public sealed class EBeeBoss1EnrageScript : MonsterScriptBase
             {
                 if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: Subject.Type), out var point))
                     continue;
-                
+
                 var mobs = MonsterFactory.Create("bee1-2", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(mobs, point);
             }

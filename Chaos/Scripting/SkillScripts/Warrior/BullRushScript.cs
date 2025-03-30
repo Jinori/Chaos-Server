@@ -61,6 +61,8 @@ public class BullRushScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public TargetFilter Filter { get; init; }
 
+    public int? HealthCost { get; init; }
+
     /// <inheritdoc />
     public int? ManaCost { get; init; }
 
@@ -69,6 +71,8 @@ public class BullRushScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public bool MustHaveTargets { get; init; }
+
+    public decimal PctHealthCost { get; init; }
 
     /// <inheritdoc />
     public decimal? PctHpDamage { get; init; }
@@ -123,14 +127,14 @@ public class BullRushScript : ConfigurableSkillScriptBase,
                             .GetDirectPath(endPoint)
                             .Skip(1)
                             .ToArray();
-        
+
         var newPoint = context.SourcePoint;
-        
+
         // Iterate through each point
-        for(var i = 0; i < points.Length; i++)
+        for (var i = 0; i < points.Length; i++)
         {
             var point = points[i];
-            
+
             //if the point we're looking at is not walkable
             if (!context.SourceMap.IsWalkable(point, false, collisionType: context.Source.Type))
             {
@@ -138,15 +142,16 @@ public class BullRushScript : ConfigurableSkillScriptBase,
                 //we're already standing on the point to charge to
                 if (i == 0)
                     break;
-                
+
                 //otherwise set the new point to the previous point
                 newPoint = points[i - 1];
+
                 break;
             }
-            
+
             //if we reach here on the last point (it's walkable)
             //set the new point to the last point
-            if(i == (points.Length - 1))
+            if (i == (points.Length - 1))
                 newPoint = points.Last();
         }
 
@@ -157,7 +162,7 @@ public class BullRushScript : ConfigurableSkillScriptBase,
             context.Source.WarpTo(newPoint);
             context = context.WithUpdatedOrigin();
         }
-        
+
         //deal damage according to selected options
         new ComponentExecutor(context).WithOptions(this)
                                       .ExecuteAndCheck<GenericAbilityComponent<Creature>>()

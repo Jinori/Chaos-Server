@@ -1,4 +1,3 @@
-using Chaos.Extensions.Common;
 using Chaos.MetaData.ItemMetaData;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
@@ -10,15 +9,6 @@ namespace Chaos.Scripting.ItemScripts.Enchantments;
 public sealed class PowerfulPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
     /// <inheritdoc />
-    public PowerfulPrefixScript(Item subject)
-        : base(subject)
-        => IPrefixEnchantmentScript.ApplyPrefix<PowerfulPrefixScript>(subject);
-
-    /// <inheritdoc />
-    public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
-        => IPrefixEnchantmentScript.Mutate<PowerfulPrefixScript>(node, template);
-
-    /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
         MaximumHp = 150,
@@ -27,4 +17,13 @@ public sealed class PowerfulPrefixScript : ItemScriptBase, IPrefixEnchantmentScr
 
     /// <inheritdoc />
     public static string PrefixStr => "Powerful";
+
+    /// <inheritdoc />
+    public PowerfulPrefixScript(Item subject)
+        : base(subject)
+        => IPrefixEnchantmentScript.ApplyPrefix<PowerfulPrefixScript>(subject);
+
+    /// <inheritdoc />
+    public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
+        => IPrefixEnchantmentScript.Mutate<PowerfulPrefixScript>(node, template);
 }

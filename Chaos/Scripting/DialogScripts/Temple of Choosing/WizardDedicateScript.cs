@@ -83,11 +83,7 @@ public class WizardDedicateScript : DialogScriptBase
             source.TraverseMap(mapInstance, point);
             source.Animate(ani, source.Id);
 
-            Logger.WithTopics(
-                      [
-                          Topics.Entities.Aisling,
-                          Topics.Actions.Promote
-                      ])
+            Logger.WithTopics(Topics.Entities.Aisling, Topics.Actions.Promote)
                   .WithProperty(Subject)
                   .LogInformation("{@AislingName} has become wizard", source.Name);
         }

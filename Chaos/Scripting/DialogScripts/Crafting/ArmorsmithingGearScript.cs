@@ -58,6 +58,14 @@ public class ArmorsmithingGearScript : DialogScriptBase
         DialogFactory = dialogFactory;
     }
 
+    private double AdjustSuccessRateForEffects(double baseSuccessRate, Aisling source)
+    {
+        if (source.Effects.Contains("Miracle"))
+            return baseSuccessRate + 15.0;
+
+        return baseSuccessRate;
+    }
+
     // Calculates the success rate of crafting an item
     private double CalculateSuccessRate(
         int totalTimesCrafted,
@@ -283,7 +291,7 @@ public class ArmorsmithingGearScript : DialogScriptBase
             source.Inventory.RemoveQuantity(removeRegant.DisplayName, removeRegant.Amount);
 
         var adjustedSuccessRate = AdjustSuccessRateForEffects(BASE_SUCCESS_RATE, source);
-        
+
         if (!IntegerRandomizer.RollChance(
                 (int)CalculateSuccessRate(
                     legendMarkCount,
@@ -343,8 +351,7 @@ public class ArmorsmithingGearScript : DialogScriptBase
             source.GiveItemOrSendToBank(newCraft);
 
             Subject.InjectTextParameters(newCraft.DisplayName);
-        } 
-        else
+        } else
         {
             var newCraft = ItemFactory.Create(recipe.TemplateKey);
 
@@ -529,13 +536,5 @@ public class ArmorsmithingGearScript : DialogScriptBase
         }
 
         source.Client.SendSelfProfile();
-    }
-    
-    private double AdjustSuccessRateForEffects(double baseSuccessRate, Aisling source)
-    {
-        if (source.Effects.Contains("Miracle"))
-            return baseSuccessRate + 15.0;
-
-        return baseSuccessRate;
     }
 }

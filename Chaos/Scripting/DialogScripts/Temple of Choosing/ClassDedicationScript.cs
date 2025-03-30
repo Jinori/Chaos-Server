@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
@@ -16,29 +15,54 @@ public class ClassDedicationScript : DialogScriptBase
 {
     private const int REQUIRED_EXPERIENCE = 60000000;
 
-    private readonly ISkillFactory SkillFactory;
-    private readonly ISpellFactory SpellFactory;
-
     private readonly Dictionary<BaseClass, (int requiredHealth, int requiredMana)> BaseClassRequirements = new()
     {
-        { BaseClass.Monk, (8400, 3400) },
-        { BaseClass.Warrior, (8400, 2500) },
-        { BaseClass.Rogue, (6600, 3300) },
-        { BaseClass.Wizard, (6000, 6000) },
-        { BaseClass.Priest, (6600, 6250) }
+        {
+            BaseClass.Monk, (8400, 3400)
+        },
+        {
+            BaseClass.Warrior, (8400, 2500)
+        },
+        {
+            BaseClass.Rogue, (6600, 3300)
+        },
+        {
+            BaseClass.Wizard, (6000, 6000)
+        },
+        {
+            BaseClass.Priest, (6600, 6250)
+        }
     };
 
     private readonly Dictionary<string, BaseClass> ClassNameMappings = new()
     {
-        { "miraelisgod_selectwizard", BaseClass.Wizard },
-        { "miraelisgod_selectwarrior", BaseClass.Warrior },
-        { "miraelisgod_selectrogue", BaseClass.Rogue },
-        { "miraelisgod_selectpriest", BaseClass.Priest },
-        { "miraelisgod_selectmonk", BaseClass.Monk }
+        {
+            "miraelisgod_selectwizard", BaseClass.Wizard
+        },
+        {
+            "miraelisgod_selectwarrior", BaseClass.Warrior
+        },
+        {
+            "miraelisgod_selectrogue", BaseClass.Rogue
+        },
+        {
+            "miraelisgod_selectpriest", BaseClass.Priest
+        },
+        {
+            "miraelisgod_selectmonk", BaseClass.Monk
+        }
     };
+
     private readonly IClientRegistry<IChaosWorldClient> ClientRegistry;
 
-    public ClassDedicationScript(Dialog subject, IClientRegistry<IChaosWorldClient> clientRegistry, ISpellFactory spellFactory, ISkillFactory skillFactory)
+    private readonly ISkillFactory SkillFactory;
+    private readonly ISpellFactory SpellFactory;
+
+    public ClassDedicationScript(
+        Dialog subject,
+        IClientRegistry<IChaosWorldClient> clientRegistry,
+        ISpellFactory spellFactory,
+        ISkillFactory skillFactory)
         : base(subject)
     {
         ClientRegistry = clientRegistry;
@@ -60,13 +84,13 @@ public class ClassDedicationScript : DialogScriptBase
                     MarkColor.Cyan,
                     1,
                     GameTime.Now));
-            
+
             GiveNewAbilities(source, baseClass);
         }
     }
 
-    private MarkIcon GetMarkIcon(BaseClass baseClass) =>
-        baseClass switch
+    private MarkIcon GetMarkIcon(BaseClass baseClass)
+        => baseClass switch
         {
             BaseClass.Wizard  => MarkIcon.Wizard,
             BaseClass.Warrior => MarkIcon.Warrior,
@@ -75,96 +99,6 @@ public class ClassDedicationScript : DialogScriptBase
             BaseClass.Monk    => MarkIcon.Monk,
             _                 => MarkIcon.Yay
         };
-
-    public override void OnDisplaying(Aisling source)
-    {
-        const string CLASS_CONFIRM_REQUIREMENTS = "miraelisgod_confirmrequirements";
-        const string CLASS_CHOOSE_NEW = "miraelisgod_choosenewclass";
-        var currentTemplateKey = Subject.Template.TemplateKey.ToLower();
-
-        switch (currentTemplateKey)
-        {
-            case CLASS_CONFIRM_REQUIREMENTS when source.Legend.ContainsKey("dedicated"):
-                Subject.Reply(source, "You have already dedicated yourself to a new path.");
-                Subject.PrevDialogKey = null;
-                Subject.NextDialogKey = null;
-
-                return;
-            case CLASS_CONFIRM_REQUIREMENTS when source.UserStatSheet.Level != 99:
-                Subject.Reply(source, "You are not Level 99 and cannot dedicate your class.");
-                Subject.PrevDialogKey = null;
-                Subject.NextDialogKey = null;
-
-                return;
-            case CLASS_CONFIRM_REQUIREMENTS when !source.Trackers.Flags.HasFlag(MainstoryFlags.CompletedFloor3):
-                Subject.Reply(source, "You must follow the Main Story Quest further.");
-                Subject.PrevDialogKey = null;
-                Subject.NextDialogKey = null;
-
-                return;
-            case CLASS_CONFIRM_REQUIREMENTS when source.UserStatSheet.Master:
-                Subject.Reply(source, "You are already a Master of your class and cannot rededicate yourself.");
-                Subject.PrevDialogKey = null;
-                Subject.NextDialogKey = null;
-
-                return;
-            case CLASS_CONFIRM_REQUIREMENTS:
-            {
-                var requiredStats = BaseClassRequirements[source.UserStatSheet.BaseClass];
-
-                string builtReply;
-
-                if ((source.UserStatSheet.MaximumHp >= requiredStats.requiredHealth)
-                    && (source.UserStatSheet.MaximumMp >= requiredStats.requiredMana))
-                    builtReply = "You have enough vitality to continue.";
-                else
-                {
-                    Subject.Reply(
-                        source,
-                        $"You do not have the required {requiredStats.requiredHealth} health and {requiredStats.requiredMana
-                        } mana to continue.");
-
-                    return;
-                }
-
-                if (source.Inventory.CountOf("strong health potion") >= 10)
-                    builtReply += " Looks like you've also brought enough strong health potions";
-                else
-                {
-                    builtReply += " but you do not have the required strong health potion. Come back with what you need.";
-                    Subject.Reply(source, builtReply);
-
-                    return;
-                }
-
-                if (source.UserStatSheet.TotalExp >= REQUIRED_EXPERIENCE)
-                {
-                    builtReply += " and you've hunted enough experience! Let's continue.";
-                    Subject.Reply(source, builtReply, "miraelisgod_chooseNewClass");
-                }
-                else
-                {
-                    builtReply += " but you do not have the required experience of 60 million.";
-                    Subject.Reply(source, builtReply);
-                }
-
-                break;
-            }
-            case CLASS_CHOOSE_NEW:
-            {
-                if (Subject.GetOptionIndex(source.UserStatSheet.BaseClass.ToString()).HasValue)
-                {
-                    var s = Subject.GetOptionIndex(source.UserStatSheet.BaseClass.ToString())!.Value;
-                    Subject.Options.RemoveAt(s);
-                }
-
-                break;
-            }
-        }
-
-        foreach (var mapping in ClassNameMappings)
-            DedicateUserToClass(source, mapping.Value, mapping.Key);
-    }
 
     private void GiveNewAbilities(Aisling source, BaseClass baseClass)
     {
@@ -231,17 +165,107 @@ public class ClassDedicationScript : DialogScriptBase
         }
     }
 
+    public override void OnDisplaying(Aisling source)
+    {
+        const string CLASS_CONFIRM_REQUIREMENTS = "miraelisgod_confirmrequirements";
+        const string CLASS_CHOOSE_NEW = "miraelisgod_choosenewclass";
+        var currentTemplateKey = Subject.Template.TemplateKey.ToLower();
+
+        switch (currentTemplateKey)
+        {
+            case CLASS_CONFIRM_REQUIREMENTS when source.Legend.ContainsKey("dedicated"):
+                Subject.Reply(source, "You have already dedicated yourself to a new path.");
+                Subject.PrevDialogKey = null;
+                Subject.NextDialogKey = null;
+
+                return;
+            case CLASS_CONFIRM_REQUIREMENTS when source.UserStatSheet.Level != 99:
+                Subject.Reply(source, "You are not Level 99 and cannot dedicate your class.");
+                Subject.PrevDialogKey = null;
+                Subject.NextDialogKey = null;
+
+                return;
+            case CLASS_CONFIRM_REQUIREMENTS when !source.Trackers.Flags.HasFlag(MainstoryFlags.CompletedFloor3):
+                Subject.Reply(source, "You must follow the Main Story Quest further.");
+                Subject.PrevDialogKey = null;
+                Subject.NextDialogKey = null;
+
+                return;
+            case CLASS_CONFIRM_REQUIREMENTS when source.UserStatSheet.Master:
+                Subject.Reply(source, "You are already a Master of your class and cannot rededicate yourself.");
+                Subject.PrevDialogKey = null;
+                Subject.NextDialogKey = null;
+
+                return;
+            case CLASS_CONFIRM_REQUIREMENTS:
+            {
+                var requiredStats = BaseClassRequirements[source.UserStatSheet.BaseClass];
+
+                string builtReply;
+
+                if ((source.UserStatSheet.MaximumHp >= requiredStats.requiredHealth)
+                    && (source.UserStatSheet.MaximumMp >= requiredStats.requiredMana))
+                    builtReply = "You have enough vitality to continue.";
+                else
+                {
+                    Subject.Reply(
+                        source,
+                        $"You do not have the required {requiredStats.requiredHealth} health and {requiredStats.requiredMana
+                        } mana to continue.");
+
+                    return;
+                }
+
+                if (source.Inventory.CountOf("strong health potion") >= 10)
+                    builtReply += " Looks like you've also brought enough strong health potions";
+                else
+                {
+                    builtReply += " but you do not have the required strong health potion. Come back with what you need.";
+                    Subject.Reply(source, builtReply);
+
+                    return;
+                }
+
+                if (source.UserStatSheet.TotalExp >= REQUIRED_EXPERIENCE)
+                {
+                    builtReply += " and you've hunted enough experience! Let's continue.";
+                    Subject.Reply(source, builtReply, "miraelisgod_chooseNewClass");
+                } else
+                {
+                    builtReply += " but you do not have the required experience of 60 million.";
+                    Subject.Reply(source, builtReply);
+                }
+
+                break;
+            }
+            case CLASS_CHOOSE_NEW:
+            {
+                if (Subject.GetOptionIndex(source.UserStatSheet.BaseClass.ToString())
+                           .HasValue)
+                {
+                    var s = Subject.GetOptionIndex(source.UserStatSheet.BaseClass.ToString())!.Value;
+                    Subject.Options.RemoveAt(s);
+                }
+
+                break;
+            }
+        }
+
+        foreach (var mapping in ClassNameMappings)
+            DedicateUserToClass(source, mapping.Value, mapping.Key);
+    }
+
     private void SetUserToLevel1Stats(Aisling source, BaseClass baseClass)
     {
         if (source.Bank.Contains("Pet Collar"))
             source.Bank.TryWithdraw("Pet Collar", 1, out _);
-        
-        if (source.Inventory.Contains("Pet Collar")) 
+
+        if (source.Inventory.Contains("Pet Collar"))
             source.Inventory.RemoveQuantity("Pet Collar", 1);
 
         if (source.SkillBook.Contains("summonpet"))
             source.SkillBook.Remove("summonpet");
-        
+
         source.Inventory.RemoveQuantity("strong health potion", 10);
         source.UserStatSheet.SetLevel(1);
         source.UserStatSheet.SubtractTotalExp(source.UserStatSheet.TotalExp);
@@ -250,11 +274,10 @@ public class ClassDedicationScript : DialogScriptBase
             source.UserStatSheet.SubtractTnl(source.UserStatSheet.ToNextLevel);
 
         source.UserStatSheet.AddTnl(599);
-        
-        
+
         var baseStats = UserStatSheet.NewCharacter;
-        
-        var diff = new Attributes()
+
+        var diff = new Attributes
         {
             Ac = source.StatSheet.Ac - baseStats.Ac,
             MaximumHp = source.StatSheet.MaximumHp - baseStats.MaximumHp,
@@ -273,24 +296,22 @@ public class ClassDedicationScript : DialogScriptBase
             Con = source.StatSheet.Con - baseStats.Con,
             Dex = source.StatSheet.Dex - baseStats.Dex
         };
-        
+
         source.UserStatSheet.Subtract(diff);
         source.UserStatSheet.SetMaxWeight(44);
         source.UserStatSheet.SetBaseClass(baseClass);
 
         var unspentpoints = source.UserStatSheet.UnspentPoints;
+
         if (unspentpoints > 19)
-        {
             source.UserStatSheet.UnspentPoints = 19;
-        }
         source.Trackers.Enums.Remove<PentagramQuestStage>();
         source.Trackers.Enums.Remove<NightmareQuestStage>();
-        
+
         source.Client.SendAttributes(StatUpdateType.Full);
         source.Refresh(true);
 
-        var player = ClientRegistry
-            .Select(c => c.Aisling);
+        var player = ClientRegistry.Select(c => c.Aisling);
 
         foreach (var aisling in player)
             aisling.SendOrangeBarMessage($"{source.Name} has dedicated to the path of {baseClass.ToString()}.");

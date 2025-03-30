@@ -18,7 +18,7 @@ public class MythicKoboldWarpScript(Dialog subject, ISimpleCache simpleCache) : 
             case "koboldwarp_initial":
             {
                 var vitality = source.StatSheet.MaximumHp + source.StatSheet.MaximumMp * 2;
-                
+
                 if ((source.StatSheet.Level >= 99) && (vitality >= 25000))
                 {
                     var option3 = new DialogOption
@@ -105,7 +105,6 @@ public class MythicKoboldWarpScript(Dialog subject, ISimpleCache simpleCache) : 
                     source.TraverseMap(kobold1, point);
                 }
 
-
                 Subject.Close(source);
 
                 break;
@@ -126,7 +125,6 @@ public class MythicKoboldWarpScript(Dialog subject, ISimpleCache simpleCache) : 
                     var point = new Point(1, 11);
                     source.TraverseMap(kobold1, point);
                 }
-
 
                 Subject.Close(source);
 

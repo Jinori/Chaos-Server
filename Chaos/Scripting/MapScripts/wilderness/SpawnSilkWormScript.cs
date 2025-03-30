@@ -20,14 +20,13 @@ public class SpawnSilkWormScript : MapScriptBase
             points.Add(point);
         }
 
-        foreach (var wormspawn in points.Select(point => reactorTileFactory.Create(
-                     "spawnsilkworm",
-                     Subject,
-                     point,
-                     owner: merchant)))
-        {
+        foreach (var wormspawn in points.Select(
+                     point => reactorTileFactory.Create(
+                         "spawnsilkworm",
+                         Subject,
+                         point,
+                         owner: merchant)))
             Subject.SimpleAdd(wormspawn);
-        }
     }
 
     private static Point GenerateSpawnPoint(MapInstance selectedMap)

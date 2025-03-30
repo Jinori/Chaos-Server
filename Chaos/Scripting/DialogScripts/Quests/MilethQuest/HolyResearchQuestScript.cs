@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
@@ -29,10 +28,10 @@ public class HolyResearchQuestScript : DialogScriptBase
     private void GiveRewards(Aisling source, string itemToRemove)
     {
         Logger.WithTopics(
-                  [Topics.Entities.Aisling,
+                  Topics.Entities.Aisling,
                   Topics.Entities.Experience,
                   Topics.Entities.Dialog,
-                  Topics.Entities.Quest])
+                  Topics.Entities.Quest)
               .WithProperty(source)
               .WithProperty(Subject)
               .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, 2000);
@@ -108,7 +107,9 @@ public class HolyResearchQuestScript : DialogScriptBase
                 {
                     var randomHolyResearchStage = new[]
                     {
-                        HolyResearchStage.StartedRawHoney, HolyResearchStage.StartedRawWax, HolyResearchStage.StartedRoyalWax
+                        HolyResearchStage.StartedRawHoney,
+                        HolyResearchStage.StartedRawWax,
+                        HolyResearchStage.StartedRoyalWax
                     }.PickRandom();
 
                     source.Trackers.Enums.Set(randomHolyResearchStage);

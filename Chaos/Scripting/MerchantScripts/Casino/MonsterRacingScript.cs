@@ -29,7 +29,9 @@ public sealed class MonsterRacingScript : MerchantScriptBase
             "Monster Race will start in {Time}",
             subject.Say);
 
-        var aislingsAtStart = Subject.MapInstance.GetEntities<Aisling>().ToList();
+        var aislingsAtStart = Subject.MapInstance
+                                     .GetEntities<Aisling>()
+                                     .ToList();
 
         foreach (var aisling in aislingsAtStart)
             aisling.SendActiveMessage("A game of Monster Racing is beginning. Come join!");

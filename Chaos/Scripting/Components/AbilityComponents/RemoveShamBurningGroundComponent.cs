@@ -1,4 +1,3 @@
-using System.Reactive.Subjects;
 using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Models.Data;
@@ -7,7 +6,6 @@ using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
-using Chaos.Scripting.ReactorTileScripts;
 using Chaos.Scripting.ReactorTileScripts.Creants.Shamensyth;
 
 namespace Chaos.Scripting.Components.AbilityComponents;
@@ -19,7 +17,7 @@ public sealed class RemoveShamBurningGroundComponent : IComponent
     {
         if (!ShouldActivate(context, vars))
             return;
-        
+
         var pointsForStage = vars.GetPoints();
 
         var shamBurningGrounds = context.TargetMap
@@ -37,21 +35,23 @@ public sealed class RemoveShamBurningGroundComponent : IComponent
             return false;
 
         var sourceScript = vars.GetSourceScript();
+
         return ShouldActivateForScript(sourceScript);
     }
-    
+
     private bool ShouldActivateForScript(IScript sourceScript)
     {
         switch (sourceScript)
         {
             case SubjectiveScriptBase<Spell> spellScript:
                 var templateKey = spellScript.Subject.Template.TemplateKey;
+
                 if (templateKey.EqualsI("tidalbreeze")
                     || templateKey.EqualsI("tidalwave")
                     || templateKey.ContainsI("ardsal")
                     || templateKey.ContainsI("morsal"))
                     return true;
-                
+
                 break;
             case SubjectiveScriptBase<Skill> skillScript:
                 break;
@@ -59,9 +59,8 @@ public sealed class RemoveShamBurningGroundComponent : IComponent
                 // ReSharper disable once TailRecursiveCall
                 if (reactorTileScript.Subject.SourceScript is not null)
                     return ShouldActivateForScript(reactorTileScript.Subject.SourceScript);
-                
+
                 break;
-            
         }
 
         return false;

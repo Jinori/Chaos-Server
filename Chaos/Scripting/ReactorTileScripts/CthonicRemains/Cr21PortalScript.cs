@@ -1,11 +1,8 @@
 using Chaos.Collections;
 using Chaos.Definitions;
-using Chaos.Extensions;
-using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.MonsterScripts.Pet;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
@@ -16,10 +13,11 @@ namespace Chaos.Scripting.ReactorTileScripts.CthonicRemains;
 public class Cr21PortalScript : ReactorTileScriptBase
 {
     private readonly ISimpleCache SimpleCache;
-    
-    protected Creature? Owner { get; set; }
     protected IIntervalTimer AnimationTimer { get; set; }
+
+    protected Creature? Owner { get; set; }
     protected IIntervalTimer? Timer { get; set; }
+
     protected Animation PortalAnimation { get; } = new()
     {
         AnimationSpeed = 145,
@@ -49,47 +47,50 @@ public class Cr21PortalScript : ReactorTileScriptBase
             {
                 aisling.TraverseMap(targetMap, point);
                 aisling.SendOrangeBarMessage("You walked through the portal to Cthonic Remains 21.");
+
                 return;
             }
 
             if ((aisling?.Group != null) && !aisling.Group.Contains(owner))
             {
                 aisling.SendOrangeBarMessage("This portal is for another group.");
+
                 return;
             }
 
             if (aisling?.Group == null)
             {
                 aisling?.SendOrangeBarMessage("You must be grouped with the player who opened the portal.");
+
                 return;
             }
 
             if (!aisling.Trackers.Flags.HasFlag(CdDungeonBoss.CompletedDungeonOnce))
             {
                 aisling?.SendOrangeBarMessage("You must speak to Goddess Miraelis after defeating the Summoner.");
+
                 return;
             }
-            
+
             if (source.StatSheet.Level < (targetMap.MinimumLevel ?? 0))
             {
                 aisling.SendOrangeBarMessage($"You must be at least level {targetMap.MinimumLevel} to enter this area.");
+
                 return;
             }
-            
+
             if (source.StatSheet.Level > (targetMap.MaximumLevel ?? int.MaxValue))
             {
                 aisling.SendOrangeBarMessage($"You must be at most level {targetMap.MaximumLevel} to enter this area.");
+
                 return;
             }
-            
+
             aisling.TraverseMap(targetMap, point);
             aisling.SendOrangeBarMessage($"You walk through {owner.Name}'s portal to Cthonic Remains 21");
-            
+
             owner.SendActiveMessage($"{aisling.Name} has entered your portal to Cthonic Remains 21.");
         }
-        
-        
-        
     }
 
     /// <inheritdoc />
@@ -99,16 +100,15 @@ public class Cr21PortalScript : ReactorTileScriptBase
 
         if (AnimationTimer.IntervalElapsed)
         {
-            var aislings = Subject.MapInstance
-                                           .GetEntitiesWithinRange<Aisling>(Subject, 12);
+            var aislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 12);
 
             foreach (var aisling in aislings)
                 aisling.MapInstance.ShowAnimation(PortalAnimation.GetPointAnimation(new Point(Subject.X, Subject.Y)));
         }
-        
+
         if (Subject.Owner is Aisling { Client.Connected: false })
             Map.RemoveEntity(Subject);
-        
+
         if (Timer != null)
         {
             Timer.Update(delta);

@@ -1,4 +1,3 @@
-using System.Globalization;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
@@ -9,7 +8,6 @@ using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
-using Humanizer;
 
 namespace Chaos.Scripting.DialogScripts.Temple_of_Choosing;
 
@@ -93,7 +91,12 @@ public class AscendingScript(Dialog subject, ILogger<AscendingScript> logger) : 
             $"Your {attributeType.ToLower()} is now {newBaseValue} base from {statBeforeStarting}, spending {totalExpSpent:N0} Exp.");
 
         var totalExp = totalExpSpent.ToString("N0");
-        Subject.InjectTextParameters(attributeType, newBaseValue, statBeforeStarting, totalExp);
+
+        Subject.InjectTextParameters(
+            attributeType,
+            newBaseValue,
+            statBeforeStarting,
+            totalExp);
     }
 
     public override void OnDisplaying(Aisling source)
@@ -106,8 +109,10 @@ public class AscendingScript(Dialog subject, ILogger<AscendingScript> logger) : 
             return;
         }
 
-
-        if (source.HasClass(BaseClass.Priest) && source.UserStatSheet.Master && !source.Trackers.Enums.HasValue(MasterPriestPath.Light) && !source.Trackers.Enums.HasValue(MasterPriestPath.Dark))
+        if (source.HasClass(BaseClass.Priest)
+            && source.UserStatSheet.Master
+            && !source.Trackers.Enums.HasValue(MasterPriestPath.Light)
+            && !source.Trackers.Enums.HasValue(MasterPriestPath.Dark))
         {
             Subject.Reply(source, "You haven't picked a priest path yet Aisling. To ascend any further, you must pick Dark or Light path.");
             source.SendOrangeBarMessage("You must pick Dark or Light path.");

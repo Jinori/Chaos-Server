@@ -9,14 +9,14 @@ namespace Chaos.Scripting.MapScripts.Arena.Arena_Modes;
 
 public sealed class HiddenHavocShrinkScript : CompositeMapScript
 {
-    private readonly IEffectFactory EffectFactory;
-    
     private static readonly ICollection<string> ScriptKeys = new[]
     {
         GetScriptKey(typeof(AislingDeathTouchScript)),
         GetScriptKey(typeof(MapShrinkScript)),
-        GetScriptKey(typeof(DeclareWinnerScript)),
+        GetScriptKey(typeof(DeclareWinnerScript))
     };
+
+    private readonly IEffectFactory EffectFactory;
 
     /// <inheritdoc />
     public HiddenHavocShrinkScript(IScriptProvider scriptProvider, MapInstance subject, IEffectFactory effectFactory)

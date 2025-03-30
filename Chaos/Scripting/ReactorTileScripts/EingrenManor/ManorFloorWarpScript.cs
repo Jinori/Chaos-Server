@@ -1,5 +1,4 @@
 using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
@@ -13,16 +12,17 @@ namespace Chaos.Scripting.ReactorTileScripts.EingrenManor;
 
 public class ManorFloorWarpScript : ConfigurableReactorTileScriptBase
 {
-    private readonly ISimpleCache SimpleCache;
     private readonly Random Random = new();
+    private readonly ISimpleCache SimpleCache;
+
     #region ScriptVars
     protected Location Destination { get; init; } = null!;
     #endregion
 
     /// <inheritdoc />
     public ManorFloorWarpScript(ReactorTile subject, ISimpleCache simpleCache)
-        : base(subject) =>
-        SimpleCache = simpleCache;
+        : base(subject)
+        => SimpleCache = simpleCache;
 
     /// <inheritdoc />
     public override void OnWalkedOn(Creature source)
@@ -53,6 +53,7 @@ public class ManorFloorWarpScript : ConfigurableReactorTileScriptBase
         if (source.Trackers.TimedEvents.HasActiveEvent("Louegie2ndFloor", out _))
         {
             aisling?.SendOrangeBarMessage("You have recently killed all the banshees.");
+
             return;
         }
 
@@ -80,9 +81,7 @@ public class ManorFloorWarpScript : ConfigurableReactorTileScriptBase
         if (aisling?.Group is null || aisling.Group.Any(x => !x.OnSameMapAs(aisling) || !x.WithinRange(aisling)))
         {
             // Send a message to the Aisling
-            aisling?.Client.SendServerMessage(
-                ServerMessageType.OrangeBar1,
-                "Make sure you are grouped or your group is near you.");
+            aisling?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure you are grouped or your group is near you.");
 
             // Warp the source back
             var point = source.DirectionalOffset(source.Direction.Reverse());
@@ -93,32 +92,28 @@ public class ManorFloorWarpScript : ConfigurableReactorTileScriptBase
 
         // Check if all members of the group have the quest enum and are within level range
         var allMembersHaveQuestFlag = aisling.Group.All(
-            member =>
-                member.Trackers.Enums.TryGetValue(out ManorLouegieStage value)
-                && (value == ManorLouegieStage.AcceptedQuestBanshee)
-                && member.WithinLevelRange(source)
-                && (member.StatSheet.Level >= 41));
+            member => member.Trackers.Enums.TryGetValue(out ManorLouegieStage value)
+                      && (value == ManorLouegieStage.AcceptedQuestBanshee)
+                      && member.WithinLevelRange(source)
+                      && (member.StatSheet.Level >= 41));
 
         if (allMembersHaveQuestFlag)
         {
             if (!targetMap.TryGetRandomWalkablePoint(out var point1))
             {
                 // Send a message to the Aisling
-                aisling.Client.SendServerMessage(
-                    ServerMessageType.OrangeBar1,
-                    "A strange force is stopping you from entering. Try again.");
-                
+                aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A strange force is stopping you from entering. Try again.");
+
                 // Warp the source back
                 var backPoint = source.DirectionalOffset(source.Direction.Reverse());
                 source.WarpTo(backPoint);
 
                 return;
             }
-            
+
             foreach (var member in aisling.Group)
-                    member.TraverseMap(targetMap, point1);
-        }
-        else
+                member.TraverseMap(targetMap, point1);
+        } else
         {
             // Send a message to the Aisling
             aisling.Client.SendServerMessage(

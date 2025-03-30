@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.Common.Utilities;
+﻿using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Formulae;
 using Chaos.Models.Data;
@@ -18,11 +17,7 @@ namespace Chaos.Scripting.EffectScripts.Jobs;
 
 public class ForagingEffect(IItemFactory itemFactory, ILogger<ForagingEffect> logger) : ContinuousAnimationEffectBase
 {
-    private int ForageGatherChance = 2;
     private const byte FORAGE_ICON = 95;
-    private int DamageGlove = 5;
-
-    private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
 
     private static readonly List<KeyValuePair<string, decimal>> ForagingData = new()
     {
@@ -46,6 +41,64 @@ public class ForagingEffect(IItemFactory itemFactory, ILogger<ForagingEffect> lo
         new KeyValuePair<string, decimal>("sparkflower", 2)
     };
 
+    private static readonly Dictionary<string, double> ForagingExperienceMultipliers = new()
+    {
+        {
+            "Green Grapes", 0.009
+        },
+        {
+            "Strawberry", 0.009
+        },
+        {
+            "Tangerines", 0.009
+        },
+        {
+            "Rambutan", 0.02
+        },
+        {
+            "Tomato", 0.009
+        },
+        {
+            "Petunia", 0.015
+        },
+        {
+            "Pink Rose", 0.015
+        },
+        {
+            "Water Lily", 0.015
+        },
+        {
+            "Blossom of Betrayal", 0.05
+        },
+        {
+            "Bocan Bough", 0.01
+        },
+        {
+            "Cactus Flower", 0.01
+        },
+        {
+            "Dochas Bloom", 0.01
+        },
+        {
+            "Lily Pad", 0.01
+        },
+        {
+            "Kobold Tail", 0.01
+        },
+        {
+            "Kabine Blossom", 0.01
+        },
+        {
+            "Passion Flower", 0.01
+        },
+        {
+            "Raineach", 0.01
+        },
+        {
+            "Sparkflower", 0.01
+        }
+    };
+
     private readonly List<string> GloveBreakMessages = new()
     {
         "Your glove gets a little bit worn.",
@@ -59,27 +112,8 @@ public class ForagingEffect(IItemFactory itemFactory, ILogger<ForagingEffect> lo
         "Glove fabric experiences a tear."
     };
 
-    private static readonly Dictionary<string, double> ForagingExperienceMultipliers = new()
-    {
-        { "Green Grapes", 0.009 },
-        { "Strawberry", 0.009 },
-        { "Tangerines", 0.009 },
-        { "Rambutan", 0.02 },
-        { "Tomato", 0.009 },
-        { "Petunia", 0.015 },
-        { "Pink Rose", 0.015 },
-        { "Water Lily", 0.015 },
-        { "Blossom of Betrayal", 0.05 },
-        { "Bocan Bough", 0.01 },
-        { "Cactus Flower", 0.01 },
-        { "Dochas Bloom", 0.01 },
-        { "Lily Pad", 0.01 },
-        { "Kobold Tail", 0.01 },
-        { "Kabine Blossom", 0.01 },
-        { "Passion Flower", 0.01 },
-        { "Raineach", 0.01 },
-        { "Sparkflower", 0.01 },
-    };
+    private int DamageGlove = 5;
+    private int ForageGatherChance = 2;
 
     private List<Point> ForagingSpots = new();
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromHours(1);
@@ -89,17 +123,54 @@ public class ForagingEffect(IItemFactory itemFactory, ILogger<ForagingEffect> lo
         AnimationSpeed = 100,
         TargetAnimation = 169
     };
+
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1500));
+
+    private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromSeconds(10), false);
 
     public override byte Icon => FORAGE_ICON;
     public override string Name => "Foraging";
 
-    public override void OnApplied() =>
-        ForagingSpots = Subject.MapInstance.GetEntities<ReactorTile>()
-                               .Where(x => x.ScriptKeys.Contains("ForagingSpot"))
-                               .Select(x => new Point(x.X, x.Y))
-                               .ToList();
+    private int CalculateExperienceGain(Aisling source, int tnl, string herbName)
+    {
+        if (!ForagingExperienceMultipliers.TryGetValue(herbName, out var multiplier))
+        {
+            source.SendActiveMessage("Something went wrong when trying to forage a herb!");
+
+            return 0;
+        }
+
+        return Convert.ToInt32(multiplier * tnl);
+    }
+
+    private bool IsUsingHybrasylGlove(Aisling aisling)
+    {
+        var weaponTemplateKey = aisling.Equipment[EquipmentSlot.Weapon]?.Template.TemplateKey;
+
+        return weaponTemplateKey?.StartsWith("Hybrasyl", StringComparison.OrdinalIgnoreCase) == true;
+    }
+
+    private bool IsUsingIronGlove(Aisling aisling)
+    {
+        var weaponTemplateKey = aisling.Equipment[EquipmentSlot.Weapon]?.Template.TemplateKey;
+
+        return weaponTemplateKey?.StartsWith("Iron", StringComparison.OrdinalIgnoreCase) == true;
+    }
+
+    private bool IsUsingMythrilGlove(Aisling aisling)
+    {
+        var weaponTemplateKey = aisling.Equipment[EquipmentSlot.Weapon]?.Template.TemplateKey;
+
+        return weaponTemplateKey?.StartsWith("Mythril", StringComparison.OrdinalIgnoreCase) == true;
+    }
+
+    public override void OnApplied()
+        => ForagingSpots = Subject.MapInstance
+                                  .GetEntities<ReactorTile>()
+                                  .Where(x => x.ScriptKeys.Contains("ForagingSpot"))
+                                  .Select(x => new Point(x.X, x.Y))
+                                  .ToList();
 
     protected override void OnIntervalElapsed()
     {
@@ -108,13 +179,17 @@ public class ForagingEffect(IItemFactory itemFactory, ILogger<ForagingEffect> lo
 
         if ((ForagingSpots.Count == 0)
             || !ForagingSpots.Contains(playerLocation)
-            || aisling.Equipment[EquipmentSlot.Weapon]?.Template.TemplateKey.EndsWith("Glove", StringComparison.OrdinalIgnoreCase) != true)
+            || (aisling.Equipment[EquipmentSlot.Weapon]
+                       ?.Template
+                       .TemplateKey
+                       .EndsWith("Glove", StringComparison.OrdinalIgnoreCase)
+                != true))
         {
             Subject.Effects.Terminate("Foraging");
+
             return;
         }
 
-        
         if (IsUsingIronGlove(aisling))
         {
             ForageGatherChance = 4;
@@ -123,7 +198,7 @@ public class ForagingEffect(IItemFactory itemFactory, ILogger<ForagingEffect> lo
         {
             ForageGatherChance = 5;
             DamageGlove = 3;
-        }else if (IsUsingHybrasylGlove(aisling))
+        } else if (IsUsingHybrasylGlove(aisling))
         {
             ForageGatherChance = 6;
             DamageGlove = 2;
@@ -134,12 +209,10 @@ public class ForagingEffect(IItemFactory itemFactory, ILogger<ForagingEffect> lo
             var randomMessage = GloveBreakMessages[Random.Shared.Next(GloveBreakMessages.Count)];
             var equippedGlove = aisling.Equipment[EquipmentSlot.Weapon];
 
-            if (equippedGlove != null && equippedGlove.Template.TemplateKey.EndsWith("Glove", StringComparison.OrdinalIgnoreCase))
+            if ((equippedGlove != null) && equippedGlove.Template.TemplateKey.EndsWith("Glove", StringComparison.OrdinalIgnoreCase))
             {
                 if (equippedGlove.CurrentDurability > 5)
-                {
                     equippedGlove.CurrentDurability -= 5;
-                }
                 else
                 {
                     aisling.Equipment.RemoveByTemplateKey(equippedGlove.Template.TemplateKey);
@@ -149,7 +222,6 @@ public class ForagingEffect(IItemFactory itemFactory, ILogger<ForagingEffect> lo
                 aisling.SendOrangeBarMessage(randomMessage);
             }
         }
-
 
         if (!IntegerRandomizer.RollChance(ForageGatherChance))
             return;
@@ -164,72 +236,30 @@ public class ForagingEffect(IItemFactory itemFactory, ILogger<ForagingEffect> lo
             var expGain = CalculateExperienceGain(aisling, tnl, herb.DisplayName);
 
             if (expGain >= 25000)
-            {
                 expGain = 25000;
-            }
 
             ExperienceDistributionScript.GiveExp(aisling, expGain);
             aisling.SendOrangeBarMessage($"You gather a {herb.DisplayName} and gained {expGain} experience!");
-            
-            logger.WithTopics(
-                    [Topics.Entities.Aisling,
-                    Topics.Entities.Item,
-                    Topics.Entities.Dialog,
-                    Topics.Entities.Quest,
-                    Topics.Entities.Experience])
-                .WithProperty(aisling)
-                .WithProperty(Subject)
-                .LogInformation("{@AislingName} has received {@Herb} and {@Experience} from foraging.", aisling.Name, herb.DisplayName, expGain);
 
+            logger.WithTopics(
+                      Topics.Entities.Aisling,
+                      Topics.Entities.Item,
+                      Topics.Entities.Dialog,
+                      Topics.Entities.Quest,
+                      Topics.Entities.Experience)
+                  .WithProperty(aisling)
+                  .WithProperty(Subject)
+                  .LogInformation(
+                      "{@AislingName} has received {@Herb} and {@Experience} from foraging.",
+                      aisling.Name,
+                      herb.DisplayName,
+                      expGain);
 
             UpdatePlayerLegend(aisling);
-        }
-        else
-        {
+        } else
             aisling.SendOrangeBarMessage($"You gathered a {herb.DisplayName}!");
-        }
-    }
-    
-    private bool IsUsingIronGlove(Aisling aisling)
-    {
-        var weaponTemplateKey = aisling.Equipment[EquipmentSlot.Weapon]?.Template.TemplateKey;
-        return weaponTemplateKey?.StartsWith("Iron", StringComparison.OrdinalIgnoreCase) == true;
     }
 
-    private bool IsUsingMythrilGlove(Aisling aisling)
-    {
-        var weaponTemplateKey = aisling.Equipment[EquipmentSlot.Weapon]?.Template.TemplateKey;
-        return weaponTemplateKey?.StartsWith("Mythril", StringComparison.OrdinalIgnoreCase) == true;
-    }
-
-    private bool IsUsingHybrasylGlove(Aisling aisling)
-    {
-        var weaponTemplateKey = aisling.Equipment[EquipmentSlot.Weapon]?.Template.TemplateKey;
-        return weaponTemplateKey?.StartsWith("Hybrasyl", StringComparison.OrdinalIgnoreCase) == true;
-    }
-
-    private int CalculateExperienceGain(Aisling source, int tnl, string herbName)
-    {
-
-        if (!ForagingExperienceMultipliers.TryGetValue(herbName, out var multiplier))
-        {
-            source.SendActiveMessage("Something went wrong when trying to forage a herb!");
-
-            return 0;
-        }
-
-        return Convert.ToInt32(multiplier * tnl);
-    }
-
-    private void UpdatePlayerLegend(Aisling source) =>
-    source.Legend.AddOrAccumulate(
-        new LegendMark(
-            "Foraged a bush",
-            "forage",
-            MarkIcon.Yay,
-            MarkColor.White,
-            1,
-            GameTime.Now));
     public override void OnTerminated()
     {
         var playerLocation = new Point(Subject.X, Subject.Y);
@@ -243,9 +273,20 @@ public class ForagingEffect(IItemFactory itemFactory, ILogger<ForagingEffect> lo
 
         var foragingSpot = ForagingSpots.FirstOrDefault(x => x.Equals(playerLocation));
 
-        var reactorTile = Subject.MapInstance.GetEntities<ReactorTile>()
+        var reactorTile = Subject.MapInstance
+                                 .GetEntities<ReactorTile>()
                                  .FirstOrDefault(x => (x.X == foragingSpot.X) && (x.Y == foragingSpot.Y));
 
         reactorTile?.OnWalkedOn(Subject);
     }
+
+    private void UpdatePlayerLegend(Aisling source)
+        => source.Legend.AddOrAccumulate(
+            new LegendMark(
+                "Foraged a bush",
+                "forage",
+                MarkIcon.Yay,
+                MarkColor.White,
+                1,
+                GameTime.Now));
 }

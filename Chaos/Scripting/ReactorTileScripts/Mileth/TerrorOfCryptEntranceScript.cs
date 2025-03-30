@@ -32,6 +32,7 @@ public class TerrorOfCryptEntranceScript : ReactorTileScriptBase
         {
             // Send a message to the Aisling
             aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure you are grouped or your group is near you.");
+
             // Warp the source back
             var point = source.DirectionalOffset(source.Direction.Reverse());
             source.WarpTo(point);
@@ -48,14 +49,15 @@ public class TerrorOfCryptEntranceScript : ReactorTileScriptBase
             // Create a merchant at the Aisling's current point
             var npcpoint = new Point(aisling.X, aisling.Y);
             var merchant = _merchantFactory.Create("teague", aisling.MapInstance, npcpoint);
+
             // Create a dialog for the merchant
             var dialog = _dialogFactory.Create("teague_enterTerror", merchant);
             dialog.Display(aisling);
-        }
-        else
+        } else
         {
             // Send a message to the Aisling
             aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure everyone is within level range and has quest.");
+
             // Warp the source back
             var point = source.DirectionalOffset(source.Direction.Reverse());
             source.WarpTo(point);

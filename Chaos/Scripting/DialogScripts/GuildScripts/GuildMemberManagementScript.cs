@@ -63,9 +63,6 @@ public class GuildMemberManagementScript : GuildScriptBase
                 ("Kick", "generic_guild_members_kick_initial"));
 
         if (sourceRank.Tier == 0)
-        {
-            Subject.AddOptions(
-            ("Promote to Leader", "generic_guild_members_transferownership_initial"));
-        }
+            Subject.AddOptions(("Promote to Leader", "generic_guild_members_transferownership_initial"));
     }
 }

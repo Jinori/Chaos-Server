@@ -1,4 +1,3 @@
-using Chaos.DarkAges.Definitions;
 using Chaos.Models.World;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
@@ -22,7 +21,7 @@ public sealed class BountyBoardScript : ReactorTileScriptBase
     public override void OnClicked(Aisling source)
     {
         var point = new Point(source.X, source.Y);
-        var board = MerchantFactory.Create("blank_merchant",Subject.MapInstance, point);
+        var board = MerchantFactory.Create("blank_merchant", Subject.MapInstance, point);
         var dialog = DialogFactory.Create("bountyboard_initial", board);
         dialog.Display(source);
     }

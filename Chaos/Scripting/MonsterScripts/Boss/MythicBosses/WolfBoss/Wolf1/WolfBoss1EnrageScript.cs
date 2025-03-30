@@ -21,8 +21,8 @@ public sealed class WolfBoss1EnrageScript : MonsterScriptBase
 
     /// <inheritdoc />
     public WolfBoss1EnrageScript(Monster subject, IMonsterFactory monsterFactory)
-        : base(subject) =>
-        MonsterFactory = monsterFactory;
+        : base(subject)
+        => MonsterFactory = monsterFactory;
 
     public override void Update(TimeSpan delta)
     {
@@ -30,6 +30,7 @@ public sealed class WolfBoss1EnrageScript : MonsterScriptBase
         {
             Bonus75Applied = true;
             Subject.Animate(UpgradeAnimation);
+
             //Spawn Monsters
             var rectangle = new Rectangle(Subject, 5, 5);
 
@@ -41,7 +42,7 @@ public sealed class WolfBoss1EnrageScript : MonsterScriptBase
                 var mobs = MonsterFactory.Create("wolf1-3", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(mobs, point);
             }
-            
+
             var attrib = new Attributes
             {
                 AtkSpeedPct = 10,
@@ -64,8 +65,11 @@ public sealed class WolfBoss1EnrageScript : MonsterScriptBase
                 var mobs = MonsterFactory.Create("wolf1-3", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(mobs, point);
             }
-            
-            var attrib = new Attributes { AtkSpeedPct = 20 };
+
+            var attrib = new Attributes
+            {
+                AtkSpeedPct = 20
+            };
             Subject.StatSheet.AddBonus(attrib);
         }
 
@@ -83,7 +87,7 @@ public sealed class WolfBoss1EnrageScript : MonsterScriptBase
                 var mobs = MonsterFactory.Create("wolf1-3", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(mobs, point);
             }
-            
+
             var attrib = new Attributes
             {
                 AtkSpeedPct = 10,

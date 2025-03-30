@@ -14,8 +14,9 @@ public class RepairAllItemsScript(Dialog subject, ILogger<RepairAllItemsScript> 
     private int CalculateNewRepairCostForItem(Aisling aisling, Item item)
     {
         // Skip if item is not damaged
-        if ((item.Template.MaxDurability == null) || (item.CurrentDurability == null) ||
-            (item.CurrentDurability.Value == item.Template.MaxDurability.Value))
+        if ((item.Template.MaxDurability == null)
+            || (item.CurrentDurability == null)
+            || (item.CurrentDurability.Value == item.Template.MaxDurability.Value))
             return 0;
 
         const double REPAIR_FACTOR = 0.8;
@@ -37,7 +38,6 @@ public class RepairAllItemsScript(Dialog subject, ILogger<RepairAllItemsScript> 
         return Convert.ToInt32(repairCost);
     }
 
-    
     private double CalculateOldRepairCostForItem(Item item)
     {
         // Skip if item is not damaged
@@ -46,8 +46,6 @@ public class RepairAllItemsScript(Dialog subject, ILogger<RepairAllItemsScript> 
             || (item.CurrentDurability.Value == item.Template.MaxDurability.Value))
             return 0;
 
-        
-        
         // Calculate damage percentage
         var damage = (float)item.CurrentDurability.Value / item.Template.MaxDurability.Value;
 
@@ -93,7 +91,7 @@ public class RepairAllItemsScript(Dialog subject, ILogger<RepairAllItemsScript> 
             return;
         }
 
-        logger.WithTopics([Topics.Entities.Aisling, Topics.Entities.Item, Topics.Entities.Gold])
+        logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Item, Topics.Entities.Gold)
               .WithProperty(source)
               .WithProperty(Subject)
               .LogInformation("{@AislingName} has repaired all items for {@AmountGold}", source.Name, RepairCost);

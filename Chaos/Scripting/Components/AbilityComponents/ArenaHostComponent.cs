@@ -15,14 +15,15 @@ public sealed class ArenaHostComponent : IComponent
     /// <inheritdoc />
     public void Execute(ActivationContext context, ComponentVars vars)
     {
-        var targets = vars.GetTargets<Aisling>().ToList();
+        var targets = vars.GetTargets<Aisling>()
+                          .ToList();
         var options = vars.GetOptions<IArenaHostComponentOptions>();
 
         foreach (var target in targets.ToList())
         {
             if (target.MapInstance.Template.TemplateKey != "26001")
-                return; 
-            
+                return;
+
             switch (options.ArenaTeamColor)
             {
                 case ArenaTeam.Blue:

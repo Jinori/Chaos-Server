@@ -1,6 +1,5 @@
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
-using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
@@ -22,7 +21,12 @@ public sealed class SummonerKadesEnrageScript : MonsterScriptBase
     {
         SpellFactory = spellFactory;
         SpellToCast = SpellFactory.Create("entangle");
-        SpellCastTimer = new RandomizedIntervalTimer(TimeSpan.FromSeconds(15), 30, RandomizationType.Balanced, false);
+
+        SpellCastTimer = new RandomizedIntervalTimer(
+            TimeSpan.FromSeconds(15),
+            30,
+            RandomizationType.Balanced,
+            false);
     }
 
     public override void Update(TimeSpan delta)
@@ -32,7 +36,7 @@ public sealed class SummonerKadesEnrageScript : MonsterScriptBase
         if (SpellCastTimer.IntervalElapsed)
         {
             var roll = IntegerRandomizer.RollSingle(100);
-            
+
             switch (roll)
             {
                 case < 40:
@@ -48,6 +52,7 @@ public sealed class SummonerKadesEnrageScript : MonsterScriptBase
                 case < 101:
                     Subject.Say("Let the shadows consume you!");
                     Subject.TryUseSpell(SpellToCast);
+
                     break;
             }
         }

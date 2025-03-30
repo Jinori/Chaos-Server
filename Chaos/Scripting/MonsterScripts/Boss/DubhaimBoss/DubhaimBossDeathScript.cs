@@ -13,8 +13,8 @@ namespace Chaos.Scripting.MonsterScripts.Boss.DubhaimBoss;
 // ReSharper disable once ClassCanBeSealed.Global
 public class DubhaimBossDeathScript : MonsterScriptBase
 {
-    protected IExperienceDistributionScript ExperienceDistributionScript { get; set; }
     private readonly IItemFactory ItemFactory;
+    protected IExperienceDistributionScript ExperienceDistributionScript { get; set; }
 
     /// <inheritdoc />
     public DubhaimBossDeathScript(Monster subject, IItemFactory itemFactory)
@@ -39,16 +39,19 @@ public class DubhaimBossDeathScript : MonsterScriptBase
         //get the highest contributor
         //if there are no contributor, try getting the highest aggro
         var rewardTarget = Subject.Contribution
-            .OrderByDescending(kvp => kvp.Value)
-            .Select(kvp => Map.TryGetEntity<Aisling>(kvp.Key, out var a) ? a : null)
-            .FirstOrDefault(a => a is not null);
+                                  .OrderByDescending(kvp => kvp.Value)
+                                  .Select(kvp => Map.TryGetEntity<Aisling>(kvp.Key, out var a) ? a : null)
+                                  .FirstOrDefault(a => a is not null);
 
         Aisling[]? rewardTargets = null;
 
         if (rewardTarget != null)
-            rewardTargets = (rewardTarget.Group ?? (IEnumerable<Aisling>)new[] { rewardTarget })
-                .ThatAreWithinRange(rewardTarget)
-                .ToArray();
+            rewardTargets = (rewardTarget.Group
+                             ?? (IEnumerable<Aisling>)new[]
+                             {
+                                 rewardTarget
+                             }).ThatAreWithinRange(rewardTarget)
+                               .ToArray();
 
         Subject.Items.AddRange(Subject.LootTable.GenerateLoot());
 
@@ -70,21 +73,22 @@ public class DubhaimBossDeathScript : MonsterScriptBase
             }
 
             ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
-            
-            var bossReward = rewardTargets.Where(a => a.Trackers.Flags.TryGetFlag(out AvailableMounts _) && !a.Trackers.Flags.HasFlag(AvailableMounts.Dunan))
-                .ToList();
-            
-            if (bossReward.Count <= 0) 
+
+            var bossReward = rewardTargets.Where(
+                                              a => a.Trackers.Flags.TryGetFlag(out AvailableMounts _)
+                                                   && !a.Trackers.Flags.HasFlag(AvailableMounts.Dunan))
+                                          .ToList();
+
+            if (bossReward.Count <= 0)
                 return;
 
             bossReward.PickRandom();
 
             var randomIndex = new Random().Next(bossReward.Count);
             var rewardedAisling = bossReward[randomIndex];
-                
+
             rewardedAisling!.Trackers.Flags.AddFlag(AvailableMounts.Dunan);
             rewardedAisling.SendOrangeBarMessage("You received a unique mount!");
-
         }
     }
 }

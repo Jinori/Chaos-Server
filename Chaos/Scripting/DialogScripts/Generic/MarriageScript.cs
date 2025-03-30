@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
 using Chaos.Geometry.Abstractions;
@@ -18,21 +17,21 @@ namespace Chaos.Scripting.DialogScripts.Generic;
 
 public class MarriageScript : DialogScriptBase
 {
-    private readonly IEffectFactory EffectFactory;
     private readonly Animation Animation = new()
     {
         AnimationSpeed = 300,
         TargetAnimation = 36
     };
+
     private readonly IClientRegistry<IChaosWorldClient> ClientRegistry;
     private readonly IDialogFactory DialogFactory;
+    private readonly IEffectFactory EffectFactory;
 
     public MarriageScript(
         Dialog subject,
         IClientRegistry<IChaosWorldClient> clientRegistry,
         IDialogFactory dialogFactory,
-        IEffectFactory effectFactory
-    )
+        IEffectFactory effectFactory)
         : base(subject)
     {
         ClientRegistry = clientRegistry;
@@ -105,9 +104,7 @@ public class MarriageScript : DialogScriptBase
 
         if ((partner == null) || !partner.Aisling.OnSameMapAs(source))
         {
-            Subject.Reply(
-                source,
-                "It does not look like they are here, I cannot proceed without your partner being here with you.");
+            Subject.Reply(source, "It does not look like they are here, I cannot proceed without your partner being here with you.");
 
             return;
         }
@@ -237,9 +234,7 @@ public class MarriageScript : DialogScriptBase
 
         if ((partnerTwo == null) || !partnerTwo.Aisling.OnSameMapAs(source))
         {
-            Subject.Reply(
-                source,
-                "It does not look like they are here, I cannot proceed without your partner being here with you.");
+            Subject.Reply(source, "It does not look like they are here, I cannot proceed without your partner being here with you.");
 
             return;
         }

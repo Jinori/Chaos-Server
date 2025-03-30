@@ -1,7 +1,3 @@
-using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
-using Humanizer;
-
 #region
 using Chaos.Models.Abstractions;
 using Chaos.Models.Data;
@@ -14,6 +10,7 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.TypeMapper.Abstractions;
 using Chaos.Utilities;
+using Humanizer;
 #endregion
 
 namespace Chaos.Scripting.DialogScripts.ShopScripts;
@@ -148,32 +145,31 @@ public class BuyShopScript : DialogScriptBase
 
         Subject.InjectTextParameters(item.DisplayName, item.Template.BuyCost);
     }
-    
+
     protected virtual void OnDisplayingConfirmation(Aisling source)
     {
         if (!TryFetchArgs<string, int>(out var itemName, out var amount)
-            || amount <= 0
+            || (amount <= 0)
             || !BuyShopSource.TryGetItem(itemName, out var item))
         {
             Subject.ReplyToUnknownInput(source);
+
             return;
         }
 
         var availableStock = BuyShopSource.GetStock(item.Template.TemplateKey);
-        
-        var stockDisplay = amount == 1
-            ? item.DisplayName.Singularize()
-            : item.DisplayName.Pluralize();
+
+        var stockDisplay = amount == 1 ? item.DisplayName.Singularize() : item.DisplayName.Pluralize();
 
         if (availableStock < amount)
         {
             Subject.Reply(source, $"Sorry, we only have {availableStock} {stockDisplay} in stock", "generic_buyshop_initial");
+
             return;
         }
 
         Subject.InjectTextParameters(amount, stockDisplay, item.Template.BuyCost * amount);
     }
-
 
     protected virtual void OnDisplayingInitial(Aisling source)
     {

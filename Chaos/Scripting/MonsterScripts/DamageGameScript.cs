@@ -10,20 +10,20 @@ namespace Chaos.Scripting.MonsterScripts;
 
 public class DamageGameScript : MonsterScriptBase
 {
-    public readonly IStorage<DamageGameObj> DamageLeaderboard;
     private readonly IIntervalTimer CountDownTimer;
+    public readonly IStorage<DamageGameObj> DamageLeaderboard;
+    private readonly ISimpleCache SimpleCache;
 
     private int DamageDone;
     private DateTime DPSTime;
     private bool GameStarted;
-    private readonly ISimpleCache SimpleCache;
-    
-    
+
     public DamageGameScript(Monster subject, ISimpleCache simpleCache, IStorage<DamageGameObj> damageLeaderboard)
         : base(subject)
     {
         SimpleCache = simpleCache;
         DamageLeaderboard = damageLeaderboard;
+
         CountDownTimer = new PeriodicMessageTimer(
             TimeSpan.FromMinutes(1),
             TimeSpan.FromSeconds(15),
@@ -32,7 +32,15 @@ public class DamageGameScript : MonsterScriptBase
             "{Time}",
             subject.Say);
     }
-    
+
+    private int CalculateDPS()
+    {
+        var fightDuration = DateTime.UtcNow - DPSTime;
+        var elapsedSeconds = fightDuration.TotalSeconds;
+
+        return (int)(DamageDone / elapsedSeconds);
+    }
+
     public override void OnAttacked(Creature source, int damage)
     {
         if (!GameStarted)
@@ -43,14 +51,13 @@ public class DamageGameScript : MonsterScriptBase
 
         DamageDone += damage;
     }
-    
-    
+
     public override void Update(TimeSpan delta)
     {
         if (GameStarted)
         {
             CountDownTimer.Update(delta);
-            
+
             if (CountDownTimer.IntervalElapsed)
             {
                 var player = Subject.MapInstance
@@ -59,7 +66,12 @@ public class DamageGameScript : MonsterScriptBase
 
                 if (player != null)
                 {
-                    DamageLeaderboard.Value.AddOrUpdateEntry(player, DamageDone, CalculateDPS(), player.UserStatSheet.BaseClass, player.UserStatSheet.BaseClass);
+                    DamageLeaderboard.Value.AddOrUpdateEntry(
+                        player,
+                        DamageDone,
+                        CalculateDPS(),
+                        player.UserStatSheet.BaseClass,
+                        player.UserStatSheet.BaseClass);
                     DamageLeaderboard.Save();
                     var mapInstance = SimpleCache.Get<MapInstance>("hm_road");
                     player.TraverseMap(mapInstance, new Point(4, 6));
@@ -68,14 +80,5 @@ public class DamageGameScript : MonsterScriptBase
                 }
             }
         }
-    }
-
-    
-    private int CalculateDPS()
-    {
-        var fightDuration = DateTime.UtcNow - DPSTime;
-        var elapsedSeconds = fightDuration.TotalSeconds;
-        
-        return (int)(DamageDone / elapsedSeconds);
     }
 }

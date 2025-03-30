@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 
@@ -13,6 +12,6 @@ public class DefenseElementScript : ConfigurableMonsterScriptBase
 
     /// <inheritdoc />
     public DefenseElementScript(Monster subject)
-        : base(subject) =>
-        Subject.StatSheet.SetDefenseElement(Element);
+        : base(subject)
+        => Subject.StatSheet.SetDefenseElement(Element);
 }

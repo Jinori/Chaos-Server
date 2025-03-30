@@ -10,8 +10,8 @@ public class ShipMessageReactorScript : ReactorTileScriptBase
     private readonly IItemFactory ItemFactory;
 
     public ShipMessageReactorScript(ReactorTile subject, IItemFactory itemFactory)
-        : base(subject) =>
-        ItemFactory = itemFactory;
+        : base(subject)
+        => ItemFactory = itemFactory;
 
     public override void OnWalkedOn(Creature source)
     {
@@ -21,6 +21,7 @@ public class ShipMessageReactorScript : ReactorTileScriptBase
         if (aisling.MapInstance.Name == "Main Hall")
         {
             aisling.SendOrangeBarMessage("The hallways is dark, best not to go there.");
+
             return;
         }
 
@@ -29,8 +30,10 @@ public class ShipMessageReactorScript : ReactorTileScriptBase
             if (aisling is { X: 14, Y: 8 })
             {
                 aisling.SendOrangeBarMessage("You are defending the deck! You can't jump off.");
+
                 return;
             }
+
             aisling.SendOrangeBarMessage("You're currently defending the ship deck! You can't go inside.");
         }
     }

@@ -18,8 +18,8 @@ public class TutorialBossCheckScript : ConfigurableReactorTileScriptBase
 
     /// <inheritdoc />
     public TutorialBossCheckScript(ReactorTile subject, ISimpleCache simpleCache)
-        : base(subject) =>
-        SimpleCache = simpleCache;
+        : base(subject)
+        => SimpleCache = simpleCache;
 
     /// <inheritdoc />
     public override void OnWalkedOn(Creature source)

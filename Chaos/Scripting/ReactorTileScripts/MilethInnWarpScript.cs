@@ -18,8 +18,8 @@ public class MilethInnWarpScript : ConfigurableReactorTileScriptBase
 
     /// <inheritdoc />
     public MilethInnWarpScript(ReactorTile subject, ISimpleCache simpleCache)
-        : base(subject) =>
-        SimpleCache = simpleCache;
+        : base(subject)
+        => SimpleCache = simpleCache;
 
     /// <inheritdoc />
     public override void OnWalkedOn(Creature source)

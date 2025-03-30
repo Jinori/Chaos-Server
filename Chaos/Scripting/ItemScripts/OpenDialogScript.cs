@@ -12,8 +12,8 @@ public class OpenDialogScript : ConfigurableItemScriptBase
 
     /// <inheritdoc />
     public OpenDialogScript(Item subject, IDialogFactory dialogFactory)
-        : base(subject) =>
-        DialogFactory = dialogFactory;
+        : base(subject)
+        => DialogFactory = dialogFactory;
 
     /// <inheritdoc />
     public override void OnUse(Aisling source)

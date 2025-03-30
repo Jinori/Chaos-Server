@@ -12,8 +12,8 @@ namespace Chaos.Scripting.MonsterScripts.Boss.DragonScaleBoss;
 // ReSharper disable once ClassCanBeSealed.Global
 public class DragonScaleDeathScript : MonsterScriptBase
 {
-    protected IExperienceDistributionScript ExperienceDistributionScript { get; set; }
     private readonly IItemFactory ItemFactory;
+    protected IExperienceDistributionScript ExperienceDistributionScript { get; set; }
 
     /// <inheritdoc />
     public DragonScaleDeathScript(Monster subject, IItemFactory itemFactory)
@@ -38,16 +38,19 @@ public class DragonScaleDeathScript : MonsterScriptBase
         //get the highest contributor
         //if there are no contributor, try getting the highest aggro
         var rewardTarget = Subject.Contribution
-            .OrderByDescending(kvp => kvp.Value)
-            .Select(kvp => Map.TryGetEntity<Aisling>(kvp.Key, out var a) ? a : null)
-            .FirstOrDefault(a => a is not null);
+                                  .OrderByDescending(kvp => kvp.Value)
+                                  .Select(kvp => Map.TryGetEntity<Aisling>(kvp.Key, out var a) ? a : null)
+                                  .FirstOrDefault(a => a is not null);
 
         Aisling[]? rewardTargets = null;
 
         if (rewardTarget != null)
-            rewardTargets = (rewardTarget.Group ?? (IEnumerable<Aisling>)new[] { rewardTarget })
-                .ThatAreWithinRange(rewardTarget)
-                .ToArray();
+            rewardTargets = (rewardTarget.Group
+                             ?? (IEnumerable<Aisling>)new[]
+                             {
+                                 rewardTarget
+                             }).ThatAreWithinRange(rewardTarget)
+                               .ToArray();
 
         Subject.Items.AddRange(Subject.LootTable.GenerateLoot());
 
@@ -70,24 +73,23 @@ public class DragonScaleDeathScript : MonsterScriptBase
 
             ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
 
-            var nearbyAislingsWithDragon = Map
-                .GetEntitiesWithinRange<Aisling>(Subject, 13)
-                .FirstOrDefault(x => x.Trackers.Enums.TryGetValue(out DragonScale stage) && stage == DragonScale.SpawnedDragon);
-            
+            var nearbyAislingsWithDragon = Map.GetEntitiesWithinRange<Aisling>(Subject, 13)
+                                              .FirstOrDefault(
+                                                  x => x.Trackers.Enums.TryGetValue(out DragonScale stage)
+                                                       && (stage == DragonScale.SpawnedDragon));
+
             if (nearbyAislingsWithDragon != null)
             {
                 var dragonscale = ItemFactory.Create("dragonscale");
-                
+
                 foreach (var target in rewardTargets)
-                {
-                    if (target.Trackers.Enums.TryGetValue(out DragonScale stage) && stage == DragonScale.SpawnedDragon)
+                    if (target.Trackers.Enums.TryGetValue(out DragonScale stage) && (stage == DragonScale.SpawnedDragon))
                     {
                         target.Trackers.TimedEvents.AddEvent("spawndragonscale", TimeSpan.FromDays(3), true);
                         target.Trackers.Enums.Set(DragonScale.KilledDragon);
                         target.SendOrangeBarMessage("The dragon collapses, you scour the body for a scale.");
-                        target.GiveItemOrSendToBank(dragonscale);   
+                        target.GiveItemOrSendToBank(dragonscale);
                     }
-                }
             }
         }
     }

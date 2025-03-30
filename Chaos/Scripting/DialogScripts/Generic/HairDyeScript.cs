@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.Menu;
@@ -14,7 +13,8 @@ public class HairDyeScript : DialogScriptBase
     private readonly IItemFactory ItemFactory;
 
     public HairDyeScript(Dialog subject, IItemFactory itemFactory)
-        : base(subject) => ItemFactory = itemFactory;
+        : base(subject)
+        => ItemFactory = itemFactory;
 
     public override void OnDisplaying(Aisling source)
     {

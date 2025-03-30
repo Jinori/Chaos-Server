@@ -26,22 +26,19 @@ public class ArtisanAlchemyBoxScript : ItemScriptBase
         // Create items
         var greatermonsterextract = _itemFactory.Create("greatermonsterextract");
         var superiormonsterextract = _itemFactory.Create("superiormonsterextract");
-        
-        for (int i = 0; i < greatermonsterextractAmount; i++)
-        {
-            source.GiveItemOrSendToBank(_itemFactory.Create("greatermonsterextract"));
-        }
 
-        for (int i = 0; i < superiormonsterextractAmount; i++)
-        {
+        for (var i = 0; i < greatermonsterextractAmount; i++)
+            source.GiveItemOrSendToBank(_itemFactory.Create("greatermonsterextract"));
+
+        for (var i = 0; i < superiormonsterextractAmount; i++)
             source.GiveItemOrSendToBank(_itemFactory.Create("superiormonsterextract"));
-        }
 
         // Add items to the player's inventory
         source.GiveItemOrSendToBank(greatermonsterextract);
         source.GiveItemOrSendToBank(superiormonsterextract);
 
         // Notify the player
-        source.SendOrangeBarMessage($"You received {greatermonsterextractAmount +1} Greater Monster Extract and {superiormonsterextractAmount +1} Superior Monster Extract!");
+        source.SendOrangeBarMessage(
+            $"You received {greatermonsterextractAmount + 1} Greater Monster Extract and {superiormonsterextractAmount + 1} Superior Monster Extract!");
     }
 }

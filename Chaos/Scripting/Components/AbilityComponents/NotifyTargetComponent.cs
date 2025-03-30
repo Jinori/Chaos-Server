@@ -18,15 +18,11 @@ public class NotifyTargetComponent : IComponent
 
         if (vars.GetSourceScript() is not SubjectiveScriptBase<Spell> spellScript)
             return;
-        
+
         foreach (var target in targets)
-        {
             if (target is Aisling aisling)
                 aisling.SendOrangeBarMessage($"{context.Source.Name} cast {spellScript.Subject.Template.Name} on you.");
-        }
     }
-    
-    public interface INotifyTargetComponentOptions
-    {
-    }
+
+    public interface INotifyTargetComponentOptions { }
 }

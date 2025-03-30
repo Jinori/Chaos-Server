@@ -15,7 +15,6 @@ public class SupplyLouresReactorScript : ReactorTileScriptBase
         if (source is not Aisling aisling)
             return;
 
-        
         aisling.SendOrangeBarMessage("Fight off your attacker! There is no escape!");
     }
 }

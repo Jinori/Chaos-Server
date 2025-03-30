@@ -114,6 +114,7 @@ public class VortexEffect : ContinuousAnimationEffectBase
         if (target is Monster monster && !monster.Script.Is<PetScript>() && !monster.Script.Is<NightmareTeammateScript>())
         {
             SendMessage(source, "Cannot be cast on monsters.", ServerMessageType.OrangeBar1);
+
             return false;
         }
 

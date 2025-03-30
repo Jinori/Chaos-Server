@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
@@ -33,6 +32,7 @@ public class PorteForestBossRoomScript : ReactorTileScriptBase
         {
             // Send a message to the Aisling
             aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You're nervous to enter without your full group...");
+
             // Warp the source back
             var point = source.DirectionalOffset(source.Direction.Reverse());
             source.WarpTo(point);
@@ -51,14 +51,15 @@ public class PorteForestBossRoomScript : ReactorTileScriptBase
             // Create a merchant at the Aisling's current point
             var npcpoint = new Point(aisling.X, aisling.Y);
             var merchant = MerchantFactory.Create("pf_bossroomentrance_merchant", aisling.MapInstance, npcpoint);
+
             // Create a dialog for the merchant
             var dialog = DialogFactory.Create("pf_bossroomentrance", merchant);
             dialog.Display(aisling);
-        }
-        else
+        } else
         {
             // Send a message to the Aisling
             aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Not all group members have found the pendant.");
+
             // Warp the source back
             var point = source.DirectionalOffset(source.Direction.Reverse());
             source.WarpTo(point);

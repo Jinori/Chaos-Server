@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
@@ -28,12 +27,13 @@ public class JosephineRewardScript : DialogScriptBase
         if (source.Trackers.Enums.TryGetValue(out RionaTutorialQuestStage stage) && (stage == RionaTutorialQuestStage.StartedBeautyShop))
         {
             source.Trackers.Enums.Set(RionaTutorialQuestStage.CompletedBeautyShop);
+
             Logger.WithTopics(
-                      [Topics.Entities.Aisling,
+                      Topics.Entities.Aisling,
                       Topics.Entities.Gold,
                       Topics.Entities.Experience,
                       Topics.Entities.Dialog,
-                      Topics.Entities.Quest])
+                      Topics.Entities.Quest)
                   .WithProperty(source)
                   .WithProperty(Subject)
                   .LogInformation(
@@ -46,7 +46,11 @@ public class JosephineRewardScript : DialogScriptBase
             source.TryGiveGold(1000);
             source.TryGiveGamePoints(5);
             source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've received 1000g, 1000exp and 5 game points!");
-            Subject.Reply(source, "Riona sent you? I do have her dye, Let her know for me please. Hey, Are you interested in a hair style?", "josephine_initial");
+
+            Subject.Reply(
+                source,
+                "Riona sent you? I do have her dye, Let her know for me please. Hey, Are you interested in a hair style?",
+                "josephine_initial");
         }
     }
 }

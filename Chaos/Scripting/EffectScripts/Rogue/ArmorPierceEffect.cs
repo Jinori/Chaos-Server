@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
@@ -10,6 +9,8 @@ namespace Chaos.Scripting.EffectScripts.Rogue;
 
 public class ArmorPierceEffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
 {
+    public List<string> ConflictingEffectNames { get; init; } = ["Armor Pierce"];
+
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(6);
 
     protected Animation Animation { get; } = new()
@@ -17,11 +18,6 @@ public class ArmorPierceEffect : EffectBase, NonOverwritableEffectComponent.INon
         TargetAnimation = 204,
         AnimationSpeed = 100
     };
-
-    public List<string> ConflictingEffectNames { get; init; } =
-    [
-        "Armor Pierce"
-    ];
 
     public override byte Icon => 63;
 
@@ -60,7 +56,7 @@ public class ArmorPierceEffect : EffectBase, NonOverwritableEffectComponent.INon
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Armor has been repaired, AC and MR restored.");
     }
-    
+
     public override bool ShouldApply(Creature source, Creature target)
     {
         var execution = new ComponentExecutor(source, target).WithOptions(this)

@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.Common.Utilities;
+﻿using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
@@ -15,15 +14,17 @@ public class BranchScript : ReactorTileScriptBase
     private readonly IItemFactory ItemFactory;
 
     public BranchScript(ReactorTile subject, IItemFactory itemFactory)
-        : base(subject) =>
-        ItemFactory = itemFactory;
+        : base(subject)
+        => ItemFactory = itemFactory;
 
     public override void OnWalkedOn(Creature source)
     {
         if (source is not Aisling aisling)
             return;
 
-        if (aisling.Trackers.Enums.TryGetValue(out RionaTutorialQuestStage stage) && stage == RionaTutorialQuestStage.StartedSpareAStick && IntegerRandomizer.RollChance(18))
+        if (aisling.Trackers.Enums.TryGetValue(out RionaTutorialQuestStage stage)
+            && (stage == RionaTutorialQuestStage.StartedSpareAStick)
+            && IntegerRandomizer.RollChance(18))
         {
             var branch = ItemFactory.Create("branch");
             aisling.GiveItemOrSendToBank(branch);
@@ -32,11 +33,13 @@ public class BranchScript : ReactorTileScriptBase
             aisling.Client.SendServerMessage(
                 ServerMessageType.OrangeBar1,
                 $"Oh, you've found a sturdy branch! That makes {branchcount} branches!");
-            aisling.Animate(new Animation
-            {
-                AnimationSpeed = 100,
-                TargetAnimation = 10
-            });
+
+            aisling.Animate(
+                new Animation
+                {
+                    AnimationSpeed = 100,
+                    TargetAnimation = 10
+                });
         }
     }
 }

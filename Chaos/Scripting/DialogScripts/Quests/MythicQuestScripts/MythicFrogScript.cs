@@ -55,10 +55,7 @@ public class MythicFrogScript : DialogScriptBase
 
                 if (hasMain && !hasFrog)
                 {
-                    Subject.Reply(
-                        source,
-                        "Skip",
-                        "frog_start1start");
+                    Subject.Reply(source, "Skip", "frog_start1start");
 
                     return;
                 }
@@ -86,10 +83,7 @@ public class MythicFrogScript : DialogScriptBase
 
                 if (frog == MythicFrog.HigherFrogComplete)
                 {
-                    Subject.Reply(
-                        source,
-                        "Skip",
-                        "frog_itemstart");
+                    Subject.Reply(source, "Skip", "frog_itemstart");
 
                     return;
                 }
@@ -153,8 +147,7 @@ public class MythicFrogScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
                     source.SendOrangeBarMessage("You received 10000000 experience!");
@@ -202,8 +195,7 @@ public class MythicFrogScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
                     source.SendOrangeBarMessage("You received 10000000 experience!");
@@ -263,8 +255,7 @@ public class MythicFrogScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
                     source.SendOrangeBarMessage("You received 10000000 experience!");
@@ -282,8 +273,7 @@ public class MythicFrogScript : DialogScriptBase
 
             case "frog_ally":
             {
-                if (hasWolf
-                    && (hasWolf == wolf is MythicWolf.AlliedWolf or MythicWolf.BossWolfStarted or MythicWolf.BossWolfDefeated))
+                if (hasWolf && (hasWolf == wolf is MythicWolf.AlliedWolf or MythicWolf.BossWolfStarted or MythicWolf.BossWolfDefeated))
                 {
                     Subject.Reply(source, "Ribbit! It seems you already allied with the Wolves! Go away!");
                     source.Trackers.Enums.Set(MythicFrog.EnemyFrogAllied);
@@ -345,8 +335,7 @@ public class MythicFrogScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, fiftyPercent);
                     source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 25000000);
                     source.SendOrangeBarMessage("You received 25000000 experience!");
@@ -356,11 +345,10 @@ public class MythicFrogScript : DialogScriptBase
                 source.Trackers.Enums.Set(MythicFrog.BossFrogDefeated);
                 source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);
 
-                if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5) &&
-                    !source.Trackers.Enums.HasValue(MythicQuestMain.CompletedMythic))
-                {
+                if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss)
+                    && (mythicboss >= 5)
+                    && !source.Trackers.Enums.HasValue(MythicQuestMain.CompletedMythic))
                     source.Trackers.Enums.Set(MythicQuestMain.CompletedAll);
-                }
             }
 
                 break;

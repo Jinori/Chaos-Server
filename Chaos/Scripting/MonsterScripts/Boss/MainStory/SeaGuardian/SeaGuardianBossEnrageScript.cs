@@ -20,16 +20,20 @@ public sealed class SeaGuardianBossEnrageScript : MonsterScriptBase
 
     /// <inheritdoc />
     public SeaGuardianBossEnrageScript(Monster subject, IMonsterFactory monsterFactory)
-        : base(subject) =>
-        MonsterFactory = monsterFactory;
+        : base(subject)
+        => MonsterFactory = monsterFactory;
 
     public override void Update(TimeSpan delta)
     {
         if (!Bonus75Applied && (Subject.StatSheet.HealthPercent <= 75))
         {
             Bonus75Applied = true;
+
             //Give Bonuses
-            var attrib = new Attributes { AtkSpeedPct = 40 };
+            var attrib = new Attributes
+            {
+                AtkSpeedPct = 40
+            };
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
         }

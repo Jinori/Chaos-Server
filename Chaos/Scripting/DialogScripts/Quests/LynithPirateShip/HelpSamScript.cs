@@ -19,11 +19,7 @@ public class HelpSamScript : DialogScriptBase
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     /// <inheritdoc />
-    public HelpSamScript(
-        Dialog subject,
-        ISimpleCache simpleCache,
-        ILogger<PFQuestScript> logger
-    )
+    public HelpSamScript(Dialog subject, ISimpleCache simpleCache, ILogger<PFQuestScript> logger)
         : base(subject)
     {
         SimpleCache = simpleCache;
@@ -55,7 +51,7 @@ public class HelpSamScript : DialogScriptBase
                     || source.Trackers.Enums.HasValue(HelpSable.CompletedEscort)
                     || source.Trackers.Enums.HasValue(HelpSable.FinishedDoltoo))
                     return;
-                
+
                 if (source.Trackers.Enums.HasValue(HelpSable.StartedSam))
                 {
                     var option1 = new DialogOption
@@ -66,11 +62,10 @@ public class HelpSamScript : DialogScriptBase
 
                     if (!Subject.HasOption(option1.OptionText))
                         Subject.Options.Insert(0, option1);
-                    
+
                     return;
                 }
-                
-                
+
                 var option = new DialogOption
                 {
                     DialogKey = "helpsam_initial",
@@ -80,27 +75,29 @@ public class HelpSamScript : DialogScriptBase
                 if (!Subject.HasOption(option.OptionText))
                     Subject.Options.Insert(0, option);
             }
+
                 break;
-                
-                case "helpsam_initial":
+
+            case "helpsam_initial":
             {
                 if (source.Trackers.Enums.HasValue(HelpSable.FinishedSable))
                 {
                     Subject.Reply(source, "Skip", "HelpSam_initial2");
+
                     return;
                 }
 
                 if (source.Trackers.Enums.HasValue(HelpSable.StartedSam))
-                {
                     Subject.Reply(source, "Skip", "helpsam_return");
-                }
             }
+
                 break;
 
             case "helpsam_initial4":
             {
-               source.Trackers.Enums.Set(HelpSable.StartedSam);
-               break;
+                source.Trackers.Enums.Set(HelpSable.StartedSam);
+
+                break;
             }
 
             case "helpsam_return":
@@ -116,39 +113,46 @@ public class HelpSamScript : DialogScriptBase
                         {
                             var mapinstance1 = SimpleCache.Get<MapInstance>("lynith_pirate_brig1");
                             source.TraverseMap(mapinstance1, point);
+
                             return;
                         }
                         case >= 25 and < 41:
                         {
                             var mapinstance1 = SimpleCache.Get<MapInstance>("lynith_pirate_brig2");
                             source.TraverseMap(mapinstance1, point);
+
                             return;
                         }
                         case >= 41 and < 55:
                         {
                             var mapinstance1 = SimpleCache.Get<MapInstance>("lynith_pirate_brig3");
                             source.TraverseMap(mapinstance1, point);
+
                             return;
                         }
                         case >= 55 and < 71:
                         {
                             var mapinstance1 = SimpleCache.Get<MapInstance>("lynith_pirate_brig4");
                             source.TraverseMap(mapinstance1, point);
+
                             return;
                         }
                         case >= 71 and < 99:
                         {
                             var mapinstance1 = SimpleCache.Get<MapInstance>("lynith_pirate_brig5");
                             source.TraverseMap(mapinstance1, point);
+
                             return;
                         }
                         case >= 99:
                         {
                             var mapinstance1 = SimpleCache.Get<MapInstance>("lynith_pirate_brig6");
                             source.TraverseMap(mapinstance1, point);
+
                             return;
                         }
                     }
+
                     return;
                 }
 
@@ -157,19 +161,16 @@ public class HelpSamScript : DialogScriptBase
                 source.TryGiveGamePoints(5);
                 ExperienceDistributionScript.GiveExp(source, 250000);
                 source.SendOrangeBarMessage("Salty Sam thanks you for his Black Pirate Bandana.");
-                
+
                 Logger.WithTopics(
-                        [Topics.Entities.Aisling,
-                        Topics.Entities.Experience,
-                        Topics.Entities.Item,
-                        Topics.Entities.Dialog,
-                        Topics.Entities.Quest])
-                    .WithProperty(source)
-                    .WithProperty(Subject)
-                    .LogInformation(
-                        "{@AislingName} has received {@ExpAmount} exp from Helping Sam",
-                        source.Name,
-                        250000);
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Experience,
+                          Topics.Entities.Item,
+                          Topics.Entities.Dialog,
+                          Topics.Entities.Quest)
+                      .WithProperty(source)
+                      .WithProperty(Subject)
+                      .LogInformation("{@AislingName} has received {@ExpAmount} exp from Helping Sam", source.Name, 250000);
             }
 
                 break;

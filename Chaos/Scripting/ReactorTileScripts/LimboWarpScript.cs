@@ -1,5 +1,4 @@
 using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions.Geometry;
 using Chaos.Geometry.Abstractions;

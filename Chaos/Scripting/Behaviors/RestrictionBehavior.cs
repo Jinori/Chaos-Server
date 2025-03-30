@@ -10,6 +10,12 @@ namespace Chaos.Scripting.Behaviors;
 
 public class RestrictionBehavior
 {
+    private readonly List<string> MapsGhostsCanMoveOn =
+    [
+        "Labyrinth Battle Ring",
+        "The Afterlife"
+    ];
+
     public virtual bool CanDropItem(Aisling aisling, Item item) => aisling.IsAlive;
 
     public virtual bool CanDropItemOn(Aisling aisling, Item item, Creature target) => aisling.IsAlive;
@@ -17,15 +23,6 @@ public class RestrictionBehavior
     public virtual bool CanDropMoney(Aisling aisling, int amount) => aisling.IsAlive;
 
     public virtual bool CanDropMoneyOn(Aisling aisling, int amount, Creature target) => aisling.IsAlive;
-    private readonly List<string> MapsGhostsCanMoveOn =
-    [
-        "Labyrinth Battle Ring",
-        "The Afterlife"
-    ];
-
-    public virtual bool CanPickupItem(Aisling aisling, GroundItem groundItem) => aisling.IsAlive;
-
-    public virtual bool CanPickupMoney(Aisling aisling, Money money) => aisling.IsAlive;
 
     public virtual bool CanMove(Creature creature)
     {
@@ -76,6 +73,10 @@ public class RestrictionBehavior
         return MapsGhostsCanMoveOn.Contains(creature.MapInstance.Name) || creature.IsAlive;
     }
 
+    public virtual bool CanPickupItem(Aisling aisling, GroundItem groundItem) => aisling.IsAlive;
+
+    public virtual bool CanPickupMoney(Aisling aisling, Money money) => aisling.IsAlive;
+
     public virtual bool CanTalk(Creature creature) => true;
 
     public virtual bool CanTurn(Creature creature)
@@ -117,7 +118,7 @@ public class RestrictionBehavior
 
                 return false;
             }
-            
+
             if (aisling.IsPramhed() || aisling.IsSuained())
             {
                 aisling.SendOrangeBarMessage("You can't do that now.");
@@ -127,17 +128,18 @@ public class RestrictionBehavior
 
             if (aisling.IsStoned() && !item.Template.TemplateKey.EqualsI("lightPotion"))
                 return false;
-            
+
             if (aisling.MapInstance.LoadedFromInstanceId.StartsWithI("phoenix_sky"))
             {
                 aisling.SendOrangeBarMessage("You are in Lady Phoenix's clutches");
 
                 return false;
             }
-            
+
             if (aisling.MapInstance.LoadedFromInstanceId.StartsWithI("snaggleschallenge"))
             {
                 aisling.SendOrangeBarMessage("You can't use items here.");
+
                 return false;
             }
 
@@ -160,7 +162,9 @@ public class RestrictionBehavior
                                       || aisling.IsPramhed()
                                       || aisling.IsStoned()
                                       || aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out _)
-                                      || aisling.MapInstance.Name.EqualsI("Frosty's Challenge") || (aisling.MapInstance.Name.EqualsI("Snaggles Secret Sweetroom") || (aisling.MapInstance.LoadedFromInstanceId.EqualsI("hopmaze") && !aisling.IsGodModeEnabled())):
+                                      || aisling.MapInstance.Name.EqualsI("Frosty's Challenge")
+                                      || aisling.MapInstance.Name.EqualsI("Snaggles Secret Sweetroom")
+                                      || (aisling.MapInstance.LoadedFromInstanceId.EqualsI("hopmaze") && !aisling.IsGodModeEnabled()):
             {
                 aisling.SendOrangeBarMessage("You cannot use skills.");
 
@@ -215,7 +219,9 @@ public class RestrictionBehavior
                                       || aisling.IsPramhed()
                                       || aisling.IsStoned()
                                       || aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out _)
-                                      || aisling.MapInstance.Name.EqualsI("Frosty's Challenge") || (aisling.MapInstance.Name.EqualsI("Snaggles Secret Sweetroom") || (aisling.MapInstance.LoadedFromInstanceId.EqualsI("hopmaze") && !aisling.IsGodModeEnabled())):
+                                      || aisling.MapInstance.Name.EqualsI("Frosty's Challenge")
+                                      || aisling.MapInstance.Name.EqualsI("Snaggles Secret Sweetroom")
+                                      || (aisling.MapInstance.LoadedFromInstanceId.EqualsI("hopmaze") && !aisling.IsGodModeEnabled()):
             {
                 aisling.SendOrangeBarMessage("You cannot use spells.");
 

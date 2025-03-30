@@ -26,37 +26,32 @@ public class PhoenixPhaseScript : MonsterScriptBase
         Abduct,
         Drop
     }
-    
-    public Phase CurrentPhase { get; set; } = Phase.Normal;
-    private Aisling? AislingToDrop;
-    private MapInstance? SkyShard;
+
     private readonly IApplyDamageScript ApplyDamageScript = ApplyNonAttackDamageScript.Create();
-    
-    #region Timers
-    private readonly IIntervalTimer SpawnAddsTimer = new IntervalTimer(TimeSpan.FromSeconds(30), false);
-    private readonly IIntervalTimer AbductMessageTimer = new IntervalTimer(TimeSpan.FromSeconds(45), false);
-    private readonly IIntervalTimer AbductGraceTimer = new IntervalTimer(TimeSpan.FromSeconds(3), false);
 
-    private readonly IIntervalTimer DropTimer = new RandomizedIntervalTimer(
-        TimeSpan.FromSeconds(5),
-        50,
-        RandomizationType.Positive,
-        false);
-
-    private readonly IIntervalTimer FlyDownTimer = new IntervalTimer(TimeSpan.FromSeconds(2), false);
-    private readonly SequentialEventTimer AbductPhaseTimer;
-    private readonly SequentialEventTimer DropPhaseTimer;
-    #endregion
-    
-    #region Services
-    private readonly IMonsterFactory MonsterFactory;
-    private readonly ISimpleCache SimpleCache;
-    private readonly IShardGenerator ShardGenerator;
-    #endregion
-    
     #region Points
     private readonly Location SkyLocation = new("phoenix_sky", 7, 7);
     #endregion
+
+    private Aisling? AislingToDrop;
+    private MapInstance? SkyShard;
+
+    public Phase CurrentPhase { get; set; } = Phase.Normal;
+
+    /// <inheritdoc />
+    public PhoenixPhaseScript(
+        Monster subject,
+        IMonsterFactory monsterFactory,
+        ISimpleCache simpleCache,
+        IShardGenerator shardGenerator)
+        : base(subject)
+    {
+        MonsterFactory = monsterFactory;
+        SimpleCache = simpleCache;
+        ShardGenerator = shardGenerator;
+        AbductPhaseTimer = new SequentialEventTimer(AbductMessageTimer, AbductGraceTimer);
+        DropPhaseTimer = new SequentialEventTimer(DropTimer, FlyDownTimer);
+    }
 
     private void SpawnAdds()
     {
@@ -69,17 +64,6 @@ public class PhoenixPhaseScript : MonsterScriptBase
 
         Subject.MapInstance.AddEntities(spawns);
     }
-    
-    /// <inheritdoc />
-    public PhoenixPhaseScript(Monster subject, IMonsterFactory monsterFactory, ISimpleCache simpleCache, IShardGenerator shardGenerator)
-        : base(subject)
-    {
-        MonsterFactory = monsterFactory;
-        SimpleCache = simpleCache;
-        ShardGenerator = shardGenerator;
-        AbductPhaseTimer = new SequentialEventTimer(AbductMessageTimer, AbductGraceTimer);
-        DropPhaseTimer = new SequentialEventTimer(DropTimer, FlyDownTimer);
-    }
 
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
@@ -91,7 +75,7 @@ public class PhoenixPhaseScript : MonsterScriptBase
             if (SpawnAddsTimer.IntervalElapsed)
                 SpawnAdds();
         }
-        
+
         AbductPhaseTimer.Update(delta);
 
         if (AbductPhaseTimer.IntervalElapsed)
@@ -112,13 +96,13 @@ public class PhoenixPhaseScript : MonsterScriptBase
                 {
                     if (SkyShard is null || !SkyShard.IsRunning)
                         SkyShard = ShardGenerator.CreateShardOfInstance(SkyLocation.Map);
-                    
+
                     //set up the dedicated shard script
                     var script = SkyShard.Script.As<PhoenixSkyDedicatedShardScript>()!;
                     script.Phoenix = Subject;
                     script.FromLocation = Location.From(Subject);
                     script.WhiteList.Add(Target.Name);
-                    
+
                     Target.TraverseMap(SkyShard, SkyLocation, true);
                     Subject.TraverseMap(SkyShard, SkyLocation, true);
 
@@ -131,43 +115,66 @@ public class PhoenixPhaseScript : MonsterScriptBase
             case Phase.Drop:
             {
                 DropPhaseTimer.Update(delta);
-                
-                if(DropPhaseTimer.IntervalElapsed)
+
+                if (DropPhaseTimer.IntervalElapsed)
                     if (DropPhaseTimer.CurrentTimer == DropTimer)
                     {
                         var script = SkyShard!.Script.As<PhoenixSkyDedicatedShardScript>()!;
                         var originalMap = SimpleCache.Get<MapInstance>(script.FromLocation!.Map);
                         originalMap.TryGetRandomWalkablePoint(out var randomPoint, CreatureType.Aisling);
-                        
-                        AislingToDrop?.TraverseMap(originalMap, randomPoint!, true, onTraverse: () =>
-                        {
-                            var damage = MathEx.GetPercentOf<int>((int)AislingToDrop!.StatSheet.EffectiveMaximumHp, 75);
 
-                            ApplyDamageScript.ApplyDamage(
-                                Subject,
-                                AislingToDrop,
-                                this,
-                                damage);
-                            
-                            script.WhiteList.Remove(AislingToDrop!.Name);
-                            AislingToDrop = null;
+                        AislingToDrop?.TraverseMap(
+                            originalMap,
+                            randomPoint!,
+                            true,
+                            onTraverse: () =>
+                            {
+                                var damage = MathEx.GetPercentOf<int>((int)AislingToDrop!.StatSheet.EffectiveMaximumHp, 75);
 
-                            return Task.CompletedTask;
-                        });
-                    }
-                    else if (DropPhaseTimer.CurrentTimer == FlyDownTimer)
+                                ApplyDamageScript.ApplyDamage(
+                                    Subject,
+                                    AislingToDrop,
+                                    this,
+                                    damage);
+
+                                script.WhiteList.Remove(AislingToDrop!.Name);
+                                AislingToDrop = null;
+
+                                return Task.CompletedTask;
+                            });
+                    } else if (DropPhaseTimer.CurrentTimer == FlyDownTimer)
                     {
                         var script = SkyShard!.Script.As<PhoenixSkyDedicatedShardScript>()!;
                         var originalMap = SimpleCache.Get<MapInstance>(script.FromLocation!.Map);
                         Subject.TraverseMap(originalMap, script.FromLocation, true);
-                        
+
                         CurrentPhase = Phase.Normal;
                     }
-                
+
                 break;
             }
-
         }
-
     }
+
+    #region Timers
+    private readonly IIntervalTimer SpawnAddsTimer = new IntervalTimer(TimeSpan.FromSeconds(30), false);
+    private readonly IIntervalTimer AbductMessageTimer = new IntervalTimer(TimeSpan.FromSeconds(45), false);
+    private readonly IIntervalTimer AbductGraceTimer = new IntervalTimer(TimeSpan.FromSeconds(3), false);
+
+    private readonly IIntervalTimer DropTimer = new RandomizedIntervalTimer(
+        TimeSpan.FromSeconds(5),
+        50,
+        RandomizationType.Positive,
+        false);
+
+    private readonly IIntervalTimer FlyDownTimer = new IntervalTimer(TimeSpan.FromSeconds(2), false);
+    private readonly SequentialEventTimer AbductPhaseTimer;
+    private readonly SequentialEventTimer DropPhaseTimer;
+    #endregion
+
+    #region Services
+    private readonly IMonsterFactory MonsterFactory;
+    private readonly ISimpleCache SimpleCache;
+    private readonly IShardGenerator ShardGenerator;
+    #endregion
 }

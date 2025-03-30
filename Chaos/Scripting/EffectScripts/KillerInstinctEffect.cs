@@ -15,13 +15,13 @@ public class KillerInstinctEffect : IntervalEffectBase
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromDays(1);
 
     /// <inheritdoc />
+    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromSeconds(1));
+
+    /// <inheritdoc />
     public override byte Icon => 40;
 
     /// <inheritdoc />
     public override string Name => "Killer Instinct";
-
-    /// <inheritdoc />
-    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromSeconds(1));
 
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
@@ -30,12 +30,12 @@ public class KillerInstinctEffect : IntervalEffectBase
         {
             if (Subject is Aisling aisling)
                 aisling.SendOrangeBarMessage("Killer Instinct cannot be used in the arena.");
-            
+
             Subject.Effects.Dispel("Killer Instinct");
 
             return;
         }
-        
+
         var targets = Subject.MapInstance
                              .GetEntitiesWithinRange<Creature>(Subject, 3)
                              .ThatAreObservedBy(Subject)

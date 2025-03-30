@@ -1,9 +1,7 @@
-using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -21,10 +19,10 @@ public struct TransferBloodAbilityComponent : IComponent
         foreach (var target in targets)
         {
             // Calculate 20% of the user's health
-            var healthToTransfer = MathEx.GetPercentOf<int>((int)context.Source.StatSheet.CurrentHp, 20);
+            var healthToTransfer = MathEx.GetPercentOf<int>(context.Source.StatSheet.CurrentHp, 20);
 
             // Ensure health to transfer is not greater than current health
-            healthToTransfer = Math.Min(healthToTransfer, (int)context.Source.StatSheet.CurrentHp);
+            healthToTransfer = Math.Min(healthToTransfer, context.Source.StatSheet.CurrentHp);
 
             // Reduce user's health by the calculated amount
             context.Source.StatSheet.SubtractHp(healthToTransfer);
@@ -36,9 +34,12 @@ public struct TransferBloodAbilityComponent : IComponent
                 if (target.Name != context.SourceAisling?.Name)
                 {
                     context.SourceAisling?.SendOrangeBarMessage($"{target.Name} is currently resisting health transfer.");
+
                     continue;
                 }
-                context.SourceAisling?.SendOrangeBarMessage($"You are currently resisting health transfer.");
+
+                context.SourceAisling?.SendOrangeBarMessage("You are currently resisting health transfer.");
+
                 continue;
             }
 

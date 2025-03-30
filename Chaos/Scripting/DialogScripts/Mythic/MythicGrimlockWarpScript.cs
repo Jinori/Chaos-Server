@@ -18,7 +18,7 @@ public class MythicGrimlockWarpScript(Dialog subject, ISimpleCache simpleCache) 
             case "grimlockwarp_initial":
             {
                 var vitality = source.StatSheet.MaximumHp + source.StatSheet.MaximumMp * 2;
-                
+
                 if ((source.StatSheet.Level >= 99) && (vitality >= 30000))
                 {
                     var option3 = new DialogOption
@@ -105,7 +105,6 @@ public class MythicGrimlockWarpScript(Dialog subject, ISimpleCache simpleCache) 
                     source.TraverseMap(grimlock1, point);
                 }
 
-
                 Subject.Close(source);
 
                 break;
@@ -126,7 +125,6 @@ public class MythicGrimlockWarpScript(Dialog subject, ISimpleCache simpleCache) 
                     var point = new Point(18, 23);
                     source.TraverseMap(grimlock1, point);
                 }
-
 
                 Subject.Close(source);
 

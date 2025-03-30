@@ -1,5 +1,4 @@
 using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Legend;
@@ -17,6 +16,8 @@ public class SlaveDeathScript : MonsterScriptBase
 {
     private readonly ISimpleCache SimpleCache;
 
+    protected IExperienceDistributionScript ExperienceDistributionScript { get; set; }
+
     /// <inheritdoc />
     public SlaveDeathScript(Monster subject, ISimpleCache simpleCache)
         : base(subject)
@@ -25,15 +26,14 @@ public class SlaveDeathScript : MonsterScriptBase
         SimpleCache = simpleCache;
     }
 
-    protected IExperienceDistributionScript ExperienceDistributionScript { get; set; }
-
     /// <inheritdoc />
     public override void OnDeath()
     {
         if (!Map.RemoveEntity(Subject))
             return;
 
-        var players = Map.GetEntities<Aisling>().Where(x => x.IsAlive);
+        var players = Map.GetEntities<Aisling>()
+                         .Where(x => x.IsAlive);
 
         foreach (var player in players)
         {
@@ -45,6 +45,7 @@ public class SlaveDeathScript : MonsterScriptBase
             player.Trackers.Enums.Set(NightmareQuestStage.CompletedNightmareLoss1);
             player.Client.SendAttributes(StatUpdateType.Vitality);
             player.SendOrangeBarMessage("You have been defeated by your Nightmares");
+
             player.Legend.AddOrAccumulate(
                 new LegendMark(
                     "Succumbed to their Nightmares.",

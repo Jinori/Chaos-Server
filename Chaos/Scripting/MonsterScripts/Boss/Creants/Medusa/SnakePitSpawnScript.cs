@@ -30,10 +30,11 @@ public sealed class SnakePitSpawnScript : MonsterScriptBase
     public override void Update(TimeSpan delta)
     {
         SpawnTimer.Update(delta);
-        
+
         if (SpawnTimer.IntervalElapsed)
         {
             Subject.Animate(SpawnAnimation);
+
             //Spawn Monsters
             var rectangle = new Rectangle(Subject, 5, 5);
 

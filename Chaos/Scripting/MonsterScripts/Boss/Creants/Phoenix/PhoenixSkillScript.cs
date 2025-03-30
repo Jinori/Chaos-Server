@@ -21,7 +21,7 @@ public class PhoenixSkillScript : MonsterScriptBase
 
         if (Map.LoadedFromInstanceId.ContainsI("sky"))
             return;
-        
+
         var direction = Target.DirectionalRelationTo(Subject);
 
         if (Subject.Direction != direction)
@@ -41,7 +41,7 @@ public class PhoenixSkillScript : MonsterScriptBase
 
         if (currentPhase != PhoenixPhaseScript.Phase.Normal)
             return;
-        
+
         foreach (var skill in Skills)
             if (skill.Template.IsAssail)
                 attacked |= Subject.TryUseSkill(skill);

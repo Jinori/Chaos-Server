@@ -8,7 +8,6 @@ using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyDamage;
-using Chaos.Scripting.MonsterScripts.Pet;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 

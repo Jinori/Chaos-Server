@@ -38,10 +38,7 @@ public class PwRoseOfSharonScript : ReactorTileScriptBase
             dialog.Display(aisling);
             aisling.GiveItemOrSendToBank(roseofsharon);
             aisling.SendOrangeBarMessage("You found the Rose of Sharon, this is the flower Appie mentioned.");
-        }
-        else
-        {
+        } else
             aisling.SendOrangeBarMessage("The Master Werewolf is tracking you, you're afraid to pick the flower.");
-        }
     }
 }

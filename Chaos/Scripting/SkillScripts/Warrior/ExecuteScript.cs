@@ -64,6 +64,9 @@ public class ExecuteScript : ConfigurableSkillScriptBase,
 
     public PanelEntityBase PanelEntityBase { get; init; }
 
+    public int? HealthCost { get; init; }
+    public decimal PctHealthCost { get; init; }
+
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }
 

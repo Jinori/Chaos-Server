@@ -10,6 +10,29 @@ public class EKadesMoveToTargetScript : MonsterScriptBase
     public EKadesMoveToTargetScript(Monster subject)
         : base(subject) { }
 
+    private void ResetAttackTimerIfMoved()
+    {
+        var now = DateTime.UtcNow;
+        var lastWalk = Subject.Trackers.LastWalk;
+        var lastTurn = Subject.Trackers.LastTurn;
+
+        var walkedRecently = lastWalk.HasValue
+                             && (now.Subtract(lastWalk.Value)
+                                    .TotalMilliseconds
+                                 < Subject.Template.MoveIntervalMs);
+
+        var turnedRecently = lastTurn.HasValue
+                             && (now.Subtract(lastTurn.Value)
+                                    .TotalMilliseconds
+                                 < Subject.Template.MoveIntervalMs);
+
+        if (walkedRecently || turnedRecently)
+        {
+            Subject.WanderTimer.Reset();
+            Subject.SkillTimer.Reset();
+        }
+    }
+
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
@@ -21,7 +44,7 @@ public class EKadesMoveToTargetScript : MonsterScriptBase
         if (!Map.GetEntities<Aisling>()
                 .Any())
             return;
-        
+
         if (Subject.Effects.Contains("invulnerability"))
             return;
 
@@ -47,22 +70,7 @@ public class EKadesMoveToTargetScript : MonsterScriptBase
                 break;
             }
         }
-        
-        ResetAttackTimerIfMoved();
-    }
-    
-    private void ResetAttackTimerIfMoved()
-    {
-        var now = DateTime.UtcNow;
-        var lastWalk = Subject.Trackers.LastWalk;
-        var lastTurn = Subject.Trackers.LastTurn;
-        var walkedRecently = lastWalk.HasValue && (now.Subtract(lastWalk.Value).TotalMilliseconds < Subject.Template.MoveIntervalMs);
-        var turnedRecently = lastTurn.HasValue && (now.Subtract(lastTurn.Value).TotalMilliseconds < Subject.Template.MoveIntervalMs);
 
-        if (walkedRecently || turnedRecently)
-        {
-            Subject.WanderTimer.Reset();
-            Subject.SkillTimer.Reset();
-        }
+        ResetAttackTimerIfMoved();
     }
 }

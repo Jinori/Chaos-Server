@@ -13,8 +13,8 @@ public class PFQuestMerchant : MerchantScriptBase
 
     /// <inheritdoc />
     public PFQuestMerchant(Merchant subject, IDialogFactory dialogFactory)
-        : base(subject) =>
-        DialogFactory = dialogFactory;
+        : base(subject)
+        => DialogFactory = dialogFactory;
 
     /// <inheritdoc />
     public override void OnPublicMessage(Creature source, string message)

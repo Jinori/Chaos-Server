@@ -1,8 +1,6 @@
 using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using Chaos.Scripting.MonsterScripts.Boss.CthonicDemise.Leaders.PriestLeader;
-using Chaos.Scripting.MonsterScripts.Boss.CthonicDemise.Leaders.WizardLeader;
 using Chaos.Scripting.MonsterScripts.Boss.EventBoss.Boss.CthonicDemise.Leaders.PriestLeader;
 
 namespace Chaos.Scripting.MonsterScripts.Boss.EventBoss.Boss.CthonicDemise.Leaders.WizardLeader;

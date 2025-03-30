@@ -12,10 +12,11 @@ public class SnagglesMapScript(MapInstance subject, IMonsterFactory monsterFacto
     {
         if (creature is not Aisling aisling)
             return;
-        
-        if (Subject.GetEntities<Monster>().Any(x => x.Template.TemplateKey == "snagglesthesweetsnatcher"))
+
+        if (Subject.GetEntities<Monster>()
+                   .Any(x => x.Template.TemplateKey == "snagglesthesweetsnatcher"))
             return;
-        
+
         var monster = monsterFactory.Create("snagglesthesweetsnatcher", Subject, new Point(11, 11));
         Subject.AddEntity(monster, new Point(11, 11));
     }

@@ -26,22 +26,18 @@ public class InitiateWeaponsmithingBoxScript : ItemScriptBase
         // Create items
         var mythril = _itemFactory.Create("rawmythril");
         var iron = _itemFactory.Create("rawiron");
-        
-        for (int i = 0; i < mythrilAmount; i++)
-        {
-            source.GiveItemOrSendToBank(_itemFactory.Create("rawmythril"));
-        }
 
-        for (int i = 0; i < ironAmount; i++)
-        {
+        for (var i = 0; i < mythrilAmount; i++)
+            source.GiveItemOrSendToBank(_itemFactory.Create("rawmythril"));
+
+        for (var i = 0; i < ironAmount; i++)
             source.GiveItemOrSendToBank(_itemFactory.Create("rawiron"));
-        }
 
         // Add items to the player's inventory
         source.GiveItemOrSendToBank(mythril);
         source.GiveItemOrSendToBank(iron);
 
         // Notify the player
-        source.SendOrangeBarMessage($"You received {mythrilAmount +1} Raw Mythril and {ironAmount +1} Raw Iron!");
+        source.SendOrangeBarMessage($"You received {mythrilAmount + 1} Raw Mythril and {ironAmount + 1} Raw Iron!");
     }
 }

@@ -57,6 +57,8 @@ public class CombatAdvantageScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public TargetFilter Filter { get; init; }
 
+    public int? HealthCost { get; init; }
+
     /// <inheritdoc />
     public int? ManaCost { get; init; }
 
@@ -65,6 +67,8 @@ public class CombatAdvantageScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public bool MustHaveTargets { get; init; }
+
+    public decimal PctHealthCost { get; init; }
 
     /// <inheritdoc />
     public decimal? PctHpDamage { get; init; }

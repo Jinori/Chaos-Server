@@ -20,24 +20,24 @@ public sealed class EPossessedKnightEnrageScript : MonsterScriptBase
 
     /// <inheritdoc />
     public EPossessedKnightEnrageScript(Monster subject, IMonsterFactory monsterFactory)
-        : base(subject) =>
-        MonsterFactory = monsterFactory;
+        : base(subject)
+        => MonsterFactory = monsterFactory;
 
     public override void Update(TimeSpan delta)
     {
         if (!Bonus75Applied && (Subject.StatSheet.HealthPercent <= 75))
         {
             Bonus75Applied = true;
+
             //Give Bonuses
             var attrib = new Attributes
             {
-                AtkSpeedPct = 10, 
+                AtkSpeedPct = 10,
                 Dmg = 5
             };
             Subject.StatSheet.SetHealthPct(90);
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
-            
         }
 
         if (!Bonus50Applied && (Subject.StatSheet.HealthPercent <= 50))

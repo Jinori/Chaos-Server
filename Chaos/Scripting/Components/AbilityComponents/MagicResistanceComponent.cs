@@ -28,7 +28,8 @@ public sealed class MagicResistanceComponent : IConditionalComponent
             return true;
 
         //OfType<Creature> here because MR only applies to creatures
-        foreach (var target in targets.OfType<Creature>().ToList())
+        foreach (var target in targets.OfType<Creature>()
+                                      .ToList())
         {
             // Step 1: Calculate the difference between base magic resistance and user's hit
             var baseMagicResistance = target.StatSheet.EffectiveMagicResistance;
@@ -55,7 +56,7 @@ public sealed class MagicResistanceComponent : IConditionalComponent
 
         // Update the target list with valid hits
         vars.SetTargets(targets);
-        
+
         // If no targets were found, return false
         return targets.Count != 0;
     }

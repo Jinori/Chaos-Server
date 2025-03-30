@@ -1,7 +1,6 @@
 using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using Chaos.Scripting.MonsterScripts.Boss.MythicBosses.MantisBoss.Mantis2;
 
 namespace Chaos.Scripting.MonsterScripts.Boss.EventBoss.Boss.MythicBosses.MantisBoss.Mantis2;
 

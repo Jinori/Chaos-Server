@@ -17,7 +17,6 @@ public class DeepCryptScript(
     ISimpleCache simpleCache,
     IItemFactory itemFactory) : DialogScriptBase(subject)
 {
-
     public override void OnDisplaying(Aisling source)
     {
         switch (Subject.Template.TemplateKey.ToLower())
@@ -35,6 +34,7 @@ public class DeepCryptScript(
                     if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
                 }
+
                 break;
             }
 
@@ -51,7 +51,7 @@ public class DeepCryptScript(
                     if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
                 }
-                
+
                 if (source.UserStatSheet is { Level: >= 99, Master: true })
                 {
                     var option = new DialogOption
@@ -63,7 +63,7 @@ public class DeepCryptScript(
                     if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
                 }
-                
+
                 if (source.UserStatSheet.Level >= 80)
                 {
                     var option = new DialogOption
@@ -89,7 +89,7 @@ public class DeepCryptScript(
 
                     return;
                 }
-                
+
                 var option = new DialogOption
                 {
                     DialogKey = "deepcrypteasy_start1",
@@ -161,7 +161,7 @@ public class DeepCryptScript(
 
                 break;
             }
-            
+
             case "deepcryptmedium_initial":
             {
                 if (source.Trackers.TimedEvents.HasActiveEvent("deepcryptcd", out var cdtime2))
@@ -172,7 +172,7 @@ public class DeepCryptScript(
 
                     return;
                 }
-                
+
                 var option = new DialogOption
                 {
                     DialogKey = "deepcryptmedium_start1",
@@ -244,7 +244,7 @@ public class DeepCryptScript(
 
                 break;
             }
-            
+
             case "deepcrypthard_initial":
             {
                 if (source.Trackers.TimedEvents.HasActiveEvent("deepcryptcd", out var cdtime2))
@@ -255,7 +255,7 @@ public class DeepCryptScript(
 
                     return;
                 }
-                
+
                 var option = new DialogOption
                 {
                     DialogKey = "deepcrypthard_start1",

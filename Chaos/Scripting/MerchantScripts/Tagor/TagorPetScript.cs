@@ -26,7 +26,7 @@ public class TagorPetScript : MerchantScriptBase
     [
         new(TagorPetState.Wandering, 60),
         new(TagorPetState.FollowingPlayer, 40),
-        new(TagorPetState.Eating, 20),
+        new(TagorPetState.Eating, 20)
     ];
 
     #region Messages
@@ -43,9 +43,8 @@ public class TagorPetScript : MerchantScriptBase
         "munches quickly",
         "nibbles playfully",
         "whines",
-        "buries their nose in it",
+        "buries their nose in it"
     ];
-
     #endregion Messages
 
     private readonly IIntervalTimer ActionTimer;

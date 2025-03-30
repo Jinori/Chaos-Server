@@ -21,22 +21,24 @@ public sealed class eExiledDracoEnrageScript : MonsterScriptBase
 
     /// <inheritdoc />
     public eExiledDracoEnrageScript(Monster subject, IMonsterFactory monsterFactory)
-        : base(subject) =>
-        MonsterFactory = monsterFactory;
+        : base(subject)
+        => MonsterFactory = monsterFactory;
 
     public override void Update(TimeSpan delta)
     {
         if (!Bonus75Applied && (Subject.StatSheet.HealthPercent <= 75))
         {
             Bonus75Applied = true;
+
             //Give Bonuses
             var attrib = new Attributes
             {
                 AtkSpeedPct = 25,
-                Dmg = 5,
+                Dmg = 5
             };
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
+
             //Spawn Monsters
             var rectangle = new Rectangle(Subject, 5, 5);
 

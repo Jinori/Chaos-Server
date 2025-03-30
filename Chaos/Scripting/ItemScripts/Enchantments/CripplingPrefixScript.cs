@@ -9,14 +9,6 @@ namespace Chaos.Scripting.ItemScripts.Enchantments;
 public sealed class CripplingPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
     /// <inheritdoc />
-    public CripplingPrefixScript(Item subject)
-        : base(subject) => IPrefixEnchantmentScript.ApplyPrefix<CripplingPrefixScript>(subject);
-
-    /// <inheritdoc />
-    public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
-        => IPrefixEnchantmentScript.Mutate<CripplingPrefixScript>(node, template);
-
-    /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
         SkillDamagePct = 1,
@@ -25,4 +17,13 @@ public sealed class CripplingPrefixScript : ItemScriptBase, IPrefixEnchantmentSc
 
     /// <inheritdoc />
     public static string PrefixStr => "Crippling";
+
+    /// <inheritdoc />
+    public CripplingPrefixScript(Item subject)
+        : base(subject)
+        => IPrefixEnchantmentScript.ApplyPrefix<CripplingPrefixScript>(subject);
+
+    /// <inheritdoc />
+    public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
+        => IPrefixEnchantmentScript.Mutate<CripplingPrefixScript>(node, template);
 }

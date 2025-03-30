@@ -12,16 +12,13 @@ public sealed class ZoeDeathScript : MonsterScriptBase
     /// <inheritdoc />
     public ZoeDeathScript(Monster subject, ISimpleCache simpleCache)
         : base(subject)
-    {
-        SimpleCache = simpleCache;
-    }
+        => SimpleCache = simpleCache;
 
     /// <inheritdoc />
     public override void OnDeath()
     {
         if (!Map.RemoveEntity(Subject))
             return;
-
 
         foreach (var aisling in Map.GetEntities<Aisling>())
         {

@@ -82,7 +82,7 @@ public class WeaponPolishingStoneScript : ItemScriptBase
             "greatstaffofgeolith",
             "nyxumbralshield",
             "goodnyxumbralshield",
-            "greatnyxumbralshield",
+            "greatnyxumbralshield"
         };
 
         // Check if any item in the dictionary is in the player's inventory

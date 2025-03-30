@@ -6,11 +6,7 @@ using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Scripting.ReactorTileScripts.Secret;
 using Chaos.Services.Factories.Abstractions;
-using Chaos.Services.Storage;
 using Chaos.Storage.Abstractions;
-using Chaos.Time;
-using Chaos.Time.Abstractions;
-using Namotion.Reflection;
 
 namespace Chaos.Scripting.MapScripts.Secret;
 
@@ -19,7 +15,6 @@ public class CowMapScript : MapScriptBase
     public const int UPDATE_INTERVAL_MS = 1;
 
     private readonly IReactorTileFactory ReactorTileFactory;
-
 
     public CowMapScript(MapInstance subject, IReactorTileFactory reactorTileFactory, ISimpleCache simpleCache)
         : base(subject)
@@ -36,7 +31,6 @@ public class CowMapScript : MapScriptBase
 
     private void OpenEscapePortal()
     {
-
         // Check if there's already an escape portal open
         if (Subject.GetEntities<ReactorTile>()
                    .Any(x => x.Script.Is<milethCowPortal>()))
@@ -50,8 +44,7 @@ public class CowMapScript : MapScriptBase
         var point = rectangle.GetRandomPoint();
 
         var reactortile = ReactorTileFactory.Create("milethCowPortal", Subject, Point.From(point));
-        
-        Subject.SimpleAdd(reactortile);
 
+        Subject.SimpleAdd(reactortile);
     }
 }

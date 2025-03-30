@@ -36,6 +36,8 @@ public class ArenaPlaceScript : ConfigurableSpellScriptBase,
     /// <inheritdoc />
     public TargetFilter Filter { get; init; }
 
+    public int? HealthCost { get; init; }
+
     /// <inheritdoc />
     public bool IgnoreMagicResistance { get; init; }
 
@@ -44,6 +46,8 @@ public class ArenaPlaceScript : ConfigurableSpellScriptBase,
 
     /// <inheritdoc />
     public bool MustHaveTargets { get; init; }
+
+    public decimal PctHealthCost { get; init; }
 
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }

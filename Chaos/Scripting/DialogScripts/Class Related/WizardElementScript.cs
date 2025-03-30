@@ -11,9 +11,7 @@ namespace Chaos.Scripting.DialogScripts.Class_Related;
 public class WizardElementScript : DialogScriptBase
 {
     public WizardElementScript(Dialog subject)
-        : base(subject)
-    {
-    }
+        : base(subject) { }
 
     public override void OnDisplaying(Aisling source)
     {
@@ -274,7 +272,7 @@ public class WizardElementScript : DialogScriptBase
                     {
                         if (source.UserStatSheet.Master)
                             return;
-                        
+
                         var option = new DialogOption
                         {
                             DialogKey = "dar_changeelement_initial",
@@ -333,6 +331,7 @@ public class WizardElementScript : DialogScriptBase
                                 DialogKey = "dar_windchange1",
                                 OptionText = "Change Wind Element"
                             });
+
                     break;
                 }
                 case "dar_earthchange3":
@@ -348,7 +347,8 @@ public class WizardElementScript : DialogScriptBase
                     source.SpellBook.RemoveByTemplateKey("morcreagmeall");
                     source.Trackers.Flags.RemoveFlag(WizardElement.Earth);
                     source.Trackers.Flags.AddFlag(WizardElement.Removed);
-                    source.Legend.Remove("earthWizard", out var _);
+                    source.Legend.Remove("earthWizard", out _);
+
                     break;
                 }
 
@@ -365,8 +365,9 @@ public class WizardElementScript : DialogScriptBase
                     source.SpellBook.RemoveByTemplateKey("moratharmeall");
                     source.Trackers.Flags.RemoveFlag(WizardElement.Wind);
                     source.Trackers.Flags.AddFlag(WizardElement.Removed);
-                    source.Legend.Remove("windWizard", out var _);
+                    source.Legend.Remove("windWizard", out _);
                 }
+
                     break;
 
                 case "dar_waterchange3":
@@ -382,8 +383,9 @@ public class WizardElementScript : DialogScriptBase
                     source.SpellBook.RemoveByTemplateKey("morsalmeall");
                     source.Trackers.Flags.RemoveFlag(WizardElement.Water);
                     source.Trackers.Flags.AddFlag(WizardElement.Removed);
-                    source.Legend.Remove("waterWizard", out var _);
+                    source.Legend.Remove("waterWizard", out _);
                 }
+
                     break;
 
                 case "dar_firechange3":
@@ -399,16 +401,15 @@ public class WizardElementScript : DialogScriptBase
                     source.SpellBook.RemoveByTemplateKey("morsradmeall");
                     source.Trackers.Flags.RemoveFlag(WizardElement.Fire);
                     source.Trackers.Flags.AddFlag(WizardElement.Removed);
-                    source.Legend.Remove("fireWizard", out var _);
+                    source.Legend.Remove("fireWizard", out _);
                 }
+
                     break;
             }
-            
+
             if (hasElement && source.Trackers.Flags.HasFlag(WizardElement.Removed))
-            {
                 switch (Subject.Template.TemplateKey.ToLower())
                 {
-
                     case "dar_changeelement_initial2":
                     {
                         if (hasElement && source.Trackers.Flags.HasFlag(WizardElement.Removed))
@@ -507,8 +508,7 @@ public class WizardElementScript : DialogScriptBase
                     {
                         source.Trackers.Flags.AddFlag(WizardElement.Wind);
                         source.Trackers.Flags.RemoveFlag(WizardElement.Removed);
-                        source.Client.SendServerMessage(ServerMessageType.OrangeBar1,
-                            "Understand restraint, be the leaf.");
+                        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Understand restraint, be the leaf.");
 
                         source.Legend.AddOrAccumulate(
                             new LegendMark(
@@ -518,10 +518,10 @@ public class WizardElementScript : DialogScriptBase
                                 MarkColor.Blue,
                                 1,
                                 GameTime.Now));
+
                         break;
                     }
                 }
-            }
         }
     }
 }

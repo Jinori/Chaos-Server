@@ -23,8 +23,7 @@ public class BuyGamePointShopScript : DialogScriptBase
         Dialog subject,
         IItemFactory itemFactory,
         ICloningService<Item> itemCloner,
-        ILogger<BuyGamePointShopScript> logger
-    )
+        ILogger<BuyGamePointShopScript> logger)
         : base(subject)
     {
         ItemFactory = itemFactory;
@@ -110,10 +109,7 @@ public class BuyGamePointShopScript : DialogScriptBase
             case ComplexActionHelper.BuyGamePointItemResult.NotEnoughStock:
                 var availableStock = BuyShopSource.GetStock(item.Template.TemplateKey);
 
-                Subject.Reply(
-                    source,
-                    $"Sorry, we only have {availableStock} {item.DisplayName}s in stock",
-                    "generic_buyshopgp_initial");
+                Subject.Reply(source, $"Sorry, we only have {availableStock} {item.DisplayName}s in stock", "generic_buyshopgp_initial");
 
                 break;
             case ComplexActionHelper.BuyGamePointItemResult.BadInput:
@@ -152,10 +148,7 @@ public class BuyGamePointShopScript : DialogScriptBase
 
         if (availableStock < amount)
         {
-            Subject.Reply(
-                source,
-                $"Sorry, we only have {availableStock} {item.DisplayName}s in stock",
-                "generic_buyshopgp_initial");
+            Subject.Reply(source, $"Sorry, we only have {availableStock} {item.DisplayName}s in stock", "generic_buyshopgp_initial");
 
             return;
         }
@@ -172,29 +165,28 @@ public class BuyGamePointShopScript : DialogScriptBase
                 if (item.Template.TemplateKey == "goodFishingPole")
                     if (!source.Trackers.Flags.HasFlag(FishingQuest.Reached3000))
                         continue;
-                
+
                 if (item.Template.TemplateKey == "greatFishingPole")
                     if (!source.Trackers.Flags.HasFlag(FishingQuest.Reached15000))
                         continue;
-                
+
                 if (item.Template.TemplateKey == "grandFishingPole")
                     if (!source.Trackers.Flags.HasFlag(FishingQuest.Reached50000))
                         continue;
-                
+
                 if (item.Template.TemplateKey == "ironglove")
                     if (!source.Trackers.Flags.HasFlag(ForagingQuest.Reached3000))
                         continue;
-            
+
                 if (item.Template.TemplateKey == "mythrilglove")
                     if (!source.Trackers.Flags.HasFlag(ForagingQuest.Reached15000))
                         continue;
-            
+
                 if (item.Template.TemplateKey == "hybrasylglove")
                     if (!source.Trackers.Flags.HasFlag(ForagingQuest.Reached50000))
                         continue;
             }
 
-            
             if (BuyShopSource.HasStock(item.Template.TemplateKey))
                 Subject.Items.Add(ItemDetails.BuyWithGp(item));
         }

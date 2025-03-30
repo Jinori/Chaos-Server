@@ -14,8 +14,8 @@ namespace Chaos.Scripting.MonsterScripts.Boss.KarloposBoss;
 // ReSharper disable once ClassCanBeSealed.Global
 public class QueenOctopusDeathScript : MonsterScriptBase
 {
-    protected IExperienceDistributionScript ExperienceDistributionScript { get; set; }
     private readonly ISimpleCache SimpleCache;
+    protected IExperienceDistributionScript ExperienceDistributionScript { get; set; }
 
     /// <inheritdoc />
     public QueenOctopusDeathScript(Monster subject, ISimpleCache simpleCache)
@@ -74,14 +74,16 @@ public class QueenOctopusDeathScript : MonsterScriptBase
             }
 
             ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
-            
+
             var rectangle = new Rectangle(
                 21,
                 5,
                 2,
                 2);
 
-            foreach (var member in Subject.MapInstance.GetEntities<Aisling>().ToList())
+            foreach (var member in Subject.MapInstance
+                                          .GetEntities<Aisling>()
+                                          .ToList())
             {
                 var mapInstance = SimpleCache.Get<MapInstance>("karloposn");
                 Point point;

@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.World;
@@ -13,7 +12,8 @@ public class CoralPendantScript : ReactorTileScriptBase
     private readonly IItemFactory _itemFactory;
 
     public CoralPendantScript(ReactorTile subject, IItemFactory itemFactory)
-        : base(subject) => _itemFactory = itemFactory;
+        : base(subject)
+        => _itemFactory = itemFactory;
 
     public override void OnWalkedOn(Creature source)
     {
@@ -28,9 +28,7 @@ public class CoralPendantScript : ReactorTileScriptBase
             aisling.GiveItemOrSendToBank(coralpendant);
             source.Trackers.Enums.Set(QueenOctopusQuest.Pendant3);
 
-            aisling.Client.SendServerMessage(
-                ServerMessageType.OrangeBar1,
-                "You've found the Coral Pendant!");
+            aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've found the Coral Pendant!");
         }
     }
 }

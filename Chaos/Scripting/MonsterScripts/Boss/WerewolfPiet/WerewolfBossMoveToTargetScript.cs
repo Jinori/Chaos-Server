@@ -8,8 +8,31 @@ namespace Chaos.Scripting.MonsterScripts.Boss.WerewolfPiet;
 
 public sealed class WerewolfBossMoveToTargetScript(Monster subject) : MonsterScriptBase(subject)
 {
+    private void ResetAttackTimerIfMoved()
+    {
+        var now = DateTime.UtcNow;
+        var lastWalk = Subject.Trackers.LastWalk;
+        var lastTurn = Subject.Trackers.LastTurn;
+
+        var walkedRecently = lastWalk.HasValue
+                             && (now.Subtract(lastWalk.Value)
+                                    .TotalMilliseconds
+                                 < Subject.Template.MoveIntervalMs);
+
+        var turnedRecently = lastTurn.HasValue
+                             && (now.Subtract(lastTurn.Value)
+                                    .TotalMilliseconds
+                                 < Subject.Template.MoveIntervalMs);
+
+        if (walkedRecently || turnedRecently)
+        {
+            Subject.WanderTimer.Reset();
+            Subject.SkillTimer.Reset();
+        }
+    }
+
     /// <inheritdoc />
- public override void Update(TimeSpan delta)
+    public override void Update(TimeSpan delta)
     {
         base.Update(delta);
 
@@ -86,20 +109,5 @@ public sealed class WerewolfBossMoveToTargetScript(Monster subject) : MonsterScr
         }
 
         ResetAttackTimerIfMoved();
-    }
-    
-    private void ResetAttackTimerIfMoved()
-    {
-        var now = DateTime.UtcNow;
-        var lastWalk = Subject.Trackers.LastWalk;
-        var lastTurn = Subject.Trackers.LastTurn;
-        var walkedRecently = lastWalk.HasValue && (now.Subtract(lastWalk.Value).TotalMilliseconds < Subject.Template.MoveIntervalMs);
-        var turnedRecently = lastTurn.HasValue && (now.Subtract(lastTurn.Value).TotalMilliseconds < Subject.Template.MoveIntervalMs);
-
-        if (walkedRecently || turnedRecently)
-        {
-            Subject.WanderTimer.Reset();
-            Subject.SkillTimer.Reset();
-        }
     }
 }

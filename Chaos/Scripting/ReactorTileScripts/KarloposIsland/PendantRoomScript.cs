@@ -18,22 +18,22 @@ public class PendantRoomScript : ConfigurableReactorTileScriptBase
     /// <inheritdoc />
     public PendantRoomScript(ReactorTile subject, ISimpleCache simpleCache)
         : base(subject)
-    {
-        SimpleCache = simpleCache;
-    }
+        => SimpleCache = simpleCache;
 
     /// <inheritdoc />
     public override void OnWalkedOn(Creature source)
     {
         var targetMap = SimpleCache.Get<MapInstance>(Destination.Map);
 
-        if ((source is Aisling aisling) && !aisling.Inventory.Contains("Coral Pendant"))
+        if (source is Aisling aisling && !aisling.Inventory.Contains("Coral Pendant"))
         {
             aisling?.SendOrangeBarMessage("Are you forgetting something?");
             var point = source.DirectionalOffset(source.Direction.Reverse());
             source.WarpTo(point);
+
             return;
         }
-        source.TraverseMap(targetMap,Destination);
+
+        source.TraverseMap(targetMap, Destination);
     }
 }

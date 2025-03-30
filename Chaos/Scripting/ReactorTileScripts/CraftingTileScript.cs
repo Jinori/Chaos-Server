@@ -92,8 +92,7 @@ public class CraftingTileScript : ReactorTileScriptBase
         string merchant,
         string dialogKey,
         Hobbies? requiredHobby,
-        Crafts requiredCraft
-    )
+        Crafts requiredCraft)
     {
         public string DialogKey { get; } = dialogKey;
 

@@ -12,8 +12,8 @@ public class PetLootScript : MonsterScriptBase
 
     /// <inheritdoc />
     public PetLootScript(Monster subject, IClientRegistry<IChaosWorldClient> clientRegistry)
-        : base(subject) =>
-        ClientRegistry = clientRegistry;
+        : base(subject)
+        => ClientRegistry = clientRegistry;
 
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
@@ -35,8 +35,9 @@ public class PetLootScript : MonsterScriptBase
         if (player is null)
             return;
 
-        var item = Subject.MapInstance.GetEntitiesWithinRange<GroundItem>(player)
-                          .FirstOrDefault(x => now - x.Creation > TimeSpan.FromSeconds(TIME_SPAN_SECONDS));
+        var item = Subject.MapInstance
+                          .GetEntitiesWithinRange<GroundItem>(player)
+                          .FirstOrDefault(x => (now - x.Creation) > TimeSpan.FromSeconds(TIME_SPAN_SECONDS));
 
         if (item is null)
             return;

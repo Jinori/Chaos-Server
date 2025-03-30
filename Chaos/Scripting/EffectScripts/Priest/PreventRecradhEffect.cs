@@ -1,5 +1,4 @@
 ﻿using Chaos.DarkAges.Definitions;
-using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
 
@@ -17,8 +16,9 @@ public class PreventRecradhEffect : EffectBase
     {
         if (target.Effects.Contains("Prevent Recradh"))
             return false;
-        
+
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You resist cradhs for a short while.");
+
         return true;
     }
 }

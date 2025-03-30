@@ -13,10 +13,10 @@ namespace Chaos.Scripting.MapScripts;
 // these maps still need sharding options and an exit location, incase the shard no longer exists when the person relogs
 public class DedicatedShardScript : MapScriptBase
 {
-    public Location FromLocation { get; set; } = null!;
-    public List<string> WhiteList { get; set; } = [];
     private readonly IIntervalTimer CheckTimer = new IntervalTimer(TimeSpan.FromSeconds(1));
     private readonly ISimpleCache SimpleCache;
+    public Location FromLocation { get; set; } = null!;
+    public List<string> WhiteList { get; set; } = [];
 
     /// <inheritdoc />
     public DedicatedShardScript(MapInstance subject, ISimpleCache simpleCache)

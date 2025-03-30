@@ -4,7 +4,7 @@ using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.DialogScripts.Crafting.Refining;
+namespace Chaos.Scripting.DialogScripts.Crafting;
 
 public class WeaponEmpoweringStoneDialogScript : DialogScriptBase
 {

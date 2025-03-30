@@ -1,5 +1,4 @@
 using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
@@ -25,8 +24,8 @@ public class TerminusGroupLootScript : DialogScriptBase
                     DialogKey = "terminus_groupoptions",
                     OptionText = "Group Loot Options"
                 };
-                
-                if (!Subject.HasOption(option.OptionText) && (source.Group != null) && source.Group.Leader.Equals(source)) 
+
+                if (!Subject.HasOption(option.OptionText) && (source.Group != null) && source.Group.Leader.Equals(source))
                     Subject.Options.Insert(0, option);
 
                 return;
@@ -37,49 +36,52 @@ public class TerminusGroupLootScript : DialogScriptBase
                 if (source.Group is null)
                 {
                     Subject.Reply(source, "You are not in a group.");
+
                     return;
                 }
 
                 if (source.Group.Leader.Equals(source))
                     source.Group.LootOption = Group.GroupLootOption.Default;
-                
+
                 foreach (var member in source.Group)
                     member.SendServerMessage(ServerMessageType.ActiveMessage, $"{source.Name} set loot options to defaults.");
-                
+
                 break;
             }
-            
+
             case "terminus_lootrandom":
             {
                 if (source.Group is null)
                 {
                     Subject.Reply(source, "You are not in a group.");
+
                     return;
                 }
 
                 if (source.Group.Leader.Equals(source))
                     source.Group.LootOption = Group.GroupLootOption.Random;
-                
+
                 foreach (var member in source.Group)
                     member.SendServerMessage(ServerMessageType.ActiveMessage, $"{source.Name} set loot options to random mode.");
-                
+
                 break;
             }
-            
+
             case "terminus_lootmaster":
             {
                 if (source.Group is null)
                 {
                     Subject.Reply(source, "You are not in a group.");
+
                     return;
                 }
 
                 if (source.Group.Leader.Equals(source))
                     source.Group.LootOption = Group.GroupLootOption.MasterLooter;
-                
+
                 foreach (var member in source.Group)
                     member.SendServerMessage(ServerMessageType.ActiveMessage, $"{source.Name} set loot options to Master Looter.");
-                
+
                 break;
             }
         }

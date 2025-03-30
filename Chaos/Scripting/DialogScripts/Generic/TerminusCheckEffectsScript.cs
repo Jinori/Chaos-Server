@@ -44,7 +44,7 @@ public class TerminusCheckEffectsScript : DialogScriptBase
                 var sb = new StringBuilder();
 
                 sb.AppendLineFColored(MessageColor.Yellow, "Current Effects: ", MessageColor.Gray);
-                
+
                 foreach (var eff in source.Effects
                                           .OrderBy(x => x.Remaining)
                                           .ToList())

@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
@@ -11,7 +10,6 @@ namespace Chaos.Scripting.ReactorTileScripts.PentagramQuest;
 
 public sealed class PentaPactScript : ReactorTileScriptBase
 {
-
     private readonly IDialogFactory DialogFactory;
     private readonly IItemFactory ItemFactory;
 
@@ -27,9 +25,11 @@ public sealed class PentaPactScript : ReactorTileScriptBase
     public override void OnClicked(Aisling source)
     {
         var hasStage = source.Trackers.Enums.TryGetValue(out PentagramQuestStage stage);
-        if (hasStage && stage != PentagramQuestStage.None)
+
+        if (hasStage && (stage != PentagramQuestStage.None))
         {
             source.SendOrangeBarMessage("You have already signed the pact.");
+
             return;
         }
 
@@ -46,7 +46,7 @@ public sealed class PentaPactScript : ReactorTileScriptBase
 
         if (source.UserStatSheet.Level < 60)
         {
-           source.SendOrangeBarMessage("That book looks frightening, better not touch it.");
+            source.SendOrangeBarMessage("That book looks frightening, better not touch it.");
 
             return;
         }
@@ -74,10 +74,11 @@ public sealed class PentaPactScript : ReactorTileScriptBase
 
                         return;
                 }
-                
+
                 if (source.Group.Any(x => !x.OnSameMapAs(source) || !x.WithinRange(source)))
                 {
                     source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your full group must be nearby to sign the pact.");
+
                     return;
                 }
 
@@ -91,16 +92,13 @@ public sealed class PentaPactScript : ReactorTileScriptBase
                             "You can only have one member of each required class in your group.");
 
                         return;
-                    } else
-                    {
-                        encounteredClasses.Add(memberClass);
                     }
+
+                    encounteredClasses.Add(memberClass);
                 } else
                 {
                     // Handle the case where a class that isn't required is in the group
-                    source.Client.SendServerMessage(
-                        ServerMessageType.OrangeBar1,
-                        "Your group contains a class that is not required.");
+                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your group contains a class that is not required.");
 
                     return;
                 }

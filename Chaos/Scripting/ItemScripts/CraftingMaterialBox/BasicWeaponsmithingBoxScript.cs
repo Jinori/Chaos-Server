@@ -26,22 +26,18 @@ public class BasicWeaponsmithingBoxScript : ItemScriptBase
         // Create items
         var bronze = _itemFactory.Create("rawbronze");
         var iron = _itemFactory.Create("rawiron");
-        
-        for (int i = 0; i < bronzeAmount; i++)
-        {
-            source.GiveItemOrSendToBank(_itemFactory.Create("rawbronze"));
-        }
 
-        for (int i = 0; i < ironAmount; i++)
-        {
+        for (var i = 0; i < bronzeAmount; i++)
+            source.GiveItemOrSendToBank(_itemFactory.Create("rawbronze"));
+
+        for (var i = 0; i < ironAmount; i++)
             source.GiveItemOrSendToBank(_itemFactory.Create("rawiron"));
-        }
 
         // Add items to the player's inventory
         source.GiveItemOrSendToBank(bronze);
         source.GiveItemOrSendToBank(iron);
 
         // Notify the player
-        source.SendOrangeBarMessage($"You received {bronzeAmount +1} Raw Bronze and {ironAmount +1} Raw Iron!");
+        source.SendOrangeBarMessage($"You received {bronzeAmount + 1} Raw Bronze and {ironAmount + 1} Raw Iron!");
     }
 }

@@ -19,42 +19,6 @@ namespace Chaos.Scripting.MonsterScripts.Boss.Creants.Shamensyth;
 
 public class ShamensythScript : MonsterScriptBase
 {
-    //room slowly catches on fire, more and more tiles get fire on them
-        //if player steps on fire tile, they get a burn effect that deals damage over time
-        //fire tiles can be put out by using an aoe water spell
-    //teleport phase:
-        //boss teleports to certain spots every 15s, uses ranged attacks
-        //auto attacks with ard srad
-        //will cast reign of fire when nobody is near him (casting uninterrupted)
-    //room aoe phase:
-        //boss teleports to center of room, begins chanting
-        //at end of chant (3 or 4 lines maybe?) boss does a room aoe that doesnt go through walls
-        //players need to hide behind pillars
-        //12,12
-    //spawn adds phase:
-        //boss spawns 4 fire elementals (they are casters, they run from melee)
-        //the fire elementals cast ard srad meall on players
-    //when it hits 15%, boss will do a reverse room aoe
-        //same as room aoe, except shape is inverted
-        //players need to hide on inside part of wall
-        //chant will be reversed (letters and line order)
-        //boss will say say a line something like "time to switch things up" or something
-    
-    private enum Phase
-    {
-        Teleport,
-        RoomAoe
-    }
-    private Phase CurrentPhase = Phase.Teleport;
-    
-    private readonly List<Point> TeleportPoints =
-    [
-        new(11, 11),
-        new(18, 11),
-        new(18, 18),
-        new(11, 18)
-    ];
-
     private readonly List<Point> AddSpawnPoints =
     [
         new(13, 16),
@@ -62,9 +26,6 @@ public class ShamensythScript : MonsterScriptBase
         new(16, 13),
         new(16, 16)
     ];
-
-    private readonly List<Point> SafePoints;
-    private readonly List<Point> InvertedSafePoints;
 
     private readonly List<string> ChantLines =
     [
@@ -76,74 +37,29 @@ public class ShamensythScript : MonsterScriptBase
         "Cremate"
     ];
 
-    #region Animations
-    private readonly Animation SafePointAnimation = new()
-    {
-        TargetAnimation = 214,
-        AnimationSpeed = 200
-    };
-    
-    private readonly Animation RoomAoeAnimation1 = new()
-    {
-        TargetAnimation = 90,
-        AnimationSpeed = 750
-    };
-
-    private readonly Animation RoomAoeAnimation2 = new()
-    {
-        TargetAnimation = 52,
-        AnimationSpeed = 850
-    };
-
-    private readonly Animation RoomAoeAnimation3 = new()
-    {
-        TargetAnimation = 223,
-        AnimationSpeed = 50
-    };
-    #endregion
+    private readonly List<Point> InvertedSafePoints;
+    private readonly List<Point> RoomAoeAnimationPoints;
 
     private readonly Point RoomAoePoint = new(15, 15);
-    private bool GaveUninterruptedCastWarning;
+
+    private readonly List<Point> SafePoints;
+
+    private readonly List<Point> TeleportPoints =
+    [
+        new(11, 11),
+        new(18, 11),
+        new(18, 18),
+        new(11, 18)
+    ];
+
     private int ChantLineIndex;
-    private int SpawnAddsCount;
+    private Phase CurrentPhase = Phase.Teleport;
+    private bool GaveUninterruptedCastWarning;
     private bool InvertedRoomAoe;
-    private bool ShowedSlowRoomAoeAnimation;
     private int RoomAoeAnimationIndex1;
     private int RoomAoeAnimationIndex2;
-    private List<Point> RoomAoeAnimationPoints;
-    
-    #region Services
-    private readonly IMonsterFactory MonsterFactory;
-    private readonly IReactorTileFactory ReactorTileFactory;
-    private readonly IEffectFactory EffectFactory;
-    #endregion
-    
-    #region Timers
-    private readonly IIntervalTimer TeleportTimer = new RandomizedIntervalTimer(
-        TimeSpan.FromSeconds(15),
-        15,
-        RandomizationType.Positive,
-        false);
-    private readonly IIntervalTimer ReignOfFireTimer = new IntervalTimer(TimeSpan.FromSeconds(3), false);
-    private readonly IIntervalTimer TeleportPhaseTimer = new IntervalTimer(TimeSpan.FromMinutes(1), false);
-    private readonly IIntervalTimer ChantTimer = new IntervalTimer(TimeSpan.FromMilliseconds(2000), false);
-    private readonly IIntervalTimer AfterChantTimer1 = new IntervalTimer(TimeSpan.FromSeconds(5), false);
-    private readonly IIntervalTimer AfterChantTimer2 = new IntervalTimer(TimeSpan.FromSeconds(5), false);
-    private readonly IIntervalTimer SpawnAddsTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
-    private readonly IIntervalTimer BurningGroundTimer = new IntervalTimer(TimeSpan.FromSeconds(20), false);
-    private readonly IIntervalTimer TurnTimer = new IntervalTimer(TimeSpan.FromSeconds(3), false);
-    private readonly IIntervalTimer SafePointTimer = new IntervalTimer(TimeSpan.FromSeconds(1));
-    private readonly IIntervalTimer RoomAoeAnimationTimer = new IntervalTimer(TimeSpan.FromMilliseconds(200));
-    private readonly SequentialEventTimer RoomeAoePhaseTimer;
-    #endregion
-    
-    #region Spells
-    private readonly Spell BlazingNova;
-    private readonly Spell FocusedDestruction;
-    private readonly Spell ReignOfFire;
-    private readonly Spell Cataclysm;
-    private readonly Spell ReverseCataclysm;
-    #endregion
+    private bool ShowedSlowRoomAoeAnimation;
+    private int SpawnAddsCount;
 
     /// <inheritdoc />
     public ShamensythScript(
@@ -168,7 +84,7 @@ public class ShamensythScript : MonsterScriptBase
                       .Append(AfterChantTimer1)
                       .Append(AfterChantTimer2)
                       .ToList());
-        
+
         RoomAoeAnimationPoints = new Circle(RoomAoePoint, 3).GetOrderedOutline()
                                                             .ToList();
 
@@ -191,67 +107,38 @@ public class ShamensythScript : MonsterScriptBase
                                             .Where(pt => !Subject.MapInstance.IsWall(pt))
                                             .Where(pt => !RoomAoePoint.WithinRange(pt, 1))
                                             .ToList();
-        
+
         SetRoomAoeAnimationPoints();
     }
-    
-    private void SetRoomAoeAnimationPoints()
+
+    private void AnimateInvertedSafePoints()
     {
-        RoomAoeAnimationIndex1 = 0;
-        RoomAoeAnimationIndex2 = RoomAoeAnimationPoints.Count / 2;
+        //only animate safe points during chant timer and AfterChantTimer1
+        if ((RoomeAoePhaseTimer.CurrentTimer != AfterChantTimer2) && SafePointTimer.IntervalElapsed)
+            foreach (var point in InvertedSafePoints)
+                Subject.MapInstance.ShowAnimation(SafePointAnimation.GetPointAnimation(point));
     }
 
-    private void SpawnAdds(int count)
+    private void AnimateSafePoints()
     {
-        var adds = AddSpawnPoints.Shuffle()
-                                 .Take(count)
-                                 .Select(pt => MonsterFactory.Create("shamensythFireElemental", Subject.MapInstance, pt))
-                                 .ToList();
-
-        Subject.MapInstance.AddEntities(adds);
+        //only animate safe points during chant timer and AfterChantTimer1
+        if ((RoomeAoePhaseTimer.CurrentTimer != AfterChantTimer2) && SafePointTimer.IntervalElapsed)
+            foreach (var point in SafePoints)
+                Subject.MapInstance.ShowAnimation(SafePointAnimation.GetPointAnimation(point));
     }
 
-    private void HandleBurningGround()
+    private void ApplyInvulnerability()
     {
-        if (BurningGroundTimer.IntervalElapsed)
+        if (!Subject.Effects.Contains("invulnerability"))
         {
-            var existingBurningGround = Subject.MapInstance
-                                               .GetEntities<ReactorTile>()
-                                               .Where(rt => rt.Script.Is<BurningGroundScript>())
-                                               .ToHashSet(PointEqualityComparer.Instance);
-
-            //add 10 burning ground tiles on spots not already occupied by burning ground
-            for (var i = 0; i < 20; i++)
-                if (Subject.MapInstance.Template.Bounds.TryGetRandomPoint(IsValidBurningGroundPoint, out var pt))
-                {
-                    var newBurningGround = ReactorTileFactory.Create(
-                        "sham_burningGround",
-                        Subject.MapInstance,
-                        pt,
-                        owner: Subject);
-
-                    existingBurningGround.Add(newBurningGround);
-                    Subject.MapInstance.SimpleAdd(newBurningGround);
-                }
-
-            bool IsValidBurningGroundPoint(Point pt)
-            {
-                if (existingBurningGround.Contains(pt))
-                    return false;
-
-                if (Subject.MapInstance.IsWall(pt))
-                    return false;
-
-                return true;
-            }
+            var effect = EffectFactory.Create("invulnerability");
+            Subject.Effects.Apply(Subject, effect);
         }
-        
-
     }
 
     private void HandleAdds()
     {
-        if(SpawnAddsTimer.IntervalElapsed)
+        if (SpawnAddsTimer.IntervalElapsed)
             switch (SpawnAddsCount)
             {
                 case 0:
@@ -321,121 +208,66 @@ public class ShamensythScript : MonsterScriptBase
                 {
                     var addsAlive = Map.GetEntities<Monster>()
                                        .Any(monster => monster.Template.TemplateKey.EqualsI("shamensythFireElemental"));
-                    
-                    if(addsAlive)
+
+                    if (addsAlive)
                         ApplyInvulnerability();
                     else
                         RemoveInvulnerability();
-                    
+
                     break;
                 }
             }
     }
 
-    private void ApplyInvulnerability()
+    private void HandleBurningGround()
     {
-        if (!Subject.Effects.Contains("invulnerability"))
+        if (BurningGroundTimer.IntervalElapsed)
         {
-            var effect = EffectFactory.Create("invulnerability");
-            Subject.Effects.Apply(Subject, effect);
-        }
-    }
+            var existingBurningGround = Subject.MapInstance
+                                               .GetEntities<ReactorTile>()
+                                               .Where(rt => rt.Script.Is<BurningGroundScript>())
+                                               .ToHashSet(PointEqualityComparer.Instance);
 
-    private void RemoveInvulnerability() => Subject.Effects.Dispel("invulnerability");
-
-    private void AnimateSafePoints()
-    {
-        //only animate safe points during chant timer and AfterChantTimer1
-        if ((RoomeAoePhaseTimer.CurrentTimer != AfterChantTimer2) && SafePointTimer.IntervalElapsed)
-            foreach (var point in SafePoints)
-                Subject.MapInstance.ShowAnimation(SafePointAnimation.GetPointAnimation(point));
-    }
-
-    private void AnimateInvertedSafePoints()
-    {
-        //only animate safe points during chant timer and AfterChantTimer1
-        if ((RoomeAoePhaseTimer.CurrentTimer != AfterChantTimer2) && SafePointTimer.IntervalElapsed)
-            foreach (var point in InvertedSafePoints)
-                Subject.MapInstance.ShowAnimation(SafePointAnimation.GetPointAnimation(point));
-    }
-    
-    private void HandleRoomAoe()
-    {
-        if (RoomeAoePhaseTimer.CurrentTimer == ChantTimer)
-        {
-            ApplyInvulnerability();
-            HandleRoomAoeAnimation();
-        }
-
-        if (!InvertedRoomAoe)
-        {
-            AnimateSafePoints();
-            
-            if (RoomeAoePhaseTimer.IntervalElapsed)
-                if (RoomeAoePhaseTimer.CurrentTimer == ChantTimer)
+            //add 10 burning ground tiles on spots not already occupied by burning ground
+            for (var i = 0; i < 20; i++)
+                if (Subject.MapInstance.Template.Bounds.TryGetRandomPoint(IsValidBurningGroundPoint, out var pt))
                 {
-                    if (!ShowedSlowRoomAoeAnimation)
-                    {
-                        //slow animation plays once
-                        Subject.MapInstance.ShowAnimation(RoomAoeAnimation1.GetPointAnimation(Subject));
-                        Subject.MapInstance.ShowAnimation(RoomAoeAnimation2.GetPointAnimation(Subject));
-                        ShowedSlowRoomAoeAnimation = true;
-                    }
-                    
-                    if (ChantLineIndex < ChantLines.Count)
-                    {
-                        Subject.Shout(ChantLines[ChantLineIndex]);
-                        ChantLineIndex++;
+                    var newBurningGround = ReactorTileFactory.Create(
+                        "sham_burningGround",
+                        Subject.MapInstance,
+                        pt,
+                        owner: Subject);
 
-                        if (ChantLineIndex == ChantLines.Count)
-                            if(Subject.TryUseSpell(Cataclysm))
-                                Subject.AnimateBody(BodyAnimation.Assail, 70);
-                    }
-                } else if (RoomeAoePhaseTimer.CurrentTimer == AfterChantTimer1)
-                    RemoveInvulnerability();
-                else if (RoomeAoePhaseTimer.CurrentTimer == AfterChantTimer2)
-                {
-                    CurrentPhase = Phase.Teleport;
-                    ChantLineIndex = 0;
-                    SetRoomAoeAnimationPoints();
-                    ShowedSlowRoomAoeAnimation = false;
-                    RoomeAoePhaseTimer.Reset();
+                    existingBurningGround.Add(newBurningGround);
+                    Subject.MapInstance.SimpleAdd(newBurningGround);
                 }
-        } else
-        {
-            AnimateInvertedSafePoints();
-            
-            if (RoomeAoePhaseTimer.IntervalElapsed)
-                if (RoomeAoePhaseTimer.CurrentTimer == ChantTimer)
-                {
-                    if (!ShowedSlowRoomAoeAnimation)
-                    {
-                        //slow animation plays once
-                        Subject.MapInstance.ShowAnimation(RoomAoeAnimation1.GetPointAnimation(Subject));
-                        Subject.MapInstance.ShowAnimation(RoomAoeAnimation2.GetPointAnimation(Subject));
-                        ShowedSlowRoomAoeAnimation = true;
-                    }
-                    
-                    if (ChantLineIndex < ChantLines.Count)
-                    {
-                        Subject.Shout(new string(ChantLines[ChantLines.Count - ChantLineIndex - 1]));
-                        ChantLineIndex++;
 
-                        if (ChantLineIndex == ChantLines.Count)
-                            if(Subject.TryUseSpell(ReverseCataclysm))
-                                Subject.AnimateBody(BodyAnimation.Assail, 50);
-                    }
-                } else if (RoomeAoePhaseTimer.CurrentTimer == AfterChantTimer1)
-                    RemoveInvulnerability();
-                else if (RoomeAoePhaseTimer.CurrentTimer == AfterChantTimer2)
-                {
-                    CurrentPhase = Phase.Teleport;
-                    ChantLineIndex = 0;
-                    SetRoomAoeAnimationPoints();
-                    ShowedSlowRoomAoeAnimation = false;
-                    RoomeAoePhaseTimer.Reset();
-                }
+            bool IsValidBurningGroundPoint(Point pt)
+            {
+                if (existingBurningGround.Contains(pt))
+                    return false;
+
+                if (Subject.MapInstance.IsWall(pt))
+                    return false;
+
+                return true;
+            }
         }
+    }
+
+    private void HandleFacing()
+    {
+        if (CurrentPhase == Phase.Teleport)
+        {
+            if (TurnTimer.IntervalElapsed && Subject.Target is not null)
+            {
+                var direction = Subject.Target.DirectionalRelationTo(Subject);
+
+                if (direction != Direction.Invalid)
+                    Subject.Turn(direction);
+            }
+        } else if (Subject.Direction != Direction.Down)
+            Subject.Turn(Direction.Down);
     }
 
     private void HandleReignOfFire()
@@ -460,19 +292,101 @@ public class ShamensythScript : MonsterScriptBase
         }
     }
 
-    private void HandleFacing()
+    private void HandleRoomAoe()
     {
-        if (CurrentPhase == Phase.Teleport)
+        if (RoomeAoePhaseTimer.CurrentTimer == ChantTimer)
         {
-            if (TurnTimer.IntervalElapsed && Subject.Target is not null)
-            {
-                var direction = Subject.Target.DirectionalRelationTo(Subject);
-                
-                if (direction != Direction.Invalid)
-                    Subject.Turn(direction);
-            }
-        } else if (Subject.Direction != Direction.Down)
-            Subject.Turn(Direction.Down);
+            ApplyInvulnerability();
+            HandleRoomAoeAnimation();
+        }
+
+        if (!InvertedRoomAoe)
+        {
+            AnimateSafePoints();
+
+            if (RoomeAoePhaseTimer.IntervalElapsed)
+                if (RoomeAoePhaseTimer.CurrentTimer == ChantTimer)
+                {
+                    if (!ShowedSlowRoomAoeAnimation)
+                    {
+                        //slow animation plays once
+                        Subject.MapInstance.ShowAnimation(RoomAoeAnimation1.GetPointAnimation(Subject));
+                        Subject.MapInstance.ShowAnimation(RoomAoeAnimation2.GetPointAnimation(Subject));
+                        ShowedSlowRoomAoeAnimation = true;
+                    }
+
+                    if (ChantLineIndex < ChantLines.Count)
+                    {
+                        Subject.Shout(ChantLines[ChantLineIndex]);
+                        ChantLineIndex++;
+
+                        if (ChantLineIndex == ChantLines.Count)
+                            if (Subject.TryUseSpell(Cataclysm))
+                                Subject.AnimateBody(BodyAnimation.Assail, 70);
+                    }
+                } else if (RoomeAoePhaseTimer.CurrentTimer == AfterChantTimer1)
+                    RemoveInvulnerability();
+                else if (RoomeAoePhaseTimer.CurrentTimer == AfterChantTimer2)
+                {
+                    CurrentPhase = Phase.Teleport;
+                    ChantLineIndex = 0;
+                    SetRoomAoeAnimationPoints();
+                    ShowedSlowRoomAoeAnimation = false;
+                    RoomeAoePhaseTimer.Reset();
+                }
+        } else
+        {
+            AnimateInvertedSafePoints();
+
+            if (RoomeAoePhaseTimer.IntervalElapsed)
+                if (RoomeAoePhaseTimer.CurrentTimer == ChantTimer)
+                {
+                    if (!ShowedSlowRoomAoeAnimation)
+                    {
+                        //slow animation plays once
+                        Subject.MapInstance.ShowAnimation(RoomAoeAnimation1.GetPointAnimation(Subject));
+                        Subject.MapInstance.ShowAnimation(RoomAoeAnimation2.GetPointAnimation(Subject));
+                        ShowedSlowRoomAoeAnimation = true;
+                    }
+
+                    if (ChantLineIndex < ChantLines.Count)
+                    {
+                        Subject.Shout(new string(ChantLines[ChantLines.Count - ChantLineIndex - 1]));
+                        ChantLineIndex++;
+
+                        if (ChantLineIndex == ChantLines.Count)
+                            if (Subject.TryUseSpell(ReverseCataclysm))
+                                Subject.AnimateBody(BodyAnimation.Assail, 50);
+                    }
+                } else if (RoomeAoePhaseTimer.CurrentTimer == AfterChantTimer1)
+                    RemoveInvulnerability();
+                else if (RoomeAoePhaseTimer.CurrentTimer == AfterChantTimer2)
+                {
+                    CurrentPhase = Phase.Teleport;
+                    ChantLineIndex = 0;
+                    SetRoomAoeAnimationPoints();
+                    ShowedSlowRoomAoeAnimation = false;
+                    RoomeAoePhaseTimer.Reset();
+                }
+        }
+    }
+
+    private void HandleRoomAoeAnimation()
+    {
+        if (RoomAoeAnimationTimer.IntervalElapsed)
+        {
+            if (RoomAoeAnimationIndex1 >= RoomAoeAnimationPoints.Count)
+                RoomAoeAnimationIndex1 = 0;
+
+            if (RoomAoeAnimationIndex2 >= RoomAoeAnimationPoints.Count)
+                RoomAoeAnimationIndex2 = 0;
+
+            var point1 = RoomAoeAnimationPoints[RoomAoeAnimationIndex1++];
+            var point2 = RoomAoeAnimationPoints[RoomAoeAnimationIndex2++];
+
+            Subject.MapInstance.ShowAnimation(RoomAoeAnimation3.GetPointAnimation(point1));
+            Subject.MapInstance.ShowAnimation(RoomAoeAnimation3.GetPointAnimation(point2));
+        }
     }
 
     private void HandleTeleport()
@@ -494,7 +408,25 @@ public class ShamensythScript : MonsterScriptBase
 
         ReignOfFireTimer.Reset();
     }
-    
+
+    private void RemoveInvulnerability() => Subject.Effects.Dispel("invulnerability");
+
+    private void SetRoomAoeAnimationPoints()
+    {
+        RoomAoeAnimationIndex1 = 0;
+        RoomAoeAnimationIndex2 = RoomAoeAnimationPoints.Count / 2;
+    }
+
+    private void SpawnAdds(int count)
+    {
+        var adds = AddSpawnPoints.Shuffle()
+                                 .Take(count)
+                                 .Select(pt => MonsterFactory.Create("shamensythFireElemental", Subject.MapInstance, pt))
+                                 .ToList();
+
+        Subject.MapInstance.AddEntities(adds);
+    }
+
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
@@ -503,16 +435,16 @@ public class ShamensythScript : MonsterScriptBase
         BurningGroundTimer.Update(delta);
         TurnTimer.Update(delta);
         SafePointTimer.Update(delta);
-        
+
         //spell updates
         BlazingNova.Update(delta);
         FocusedDestruction.Update(delta);
-        
+
         //do things independent of phase
         HandleFacing();
         HandleAdds();
         HandleBurningGround();
-        
+
         //handle phases
         switch (CurrentPhase)
         {
@@ -533,6 +465,7 @@ public class ShamensythScript : MonsterScriptBase
                         Subject.TryUseSpell(FocusedDestruction, Subject.Target.Id);
 
                     var surroundingPoints = Subject.SpiralSearch(2);
+
                     var aislingIsNearby = Map.GetEntitiesAtPoints<Aisling>(surroundingPoints)
                                              .Any();
 
@@ -542,7 +475,7 @@ public class ShamensythScript : MonsterScriptBase
 
                 if (ReignOfFireTimer.IntervalElapsed)
                     HandleReignOfFire();
-                
+
                 //next phase
                 if (TeleportPhaseTimer.IntervalElapsed)
                 {
@@ -561,27 +494,96 @@ public class ShamensythScript : MonsterScriptBase
 
                 RoomeAoePhaseTimer.Update(delta);
                 HandleRoomAoe();
-                
+
                 break;
             }
         }
     }
 
-    private void HandleRoomAoeAnimation()
+    //room slowly catches on fire, more and more tiles get fire on them
+    //if player steps on fire tile, they get a burn effect that deals damage over time
+    //fire tiles can be put out by using an aoe water spell
+    //teleport phase:
+    //boss teleports to certain spots every 15s, uses ranged attacks
+    //auto attacks with ard srad
+    //will cast reign of fire when nobody is near him (casting uninterrupted)
+    //room aoe phase:
+    //boss teleports to center of room, begins chanting
+    //at end of chant (3 or 4 lines maybe?) boss does a room aoe that doesnt go through walls
+    //players need to hide behind pillars
+    //12,12
+    //spawn adds phase:
+    //boss spawns 4 fire elementals (they are casters, they run from melee)
+    //the fire elementals cast ard srad meall on players
+    //when it hits 15%, boss will do a reverse room aoe
+    //same as room aoe, except shape is inverted
+    //players need to hide on inside part of wall
+    //chant will be reversed (letters and line order)
+    //boss will say say a line something like "time to switch things up" or something
+
+    private enum Phase
     {
-        if (RoomAoeAnimationTimer.IntervalElapsed)
-        {
-            if (RoomAoeAnimationIndex1 >= RoomAoeAnimationPoints.Count)
-                RoomAoeAnimationIndex1 = 0;
-
-            if (RoomAoeAnimationIndex2 >= RoomAoeAnimationPoints.Count)
-                RoomAoeAnimationIndex2 = 0;
-
-            var point1 = RoomAoeAnimationPoints[RoomAoeAnimationIndex1++];
-            var point2 = RoomAoeAnimationPoints[RoomAoeAnimationIndex2++];
-
-            Subject.MapInstance.ShowAnimation(RoomAoeAnimation3.GetPointAnimation(point1));
-            Subject.MapInstance.ShowAnimation(RoomAoeAnimation3.GetPointAnimation(point2));
-        }
+        Teleport,
+        RoomAoe
     }
+
+    #region Animations
+    private readonly Animation SafePointAnimation = new()
+    {
+        TargetAnimation = 214,
+        AnimationSpeed = 200
+    };
+
+    private readonly Animation RoomAoeAnimation1 = new()
+    {
+        TargetAnimation = 90,
+        AnimationSpeed = 750
+    };
+
+    private readonly Animation RoomAoeAnimation2 = new()
+    {
+        TargetAnimation = 52,
+        AnimationSpeed = 850
+    };
+
+    private readonly Animation RoomAoeAnimation3 = new()
+    {
+        TargetAnimation = 223,
+        AnimationSpeed = 50
+    };
+    #endregion
+
+    #region Services
+    private readonly IMonsterFactory MonsterFactory;
+    private readonly IReactorTileFactory ReactorTileFactory;
+    private readonly IEffectFactory EffectFactory;
+    #endregion
+
+    #region Timers
+    private readonly IIntervalTimer TeleportTimer = new RandomizedIntervalTimer(
+        TimeSpan.FromSeconds(15),
+        15,
+        RandomizationType.Positive,
+        false);
+
+    private readonly IIntervalTimer ReignOfFireTimer = new IntervalTimer(TimeSpan.FromSeconds(3), false);
+    private readonly IIntervalTimer TeleportPhaseTimer = new IntervalTimer(TimeSpan.FromMinutes(1), false);
+    private readonly IIntervalTimer ChantTimer = new IntervalTimer(TimeSpan.FromMilliseconds(2000), false);
+    private readonly IIntervalTimer AfterChantTimer1 = new IntervalTimer(TimeSpan.FromSeconds(5), false);
+    private readonly IIntervalTimer AfterChantTimer2 = new IntervalTimer(TimeSpan.FromSeconds(5), false);
+    private readonly IIntervalTimer SpawnAddsTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
+    private readonly IIntervalTimer BurningGroundTimer = new IntervalTimer(TimeSpan.FromSeconds(20), false);
+    private readonly IIntervalTimer TurnTimer = new IntervalTimer(TimeSpan.FromSeconds(3), false);
+    private readonly IIntervalTimer SafePointTimer = new IntervalTimer(TimeSpan.FromSeconds(1));
+    private readonly IIntervalTimer RoomAoeAnimationTimer = new IntervalTimer(TimeSpan.FromMilliseconds(200));
+    private readonly SequentialEventTimer RoomeAoePhaseTimer;
+    #endregion
+
+    #region Spells
+    private readonly Spell BlazingNova;
+    private readonly Spell FocusedDestruction;
+    private readonly Spell ReignOfFire;
+    private readonly Spell Cataclysm;
+    private readonly Spell ReverseCataclysm;
+    #endregion
 }

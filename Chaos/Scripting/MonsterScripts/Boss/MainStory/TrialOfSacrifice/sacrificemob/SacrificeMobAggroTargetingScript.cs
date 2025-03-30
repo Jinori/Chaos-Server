@@ -10,44 +10,41 @@ namespace Chaos.Scripting.MonsterScripts.Boss.MainStory.TrialOfSacrifice.sacrifi
 
 public class SacrificeMobAggroTargetingScript : MonsterScriptBase
 {
-    private readonly IIntervalTimer TargetUpdateTimer;
     private readonly IIntervalTimer LastHitTimer;
+    private readonly IIntervalTimer TargetUpdateTimer;
     private int InitialAggro = 10;
 
     /// <inheritdoc />
     public SacrificeMobAggroTargetingScript(Monster subject)
         : base(subject)
     {
-        TargetUpdateTimer =
-            new IntervalTimer(TimeSpan.FromMilliseconds(Math.Min(250, Subject.Template.SkillIntervalMs)));
-        
-        LastHitTimer =
-            new IntervalTimer(TimeSpan.FromSeconds(5));
-    }
+        TargetUpdateTimer = new IntervalTimer(TimeSpan.FromMilliseconds(Math.Min(250, Subject.Template.SkillIntervalMs)));
 
+        LastHitTimer = new IntervalTimer(TimeSpan.FromSeconds(5));
+    }
 
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
         var zoeaggro = 100000000; // Set a fixed aggro value for the Totem
+
         var helplesszoe = Map.GetEntitiesWithinRange<Monster>(Subject, 20)
-                       .ThatAreVisibleTo(Subject)
-                       .Where(obj => obj.Template.Name == "Helpless Zoe")
-                       .ClosestOrDefault(Subject);
-        
+                             .ThatAreVisibleTo(Subject)
+                             .Where(obj => obj.Template.Name == "Helpless Zoe")
+                             .ClosestOrDefault(Subject);
+
         base.Update(delta);
 
         TargetUpdateTimer.Update(delta);
         LastHitTimer.Update(delta);
-        
+
         if (LastHitTimer.IntervalElapsed)
         {
             AggroList.Clear();
             LastHitTimer.Reset();
+
             if (helplesszoe != null)
-            {
                 AggroList.AddOrUpdate(helplesszoe.Id, _ => zoeaggro, (_, currentAggro) => currentAggro + zoeaggro);
-            }
         }
 
         if ((Target != null) && (!Target.IsAlive || !Target.OnSameMapAs(Subject)))
@@ -61,7 +58,8 @@ public class SacrificeMobAggroTargetingScript : MonsterScriptBase
 
         Target = null;
 
-        if (!Map.GetEntities<Aisling>().Any())
+        if (!Map.GetEntities<Aisling>()
+                .Any())
             return;
 
         var isBlind = Subject.IsBlind;

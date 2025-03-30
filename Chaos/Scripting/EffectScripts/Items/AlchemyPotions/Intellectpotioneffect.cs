@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.EffectComponents;
@@ -10,21 +9,23 @@ namespace Chaos.Scripting.EffectScripts.Items.AlchemyPotions;
 
 public class Intellectpotioneffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
 {
+    public List<string> ConflictingEffectNames { get; init; } =
+        [
+            "Strength Potion",
+            "Intellect Potion",
+            "Wisdom Potion",
+            "Constitution Potion",
+            "Dexterity Potion"
+        ];
+
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(20);
+
     protected Animation Animation { get; } = new()
     {
         TargetAnimation = 504,
         AnimationSpeed = 100
     };
 
-    public List<string> ConflictingEffectNames { get; init; } = 
-    [
-        "Strength Potion",
-        "Intellect Potion",
-        "Wisdom Potion",
-        "Constitution Potion",
-        "Dexterity Potion"
-    ];
     public override byte Icon => 71;
     public override string Name => "Intellect Potion";
     protected byte? Sound => 115;
@@ -57,7 +58,7 @@ public class Intellectpotioneffect : EffectBase, NonOverwritableEffectComponent.
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your intellect potion wore off!");
     }
-    
+
     public override bool ShouldApply(Creature source, Creature target)
     {
         var execution = new ComponentExecutor(source, target).WithOptions(this)

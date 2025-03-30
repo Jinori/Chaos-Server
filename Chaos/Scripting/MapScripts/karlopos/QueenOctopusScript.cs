@@ -1,5 +1,4 @@
 ﻿using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Geometry;
@@ -35,8 +34,13 @@ public class QueenOctopusScript : MapScriptBase
         StartDelay = TimeSpan.FromSeconds(5);
         AnimationInterval = new IntervalTimer(TimeSpan.FromMilliseconds(200));
         AnimationShape = new Rectangle(new Point(4, 8), 3, 3);
-        ShapeOutline = AnimationShape.GetOutline().ToList();
-        ReverseOutline = ShapeOutline.AsEnumerable().Reverse().ToList();
+
+        ShapeOutline = AnimationShape.GetOutline()
+                                     .ToList();
+
+        ReverseOutline = ShapeOutline.AsEnumerable()
+                                     .Reverse()
+                                     .ToList();
 
         Animation = new Animation
         {
@@ -58,39 +62,40 @@ public class QueenOctopusScript : MapScriptBase
         // Switch statement to determine the current state of the script
         switch (State)
         {
-            
             case ScriptState.Dormant:
             {
                 if (Subject.GetEntities<Aisling>()
-                    .Any(
-                        a => a.Trackers.Enums.TryGetValue(out QueenOctopusQuest stage)
-                             && (stage == QueenOctopusQuest.QueenSpawning)))
+                           .Any(
+                               a => a.Trackers.Enums.TryGetValue(out QueenOctopusQuest stage)
+                                    && (stage == QueenOctopusQuest.QueenSpawning)))
                     State = ScriptState.DelayedStart;
             }
+
                 break;
-            
+
             // Delayed start state
             case ScriptState.DelayedStart:
                 // Set the start time if it is not already set
                 StartTime ??= DateTime.UtcNow;
 
                 // Check if the start delay has been exceeded
-                if (DateTime.UtcNow - StartTime > StartDelay)
+                if ((DateTime.UtcNow - StartTime) > StartDelay)
                 {
                     // Reset the start time
                     StartTime = null;
+
                     // Set the state to spawning
                     State = ScriptState.Spawning;
 
                     // Get all Aislings in the subject
                     foreach (var aisling in Subject.GetEntities<Aisling>())
+
                         // Send an orange bar message to the Aisling
-                        aisling.Client.SendServerMessage(
-                            ServerMessageType.OrangeBar1,
-                            "You hear waves crash against the beach...");
+                        aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You hear waves crash against the beach...");
                 }
 
                 break;
+
             // Spawning state
             case ScriptState.Spawning:
                 // Update the animation interval
@@ -103,9 +108,11 @@ public class QueenOctopusScript : MapScriptBase
                 // Get the points for the current animation index
                 var pt1 = ShapeOutline[AnimationIndex];
                 var pt2 = ReverseOutline[AnimationIndex];
+
                 // Show the animations for the points
                 Subject.ShowAnimation(Animation.GetPointAnimation(pt1));
                 Subject.ShowAnimation(Animation.GetPointAnimation(pt2));
+
                 // Increment the animation index
                 AnimationIndex++;
 
@@ -114,11 +121,14 @@ public class QueenOctopusScript : MapScriptBase
                 {
                     foreach (var aisling in Subject.GetEntities<Aisling>())
                         aisling.Trackers.Enums.Set(QueenOctopusQuest.QueenSpawned);
-                    
+
                     // Create a monster
                     var monster = MonsterFactory.Create("karlopos_queen_octopus", Subject, new Point(4, 8));
+
                     // Get the group level from the Aislings in the subject
-                    var groupLevel = Subject.GetEntities<Aisling>().Select(aisling => aisling.StatSheet.Level).ToList();
+                    var groupLevel = Subject.GetEntities<Aisling>()
+                                            .Select(aisling => aisling.StatSheet.Level)
+                                            .ToList();
 
                     // Create attributes based on the group level
                     var attrib = new Attributes
@@ -131,26 +141,32 @@ public class QueenOctopusScript : MapScriptBase
 
                     // Add the attributes to the monster
                     monster.StatSheet.AddBonus(attrib);
+
                     // Add HP and MP to the monster
                     monster.StatSheet.SetHealthPct(100);
                     monster.StatSheet.SetManaPct(100);
-                    
+
                     // Add the monster to the subject
                     Subject.AddEntity(monster, monster);
+
                     // Set the state to spawned
                     State = ScriptState.Spawned;
+
                     // Reset the animation index
                     AnimationIndex = 0;
                 }
 
                 break;
+
             // Spawned state
             case ScriptState.Spawned:
                 // Check if there are any Aislings in the subject
-                if (!Subject.GetEntities<Aisling>().Any())
+                if (!Subject.GetEntities<Aisling>()
+                            .Any())
                 {
                     // Get all monsters in the subject
-                    var monsters = Subject.GetEntities<Monster>().ToList();
+                    var monsters = Subject.GetEntities<Monster>()
+                                          .ToList();
 
                     // Remove all monsters from the subject
                     foreach (var monster in monsters)

@@ -89,12 +89,14 @@ public class VisibilityBehavior
             "wilderness_rooster1"
         }.Select(key => key.ToLower())
     ];
-    
-    private readonly ImmutableList<string> SeeTrueHiddenEffects = ImmutableList.Create(
-        EffectBase.GetEffectKey(typeof(SeeTrueHideEffect)));
 
-    public virtual bool CanSee(Creature creature, VisibleEntity entity) =>
-        entity.Visibility switch
+    private readonly ImmutableList<string> SeeTrueHiddenEffects = ImmutableList.Create(EffectBase.GetEffectKey(typeof(SeeTrueHideEffect)));
+
+    private bool CanBossSee(Creature creature, VisibleEntity entity)
+        => creature is Monster monster && entity is Aisling && BossKeys.Contains(monster.Template.TemplateKey.ToLower());
+
+    public virtual bool CanSee(Creature creature, VisibleEntity entity)
+        => entity.Visibility switch
         {
             VisibilityType.Normal     => true,
             VisibilityType.Hidden     => CanSeeHidden(creature, entity),
@@ -102,7 +104,8 @@ public class VisibilityBehavior
             _                         => false
         };
 
-    private bool CanSeeHidden(Creature creature, VisibleEntity entity) {
+    private bool CanSeeHidden(Creature creature, VisibleEntity entity)
+    {
         var isInSameGroup = IsInSameGroup(creature, entity);
         var hasSeeHideEffect = HasSeeHideEffect(creature, entity);
         var canBossSee = CanBossSee(creature, entity);
@@ -110,37 +113,33 @@ public class VisibilityBehavior
         if (creature is Monster && entity is Aisling aisling)
         {
             var hasRecentlyHidden = HasRecentlyHidden(aisling);
+
             return hasRecentlyHidden;
         }
 
         return isInSameGroup || hasSeeHideEffect || canBossSee;
     }
 
+    private bool CanSeeTrueHidden(Creature creature, VisibleEntity entity)
+        => IsInSameGroup(creature, entity) || CanBossSee(creature, entity) || SeeTrueHiddenEffects.Any(creature.Effects.Contains);
+
+    private bool HasRecentlyHidden(Creature creature)
+        => creature.Effects.Contains("Hide") && creature.Trackers.Counters.CounterLessThanOrEqualTo("HideSec", HIDE_THRESHOLD_SECONDS);
+
     private bool HasSeeHideEffect(Creature creature, VisibleEntity entity)
     {
-        if (creature.MapInstance.Name == "Hidden Havoc" || entity.MapInstance.Name == "Hidden Havoc")
+        if ((creature.MapInstance.Name == "Hidden Havoc") || (entity.MapInstance.Name == "Hidden Havoc"))
             return false;
-        
+
         return creature is Aisling && entity is Aisling && creature.Effects.Contains("See Hide");
     }
-    
-    private bool CanSeeTrueHidden(Creature creature, VisibleEntity entity) =>
-        IsInSameGroup(creature, entity) || CanBossSee(creature, entity) ||
-        SeeTrueHiddenEffects.Any(creature.Effects.Contains);
 
     private bool IsInSameGroup(Creature creature, VisibleEntity entity)
     {
         // Check if the map name is "Hidden Havoc"
-        if (creature.MapInstance.Name == "Hidden Havoc" || entity.MapInstance.Name == "Hidden Havoc")
+        if ((creature.MapInstance.Name == "Hidden Havoc") || (entity.MapInstance.Name == "Hidden Havoc"))
             return false;
 
-        return creature is Aisling aisling && entity is Aisling targetAisling &&
-               (aisling.Group?.Contains(targetAisling) == true);
+        return creature is Aisling aisling && entity is Aisling targetAisling && (aisling.Group?.Contains(targetAisling) == true);
     }
-
-    private bool CanBossSee(Creature creature, VisibleEntity entity) =>
-        creature is Monster monster && entity is Aisling &&
-        BossKeys.Contains(monster.Template.TemplateKey.ToLower());
-
-    private bool HasRecentlyHidden(Creature creature) => creature.Effects.Contains("Hide") && creature.Trackers.Counters.CounterLessThanOrEqualTo("HideSec", HIDE_THRESHOLD_SECONDS);
 }

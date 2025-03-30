@@ -1,5 +1,4 @@
 ﻿using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Geometry;
@@ -15,6 +14,7 @@ namespace Chaos.Scripting.MapScripts;
 
 public class PentaBossMapScript : MapScriptBase
 {
+    public const int UPDATE_INTERVAL_MS = 200;
     private readonly Animation Animation;
     private readonly IIntervalTimer AnimationInterval;
     private readonly IRectangle AnimationShape;
@@ -22,11 +22,10 @@ public class PentaBossMapScript : MapScriptBase
     private readonly List<Point> ReverseOutline;
     private readonly List<Point> ShapeOutline;
     private readonly TimeSpan StartDelay;
+    private readonly IIntervalTimer? UpdateTimer;
     private int AnimationIndex;
     private DateTime? StartTime;
     private ScriptState State;
-    private readonly IIntervalTimer? UpdateTimer;
-    public const int UPDATE_INTERVAL_MS = 200;
 
     public PentaBossMapScript(MapInstance subject, IMonsterFactory monsterFactory)
         : base(subject)
@@ -35,8 +34,13 @@ public class PentaBossMapScript : MapScriptBase
         StartDelay = TimeSpan.FromSeconds(3);
         AnimationInterval = new IntervalTimer(TimeSpan.FromMilliseconds(200));
         AnimationShape = new Rectangle(new Point(8, 8), 5, 5);
-        ShapeOutline = AnimationShape.GetOutline().ToList();
-        ReverseOutline = ShapeOutline.AsEnumerable().Reverse().ToList();
+
+        ShapeOutline = AnimationShape.GetOutline()
+                                     .ToList();
+
+        ReverseOutline = ShapeOutline.AsEnumerable()
+                                     .Reverse()
+                                     .ToList();
         UpdateTimer = new IntervalTimer(TimeSpan.FromMilliseconds(UPDATE_INTERVAL_MS));
 
         Animation = new Animation
@@ -51,7 +55,7 @@ public class PentaBossMapScript : MapScriptBase
         UpdateTimer?.Update(delta);
 
         if (UpdateTimer!.IntervalElapsed)
-        {
+
             // Switch statement to determine the current state of the script
             switch (State)
             {
@@ -65,28 +69,30 @@ public class PentaBossMapScript : MapScriptBase
                 }
 
                     break;
+
                 // Delayed start state
                 case ScriptState.DelayedStart:
                     // Set the start time if it is not already set
                     StartTime ??= DateTime.UtcNow;
 
                     // Check if the start delay has been exceeded
-                    if (DateTime.UtcNow - StartTime > StartDelay)
+                    if ((DateTime.UtcNow - StartTime) > StartDelay)
                     {
                         // Reset the start time
                         StartTime = null;
+
                         // Set the state to spawning
                         State = ScriptState.Spawning;
 
                         // Get all Aislings in the subject
                         foreach (var aisling in Subject.GetEntities<Aisling>())
+
                             // Send an orange bar message to the Aisling
-                            aisling.Client.SendServerMessage(
-                                ServerMessageType.OrangeBar1,
-                                "The house begins to shake...");
+                            aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "The house begins to shake...");
                     }
 
                     break;
+
                 // Spawning state
                 case ScriptState.Spawning:
                     // Update the animation interval
@@ -99,9 +105,11 @@ public class PentaBossMapScript : MapScriptBase
                     // Get the points for the current animation index
                     var pt1 = ShapeOutline[AnimationIndex];
                     var pt2 = ReverseOutline[AnimationIndex];
+
                     // Show the animations for the points
                     Subject.ShowAnimation(Animation.GetPointAnimation(pt1));
                     Subject.ShowAnimation(Animation.GetPointAnimation(pt2));
+
                     // Increment the animation index
                     AnimationIndex++;
 
@@ -115,20 +123,25 @@ public class PentaBossMapScript : MapScriptBase
                         var monster = MonsterFactory.Create("souleater", Subject, new Point(8, 8));
 
                         Subject.AddEntity(monster, monster);
+
                         // Set the state to spawned
                         State = ScriptState.Spawned;
+
                         // Reset the animation index
                         AnimationIndex = 0;
                     }
 
                     break;
+
                 // Spawned state
                 case ScriptState.Spawned:
                     // Check if there are any Aislings in the subject
-                    if (!Subject.GetEntities<Aisling>().Any())
+                    if (!Subject.GetEntities<Aisling>()
+                                .Any())
                     {
                         // Get all monsters in the subject
-                        var monsters = Subject.GetEntities<Monster>().ToList();
+                        var monsters = Subject.GetEntities<Monster>()
+                                              .ToList();
 
                         // Remove all monsters from the subject
                         foreach (var monster in monsters)
@@ -142,7 +155,6 @@ public class PentaBossMapScript : MapScriptBase
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-        }
     }
 
     private enum ScriptState

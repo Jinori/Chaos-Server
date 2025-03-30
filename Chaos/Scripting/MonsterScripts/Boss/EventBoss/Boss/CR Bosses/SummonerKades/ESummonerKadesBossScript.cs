@@ -1,7 +1,6 @@
 using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using Chaos.Scripting.MonsterScripts.Boss.CR_Bosses.SummonerKades;
 
 namespace Chaos.Scripting.MonsterScripts.Boss.EventBoss.Boss.CR_Bosses.SummonerKades;
 
@@ -21,7 +20,7 @@ public class ESummonerKadesBossScript : CompositeMonsterScript
         GetScriptKey(typeof(WanderingScript)),
         GetScriptKey(typeof(DisplayNameScript)),
         GetScriptKey(typeof(ThisIsABossScript)),
-        GetScriptKey(typeof(ArenaDeathScript)),
+        GetScriptKey(typeof(ArenaDeathScript))
     };
 
     /// <inheritdoc />

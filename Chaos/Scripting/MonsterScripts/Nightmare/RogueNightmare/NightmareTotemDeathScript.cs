@@ -1,5 +1,4 @@
 using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Legend;
@@ -36,16 +35,74 @@ public sealed class NightmareTotemDeathScript : MonsterScriptBase
 
         var nightmaregearDictionary = new Dictionary<(BaseClass, Gender), string[]>
         {
-            { (BaseClass.Warrior, Gender.Male), new[] { "malecarnunplate", "carnunhelmet" } },
-            { (BaseClass.Warrior, Gender.Female), new[] { "femalecarnunplate", "carnunhelmet" } },
-            { (BaseClass.Monk, Gender.Male), new[] { "maleaosdicpatternwalker" } },
-            { (BaseClass.Monk, Gender.Female), new[] { "femaleaosdicpatternwalker" } },
-            { (BaseClass.Rogue, Gender.Male), new[] { "malemarauderhide", "maraudermask" } },
-            { (BaseClass.Rogue, Gender.Female), new[] { "femalemarauderhide", "maraudermask" } },
-            { (BaseClass.Priest, Gender.Male), new[] { "malecthonicdisciplerobes", "cthonicdisciplecaputium" } },
-            { (BaseClass.Priest, Gender.Female), new[] { "morrigudisciplepellison", "holyhairband" } },
-            { (BaseClass.Wizard, Gender.Male), new[] { "malecthonicmagusrobes", "cthonicmaguscaputium" } },
-            { (BaseClass.Wizard, Gender.Female), new[] { "morrigumaguspellison", "magushairband" } }
+            {
+                (BaseClass.Warrior, Gender.Male), new[]
+                {
+                    "malecarnunplate",
+                    "carnunhelmet"
+                }
+            },
+            {
+                (BaseClass.Warrior, Gender.Female), new[]
+                {
+                    "femalecarnunplate",
+                    "carnunhelmet"
+                }
+            },
+            {
+                (BaseClass.Monk, Gender.Male), new[]
+                {
+                    "maleaosdicpatternwalker"
+                }
+            },
+            {
+                (BaseClass.Monk, Gender.Female), new[]
+                {
+                    "femaleaosdicpatternwalker"
+                }
+            },
+            {
+                (BaseClass.Rogue, Gender.Male), new[]
+                {
+                    "malemarauderhide",
+                    "maraudermask"
+                }
+            },
+            {
+                (BaseClass.Rogue, Gender.Female), new[]
+                {
+                    "femalemarauderhide",
+                    "maraudermask"
+                }
+            },
+            {
+                (BaseClass.Priest, Gender.Male), new[]
+                {
+                    "malecthonicdisciplerobes",
+                    "cthonicdisciplecaputium"
+                }
+            },
+            {
+                (BaseClass.Priest, Gender.Female), new[]
+                {
+                    "morrigudisciplepellison",
+                    "holyhairband"
+                }
+            },
+            {
+                (BaseClass.Wizard, Gender.Male), new[]
+                {
+                    "malecthonicmagusrobes",
+                    "cthonicmaguscaputium"
+                }
+            },
+            {
+                (BaseClass.Wizard, Gender.Female), new[]
+                {
+                    "morrigumaguspellison",
+                    "magushairband"
+                }
+            }
         };
 
         foreach (var aisling in Map.GetEntities<Aisling>())
@@ -73,10 +130,9 @@ public sealed class NightmareTotemDeathScript : MonsterScriptBase
             if (nightmaregearDictionary.TryGetValue(gearKey, out var nightmaregear))
             {
                 var hasGear = nightmaregear.All(
-                    gearItemName =>
-                        aisling.Inventory.ContainsByTemplateKey(gearItemName)
-                        || aisling.Bank.Contains(gearItemName)
-                        || aisling.Equipment.ContainsByTemplateKey(gearItemName));
+                    gearItemName => aisling.Inventory.ContainsByTemplateKey(gearItemName)
+                                    || aisling.Bank.Contains(gearItemName)
+                                    || aisling.Equipment.ContainsByTemplateKey(gearItemName));
 
                 if (!hasGear)
                     foreach (var gearItemName in nightmaregear)

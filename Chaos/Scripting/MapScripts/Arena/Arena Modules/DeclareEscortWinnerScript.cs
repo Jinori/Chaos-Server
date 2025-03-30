@@ -1,5 +1,4 @@
 using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
@@ -13,14 +12,14 @@ namespace Chaos.Scripting.MapScripts.Arena.Arena_Modules;
 
 public sealed class DeclareEscortWinnerScript : MapScriptBase
 {
-    private readonly ISimpleCache SimpleCache;
-    private IIntervalTimer DeclareWinnerTimer { get; }
+    private readonly Point BluePoint = new(6, 15);
     private readonly IIntervalTimer GameDurationTimer;
     private readonly Point GoldPoint = new(15, 15);
     private readonly Point GreenPoint = new(16, 6);
     private readonly Point RedPoint = new(6, 6);
-    private readonly Point BluePoint = new(6, 15);
+    private readonly ISimpleCache SimpleCache;
     private bool WinnerDeclared;
+    private IIntervalTimer DeclareWinnerTimer { get; }
 
     /// <inheritdoc />
     public DeclareEscortWinnerScript(MapInstance subject, ISimpleCache simpleCache)
@@ -28,6 +27,7 @@ public sealed class DeclareEscortWinnerScript : MapScriptBase
     {
         SimpleCache = simpleCache;
         DeclareWinnerTimer = new IntervalTimer(TimeSpan.FromMilliseconds(1000), false);
+
         GameDurationTimer = new PeriodicMessageTimer(
             TimeSpan.FromMinutes(10),
             TimeSpan.FromSeconds(30),
@@ -37,45 +37,6 @@ public sealed class DeclareEscortWinnerScript : MapScriptBase
             SendMessage);
     }
 
-    /// <inheritdoc />
-    public override void Update(TimeSpan delta)
-    {
-        GameDurationTimer.Update(delta);
-        DeclareWinnerTimer.Update(delta);
-        
-        if (!Subject.GetEntities<Aisling>().Any() && WinnerDeclared)
-        {
-            Subject.Destroy();
-            return;
-        }
-        
-        if (!DeclareWinnerTimer.IntervalElapsed)
-            return;
-
-        var nathra = Subject.GetEntities<Merchant>().FirstOrDefault(obj => obj.Template.TemplateKey.EqualsI("nathra"));
-
-        if (nathra != null)
-        {
-            var currentPoint = new Point(nathra.X, nathra.Y);
-
-            //Successful offense
-            if (currentPoint == new Point(39, 6))
-                HandleWinningTeam(ArenaSide.Offensive);
-        }
-        
-        if (!GameDurationTimer.IntervalElapsed)
-            return;
-        
-        //Successful defense
-        HandleWinningTeam(ArenaSide.Defender);
-    }
-    
-    private void SendMessage(string message)
-    {
-        foreach (var player in Subject.GetEntities<Aisling>())
-            player.SendServerMessage(ServerMessageType.ActiveMessage, message);
-    }
-    
     private void HandleWinningTeam(ArenaSide winningTeam)
     {
         var playersThatWon = Subject.GetEntities<Aisling>()
@@ -95,9 +56,9 @@ public sealed class DeclareEscortWinnerScript : MapScriptBase
             loser.SendActiveMessage($"{winningTeam} has won the round. Better luck next time.");
             loser.Trackers.Enums.Remove<ArenaSide>();
         }
-        
+
         var allToPort = Subject.GetEntities<Aisling>();
-        
+
         foreach (var player in allToPort)
         {
             player.Trackers.Enums.TryGetValue(out ArenaTeam value);
@@ -125,5 +86,48 @@ public sealed class DeclareEscortWinnerScript : MapScriptBase
         }
 
         WinnerDeclared = true;
+    }
+
+    private void SendMessage(string message)
+    {
+        foreach (var player in Subject.GetEntities<Aisling>())
+            player.SendServerMessage(ServerMessageType.ActiveMessage, message);
+    }
+
+    /// <inheritdoc />
+    public override void Update(TimeSpan delta)
+    {
+        GameDurationTimer.Update(delta);
+        DeclareWinnerTimer.Update(delta);
+
+        if (!Subject.GetEntities<Aisling>()
+                    .Any()
+            && WinnerDeclared)
+        {
+            Subject.Destroy();
+
+            return;
+        }
+
+        if (!DeclareWinnerTimer.IntervalElapsed)
+            return;
+
+        var nathra = Subject.GetEntities<Merchant>()
+                            .FirstOrDefault(obj => obj.Template.TemplateKey.EqualsI("nathra"));
+
+        if (nathra != null)
+        {
+            var currentPoint = new Point(nathra.X, nathra.Y);
+
+            //Successful offense
+            if (currentPoint == new Point(39, 6))
+                HandleWinningTeam(ArenaSide.Offensive);
+        }
+
+        if (!GameDurationTimer.IntervalElapsed)
+            return;
+
+        //Successful defense
+        HandleWinningTeam(ArenaSide.Defender);
     }
 }

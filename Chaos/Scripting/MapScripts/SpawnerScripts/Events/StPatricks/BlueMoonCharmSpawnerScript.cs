@@ -8,16 +8,6 @@ namespace Chaos.Scripting.MapScripts.SpawnerScripts.Events.StPatricks;
 
 public class BlueMoonCharmSpawnerScript : ItemSpawnerScript
 {
-    /// <inheritdoc />
-    public override void Update(TimeSpan delta)
-    {
-        var isEventActive = EventPeriod.IsEventActive(DateTime.UtcNow, Subject.InstanceId);
-
-        if (isEventActive)
-            base.Update(delta);
-    }
-    
-
     public override string ItemTemplateKey { get; set; } = "bluemooncharm";
     public override int MaxAmount { get; set; } = 10;
     public override int MaxPerSpawn { get; set; } = 3;
@@ -27,4 +17,13 @@ public class BlueMoonCharmSpawnerScript : ItemSpawnerScript
     /// <inheritdoc />
     public BlueMoonCharmSpawnerScript(MapInstance subject, IItemFactory itemFactory, ISimpleCache simpleCache)
         : base(subject, itemFactory, simpleCache) { }
+
+    /// <inheritdoc />
+    public override void Update(TimeSpan delta)
+    {
+        var isEventActive = EventPeriod.IsEventActive(DateTime.UtcNow, Subject.InstanceId);
+
+        if (isEventActive)
+            base.Update(delta);
+    }
 }

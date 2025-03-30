@@ -17,6 +17,7 @@ namespace Chaos.Scripting.FunctionalScripts.ApplyDamage;
 
 public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<ApplyAttackDamageScript> logger) : ScriptBase, IApplyDamageScript
 {
+    protected readonly IEffectFactory EffectFactory = effectFactory;
 
     private readonly List<string> MapsToNotPunishDurability =
     [
@@ -28,8 +29,7 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
         "Hidden Havoc",
         "Escort - Teams"
     ];
-    
-    protected readonly IEffectFactory EffectFactory = effectFactory;
+
     public IDamageFormula DamageFormula { get; set; } = DamageFormulae.Default;
     public static string Key { get; } = GetScriptKey(typeof(ApplyAttackDamageScript));
 
@@ -46,7 +46,7 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
             script,
             damage,
             elementOverride);
-        
+
         if (damage <= 0)
             return;
 
@@ -57,10 +57,10 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
 
         if (ReflectDamage(source, target, damage))
             return;
-        
-        if(target is Aisling aislingTarget)
+
+        if (target is Aisling aislingTarget)
             ApplyDurabilityDamage(aislingTarget, source, script);
-        
+
         ApplyDamageAndTriggerEvents(target, damage, source);
     }
 
@@ -82,7 +82,7 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
 
         if (!creature.IsAlive || creature.IsDead)
             return;
-        
+
         if ((damage > creature.StatSheet.CurrentHp) && creature.IsInLastStand())
             damage = creature.StatSheet.CurrentHp - 1;
 
@@ -117,24 +117,21 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
 
         if (source.MapInstance is { IsShard: true, LoadedFromInstanceId: "guildhallmain" })
             return;
-        
 
-        if (!skillScript.Subject.Template.IsAssail) 
+        if (!skillScript.Subject.Template.IsAssail)
             return;
-        
+
         foreach (var item in aisling.Equipment)
         {
-            if (item.Slot is <= 0 or >= 14) 
+            if (item.Slot is <= 0 or >= 14)
                 continue;
-            
-            if (item.CurrentDurability is >= 1)
-            {
-                item.CurrentDurability--;
-            }
 
-            if (!item.CurrentDurability.HasValue) 
+            if (item.CurrentDurability is >= 1)
+                item.CurrentDurability--;
+
+            if (!item.CurrentDurability.HasValue)
                 continue;
-                
+
             var dura = GetCurrentDurabilityPercentage(item);
             HandleDurabilityWarning(aisling, item, dura);
             HandleBreakingItem(aisling, source, item);

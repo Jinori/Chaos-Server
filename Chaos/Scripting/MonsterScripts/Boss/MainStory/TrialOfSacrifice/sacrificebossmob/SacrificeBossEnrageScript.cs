@@ -10,9 +10,9 @@ namespace Chaos.Scripting.MonsterScripts.Boss.MainStory.TrialOfSacrifice.sacrifi
 
 public sealed class SacrificeBossEnrageScript : MonsterScriptBase
 {
-    private readonly IIntervalTimer SpellCastTimer;
     private readonly IIntervalTimer Saying1Timer;
     private readonly IIntervalTimer Saying2Timer;
+    private readonly IIntervalTimer SpellCastTimer;
     private readonly Spell SpellToCast;
 
     /// <inheritdoc />
@@ -21,8 +21,8 @@ public sealed class SacrificeBossEnrageScript : MonsterScriptBase
     {
         SpellToCast = spellFactory.Create("fireline");
         SpellCastTimer = new IntervalTimer(TimeSpan.FromSeconds(14), false);
-        Saying1Timer = new IntervalTimer(TimeSpan.FromSeconds(5),false);
-        Saying2Timer = new IntervalTimer(TimeSpan.FromSeconds(8),false);
+        Saying1Timer = new IntervalTimer(TimeSpan.FromSeconds(5), false);
+        Saying2Timer = new IntervalTimer(TimeSpan.FromSeconds(8), false);
     }
 
     public override void Update(TimeSpan delta)

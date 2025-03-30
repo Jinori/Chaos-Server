@@ -16,11 +16,7 @@ public class NightmareMonsterAggroTargetingScript : MonsterScriptBase
     /// <inheritdoc />
     public NightmareMonsterAggroTargetingScript(Monster subject)
         : base(subject)
-    {
-        TargetUpdateTimer =
-            new IntervalTimer(TimeSpan.FromMilliseconds(Math.Min(250, Subject.Template.SkillIntervalMs)));
-    }
-
+        => TargetUpdateTimer = new IntervalTimer(TimeSpan.FromMilliseconds(Math.Min(250, Subject.Template.SkillIntervalMs)));
 
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
@@ -28,7 +24,7 @@ public class NightmareMonsterAggroTargetingScript : MonsterScriptBase
         base.Update(delta);
 
         TargetUpdateTimer.Update(delta);
-        
+
         if ((Target != null) && (!Target.IsAlive || !Target.OnSameMapAs(Subject)))
         {
             AggroList.Remove(Target.Id, out _);
@@ -40,7 +36,8 @@ public class NightmareMonsterAggroTargetingScript : MonsterScriptBase
 
         Target = null;
 
-        if (!Map.GetEntities<Aisling>().Any())
+        if (!Map.GetEntities<Aisling>()
+                .Any())
             return;
 
         var isBlind = Subject.IsBlind;
@@ -74,7 +71,7 @@ public class NightmareMonsterAggroTargetingScript : MonsterScriptBase
         Target ??= Map.GetEntitiesWithinRange<Creature>(Subject, range)
                       .ThatAreVisibleTo(Subject)
                       .Where(
-                          obj => !obj.Equals(Subject) 
+                          obj => !obj.Equals(Subject)
                                  && !obj.Name.Equals("Nightmare")
                                  && !obj.Name.Contains("Wind Wall")
                                  && obj.IsAlive

@@ -22,7 +22,7 @@ public class Fury1Effect : EffectBase
     public override void OnApplied()
     {
         base.OnApplied();
-        
+
         var attributes = new Attributes
         {
             Dmg = 10,

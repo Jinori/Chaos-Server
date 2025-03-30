@@ -1,8 +1,6 @@
 using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using Chaos.Scripting.MonsterScripts.Boss.WestWoodlands;
-using Chaos.Scripting.MonsterScripts.Boss.WestWoodlands.Twink;
 
 namespace Chaos.Scripting.MonsterScripts.Boss.EventBoss.Boss.WestWoodlands.Twink;
 

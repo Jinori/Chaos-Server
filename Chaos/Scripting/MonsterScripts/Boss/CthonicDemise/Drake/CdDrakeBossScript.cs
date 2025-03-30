@@ -1,7 +1,6 @@
 using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using Chaos.Scripting.MonsterScripts.Boss.CthonicDemise.Hydras;
 
 namespace Chaos.Scripting.MonsterScripts.Boss.CthonicDemise.Drake;
 

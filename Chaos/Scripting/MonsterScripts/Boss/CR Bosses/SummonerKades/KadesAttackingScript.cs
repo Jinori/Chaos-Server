@@ -16,13 +16,16 @@ public class KadesAttackingScript : MonsterScriptBase
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
-        if (Subject.MapInstance.GetEntities<Aisling>().Any(x => x.Trackers.Enums.HasValue(SummonerBossFight.FirstStage) 
-                                                || x.Trackers.Enums.HasValue(SummonerBossFight.SecondStage) 
-                                                || x.Trackers.Enums.HasValue(SummonerBossFight.ThirdStage) 
-                                                || x.Trackers.Enums.HasValue(SummonerBossFight.FourthStage)
-                                                || x.Trackers.Enums.HasValue(SummonerBossFight.FifthStage)))
+        if (Subject.MapInstance
+                   .GetEntities<Aisling>()
+                   .Any(
+                       x => x.Trackers.Enums.HasValue(SummonerBossFight.FirstStage)
+                            || x.Trackers.Enums.HasValue(SummonerBossFight.SecondStage)
+                            || x.Trackers.Enums.HasValue(SummonerBossFight.ThirdStage)
+                            || x.Trackers.Enums.HasValue(SummonerBossFight.FourthStage)
+                            || x.Trackers.Enums.HasValue(SummonerBossFight.FifthStage)))
             return;
-        
+
         if (Target is not { IsAlive: true } || (Subject.ManhattanDistanceFrom(Target) != 1))
             return;
 

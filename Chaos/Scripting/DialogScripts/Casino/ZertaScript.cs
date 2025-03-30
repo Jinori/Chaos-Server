@@ -8,12 +8,9 @@ namespace Chaos.Scripting.DialogScripts.Casino;
 
 public class ZertaScript : DialogScriptBase
 {
-
     /// <inheritdoc />
     public ZertaScript(Dialog subject, IScriptProvider scriptProvider)
-        : base(subject)
-    {
-    }
+        : base(subject) { }
 
     public override void OnDisplaying(Aisling source)
     {

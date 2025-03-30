@@ -12,20 +12,22 @@ public class GhostDeathScript : MonsterScriptBase
 
     /// <inheritdoc />
     public GhostDeathScript(Monster subject, IItemFactory itemFactory)
-        : base(subject) =>
-        ItemFactory = itemFactory;
+        : base(subject)
+        => ItemFactory = itemFactory;
 
     /// <inheritdoc />
     public override void OnDeath()
     {
-        var ghosts = Subject.MapInstance.GetEntities<Monster>().Where(x => x.Template.TemplateKey.EndsWithI("phasedghost"));
+        var ghosts = Subject.MapInstance
+                            .GetEntities<Monster>()
+                            .Where(x => x.Template.TemplateKey.EndsWithI("phasedghost"));
 
         if (ghosts.Any())
             return;
 
-        var aislingsToReward = Subject.MapInstance.GetEntities<Aisling>()
-                                      .Where(
-                                          x => x.Trackers.Enums.TryGetValue(out ManorNecklaceStage _));
+        var aislingsToReward = Subject.MapInstance
+                                      .GetEntities<Aisling>()
+                                      .Where(x => x.Trackers.Enums.TryGetValue(out ManorNecklaceStage _));
 
         foreach (var aisling in aislingsToReward)
         {
@@ -39,11 +41,10 @@ public class GhostDeathScript : MonsterScriptBase
 
                 if (aisling.Trackers.Enums.TryGetValue(out ManorNecklaceStage stage) && (stage != ManorNecklaceStage.SawNecklace))
                     return;
-            
+
                 aisling.GiveItemOrSendToBank(item);
                 aisling.Trackers.Enums.Set(ManorNecklaceStage.ReturningNecklace);
                 aisling.SendActiveMessage("You received Zulera's Cursed Necklace! Take it back to her.");
-                
             }
 
             if (aisling.Trackers.Enums.HasValue(ManorNecklaceStage.ReturnedNecklace)

@@ -18,7 +18,7 @@ public class MythicWolfWarpScript(Dialog subject, ISimpleCache simpleCache) : Di
             case "wolfwarp_initial":
             {
                 var vitality = source.StatSheet.MaximumHp + source.StatSheet.MaximumMp * 2;
-                
+
                 if (source.StatSheet.Level >= 90)
                 {
                     var option3 = new DialogOption
@@ -105,7 +105,6 @@ public class MythicWolfWarpScript(Dialog subject, ISimpleCache simpleCache) : Di
                     source.TraverseMap(wolf1, point);
                 }
 
-
                 Subject.Close(source);
 
                 break;
@@ -126,7 +125,6 @@ public class MythicWolfWarpScript(Dialog subject, ISimpleCache simpleCache) : Di
                     var point = new Point(23, 13);
                     source.TraverseMap(wolf1, point);
                 }
-
 
                 Subject.Close(source);
 

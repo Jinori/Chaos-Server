@@ -18,6 +18,7 @@ public sealed class MapShrinkScript : MapScriptBase
     private readonly ISimpleCache SimpleCache;
     private DateTime? AnnouncedMorphStart;
     private bool AnnounceMorph;
+    private bool CountdownComplete;
     private bool CountdownMorphStarted;
     private int CountdownMorphStep;
     private DateTime LastCountdownMorphTime;
@@ -25,17 +26,35 @@ public sealed class MapShrinkScript : MapScriptBase
     private int MorphCount;
     private double TimePassedSinceMainAnimationStart;
     private double TimePassedSinceTileAnimation;
-    private bool CountdownComplete;
     private IApplyDamageScript ApplyDamageScript { get; }
 
-    private List<string> MorphTemplateKeys { get; } = ["26007", "26008", "26009", "26010", "26011"];
-    
-    private List<string> OriginalMapKeys { get; } = ["26006", "26012"];
+    private List<string> MorphTemplateKeys { get; } =
+        [
+            "26007",
+            "26008",
+            "26009",
+            "26010",
+            "26011"
+        ];
+
+    private List<string> OriginalMapKeys { get; } =
+        [
+            "26006",
+            "26012"
+        ];
+
     private Animation PreAnimation { get; } = new()
     {
         AnimationSpeed = 100,
         TargetAnimation = 214
     };
+
+    private bool ShouldAnimateTiles
+        => CountdownMorphStarted
+           && (CountdownMorphStep > 0)
+           && (DateTime.UtcNow.Subtract(LastCountdownMorphTime)
+                       .TotalSeconds
+               >= 1);
 
     /// <inheritdoc />
     public MapShrinkScript(MapInstance subject, ISimpleCache simpleCache)
@@ -45,70 +64,45 @@ public sealed class MapShrinkScript : MapScriptBase
         SimpleCache = simpleCache;
     }
 
-    private void MorphMap()
-    {
-        var templateKey = MorphTemplateKeys[Math.Min(MorphCount, MorphTemplateKeys.Count - 1)];
-        Subject.Morph(templateKey);
-        MorphCount++;
-    }
-    
-    public override void Update(TimeSpan delta)
-    {
-        CaptureMapWalls();
-
-        if (ShouldStartMorphAnnouncement())
-            AnnouncedMorph();
-
-        if (ShouldAnimateTiles)
-            AnimateTiles(delta);
-        
-        if (ShouldStartCountdown())
-            HandleCountdown();
-        
-        if (ShouldPerformMorph())
-            PerformMorph();
-    }
-
     private void AnimateTiles(TimeSpan delta)
     {
         var currentSecond = (int)Math.Floor(TimePassedSinceMainAnimationStart);
 
         foreach (var point in NextMapPoints)
-        {
             if (CurrentMapPoints.Contains(point) && ((int)Math.Floor(TimePassedSinceMainAnimationStart) == currentSecond))
-            {
                 Subject.ShowAnimation(PreAnimation.GetPointAnimation(point));
-            }
-        }
 
         TimePassedSinceMainAnimationStart += delta.TotalSeconds;
 
         TimePassedSinceTileAnimation += delta.TotalSeconds;
 
         if (TimePassedSinceTileAnimation >= 1)
-        {
             TimePassedSinceTileAnimation = 0;
-        }
     }
-    
+
+    private void AnnouncedMorph()
+    {
+        AnnouncedMorphStart = DateTime.UtcNow;
+        AnnounceMorph = true;
+    }
+
     private void CaptureMapWalls()
     {
-        if (MapWallsCaptured) 
+        if (MapWallsCaptured)
             return;
 
         MapTemplate currentMapTemp;
         MapTemplate nextMapTemp;
-        
+
         if ((Subject.Name == "Lava Arena - Teams") && (MorphCount == 0))
         {
             currentMapTemp = SimpleCache.Get<MapTemplate>("26006");
             nextMapTemp = SimpleCache.Get<MapTemplate>("26007");
-        }
-        else
+        } else
         {
             var templateKey = MorphTemplateKeys[Math.Min(MorphCount, MorphTemplateKeys.Count - 1)];
             currentMapTemp = SimpleCache.Get<MapTemplate>(Subject.Template.TemplateKey);
-            nextMapTemp = SimpleCache.Get<MapTemplate>(templateKey);   
+            nextMapTemp = SimpleCache.Get<MapTemplate>(templateKey);
         }
 
         for (var x = 0; x < currentMapTemp.Width; x++)
@@ -132,49 +126,38 @@ public sealed class MapShrinkScript : MapScriptBase
                     NextMapPoints.Add(point);
             }
         }
+
         MapWallsCaptured = true;
     }
-    
-    private bool ShouldStartMorphAnnouncement() => !AnnounceMorph && (MorphCount < MorphTemplateKeys.Count);
-    private bool ShouldAnimateTiles => CountdownMorphStarted && ((CountdownMorphStep > 0) && (DateTime.UtcNow.Subtract(LastCountdownMorphTime).TotalSeconds >= 1));
-    
-    private void AnnouncedMorph()
-    {
-        AnnouncedMorphStart = DateTime.UtcNow;
-        AnnounceMorph = true;
-    }
 
-    private bool ShouldStartCountdown() =>
-        AnnouncedMorphStart.HasValue
-        && (DateTime.UtcNow.Subtract(AnnouncedMorphStart.Value).TotalSeconds >= 15)
-        && (MorphCount < MorphTemplateKeys.Count);
-
-    
     private void HandleCountdown()
     {
         if (CountdownMorphStarted)
         {
             if (CountdownMorphStep > 0)
             {
-                if (DateTime.UtcNow.Subtract(LastCountdownMorphTime).TotalSeconds >= 1)
+                if (DateTime.UtcNow.Subtract(LastCountdownMorphTime)
+                            .TotalSeconds
+                    >= 1)
                 {
                     var message = CountdownMorphStep > 0
                         ? "Lava creeps in " + CountdownMorphStep.ToWords() + " seconds!"
                         : "Lava has flowed inwards!";
-                
+
                     SendMessageToAllPlayers(message);
-                    
+
                     LastCountdownMorphTime = DateTime.UtcNow;
-                    CountdownMorphStep--;   
+                    CountdownMorphStep--;
                 }
-            }
-            else if ((CountdownMorphStep == 0) && (DateTime.UtcNow.Subtract(LastCountdownMorphTime).TotalSeconds >= 1))
+            } else if ((CountdownMorphStep == 0)
+                       && (DateTime.UtcNow.Subtract(LastCountdownMorphTime)
+                                   .TotalSeconds
+                           >= 1))
             {
                 CountdownComplete = true;
                 SendMessageToAllPlayers("Lava has flowed inwards!");
             }
-        }
-        else
+        } else
         {
             SendMessageToAllPlayers("Lava will claim more of the map in ten seconds!");
             CountdownMorphStarted = true;
@@ -182,31 +165,12 @@ public sealed class MapShrinkScript : MapScriptBase
             LastCountdownMorphTime = DateTime.UtcNow;
         }
     }
-    
-    private void SendMessageToAllPlayers(string message)
-    {
-        var allPlayers = Subject.GetEntities<Aisling>().ToList();
-        foreach (var player in allPlayers)
-        {
-            player.SendActiveMessage(message);
-        }
-    }
-    
-    private bool ShouldPerformMorph() => CountdownMorphStarted && CountdownComplete && (MorphCount != MorphTemplateKeys.Count);
 
-    /// <inheritdoc />
-    public override void OnMorphing(MapTemplate newMapTemplate)
+    private void MorphMap()
     {
-        if (OriginalMapKeys.Contains(newMapTemplate.TemplateKey))
-            return;
-        
-        var aislingsToKill = Subject.GetEntitiesAtPoints<Aisling>(CurrentMapPoints).Where(x => NextMapPoints.Contains(x)).ToList();
-
-        foreach (var aisling in aislingsToKill)
-        {
-            var damage = (int)(aisling.StatSheet.EffectiveMaximumHp * 1000);
-            ApplyDamageScript.ApplyDamage(aisling, aisling, this, damage);
-        }
+        var templateKey = MorphTemplateKeys[Math.Min(MorphCount, MorphTemplateKeys.Count - 1)];
+        Subject.Morph(templateKey);
+        MorphCount++;
     }
 
     /// <inheritdoc />
@@ -221,5 +185,64 @@ public sealed class MapShrinkScript : MapScriptBase
         CountdownComplete = false;
     }
 
+    /// <inheritdoc />
+    public override void OnMorphing(MapTemplate newMapTemplate)
+    {
+        if (OriginalMapKeys.Contains(newMapTemplate.TemplateKey))
+            return;
+
+        var aislingsToKill = Subject.GetEntitiesAtPoints<Aisling>(CurrentMapPoints)
+                                    .Where(x => NextMapPoints.Contains(x))
+                                    .ToList();
+
+        foreach (var aisling in aislingsToKill)
+        {
+            var damage = (int)(aisling.StatSheet.EffectiveMaximumHp * 1000);
+
+            ApplyDamageScript.ApplyDamage(
+                aisling,
+                aisling,
+                this,
+                damage);
+        }
+    }
+
     private void PerformMorph() => MorphMap();
+
+    private void SendMessageToAllPlayers(string message)
+    {
+        var allPlayers = Subject.GetEntities<Aisling>()
+                                .ToList();
+
+        foreach (var player in allPlayers)
+            player.SendActiveMessage(message);
+    }
+
+    private bool ShouldPerformMorph() => CountdownMorphStarted && CountdownComplete && (MorphCount != MorphTemplateKeys.Count);
+
+    private bool ShouldStartCountdown()
+        => AnnouncedMorphStart.HasValue
+           && (DateTime.UtcNow.Subtract(AnnouncedMorphStart.Value)
+                       .TotalSeconds
+               >= 15)
+           && (MorphCount < MorphTemplateKeys.Count);
+
+    private bool ShouldStartMorphAnnouncement() => !AnnounceMorph && (MorphCount < MorphTemplateKeys.Count);
+
+    public override void Update(TimeSpan delta)
+    {
+        CaptureMapWalls();
+
+        if (ShouldStartMorphAnnouncement())
+            AnnouncedMorph();
+
+        if (ShouldAnimateTiles)
+            AnimateTiles(delta);
+
+        if (ShouldStartCountdown())
+            HandleCountdown();
+
+        if (ShouldPerformMorph())
+            PerformMorph();
+    }
 }

@@ -10,8 +10,7 @@ using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Class_Related;
 
-public class DarkPriestScript(Dialog subject, ISpellFactory spellFactory)
-    : DialogScriptBase(subject)
+public class DarkPriestScript(Dialog subject, ISpellFactory spellFactory) : DialogScriptBase(subject)
 {
     public override void OnDisplaying(Aisling source)
     {

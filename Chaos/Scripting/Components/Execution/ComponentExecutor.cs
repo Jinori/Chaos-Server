@@ -11,8 +11,8 @@ namespace Chaos.Scripting.Components.Execution;
 
 public sealed class ComponentExecutor(ActivationContext context, ComponentVars vars)
 {
-    private ComponentVars Vars = vars;
     private ActivationContext Context = context;
+    private ComponentVars Vars = vars;
 
     public ComponentExecutor(ComponentVars vars)
         : this(new ActivationContext(null!, null!), vars) { }
@@ -32,6 +32,14 @@ public sealed class ComponentExecutor(ActivationContext context, ComponentVars v
             return this;
 
         return null;
+    }
+
+    public ComponentExecutor ClearVars()
+    {
+        var options = Vars.GetOptions();
+        Vars = new ComponentVars();
+
+        return WithOptions(options);
     }
 
     public ComponentExecutor Execute<TComponent>() where TComponent: IComponent, new()
@@ -69,22 +77,13 @@ public sealed class ComponentExecutor(ActivationContext context, ComponentVars v
         return this;
     }
 
-    public ComponentExecutor ClearVars()
-    {
-        var options = Vars.GetOptions();
-        Vars = new ComponentVars();
-
-        return WithOptions(options);
-    }
-    
     public ComponentExecutor WithSource(Creature source)
     {
         Context = new ActivationContext(source, Context.Target, Context.TargetMap);
 
         return this;
     }
-    
-    
+
     public ComponentExecutor WithTarget(Creature target)
     {
         Context = new ActivationContext(Context.Source, target);

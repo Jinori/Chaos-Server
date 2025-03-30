@@ -1,5 +1,4 @@
 using Chaos.Common.Definitions;
-using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
 using Chaos.Formulae;
 using Chaos.Geometry.Abstractions;
@@ -16,20 +15,20 @@ namespace Chaos.Scripting.MonsterScripts.Boss.EventBoss.Boss.UndineFields;
 
 public sealed class ECarnunBossRoomHazardScript : MonsterScriptBase
 {
-    private Rectangle? SafeRectangle;
     private readonly Rectangle ArenaRectangle;
-    private Animation HazardAnimation { get; }
-    private Animation SafeAnimation { get; }
+    private Rectangle? SafeRectangle;
     private IApplyDamageScript ApplyDamageScript { get; }
-    private IIntervalTimer HazardExpirationTimer { get; }
-    private IIntervalTimer SafeTimer { get; }
-    private IIntervalTimer HazardTimer { get; }
-    private ISequentialTimer SequenceTimer { get; }
-    private IIntervalTimer SafeAnimationTimer { get; }
+    private Animation HazardAnimation { get; }
     private IIntervalTimer HazardAnimationTimer { get; }
-    private bool GetToSafety => SequenceTimer.CurrentTimer == SafeTimer;
+    private IIntervalTimer HazardExpirationTimer { get; }
+    private IIntervalTimer HazardTimer { get; }
+    private Animation SafeAnimation { get; }
+    private IIntervalTimer SafeAnimationTimer { get; }
+    private IIntervalTimer SafeTimer { get; }
+    private ISequentialTimer SequenceTimer { get; }
 
     private bool ApplyHazard => SequenceTimer.CurrentTimer == HazardExpirationTimer;
+    private bool GetToSafety => SequenceTimer.CurrentTimer == SafeTimer;
 
     private bool NoHazard => SequenceTimer.CurrentTimer == HazardTimer;
 
@@ -47,6 +46,7 @@ public sealed class ECarnunBossRoomHazardScript : MonsterScriptBase
             AnimationSpeed = 100,
             TargetAnimation = 13
         };
+
         SafeAnimation = new Animation
         {
             AnimationSpeed = 100,
@@ -62,20 +62,21 @@ public sealed class ECarnunBossRoomHazardScript : MonsterScriptBase
         SequenceTimer = new SequentialEventTimer(HazardTimer, SafeTimer, HazardExpirationTimer);
     }
 
-    private bool ContainsWallOrReactor(IRectangle rectangle) =>
-        rectangle.GetPoints().Any(point => Map.IsWall(point) || Map.IsBlockingReactor(point));
-    
+    private bool ContainsWallOrReactor(IRectangle rectangle)
+        => rectangle.GetPoints()
+                    .Any(point => Map.IsWall(point) || Map.IsBlockingReactor(point));
+
     private void GenerateSafeRectangle()
     {
         const int MAX_ATTEMPTS = 100;
         var attempts = 0;
         const int WIDTH = 3; // Set the width of the rectangle
         const int HEIGHT = 3; // Set the height of the rectangle
-        
+
         do
         {
             var randomSafeCenterPoint = ArenaRectangle.GetRandomPoint();
-            
+
             SafeRectangle = new Rectangle(randomSafeCenterPoint, WIDTH, HEIGHT);
             attempts++;
 
@@ -83,28 +84,32 @@ public sealed class ECarnunBossRoomHazardScript : MonsterScriptBase
                 break;
         } while (ContainsWallOrReactor(SafeRectangle));
     }
-    
+
     public override void Update(TimeSpan delta)
     {
-        if (!Map.GetEntities<Aisling>().Any())
+        if (!Map.GetEntities<Aisling>()
+                .Any())
             return;
-        
+
         SequenceTimer.Update(delta);
-        
+
         if (ApplyHazard)
         {
             HazardAnimationTimer.Update(delta);
-            
+
             if (!HazardAnimationTimer.IntervalElapsed)
                 return;
 
-            var hazardPoints = ArenaRectangle.GetPoints().Except(SafeRectangle!.GetPoints()).ToList().Cast<IPoint>();
-            
-            foreach (var point in hazardPoints) 
+            var hazardPoints = ArenaRectangle.GetPoints()
+                                             .Except(SafeRectangle!.GetPoints())
+                                             .ToList()
+                                             .Cast<IPoint>();
+
+            foreach (var point in hazardPoints)
                 Map.ShowAnimation(HazardAnimation.GetPointAnimation(point));
 
             var creaturesToDamage = Map.GetEntitiesAtPoints<Creature>(hazardPoints)
-                .Where(c => c.Id != Subject.Id);
+                                       .Where(c => c.Id != Subject.Id);
 
             foreach (var creature in creaturesToDamage)
             {
@@ -112,21 +117,23 @@ public sealed class ECarnunBossRoomHazardScript : MonsterScriptBase
 
                 if (creature.IsDead)
                     return;
-                
-                ApplyDamageScript.ApplyDamage(Subject, creature, this, damage);
+
+                ApplyDamageScript.ApplyDamage(
+                    Subject,
+                    creature,
+                    this,
+                    damage);
             }
-        }
-        else if (GetToSafety)
+        } else if (GetToSafety)
         {
             SafeAnimationTimer.Update(delta);
-            
-            if (!SafeAnimationTimer.IntervalElapsed) 
+
+            if (!SafeAnimationTimer.IntervalElapsed)
                 return;
-            
+
             foreach (var point in SafeRectangle!.GetPoints())
                 Map.ShowAnimation(SafeAnimation.GetPointAnimation(point));
-        }
-        else if (NoHazard && HazardTimer.IntervalElapsed) 
+        } else if (NoHazard && HazardTimer.IntervalElapsed)
         {
             Subject.Say("Better run Aisling, it's about to get hot.");
 

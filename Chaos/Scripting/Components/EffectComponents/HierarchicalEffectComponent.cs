@@ -46,12 +46,12 @@ public struct HierarchicalEffectComponent : IConditionalComponent
         if (target is Merchant)
             return false;
 
-        if (!target.Effects.Contains("GM Hide") && target.Name != context.Source.Name)
+        if (!target.Effects.Contains("GM Hide") && (target.Name != context.Source.Name))
             context.SourceAisling?.SendActiveMessage($"You cast {options.Name} on {target.Name}.");
         else if (target.Name == context.Source.Name)
             context.SourceAisling?.SendActiveMessage($"You cast {options.Name} on yourself.");
 
-        if (target is Aisling aisling && target.Name != context.Source.Name)
+        if (target is Aisling aisling && (target.Name != context.Source.Name))
             aisling.SendActiveMessage($"{context.Source.Name} casted {options.Name} on you.");
 
         return true;

@@ -92,13 +92,11 @@ public class RedNoseQuestScript(Dialog subject, ILogger<RedNose> logger, IItemFa
                             ExperienceDistributionScript.GiveExp(source, expRewarded);
 
                             logger.WithTopics(
-                                      [
-                                          Topics.Entities.Aisling,
-                                          Topics.Entities.Gold,
-                                          Topics.Entities.Experience,
-                                          Topics.Entities.Dialog,
-                                          Topics.Entities.Quest
-                                      ])
+                                      Topics.Entities.Aisling,
+                                      Topics.Entities.Gold,
+                                      Topics.Entities.Experience,
+                                      Topics.Entities.Dialog,
+                                      Topics.Entities.Quest)
                                   .WithProperty(source)
                                   .WithProperty(Subject)
                                   .LogInformation(

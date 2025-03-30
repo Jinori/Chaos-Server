@@ -2,7 +2,6 @@ using Chaos.Extensions.Geometry;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
@@ -11,11 +10,11 @@ namespace Chaos.Scripting.MonsterScripts.Boss.EventBoss.Boss.DragonScaleBoss;
 
 public class EdragonScaleMoveToTargetScript : MonsterScriptBase
 {
-    
-    private bool ReachedPoint;
-    private readonly IIntervalTimer WalkTimer;
     private readonly IEffectFactory EffectFactory;
     private readonly Spell SpellToCast;
+    private readonly IIntervalTimer WalkTimer;
+
+    private bool ReachedPoint;
 
     /// <inheritdoc />
     public EdragonScaleMoveToTargetScript(Monster subject, ISpellFactory spellFactory, IEffectFactory effectFactory)
@@ -24,7 +23,29 @@ public class EdragonScaleMoveToTargetScript : MonsterScriptBase
         EffectFactory = effectFactory;
         SpellToCast = spellFactory.Create("fireblast");
         WalkTimer = new IntervalTimer(TimeSpan.FromMilliseconds(300), false);
+    }
 
+    private void ResetAttackTimerIfMoved()
+    {
+        var now = DateTime.UtcNow;
+        var lastWalk = Subject.Trackers.LastWalk;
+        var lastTurn = Subject.Trackers.LastTurn;
+
+        var walkedRecently = lastWalk.HasValue
+                             && (now.Subtract(lastWalk.Value)
+                                    .TotalMilliseconds
+                                 < Subject.Template.MoveIntervalMs);
+
+        var turnedRecently = lastTurn.HasValue
+                             && (now.Subtract(lastTurn.Value)
+                                    .TotalMilliseconds
+                                 < Subject.Template.MoveIntervalMs);
+
+        if (walkedRecently || turnedRecently)
+        {
+            Subject.WanderTimer.Reset();
+            Subject.SkillTimer.Reset();
+        }
     }
 
     /// <inheritdoc />
@@ -32,33 +53,34 @@ public class EdragonScaleMoveToTargetScript : MonsterScriptBase
     {
         base.Update(delta);
 
-        var fightSpot = Subject.MapInstance.GetEntitiesWithinRange<GroundItem>(Subject, 12)
-            .FirstOrDefault(x => x.Name == "Lion Fish");
+        var fightSpot = Subject.MapInstance
+                               .GetEntitiesWithinRange<GroundItem>(Subject, 12)
+                               .FirstOrDefault(x => x.Name == "Lion Fish");
 
-        if (fightSpot == null && !ReachedPoint)
-        {
+        if ((fightSpot == null) && !ReachedPoint)
             if (!Subject.Effects.Contains("invulnerability"))
             {
                 var invulnerability = EffectFactory.Create("invulnerability");
                 Subject.Effects.Apply(Subject, invulnerability);
             }
-        }
 
         if (fightSpot != null)
         {
             var point = new Point(fightSpot.X, fightSpot.Y);
-        
+
             if ((Subject.ManhattanDistanceFrom(point) > 0) && !ReachedPoint)
             {
                 WalkTimer.Update(delta);
                 Subject.StatSheet.SetHealthPct(100);
-            
+
                 if (WalkTimer.IntervalElapsed)
                     Subject.Pathfind(fightSpot);
 
                 if (Subject.ManhattanDistanceFrom(fightSpot) <= 1)
                 {
-                    var lionFish = Subject.MapInstance.GetEntitiesAtPoints<GroundItem>(fightSpot).FirstOrDefault(x => x.Name == "Lion Fish");
+                    var lionFish = Subject.MapInstance
+                                          .GetEntitiesAtPoints<GroundItem>(fightSpot)
+                                          .FirstOrDefault(x => x.Name == "Lion Fish");
 
                     if (lionFish != null)
                     {
@@ -66,9 +88,10 @@ public class EdragonScaleMoveToTargetScript : MonsterScriptBase
                         Subject.TryUseSpell(SpellToCast);
                         Map.RemoveEntity(lionFish);
                         Subject.Effects.Terminate("Invulnerability");
-                        ReachedPoint = true;   
+                        ReachedPoint = true;
                     }
                 }
+
                 return;
             }
         }
@@ -79,10 +102,10 @@ public class EdragonScaleMoveToTargetScript : MonsterScriptBase
         if (!Map.GetEntities<Aisling>()
                 .Any())
             return;
-        
+
         if (!ReachedPoint)
             return;
-        
+
         var distance = Subject.ManhattanDistanceFrom(Target);
 
         switch (distance)
@@ -105,22 +128,7 @@ public class EdragonScaleMoveToTargetScript : MonsterScriptBase
                 break;
             }
         }
-        
-        ResetAttackTimerIfMoved();
-    }
-    
-    private void ResetAttackTimerIfMoved()
-    {
-        var now = DateTime.UtcNow;
-        var lastWalk = Subject.Trackers.LastWalk;
-        var lastTurn = Subject.Trackers.LastTurn;
-        var walkedRecently = lastWalk.HasValue && (now.Subtract(lastWalk.Value).TotalMilliseconds < Subject.Template.MoveIntervalMs);
-        var turnedRecently = lastTurn.HasValue && (now.Subtract(lastTurn.Value).TotalMilliseconds < Subject.Template.MoveIntervalMs);
 
-        if (walkedRecently || turnedRecently)
-        {
-            Subject.WanderTimer.Reset();
-            Subject.SkillTimer.Reset();
-        }
+        ResetAttackTimerIfMoved();
     }
 }

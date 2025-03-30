@@ -1,6 +1,4 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
-using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
@@ -16,10 +14,12 @@ public sealed class Weaken2SpellComponent : IComponent
         AnimationSpeed = 75,
         TargetAnimation = 2
     };
+
     /// <inheritdoc />
     public void Execute(ActivationContext context, ComponentVars vars)
     {
-        var targets = vars.GetTargets<Aisling>().ToList();
+        var targets = vars.GetTargets<Aisling>()
+                          .ToList();
 
         foreach (var target in targets.ToList())
         {
@@ -35,7 +35,5 @@ public sealed class Weaken2SpellComponent : IComponent
         }
     }
 
-    public interface IWeakenSpellComponentOptions
-    {
-    }
+    public interface IWeakenSpellComponentOptions { }
 }

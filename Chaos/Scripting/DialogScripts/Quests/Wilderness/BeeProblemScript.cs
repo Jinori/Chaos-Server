@@ -34,8 +34,8 @@ public class BeeProblemScript : DialogScriptBase
             {
                 if (source.UserStatSheet.Level >= 16)
                     Subject.Reply(source, "Skip", "talula_initial3");
-                
-                if (!hasStage || stage == BeeProblem.None)
+
+                if (!hasStage || (stage == BeeProblem.None))
                 {
                     var option = new DialogOption
                     {
@@ -47,10 +47,10 @@ public class BeeProblemScript : DialogScriptBase
                         Subject.Options.Insert(0, option);
                 }
 
-                if (hasStage && stage == BeeProblem.Started)
+                if (hasStage && (stage == BeeProblem.Started))
                     Subject.Reply(source, "Skip", "talula_initial2");
-                
-                if (hasStage && stage == BeeProblem.Completed)
+
+                if (hasStage && (stage == BeeProblem.Completed))
                     Subject.Reply(source, "Skip", "talula_initial3");
 
                 break;
@@ -74,11 +74,11 @@ public class BeeProblemScript : DialogScriptBase
                 }
 
                 Logger.WithTopics(
-                          [Topics.Entities.Aisling,
+                          Topics.Entities.Aisling,
                           Topics.Entities.Experience,
                           Topics.Entities.Item,
                           Topics.Entities.Dialog,
-                          Topics.Entities.Quest])
+                          Topics.Entities.Quest)
                       .WithProperty(source)
                       .WithProperty(Subject)
                       .LogInformation(

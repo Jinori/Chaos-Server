@@ -21,18 +21,23 @@ public sealed class EThalzekTheForsakenEnrageScript : MonsterScriptBase
 
     /// <inheritdoc />
     public EThalzekTheForsakenEnrageScript(Monster subject, IMonsterFactory monsterFactory)
-        : base(subject) =>
-        MonsterFactory = monsterFactory;
+        : base(subject)
+        => MonsterFactory = monsterFactory;
 
     public override void Update(TimeSpan delta)
     {
         if (!Bonus75Applied && (Subject.StatSheet.HealthPercent <= 75))
         {
             Bonus75Applied = true;
+
             //Give Bonuses
-            var attrib = new Attributes {  MagicResistance = 10, };
+            var attrib = new Attributes
+            {
+                MagicResistance = 10
+            };
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
+
             //Spawn Monsters
             var rectangle = new Rectangle(Subject, 5, 5);
 
@@ -81,10 +86,11 @@ public sealed class EThalzekTheForsakenEnrageScript : MonsterScriptBase
             {
                 if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: Subject.Type), out var point))
                     continue;
-                
+
                 var mobs1 = MonsterFactory.Create("echaos_Kabungkl", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(mobs1, point);
             }
+
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
         }

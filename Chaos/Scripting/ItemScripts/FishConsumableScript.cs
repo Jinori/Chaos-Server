@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Formulae;
 using Chaos.Models.Legend;
 using Chaos.Models.Panel;
@@ -15,13 +14,27 @@ public class FishConsumableScript(Item subject) : ItemScriptBase(subject)
 {
     private static readonly Dictionary<string, double> FishExperienceMultipliers = new()
     {
-        { "Trout", 0.006 },
-        { "Bass", 0.007 },
-        { "Perch", 0.008 },
-        { "Pike", 0.009 },
-        { "Rock Fish", 0.01 },
-        { "Lion Fish", 0.02 },
-        { "Purple Whopper", 0.03 }
+        {
+            "Trout", 0.006
+        },
+        {
+            "Bass", 0.007
+        },
+        {
+            "Perch", 0.008
+        },
+        {
+            "Pike", 0.009
+        },
+        {
+            "Rock Fish", 0.01
+        },
+        {
+            "Lion Fish", 0.02
+        },
+        {
+            "Purple Whopper", 0.03
+        }
     };
 
     private readonly IExperienceDistributionScript ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
@@ -38,9 +51,10 @@ public class FishConsumableScript(Item subject) : ItemScriptBase(subject)
         return Convert.ToInt32(multiplier * tnl);
     }
 
-    private void NotifyPlayer(Aisling source, int expGain) => source.Client.SendServerMessage(
-        ServerMessageType.OrangeBar1,
-        $"You ate {Subject.DisplayName} and it gave you {expGain:N0} exp.");
+    private void NotifyPlayer(Aisling source, int expGain)
+        => source.Client.SendServerMessage(
+            ServerMessageType.OrangeBar1,
+            $"You ate {Subject.DisplayName} and it gave you {expGain:N0} exp.");
 
     public override void OnUse(Aisling source)
     {
@@ -55,8 +69,8 @@ public class FishConsumableScript(Item subject) : ItemScriptBase(subject)
 
     private void RemoveItemFromInventory(Aisling source) => source.Inventory.RemoveQuantity(Subject.DisplayName, 1, out _);
 
-    private void UpdatePlayerLegend(Aisling source) =>
-        source.Legend.AddOrAccumulate(
+    private void UpdatePlayerLegend(Aisling source)
+        => source.Legend.AddOrAccumulate(
             new LegendMark(
                 "Caught a fish and ate it",
                 "fish",

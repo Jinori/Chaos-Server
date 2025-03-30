@@ -1,6 +1,4 @@
 using Chaos.Collections;
-using Chaos.Definitions;
-using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -15,7 +13,7 @@ public class milethCowPortal : ReactorTileScriptBase
 {
     private readonly ISimpleCache SimpleCache;
     protected IIntervalTimer AnimationTimer { get; set; }
-    
+
     protected IIntervalTimer? Timer { get; set; }
 
     protected Animation PortalAnimation { get; } = new()
@@ -52,8 +50,6 @@ public class milethCowPortal : ReactorTileScriptBase
 
         if (AnimationTimer.IntervalElapsed)
         {
-           
-            
             var aislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 12);
 
             foreach (var aisling in aislings)

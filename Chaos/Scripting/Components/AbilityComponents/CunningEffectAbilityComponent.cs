@@ -7,13 +7,14 @@ using Chaos.Services.Factories.Abstractions;
 namespace Chaos.Scripting.Components.AbilityComponents;
 
 /// <summary>
-/// Handles the application of "Cunning" effects based on the target's mana threshold.
+///     Handles the application of "Cunning" effects based on the target's mana threshold.
 /// </summary>
 public struct CunningEffectAbilityComponent : IComponent
 {
     private readonly IEffectFactory _effectFactory;
 
-    public CunningEffectAbilityComponent(IEffectFactory effectFactory) => _effectFactory = effectFactory ?? throw new ArgumentNullException(nameof(effectFactory));
+    public CunningEffectAbilityComponent(IEffectFactory effectFactory)
+        => _effectFactory = effectFactory ?? throw new ArgumentNullException(nameof(effectFactory));
 
     /// <inheritdoc />
     public void Execute(ActivationContext context, ComponentVars vars)
@@ -23,22 +24,32 @@ public struct CunningEffectAbilityComponent : IComponent
         // Define the Cunning effects and their corresponding MP thresholds.
         var cunningEffects = new Dictionary<string, int>
         {
-            { "Cunning1", 4000 },
-            { "Cunning2", 8000 },
-            { "Cunning3", 16000 },
-            { "Cunning4", 32000 },
-            { "Cunning5", 64000 },
-            { "Cunning6", 128000 }
+            {
+                "Cunning1", 4000
+            },
+            {
+                "Cunning2", 8000
+            },
+            {
+                "Cunning3", 16000
+            },
+            {
+                "Cunning4", 32000
+            },
+            {
+                "Cunning5", 64000
+            },
+            {
+                "Cunning6", 128000
+            }
         };
 
         foreach (var target in targets)
-        {
             ApplyCunningEffect(target, context, cunningEffects);
-        }
     }
 
     /// <summary>
-    /// Applies the appropriate "Cunning" effect based on the target's current MP.
+    ///     Applies the appropriate "Cunning" effect based on the target's current MP.
     /// </summary>
     private void ApplyCunningEffect(Creature target, ActivationContext context, Dictionary<string, int> cunningEffects)
     {
@@ -48,23 +59,27 @@ public struct CunningEffectAbilityComponent : IComponent
         // Determine the next effect to apply
         foreach ((var effect, var mpThreshold) in cunningEffects)
         {
-            if (currentMp < mpThreshold) break;
+            if (currentMp < mpThreshold)
+                break;
 
             if (activeEffect == null)
             {
                 target.Effects.Apply(context.Source, _effectFactory.Create(effect));
+
                 return;
             }
 
             if (effect == activeEffect)
             {
                 target.Effects.Terminate(effect);
+
                 continue;
             }
 
             if (cunningEffects.TryGetValue(activeEffect, out var value) && (value < mpThreshold))
             {
                 target.Effects.Apply(context.Source, _effectFactory.Create(effect));
+
                 return;
             }
         }

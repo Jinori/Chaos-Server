@@ -1,5 +1,4 @@
 using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
@@ -13,22 +12,107 @@ namespace Chaos.Scripting.ReactorTileScripts.PentagramQuest;
 
 public class ZombieFleshScript : ReactorTileScriptBase
 {
-    private static readonly Point WizardSpot = new Point(10, 13);
-    private static readonly Point WarriorSpot = new Point(7, 7);
-    private static readonly Point RogueSpot = new Point(11, 6);
-    private static readonly Point PriestSpot = new Point(13, 10);
-    private static readonly Point MonkSpot = new Point(6, 11);
-    private readonly ISimpleCache SimpleCache;
+    private static readonly Point WizardSpot = new(10, 13);
+    private static readonly Point WarriorSpot = new(7, 7);
+    private static readonly Point RogueSpot = new(11, 6);
+    private static readonly Point PriestSpot = new(13, 10);
+    private static readonly Point MonkSpot = new(6, 11);
     private readonly IDialogFactory DialogFactory;
     private readonly IItemFactory ItemFactory;
+    private readonly ISimpleCache SimpleCache;
 
-    public ZombieFleshScript(ReactorTile subject, IItemFactory itemFactory, IDialogFactory dialogFactory,
+    public ZombieFleshScript(
+        ReactorTile subject,
+        IItemFactory itemFactory,
+        IDialogFactory dialogFactory,
         ISimpleCache simpleCache)
         : base(subject)
     {
         ItemFactory = itemFactory;
         DialogFactory = dialogFactory;
         SimpleCache = simpleCache;
+    }
+
+    private bool CanStartBoss(Aisling source, out MapInstance mapInstance)
+    {
+        mapInstance = SimpleCache.Get<MapInstance>("hm_macabre_pentagram");
+        source.Trackers.Enums.TryGetValue(out PentagramQuestStage stage);
+
+        if (MapHasMonsters(mapInstance))
+        {
+            source.SendOrangeBarMessage("The boss is already summoned.");
+
+            return false;
+        }
+
+        if (source.Group == null)
+        {
+            source.SendOrangeBarMessage("You must be grouped to perform the ritual.");
+
+            return false;
+        }
+
+        foreach (var groupmember in source.Group!)
+        {
+            if (stage is not (PentagramQuestStage.CreatedPentagram or PentagramQuestStage.BossSpawned))
+            {
+                foreach (var groupmember2 in source.Group!)
+                    groupmember2.SendOrangeBarMessage("Someone inside the group hasn't created the pentagram.");
+
+                return false;
+            }
+
+            if (groupmember.UserStatSheet.BaseClass == BaseClass.Wizard)
+                if (!groupmember.Inventory.HasCount("Pentagram", 1))
+
+                    return false;
+        }
+
+        return true;
+    }
+
+    private bool CanStartRitual(Aisling source)
+    {
+        source.Trackers.Enums.TryGetValue(out PentagramQuestStage stage);
+
+        if (source.Group == null)
+        {
+            source.SendOrangeBarMessage("You must be grouped to perform the ritual.");
+
+            return false;
+        }
+
+        foreach (var groupmember in source.Group!)
+            if (stage is not PentagramQuestStage.SignedPact)
+            {
+                groupmember.SendOrangeBarMessage("You have not signed the pact to start the ritual.");
+
+                return false;
+            }
+
+        return true;
+    }
+
+    private bool CheckPosition(Aisling player)
+        => player.UserStatSheet.BaseClass switch
+        {
+            BaseClass.Rogue   => RogueSpot.Equals(new Point(player.X, player.Y)),
+            BaseClass.Wizard  => WizardSpot.Equals(new Point(player.X, player.Y)),
+            BaseClass.Priest  => PriestSpot.Equals(new Point(player.X, player.Y)),
+            BaseClass.Warrior => WarriorSpot.Equals(new Point(player.X, player.Y)),
+            BaseClass.Monk    => MonkSpot.Equals(new Point(player.X, player.Y)),
+            _                 => false
+        };
+
+    private bool MapHasMonsters(MapInstance mapInstance)
+    {
+        var monstersOnMap = mapInstance.GetEntities<Monster>()
+                                       .Where(entity => !entity.Template.TemplateKey.Contains("Pet"));
+
+        if (monstersOnMap.Any())
+            return true;
+
+        return false;
     }
 
     public override void OnItemDroppedOn(Creature source, GroundItem groundItem)
@@ -94,21 +178,16 @@ public class ZombieFleshScript : ReactorTileScriptBase
 
         // Check if group members are in the correct position
         foreach (var groupMember in aisling.Group)
-        {
             if (!CheckPosition(groupMember))
             {
                 foreach (var member in aisling.Group)
-                {
                     member.SendOrangeBarMessage("Your group must be ready to perform the ritual.");
-                }
 
                 return;
             }
-        }
 
         // Check quest stage and perform actions accordingly
         foreach (var groupMember in aisling.Group)
-        {
             if (groupMember.Trackers.Enums.TryGetValue(out PentagramQuestStage stage))
             {
                 var ani = new Animation
@@ -136,7 +215,7 @@ public class ZombieFleshScript : ReactorTileScriptBase
                     {
                         if (!CanStartBoss(groupMember, out var mapInstance))
                             return;
-                        
+
                         groupMember.Trackers.Enums.Set(PentagramQuestStage.BossSpawning);
                         groupMember.SendOrangeBarMessage("The ritual has begun...");
 
@@ -144,90 +223,7 @@ public class ZombieFleshScript : ReactorTileScriptBase
                     }
                 }
             }
-        }
 
         aisling.MapInstance.RemoveEntity(groundItem);
     }
-
-    private bool CheckPosition(Aisling player) =>
-        player.UserStatSheet.BaseClass switch
-        {
-            BaseClass.Rogue   => RogueSpot.Equals(new Point(player.X, player.Y)),
-            BaseClass.Wizard  => WizardSpot.Equals(new Point(player.X, player.Y)),
-            BaseClass.Priest  => PriestSpot.Equals(new Point(player.X, player.Y)),
-            BaseClass.Warrior => WarriorSpot.Equals(new Point(player.X, player.Y)),
-            BaseClass.Monk    => MonkSpot.Equals(new Point(player.X, player.Y)),
-            _                 => false
-        };
-
-    private bool CanStartRitual(Aisling source)
-    {
-        source.Trackers.Enums.TryGetValue(out PentagramQuestStage stage);
-        
-        if (source.Group == null)
-        {
-            source.SendOrangeBarMessage("You must be grouped to perform the ritual.");
-            return false; 
-        }
-
-        foreach (var groupmember in source.Group!)
-        {
-            if (stage is not PentagramQuestStage.SignedPact)
-            {
-                groupmember.SendOrangeBarMessage("You have not signed the pact to start the ritual.");
-                return false;
-            }
-            
-        }
-        
-        return true;
-    }
-     private bool CanStartBoss(Aisling source, out MapInstance mapInstance)
-    {
-        mapInstance = SimpleCache.Get<MapInstance>("hm_macabre_pentagram");
-        source.Trackers.Enums.TryGetValue(out PentagramQuestStage stage);
-
-        if (MapHasMonsters(mapInstance))
-        {
-            source.SendOrangeBarMessage("The boss is already summoned.");
-            return false;
-        }
-
-        if (source.Group == null)
-        {
-            source.SendOrangeBarMessage("You must be grouped to perform the ritual.");
-            return false; 
-        }
-
-        foreach (var groupmember in source.Group!)
-        {
-            if (stage is not (PentagramQuestStage.CreatedPentagram or PentagramQuestStage.BossSpawned))
-            {
-                foreach (var groupmember2 in source.Group!)
-                {
-                    groupmember2.SendOrangeBarMessage("Someone inside the group hasn't created the pentagram.");
-                }
-                return false;
-            }
-
-            if (groupmember.UserStatSheet.BaseClass == BaseClass.Wizard)
-            {
-                if (!groupmember.Inventory.HasCount("Pentagram", 1))
-
-                    return false;
-            }
-        }
-        return true;
-    }
-    
-    private bool MapHasMonsters(MapInstance mapInstance)
-    {
-        var monstersOnMap = mapInstance.GetEntities<Monster>().Where(entity => !entity.Template.TemplateKey.Contains("Pet"));
-
-        if (monstersOnMap.Any())
-            return true;
-
-        return false;
-    }
 }
-

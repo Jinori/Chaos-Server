@@ -215,12 +215,10 @@ public class WWDungeonScript(
                 source.TryGiveGamePoints(10);
 
                 logger.WithTopics(
-                          [
-                              Topics.Entities.Aisling,
-                              Topics.Entities.Experience,
-                              Topics.Entities.Dialog,
-                              Topics.Entities.Quest
-                          ])
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Experience,
+                          Topics.Entities.Dialog,
+                          Topics.Entities.Quest)
                       .WithProperty(source)
                       .WithProperty(Subject)
                       .LogInformation("{@AislingName} has received {@ExpAmount} exp from a Lost Woodlands quest", source.Name, 500000);
@@ -391,7 +389,7 @@ public class WWDungeonScript(
                     }
 
                 break;
-        }
+            }
 
             case "wwdungeon_turnin2":
             {
@@ -401,12 +399,10 @@ public class WWDungeonScript(
                 source.TryGiveGamePoints(10);
 
                 logger.WithTopics(
-                          [
-                              Topics.Entities.Aisling,
-                              Topics.Entities.Experience,
-                              Topics.Entities.Dialog,
-                              Topics.Entities.Quest
-                          ])
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Experience,
+                          Topics.Entities.Dialog,
+                          Topics.Entities.Quest)
                       .WithProperty(source)
                       .WithProperty(Subject)
                       .LogInformation("{@AislingName} has received {@ExpAmount} exp from a Lost Woodlands quest", source.Name, 500000);

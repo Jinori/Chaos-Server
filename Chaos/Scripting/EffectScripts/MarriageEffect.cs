@@ -1,4 +1,3 @@
-using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Time;
@@ -10,18 +9,23 @@ public class MarriageEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(2);
+
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 150,
         TargetAnimation = 36
     };
+
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1500));
+
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(100));
+
     /// <inheritdoc />
     public override byte Icon => 82;
+
     /// <inheritdoc />
     public override string Name => "Marriage";
 

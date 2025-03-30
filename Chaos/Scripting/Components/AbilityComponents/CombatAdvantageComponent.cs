@@ -5,7 +5,6 @@ using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
-using Chaos.Scripting.SkillScripts.Abstractions;
 #endregion
 
 namespace Chaos.Scripting.Components.AbilityComponents;
@@ -41,7 +40,7 @@ public class CombatAdvantageComponent : IComponent
             {
                 //get the direction that vectors behind the target relative to the source
                 var behindTargetDirection = entity.DirectionalRelationTo(context.SourcePoint);
-                
+
                 //for each direction around the target, starting with the direction behind the target
                 foreach (var direction in behindTargetDirection.AsEnumerable())
                 {

@@ -7,8 +7,6 @@ namespace Chaos.Scripting.Components.AbilityComponents;
 
 public class ThrowWeaponComponent : IComponent
 {
-    
-    
     //Animations
     //10000 - Single Wooden Arrow
     //10001 - Double Crystal Arrow
@@ -24,11 +22,11 @@ public class ThrowWeaponComponent : IComponent
     //10011 - Surigum   
     //10012 - Big Surigum
     //10013 - Rock    
-    
+
     public void Execute(ActivationContext context, ComponentVars vars)
     {
         var targets = vars.GetTargets<Creature>();
-        
+
         foreach (var target in targets)
         {
             if (context.TargetMap.IsWall(target) || context.TargetMap.IsBlockingReactor(target))
@@ -40,7 +38,7 @@ public class ThrowWeaponComponent : IComponent
             {
                 case "Dagger":
                 {
-                    var ani = new Animation()
+                    var ani = new Animation
                     {
                         AnimationSpeed = 100,
                         SourceAnimation = 10009,
@@ -49,11 +47,12 @@ public class ThrowWeaponComponent : IComponent
                         TargetId = target.Id
                     };
                     context.TargetMap.ShowAnimation(ani);
+
                     break;
                 }
                 case "Secret":
                 {
-                    var ani = new Animation()
+                    var ani = new Animation
                     {
                         AnimationSpeed = 100,
                         SourceAnimation = 10011,
@@ -62,11 +61,12 @@ public class ThrowWeaponComponent : IComponent
                         TargetId = target.Id
                     };
                     context.TargetMap.ShowAnimation(ani);
+
                     break;
                 }
                 case "Surigum":
                 {
-                    var ani = new Animation()
+                    var ani = new Animation
                     {
                         AnimationSpeed = 100,
                         SourceAnimation = 10011,
@@ -75,12 +75,13 @@ public class ThrowWeaponComponent : IComponent
                         TargetId = target.Id
                     };
                     context.TargetMap.ShowAnimation(ani);
+
                     break;
                 }
                 case null:
                     return;
             }
-            
+
             return;
         }
     }

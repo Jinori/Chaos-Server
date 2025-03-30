@@ -10,11 +10,10 @@ namespace Chaos.Scripting.MonsterScripts.Boss.UndineFields;
 
 public sealed class UFOrcEnrageScript : MonsterScriptBase
 {
+    private readonly IIntervalTimer SkillUseTimer;
     private bool Bonus30Applied;
     private bool Bonus50Applied;
     private bool Bonus75Applied;
-    private readonly IIntervalTimer SkillUseTimer;
-   
 
     private Animation UpgradeAnimation { get; } = new()
     {
@@ -25,9 +24,11 @@ public sealed class UFOrcEnrageScript : MonsterScriptBase
     /// <inheritdoc />
     public UFOrcEnrageScript(Monster subject)
         : base(subject)
-    {
-        SkillUseTimer = new RandomizedIntervalTimer(TimeSpan.FromSeconds(20), 20, RandomizationType.Balanced, false);
-    }
+        => SkillUseTimer = new RandomizedIntervalTimer(
+            TimeSpan.FromSeconds(20),
+            20,
+            RandomizationType.Balanced,
+            false);
 
     public override void Update(TimeSpan delta)
     {
@@ -36,20 +37,23 @@ public sealed class UFOrcEnrageScript : MonsterScriptBase
         if (SkillUseTimer.IntervalElapsed)
         {
             var roll = IntegerRandomizer.RollSingle(100);
-            
+
             switch (roll)
             {
                 case < 40:
                     Subject.Say("GIT OUT OF MY FIELDS!");
+
                     break;
 
                 case < 80:
                     Subject.Say("Wuht do u thnk ur doin here?");
+
                     break;
-                
-                case <101:
+
+                case < 101:
                     Subject.StatSheet.AddHealthPct(10);
                     Subject.Say("Im harder to kill than that.");
+
                     break;
             }
         }
@@ -57,10 +61,15 @@ public sealed class UFOrcEnrageScript : MonsterScriptBase
         if (!Bonus75Applied && (Subject.StatSheet.HealthPercent <= 75))
         {
             Bonus75Applied = true;
+
             //Give Bonuses
-            var attrib = new Attributes { AtkSpeedPct = 50 };
+            var attrib = new Attributes
+            {
+                AtkSpeedPct = 50
+            };
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
+
             //Spawn Monsters
         }
 
@@ -71,7 +80,7 @@ public sealed class UFOrcEnrageScript : MonsterScriptBase
             var attrib = new Attributes
             {
                 Dmg = 15,
-                SkillDamagePct = 20,
+                SkillDamagePct = 20
             };
 
             Subject.StatSheet.AddBonus(attrib);

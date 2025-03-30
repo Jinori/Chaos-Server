@@ -101,13 +101,11 @@ public class ErbieQuestScript(Dialog subject, ILogger<Erbie> logger, IItemFactor
                             source.SendOrangeBarMessage("You have found all the Baby Erbies! Thank you for your help.");
 
                             logger.WithTopics(
-                                      [
-                                          Topics.Entities.Aisling,
-                                          Topics.Entities.Gold,
-                                          Topics.Entities.Experience,
-                                          Topics.Entities.Dialog,
-                                          Topics.Entities.Quest
-                                      ])
+                                      Topics.Entities.Aisling,
+                                      Topics.Entities.Gold,
+                                      Topics.Entities.Experience,
+                                      Topics.Entities.Dialog,
+                                      Topics.Entities.Quest)
                                   .WithProperty(source)
                                   .WithProperty(Subject)
                                   .LogInformation(

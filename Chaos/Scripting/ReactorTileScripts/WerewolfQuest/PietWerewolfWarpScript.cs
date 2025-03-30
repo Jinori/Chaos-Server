@@ -27,15 +27,16 @@ public class PietWerewolfWarpScript : ConfigurableReactorTileScriptBase
     {
         var aisling = source as Aisling;
         var targetMap = SimpleCache.Get<MapInstance>(Destination.Map);
-        
+
         if (source.Trackers.Enums.HasValue(WerewolfOfPiet.FollowedMerchant))
         {
             var targetMap2 = SimpleCache.Get<MapInstance>("piet_empty_room2");
             var point = new Point(11, 6);
             source.TraverseMap(targetMap2, point);
+
             return;
         }
-        
+
         if (source.StatSheet.Level < (targetMap.MinimumLevel ?? 0))
         {
             aisling?.SendOrangeBarMessage($"You must be at least level {targetMap.MinimumLevel} to enter this area.");

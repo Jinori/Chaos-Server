@@ -69,10 +69,7 @@ public class MythicKoboldScript : DialogScriptBase
 
                 if (kobold == MythicKobold.LowerKoboldComplete)
                 {
-                    Subject.Reply(
-                        source,
-                        "Skip",
-                        "kobold_start3start");
+                    Subject.Reply(source, "Skip", "kobold_start3start");
 
                     return;
                 }
@@ -100,30 +97,21 @@ public class MythicKoboldScript : DialogScriptBase
 
                 if (kobold == MythicKobold.ItemKoboldComplete)
                 {
-                    Subject.Reply(
-                        source,
-                        "Skip",
-                        "kobold_allystart");
+                    Subject.Reply(source, "Skip", "kobold_allystart");
 
                     return;
                 }
 
                 if (kobold == MythicKobold.AlliedKobold)
                 {
-                    Subject.Reply(
-                        source,
-                        "Skip",
-                        "kobold_start5start");
+                    Subject.Reply(source, "Skip", "kobold_start5start");
 
                     return;
                 }
 
                 if (kobold == MythicKobold.BossKoboldStarted)
                 {
-                    Subject.Reply(
-                        source,
-                        "Skip",
-                        "kobold_boss2start");
+                    Subject.Reply(source, "Skip", "kobold_boss2start");
 
                     return;
                 }
@@ -162,8 +150,7 @@ public class MythicKoboldScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
                     source.SendOrangeBarMessage("You received 10000000 experience!");
@@ -214,8 +201,7 @@ public class MythicKoboldScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
                     source.SendOrangeBarMessage("You received 10000000 experience!");
@@ -255,8 +241,7 @@ public class MythicKoboldScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
                     source.SendOrangeBarMessage("You received 10000000 experience!");
@@ -276,8 +261,9 @@ public class MythicKoboldScript : DialogScriptBase
             {
                 if (hasGrimlock
                     && (hasGrimlock
-                        == grimlock is MythicGrimlock.AlliedGrimlock or MythicGrimlock.BossGrimlockStarted
-                                                                     or MythicGrimlock.BossGrimlockDefeated))
+                        == grimlock is MythicGrimlock.AlliedGrimlock
+                                       or MythicGrimlock.BossGrimlockStarted
+                                       or MythicGrimlock.BossGrimlockDefeated))
                 {
                     Subject.Reply(
                         source,
@@ -339,8 +325,7 @@ public class MythicKoboldScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, fiftyPercent);
                     source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 25000000);
                     source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
@@ -350,11 +335,10 @@ public class MythicKoboldScript : DialogScriptBase
                 source.Trackers.Enums.Set(MythicKobold.BossKoboldDefeated);
                 source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);
 
-                if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5) &&
-                    !source.Trackers.Enums.HasValue(MythicQuestMain.CompletedMythic))
-                {
+                if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss)
+                    && (mythicboss >= 5)
+                    && !source.Trackers.Enums.HasValue(MythicQuestMain.CompletedMythic))
                     source.Trackers.Enums.Set(MythicQuestMain.CompletedAll);
-                }
             }
 
                 break;

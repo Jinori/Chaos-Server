@@ -18,7 +18,7 @@ public class MythicHorseWarpScript(Dialog subject, ISimpleCache simpleCache) : D
             case "horsewarp_initial":
             {
                 var vitality = source.StatSheet.MaximumHp + source.StatSheet.MaximumMp * 2;
-                
+
                 if ((source.StatSheet.Level >= 99) && (vitality >= 50000))
                 {
                     var option3 = new DialogOption
@@ -105,7 +105,6 @@ public class MythicHorseWarpScript(Dialog subject, ISimpleCache simpleCache) : D
                     source.TraverseMap(horse1, point);
                 }
 
-
                 Subject.Close(source);
 
                 break;
@@ -126,7 +125,6 @@ public class MythicHorseWarpScript(Dialog subject, ISimpleCache simpleCache) : D
                     var point = new Point(13, 1);
                     source.TraverseMap(horse1, point);
                 }
-
 
                 Subject.Close(source);
 

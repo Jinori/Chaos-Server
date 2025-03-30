@@ -20,7 +20,8 @@ public class ELynithMonsterWanderingScript : MonsterScriptBase
             return;
 
         // Check if there are any players (Aislings) on the map
-        if (!Map.GetEntities<Aisling>().Any())
+        if (!Map.GetEntities<Aisling>()
+                .Any())
             return;
 
         // Get the center point of the map
@@ -34,5 +35,4 @@ public class ELynithMonsterWanderingScript : MonsterScriptBase
         // Reset the monster's move timer
         Subject.MoveTimer.Reset();
     }
-
 }

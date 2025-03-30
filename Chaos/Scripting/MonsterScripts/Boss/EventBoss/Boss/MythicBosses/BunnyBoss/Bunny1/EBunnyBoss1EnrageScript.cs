@@ -21,14 +21,15 @@ public sealed class EBunnyBoss1EnrageScript : MonsterScriptBase
 
     /// <inheritdoc />
     public EBunnyBoss1EnrageScript(Monster subject, IMonsterFactory monsterFactory)
-        : base(subject) =>
-        MonsterFactory = monsterFactory;
+        : base(subject)
+        => MonsterFactory = monsterFactory;
 
     public override void Update(TimeSpan delta)
     {
         if (!Bonus75Applied && (Subject.StatSheet.HealthPercent <= 75))
         {
             Bonus75Applied = true;
+
             //Spawn Monsters
             var rectangle = new Rectangle(Subject, 5, 5);
 

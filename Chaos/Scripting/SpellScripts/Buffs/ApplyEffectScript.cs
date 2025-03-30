@@ -21,6 +21,9 @@ public class ApplyEffectScript : ConfigurableSpellScriptBase,
 {
     public List<string>? EffectKeysToBreak { get; set; }
 
+    public int? HealthCost { get; init; }
+    public decimal PctHealthCost { get; init; }
+
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
@@ -29,12 +32,6 @@ public class ApplyEffectScript : ConfigurableSpellScriptBase,
     public ApplyEffectScript(Spell subject, IEffectFactory effectFactory)
         : base(subject)
         => EffectFactory = effectFactory;
-
-    /// <inheritdoc />
-    public override void OnUse(SpellContext context)
-        => new ComponentExecutor(context).WithOptions(this)
-                                         .ExecuteAndCheck<SpellComponent<Creature>>()
-                                         ?.Execute<ApplyEffectAbilityComponent>();
 
     /// <inheritdoc />
     public override bool CanUse(SpellContext context)
@@ -47,6 +44,12 @@ public class ApplyEffectScript : ConfigurableSpellScriptBase,
 
         return true;
     }
+
+    /// <inheritdoc />
+    public override void OnUse(SpellContext context)
+        => new ComponentExecutor(context).WithOptions(this)
+                                         .ExecuteAndCheck<SpellComponent<Creature>>()
+                                         ?.Execute<ApplyEffectAbilityComponent>();
 
     #region ScriptVars
     /// <inheritdoc />

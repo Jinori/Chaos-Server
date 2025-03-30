@@ -11,6 +11,29 @@ public class KadesMoveToTargetScript : MonsterScriptBase
     public KadesMoveToTargetScript(Monster subject)
         : base(subject) { }
 
+    private void ResetAttackTimerIfMoved()
+    {
+        var now = DateTime.UtcNow;
+        var lastWalk = Subject.Trackers.LastWalk;
+        var lastTurn = Subject.Trackers.LastTurn;
+
+        var walkedRecently = lastWalk.HasValue
+                             && (now.Subtract(lastWalk.Value)
+                                    .TotalMilliseconds
+                                 < Subject.Template.MoveIntervalMs);
+
+        var turnedRecently = lastTurn.HasValue
+                             && (now.Subtract(lastTurn.Value)
+                                    .TotalMilliseconds
+                                 < Subject.Template.MoveIntervalMs);
+
+        if (walkedRecently || turnedRecently)
+        {
+            Subject.WanderTimer.Reset();
+            Subject.SkillTimer.Reset();
+        }
+    }
+
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
@@ -23,11 +46,13 @@ public class KadesMoveToTargetScript : MonsterScriptBase
                 .Any())
             return;
 
-        if (Map.GetEntities<Aisling>().Any(x => x.Trackers.Enums.HasValue(SummonerBossFight.FirstStage) 
-                                                || x.Trackers.Enums.HasValue(SummonerBossFight.SecondStage) 
-                                                || x.Trackers.Enums.HasValue(SummonerBossFight.ThirdStage) 
-                                                || x.Trackers.Enums.HasValue(SummonerBossFight.FourthStage)
-                                                || x.Trackers.Enums.HasValue(SummonerBossFight.FifthStage)))
+        if (Map.GetEntities<Aisling>()
+               .Any(
+                   x => x.Trackers.Enums.HasValue(SummonerBossFight.FirstStage)
+                        || x.Trackers.Enums.HasValue(SummonerBossFight.SecondStage)
+                        || x.Trackers.Enums.HasValue(SummonerBossFight.ThirdStage)
+                        || x.Trackers.Enums.HasValue(SummonerBossFight.FourthStage)
+                        || x.Trackers.Enums.HasValue(SummonerBossFight.FifthStage)))
             return;
 
         var distance = Subject.ManhattanDistanceFrom(Target);
@@ -52,22 +77,7 @@ public class KadesMoveToTargetScript : MonsterScriptBase
                 break;
             }
         }
-        
-        ResetAttackTimerIfMoved();
-    }
-    
-    private void ResetAttackTimerIfMoved()
-    {
-        var now = DateTime.UtcNow;
-        var lastWalk = Subject.Trackers.LastWalk;
-        var lastTurn = Subject.Trackers.LastTurn;
-        var walkedRecently = lastWalk.HasValue && (now.Subtract(lastWalk.Value).TotalMilliseconds < Subject.Template.MoveIntervalMs);
-        var turnedRecently = lastTurn.HasValue && (now.Subtract(lastTurn.Value).TotalMilliseconds < Subject.Template.MoveIntervalMs);
 
-        if (walkedRecently || turnedRecently)
-        {
-            Subject.WanderTimer.Reset();
-            Subject.SkillTimer.Reset();
-        }
+        ResetAttackTimerIfMoved();
     }
 }

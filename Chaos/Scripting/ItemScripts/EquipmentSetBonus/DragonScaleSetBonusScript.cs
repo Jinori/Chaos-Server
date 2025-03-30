@@ -1,10 +1,9 @@
-using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
-using Chaos.Models.World;
 using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.EquipmentSetBonus;
+
 public class DragonScaleSetBonusScript : SetBonusItemScriptBase
 {
     protected override Dictionary<int, Attributes> SetBonus { get; } = new()

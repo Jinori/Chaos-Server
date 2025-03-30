@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.World;
@@ -30,11 +29,13 @@ public class CarnunGladeScript : ReactorTileScriptBase
         if (hasStage && (stage == NightmareQuestStage.Started))
             if (aisling.UserStatSheet.BaseClass == BaseClass.Warrior)
             {
-                aisling.Trackers.Enums.Set(NightmareQuestStage.MetRequirementsToEnter1);   
+                aisling.Trackers.Enums.Set(NightmareQuestStage.MetRequirementsToEnter1);
                 aisling.SendOrangeBarMessage("You notice what looks like the glade of Carnun.");
             }
 
-        if (stage is NightmareQuestStage.MetRequirementsToEnter1 or NightmareQuestStage.EnteredDream or NightmareQuestStage.SpawnedNightmare)
+        if (stage is NightmareQuestStage.MetRequirementsToEnter1
+                     or NightmareQuestStage.EnteredDream
+                     or NightmareQuestStage.SpawnedNightmare)
             if (aisling.UserStatSheet.BaseClass == BaseClass.Warrior)
             {
                 var npcpoint = new Point(aisling.X, aisling.Y);

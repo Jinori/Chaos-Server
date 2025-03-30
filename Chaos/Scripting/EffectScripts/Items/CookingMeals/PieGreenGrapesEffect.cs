@@ -38,7 +38,7 @@ public class PieGreenGrapesEffect : EffectBase, NonOverwritableEffectComponent.I
 
     public override byte Icon => 72;
     public override string Name => "PieGreengrapes";
-    
+
     protected byte? Sound => 115;
 
     public override void OnApplied()

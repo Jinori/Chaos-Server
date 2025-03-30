@@ -1,5 +1,4 @@
 ﻿using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Geometry;
@@ -42,8 +41,7 @@ public class MaleWizardNightmareChallengeMapScript : MapScriptBase
         MapInstance subject,
         IMonsterFactory monsterFactory,
         IItemFactory itemFactory,
-        ISimpleCache simpleCache
-    )
+        ISimpleCache simpleCache)
         : base(subject)
     {
         ItemFactory = itemFactory;
@@ -53,8 +51,13 @@ public class MaleWizardNightmareChallengeMapScript : MapScriptBase
         StartDelay = TimeSpan.FromSeconds(4);
         AnimationInterval = new IntervalTimer(TimeSpan.FromMilliseconds(100));
         AnimationShape1 = new Circle(new Point(13, 10), 6);
-        ShapeOutline1 = AnimationShape1.GetOutline().ToList();
-        ReverseOutline1 = ShapeOutline1.AsEnumerable().Reverse().ToList();
+
+        ShapeOutline1 = AnimationShape1.GetOutline()
+                                       .ToList();
+
+        ReverseOutline1 = ShapeOutline1.AsEnumerable()
+                                       .Reverse()
+                                       .ToList();
         UpdateTimer = new IntervalTimer(TimeSpan.FromMilliseconds(200));
         MonsterDelay = new IntervalTimer(TimeSpan.FromSeconds(20));
         NightmareComplete = new IntervalTimer(TimeSpan.FromMinutes(6));
@@ -76,10 +79,7 @@ public class MaleWizardNightmareChallengeMapScript : MapScriptBase
         {
             var point = GenerateSpawnPoint();
 
-            var monster = MonsterFactory.Create(
-                "nightmare_cthonic1",
-                Subject,
-                point);
+            var monster = MonsterFactory.Create("nightmare_cthonic1", Subject, point);
 
             monsters.Add(monster);
         }
@@ -122,7 +122,6 @@ public class MaleWizardNightmareChallengeMapScript : MapScriptBase
         Subject.AddEntities(windwalls);
     }
 
-
     public override void Update(TimeSpan delta)
     {
         UpdateTimer?.Update(delta);
@@ -130,15 +129,16 @@ public class MaleWizardNightmareChallengeMapScript : MapScriptBase
         NightmareComplete?.Update(delta);
 
         if (UpdateTimer!.IntervalElapsed)
+
             // Switch statement to determine the current state of the script
             switch (State)
             {
                 case ScriptState.Dormant:
                 {
                     if (Subject.GetEntities<Aisling>()
-                        .Any(
-                            a => a.Trackers.Enums.TryGetValue(out NightmareQuestStage stage)
-                                 && (stage == NightmareQuestStage.EnteredDream)))
+                               .Any(
+                                   a => a.Trackers.Enums.TryGetValue(out NightmareQuestStage stage)
+                                        && (stage == NightmareQuestStage.EnteredDream)))
                     {
                         SpawnWalls();
                         State = ScriptState.DelayedStart;
@@ -146,28 +146,30 @@ public class MaleWizardNightmareChallengeMapScript : MapScriptBase
                 }
 
                     break;
+
                 // Delayed start state
                 case ScriptState.DelayedStart:
                     // Set the start time if it is not already set
                     StartTime ??= DateTime.UtcNow;
 
                     // Check if the start delay has been exceeded
-                    if (DateTime.UtcNow - StartTime > StartDelay)
+                    if ((DateTime.UtcNow - StartTime) > StartDelay)
                     {
                         // Reset the start time
                         StartTime = null;
+
                         // Set the state to spawning
                         State = ScriptState.Spawning;
 
                         // Get all Aislings in the subject
                         foreach (var aisling in Subject.GetEntities<Aisling>())
+
                             // Send an orange bar message to the Aisling
-                            aisling.Client.SendServerMessage(
-                                ServerMessageType.OrangeBar1,
-                                "Kill 25 Enemies to defeat your nightmare.");
+                            aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Kill 25 Enemies to defeat your nightmare.");
                     }
 
                     break;
+
                 // Spawning state
                 case ScriptState.Spawning:
                     // Update the animation interval
@@ -180,9 +182,11 @@ public class MaleWizardNightmareChallengeMapScript : MapScriptBase
                     // Get the points for the current animation index
                     var pt1 = ShapeOutline1[AnimationIndex];
                     var pt2 = ReverseOutline1[AnimationIndex];
+
                     // Show the animations for the points
                     Subject.ShowAnimation(Animation.GetPointAnimation(pt1));
                     Subject.ShowAnimation(Animation.GetPointAnimation(pt2));
+
                     // Increment the animation index
                     AnimationIndex++;
 
@@ -198,11 +202,13 @@ public class MaleWizardNightmareChallengeMapScript : MapScriptBase
                         SpawnMonsters();
 
                         State = ScriptState.Spawned;
+
                         // Reset the animation index
                         AnimationIndex = 0;
                     }
 
                     break;
+
                 // Spawned state
                 case ScriptState.Spawned:
                 {
@@ -227,10 +233,12 @@ public class MaleWizardNightmareChallengeMapScript : MapScriptBase
                     }
 
                     // Check if there are any Aislings in the subject
-                    if (!Subject.GetEntities<Aisling>().Any())
+                    if (!Subject.GetEntities<Aisling>()
+                                .Any())
                     {
                         // Get all monsters in the subject
-                        var monsters = Subject.GetEntities<Monster>().ToList();
+                        var monsters = Subject.GetEntities<Monster>()
+                                              .ToList();
 
                         // Remove all monsters from the subject
                         foreach (var monster in monsters)
@@ -247,21 +255,66 @@ public class MaleWizardNightmareChallengeMapScript : MapScriptBase
                 {
                     var nightmaregearDictionary = new Dictionary<(BaseClass, Gender), string[]>
                     {
-                        { (BaseClass.Warrior, Gender.Male), ["malecarnunplate", "carnunhelmet"] },
-                        { (BaseClass.Warrior, Gender.Female), ["femalecarnunplate", "carnunhelmet"] },
-                        { (BaseClass.Monk, Gender.Male), ["maleaosdicpatternwalker"] },
-                        { (BaseClass.Monk, Gender.Female), ["femaleaosdicpatternwalker"] },
-                        { (BaseClass.Rogue, Gender.Male), ["malemarauderhide", "maraudermask"] },
-                        { (BaseClass.Rogue, Gender.Female), ["femalemarauderhide", "maraudermask"] },
-                        { (BaseClass.Priest, Gender.Male), ["malecthonicdisciplerobes", "cthonicdisciplecaputium"] },
-                        { (BaseClass.Priest, Gender.Female), ["morrigudisciplepellison", "holyhairband"] },
-                        { (BaseClass.Wizard, Gender.Male), ["cthonicmagusrobes", "cthonicmaguscaputium"] },
-                        { (BaseClass.Wizard, Gender.Female), ["morrigumaguspellison", "magushairband"] }
+                        {
+                            (BaseClass.Warrior, Gender.Male), [
+                                                                  "malecarnunplate",
+                                                                  "carnunhelmet"
+                                                              ]
+                        },
+                        {
+                            (BaseClass.Warrior, Gender.Female), [
+                                                                    "femalecarnunplate",
+                                                                    "carnunhelmet"
+                                                                ]
+                        },
+                        {
+                            (BaseClass.Monk, Gender.Male), ["maleaosdicpatternwalker"]
+                        },
+                        {
+                            (BaseClass.Monk, Gender.Female), ["femaleaosdicpatternwalker"]
+                        },
+                        {
+                            (BaseClass.Rogue, Gender.Male), [
+                                                                "malemarauderhide",
+                                                                "maraudermask"
+                                                            ]
+                        },
+                        {
+                            (BaseClass.Rogue, Gender.Female), [
+                                                                  "femalemarauderhide",
+                                                                  "maraudermask"
+                                                              ]
+                        },
+                        {
+                            (BaseClass.Priest, Gender.Male), [
+                                                                 "malecthonicdisciplerobes",
+                                                                 "cthonicdisciplecaputium"
+                                                             ]
+                        },
+                        {
+                            (BaseClass.Priest, Gender.Female), [
+                                                                   "morrigudisciplepellison",
+                                                                   "holyhairband"
+                                                               ]
+                        },
+                        {
+                            (BaseClass.Wizard, Gender.Male), [
+                                                                 "cthonicmagusrobes",
+                                                                 "cthonicmaguscaputium"
+                                                             ]
+                        },
+                        {
+                            (BaseClass.Wizard, Gender.Female), [
+                                                                   "morrigumaguspellison",
+                                                                   "magushairband"
+                                                               ]
+                        }
                     };
 
-                    var player = Subject.GetEntities<Aisling>().FirstOrDefault(x =>
-                        x.Trackers.Enums.TryGetValue(out NightmareQuestStage hasNightmare) &&
-                        (hasNightmare == NightmareQuestStage.SpawnedNightmare));
+                    var player = Subject.GetEntities<Aisling>()
+                                        .FirstOrDefault(
+                                            x => x.Trackers.Enums.TryGetValue(out NightmareQuestStage hasNightmare)
+                                                 && (hasNightmare == NightmareQuestStage.SpawnedNightmare));
 
                     if (player != null)
                     {
@@ -283,10 +336,9 @@ public class MaleWizardNightmareChallengeMapScript : MapScriptBase
                         if (nightmaregearDictionary.TryGetValue(gearKey, out var nightmaregear))
                         {
                             var hasGear = nightmaregear.All(
-                                gearItemName =>
-                                    player.Inventory.ContainsByTemplateKey(gearItemName)
-                                    || player.Bank.Contains(gearItemName)
-                                    || player.Equipment.ContainsByTemplateKey(gearItemName));
+                                gearItemName => player.Inventory.ContainsByTemplateKey(gearItemName)
+                                                || player.Bank.Contains(gearItemName)
+                                                || player.Equipment.ContainsByTemplateKey(gearItemName));
 
                             if (!hasGear)
                                 foreach (var gearItemName in nightmaregear)
@@ -300,7 +352,6 @@ public class MaleWizardNightmareChallengeMapScript : MapScriptBase
                         var pointS = new Point(5, 7);
                         player.TraverseMap(mapInstance, pointS);
                         player.SendOrangeBarMessage("You wake up from the nightmare feeling refreshed.");
-
                     }
 
                     break;

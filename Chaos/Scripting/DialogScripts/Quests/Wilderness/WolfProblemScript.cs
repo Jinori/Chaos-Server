@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Legend;
@@ -73,11 +72,11 @@ public class WolfProblemScript : DialogScriptBase
                 }
 
                 Logger.WithTopics(
-                          [Topics.Entities.Aisling,
+                          Topics.Entities.Aisling,
                           Topics.Entities.Experience,
                           Topics.Entities.Gold,
                           Topics.Entities.Dialog,
-                          Topics.Entities.Quest])
+                          Topics.Entities.Quest)
                       .WithProperty(source)
                       .WithProperty(Subject)
                       .LogInformation(

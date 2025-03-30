@@ -24,9 +24,7 @@ public class NonOverwritableEffectComponent : IConditionalComponent
         if (conflictingEffect is null)
         {
             if (target is Aisling aisling)
-                if ((context.SourceAisling?.Name != aisling.Name)
-                    && (options.Name != "GMKnowledge")
-                    && !target.Effects.Contains("GM Hide"))
+                if ((context.SourceAisling?.Name != aisling.Name) && (options.Name != "GMKnowledge") && !target.Effects.Contains("GM Hide"))
                 {
                     context.SourceAisling?.SendActiveMessage($"You cast {options.Name} on {aisling.Name}.");
                     aisling.SendActiveMessage($"{context.Source.Name} casted {options.Name} on you.");

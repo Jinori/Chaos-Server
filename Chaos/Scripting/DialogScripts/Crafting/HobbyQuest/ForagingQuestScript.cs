@@ -7,14 +7,12 @@ using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.DialogScripts.Crafting.HobbyQuest
-{
-    public class ForagingQuestScript : DialogScriptBase
-    {
-        private readonly IItemFactory ItemFactory;
-        private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
+namespace Chaos.Scripting.DialogScripts.Crafting.HobbyQuest;
 
-        private static readonly (int Marks, int Gold, int ExpPercent, int Exp99, int GamePoints, string? ItemKey, string? Message, ForagingQuest Flag)[] RewardStages = 
+public class ForagingQuestScript : DialogScriptBase
+{
+    private static readonly (int Marks, int Gold, int ExpPercent, int Exp99, int GamePoints, string? ItemKey, string? Message, ForagingQuest
+        Flag)[] RewardStages =
         {
             (250, 10000, 10, 1000000, 5, null, null, ForagingQuest.Reached250),
             (500, 25000, 10, 5000000, 5, null, null, ForagingQuest.Reached500),
@@ -33,81 +31,84 @@ namespace Chaos.Scripting.DialogScripts.Crafting.HobbyQuest
             (50000, 10000000, 50, 200000000, 100, "hybrasylglove", "Goran hands you a new cloth glove!", ForagingQuest.Reached50000)
         };
 
-        public ForagingQuestScript(Dialog subject, IItemFactory itemFactory)
-            : base(subject)
-        {
-            ItemFactory = itemFactory;
-        }
+    private readonly IItemFactory ItemFactory;
+    private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
 
-        public override void OnDisplaying(Aisling source)
-        {
-            var sourceForagingMarks = source.Legend.GetCount("forage");
-            var hasRewarded = false;
+    public ForagingQuestScript(Dialog subject, IItemFactory itemFactory)
+        : base(subject)
+        => ItemFactory = itemFactory;
 
-            // Display initial dialog based on conditions
-            if (Subject.Template.TemplateKey.Equals("goran_initial", StringComparison.OrdinalIgnoreCase) &&
-                source.Trackers.Flags.HasFlag(Hobbies.Foraging) &&
-                sourceForagingMarks >= RewardStages[0].Marks)
-            {
-                Subject.Options.Insert(0, new DialogOption
+    public override void OnDisplaying(Aisling source)
+    {
+        var sourceForagingMarks = source.Legend.GetCount("forage");
+        var hasRewarded = false;
+
+        // Display initial dialog based on conditions
+        if (Subject.Template.TemplateKey.Equals("goran_initial", StringComparison.OrdinalIgnoreCase)
+            && source.Trackers.Flags.HasFlag(Hobbies.Foraging)
+            && (sourceForagingMarks >= RewardStages[0].Marks))
+        {
+            Subject.Options.Insert(
+                0,
+                new DialogOption
                 {
                     DialogKey = "foragingquest_initial",
                     OptionText = "I am an Experienced Forager now."
                 });
+
+            return;
+        }
+
+        // Handle the initial dialog for foraging quest
+        if (Subject.Template.TemplateKey.Equals("foragingquest_initial", StringComparison.OrdinalIgnoreCase))
+        {
+            if (source.Trackers.Flags.HasFlag(ForagingQuest.CompletedForaging))
+            {
+                Subject.Reply(source, "The greenery fears your presence now. It tells me so... *goran chuckles*", "goran_initial");
+
                 return;
             }
 
-            // Handle the initial dialog for foraging quest
-            if (Subject.Template.TemplateKey.Equals("foragingquest_initial", StringComparison.OrdinalIgnoreCase))
-            {
-                if (source.Trackers.Flags.HasFlag(ForagingQuest.CompletedForaging))
-                {
-                    Subject.Reply(source, "The greenery fears your presence now. It tells me so... *goran chuckles*", "goran_initial");
-                    return;
-                }
+            foreach (var stage in RewardStages)
 
-                foreach (var stage in RewardStages)
+                // Check if the player has reached a reward stage and hasn't been rewarded for it yet
+                if ((sourceForagingMarks >= stage.Marks) && !source.Trackers.Flags.HasFlag(stage.Flag))
                 {
-                    // Check if the player has reached a reward stage and hasn't been rewarded for it yet
-                    if (sourceForagingMarks >= stage.Marks && !source.Trackers.Flags.HasFlag(stage.Flag))
+                    // Apply the flag to mark that the reward for this stage has been given
+                    source.Trackers.Flags.AddFlag(stage.Flag);
+
+                    // Calculate experience based on player level
+                    var exp = source.StatSheet.Level != 99
+                        ? stage.ExpPercent * LevelUpFormulae.Default.CalculateTnl(source) / 100
+                        : stage.Exp99;
+
+                    // Apply rewards
+                    ExperienceDistributionScript.GiveExp(source, exp);
+                    source.GiveGoldOrSendToBank(stage.Gold);
+                    source.TryGiveGamePoints(stage.GamePoints);
+
+                    if (!string.IsNullOrEmpty(stage.ItemKey))
                     {
-                        // Apply the flag to mark that the reward for this stage has been given
-                        source.Trackers.Flags.AddFlag(stage.Flag);
-
-                        // Calculate experience based on player level
-                        int exp = source.StatSheet.Level != 99 ? 
-                            stage.ExpPercent * LevelUpFormulae.Default.CalculateTnl(source) / 100 : 
-                            stage.Exp99;
-                        
-                        // Apply rewards
-                        ExperienceDistributionScript.GiveExp(source, exp);
-                        source.GiveGoldOrSendToBank(stage.Gold);
-                        source.TryGiveGamePoints(stage.GamePoints);
-
-                        if (!string.IsNullOrEmpty(stage.ItemKey))
-                        {
-                            var item = ItemFactory.Create(stage.ItemKey);
-                            source.GiveItemOrSendToBank(item);
-                        }
-
-                        if (!string.IsNullOrEmpty(stage.Message))
-                        {
-                            source.SendOrangeBarMessage(stage.Message);
-                        }
-
-                        hasRewarded = true;
+                        var item = ItemFactory.Create(stage.ItemKey);
+                        source.GiveItemOrSendToBank(item);
                     }
+
+                    if (!string.IsNullOrEmpty(stage.Message))
+                        source.SendOrangeBarMessage(stage.Message);
+
+                    hasRewarded = true;
                 }
 
-                if (hasRewarded)
-                {
-                    Subject.Reply(source, "Not many keep foraging like you, Aisling. You're getting better with each day. I must reward you with a little something.", "goran_initial");
-                }
-                else
-                {
-                    Subject.Reply(source, "Your skill hasn't improved since the last time I saw you, Aisling. Keep on foraging!", "goran_initial");
-                }
-            }
+            if (hasRewarded)
+                Subject.Reply(
+                    source,
+                    "Not many keep foraging like you, Aisling. You're getting better with each day. I must reward you with a little something.",
+                    "goran_initial");
+            else
+                Subject.Reply(
+                    source,
+                    "Your skill hasn't improved since the last time I saw you, Aisling. Keep on foraging!",
+                    "goran_initial");
         }
     }
 }

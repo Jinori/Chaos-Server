@@ -22,7 +22,7 @@ public class IntimidateEffect : EffectBase
 
         if (directionOfSource is Direction.Invalid)
             return;
-        
+
         var awayFromSource = directionOfSource.Reverse();
         Subject.Turn(awayFromSource, true);
     }

@@ -11,16 +11,36 @@ namespace Chaos.Scripting.ReactorTileScripts.Arena;
 public class ColorClashScript : ReactorTileScriptBase
 {
     public ArenaTeam? CurrentTeam { get; set; }
-    
-    private Animation BlueAnimation { get; } = new() { AnimationSpeed = 250, TargetAnimation = 406 };
-    private Animation GoldAnimation { get; } = new() { AnimationSpeed = 250, TargetAnimation = 409 };
-    private Animation GreenAnimation { get; } = new() { AnimationSpeed = 250, TargetAnimation = 407 };
-    private Animation RedAnimation { get; } = new() { AnimationSpeed = 250, TargetAnimation = 408 };
-    
+
+    private Animation BlueAnimation { get; } = new()
+    {
+        AnimationSpeed = 250,
+        TargetAnimation = 406
+    };
+
+    private Animation GoldAnimation { get; } = new()
+    {
+        AnimationSpeed = 250,
+        TargetAnimation = 409
+    };
+
+    private Animation GreenAnimation { get; } = new()
+    {
+        AnimationSpeed = 250,
+        TargetAnimation = 407
+    };
+
+    private Animation RedAnimation { get; } = new()
+    {
+        AnimationSpeed = 250,
+        TargetAnimation = 408
+    };
+
     private IIntervalTimer UpdateColorTimer { get; }
 
     public ColorClashScript(ReactorTile subject)
-        : base(subject) => UpdateColorTimer = new IntervalTimer(TimeSpan.FromSeconds(1));
+        : base(subject)
+        => UpdateColorTimer = new IntervalTimer(TimeSpan.FromSeconds(1));
 
     public override void OnWalkedOn(Creature source)
     {
@@ -37,10 +57,10 @@ public class ColorClashScript : ReactorTileScriptBase
 
         if (!UpdateColorTimer.IntervalElapsed)
             return;
-        
+
         if (CurrentTeam is ArenaTeam.None or null)
             return;
-            
+
         // Determine which animation to use based on the current team's color
         var animation = CurrentTeam switch
         {

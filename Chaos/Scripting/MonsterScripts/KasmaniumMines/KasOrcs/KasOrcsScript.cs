@@ -2,7 +2,6 @@ using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Scripting.MonsterScripts.Boss;
-using Chaos.Scripting.MonsterScripts.Boss.CryptBosses.FunnyBones;
 using Chaos.Scripting.MonsterScripts.Boss.UndineFields;
 
 namespace Chaos.Scripting.MonsterScripts.KasmaniumMines.KasOrcs;
@@ -22,7 +21,7 @@ public class KasOrcsScript : CompositeMonsterScript
         GetScriptKey(typeof(DeathScript)),
         GetScriptKey(typeof(DisplayNameScript)),
         GetScriptKey(typeof(UFOrcRegenScript)),
-        GetScriptKey(typeof(DelayDefenseScript)),
+        GetScriptKey(typeof(DelayDefenseScript))
     };
 
     /// <inheritdoc />

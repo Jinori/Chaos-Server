@@ -31,7 +31,6 @@ public class BerserkEffect : EffectBase
         };
 
         AislingSubject?.StatSheet.AddBonus(attributes);
-        AislingSubject?.StatSheet.SubtractHp(1000);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "{=bYou suddenly go berserk, increasing damage and AC.");
         AislingSubject?.Animate(Animation);

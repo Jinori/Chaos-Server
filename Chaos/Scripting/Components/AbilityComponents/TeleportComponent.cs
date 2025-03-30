@@ -1,5 +1,4 @@
 using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions.Geometry;
@@ -20,7 +19,8 @@ public class TeleportComponent : IComponent
         var mapInstance = options.SimpleCache.Get<MapInstance>(options.DestinationMapKey);
         var origin = options.OriginPoint;
 
-        var possiblePoints = mapInstance.Template.Bounds
+        var possiblePoints = mapInstance.Template
+                                        .Bounds
                                         .GetPoints()
                                         .Where(pt => mapInstance.IsWalkable(pt, collisionType: CreatureType.Aisling) && !mapInstance.IsBlockingReactor(pt))
                                         .FloodFill(origin)

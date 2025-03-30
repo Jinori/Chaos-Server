@@ -1,5 +1,4 @@
 using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
@@ -15,8 +14,8 @@ public class SapphireStreamPassScript : ReactorTileScriptBase
 
     /// <inheritdoc />
     public SapphireStreamPassScript(ReactorTile subject, ISimpleCache simpleCache)
-        : base(subject) =>
-        SimpleCache = simpleCache;
+        : base(subject)
+        => SimpleCache = simpleCache;
 
     /// <inheritdoc />
     public override void OnWalkedOn(Creature source)
@@ -30,7 +29,7 @@ public class SapphireStreamPassScript : ReactorTileScriptBase
 
             return;
         }
-        
+
         var targetMap = SimpleCache.Get<MapInstance>("sapphire_stream");
         source.TraverseMap(targetMap, new Point(13, 11));
     }

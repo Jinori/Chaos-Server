@@ -38,6 +38,7 @@ public class ValentinesCandyEffect : EffectBase, NonOverwritableEffectComponent.
     {
         var execution = new ComponentExecutor(source, target).WithOptions(this)
                                                              .ExecuteAndCheck<NonOverwritableEffectComponent>();
+
         return execution is not null;
     }
 }

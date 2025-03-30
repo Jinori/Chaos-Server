@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -13,7 +12,7 @@ public class DodgeEffect : EffectBase
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(10);
     public override byte Icon => 18;
     public override string Name => "Dodge";
-    public int GetAcReduction() => (int)Math.Round(-3 - (15.0 / 98.0) * (Subject.StatSheet.Level - 1));
+    public int GetAcReduction() => (int)Math.Round(-3 - 15.0 / 98.0 * (Subject.StatSheet.Level - 1));
 
     public override void OnApplied()
     {
@@ -23,11 +22,12 @@ public class DodgeEffect : EffectBase
         {
             Ac = ArmorClassSaved
         };
+
         var attributesToSubtract = new Attributes
         {
             MagicResistance = 15
         };
-        
+
         Subject.StatSheet.AddBonus(attributesToAdd);
         Subject.StatSheet.SubtractBonus(attributesToSubtract);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
@@ -42,29 +42,18 @@ public class DodgeEffect : EffectBase
         {
             MagicResistance = 15
         };
+
         var attributesToSubtract = new Attributes
         {
             Ac = ArmorClassSaved
         };
-        
+
         Subject.StatSheet.AddBonus(attributesToAdd);
         Subject.StatSheet.SubtractBonus(attributesToSubtract);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Armor and Magic Resist have returned to normal.");
     }
-    
-    /// <inheritdoc />
-    public override void Update(TimeSpan delta)
-    {
-        base.Update(delta);
-        
-        if (Subject is Aisling aisling && aisling.Equipment.Contains(3))
-        {
-            aisling.Effects.Dispel("Dodge");
-            AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A physical shield prevents your magic.");
-        }
-    }
-    
+
     public override bool ShouldApply(Creature source, Creature target)
     {
         if (source.Effects.Contains("Dodge"))
@@ -75,5 +64,17 @@ public class DodgeEffect : EffectBase
         }
 
         return true;
+    }
+
+    /// <inheritdoc />
+    public override void Update(TimeSpan delta)
+    {
+        base.Update(delta);
+
+        if (Subject is Aisling aisling && aisling.Equipment.Contains(3))
+        {
+            aisling.Effects.Dispel("Dodge");
+            AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A physical shield prevents your magic.");
+        }
     }
 }

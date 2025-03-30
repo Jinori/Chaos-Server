@@ -3,7 +3,6 @@ using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -139,7 +138,6 @@ public sealed class SacrificeBossCascadingDamageTileScript : ConfigurableReactor
 
     public decimal? PctOfHealthMultiplier { get; init; }
     public decimal? PctOfHealth { get; init; }
-
 
     public bool? SurroundingTargets { get; init; }
     public decimal? DamageMultiplierPerTarget { get; init; }

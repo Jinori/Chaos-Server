@@ -13,20 +13,20 @@ namespace Chaos.Scripting.MonsterScripts.Limbo.Wizard;
 public class LimboWizardScript : MonsterScriptBase
 {
     private readonly IIntervalTimer ActionTimer;
+    private readonly Spell[] AllSpells;
     private readonly Spell ArdAtharMeall;
-    private readonly Spell DiaCradh;
     private readonly Spell ArdCreagMeall;
     private readonly Spell ArdSalMeall;
     private readonly Spell ArdSradMeall;
     private readonly Spell ChainLightning;
     private readonly Spell Dall;
+    private readonly Spell DiaCradh;
+    private readonly TimeSpan FizzleCooldown;
     private readonly Spell MagmaSurge;
     private readonly Spell[] MeallSpells;
     private readonly ISpellFactory SpellFactory;
     private readonly Dictionary<Func<List<Aisling>, bool>, int> WeightedActions;
-    private readonly Spell[] AllSpells;
     private TimeSpan TimeSinceLastFizzle;
-    private readonly TimeSpan FizzleCooldown;
 
     public LimboWizardScript(Monster subject, ISpellFactory spellFactory)
         : base(subject)
@@ -35,7 +35,7 @@ public class LimboWizardScript : MonsterScriptBase
         ActionTimer = new RandomizedIntervalTimer(TimeSpan.FromMilliseconds(1000), 10, startAsElapsed: false);
         TimeSinceLastFizzle = TimeSpan.Zero;
         FizzleCooldown = TimeSpan.FromSeconds(5);
-        
+
         MagmaSurge = SpellFactory.Create("magmasurge");
         DiaCradh = SpellFactory.Create("diaCradh");
         Dall = SpellFactory.Create("dall");
@@ -45,8 +45,18 @@ public class LimboWizardScript : MonsterScriptBase
         ArdCreagMeall = SpellFactory.Create("ardCreagMeall");
         ChainLightning = SpellFactory.Create("chainLightning");
 
-        AllSpells = [MagmaSurge, DiaCradh, Dall, ArdSalMeall, ArdSradMeall, ArdAtharMeall, ArdCreagMeall, ChainLightning];
-        
+        AllSpells =
+        [
+            MagmaSurge,
+            DiaCradh,
+            Dall,
+            ArdSalMeall,
+            ArdSradMeall,
+            ArdAtharMeall,
+            ArdCreagMeall,
+            ChainLightning
+        ];
+
         MeallSpells =
         [
             ArdSalMeall,
@@ -75,39 +85,6 @@ public class LimboWizardScript : MonsterScriptBase
             }
         };
     }
-    
-    public override void OnAttacked(Creature source, int damage)
-    {
-        if (TimeSinceLastFizzle > FizzleCooldown)
-        {
-            TimeSinceLastFizzle = TimeSpan.Zero;
-            
-            ActionTimer.Reset();
-            ResetMovementTimer();
-        }
-    }
-
-    private void ResetMovementTimer()
-    {
-        Subject.WanderTimer.Reset();
-        Subject.MoveTimer.Reset();
-    }
-    
-    private bool DoDiaCradh(List<Aisling> nearbyAislings)
-    {
-        var notDiaCradh = nearbyAislings.Where(aisling => !aisling.Effects.Contains("dia cradh"))
-                                        .ToList();
-
-        if (notDiaCradh.Count == 0)
-            return false;
-
-        var target = notDiaCradh.PickRandom();
-
-        if (Subject.TryUseSpell(DiaCradh, target.Id))
-            return true;
-
-        return false;
-    }
 
     private bool DoChainLightning(List<Aisling> nearbyAislings)
     {
@@ -133,9 +110,25 @@ public class LimboWizardScript : MonsterScriptBase
         if (Subject.TryUseSpell(Dall, target.Id))
         {
             Dall.SetTemporaryCooldown(TimeSpan.FromSeconds(25));
-            
+
             return true;
         }
+
+        return false;
+    }
+
+    private bool DoDiaCradh(List<Aisling> nearbyAislings)
+    {
+        var notDiaCradh = nearbyAislings.Where(aisling => !aisling.Effects.Contains("dia cradh"))
+                                        .ToList();
+
+        if (notDiaCradh.Count == 0)
+            return false;
+
+        var target = notDiaCradh.PickRandom();
+
+        if (Subject.TryUseSpell(DiaCradh, target.Id))
+            return true;
 
         return false;
     }
@@ -164,6 +157,23 @@ public class LimboWizardScript : MonsterScriptBase
             return true;
 
         return false;
+    }
+
+    public override void OnAttacked(Creature source, int damage)
+    {
+        if (TimeSinceLastFizzle > FizzleCooldown)
+        {
+            TimeSinceLastFizzle = TimeSpan.Zero;
+
+            ActionTimer.Reset();
+            ResetMovementTimer();
+        }
+    }
+
+    private void ResetMovementTimer()
+    {
+        Subject.WanderTimer.Reset();
+        Subject.MoveTimer.Reset();
     }
 
     public override void Update(TimeSpan delta)
@@ -199,7 +209,7 @@ public class LimboWizardScript : MonsterScriptBase
             if (randomAction(nearbyAislings))
             {
                 ResetMovementTimer();
-                
+
                 break;
             }
         }

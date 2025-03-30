@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.EffectComponents;
@@ -10,30 +9,33 @@ namespace Chaos.Scripting.EffectScripts.Items.CookingMeals;
 
 public class SteakMealEffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
 {
+    public List<string> ConflictingEffectNames { get; init; } =
+        [
+            "Dinner Plate",
+            "Sweet Buns",
+            "Fruit Basket",
+            "Lobster Dinner",
+            "Pie Acorn",
+            "Pie Apple",
+            "Pie Cherry",
+            "Pie Grape",
+            "PieGreengrapes",
+            "Pie Strawberry",
+            "Pie Tangerines",
+            "Salad",
+            "Sandwich",
+            "Soup",
+            "Steak Meal"
+        ];
+
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(15);
+
     protected Animation? Animation { get; } = new()
     {
         TargetAnimation = 127,
         AnimationSpeed = 100
     };
-    public List<string> ConflictingEffectNames { get; init; } =
-    [
-        "Dinner Plate",
-        "Sweet Buns",
-        "Fruit Basket",
-        "Lobster Dinner",
-        "Pie Acorn",
-        "Pie Apple",
-        "Pie Cherry",
-        "Pie Grape",
-        "PieGreengrapes",
-        "Pie Strawberry",
-        "Pie Tangerines",
-        "Salad",
-        "Sandwich",
-        "Soup",
-        "Steak Meal"
-    ];
+
     public override byte Icon => 72;
     public override string Name => "Steak Meal";
     protected byte? Sound => 115;
@@ -54,9 +56,7 @@ public class SteakMealEffect : EffectBase, NonOverwritableEffectComponent.INonOv
         Subject.StatSheet.AddBonus(attributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
 
-        AislingSubject?.Client.SendServerMessage(
-            ServerMessageType.OrangeBar1,
-            "You feel full and strong.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You feel full and strong.");
     }
 
     public override void OnDispelled() => OnTerminated();
@@ -76,6 +76,7 @@ public class SteakMealEffect : EffectBase, NonOverwritableEffectComponent.INonOv
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You're no longer full.");
     }
+
     public override bool ShouldApply(Creature source, Creature target)
     {
         var execution = new ComponentExecutor(source, target).WithOptions(this)

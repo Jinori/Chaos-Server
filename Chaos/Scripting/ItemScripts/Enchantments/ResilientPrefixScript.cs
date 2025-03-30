@@ -10,6 +10,17 @@ namespace Chaos.Scripting.ItemScripts.Enchantments;
 public sealed class ResilientPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
     /// <inheritdoc />
+    public static Attributes Modifiers { get; } = new()
+    {
+        SpellDamagePct = 3,
+        FlatSpellDamage = 50,
+        Ac = 1
+    };
+
+    /// <inheritdoc />
+    public static string PrefixStr => "Resilient";
+
+    /// <inheritdoc />
     public ResilientPrefixScript(Item subject)
         : base(subject)
     {
@@ -28,17 +39,9 @@ public sealed class ResilientPrefixScript : ItemScriptBase, IPrefixEnchantmentSc
     public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
     {
         if (!node.Name.StartsWithI("Resilient"))
-            yield return node with { Name = $"Resilient {node.Name}" };
+            yield return node with
+            {
+                Name = $"Resilient {node.Name}"
+            };
     }
-
-    /// <inheritdoc />
-    public static Attributes Modifiers { get; } = new()
-    {
-        SpellDamagePct = 3,
-        FlatSpellDamage = 50,
-        Ac = 1
-    };
-
-    /// <inheritdoc />
-    public static string PrefixStr => "Resilient";
 }

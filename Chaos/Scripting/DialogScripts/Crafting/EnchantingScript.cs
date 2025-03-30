@@ -65,6 +65,14 @@ public class EnchantingScript : DialogScriptBase
         DialogFactory = dialogFactory;
     }
 
+    private double AdjustSuccessRateForEffects(double baseSuccessRate, Aisling source)
+    {
+        if (source.Effects.Contains("Miracle"))
+            return baseSuccessRate + 15.0;
+
+        return baseSuccessRate;
+    }
+
     private double CalculateSuccessRate(
         int totalTimesCrafted,
         int timesCraftedThisItem,
@@ -315,7 +323,7 @@ public class EnchantingScript : DialogScriptBase
             source.Inventory.RemoveQuantity(reagent.DisplayName, reagent.Amount);
 
         var adjustedSuccessRate = AdjustSuccessRateForEffects(BASE_SUCCESS_RATE, source);
-        
+
         // Calculate success chance
         var successChance = (int)CalculateSuccessRate(
             legendMarkCount,
@@ -393,7 +401,6 @@ public class EnchantingScript : DialogScriptBase
 
         // If GodMode, display all possible recipes sorted by rank
         if (source.IsGodModeEnabled())
-        {
             sortedRecipes = CraftingRequirements.EnchantingRequirements
                                                 .Select(
                                                     recipe => ItemDetails.DisplayRecipe(ItemFactory.CreateFaux(recipe.Value.TemplateKey)))
@@ -404,7 +411,6 @@ public class EnchantingScript : DialogScriptBase
                                                                                      == recipe.Item.Template.TemplateKey)
                                                                             .Value.Rank))
                                                 .ToList();
-        }
         else
         {
             // Get the user's legend mark for enchanting
@@ -421,9 +427,9 @@ public class EnchantingScript : DialogScriptBase
 
                 // If the user has any recipe flags, show matching recipes
                 if (source.Trackers.Flags.TryGetFlag(out EnchantingRecipes recipes))
-                {
                     sortedRecipes = CraftingRequirements.EnchantingRequirements
-                                                        .Where(kv => recipes.HasFlag(kv.Key) && playerRank >= GetStatusAsInt(kv.Value.Rank))
+                                                        .Where(
+                                                            kv => recipes.HasFlag(kv.Key) && (playerRank >= GetStatusAsInt(kv.Value.Rank)))
                                                         .Select(
                                                             kv => ItemDetails.DisplayRecipe(ItemFactory.CreateFaux(kv.Value.TemplateKey)))
                                                         .Where(item => source.UserStatSheet.Level >= item.Item.Level)
@@ -434,7 +440,6 @@ public class EnchantingScript : DialogScriptBase
                                                                                             == item.Item.Template.TemplateKey)
                                                                                     .Value.Rank))
                                                         .ToList();
-                }
             }
         }
 
@@ -445,7 +450,6 @@ public class EnchantingScript : DialogScriptBase
         if (Subject.Items.Count == 0)
             Subject.Reply(source, "You do not have any recipes to craft. Check your recipe book (F1 Menu) for requirements.", "Close");
     }
-
 
     private void UpdateLegendmark(Aisling source)
     {
@@ -521,13 +525,5 @@ public class EnchantingScript : DialogScriptBase
         }
 
         source.Client.SendSelfProfile();
-    }
-    
-    private double AdjustSuccessRateForEffects(double baseSuccessRate, Aisling source)
-    {
-        if (source.Effects.Contains("Miracle"))
-            return baseSuccessRate + 15.0;
-
-        return baseSuccessRate;
     }
 }

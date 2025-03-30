@@ -9,14 +9,6 @@ namespace Chaos.Scripting.ItemScripts.Enchantments;
 public sealed class BrightPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
     /// <inheritdoc />
-    public BrightPrefixScript(Item subject)
-        : base(subject) => IPrefixEnchantmentScript.ApplyPrefix<BrightPrefixScript>(subject);
-
-    /// <inheritdoc />
-    public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
-        => IPrefixEnchantmentScript.Mutate<BrightPrefixScript>(node, template);
-
-    /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
         SpellDamagePct = 1,
@@ -25,4 +17,13 @@ public sealed class BrightPrefixScript : ItemScriptBase, IPrefixEnchantmentScrip
 
     /// <inheritdoc />
     public static string PrefixStr => "Bright";
+
+    /// <inheritdoc />
+    public BrightPrefixScript(Item subject)
+        : base(subject)
+        => IPrefixEnchantmentScript.ApplyPrefix<BrightPrefixScript>(subject);
+
+    /// <inheritdoc />
+    public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
+        => IPrefixEnchantmentScript.Mutate<BrightPrefixScript>(node, template);
 }

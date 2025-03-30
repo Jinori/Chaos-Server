@@ -23,6 +23,7 @@ public class Fury4Effect : EffectBase
     {
         base.OnApplied();
         AislingSubject?.Effects.Terminate("Fury3");
+
         var attributes = new Attributes
         {
             Dmg = 50,
@@ -56,6 +57,7 @@ public class Fury4Effect : EffectBase
         AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your fury returns to normal.");
     }
+
     public override bool ShouldApply(Creature source, Creature target)
     {
         if (!target.Effects.Contains("Fury4") && (target.StatSheet.CurrentHp <= 64000))

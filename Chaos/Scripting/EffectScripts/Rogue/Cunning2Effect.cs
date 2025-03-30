@@ -23,6 +23,7 @@ public class Cunning2Effect : EffectBase
     {
         base.OnApplied();
         AislingSubject?.Effects.Terminate("Cunning1");
+
         var attributes = new Attributes
         {
             Dmg = 28,

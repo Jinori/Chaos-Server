@@ -42,7 +42,7 @@ public class TerminusShowRawStatsScript : DialogScriptBase
             {
                 var sb = new StringBuilder();
                 var vitality = source.UserStatSheet.MaximumHp + source.UserStatSheet.MaximumMp * 2;
-                
+
                 sb.AppendLineFColored(MessageColor.Yellow, "Base Vitality", MessageColor.Gray);
                 sb.Append($"Vitality: {vitality} ");
                 sb.Append($"HP: {source.StatSheet.MaximumHp} ");

@@ -59,30 +59,21 @@ public class WildernessGatheringScript : MapScriptBase
 
         foreach (var cottonpoint in cottonpoints)
         {
-            var cotton = ReactorTileFactory.Create(
-                "cotton",
-                Subject,
-                cottonpoint);
+            var cotton = ReactorTileFactory.Create("cotton", Subject, cottonpoint);
 
             Subject.SimpleAdd(cotton);
         }
 
         foreach (var wildernesscherrypoint in wildernesscherrypoints)
         {
-            var wildernesscherry = ReactorTileFactory.Create(
-                "wildernesscherry",
-                Subject,
-                wildernesscherrypoint);
+            var wildernesscherry = ReactorTileFactory.Create("wildernesscherry", Subject, wildernesscherrypoint);
 
             Subject.SimpleAdd(wildernesscherry);
         }
 
         foreach (var wildernessicepoints in icepoints)
         {
-            var ice = ReactorTileFactory.Create(
-                "ice",
-                Subject,
-                wildernessicepoints);
+            var ice = ReactorTileFactory.Create("ice", Subject, wildernessicepoints);
 
             Subject.SimpleAdd(ice);
         }

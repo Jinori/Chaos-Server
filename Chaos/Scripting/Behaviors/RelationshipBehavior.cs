@@ -1,7 +1,5 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
-using Chaos.Extensions.Common;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MonsterScripts.Boss.MainStory.TrialOfSacrifice.zoe;
@@ -15,6 +13,16 @@ namespace Chaos.Scripting.Behaviors;
 
 public class RelationshipBehavior
 {
+    private readonly HashSet<string> ArenaKeys = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "arena_battle_ring",
+        "arena_lava",
+        "arena_lavateams",
+        "arena_colorclash",
+        "arena_escort",
+        "arena_pitfight"
+    };
+
     public virtual bool IsFriendlyTo(Creature source, Creature target)
         => source switch
         {
@@ -42,8 +50,6 @@ public class RelationshipBehavior
             _ => throw new ArgumentOutOfRangeException(nameof(source))
         };
 
-    private readonly HashSet<string> ArenaKeys = new(StringComparer.OrdinalIgnoreCase) { "arena_battle_ring", "arena_lava", "arena_lavateams", "arena_colorclash", "arena_escort", "arena_pitfight"};
-    
     protected virtual bool IsFriendlyTo(Aisling source, Merchant target) => true;
 
     protected virtual bool IsFriendlyTo(Merchant source, Merchant target) => source.Equals(target);
@@ -87,54 +93,60 @@ public class RelationshipBehavior
         if (isSourceOrTargetPet)
         {
             var isGroupMember = source.PetOwner?.Group?.Contains(target) == true;
-            var isAisling = source.MapInstance.GetEntities<Aisling>().Any();
+
+            var isAisling = source.MapInstance
+                                  .GetEntities<Aisling>()
+                                  .Any();
             var isOwner = target.Equals(source.PetOwner);
+
             return (isSourceOrTargetPet && isGroupMember) || isOwner || isAisling;
         }
-        
+
         var isTotem = source.Script.Is<NightmareTotemScript>() || target.Script.Is<NightmareTotemScript>();
 
         if (isTotem)
         {
             var isGroupMember = source.PetOwner?.Group?.Contains(target) == true;
             var isOwner = target.Equals(source.PetOwner);
+
             return (isSourceOrTargetPet && isGroupMember) || isOwner;
         }
-        
+
         var isZoe = source.Script.Is<SacrificeZoe>() || target.Script.Is<SacrificeZoe>();
 
         if (isZoe)
         {
             var isGroupMember = source.PetOwner?.Group?.Contains(target) == true;
             var isOwner = target.Equals(source.PetOwner);
+
             return (isSourceOrTargetPet && isGroupMember) || isOwner;
         }
-        
+
         var isSlave = source.Script.Is<NightmareSlaveScript>() || target.Script.Is<NightmareSlaveScript>();
 
         if (isSlave)
         {
             var isGroupMember = source.PetOwner?.Group?.Contains(target) == true;
             var isOwner = target.Equals(source.PetOwner);
+
             return (isSourceOrTargetPet && isGroupMember) || isOwner;
         }
-        
+
         var isTeammate = source.Script.Is<NightmareTeammateScript>() || target.Script.Is<NightmareTeammateScript>();
 
         if (isTeammate)
         {
             var isGroupMember = source.PetOwner?.Group?.Contains(target) == true;
             var isOwner = target.Equals(source.PetOwner);
+
             return (isSourceOrTargetPet && isGroupMember) || isOwner;
         }
 
         return false;
     }
 
-
     protected virtual bool IsFriendlyTo(Monster source, Monster target)
     {
-
         if (source.Equals(target))
             return true;
 
@@ -146,16 +158,16 @@ public class RelationshipBehavior
 
         if (source.Script.Is<NightmareTotemScript>() || target.Script.Is<NightmareTotemScript>())
             return false;
-        
+
         if (source.Script.Is<SacrificeZoe>() || target.Script.Is<SacrificeZoe>())
             return false;
-        
+
         if (source.Script.Is<NightmareSlaveScript>() || target.Script.Is<NightmareSlaveScript>())
             return false;
 
         if (source.Script.Is<LimboFriendlyScript>() && target.Script.Is<LimboFriendlyScript>())
             return true;
-        
+
         return false;
     }
 
@@ -208,29 +220,29 @@ public class RelationshipBehavior
     {
         if (target.Type is CreatureType.WhiteSquare)
             return false;
-        
+
         var isPet = target.Script.Is<PetScript>() || source.Script.Is<PetScript>();
 
         if (isPet)
             return false;
-        
+
         var isTotem = target.Script.Is<NightmareTotemScript>() || source.Script.Is<NightmareTotemScript>();
-        
+
         if (isTotem)
             return false;
-        
+
         var isZoe = target.Script.Is<SacrificeZoe>() || source.Script.Is<SacrificeZoe>();
-        
+
         if (isZoe)
             return false;
-        
+
         var isSlave = target.Script.Is<NightmareSlaveScript>() || source.Script.Is<NightmareSlaveScript>();
-        
+
         if (isSlave)
             return false;
-        
+
         var isTeammate = target.Script.Is<NightmareTeammateScript>() || source.Script.Is<NightmareTeammateScript>();
-        
+
         if (isTeammate)
             return false;
 
@@ -253,38 +265,41 @@ public class RelationshipBehavior
     {
         if (source.Type is CreatureType.WhiteSquare)
             return false;
-        
+
         if (source.Script.Is<PetScript>() || target.Script.Is<PetScript>())
         {
             var isGroupMember = source.PetOwner?.Group?.Contains(target) == true;
             var isOwner = target.Equals(source.PetOwner);
-            var isAisling = source.MapInstance.GetEntities<Aisling>().Any();
 
-            return !(isGroupMember || isOwner || isAisling);            
+            var isAisling = source.MapInstance
+                                  .GetEntities<Aisling>()
+                                  .Any();
+
+            return !(isGroupMember || isOwner || isAisling);
         }
-        
+
         if (source.Script.Is<SacrificeZoe>() || target.Script.Is<SacrificeZoe>())
         {
             var isGroupMember = source.PetOwner?.Group?.Contains(target) == true;
             var isOwner = target.Equals(source.PetOwner);
 
-            return !(isGroupMember || isOwner);            
+            return !(isGroupMember || isOwner);
         }
-        
+
         if (source.Script.Is<NightmareSlaveScript>() || target.Script.Is<NightmareSlaveScript>())
         {
             var isGroupMember = source.PetOwner?.Group?.Contains(target) == true;
             var isOwner = target.Equals(source.PetOwner);
 
-            return !(isGroupMember || isOwner);            
+            return !(isGroupMember || isOwner);
         }
-        
+
         if (source.Script.Is<NightmareTeammateScript>() || target.Script.Is<NightmareTeammateScript>())
         {
             var isGroupMember = source.PetOwner?.Group?.Contains(target) == true;
             var isOwner = target.Equals(source.PetOwner);
 
-            return !(isGroupMember || isOwner);            
+            return !(isGroupMember || isOwner);
         }
 
         return true;
@@ -302,16 +317,16 @@ public class RelationshipBehavior
     {
         if (source.Type is CreatureType.WhiteSquare || target.Type is CreatureType.WhiteSquare)
             return false;
-        
+
         if (source.Script.Is<PetScript>() ^ target.Script.Is<PetScript>())
             return true;
-        
+
         if (source.Script.Is<NightmareTotemScript>() ^ target.Script.Is<NightmareTotemScript>())
             return true;
-        
+
         if (source.Script.Is<SacrificeZoe>() ^ target.Script.Is<SacrificeZoe>())
             return true;
-        
+
         if (source.Script.Is<NightmareSlaveScript>() ^ target.Script.Is<NightmareSlaveScript>())
             return true;
 

@@ -64,8 +64,7 @@ public class VerbalWithdrawItemScript : VerbalBankerScriptBase
                 amountActual = Math.Min(amountActual, item.Template.MaxStacks - aisling.Inventory.CountOf(item.DisplayName));
 
             WithdrawItem(aisling, amountActual, item.DisplayName);
-        }
-        else if (int.TryParse(amountStr, out var amount))
+        } else if (int.TryParse(amountStr, out var amount))
             WithdrawItem(aisling, amount, item.DisplayName);
         else
             ReplyToUnknownInput(aisling);

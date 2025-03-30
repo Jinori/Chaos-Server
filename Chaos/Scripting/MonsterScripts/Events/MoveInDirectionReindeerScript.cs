@@ -186,12 +186,12 @@ public class MoveInDirectionReindeerScript : MonsterScriptBase
     public override void Update(TimeSpan delta)
     {
         var aislingsOnTop = Subject.MapInstance
-            .GetEntitiesAtPoints<Aisling>(Subject)
-            .TopOrDefault();
+                                   .GetEntitiesAtPoints<Aisling>(Subject)
+                                   .TopOrDefault();
 
         if (aislingsOnTop != null)
             HandleTrample(aislingsOnTop);
-        
+
         // Update walk interval
         RandomWalkInterval.Update(delta);
 
@@ -222,7 +222,6 @@ public class MoveInDirectionReindeerScript : MonsterScriptBase
 
             return;
         }
-        
 
         var targetDirection = Subject.Direction; // Reindeer's current direction
         var nextPosition = Subject.DirectionalOffset(targetDirection);

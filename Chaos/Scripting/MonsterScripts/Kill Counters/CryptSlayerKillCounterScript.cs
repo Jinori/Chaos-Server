@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
@@ -29,9 +28,12 @@ public class CryptSlayerKillCounterScript : ConfigurableMonsterScriptBase
         Aisling[]? rewardTargets = null;
 
         if (rewardTarget != null)
-            rewardTargets = (rewardTarget.Group ?? (IEnumerable<Aisling>)new[] { rewardTarget })
-                            .ThatAreWithinRange(rewardTarget)
-                            .ToArray();
+            rewardTargets = (rewardTarget.Group
+                             ?? (IEnumerable<Aisling>)new[]
+                             {
+                                 rewardTarget
+                             }).ThatAreWithinRange(rewardTarget)
+                               .ToArray();
 
         if (rewardTargets is not null)
             foreach (var aisling in rewardTargets)
@@ -41,6 +43,7 @@ public class CryptSlayerKillCounterScript : ConfigurableMonsterScriptBase
                 if (Enum.TryParse(QuestEnum, out CryptSlayerStage parsedStage))
                     stage = parsedStage;
                 else
+
                     // Handle the case where Quest value is not a valid CryptSlayerStage enum value
                     // You can decide what action to take or skip the iteration
                     continue;

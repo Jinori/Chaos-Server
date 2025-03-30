@@ -103,8 +103,6 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         "Steak Meal"
     ];
 
-
-
     private readonly HashSet<string> ArenaKeys = new(StringComparer.OrdinalIgnoreCase)
     {
         "arena_battle_ring",
@@ -118,7 +116,6 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
     private readonly IStore<BulletinBoard> BoardStore;
     private readonly IIntervalTimer CleanupSkillsSpellsTimer;
-    private readonly IIntervalTimer PickupUndineEggsTimer;
     private readonly IIntervalTimer ClearOrangeBarTimer;
     private readonly IClientRegistry<IChaosWorldClient> ClientRegistry;
     private readonly IDialogFactory DialogFactory;
@@ -254,6 +251,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
     private readonly IMerchantFactory MerchantFactory;
     private readonly IIntervalTimer OneSecondTimer;
+    private readonly IIntervalTimer PickupUndineEggsTimer;
     private readonly ISimpleCache SimpleCache;
     private readonly ISkillFactory SkillFactory;
     private readonly IIntervalTimer SleepAnimationTimer;
@@ -358,6 +356,36 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         ApplyHealScript.HealFormula = HealFormulae.Default;
     }
 
+    private void AdjustAttributesBasedOnLevel(int targetAc)
+    {
+        var acDifference = Subject.UserStatSheet.Ac - targetAc;
+        var newAtkSpeedPct = Math.Max(0, (Subject.UserStatSheet.Dex - 3) / 3);
+        var atkSpeedPctDifference = Subject.UserStatSheet.AtkSpeedPct - newAtkSpeedPct;
+
+        Subject.UserStatSheet.Subtract(
+            new Attributes
+            {
+                Ac = acDifference,
+                AtkSpeedPct = atkSpeedPctDifference
+            });
+    }
+
+    private void AdjustCharacterAttributes()
+    {
+        switch (Subject.UserStatSheet.Level)
+        {
+            case < 99:
+                AdjustAttributesBasedOnLevel(100 - Subject.UserStatSheet.Level / 3);
+
+                break;
+            case 99:
+                AdjustAttributesBasedOnLevel(67);
+                Subject.Client.SendAttributes(StatUpdateType.Full);
+
+                break;
+        }
+    }
+
     /// <inheritdoc />
     public override bool CanDropItem(Item item) => RestrictionBehavior.CanDropItem(Subject, item);
 
@@ -396,6 +424,73 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
     /// <inheritdoc />
     public override bool CanUseSpell(Spell spell) => RestrictionBehavior.CanUseSpell(Subject, spell);
+
+    private void CleanupSubjectItems()
+    {
+        RemoveNyxItemCounters();
+        ProcessItemDurabilityAndScripts(Subject.Equipment);
+        ProcessItemDurabilityAndScripts(Subject.Inventory);
+        ProcessItemDurabilityAndScripts(Subject.Bank);
+    }
+
+    private void ItemUpdater(Item item)
+    {
+        if ((item.Template.TemplateKey == "DivineStaff") && !Subject.IsPurePriestMaster())
+        {
+            Subject.Inventory.RemoveByTemplateKey("DivineStaff");
+            var celestialstaff = ItemFactory.Create("celestialstaff");
+            Subject.GiveItemOrSendToBank(celestialstaff);
+            Subject.SendOrangeBarMessage("Your Divine Staff has been replaced with a Celestial Staff.");
+        }
+    }
+
+    private void ClearOrangeBarMessage()
+    {
+        var lastOrangeBarMessage = Subject.Trackers.LastOrangeBarMessage;
+        var now = DateTime.UtcNow;
+
+        //clear if
+        //an orange bar message has ever been sent
+        //and the last message was sent after the last clear
+        //and the time since the last message is greater than the clear timer
+        var shouldClear = lastOrangeBarMessage.HasValue
+                          && (lastOrangeBarMessage > (Subject.Trackers.LastOrangeBarMessageClear ?? DateTime.MinValue))
+                          && (now.Subtract(lastOrangeBarMessage.Value)
+                                 .TotalSeconds
+                              > WorldOptions.Instance.ClearOrangeBarTimerSecs);
+
+        if (shouldClear)
+        {
+            Subject.SendServerMessage(ServerMessageType.OrangeBar1, string.Empty);
+            Subject.Trackers.LastOrangeBarMessage = lastOrangeBarMessage;
+            Subject.Trackers.LastOrangeBarMessageClear = now;
+        }
+    }
+
+    private void EnsureDurabilityWithinLimits(Item item)
+    {
+        if (item.CurrentDurability > item.Template.MaxDurability)
+        {
+            item.CurrentDurability = item.Template.MaxDurability;
+            Subject.Client.SendAttributes(StatUpdateType.Full);
+        }
+    }
+
+    private void EnsureValidScriptKeys(Item item)
+    {
+        if (item.ScriptKeys.Count > 1)
+        {
+            var validKey = item.ScriptKeys.FirstOrDefault(
+                key => (item.Prefix != null) && key.StartsWith(item.Prefix, StringComparison.OrdinalIgnoreCase));
+
+            if (validKey != null)
+            {
+                item.ScriptKeys.Clear();
+                item.ScriptKeys.Add(validKey);
+                Subject.Client.SendAttributes(StatUpdateType.Vitality);
+            }
+        }
+    }
 
     /// <inheritdoc />
     public override IEnumerable<BoardBase> GetBoardList()
@@ -443,6 +538,93 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
         if (nationBoard != null)
             yield return nationBoard;
+    }
+
+    private void HandleAfkEffects()
+    {
+        if (Subject.Effects.Contains("mount"))
+            Subject.Effects.Dispel("mount");
+
+        var isGathering = Subject.MapInstance
+                                 .GetDistinctReactorsAtPoint(Subject)
+                                 .Any(x => x.Script.Is<ForagingSpotScript>() || x.Script.Is<FishingSpotScript>());
+
+        Subject.Options.SocialStatus = isGathering ? SocialStatus.Gathering : SocialStatus.DayDreaming;
+    }
+
+    private void HandleSkillReplacements()
+    {
+        string[,] skillsToReplace =
+        {
+            {
+                "athar",
+                "beagathar"
+            },
+            {
+                "morathar",
+                "athar"
+            },
+            {
+                "morathar",
+                "beagathar"
+            },
+            {
+                "ardathar",
+                "morathar"
+            },
+            {
+                "ardathar",
+                "athar"
+            },
+            {
+                "ardathar",
+                "beagathar"
+            },
+            {
+                "arcanemissile",
+                "arcanebolt"
+            },
+            {
+                "arcaneblast",
+                "arcanemissile"
+            },
+            {
+                "arcaneblast",
+                "arcanebolt"
+            },
+            {
+                "arcaneexplosion",
+                "arcaneblast"
+            },
+            {
+                "arcaneexplosion",
+                "arcanemissile"
+            },
+            {
+                "arcaneexplosion",
+                "arcanebolt"
+            }
+        };
+
+        for (var i = 0; i < skillsToReplace.GetLength(0); i++)
+            RemoveAndNotifyIfBothExist(skillsToReplace[i, 0], skillsToReplace[i, 1]);
+    }
+
+    private void HandleSleepAnimation()
+    {
+        var lastManualAction = Subject.Trackers.LastManualAction;
+
+        var isAfk = !lastManualAction.HasValue
+                    || ((DateTime.UtcNow - lastManualAction.Value).TotalMinutes > WorldOptions.Instance.SleepAnimationTimerMins);
+
+        if (isAfk)
+        {
+            if (Subject.IsAlive)
+                Subject.AnimateBody(BodyAnimation.Snore);
+
+            HandleAfkEffects();
+        } else if (Subject.Options.SocialStatus is SocialStatus.DayDreaming or SocialStatus.Gathering)
+            Subject.Options.SocialStatus = PreAfkSocialStatus;
     }
 
     private void HandleWerewolfEffect()
@@ -740,7 +922,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
             return;
         }
-        
+
         if (source?.MapInstance.Name.Equals("Mileth Inn") == true)
         {
             var mapInstance = SimpleCache.Get<MapInstance>("mileth_inn_room1");
@@ -974,8 +1156,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                           Subject.Name,
                           item.DisplayName,
                           diceCount - 1);
-            } 
-            else
+            } else
             {
                 // Remove the item from the player's equipment
                 Subject.Equipment.TryGetRemove(item.Slot, out _);
@@ -1010,8 +1191,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
             sb.AppendLine("");
             sb.AppendLineFColored(MessageColor.Orange, "Revive with Terminus or wait to be revived.");
-        } 
-        else if (savedItems.Any())
+        } else if (savedItems.Any())
         {
             sb.AppendLineFColored(MessageColor.NeonGreen, "Mithril Dice saved your items:");
 
@@ -1020,8 +1200,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
             sb.AppendLine("");
             sb.AppendLineFColored(MessageColor.Orange, "Revive with Terminus or wait to be revived.");
-        } 
-        else if (lostItems.Any())
+        } else if (lostItems.Any())
         {
             sb.AppendLineFColored(MessageColor.Yellow, "You lost the following items:");
 
@@ -1080,18 +1259,22 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         if (Subject.Guild != null)
             foreach (var player in ClientRegistry)
                 if (player.Aisling.Guild == Subject.Guild)
-                    player.Aisling.SendServerMessage(ServerMessageType.ActiveMessage, $"({Subject.Guild.Name}) - {Subject.Name} has appeared online.");
+                    player.Aisling.SendServerMessage(
+                        ServerMessageType.ActiveMessage,
+                        $"({Subject.Guild.Name}) - {Subject.Name} has appeared online.");
     }
 
     /// <inheritdoc />
     public override void OnLogout()
     {
         base.OnLogout();
-        
+
         if (Subject.Guild != null)
             foreach (var player in ClientRegistry)
                 if (player.Aisling.Guild == Subject.Guild)
-                    player.Aisling.SendServerMessage(ServerMessageType.ActiveMessage, $"({Subject.Guild.Name}) - {Subject.Name} has gone offline.");
+                    player.Aisling.SendServerMessage(
+                        ServerMessageType.ActiveMessage,
+                        $"({Subject.Guild.Name}) - {Subject.Name} has gone offline.");
     }
 
     /// <inheritdoc />
@@ -1151,6 +1334,16 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         }
     }
 
+    private void ProcessItemDurabilityAndScripts(IEnumerable<Item> items)
+    {
+        foreach (var item in items)
+        {
+            ItemUpdater(item);
+            EnsureDurabilityWithinLimits(item);
+            EnsureValidScriptKeys(item);
+        }
+    }
+
     private void RemoveAndNotifyIfBothExist(string keyToKeep, string keyToRemove)
     {
         if (Subject.Inventory.Contains("Invisible Helmet"))
@@ -1194,8 +1387,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                       Subject.Name,
                       keyToKeep,
                       keyToRemove);
-        } 
-        else if (Subject.SkillBook.ContainsByTemplateKey(keyToKeep) && Subject.SkillBook.ContainsByTemplateKey(keyToRemove))
+        } else if (Subject.SkillBook.ContainsByTemplateKey(keyToKeep) && Subject.SkillBook.ContainsByTemplateKey(keyToRemove))
         {
             Subject.SkillBook.RemoveByTemplateKey(keyToRemove);
             NotifyPlayerSkills(keyToRemove, keyToKeep);
@@ -1210,12 +1402,59 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         }
     }
 
-    private static void RemoveOldWarriorSkillsSpells(Aisling aisling)
+    private void RemoveInvalidSpellsAndSkills()
     {
-        if (aisling.SpellBook.ContainsByTemplateKey("rage"))
-            aisling.SpellBook.RemoveByTemplateKey("rage");
+        string[] pureOnlySpells =
+        {
+            "magmasurge",
+            "tidalbreeze",
+            "sightoffrailty",
+            "diacradh",
+            "hidegroup",
+            "healingaura",
+            "darkstorm",
+            "resurrect",
+            "evasion"
+        };
+
+        string[] pureOnlySkills =
+        {
+            "annihilate",
+            "dragonstrike",
+            "chaosfist",
+            "madsoul",
+            "onslaught",
+            "sneakattack",
+            "shadowfigure",
+            "rupture",
+            "battlefieldsweep",
+            "paralyzeforce",
+            "shadowfigure"
+        };
+
+        foreach (var spell in pureOnlySpells)
+            RemovePureOnlySpells(spell);
+
+        foreach (var skill in pureOnlySkills)
+            RemovePureOnlySkills(skill);
+
+        RemoveOldMonkFormSkillsSpells(Subject);
+        RemoveOldWarriorSkillsSpells(Subject);
     }
-    
+
+    private void RemoveItemIfTitleMissing(string title1, string title2, string itemKey)
+    {
+        if (!Subject.Titles.ContainsI(title1) && !Subject.Titles.ContainsI(title2) && !Subject.IsAdmin)
+            Subject.Inventory.RemoveQuantityByTemplateKey(itemKey, 1);
+    }
+
+    private void RemoveNyxItemCounters()
+    {
+        foreach (var counter in Subject.Trackers.Counters.ToList())
+            if (counter.Key.ContainsI("NyxItem"))
+                Subject.Trackers.Counters.Remove(counter.Key, out _);
+    }
+
     private static void RemoveOldMonkFormSkillsSpells(Aisling aisling)
     {
         if (aisling.UserStatSheet.BaseClass is not BaseClass.Monk)
@@ -1272,6 +1511,12 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             RemoveSkillsAndSpells(aisling, element.Value.Skills, element.Value.Spells);
     }
 
+    private static void RemoveOldWarriorSkillsSpells(Aisling aisling)
+    {
+        if (aisling.SpellBook.ContainsByTemplateKey("rage"))
+            aisling.SpellBook.RemoveByTemplateKey("rage");
+    }
+
     private void RemovePureOnlySkills(string keyToRemove)
     {
         if (Subject.IsGodModeEnabled())
@@ -1306,6 +1551,14 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         }
     }
 
+    private void RemoveRestrictedTrinkets()
+    {
+        RemoveItemIfTitleMissing("Expert Enchanter", "Master Enchanter", "portaltrinket");
+        RemoveItemIfTitleMissing("Expert Weaponsmith", "Master Weaponsmith", "dmgtrinket");
+        RemoveItemIfTitleMissing("Expert Armorsmith", "Master Armorsmith", "repairtrinket");
+        RemoveItemIfTitleMissing("Expert Jewelcrafter", "Master Jewelcrafter", "exptrinket");
+    }
+
     private static void RemoveSkillsAndSpells(Aisling aisling, List<string> skills, List<string> spells)
     {
         foreach (var skill in skills.Where(skill => aisling.SkillBook.ContainsByTemplateKey(skill)))
@@ -1315,20 +1568,50 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             aisling.SpellBook.RemoveByTemplateKey(spell);
     }
 
+    private void ReplaceMultipleSkills(string oldSkill, string[] newSkills)
+    {
+        if (Subject.SkillBook.ContainsByTemplateKey(oldSkill))
+        {
+            Subject.SkillBook.RemoveByTemplateKey(oldSkill);
+
+            foreach (var newSkill in newSkills)
+                if (!Subject.SkillBook.ContainsByTemplateKey(newSkill))
+                {
+                    Subject.SkillBook.TryAddToNextSlot(SkillFactory.Create(newSkill));
+                    Subject.SendOrangeBarMessage($"{oldSkill} has been replaced by {newSkill}.");
+                }
+        }
+    }
+
+    private void ReplaceSkill(string oldSkill, string newSkill)
+    {
+        if (Subject.SkillBook.ContainsByTemplateKey(oldSkill))
+        {
+            Subject.SkillBook.RemoveByTemplateKey(oldSkill);
+
+            if (!Subject.SkillBook.ContainsByTemplateKey(newSkill))
+            {
+                Subject.SkillBook.TryAddToNextSlot(SkillFactory.Create(newSkill));
+                Subject.SendOrangeBarMessage($"{oldSkill} has been replaced by {newSkill}.");
+            }
+        }
+    }
+
     public override void Update(TimeSpan delta)
     {
         SleepAnimationTimer.Update(delta);
         ClearOrangeBarTimer.Update(delta);
         OneSecondTimer.Update(delta);
         CleanupSkillsSpellsTimer.Update(delta);
-        
+
         //if (EventPeriod.IsEventActive(DateTime.Now, "hopmaze"))
         PickupUndineEggsTimer.Update(delta);
 
-
         if (PickupUndineEggsTimer.IntervalElapsed)
         {
-            var egg = Subject.MapInstance.GetEntitiesAtPoints<GroundItem>(Subject).FirstOrDefault(x => x.Name is "Undine Chicken Egg" or "Undine Golden Chicken Egg");
+            var egg = Subject.MapInstance
+                             .GetEntitiesAtPoints<GroundItem>(Subject)
+                             .FirstOrDefault(x => x.Name is "Undine Chicken Egg" or "Undine Golden Chicken Egg");
 
             switch (egg?.Item.DisplayName)
             {
@@ -1339,12 +1622,13 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                     if (!Subject.Inventory.TryAddToNextSlot(item))
                     {
                         Subject.SendOrangeBarMessage("You need space to pickup eggs!");
+
                         return;
                     }
-                    
+
                     Subject.MapInstance.RemoveEntity(egg);
                     Subject.SendPersistentMessage($"{Subject.Inventory.CountOf("Undine Chicken Egg")} eggs!");
-                    
+
                     break;
                 }
                 case "Undine Golden Chicken Egg":
@@ -1354,6 +1638,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                     if (!Subject.Inventory.TryAddToNextSlot(item))
                     {
                         Subject.SendOrangeBarMessage("You need space to pickup Golden eggs!");
+
                         return;
                     }
 
@@ -1368,7 +1653,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 }
             }
         }
-        
+
         if (CleanupSkillsSpellsTimer.IntervalElapsed && !Subject.IsDiacht())
         {
             CleanupSubjectItems();
@@ -1389,228 +1674,16 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             ClearOrangeBarMessage();
     }
 
-    private void CleanupSubjectItems()
-    {
-        RemoveNyxItemCounters();
-        ProcessItemDurabilityAndScripts(Subject.Equipment);
-        ProcessItemDurabilityAndScripts(Subject.Inventory);
-        ProcessItemDurabilityAndScripts(Subject.Bank);
-    }
-
-    private void RemoveNyxItemCounters()
-    {
-        foreach (var counter in Subject.Trackers.Counters.ToList())
-            if (counter.Key.ContainsI("NyxItem"))
-                Subject.Trackers.Counters.Remove(counter.Key, out _);
-    }
-
-    private void ProcessItemDurabilityAndScripts(IEnumerable<Item> items)
-    {
-        foreach (var item in items)
-        {
-            EnsureDurabilityWithinLimits(item);
-            EnsureValidScriptKeys(item);
-        }
-    }
-
-    private void EnsureDurabilityWithinLimits(Item item)
-    {
-        if (item.CurrentDurability > item.Template.MaxDurability)
-        {
-            item.CurrentDurability = item.Template.MaxDurability;
-            Subject.Client.SendAttributes(StatUpdateType.Full);
-        }
-    }
-
-    private void EnsureValidScriptKeys(Item item)
-    {
-        if (item.ScriptKeys.Count > 1)
-        {
-            var validKey = item.ScriptKeys.FirstOrDefault(
-                key => (item.Prefix != null) && key.StartsWith(item.Prefix, StringComparison.OrdinalIgnoreCase));
-
-            if (validKey != null)
-            {
-                item.ScriptKeys.Clear();
-                item.ScriptKeys.Add(validKey);
-                Subject.Client.SendAttributes(StatUpdateType.Vitality);
-            }
-        }
-    }
-
     private void UpdateSkillBook()
     {
         ReplaceSkill("multistrike", "rupture");
         ReplaceSkill("gut", "backstab");
-        ReplaceMultipleSkills("surigumblitz", ["murderousintent", "killerinstinct"]);
-    }
 
-    private void ReplaceSkill(string oldSkill, string newSkill)
-    {
-        if (Subject.SkillBook.ContainsByTemplateKey(oldSkill))
-        {
-            Subject.SkillBook.RemoveByTemplateKey(oldSkill);
-
-            if (!Subject.SkillBook.ContainsByTemplateKey(newSkill))
-            {
-                Subject.SkillBook.TryAddToNextSlot(SkillFactory.Create(newSkill));
-                Subject.SendOrangeBarMessage($"{oldSkill} has been replaced by {newSkill}.");
-            }
-        }
-    }
-
-    private void ReplaceMultipleSkills(string oldSkill, string[] newSkills)
-    {
-        if (Subject.SkillBook.ContainsByTemplateKey(oldSkill))
-        {
-            Subject.SkillBook.RemoveByTemplateKey(oldSkill);
-
-            foreach (var newSkill in newSkills)
-            {
-                if (!Subject.SkillBook.ContainsByTemplateKey(newSkill))
-                {
-                    Subject.SkillBook.TryAddToNextSlot(SkillFactory.Create(newSkill));
-                    Subject.SendOrangeBarMessage($"{oldSkill} has been replaced by {newSkill}.");
-                }
-            }
-        }
-    }
-
-    private void AdjustCharacterAttributes()
-    {
-        switch (Subject.UserStatSheet.Level)
-        {
-            case < 99:
-                AdjustAttributesBasedOnLevel(100 - Subject.UserStatSheet.Level / 3);
-
-                break;
-            case 99:
-                AdjustAttributesBasedOnLevel(67);
-                Subject.Client.SendAttributes(StatUpdateType.Full);
-
-                break;
-        }
-    }
-
-    private void AdjustAttributesBasedOnLevel(int targetAc)
-    {
-        var acDifference = Subject.UserStatSheet.Ac - targetAc;
-        var newAtkSpeedPct = Math.Max(0, (Subject.UserStatSheet.Dex - 3) / 3);
-        var atkSpeedPctDifference = Subject.UserStatSheet.AtkSpeedPct - newAtkSpeedPct;
-
-        Subject.UserStatSheet.Subtract(
-            new Attributes
-            {
-                Ac = acDifference,
-                AtkSpeedPct = atkSpeedPctDifference
-            });
-    }
-
-    private void RemoveRestrictedTrinkets()
-    {
-        RemoveItemIfTitleMissing("Expert Enchanter", "Master Enchanter", "portaltrinket");
-        RemoveItemIfTitleMissing("Expert Weaponsmith", "Master Weaponsmith", "dmgtrinket");
-        RemoveItemIfTitleMissing("Expert Armorsmith", "Master Armorsmith", "repairtrinket");
-        RemoveItemIfTitleMissing("Expert Jewelcrafter", "Master Jewelcrafter", "exptrinket");
-    }
-
-    private void RemoveItemIfTitleMissing(string title1, string title2, string itemKey)
-    {
-        if (!Subject.Titles.ContainsI(title1) && !Subject.Titles.ContainsI(title2) && !Subject.IsAdmin)
-            Subject.Inventory.RemoveQuantityByTemplateKey(itemKey, 1);
-    }
-
-    private void RemoveInvalidSpellsAndSkills()
-    {
-        string[] pureOnlySpells =
-        {
-            "magmasurge", "tidalbreeze", "sightoffrailty", "diacradh", "hidegroup",
-            "healingaura", "darkstorm", "resurrect", "evasion"
-        };
-
-        string[] pureOnlySkills =
-        {
-            "annihilate", "dragonstrike", "chaosfist", "madsoul", "onslaught",
-            "sneakattack", "shadowfigure", "rupture", "battlefieldsweep",
-            "paralyzeforce", "shadowfigure"
-        };
-
-        foreach (var spell in pureOnlySpells)
-            RemovePureOnlySpells(spell);
-
-        foreach (var skill in pureOnlySkills)
-            RemovePureOnlySkills(skill);
-
-        RemoveOldMonkFormSkillsSpells(Subject);
-        RemoveOldWarriorSkillsSpells(Subject);
-    }
-
-    private void HandleSkillReplacements()
-    {
-        string[,] skillsToReplace =
-        {
-            { "athar", "beagathar" }, { "morathar", "athar" }, { "morathar", "beagathar" },
-            { "ardathar", "morathar" }, { "ardathar", "athar" }, { "ardathar", "beagathar" },
-            { "arcanemissile", "arcanebolt" }, { "arcaneblast", "arcanemissile" },
-            { "arcaneblast", "arcanebolt" }, { "arcaneexplosion", "arcaneblast" },
-            { "arcaneexplosion", "arcanemissile" }, { "arcaneexplosion", "arcanebolt" }
-        };
-
-        for (var i = 0; i < skillsToReplace.GetLength(0); i++)
-        {
-            RemoveAndNotifyIfBothExist(skillsToReplace[i, 0], skillsToReplace[i, 1]);
-        }
-    }
-
-    private void HandleSleepAnimation()
-    {
-        var lastManualAction = Subject.Trackers.LastManualAction;
-
-        var isAfk = !lastManualAction.HasValue
-                    || ((DateTime.UtcNow - lastManualAction.Value).TotalMinutes > WorldOptions.Instance.SleepAnimationTimerMins);
-
-        if (isAfk)
-        {
-            if (Subject.IsAlive)
-                Subject.AnimateBody(BodyAnimation.Snore);
-
-            HandleAfkEffects();
-        }
-        else if (Subject.Options.SocialStatus is SocialStatus.DayDreaming or SocialStatus.Gathering)
-            Subject.Options.SocialStatus = PreAfkSocialStatus;
-    }
-
-    private void HandleAfkEffects()
-    {
-        if (Subject.Effects.Contains("mount"))
-            Subject.Effects.Dispel("mount");
-
-        var isGathering = Subject.MapInstance.GetDistinctReactorsAtPoint(Subject)
-                                 .Any(x => x.Script.Is<ForagingSpotScript>() || x.Script.Is<FishingSpotScript>());
-
-        Subject.Options.SocialStatus = isGathering ? SocialStatus.Gathering : SocialStatus.DayDreaming;
-    }
-
-    private void ClearOrangeBarMessage()
-    {
-        var lastOrangeBarMessage = Subject.Trackers.LastOrangeBarMessage;
-        var now = DateTime.UtcNow;
-
-        //clear if
-        //an orange bar message has ever been sent
-        //and the last message was sent after the last clear
-        //and the time since the last message is greater than the clear timer
-        var shouldClear = lastOrangeBarMessage.HasValue
-                          && (lastOrangeBarMessage > (Subject.Trackers.LastOrangeBarMessageClear ?? DateTime.MinValue))
-                          && (now.Subtract(lastOrangeBarMessage.Value)
-                                 .TotalSeconds
-                              > WorldOptions.Instance.ClearOrangeBarTimerSecs);
-
-        if (shouldClear)
-        {
-            Subject.SendServerMessage(ServerMessageType.OrangeBar1, string.Empty);
-            Subject.Trackers.LastOrangeBarMessage = lastOrangeBarMessage;
-            Subject.Trackers.LastOrangeBarMessageClear = now;
-        }
+        ReplaceMultipleSkills(
+            "surigumblitz",
+            [
+                "murderousintent",
+                "killerinstinct"
+            ]);
     }
 }

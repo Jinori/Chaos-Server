@@ -8,7 +8,7 @@ using Chaos.Scripting.Components.Execution;
 
 namespace Chaos.Scripting.Components.AbilityComponents;
 
-public class SplashComponent<TEntity> : IConditionalComponent where TEntity : MapEntity
+public class SplashComponent<TEntity> : IConditionalComponent where TEntity: MapEntity
 {
     /// <inheritdoc />
     public virtual bool Execute(ActivationContext context, ComponentVars vars)
@@ -17,16 +17,18 @@ public class SplashComponent<TEntity> : IConditionalComponent where TEntity : Ma
         var options = vars.GetOptions<ISplashComponentOptions>();
 
         // Getting targets
-        var targets = vars.GetTargets<TEntity>().ToList();
+        var targets = vars.GetTargets<TEntity>()
+                          .ToList();
 
         // Check each target for nearby creatures
         foreach (var target in targets.ToList())
         {
-            var localSplashTargets = context.TargetMap.GetEntitiesWithinRange<TEntity>(target, options.SplashDistance)
+            var localSplashTargets = context.TargetMap
+                                            .GetEntitiesWithinRange<TEntity>(target, options.SplashDistance)
                                             .Where(x => !x.Equals(context.TargetCreature))
-                .WithFilter(context.Source, options.SplashFilter);
+                                            .WithFilter(context.Source, options.SplashFilter);
 
-            foreach(var localSplashTarget in localSplashTargets)
+            foreach (var localSplashTarget in localSplashTargets)
                 if (IntegerRandomizer.RollChance(options.SplashChance))
                     targets.Add(localSplashTarget);
         }
@@ -34,14 +36,14 @@ public class SplashComponent<TEntity> : IConditionalComponent where TEntity : Ma
         vars.SetTargets(targets);
 
         // If no targets were found, return false
-        return !options.MustHaveTargets || targets.Count != 0;
+        return !options.MustHaveTargets || (targets.Count != 0);
     }
 
     public interface ISplashComponentOptions
     {
+        bool MustHaveTargets { get; init; }
         int SplashChance { get; init; }
         int SplashDistance { get; init; }
         TargetFilter SplashFilter { get; init; }
-        bool MustHaveTargets { get; init; }
     }
 }

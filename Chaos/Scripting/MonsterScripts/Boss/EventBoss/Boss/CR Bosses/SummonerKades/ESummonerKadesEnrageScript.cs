@@ -19,7 +19,12 @@ public sealed class ESummonerKadesEnrageScript : MonsterScriptBase
         : base(subject)
     {
         SpellToCast = spellFactory.Create("entangle");
-        SpellCastTimer = new RandomizedIntervalTimer(TimeSpan.FromSeconds(15), 30, RandomizationType.Balanced, false);
+
+        SpellCastTimer = new RandomizedIntervalTimer(
+            TimeSpan.FromSeconds(15),
+            30,
+            RandomizationType.Balanced,
+            false);
     }
 
     public override void Update(TimeSpan delta)
@@ -29,7 +34,7 @@ public sealed class ESummonerKadesEnrageScript : MonsterScriptBase
         if (SpellCastTimer.IntervalElapsed)
         {
             var roll = IntegerRandomizer.RollSingle(100);
-            
+
             switch (roll)
             {
                 case < 40:
@@ -45,6 +50,7 @@ public sealed class ESummonerKadesEnrageScript : MonsterScriptBase
                 case < 101:
                     Subject.Say("Let the shadows consume you!");
                     Subject.TryUseSpell(SpellToCast);
+
                     break;
             }
         }

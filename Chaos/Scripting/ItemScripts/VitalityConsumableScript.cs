@@ -30,6 +30,9 @@ public class VitalityConsumableScript : ConfigurableItemScriptBase,
 
     public List<string>? EffectKeysToBreak { get; set; }
 
+    public int? HealthCost { get; init; }
+    public decimal PctHealthCost { get; init; }
+
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }

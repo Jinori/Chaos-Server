@@ -26,16 +26,12 @@ public class ArtisanWeaponsmithingBoxScript : ItemScriptBase
         // Create items
         var mythril = _itemFactory.Create("rawmythril");
         var hybrasyl = _itemFactory.Create("rawhybrasyl");
-        
-        for (int i = 0; i < mythrilAmount; i++)
-        {
-            source.GiveItemOrSendToBank(_itemFactory.Create("rawmythril"));
-        }
 
-        for (int i = 0; i < hybrasylAmount; i++)
-        {
+        for (var i = 0; i < mythrilAmount; i++)
+            source.GiveItemOrSendToBank(_itemFactory.Create("rawmythril"));
+
+        for (var i = 0; i < hybrasylAmount; i++)
             source.GiveItemOrSendToBank(_itemFactory.Create("rawhybrasyl"));
-        }
 
         // Add items to the player's inventory
         source.GiveItemOrSendToBank(mythril);

@@ -21,15 +21,20 @@ public sealed class ETwinkBossEnrageScript : MonsterScriptBase
 
     /// <inheritdoc />
     public ETwinkBossEnrageScript(Monster subject, IMonsterFactory monsterFactory)
-        : base(subject) =>
-        MonsterFactory = monsterFactory;
+        : base(subject)
+        => MonsterFactory = monsterFactory;
 
     public override void Update(TimeSpan delta)
     {
         if (!Bonus75Applied && (Subject.StatSheet.HealthPercent <= 75))
         {
             Bonus75Applied = true;
-            var attrib = new Attributes { AtkSpeedPct = 25 };
+
+            var attrib = new Attributes
+            {
+                AtkSpeedPct = 25
+            };
+
             //Spawn Monsters
             var rectangle = new Rectangle(Subject, 5, 5);
 
@@ -67,10 +72,11 @@ public sealed class ETwinkBossEnrageScript : MonsterScriptBase
             Bonus30Applied = true;
             var rectangle = new Rectangle(Subject, 5, 5);
             Subject.StatSheet.SetHealthPct(50);
+
             var attrib = new Attributes
             {
                 AtkSpeedPct = 15,
-                MagicResistance = 25,   
+                MagicResistance = 25,
                 SkillDamagePct = 10,
                 SpellDamagePct = 10
             };

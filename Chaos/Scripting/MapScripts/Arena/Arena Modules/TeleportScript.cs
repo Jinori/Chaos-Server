@@ -1,23 +1,24 @@
-using Chaos.Models.World;
-using Chaos.Time;
-using Chaos.Time.Abstractions;
 using Chaos.Collections;
 using Chaos.Models.Data;
+using Chaos.Models.World;
 using Chaos.Scripting.MapScripts.Abstractions;
+using Chaos.Time;
+using Chaos.Time.Abstractions;
 
 namespace Chaos.Scripting.MapScripts.Arena.Arena_Modules;
 
 public sealed class TeleportScript : MapScriptBase
 {
-    private IIntervalTimer TeleportTimer { get; }
-    private IIntervalTimer AnimationTimer { get; }
     private Point? AnimatedTile { get; set; }
-    
+    private IIntervalTimer AnimationTimer { get; }
+
     private Animation PortAnimation { get; } = new()
     {
         AnimationSpeed = 100,
         TargetAnimation = 96
     };
+
+    private IIntervalTimer TeleportTimer { get; }
 
     /// <inheritdoc />
     public TeleportScript(MapInstance subject)
@@ -36,9 +37,11 @@ public sealed class TeleportScript : MapScriptBase
         {
             // Get all non-wall points on the map
             var nonWallPoints = Enumerable.Range(0, Subject.Template.Width)
-                                          .SelectMany(x => Enumerable.Range(0, Subject.Template.Height)
-                                                                     .Where(y => !Subject.IsWall(new Point(x, y)))
-                                                                     .Select(y => new Point(x, y))).ToList();
+                                          .SelectMany(
+                                              x => Enumerable.Range(0, Subject.Template.Height)
+                                                             .Where(y => !Subject.IsWall(new Point(x, y)))
+                                                             .Select(y => new Point(x, y)))
+                                          .ToList();
 
             if (nonWallPoints.Count > 0)
             {
@@ -55,9 +58,12 @@ public sealed class TeleportScript : MapScriptBase
         if (AnimationTimer.IntervalElapsed && (AnimatedTile != null))
         {
             var nonWallPoints = Enumerable.Range(0, Subject.Template.Width)
-                                          .SelectMany(x => Enumerable.Range(0, Subject.Template.Height)
-                                                                     .Where(y => !Subject.IsWall(new Point(x, y)) && new Point(x, y) != AnimatedTile)
-                                                                     .Select(y => new Point(x, y))).ToList();
+                                          .SelectMany(
+                                              x => Enumerable.Range(0, Subject.Template.Height)
+                                                             .Where(
+                                                                 y => !Subject.IsWall(new Point(x, y)) && (new Point(x, y) != AnimatedTile))
+                                                             .Select(y => new Point(x, y)))
+                                          .ToList();
 
             if (nonWallPoints.Count > 0)
             {
@@ -69,9 +75,7 @@ public sealed class TeleportScript : MapScriptBase
 
                 // Teleport each player to the random point
                 foreach (var player in playersOnTile)
-                {
                     player.WarpTo(targetPoint);
-                }
             }
 
             AnimatedTile = null; // Reset the animated tile

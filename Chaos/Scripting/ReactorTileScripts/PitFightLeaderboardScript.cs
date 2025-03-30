@@ -3,7 +3,6 @@ using System.Text;
 using Chaos.DarkAges.Definitions;
 using Chaos.DarkAges.Extensions;
 using Chaos.Models.World;
-using Chaos.Networking.Abstractions;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
 using Chaos.Storage.Abstractions;
 #endregion
@@ -16,8 +15,8 @@ public class PitFightLeaderboardScript : ReactorTileScriptBase
 
     /// <inheritdoc />
     public PitFightLeaderboardScript(ReactorTile subject, IStorage<PitFightLeaderboardObj>? storage)
-        : base(subject) =>
-        Leaderboard = storage;
+        : base(subject)
+        => Leaderboard = storage;
 
     /// <inheritdoc />
     public override void OnClicked(Aisling source)
@@ -36,9 +35,8 @@ public class PitFightLeaderboardScript : ReactorTileScriptBase
         var isSilver = true;
 
         if (leaderboard != null)
-            foreach (var entry in leaderboard
-                                  .OrderByDescending(kvp => kvp.Value.Victories)
-                                  .ThenBy(kvp => kvp.Value.Losses))
+            foreach (var entry in leaderboard.OrderByDescending(kvp => kvp.Value.Victories)
+                                             .ThenBy(kvp => kvp.Value.Losses))
             {
                 var stats = entry.Value;
 
@@ -58,39 +56,36 @@ public class PitFightLeaderboardScript : ReactorTileScriptBase
     {
         public Dictionary<string, PlayerStats> Entries { get; set; } = new(StringComparer.OrdinalIgnoreCase);
 
-        public class PlayerStats
-        {
-            public int Victories { get; set; }
-            public int Losses { get; set; }
-        }
-        
-        
-        // Add a victory to a player
-        public void AddVictory(string playerName)
-        {
-            if (Entries.TryGetValue(playerName, out var stats))
-            {
-                stats.Victories++;
-            }
-            else
-            {
-                Entries[playerName] = new PlayerStats { Victories = 1 };
-            }
-            Leaderboard?.Save();
-        }
-
         // Add a loss to a player
         public void AddLoss(string playerName)
         {
             if (Entries.TryGetValue(playerName, out var stats))
-            {
                 stats.Losses++;
-            }
             else
-            {
-                Entries[playerName] = new PlayerStats { Losses = 1 };
-            }
+                Entries[playerName] = new PlayerStats
+                {
+                    Losses = 1
+                };
             Leaderboard?.Save();
+        }
+
+        // Add a victory to a player
+        public void AddVictory(string playerName)
+        {
+            if (Entries.TryGetValue(playerName, out var stats))
+                stats.Victories++;
+            else
+                Entries[playerName] = new PlayerStats
+                {
+                    Victories = 1
+                };
+            Leaderboard?.Save();
+        }
+
+        public class PlayerStats
+        {
+            public int Losses { get; set; }
+            public int Victories { get; set; }
         }
     }
 }

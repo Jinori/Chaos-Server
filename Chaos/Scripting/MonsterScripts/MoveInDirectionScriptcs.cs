@@ -13,8 +13,8 @@ public class MoveInDirectionScript : MonsterScriptBase
 
     /// <inheritdoc />
     public MoveInDirectionScript(Monster subject)
-        : base(subject) =>
-        RandomWalkInterval = new RandomizedIntervalTimer(TimeSpan.FromSeconds(1), 70, RandomizationType.Negative);
+        : base(subject)
+        => RandomWalkInterval = new RandomizedIntervalTimer(TimeSpan.FromSeconds(1), 70, RandomizationType.Negative);
 
     /// <inheritdoc />
     public override void Update(TimeSpan delta)

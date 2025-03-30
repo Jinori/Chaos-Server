@@ -21,12 +21,12 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.Creants.Phoenix;
 
 public class PhoenixSkyDedicatedShardScript : MapScriptBase
 {
-    public Location? FromLocation { get; set; }
-    public List<string> WhiteList { get; set; } = [];
-    public Monster? Phoenix { get; set; }
+    private readonly IApplyDamageScript ApplyDamageScript;
     private readonly IIntervalTimer CheckTimer = new IntervalTimer(TimeSpan.FromSeconds(5), false);
     private readonly ISimpleCache SimpleCache;
-    private readonly IApplyDamageScript ApplyDamageScript;
+    public Location? FromLocation { get; set; }
+    public Monster? Phoenix { get; set; }
+    public List<string> WhiteList { get; set; } = [];
 
     /// <inheritdoc />
     public PhoenixSkyDedicatedShardScript(MapInstance subject, ISimpleCache simpleCache)
@@ -34,6 +34,19 @@ public class PhoenixSkyDedicatedShardScript : MapScriptBase
     {
         SimpleCache = simpleCache;
         ApplyDamageScript = ApplyNonAttackDamageScript.Create();
+    }
+
+    private Task ApplyFallDamageAsync(Aisling aisling)
+    {
+        var damage = MathEx.GetPercentOf<int>((int)aisling.StatSheet.EffectiveMaximumHp, 75);
+
+        ApplyDamageScript.ApplyDamage(
+            Phoenix,
+            aisling,
+            this,
+            damage);
+
+        return Task.CompletedTask;
     }
 
     /// <inheritdoc />
@@ -55,18 +68,5 @@ public class PhoenixSkyDedicatedShardScript : MapScriptBase
                     true,
                     onTraverse: () => ApplyFallDamageAsync(aisling));
         }
-    }
-
-    private Task ApplyFallDamageAsync(Aisling aisling)
-    {
-        var damage = MathEx.GetPercentOf<int>((int)aisling.StatSheet.EffectiveMaximumHp, 75);
-
-        ApplyDamageScript.ApplyDamage(
-            Phoenix,
-            aisling,
-            this,
-            damage);
-
-        return Task.CompletedTask;
     }
 }

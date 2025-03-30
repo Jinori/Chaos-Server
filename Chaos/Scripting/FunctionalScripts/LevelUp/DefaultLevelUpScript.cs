@@ -33,9 +33,10 @@ public class DefaultLevelUpScript : ScriptBase, ILevelUpScript
         aisling.SendOrangeBarMessage("You level up!");
 
         var notifyNear = aisling.MapInstance.GetEntitiesWithinRange<Aisling>(aisling, 12);
+
         foreach (var player in notifyNear)
             player.Client.SendSound(168, false);
-        
+
         var pointsToGive = 2;
         aisling.UserStatSheet.GivePoints(pointsToGive);
 

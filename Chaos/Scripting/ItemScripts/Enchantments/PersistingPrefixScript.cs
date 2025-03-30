@@ -1,4 +1,3 @@
-using Chaos.Extensions.Common;
 using Chaos.MetaData.ItemMetaData;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
@@ -10,15 +9,6 @@ namespace Chaos.Scripting.ItemScripts.Enchantments;
 public sealed class PersistingPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
     /// <inheritdoc />
-    public PersistingPrefixScript(Item subject)
-        : base(subject)
-        => IPrefixEnchantmentScript.ApplyPrefix<PersistingPrefixScript>(subject);
-
-    /// <inheritdoc />
-    public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
-        => IPrefixEnchantmentScript.Mutate<PersistingPrefixScript>(node, template);
-
-    /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
         Hit = 3,
@@ -27,4 +17,13 @@ public sealed class PersistingPrefixScript : ItemScriptBase, IPrefixEnchantmentS
 
     /// <inheritdoc />
     public static string PrefixStr => "Persisting";
+
+    /// <inheritdoc />
+    public PersistingPrefixScript(Item subject)
+        : base(subject)
+        => IPrefixEnchantmentScript.ApplyPrefix<PersistingPrefixScript>(subject);
+
+    /// <inheritdoc />
+    public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
+        => IPrefixEnchantmentScript.Mutate<PersistingPrefixScript>(node, template);
 }

@@ -14,18 +14,16 @@ public class LuckTrialDoorScript : MerchantScriptBase
     /// <inheritdoc />
     public LuckTrialDoorScript(Merchant subject, ISimpleCache simpleCache)
         : base(subject)
-    {
-        SimpleCache = simpleCache;
-    }
+        => SimpleCache = simpleCache;
 
     public override void OnClicked(Aisling source)
     {
-
         if (Subject.Template.TemplateKey == "doorsuccess")
         {
             if (source.ManhattanDistanceFrom(Subject) >= 4)
             {
                 source.SendOrangeBarMessage("Move closer to the door to choose it.");
+
                 return;
             }
 
@@ -37,11 +35,10 @@ public class LuckTrialDoorScript : MerchantScriptBase
                     source.SendOrangeBarMessage("The door opens and lets you through.");
                     var point = new Point(7, 48);
                     source.WarpTo(point);
+
                     foreach (var merchant in source.MapInstance.GetEntities<Merchant>())
                         if (merchant.Template.TemplateKey != "trialofluckchest")
-                        {
                             source.MapInstance.RemoveEntity(merchant);
-                        }
 
                     return;
                 }
@@ -52,11 +49,10 @@ public class LuckTrialDoorScript : MerchantScriptBase
                     source.SendOrangeBarMessage("The door opens and lets you through.");
                     var point = new Point(7, 27);
                     source.WarpTo(point);
+
                     foreach (var merchant in source.MapInstance.GetEntities<Merchant>())
                         if (merchant.Template.TemplateKey != "trialofluckchest")
-                        {
                             source.MapInstance.RemoveEntity(merchant);
-                        }
 
                     return;
                 }
@@ -67,11 +63,10 @@ public class LuckTrialDoorScript : MerchantScriptBase
                     source.SendOrangeBarMessage("The door opens and lets you through.");
                     var point = new Point(7, 9);
                     source.WarpTo(point);
+
                     foreach (var merchant in source.MapInstance.GetEntities<Merchant>())
                         if (merchant.Template.TemplateKey != "trialofluckchest")
-                        {
                             source.MapInstance.RemoveEntity(merchant);
-                        }
 
                     return;
                 }
@@ -83,6 +78,7 @@ public class LuckTrialDoorScript : MerchantScriptBase
             if (source.ManhattanDistanceFrom(Subject) >= 4)
             {
                 source.SendOrangeBarMessage("Move closer to the door to choose it.");
+
                 return;
             }
 
@@ -95,9 +91,7 @@ public class LuckTrialDoorScript : MerchantScriptBase
 
                 foreach (var merchant in source.MapInstance.GetEntities<Merchant>())
                     if (merchant.Template.TemplateKey != "trialofluckchest")
-                    {
                         source.MapInstance.RemoveEntity(merchant);
-                    }
 
                 return;
             }
@@ -108,11 +102,11 @@ public class LuckTrialDoorScript : MerchantScriptBase
             if (source.ManhattanDistanceFrom(Subject) >= 4)
             {
                 source.SendOrangeBarMessage("Move closer to the chest to open it.");
+
                 return;
             }
 
             if (source.ManhattanDistanceFrom(Subject) <= 3)
-            {
                 if (source.Trackers.Enums.HasValue(LuckTrial.CompletedTrial))
                 {
                     source.Trackers.Enums.Set(LuckTrial.CompletedTrial2);
@@ -123,8 +117,6 @@ public class LuckTrialDoorScript : MerchantScriptBase
                     source.TraverseMap(mapinstance, point);
                     source.SendOrangeBarMessage("Congratulations! You have completed the Trial of Luck!");
                 }
-            }
         }
     }
 }
- 

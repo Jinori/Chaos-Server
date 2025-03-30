@@ -19,6 +19,7 @@ public class EDragonScaleWanderingScript : MonsterScriptBase
         {
             Subject.Wander();
             Subject.MoveTimer.Reset();
+
             return;
         }
 

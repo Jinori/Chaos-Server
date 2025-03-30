@@ -17,6 +17,7 @@ public class SummonerEscapePortalScript : ReactorTileScriptBase
 {
     private readonly ISimpleCache SimpleCache;
     protected IIntervalTimer AnimationTimer { get; set; }
+
     protected Animation PortalAnimation { get; } = new()
     {
         AnimationSpeed = 145,
@@ -37,11 +38,14 @@ public class SummonerEscapePortalScript : ReactorTileScriptBase
         if (source is not Aisling aisling)
             return;
 
-        if (Subject.MapInstance.GetEntities<Monster>().Any(x => !x.Script.Is<PetScript>()))
+        if (Subject.MapInstance
+                   .GetEntities<Monster>()
+                   .Any(x => !x.Script.Is<PetScript>()))
         {
             aisling.SendOrangeBarMessage("You must clear the room before taking the portal.");
             var point = source.DirectionalOffset(source.Direction.Reverse());
             source.WarpTo(point);
+
             return;
         }
 
@@ -50,92 +54,142 @@ public class SummonerEscapePortalScript : ReactorTileScriptBase
             case 22100:
             {
                 var targetMap = SimpleCache.Get<MapInstance>("terraguardiandomain");
-                var rectangle = new Rectangle(10, 13, 3, 3);
+
+                var rectangle = new Rectangle(
+                    10,
+                    13,
+                    3,
+                    3);
                 var point = rectangle.GetRandomPoint();
 
-                foreach (var player in Subject.MapInstance.GetEntities<Aisling>().Where(x => x.IsAlive && !x.IsGodModeEnabled()).ToList())
+                foreach (var player in Subject.MapInstance
+                                              .GetEntities<Aisling>()
+                                              .Where(x => x.IsAlive && !x.IsGodModeEnabled())
+                                              .ToList())
                 {
                     player.Trackers.Enums.Set(SummonerBossFight.FirstStage1);
                     player.TraverseMap(targetMap, point);
+
                     if (source.Name != player.Name)
                         player.SendOrangeBarMessage($"{source.Name} drags you through the portal.");
-                    
+
                     if (source.Name == player.Name)
                         player.SendOrangeBarMessage("You bring your group through the portal.");
                 }
+
                 break;
             }
-            
+
             case 31002:
             {
                 var targetMap = SimpleCache.Get<MapInstance>("galeguardiandomain");
-                var rectangle = new Rectangle(10, 13, 3, 3);
+
+                var rectangle = new Rectangle(
+                    10,
+                    13,
+                    3,
+                    3);
                 var point = rectangle.GetRandomPoint();
 
-                foreach (var player in Subject.MapInstance.GetEntities<Aisling>().Where(x => x.IsAlive && !x.IsGodModeEnabled()).ToList())
+                foreach (var player in Subject.MapInstance
+                                              .GetEntities<Aisling>()
+                                              .Where(x => x.IsAlive && !x.IsGodModeEnabled())
+                                              .ToList())
                 {
                     player.Trackers.Enums.Set(SummonerBossFight.SecondStage1);
                     player.TraverseMap(targetMap, point);
+
                     if (source.Name != player.Name)
                         player.SendOrangeBarMessage($"{source.Name} drags you through the portal.");
-                    
+
                     if (source.Name == player.Name)
                         player.SendOrangeBarMessage("You bring your group through the portal.");
                 }
+
                 break;
             }
             case 31004:
             {
                 var targetMap = SimpleCache.Get<MapInstance>("tideguardiandomain");
-                var rectangle = new Rectangle(6, 9, 3, 3);
+
+                var rectangle = new Rectangle(
+                    6,
+                    9,
+                    3,
+                    3);
                 var point = rectangle.GetRandomPoint();
 
-                foreach (var player in Subject.MapInstance.GetEntities<Aisling>().Where(x => x.IsAlive && !x.IsGodModeEnabled()).ToList())
+                foreach (var player in Subject.MapInstance
+                                              .GetEntities<Aisling>()
+                                              .Where(x => x.IsAlive && !x.IsGodModeEnabled())
+                                              .ToList())
                 {
                     player.Trackers.Enums.Set(SummonerBossFight.ThirdStage1);
                     player.TraverseMap(targetMap, point);
+
                     if (source.Name != player.Name)
                         player.SendOrangeBarMessage($"{source.Name} drags you through the portal.");
-                    
+
                     if (source.Name == player.Name)
                         player.SendOrangeBarMessage("You bring your group through the portal.");
                 }
+
                 break;
             }
             case 31003:
             {
                 var targetMap = SimpleCache.Get<MapInstance>("ignisguardiandomain");
-                var rectangle = new Rectangle(13, 8, 3, 3);
+
+                var rectangle = new Rectangle(
+                    13,
+                    8,
+                    3,
+                    3);
                 var point = rectangle.GetRandomPoint();
 
-                foreach (var player in Subject.MapInstance.GetEntities<Aisling>().Where(x => x.IsAlive && !x.IsGodModeEnabled()).ToList())
+                foreach (var player in Subject.MapInstance
+                                              .GetEntities<Aisling>()
+                                              .Where(x => x.IsAlive && !x.IsGodModeEnabled())
+                                              .ToList())
                 {
                     player.Trackers.Enums.Set(SummonerBossFight.FourthStage1);
                     player.TraverseMap(targetMap, point);
+
                     if (source.Name != player.Name)
                         player.SendOrangeBarMessage($"{source.Name} drags you through the portal.");
-                    
+
                     if (source.Name == player.Name)
                         player.SendOrangeBarMessage("You bring your group through the portal.");
                 }
+
                 break;
             }
             case 31001:
             {
                 var targetMap = SimpleCache.Get<MapInstance>("cthonic_domain3");
-                var rectangle = new Rectangle(13, 14, 3, 3);
+
+                var rectangle = new Rectangle(
+                    13,
+                    14,
+                    3,
+                    3);
                 var point = rectangle.GetRandomPoint();
 
-                foreach (var player in Subject.MapInstance.GetEntities<Aisling>().Where(x => x.IsAlive && !x.IsGodModeEnabled()).ToList())
+                foreach (var player in Subject.MapInstance
+                                              .GetEntities<Aisling>()
+                                              .Where(x => x.IsAlive && !x.IsGodModeEnabled())
+                                              .ToList())
                 {
                     player.Trackers.Enums.Set(SummonerBossFight.FifthStage1);
                     player.TraverseMap(targetMap, point);
+
                     if (source.Name != player.Name)
                         player.SendOrangeBarMessage($"{source.Name} drags you through the portal.");
-                    
+
                     if (source.Name == player.Name)
                         player.SendOrangeBarMessage("You bring your group through the portal.");
                 }
+
                 break;
             }
         }
@@ -148,8 +202,7 @@ public class SummonerEscapePortalScript : ReactorTileScriptBase
 
         if (AnimationTimer.IntervalElapsed)
         {
-            var aislings = Subject.MapInstance
-                                           .GetEntitiesWithinRange<Aisling>(Subject, 12);
+            var aislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 12);
 
             foreach (var aisling in aislings)
                 aisling.MapInstance.ShowAnimation(PortalAnimation.GetPointAnimation(new Point(Subject.X, Subject.Y)));

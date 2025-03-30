@@ -78,7 +78,7 @@ public class MorCradhEffect : EffectBase, NonOverwritableEffectComponent.INonOve
 
             return false;
         }
-        
+
         if (target.Effects.Contains("beag cradh") || target.Effects.Contains("cradh"))
         {
             target.Effects.Dispel("beag cradh");
@@ -88,7 +88,6 @@ public class MorCradhEffect : EffectBase, NonOverwritableEffectComponent.INonOve
         var execution = new ComponentExecutor(source, target).WithOptions(this)
                                                              .ExecuteAndCheck<NonOverwritableEffectComponent>();
 
-        
         return execution is not null;
     }
 }

@@ -17,8 +17,8 @@ public class KarloposIslandSecretEntranceScript : ConfigurableReactorTileScriptB
 
     /// <inheritdoc />
     public KarloposIslandSecretEntranceScript(ReactorTile subject, ISimpleCache simpleCache)
-        : base(subject) =>
-        SimpleCache = simpleCache;
+        : base(subject)
+        => SimpleCache = simpleCache;
 
     /// <inheritdoc />
     public override void OnWalkedOn(Creature source)
@@ -53,16 +53,17 @@ public class KarloposIslandSecretEntranceScript : ConfigurableReactorTileScriptB
             return;
         }
 
-        if ((aisling != null)
-            && !aisling.Inventory.Contains("Coral Pendant"))
+        if ((aisling != null) && !aisling.Inventory.Contains("Coral Pendant"))
         {
             source.TraverseMap(targetMap, Destination);
+
             return;
         }
 
         if ((aisling != null) && aisling.Inventory.Contains("Coral Pendant") && aisling.Inventory.Contains("red pearl"))
         {
             aisling?.SendOrangeBarMessage("You peak into the familiar room and do not see Bret anymore.");
+
             return;
         }
 

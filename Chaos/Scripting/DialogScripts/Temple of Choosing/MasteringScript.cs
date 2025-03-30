@@ -149,10 +149,8 @@ public class MasteringScript : DialogScriptBase
         source.SpellBook.TryAddToNextSlot(roar);
         source.SpellBook.TryAddToNextSlot(adaptiveskin);
 
-
         var phoenixgrasp = SpellFactory.Create("phoenixgrasp");
         source.SpellBook.TryAddToNextSlot(phoenixgrasp);
-
 
         var itemsToGive = new[]
         {

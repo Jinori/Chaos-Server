@@ -297,28 +297,26 @@ public class RecipeLibraryScript : DialogScriptBase
             #endregion
 
             #region Enchanting Book
-
-                
             case "enchantingbook":
             {
                 // If the user has any recipe flags, show matching recipes
                 if (source.Trackers.Flags.TryGetFlag(out EnchantingRecipes recipes))
                 {
                     var sortedRecipes = CraftingRequirements.EnchantingRequirements
-                                                        .Where(kv => recipes.HasFlag(kv.Key))
-                                                        .Select(
-                                                            kv => ItemDetails.DisplayRecipe(ItemFactory.CreateFaux(kv.Value.TemplateKey)))
-                                                        .OrderBy(
-                                                            item => EnchantingScript.GetStatusAsInt(
-                                                                CraftingRequirements.EnchantingRequirements.First(
-                                                                                        x => x.Value.TemplateKey
-                                                                                            == item.Item.Template.TemplateKey)
-                                                                                    .Value.Rank))
-                                                        .ToList();
-                    
+                                                            .Where(kv => recipes.HasFlag(kv.Key))
+                                                            .Select(
+                                                                kv => ItemDetails.DisplayRecipe(
+                                                                    ItemFactory.CreateFaux(kv.Value.TemplateKey)))
+                                                            .OrderBy(
+                                                                item => EnchantingScript.GetStatusAsInt(
+                                                                    CraftingRequirements.EnchantingRequirements.First(
+                                                                                            x => x.Value.TemplateKey
+                                                                                                == item.Item.Template.TemplateKey)
+                                                                                        .Value.Rank))
+                                                            .ToList();
+
                     Subject.Items = sortedRecipes;
                 }
-                
 
                 break;
             }
@@ -2807,7 +2805,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"Level Required: {FauxItem.Level}.\n{FauxItem.Template.Name
-                            } cannot be crafted.\nUpgrading {FauxItem.Template.TemplateKey
+                            } cannot be crafted.\nUpgrading {FauxItem.Template.Name
                             } requires 1 Curved Dagger, 3 Polished Bronze Bar, and 1 Coal.");
 
                         return;

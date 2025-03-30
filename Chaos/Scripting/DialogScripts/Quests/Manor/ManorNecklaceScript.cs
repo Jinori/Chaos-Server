@@ -38,9 +38,8 @@ public class ManorNecklaceScript : DialogScriptBase
                 if (stage == ManorNecklaceStage.ReturningNecklace)
                     source.Trackers.Enums.Set(ManorNecklaceStage.KeptNecklace);
 
-                
                 source.Inventory.RemoveQuantity("Zulera's Cursed Necklace", 1);
-                
+
                 source.Legend.AddUnique(
                     new LegendMark(
                         "Stolen Zulera's Heirloom",
@@ -57,10 +56,10 @@ public class ManorNecklaceScript : DialogScriptBase
                 var necklace = ItemFactory.Create("zulerasHeirloom");
 
                 Logger.WithTopics(
-                          [Topics.Entities.Aisling,
+                          Topics.Entities.Aisling,
                           Topics.Entities.Item,
                           Topics.Entities.Dialog,
-                          Topics.Entities.Quest])
+                          Topics.Entities.Quest)
                       .WithProperty(source)
                       .WithProperty(Subject)
                       .LogInformation("{@AislingName} has received {@ItemName} from a quest", source.Name, necklace.DisplayName);
@@ -85,10 +84,10 @@ public class ManorNecklaceScript : DialogScriptBase
                     source.Trackers.Enums.Set(ManorNecklaceStage.ReturnedNecklace);
 
                 Logger.WithTopics(
-                          [Topics.Entities.Aisling,
+                          Topics.Entities.Aisling,
                           Topics.Entities.Experience,
                           Topics.Entities.Dialog,
-                          Topics.Entities.Quest])
+                          Topics.Entities.Quest)
                       .WithProperty(source)
                       .WithProperty(Subject)
                       .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, 150000);
@@ -105,9 +104,7 @@ public class ManorNecklaceScript : DialogScriptBase
                         1,
                         GameTime.Now));
 
-                source.Client.SendServerMessage(
-                    ServerMessageType.OrangeBar1,
-                    "You receive 20 gamepoints, legend mark and 150,000 exp!");
+                source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You receive 20 gamepoints, legend mark and 150,000 exp!");
 
                 break;
             }
@@ -136,12 +133,10 @@ public class ManorNecklaceScript : DialogScriptBase
                         break;
                     case ManorNecklaceStage.SawNecklace:
                     {
-                     
                         Subject.Reply(
                             source,
                             "You saw it!? Then ghost appeared? They must of taken it! Go back to that room and find it for me!");
                         source.Trackers.Enums.Set(ManorNecklaceStage.AcceptedQuest);
-                        
                     }
 
                         break;

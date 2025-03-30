@@ -27,6 +27,7 @@ public sealed class SmashVialHealEffect : ContinuousAnimationEffectBase
 
     /// <inheritdoc />
     public override byte Icon => 145;
+
     /// <inheritdoc />
     public override string Name => "HealthRegen";
 
@@ -36,6 +37,7 @@ public sealed class SmashVialHealEffect : ContinuousAnimationEffectBase
         //the interval is 100ms, so this will be applied 10 times a second
         const int HEAL_PER_TICK = 5;
         Subject.StatSheet.AddHp(HEAL_PER_TICK);
+
         //if the subject was a player, update their vit
         AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
     }

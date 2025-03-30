@@ -15,7 +15,6 @@ public class AttackingScript : MonsterScriptBase
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
-        
         if (Target is not { IsAlive: true } || (Subject.ManhattanDistanceFrom(Target) != 1))
             return;
 

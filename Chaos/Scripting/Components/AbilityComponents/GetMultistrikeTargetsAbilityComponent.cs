@@ -9,7 +9,7 @@ using Chaos.Scripting.Components.Execution;
 
 namespace Chaos.Scripting.Components.AbilityComponents;
 
-public class GetMultistrikeTargetsAbilityComponent<TEntity> : IConditionalComponent where TEntity : Creature
+public class GetMultistrikeTargetsAbilityComponent<TEntity> : IConditionalComponent where TEntity: Creature
 {
     /// <inheritdoc />
     public bool Execute(ActivationContext context, ComponentVars vars)
@@ -17,17 +17,16 @@ public class GetMultistrikeTargetsAbilityComponent<TEntity> : IConditionalCompon
         var options = vars.GetOptions<IGetMultistrikeTargetsOptions>();
         var source = context.Source;
         var map = context.SourceMap;
-        
+
         var targetEntities = map.GetEntitiesWithinRange<TEntity>(source, options.Range)
                                 .Where(target => IsValidTarget(source, target, options))
                                 .OrderBy(target => target.ManhattanDistanceFrom(source))
                                 .Take(5) // Limit to 5 targets
                                 .ToList();
-        
+
         // Extract points assuming TEntity implements IMapEntity with X and Y properties
-        var targetPoints = targetEntities
-            .Select(target => new Point(target.X, target.Y))
-            .ToList();
+        var targetPoints = targetEntities.Select(target => new Point(target.X, target.Y))
+                                         .ToList();
 
         // Save points and targets into ComponentVars
         vars.SetPoints(targetPoints);
@@ -35,17 +34,6 @@ public class GetMultistrikeTargetsAbilityComponent<TEntity> : IConditionalCompon
 
         // Return true if at least one target is found, or if no targets are required
         return !options.MustHaveTargets || (targetEntities.Count != 0);
-    }
-    
-    private bool IsValidTarget(Creature source, TEntity target, IGetMultistrikeTargetsOptions options)
-    {
-        // Ensure TEntity can be cast to Creature
-        Creature creatureTarget = target;
-
-        return creatureTarget.IsHostileTo(source) &&
-               !creatureTarget.IsDead &&
-               ((options.Filter & TargetFilter.HostileOnly) != 0) &&
-               (!options.StopOnWalls || IsSameSideOrNoWallBetween(source, creatureTarget));
     }
 
     private bool IsSameSideOrNoWallBetween(Creature source, Creature target)
@@ -56,11 +44,22 @@ public class GetMultistrikeTargetsAbilityComponent<TEntity> : IConditionalCompon
         return !path.Any(point => source.MapInstance.IsWall(point));
     }
 
+    private bool IsValidTarget(Creature source, TEntity target, IGetMultistrikeTargetsOptions options)
+    {
+        // Ensure TEntity can be cast to Creature
+        Creature creatureTarget = target;
+
+        return creatureTarget.IsHostileTo(source)
+               && !creatureTarget.IsDead
+               && ((options.Filter & TargetFilter.HostileOnly) != 0)
+               && (!options.StopOnWalls || IsSameSideOrNoWallBetween(source, creatureTarget));
+    }
+
     public interface IGetMultistrikeTargetsOptions
     {
-        int Range { get; init; }
         TargetFilter Filter { get; init; }
         bool MustHaveTargets { get; init; }
+        int Range { get; init; }
         bool StopOnWalls { get; init; }
     }
 }

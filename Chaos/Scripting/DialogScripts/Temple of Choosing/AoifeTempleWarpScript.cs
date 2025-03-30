@@ -18,8 +18,7 @@ public class AoifeTempleWarpScript(Dialog subject, ISimpleCache simpleCache) : D
             {
                 if (source.Trackers.Flags.HasFlag(QuestFlag1.ChosenClass))
                 {
-                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1,
-                        "You have already chosen a class. Luck be with you.");
+                    source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You have already chosen a class. Luck be with you.");
 
                     return;
                 }
@@ -71,6 +70,5 @@ public class AoifeTempleWarpScript(Dialog subject, ISimpleCache simpleCache) : D
                 break;
             }
         }
-
     }
 }

@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using Chaos.Collections;
 using Chaos.Common.Abstractions;
-using Chaos.Extensions.Common;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Networking.Abstractions;
@@ -148,7 +147,7 @@ public class GuildMemberDemoteScript : GuildScriptBase
         }
 
         var targetCurrentRank = guild.RankOf(name);
-        
+
         if (!targetCurrentRank.CanBeDemoted)
         {
             Subject.Reply(source, $"{name} is already the lowest rank and can not be further demoted.", "generic_guild_members_initial");

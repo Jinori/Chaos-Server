@@ -9,14 +9,6 @@ namespace Chaos.Scripting.ItemScripts.Enchantments;
 public sealed class CursedPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
     /// <inheritdoc />
-    public CursedPrefixScript(Item subject)
-        : base(subject) => IPrefixEnchantmentScript.ApplyPrefix<CursedPrefixScript>(subject);
-
-    /// <inheritdoc />
-    public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
-        => IPrefixEnchantmentScript.Mutate<CursedPrefixScript>(node, template);
-    
-    /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
         AtkSpeedPct = 3,
@@ -25,4 +17,13 @@ public sealed class CursedPrefixScript : ItemScriptBase, IPrefixEnchantmentScrip
 
     /// <inheritdoc />
     public static string PrefixStr => "Cursed";
+
+    /// <inheritdoc />
+    public CursedPrefixScript(Item subject)
+        : base(subject)
+        => IPrefixEnchantmentScript.ApplyPrefix<CursedPrefixScript>(subject);
+
+    /// <inheritdoc />
+    public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
+        => IPrefixEnchantmentScript.Mutate<CursedPrefixScript>(node, template);
 }

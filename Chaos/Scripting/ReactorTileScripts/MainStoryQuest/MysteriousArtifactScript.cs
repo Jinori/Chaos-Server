@@ -34,6 +34,7 @@ public class MysteriousArtifactScript : ReactorTileScriptBase
         if (IntegerRandomizer.RollChance(30))
         {
             Map.RemoveEntity(Subject);
+
             return;
         }
 

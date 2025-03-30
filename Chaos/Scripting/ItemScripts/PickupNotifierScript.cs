@@ -12,17 +12,25 @@ public class PickupNotifierScript : ItemScriptBase
     public PickupNotifierScript(Item subject)
         : base(subject) { }
 
+    public override bool CanUse(Aisling source)
+    {
+        if (((Subject.Template.Name == "Revive Potion") && source.IsDead) || !source.IsAlive)
+            return true;
+
+        if (source.IsAlive || !source.IsDead)
+            return true;
+
+        return false;
+    }
+
     private void NotifyGroupMembers(Aisling aisling, int originalCount, List<Aisling> nearbyPlayers)
     {
         if (aisling.Group is { Count: > 1 })
         {
             var point = new Point(aisling.X, aisling.Y);
 
-            var groupMembersInRange = aisling.Group
-                                             .Where(
-                                                 x => x.WithinRange(point)
-                                                      && x.MapInstance.Equals(aisling.MapInstance)
-                                                      && !nearbyPlayers.Contains(x));
+            var groupMembersInRange = aisling.Group.Where(
+                x => x.WithinRange(point) && x.MapInstance.Equals(aisling.MapInstance) && !nearbyPlayers.Contains(x));
 
             foreach (var member in groupMembersInRange)
                 if (member.Id != aisling.Id)
@@ -66,16 +74,5 @@ public class PickupNotifierScript : ItemScriptBase
         NotifyPlayer(aisling, originalCount);
         var nearbyPlayers = NotifyNearbyPlayers(aisling, originalCount);
         NotifyGroupMembers(aisling, originalCount, nearbyPlayers);
-    }
-
-    public override bool CanUse(Aisling source)
-    {
-        if (((Subject.Template.Name == "Revive Potion") && source.IsDead) || !source.IsAlive)
-                return true;
-
-        if (source.IsAlive || !source.IsDead) 
-            return true;
-
-        return false;
     }
 }

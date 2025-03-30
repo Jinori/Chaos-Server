@@ -15,27 +15,48 @@ public sealed class PetAggroTargetingScript(Monster subject) : MonsterScriptBase
 {
     private readonly IIntervalTimer TargetUpdateTimer = new IntervalTimer(
         TimeSpan.FromMilliseconds(Math.Max(250, subject.Template.SkillIntervalMs)));
+
     private int InitialAggro = 10;
 
-    private Monster? FindAggroedMonster(Aisling owner) =>
-        owner.MapInstance.GetEntitiesWithinRange<Monster>(owner, 9)
-             .FirstOrDefault(x => x.IsAlive && x.AggroList.ContainsKey(owner.Id) && !x.Name.Contains("Teammate") && !x.Name.Contains("Wind Wall") && !x.Script.Is<PetScript>() && !x.Name.Contains("Helpless Zoe"));
+    private Monster? FindAggroedMonster(Aisling owner)
+        => owner.MapInstance
+                .GetEntitiesWithinRange<Monster>(owner, 9)
+                .FirstOrDefault(
+                    x => x.IsAlive
+                         && x.AggroList.ContainsKey(owner.Id)
+                         && !x.Name.Contains("Teammate")
+                         && !x.Name.Contains("Wind Wall")
+                         && !x.Script.Is<PetScript>()
+                         && !x.Name.Contains("Helpless Zoe"));
 
-    private Monster? FindClosestMonster(Aisling owner) =>
-        owner.MapInstance.GetEntitiesWithinRange<Monster>(owner, 9)
-             .Where(x => x.IsAlive && !x.Equals(Subject) && !x.Script.Is<PetScript>() && !x.Script.Is<NightmareTeammateScript>() && !x.Script.Is<NightmareWindWallScript>() && !x.Script.Is<SacrificeZoe>())
-             .MinBy(x => x.ManhattanDistanceFrom(owner));
+    private Monster? FindClosestMonster(Aisling owner)
+        => owner.MapInstance
+                .GetEntitiesWithinRange<Monster>(owner, 9)
+                .Where(
+                    x => x.IsAlive
+                         && !x.Equals(Subject)
+                         && !x.Script.Is<PetScript>()
+                         && !x.Script.Is<NightmareTeammateScript>()
+                         && !x.Script.Is<NightmareWindWallScript>()
+                         && !x.Script.Is<SacrificeZoe>())
+                .MinBy(x => x.ManhattanDistanceFrom(owner));
 
     private Monster? FindGroupAggroTarget(Aisling owner)
     {
         if (owner.Group == null)
             return null;
 
-        var groupMembers = owner.Group.Select(x => x.Id).ToList();
-            
-        return owner.MapInstance.GetEntitiesWithinRange<Monster>(owner, 9)
+        var groupMembers = owner.Group
+                                .Select(x => x.Id)
+                                .ToList();
+
+        return owner.MapInstance
+                    .GetEntitiesWithinRange<Monster>(owner, 9)
                     .Where(monster => monster.IsAlive && monster.AggroList.Keys.Any(aggroId => groupMembers.Contains(aggroId)))
-                    .MaxBy(monster => monster.AggroList.Where(kvp => groupMembers.Contains(kvp.Key)).Sum(kvp => kvp.Value));
+                    .MaxBy(
+                        monster => monster.AggroList
+                                          .Where(kvp => groupMembers.Contains(kvp.Key))
+                                          .Sum(kvp => kvp.Value));
     }
 
     private bool IsCurrentTargetValid() => Target is { IsAlive: true } && Target.OnSameMapAs(Subject);
@@ -46,10 +67,9 @@ public sealed class PetAggroTargetingScript(Monster subject) : MonsterScriptBase
             return;
 
         var aggro = aggroOverride ?? damage;
+
         if (aggro > 0)
-        {
             AggroList.AddOrUpdate(source.Id, _ => aggro, (_, currentAggro) => currentAggro + aggro);
-        }
     }
 
     public override void Update(TimeSpan delta)
@@ -65,7 +85,6 @@ public sealed class PetAggroTargetingScript(Monster subject) : MonsterScriptBase
             Target = null;
         }
 
-
         if (!TargetUpdateTimer.IntervalElapsed || (Subject.PetOwner == null))
             return;
 
@@ -73,7 +92,7 @@ public sealed class PetAggroTargetingScript(Monster subject) : MonsterScriptBase
 
         if (value == PetMode.Passive)
             return;
-            
+
         Target = value switch
         {
             PetMode.Offensive => FindClosestMonster(Subject.PetOwner),
@@ -83,6 +102,6 @@ public sealed class PetAggroTargetingScript(Monster subject) : MonsterScriptBase
         };
 
         if (Target != null)
-            AggroList[Target.Id] = InitialAggro++; 
+            AggroList[Target.Id] = InitialAggro++;
     }
 }

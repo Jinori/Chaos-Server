@@ -17,17 +17,16 @@ namespace Chaos.Scripting.DialogScripts.Temple_of_Choosing;
 public class WarriorDedicateScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
+    private readonly ILogger<WarriorDedicateScript> Logger;
     private readonly ISimpleCache SimpleCache;
     private readonly ISkillFactory SkillFactory;
-    private readonly ILogger<WarriorDedicateScript> Logger;
 
     public WarriorDedicateScript(
         Dialog subject,
         IItemFactory itemFactory,
         ISimpleCache simpleCache,
         ISkillFactory skillFactory,
-        ILogger<WarriorDedicateScript> logger
-    )
+        ILogger<WarriorDedicateScript> logger)
         : base(subject)
     {
         ItemFactory = itemFactory;
@@ -79,9 +78,8 @@ public class WarriorDedicateScript : DialogScriptBase
             var point = new Point(8, 5);
             source.TraverseMap(mapInstance, point);
             source.Animate(ani, source.Id);
-            
-            Logger.WithTopics(
-                      [Topics.Entities.Aisling, Topics.Actions.Promote])
+
+            Logger.WithTopics(Topics.Entities.Aisling, Topics.Actions.Promote)
                   .WithProperty(Subject)
                   .LogInformation("{@AislingName} has become warrior", source.Name);
         }

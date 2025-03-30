@@ -24,6 +24,14 @@ public class SellShopScript : DialogScriptBase
         SellShopSource = (ISellShopSource)subject.DialogSource;
     }
 
+    private static string GetDisplayNameWithPlural(string baseName, int amount)
+    {
+        if ((amount == 1) || string.IsNullOrWhiteSpace(baseName))
+            return baseName;
+
+        return baseName.Pluralize();
+    }
+
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
@@ -153,18 +161,10 @@ public class SellShopScript : DialogScriptBase
         }
 
         var itemName = GetDisplayNameWithPlural(item.DisplayName, amount);
-        
+
         Subject.InjectTextParameters(amount, itemName, amount * item.Template.SellValue);
     }
-    
-    private static string GetDisplayNameWithPlural(string baseName, int amount)
-    {
-        if ((amount == 1) || string.IsNullOrWhiteSpace(baseName))
-            return baseName;
 
-        return baseName.Pluralize();
-    }
-    
     private void OnDisplayingInitial(Aisling source)
         => Subject.Slots = source.Inventory
                                  .Where(SellShopSource.IsBuying)

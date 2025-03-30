@@ -23,17 +23,17 @@ public class LimboPriestScript : MonsterScriptBase
     ];
 
     private readonly IIntervalTimer ActionTimer;
+    private readonly Spell[] AllSpells;
     private readonly Spell AoArdCradh;
     private readonly Spell AoDall;
     private readonly Spell AoPoison;
     private readonly Spell AoSuain;
     private readonly Spell Dinarcoli;
+    private readonly TimeSpan FizzleCooldown;
     private readonly Spell Nuadhaich;
     private readonly Spell Pramh;
     private readonly ISpellFactory SpellFactory;
-    private readonly Spell[] AllSpells;
     private TimeSpan TimeSinceLastFizzle;
-    private readonly TimeSpan FizzleCooldown;
 
     public LimboPriestScript(Monster subject, ISpellFactory spellFactory)
         : base(subject)
@@ -49,13 +49,17 @@ public class LimboPriestScript : MonsterScriptBase
         ActionTimer = new RandomizedIntervalTimer(TimeSpan.FromMilliseconds(1000), 10, startAsElapsed: false);
         TimeSinceLastFizzle = TimeSpan.Zero;
         FizzleCooldown = TimeSpan.FromSeconds(5);
-        AllSpells = [Nuadhaich, Pramh, AoDall, AoPoison, AoSuain, Dinarcoli, AoArdCradh];
-    }
 
-    private void ResetMovementTimer()
-    {
-        Subject.WanderTimer.Reset();
-        Subject.MoveTimer.Reset();
+        AllSpells =
+        [
+            Nuadhaich,
+            Pramh,
+            AoDall,
+            AoPoison,
+            AoSuain,
+            Dinarcoli,
+            AoArdCradh
+        ];
     }
 
     /// <inheritdoc />
@@ -64,17 +68,23 @@ public class LimboPriestScript : MonsterScriptBase
         if (TimeSinceLastFizzle > FizzleCooldown)
         {
             TimeSinceLastFizzle = TimeSpan.Zero;
-            
+
             ActionTimer.Reset();
             ResetMovementTimer();
         }
+    }
+
+    private void ResetMovementTimer()
+    {
+        Subject.WanderTimer.Reset();
+        Subject.MoveTimer.Reset();
     }
 
     public override void Update(TimeSpan delta)
     {
         foreach (var spell in AllSpells)
             spell.Update(delta);
-        
+
         ActionTimer.Update(delta);
         TimeSinceLastFizzle += delta;
 
@@ -84,7 +94,7 @@ public class LimboPriestScript : MonsterScriptBase
         //25% of the time it casts nothing
         if (IntegerRandomizer.RollChance(25))
             return;
-        
+
         var shouldPramh = IntegerRandomizer.RollChance(25);
 
         //cure self of control effects
@@ -113,7 +123,7 @@ public class LimboPriestScript : MonsterScriptBase
         var lowestNearbyMonster = nearbyMonsters.MinBy(monster => monster.StatSheet.HealthPercent);
 
         if (lowestNearbyMonster is not null && (lowestNearbyMonster.StatSheet.HealthPercent < 100))
-            if(Subject.TryUseSpell(Nuadhaich, lowestNearbyMonster.Id))
+            if (Subject.TryUseSpell(Nuadhaich, lowestNearbyMonster.Id))
                 ResetMovementTimer();
 
         //dont return, priests always heal on top of any other spells
@@ -161,7 +171,7 @@ public class LimboPriestScript : MonsterScriptBase
         //ao self blind
         if (Subject.IsBlind)
         {
-            if(Subject.TryUseSpell(AoDall, Subject.Id))
+            if (Subject.TryUseSpell(AoDall, Subject.Id))
                 ResetMovementTimer();
 
             return;
@@ -182,7 +192,7 @@ public class LimboPriestScript : MonsterScriptBase
 
             if (monster.IsPramhed())
             {
-                if(Subject.TryUseSpell(Dinarcoli, monster.Id))
+                if (Subject.TryUseSpell(Dinarcoli, monster.Id))
                     ResetMovementTimer();
 
                 return;
@@ -190,7 +200,7 @@ public class LimboPriestScript : MonsterScriptBase
 
             if (monster.IsSuained())
             {
-                if(Subject.TryUseSpell(AoSuain, monster.Id))
+                if (Subject.TryUseSpell(AoSuain, monster.Id))
                     ResetMovementTimer();
 
                 return;
@@ -198,7 +208,7 @@ public class LimboPriestScript : MonsterScriptBase
 
             if (monster.IsBlind)
             {
-                if(Subject.TryUseSpell(AoDall, monster.Id))
+                if (Subject.TryUseSpell(AoDall, monster.Id))
                     ResetMovementTimer();
 
                 return;
@@ -207,7 +217,7 @@ public class LimboPriestScript : MonsterScriptBase
 
         if (Subject.Effects.Contains("Poison"))
         {
-            if(Subject.TryUseSpell(AoPoison, Subject.Id))
+            if (Subject.TryUseSpell(AoPoison, Subject.Id))
                 ResetMovementTimer();
 
             return;
@@ -216,7 +226,7 @@ public class LimboPriestScript : MonsterScriptBase
         foreach (var monster in nearbyMonsters)
             if (monster.Effects.Contains("Poison"))
             {
-                if(Subject.TryUseSpell(AoPoison, monster.Id))
+                if (Subject.TryUseSpell(AoPoison, monster.Id))
                     ResetMovementTimer();
 
                 return;

@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.Common.Utilities;
+﻿using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
@@ -41,7 +40,7 @@ public class SharpestBladeQuestScript : DialogScriptBase
             {
                 if (source.UserStatSheet.Level < 41)
                     return;
-                
+
                 var option = new DialogOption
                 {
                     DialogKey = "sharpestblade_initial",
@@ -58,14 +57,16 @@ public class SharpestBladeQuestScript : DialogScriptBase
             {
                 if (source.Trackers.TimedEvents.HasActiveEvent("sharpestbladecd", out var cdtime))
                 {
-                    Subject.Reply(source, $"Those brawlfish scales will make perfect blades. I'm still working on them now, come back in (({cdtime.Remaining.ToReadableString()}))");
+                    Subject.Reply(
+                        source,
+                        $"Those brawlfish scales will make perfect blades. I'm still working on them now, come back in (({cdtime.Remaining.ToReadableString()}))");
+
                     return;
                 }
-                
-                if (hasStage && stage == SharpestBlade.StartedQuest)
-                {
+
+                if (hasStage && (stage == SharpestBlade.StartedQuest))
                     Subject.Reply(source, "Skip", "sharpestblade_return");
-                }
+
                 break;
             }
 
@@ -73,6 +74,7 @@ public class SharpestBladeQuestScript : DialogScriptBase
             {
                 source.Trackers.Enums.Set(SharpestBlade.StartedQuest);
                 source.SendOrangeBarMessage("Retrieve 5 Brawlfish Scales for Vidar.");
+
                 break;
             }
 
@@ -80,8 +82,7 @@ public class SharpestBladeQuestScript : DialogScriptBase
             {
                 var hasRequiredBrawlfishScale = source.Inventory.HasCount("Brawlfish's Scale", 5);
 
-
-                if (hasStage && stage == SharpestBlade.StartedQuest)
+                if (hasStage && (stage == SharpestBlade.StartedQuest))
                 {
                     if (hasRequiredBrawlfishScale)
                     {
@@ -90,18 +91,18 @@ public class SharpestBladeQuestScript : DialogScriptBase
                         source.Trackers.TimedEvents.AddEvent("sharpestbladecd", TimeSpan.FromHours(22), true);
 
                         Logger.WithTopics(
-                                [Topics.Entities.Aisling,
-                                Topics.Entities.Gold,
-                                Topics.Entities.Experience,
-                                Topics.Entities.Dialog,
-                                Topics.Entities.Quest])
-                            .WithProperty(source)
-                            .WithProperty(Subject)
-                            .LogInformation(
-                                "{@AislingName} has received {@GoldAmount} gold and {@ExpAmount} exp from a quest",
-                                source.Name,
-                                25000,
-                                75000);
+                                  Topics.Entities.Aisling,
+                                  Topics.Entities.Gold,
+                                  Topics.Entities.Experience,
+                                  Topics.Entities.Dialog,
+                                  Topics.Entities.Quest)
+                              .WithProperty(source)
+                              .WithProperty(Subject)
+                              .LogInformation(
+                                  "{@AislingName} has received {@GoldAmount} gold and {@ExpAmount} exp from a quest",
+                                  source.Name,
+                                  25000,
+                                  75000);
 
                         ExperienceDistributionScript.GiveExp(source, 75000);
                         source.TryGiveGold(25000);
@@ -118,8 +119,7 @@ public class SharpestBladeQuestScript : DialogScriptBase
                                     1,
                                     GameTime.Now));
 
-                            source.Client.SendServerMessage(ServerMessageType.OrangeBar1,
-                                "You received a unique legend mark!");
+                            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You received a unique legend mark!");
                         }
                     }
 
@@ -130,10 +130,12 @@ public class SharpestBladeQuestScript : DialogScriptBase
                         if (brawlfishCount < 1)
                         {
                             Subject.Reply(source, "You don't even have one! Please go get those Brawlfish's Scales.");
+
                             return;
                         }
-                        
-                        Subject.Reply(source,
+
+                        Subject.Reply(
+                            source,
                             $"You only have {brawlfishCount} Brawlfish's Scales. I need at least 5 incase I break a few.");
                     }
                 }

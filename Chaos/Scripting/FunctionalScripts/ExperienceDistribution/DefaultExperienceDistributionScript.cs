@@ -39,6 +39,7 @@ public class DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistri
         foreach (var aisling in aislings)
         {
             var totalBonus = 1m; // Start with 1 (no bonus)
+
             // Apply a 5% experience bonus for "Knowledge"
             if (HasKnowledgeEffect(aisling))
                 totalBonus += 0.05m;

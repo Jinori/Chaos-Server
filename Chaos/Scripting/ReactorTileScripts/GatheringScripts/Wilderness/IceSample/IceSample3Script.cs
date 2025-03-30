@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.World;
@@ -13,8 +12,8 @@ public class IceSample3Script : ReactorTileScriptBase
     private readonly IItemFactory _itemFactory;
 
     public IceSample3Script(ReactorTile subject, IItemFactory itemFactory)
-        : base(subject) =>
-        _itemFactory = itemFactory;
+        : base(subject)
+        => _itemFactory = itemFactory;
 
     public override void OnWalkedOn(Creature source)
     {
@@ -32,9 +31,7 @@ public class IceSample3Script : ReactorTileScriptBase
                     var sample = _itemFactory.Create("icesample3");
                     aisling.GiveItemOrSendToBank(sample);
 
-                    aisling.Client.SendServerMessage(
-                        ServerMessageType.OrangeBar1,
-                        "You've collected an ice sample!");
+                    aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've collected an ice sample!");
                 }
 
                 break;

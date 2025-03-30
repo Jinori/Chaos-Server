@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
@@ -14,7 +13,7 @@ public class PentaPactSignScript(Dialog subject) : DialogScriptBase(subject)
     {
         //You never used hasStage or stage below?
         //var hasStage = source.Trackers.Enums.TryGetValue(out PentagramQuestStage stage);
-        
+
         var ani = new Animation
         {
             AnimationSpeed = 100,
@@ -34,7 +33,7 @@ public class PentaPactSignScript(Dialog subject) : DialogScriptBase(subject)
 
             return;
         }
-        
+
         source.Trackers.Enums.Set(PentagramQuestStage.SignedPact);
         source.SendOrangeBarMessage("You signed the pact and feel a surge of pain.");
         source.UserStatSheet.SetHealthPct(50);

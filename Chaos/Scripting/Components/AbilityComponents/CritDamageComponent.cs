@@ -1,9 +1,7 @@
-using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -50,8 +48,7 @@ public class CritDamageComponent : IComponent
         decimal? pctHpDamage = null,
         Stat? damageStat = null,
         decimal? damageStatMultiplier = null,
-        bool? moreDmgLowTargetHp = null
-    )
+        bool? moreDmgLowTargetHp = null)
     {
         var finalDamage = baseDamage ?? 0;
 
@@ -61,8 +58,7 @@ public class CritDamageComponent : IComponent
 
             finalDamage += Convert.ToInt32(
                 MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, pctHpDamage ?? 0) * healthPercentFactor);
-        }
-        else
+        } else
             finalDamage += MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, pctHpDamage ?? 0);
 
         if (!damageStat.HasValue)
@@ -71,16 +67,17 @@ public class CritDamageComponent : IComponent
         if (!damageStatMultiplier.HasValue)
         {
             finalDamage += source.StatSheet.GetEffectiveStat(damageStat.Value);
+
             return finalDamage;
         }
-        
+
         finalDamage += Convert.ToInt32(source.StatSheet.GetEffectiveStat(damageStat.Value) * damageStatMultiplier.Value);
 
         if (critChance.HasValue && !IntegerRandomizer.RollChance(critChance.Value))
             return finalDamage;
-        
+
         var finalDamage1 = finalDamage * 2;
-            
+
         return finalDamage1;
     }
 
@@ -88,10 +85,10 @@ public class CritDamageComponent : IComponent
     {
         IApplyDamageScript ApplyDamageScript { get; init; }
         int? BaseDamage { get; init; }
+
+        int? CritChance { get; init; }
         Stat? DamageStat { get; init; }
         decimal? DamageStatMultiplier { get; init; }
-        
-        int? CritChance { get; init; }
         Element? Element { get; init; }
         bool? MoreDmgLowTargetHp { get; init; }
         decimal? PctHpDamage { get; init; }

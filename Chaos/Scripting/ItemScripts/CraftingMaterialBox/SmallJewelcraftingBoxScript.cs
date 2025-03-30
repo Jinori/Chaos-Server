@@ -32,28 +32,21 @@ public class SmallJewelcraftingBoxScript : ItemScriptBase
         var emerald = _itemFactory.Create("rawemerald");
         var beryl = _itemFactory.Create("rawberyl");
         var heartstone = _itemFactory.Create("rawheartstone");
-        
-        for (int i = 0; i < rubyAmount; i++)
-        {
-            source.GiveItemOrSendToBank(_itemFactory.Create("rawruby"));
-        }
 
-        for (int i = 0; i < sapphireAmount; i++)
-        {
+        for (var i = 0; i < rubyAmount; i++)
+            source.GiveItemOrSendToBank(_itemFactory.Create("rawruby"));
+
+        for (var i = 0; i < sapphireAmount; i++)
             source.GiveItemOrSendToBank(_itemFactory.Create("rawsapphire"));
-        }
-        for (int i = 0; i < emeraldAmount; i++)
-        {
+
+        for (var i = 0; i < emeraldAmount; i++)
             source.GiveItemOrSendToBank(_itemFactory.Create("rawemerald"));
-        }
-        for (int i = 0; i < berylAmount; i++)
-        {
+
+        for (var i = 0; i < berylAmount; i++)
             source.GiveItemOrSendToBank(_itemFactory.Create("rawberyl"));
-        }
-        for (int i = 0; i < heartstoneAmount; i++)
-        {
+
+        for (var i = 0; i < heartstoneAmount; i++)
             source.GiveItemOrSendToBank(_itemFactory.Create("rawheartstone"));
-        }
 
         // Add items to the player's inventory
         source.GiveItemOrSendToBank(ruby);
@@ -63,6 +56,6 @@ public class SmallJewelcraftingBoxScript : ItemScriptBase
         source.GiveItemOrSendToBank(heartstone);
 
         // Notify the player
-        source.SendOrangeBarMessage($"You received some raw gems!");
+        source.SendOrangeBarMessage("You received some raw gems!");
     }
 }

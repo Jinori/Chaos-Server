@@ -29,7 +29,7 @@ public class TpToCthonicDemiseScript : ReactorTileScriptBase
 
         if (source.IsGodModeEnabled())
         {
-            var point1 = new Point (source.X, source.Y);
+            var point1 = new Point(source.X, source.Y);
             var blankmerchant1 = MerchantFactory.Create("blank_merchant", Subject.MapInstance, point1);
             var dialog1 = DialogFactory.Create("cthonicdemise_entrance", blankmerchant1);
             dialog1.Display(aisling);
@@ -41,25 +41,26 @@ public class TpToCthonicDemiseScript : ReactorTileScriptBase
             var point2 = source.DirectionalOffset(source.Direction.Reverse());
             source.WarpTo(point2);
         }
-        
+
         if (aisling.Trackers.Flags.HasFlag(MainstoryFlags.FinishedDungeon) && !aisling.IsGodModeEnabled())
         {
             aisling.SendOrangeBarMessage("The army is gone, nothing for you there.");
             var point2 = source.DirectionalOffset(source.Direction.Reverse());
             source.WarpTo(point2);
+
             return;
         }
-        
 
-        if (!aisling.Trackers.Enums.HasValue(MainstoryMasterEnums.StartedDungeon)) 
+        if (!aisling.Trackers.Enums.HasValue(MainstoryMasterEnums.StartedDungeon))
         {
             aisling.SendOrangeBarMessage("You must speak to Goddess Miraelis before attempting this.");
             var point2 = source.DirectionalOffset(source.Direction.Reverse());
             source.WarpTo(point2);
+
             return;
         }
-        
-        var point = new Point (source.X, source.Y);
+
+        var point = new Point(source.X, source.Y);
         var blankmerchant = MerchantFactory.Create("blank_merchant", Subject.MapInstance, point);
         var dialog = DialogFactory.Create("cthonicdemise_entrance", blankmerchant);
         dialog.Display(aisling);

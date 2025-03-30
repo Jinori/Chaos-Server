@@ -18,7 +18,7 @@ public class MythicMantisWarpScript(Dialog subject, ISimpleCache simpleCache) : 
             case "mantiswarp_initial":
             {
                 var vitality = source.StatSheet.MaximumHp + source.StatSheet.MaximumMp * 2;
-                
+
                 if (source.StatSheet.Level >= 80)
                 {
                     var option3 = new DialogOption
@@ -105,7 +105,6 @@ public class MythicMantisWarpScript(Dialog subject, ISimpleCache simpleCache) : 
                     source.TraverseMap(mantis1, point);
                 }
 
-
                 Subject.Close(source);
 
                 break;
@@ -126,7 +125,6 @@ public class MythicMantisWarpScript(Dialog subject, ISimpleCache simpleCache) : 
                     var point = new Point(23, 12);
                     source.TraverseMap(mantis1, point);
                 }
-
 
                 Subject.Close(source);
 

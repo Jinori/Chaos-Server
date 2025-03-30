@@ -3,6 +3,7 @@ using Chaos.Models.Panel;
 using Chaos.Scripting.ItemScripts.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.EquipmentSetBonus;
+
 public class NyxSetBonusScript : SetBonusItemScriptBase
 {
     protected override Dictionary<int, Attributes> SetBonus { get; } = new()
@@ -11,7 +12,7 @@ public class NyxSetBonusScript : SetBonusItemScriptBase
             2, new Attributes
             {
                 MaximumHp = 3000,
-                MaximumMp = 1500,
+                MaximumMp = 1500
             }
         },
         {
