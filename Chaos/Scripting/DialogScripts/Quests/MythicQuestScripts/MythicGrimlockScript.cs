@@ -52,50 +52,35 @@ public class MythicGrimlockScript : DialogScriptBase
                 if (hasMain && !hasGrimlock)
 
                 {
-                    Subject.Reply(
-                        source,
-                        "Skip",
-                        "grimlock_start1start");
+                    Subject.Reply(source, "Skip", "grimlock_start1start");
 
                     return;
                 }
 
                 if (grimlock == MythicGrimlock.LowerGrimlock)
                 {
-                    Subject.Reply(
-                        source,
-                        "Skip",
-                        "grimlock_lower2start");
+                    Subject.Reply(source, "Skip", "grimlock_lower2start");
 
                     return;
                 }
 
                 if (grimlock == MythicGrimlock.LowerGrimlockComplete)
                 {
-                    Subject.Reply(
-                        source,
-                        "Skip",
-                        "grimlock_start3start");
+                    Subject.Reply(source, "Skip", "grimlock_start3start");
 
                     return;
                 }
 
                 if (grimlock == MythicGrimlock.HigherGrimlock)
                 {
-                    Subject.Reply(
-                        source,
-                        "Skip",
-                        "grimlock_higher2start");
+                    Subject.Reply(source, "Skip", "grimlock_higher2start");
 
                     return;
                 }
 
                 if (grimlock == MythicGrimlock.HigherGrimlockComplete)
                 {
-                    Subject.Reply(
-                        source,
-                        "Skip",
-                        "grimlock_itemstart");
+                    Subject.Reply(source, "Skip", "grimlock_itemstart");
 
                     return;
                 }
@@ -109,30 +94,21 @@ public class MythicGrimlockScript : DialogScriptBase
 
                 if (grimlock == MythicGrimlock.ItemGrimlockComplete)
                 {
-                    Subject.Reply(
-                        source,
-                        "Skip",
-                        "grimlock_allystart");
+                    Subject.Reply(source, "Skip", "grimlock_allystart");
 
                     return;
                 }
 
                 if (grimlock == MythicGrimlock.AlliedGrimlock)
                 {
-                    Subject.Reply(
-                        source,
-                        "Skip",
-                        "grimlock_start5start");
+                    Subject.Reply(source, "Skip", "grimlock_start5start");
 
                     return;
                 }
 
                 if (grimlock == MythicGrimlock.BossGrimlockStarted)
                 {
-                    Subject.Reply(
-                        source,
-                        "Skip",
-                        "grimlock_boss2start");
+                    Subject.Reply(source, "Skip", "grimlock_boss2start");
 
                     return;
                 }
@@ -159,8 +135,7 @@ public class MythicGrimlockScript : DialogScriptBase
 
             case "grimlock_lower2":
             {
-                if (!source.Trackers.Counters.TryGetValue("MythicGrimlock1", out var koboldworker) ||
-                    (koboldworker < 15))
+                if (!source.Trackers.Counters.TryGetValue("MythicGrimlock1", out var koboldworker) || (koboldworker < 15))
                 {
                     Subject.Reply(source, "You haven't killed enough Kobold Workers");
 
@@ -174,8 +149,7 @@ public class MythicGrimlockScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
                     source.SendOrangeBarMessage("You received 10000000 experience!");
@@ -223,8 +197,7 @@ public class MythicGrimlockScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
                     source.SendOrangeBarMessage("You received 10000000 experience!");
@@ -253,15 +226,15 @@ public class MythicGrimlockScript : DialogScriptBase
             {
                 // 1) Check if the player has enough of each item first
                 var hasBrown = source.Inventory.HasCount("Brown Kobold Tail", 10);
-                var hasBlack  = source.Inventory.HasCount("Black Kobold Tail", 10);
-                var hasSilver = source.Inventory.HasCount("Silver Kobold Tail",10);
+                var hasBlack = source.Inventory.HasCount("Black Kobold Tail", 10);
+                var hasSilver = source.Inventory.HasCount("Silver Kobold Tail", 10);
 
                 if (!hasBrown || !hasBlack || !hasSilver)
                 {
                     Subject.Reply(
                         source,
-                        "This is not enough tails! My people will blow through that many very quickly. Please try harder. We are counting on you."
-                    );
+                        "This is not enough tails! My people will blow through that many very quickly. Please try harder. We are counting on you.");
+
                     return;
                 }
 
@@ -276,8 +249,7 @@ public class MythicGrimlockScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
                     source.SendOrangeBarMessage("You received 10000000 experience!");
@@ -297,8 +269,7 @@ public class MythicGrimlockScript : DialogScriptBase
             {
                 if (hasKobold
                     && (hasKobold
-                        == kobold is MythicKobold.AlliedKobold or MythicKobold.BossKoboldStarted
-                            or MythicKobold.BossKoboldDefeated))
+                        == kobold is MythicKobold.AlliedKobold or MythicKobold.BossKoboldStarted or MythicKobold.BossKoboldDefeated))
                 {
                     Subject.Reply(
                         source,
@@ -362,8 +333,7 @@ public class MythicGrimlockScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, fiftyPercent);
                     source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 25000000);
                     source.SendOrangeBarMessage("You received 25000000 experience!");
@@ -373,12 +343,10 @@ public class MythicGrimlockScript : DialogScriptBase
                 source.Trackers.Enums.Set(MythicGrimlock.BossGrimlockDefeated);
                 source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);
 
-                if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5) &&
-                    !source.Trackers.Enums.HasValue(MythicQuestMain.CompletedMythic))
-                {
+                if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss)
+                    && (mythicboss >= 5)
+                    && !source.Trackers.Enums.HasValue(MythicQuestMain.CompletedMythic))
                     source.Trackers.Enums.Set(MythicQuestMain.CompletedAll);
-                }
-
             }
 
                 break;

@@ -21,26 +21,32 @@ public sealed class HardForgottenSeerEnrageScript : MonsterScriptBase
 
     /// <inheritdoc />
     public HardForgottenSeerEnrageScript(Monster subject, IMonsterFactory monsterFactory)
-        : base(subject) =>
-        MonsterFactory = monsterFactory;
+        : base(subject)
+        => MonsterFactory = monsterFactory;
 
     public override void Update(TimeSpan delta)
     {
         if (!Bonus75Applied && (Subject.StatSheet.HealthPercent <= 75))
         {
             Bonus75Applied = true;
+
             //Give Bonuses
-            var attrib = new Attributes { SpellDamagePct = 30};
+            var attrib = new Attributes
+            {
+                SpellDamagePct = 30
+            };
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
+
             //Spawn Monsters
             var rectangle = new Rectangle(Subject, 8, 8);
 
             for (var i = 0; i <= 6; i++)
             {
-                if (!rectangle.GetPoints().Any(x => Subject.MapInstance.IsWalkable(x, Subject.Type)))
+                if (!rectangle.GetPoints()
+                              .Any(x => Subject.MapInstance.IsWalkable(x, Subject.Type)))
                     continue;
-                
+
                 if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
                     continue;
 
@@ -52,9 +58,9 @@ public sealed class HardForgottenSeerEnrageScript : MonsterScriptBase
         if (!Bonus50Applied && (Subject.StatSheet.HealthPercent <= 50))
         {
             Bonus50Applied = true;
-            
+
             var rectangle = new Rectangle(Subject, 10, 10);
-            
+
             for (var i = 0; i <= 20; i++)
             {
                 if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
@@ -79,7 +85,7 @@ public sealed class HardForgottenSeerEnrageScript : MonsterScriptBase
         if (!Bonus30Applied && (Subject.StatSheet.HealthPercent <= 30))
         {
             Bonus30Applied = true;
-            
+
             var rectangle = new Rectangle(Subject, 5, 5);
 
             for (var i = 0; i <= 1; i++)

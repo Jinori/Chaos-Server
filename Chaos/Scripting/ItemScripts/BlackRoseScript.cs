@@ -1,5 +1,4 @@
 ﻿using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
@@ -14,12 +13,14 @@ namespace Chaos.Scripting.ItemScripts;
 public class BlackRoseScript : ItemScriptBase
 {
     private readonly ISimpleCache _simpleCache;
-    private readonly IItemFactory ItemFactory;
     private readonly IDialogFactory DialogFactory;
+    private readonly IItemFactory ItemFactory;
 
-    public BlackRoseScript(Item subject, ISimpleCache simpleCache, IItemFactory itemFactory,
-        IDialogFactory dialogFactory
-    )
+    public BlackRoseScript(
+        Item subject,
+        ISimpleCache simpleCache,
+        IItemFactory itemFactory,
+        IDialogFactory dialogFactory)
         : base(subject)
     {
         _simpleCache = simpleCache;
@@ -31,8 +32,11 @@ public class BlackRoseScript : ItemScriptBase
     {
         mapInstance = _simpleCache.Get<MapInstance>("mehadi_heart_east");
         source.Trackers.Enums.TryGetValue(out NightmareQuestStage stage);
-        
-        if (stage is not (NightmareQuestStage.Started or NightmareQuestStage.MetRequirementsToEnter1 or NightmareQuestStage.EnteredDream or NightmareQuestStage.SpawnedNightmare))
+
+        if (stage is not (NightmareQuestStage.Started
+                          or NightmareQuestStage.MetRequirementsToEnter1
+                          or NightmareQuestStage.EnteredDream
+                          or NightmareQuestStage.SpawnedNightmare))
             return false;
 
         if (!source.IsAlive || !source.MapInstance.Name.EqualsI(mapInstance.Name))
@@ -48,15 +52,16 @@ public class BlackRoseScript : ItemScriptBase
         var classDialog = DialogFactory.Create("nightmareblackrose1", item);
         classDialog.Display(source);
     }
-    
+
     public override void OnUse(Aisling source)
     {
         if (CanDream(source, out var mapInstance))
         {
             Dream(source);
+
             return;
         }
-        
+
         source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "This would surely make you sick to consume.");
     }
 }

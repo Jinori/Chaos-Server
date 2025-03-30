@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.Models.Panel;
+﻿using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Scripting.ItemScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
@@ -27,22 +26,19 @@ public class BasicAlchemyBoxScript : ItemScriptBase
         // Create items
         var lessermonsterextract = _itemFactory.Create("lessermonsterextract");
         var basicmonsterextract = _itemFactory.Create("basicmonsterextract");
-        
-        for (int i = 0; i < lessermonsterextractAmount; i++)
-        {
-            source.GiveItemOrSendToBank(_itemFactory.Create("lessermonsterextract"));
-        }
 
-        for (int i = 0; i < basicmonsterextractAmount; i++)
-        {
+        for (var i = 0; i < lessermonsterextractAmount; i++)
+            source.GiveItemOrSendToBank(_itemFactory.Create("lessermonsterextract"));
+
+        for (var i = 0; i < basicmonsterextractAmount; i++)
             source.GiveItemOrSendToBank(_itemFactory.Create("basicmonsterextract"));
-        }
 
         // Add items to the player's inventory
         source.GiveItemOrSendToBank(lessermonsterextract);
         source.GiveItemOrSendToBank(basicmonsterextract);
 
         // Notify the player
-        source.SendOrangeBarMessage($"You received {lessermonsterextractAmount +1} Lesser Monster Extract and {basicmonsterextractAmount +1} Basic Monster Extract!");
+        source.SendOrangeBarMessage(
+            $"You received {lessermonsterextractAmount + 1} Lesser Monster Extract and {basicmonsterextractAmount + 1} Basic Monster Extract!");
     }
 }

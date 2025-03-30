@@ -11,6 +11,29 @@ public class TeammateMoveToTargetScript : MonsterScriptBase
     public TeammateMoveToTargetScript(Monster subject)
         : base(subject) { }
 
+    private void ResetAttackTimerIfMoved()
+    {
+        var now = DateTime.UtcNow;
+        var lastWalk = Subject.Trackers.LastWalk;
+        var lastTurn = Subject.Trackers.LastTurn;
+
+        var walkedRecently = lastWalk.HasValue
+                             && (now.Subtract(lastWalk.Value)
+                                    .TotalMilliseconds
+                                 < Subject.Template.MoveIntervalMs);
+
+        var turnedRecently = lastTurn.HasValue
+                             && (now.Subtract(lastTurn.Value)
+                                    .TotalMilliseconds
+                                 < Subject.Template.MoveIntervalMs);
+
+        if (walkedRecently || turnedRecently)
+        {
+            Subject.WanderTimer.Reset();
+            Subject.SkillTimer.Reset();
+        }
+    }
+
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
@@ -26,7 +49,8 @@ public class TeammateMoveToTargetScript : MonsterScriptBase
         if ((Target == null) || !ShouldMove)
             return;
 
-        if (!Map.GetEntities<Monster>().Any())
+        if (!Map.GetEntities<Monster>()
+                .Any())
             return;
 
         var distance = Subject.ManhattanDistanceFrom(Target);
@@ -35,13 +59,13 @@ public class TeammateMoveToTargetScript : MonsterScriptBase
         {
             if (distance <= 2)
             {
-                var pathtopoint = Subject.SpiralSearch(3).OrderByDescending(point => point.ManhattanDistanceFrom(Target))
-                    .FirstOrDefault(point => Subject.MapInstance.IsWalkable(point, Subject.Type));
-            
+                var pathtopoint = Subject.SpiralSearch(3)
+                                         .OrderByDescending(point => point.ManhattanDistanceFrom(Target))
+                                         .FirstOrDefault(point => Subject.MapInstance.IsWalkable(point, Subject.Type));
+
                 Subject.Pathfind(pathtopoint);
             }
-        }
-        else
+        } else
         {
             if (distance != 1)
                 Subject.Pathfind(Target);
@@ -49,24 +73,9 @@ public class TeammateMoveToTargetScript : MonsterScriptBase
             {
                 var direction = Target.DirectionalRelationTo(Subject);
                 Subject.Turn(direction);
-            } 
+            }
         }
 
         ResetAttackTimerIfMoved();
-    }
-    
-    private void ResetAttackTimerIfMoved()
-    {
-        var now = DateTime.UtcNow;
-        var lastWalk = Subject.Trackers.LastWalk;
-        var lastTurn = Subject.Trackers.LastTurn;
-        var walkedRecently = lastWalk.HasValue && (now.Subtract(lastWalk.Value).TotalMilliseconds < Subject.Template.MoveIntervalMs);
-        var turnedRecently = lastTurn.HasValue && (now.Subtract(lastTurn.Value).TotalMilliseconds < Subject.Template.MoveIntervalMs);
-
-        if (walkedRecently || turnedRecently)
-        {
-            Subject.WanderTimer.Reset();
-            Subject.SkillTimer.Reset();
-        }
     }
 }

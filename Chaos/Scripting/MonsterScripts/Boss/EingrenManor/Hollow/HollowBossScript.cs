@@ -1,7 +1,6 @@
 using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using Chaos.Scripting.MonsterScripts.Boss.MythicBosses.BeeBoss.Bee1;
 
 namespace Chaos.Scripting.MonsterScripts.Boss.EingrenManor.Hollow;
 

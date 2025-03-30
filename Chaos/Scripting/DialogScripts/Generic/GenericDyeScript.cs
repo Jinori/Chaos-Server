@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.Menu;
@@ -15,8 +14,8 @@ public class GenericDyeScript : DialogScriptBase
     private readonly IItemFactory ItemFactory;
 
     public GenericDyeScript(Dialog subject, IItemFactory itemFactory)
-        : base(subject) =>
-        ItemFactory = itemFactory;
+        : base(subject)
+        => ItemFactory = itemFactory;
 
     public override void OnDisplaying(Aisling source)
     {
@@ -60,7 +59,8 @@ public class GenericDyeScript : DialogScriptBase
             return;
         }
 
-        var colorName = dyedItemName.ReplaceI(item.Template.Name, string.Empty).Trim();
+        var colorName = dyedItemName.ReplaceI(item.Template.Name, string.Empty)
+                                    .Trim();
 
         if (!Enum.TryParse(colorName, out DisplayColor color))
         {
@@ -126,7 +126,8 @@ public class GenericDyeScript : DialogScriptBase
             return;
         }
 
-        var colorName = dyedItemName.ReplaceI(item.Template.Name, string.Empty).Trim();
+        var colorName = dyedItemName.ReplaceI(item.Template.Name, string.Empty)
+                                    .Trim();
 
         if (!Enum.TryParse(colorName, out DisplayColor color))
         {
@@ -138,6 +139,9 @@ public class GenericDyeScript : DialogScriptBase
         Subject.InjectTextParameters(item.DisplayName, colorName, DyeCost);
     }
 
-    private void OnDisplayingInitial(Aisling source) =>
-        Subject.Slots = source.Inventory.Where(x => x.Template.IsDyeable).Select(x => x.Slot).ToList();
+    private void OnDisplayingInitial(Aisling source)
+        => Subject.Slots = source.Inventory
+                                 .Where(x => x.Template.IsDyeable)
+                                 .Select(x => x.Slot)
+                                 .ToList();
 }

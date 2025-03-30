@@ -26,22 +26,18 @@ public class ArtisanArmorsmithingBoxScript : ItemScriptBase
         // Create items
         var wool = _itemFactory.Create("wool");
         var silk = _itemFactory.Create("silk");
-        
-        for (int i = 0; i < woolAmount; i++)
-        {
-            source.GiveItemOrSendToBank(_itemFactory.Create("wool"));
-        }
 
-        for (int i = 0; i < silkAmount; i++)
-        {
+        for (var i = 0; i < woolAmount; i++)
+            source.GiveItemOrSendToBank(_itemFactory.Create("wool"));
+
+        for (var i = 0; i < silkAmount; i++)
             source.GiveItemOrSendToBank(_itemFactory.Create("silk"));
-        }
 
         // Add items to the player's inventory
         source.GiveItemOrSendToBank(wool);
         source.GiveItemOrSendToBank(silk);
 
         // Notify the player
-        source.SendOrangeBarMessage($"You received {woolAmount +1} Wool and {silkAmount +1} Silk!");
+        source.SendOrangeBarMessage($"You received {woolAmount + 1} Wool and {silkAmount + 1} Silk!");
     }
 }

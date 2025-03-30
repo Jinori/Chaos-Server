@@ -20,14 +20,15 @@ public sealed class GoblinChiefEnrageScript : MonsterScriptBase
 
     /// <inheritdoc />
     public GoblinChiefEnrageScript(Monster subject, IMonsterFactory monsterFactory)
-        : base(subject) =>
-        MonsterFactory = monsterFactory;
+        : base(subject)
+        => MonsterFactory = monsterFactory;
 
     public override void Update(TimeSpan delta)
     {
         if (!Bonus75Applied && (Subject.StatSheet.HealthPercent <= 75))
         {
             Bonus75Applied = true;
+
             //Give Bonuses
             var attrib = new Attributes
             {
@@ -41,7 +42,7 @@ public sealed class GoblinChiefEnrageScript : MonsterScriptBase
         if (!Bonus50Applied && (Subject.StatSheet.HealthPercent <= 50))
         {
             Bonus50Applied = true;
-            
+
             Subject.StatSheet.SetHealthPct(65);
 
             var attrib = new Attributes
@@ -58,7 +59,7 @@ public sealed class GoblinChiefEnrageScript : MonsterScriptBase
         if (!Bonus30Applied && (Subject.StatSheet.HealthPercent <= 30))
         {
             Bonus30Applied = true;
-            
+
             Subject.StatSheet.SetHealthPct(55);
 
             var attrib = new Attributes

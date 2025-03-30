@@ -10,12 +10,12 @@ namespace Chaos.Scripting.MapScripts.Events;
 
 public sealed class HopocalypseScript : MapScriptBase
 {
+    private readonly IItemFactory ItemFactory;
+    private readonly IIntervalTimer MessageTimer;
+    private readonly IMonsterFactory MonsterFactory;
+    private readonly Point PlayerStartPoint = new(10, 14);
     private bool AnnounceStart;
     private bool SpawnedBunnies;
-    private readonly IIntervalTimer MessageTimer;
-    private readonly Point PlayerStartPoint = new(10, 14);
-    private readonly IMonsterFactory MonsterFactory;
-    private readonly IItemFactory ItemFactory;
 
     /// <inheritdoc />
     public HopocalypseScript(MapInstance subject, IMonsterFactory monsterFactory, IItemFactory itemFactory)
@@ -28,45 +28,72 @@ public sealed class HopocalypseScript : MapScriptBase
             TimeSpan.FromSeconds(1),
             "Get ready to collect eggs in {Time}!",
             SendMessage);
-        
+
         MonsterFactory = monsterFactory;
         ItemFactory = itemFactory;
     }
-
 
     private void SendMessage(string message)
     {
         foreach (var player in Subject.GetEntities<Aisling>())
             player.SendServerMessage(ServerMessageType.ActiveMessage, message);
     }
-    
-    
+
+    private void SpawnEggs()
+    {
+        var bounds = Subject.Template.Bounds;
+
+        for (var x = bounds.Left; x <= bounds.Right; x++)
+        {
+            for (var y = bounds.Top; y <= bounds.Bottom; y++)
+            {
+                var point = new Point(x, y);
+
+                if (Subject.Template.IsWall(point) || point is (20, 9) || point is (0, 9))
+                    continue;
+
+                var isCorner = ((x == 1) && (y == 1)) || ((x == 19) && (y == 1)) || ((x == 19) && (y == 19)) || ((x == 1) && (y == 19));
+
+                if (isCorner)
+                {
+                    var item = ItemFactory.Create("undinegoldenchickenegg");
+                    var groundItem = new GroundItem(item, Subject, point);
+                    Subject.AddEntity(groundItem, point);
+                } else
+                {
+                    var item = ItemFactory.Create("undinechickenegg");
+                    var groundItem = new GroundItem(item, Subject, point);
+                    Subject.AddEntity(groundItem, point);
+                }
+            }
+        }
+    }
+
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
         MessageTimer.Update(delta);
 
         if (!AnnounceStart)
-        {
             foreach (var aisling in Subject.GetEntities<Aisling>())
             {
                 if (aisling.Effects.Contains("mount"))
                     aisling.Effects.Dispel("mount");
-                
+
                 var point = new Point(aisling.X, aisling.Y);
+
                 if (point != PlayerStartPoint)
                     aisling.WarpTo(PlayerStartPoint);
             }
-        }
-        
+
         if (MessageTimer.IntervalElapsed)
-        {
             if (!AnnounceStart)
             {
                 if (Subject.Name == "Undine Hopocalypse")
                     Subject.Morph("26021");
-            
+
                 SendMessage("Get the eggs! Match start!");
+
                 if (!SpawnedBunnies)
                 {
                     // Hopscare at (1, 1)
@@ -86,46 +113,11 @@ public sealed class HopocalypseScript : MapScriptBase
                     Subject.AddEntity(burrowglint, new Point(1, 19));
 
                     SpawnEggs();
-                    
+
                     SpawnedBunnies = true;
                 }
+
                 AnnounceStart = true;
             }
-        }
-    }
-    
-    private void SpawnEggs()
-    {
-        var bounds = Subject.Template.Bounds;
-
-        for (var x = bounds.Left; x <= bounds.Right; x++)
-        {
-            for (var y = bounds.Top; y <= bounds.Bottom; y++)
-            {
-                var point = new Point(x, y);
-                
-                if (Subject.Template.IsWall(point) || point is (20, 9) || point is (0, 9))
-                    continue;
-                
-                var isCorner = ((x == 1) && (y == 1))
-                               || ((x == 19) && (y == 1))
-                               || ((x == 19) && (y == 19))
-                               || ((x == 1) && (y == 19));
-
-                if (isCorner)
-                {
-                    var item = ItemFactory.Create("undinegoldenchickenegg");
-                    var groundItem = new GroundItem(item, Subject, point);
-                    Subject.AddEntity(groundItem, point);
-                }
-                else
-                {
-                    var item = ItemFactory.Create("undinechickenegg");
-                    var groundItem = new GroundItem(item, Subject, point);
-                    Subject.AddEntity(groundItem, point);
-                }
-                
-            }
-        }
     }
 }

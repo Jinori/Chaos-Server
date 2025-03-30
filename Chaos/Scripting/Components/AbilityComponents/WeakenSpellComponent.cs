@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
@@ -15,16 +14,18 @@ public sealed class WeakenSpellComponent : IComponent
         AnimationSpeed = 75,
         TargetAnimation = 2
     };
+
     /// <inheritdoc />
     public void Execute(ActivationContext context, ComponentVars vars)
     {
-        var targets = vars.GetTargets<Aisling>().ToList();
+        var targets = vars.GetTargets<Aisling>()
+                          .ToList();
 
         foreach (var target in targets.ToList())
         {
             if (target.Trackers.Enums.HasValue(GodMode.Yes))
                 return;
-            
+
             if (target.Inventory.Contains("Silver Wolf Leather"))
                 return;
 
@@ -35,7 +36,5 @@ public sealed class WeakenSpellComponent : IComponent
         }
     }
 
-    public interface IWeakenSpellComponentOptions
-    {
-    }
+    public interface IWeakenSpellComponentOptions { }
 }

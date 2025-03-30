@@ -9,14 +9,6 @@ namespace Chaos.Scripting.ItemScripts.Enchantments;
 public sealed class BreezyPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
     /// <inheritdoc />
-    public BreezyPrefixScript(Item subject)
-        : base(subject) => IPrefixEnchantmentScript.ApplyPrefix<BreezyPrefixScript>(subject);
-
-    /// <inheritdoc />
-    public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
-        => IPrefixEnchantmentScript.Mutate<BreezyPrefixScript>(node, template);
-
-    /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
         MagicResistance = 1
@@ -24,4 +16,13 @@ public sealed class BreezyPrefixScript : ItemScriptBase, IPrefixEnchantmentScrip
 
     /// <inheritdoc />
     public static string PrefixStr => "Breezy";
+
+    /// <inheritdoc />
+    public BreezyPrefixScript(Item subject)
+        : base(subject)
+        => IPrefixEnchantmentScript.ApplyPrefix<BreezyPrefixScript>(subject);
+
+    /// <inheritdoc />
+    public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
+        => IPrefixEnchantmentScript.Mutate<BreezyPrefixScript>(node, template);
 }

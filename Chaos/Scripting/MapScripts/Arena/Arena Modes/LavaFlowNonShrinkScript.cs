@@ -10,7 +10,7 @@ public sealed class LavaFlowNonShrinkScript : CompositeMapScript
     private static readonly ICollection<string> ScriptKeys = new[]
     {
         GetScriptKey(typeof(AnnounceMatchScript)),
-        GetScriptKey(typeof(DeclareWinnerScript)),
+        GetScriptKey(typeof(DeclareWinnerScript))
     };
 
     /// <inheritdoc />

@@ -119,8 +119,7 @@ public class VerbalDepositItemScript : VerbalBankerScriptBase
             var amountActual = aisling.Inventory.CountOf(item.DisplayName);
 
             DepositItem(aisling, amountActual, item.DisplayName);
-        }
-        else if (int.TryParse(amountStr, out var amount))
+        } else if (int.TryParse(amountStr, out var amount))
             DepositItem(aisling, amount, item.DisplayName);
         else
             ReplyToUnknownInput(aisling);

@@ -13,8 +13,16 @@ public class SerendaelTempleScript : ReligionScriptBase
     private const string GODNAME = "Serendael";
 
     /// <inheritdoc />
-    public SerendaelTempleScript(Dialog subject, IClientRegistry<IChaosWorldClient> clientRegistry, IItemFactory itemFactory, IEffectFactory effectFactory)
-        : base(subject, clientRegistry, itemFactory, effectFactory) { }
+    public SerendaelTempleScript(
+        Dialog subject,
+        IClientRegistry<IChaosWorldClient> clientRegistry,
+        IItemFactory itemFactory,
+        IEffectFactory effectFactory)
+        : base(
+            subject,
+            clientRegistry,
+            itemFactory,
+            effectFactory) { }
 
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
@@ -37,37 +45,37 @@ public class SerendaelTempleScript : ReligionScriptBase
                 CheckJoinQuestCompletion(source, GODNAME);
 
                 break;
-            
+
             case "serendael_temple_createscroll":
                 CreateTempleScroll(source, GODNAME);
 
                 break;
-            
+
             case "serendael_temple_divineblessing25":
                 BuffGroup(source, GODNAME, 25);
-                
+
                 break;
-            
+
             case "serendael_temple_divineblessing50":
                 BuffGroup(source, GODNAME, 50);
-                
+
                 break;
-            
+
             case "serendael_temple_divineblessing75":
                 BuffGroup(source, GODNAME, 75);
-                
+
                 break;
-            
+
             case "serendael_temple_divineblessing100":
                 BuffGroup(source, GODNAME, 100);
-                
+
                 break;
-            
+
             case "serendael_temple_divineblessing300":
                 BuffGroup(source, GODNAME, 300);
-                
+
                 break;
-            
+
             case "serendael_temple_holdmass":
                 if (source.Trackers.TimedEvents.HasActiveEvent("Mass", out var timedEvent))
                     Subject.Reply(
@@ -76,7 +84,7 @@ public class SerendaelTempleScript : ReligionScriptBase
                             timedEvent.Remaining.ToReadableString()}.");
 
                 break;
-            
+
             case "serendael_temple_holdmassself5minute":
                 AnnounceMassStart(source, GODNAME, true);
 
@@ -108,7 +116,10 @@ public class SerendaelTempleScript : ReligionScriptBase
     private void PrayToMiraelis(Aisling source)
     {
         Pray(source, "Serendael");
-        Subject.InjectTextParameters(DeityPrayers["Serendael"].PickRandom());
+
+        Subject.InjectTextParameters(
+            DeityPrayers["Serendael"]
+                .PickRandom());
     }
 
     public void TempleInitial(Aisling source) => HideDialogOptions(source, GODNAME, Subject);

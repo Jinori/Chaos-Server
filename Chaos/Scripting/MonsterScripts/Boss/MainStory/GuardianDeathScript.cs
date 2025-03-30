@@ -13,9 +13,9 @@ namespace Chaos.Scripting.MonsterScripts.Boss.MainStory;
 // ReSharper disable once ClassCanBeSealed.Global
 public class GuardianDeathScript : MonsterScriptBase
 {
-    protected IExperienceDistributionScript ExperienceDistributionScript { get; set; }
-    private readonly ISimpleCache SimpleCache;
     private readonly IItemFactory ItemFactory;
+    private readonly ISimpleCache SimpleCache;
+    protected IExperienceDistributionScript ExperienceDistributionScript { get; set; }
 
     /// <inheritdoc />
     public GuardianDeathScript(Monster subject, ISimpleCache simpleCache, IItemFactory itemFactory)
@@ -76,44 +76,46 @@ public class GuardianDeathScript : MonsterScriptBase
 
             ExperienceDistributionScript.DistributeExperience(Subject, rewardTargets);
 
-            foreach (var member in Subject.MapInstance.GetEntities<Aisling>().Where(x => x.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact1) || x.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact2) || x.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact3) || x.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact4)).ToList())
+            foreach (var member in Subject.MapInstance
+                                          .GetEntities<Aisling>()
+                                          .Where(
+                                              x => x.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact1)
+                                                   || x.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact2)
+                                                   || x.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact3)
+                                                   || x.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact4))
+                                          .ToList())
             {
                 if (Subject.Name == "Earth Guardian")
-                {
                     if (!member.Inventory.Contains("Earth Artifact"))
                     {
                         var artifact = ItemFactory.Create("earthartifact");
                         member.GiveItemOrSendToBank(artifact);
                         member.SendOrangeBarMessage("You pull the Earth Artifact from the mud.");
                     }
-                }
+
                 if (Subject.Name == "Flame Guardian")
-                {
                     if (!member.Inventory.Contains("Fire Artifact"))
                     {
                         var artifact = ItemFactory.Create("fireartifact");
                         member.GiveItemOrSendToBank(artifact);
                         member.SendOrangeBarMessage("You pull the Fire Artifact from its ashes.");
                     }
-                }
+
                 if (Subject.Name == "Wind Guardian")
-                {
                     if (!member.Inventory.Contains("Wind Artifact"))
                     {
                         var artifact = ItemFactory.Create("windartifact");
                         member.GiveItemOrSendToBank(artifact);
                         member.SendOrangeBarMessage("You pull the Wind Artifact from the ground.");
                     }
-                }
+
                 if (Subject.Name == "Sea Guardian")
-                {
                     if (!member.Inventory.Contains("Sea Artifact"))
                     {
                         var artifact = ItemFactory.Create("seaartifact");
                         member.GiveItemOrSendToBank(artifact);
                         member.SendOrangeBarMessage("You pull the Sea Artifact from the sand.");
                     }
-                }
             }
         }
     }

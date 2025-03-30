@@ -10,8 +10,8 @@ using Chaos.Scripting.SkillScripts.Abstractions;
 namespace Chaos.Scripting.SkillScripts.Rogue;
 
 public class SenseScript : ConfigurableSkillScriptBase,
-                             SenseComponent.ISenseComponentOptions,
-                             GenericAbilityComponent<Creature>.IAbilityComponentOptions
+                           SenseComponent.ISenseComponentOptions,
+                           GenericAbilityComponent<Creature>.IAbilityComponentOptions
 {
     /// <inheritdoc />
     public bool AnimatePoints { get; init; }
@@ -34,6 +34,8 @@ public class SenseScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public TargetFilter Filter { get; init; }
 
+    public int? HealthCost { get; init; }
+
     /// <inheritdoc />
     public int? ManaCost { get; init; }
 
@@ -42,6 +44,8 @@ public class SenseScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public ServerMessageType? OutputType { get; init; }
+
+    public decimal PctHealthCost { get; init; }
 
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }

@@ -16,6 +16,9 @@ public class PullScript : ConfigurableSpellScriptBase,
 {
     public List<string>? EffectKeysToBreak { get; set; }
 
+    public int? HealthCost { get; init; }
+    public decimal PctHealthCost { get; init; }
+
     /// <inheritdoc />
     public PullScript(Spell subject)
         : base(subject) { }

@@ -7,8 +7,10 @@ public sealed class HiddenHavocHideEffect : EffectBase
 {
     /// <inheritdoc />
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(100);
+
     /// <inheritdoc />
     public override byte Icon => 8;
+
     /// <inheritdoc />
     public override string Name => "HiddenHavocHide";
 

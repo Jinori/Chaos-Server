@@ -22,14 +22,15 @@ public class ZertaScript : MerchantScriptBase
     private readonly IIntervalTimer WalkTimer;
     public bool AnnouncedPutItOnRed;
     public bool AnnouncedWinOrLoss;
-    private IPathOptions Options => PathOptions.Default with
-    {
-        LimitRadius = null,
-        IgnoreBlockingReactors = true
-    };
 
-        
     public Aisling? Source;
+
+    private IPathOptions Options
+        => PathOptions.Default with
+        {
+            LimitRadius = null,
+            IgnoreBlockingReactors = true
+        };
 
     /// <inheritdoc />
     public ZertaScript(Merchant subject)
@@ -53,29 +54,26 @@ public class ZertaScript : MerchantScriptBase
 
             if (WalkTimer.IntervalElapsed)
             {
-                var door = Subject.MapInstance.GetEntitiesAtPoints<Door>(CasinoDoorPoint).First();
+                var door = Subject.MapInstance
+                                  .GetEntitiesAtPoints<Door>(CasinoDoorPoint)
+                                  .First();
 
                 if ((Source != null) && door.Closed)
                     door.OnClicked(Source);
 
                 Subject.Pathfind(CasinoDoorPoint, 0, Options);
             }
-        }
-        else if ((Subject.ManhattanDistanceFrom(CasinoPoint) > 0) && Subject.OnSameMapAs(CasinoPoint) && !AnnouncedPutItOnRed)
+        } else if ((Subject.ManhattanDistanceFrom(CasinoPoint) > 0) && Subject.OnSameMapAs(CasinoPoint) && !AnnouncedPutItOnRed)
         {
             WalkTimer.Update(delta);
 
             if (WalkTimer.IntervalElapsed)
-            {
                 Subject.Pathfind(CasinoPoint, 0, Options);
-            }
-        }
-        else if ((Subject.ManhattanDistanceFrom(CasinoPoint) <= 2) && !AnnouncedPutItOnRed)
+        } else if ((Subject.ManhattanDistanceFrom(CasinoPoint) <= 2) && !AnnouncedPutItOnRed)
         {
             Subject.Say("Put it all on red!");
             AnnouncedPutItOnRed = true;
-        }
-        else if (AnnouncedPutItOnRed && !AnnouncedWinOrLoss)
+        } else if (AnnouncedPutItOnRed && !AnnouncedWinOrLoss)
         {
             DelayTimer.Update(delta);
 
@@ -84,8 +82,7 @@ public class ZertaScript : MerchantScriptBase
                 Subject.Say(IntegerRandomizer.RollChance(50) ? "Woohoo! I won!" : "Shucks.. I lost.");
                 AnnouncedWinOrLoss = true;
             }
-        }
-        else if (AnnouncedWinOrLoss && AnnouncedPutItOnRed)
+        } else if (AnnouncedWinOrLoss && AnnouncedPutItOnRed)
         {
             if ((Subject.ManhattanDistanceFrom(InsideCasinoDoorPoint) > 0) && Subject.OnSameMapAs(InsideCasinoDoorPoint))
             {
@@ -93,15 +90,13 @@ public class ZertaScript : MerchantScriptBase
 
                 if (WalkTimer.IntervalElapsed)
                     Subject.Pathfind(InsideCasinoDoorPoint, 0, Options);
-            }
-            else if ((Subject.ManhattanDistanceFrom(HomePoint) > 0) && Subject.OnSameMapAs(HomePoint))
+            } else if ((Subject.ManhattanDistanceFrom(HomePoint) > 0) && Subject.OnSameMapAs(HomePoint))
             {
                 WalkTimer.Update(delta);
 
                 if (WalkTimer.IntervalElapsed)
                     Subject.Pathfind(HomePoint, 0, Options);
-            }
-            else if ((Subject.ManhattanDistanceFrom(HomePoint) == 0) && Subject.OnSameMapAs(HomePoint))
+            } else if ((Subject.ManhattanDistanceFrom(HomePoint) == 0) && Subject.OnSameMapAs(HomePoint))
             {
                 Subject.Say("*shrugs*");
                 AnnouncedWinOrLoss = false;

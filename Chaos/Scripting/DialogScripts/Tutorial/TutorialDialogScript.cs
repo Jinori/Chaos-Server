@@ -1,5 +1,4 @@
 using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
@@ -28,8 +27,7 @@ public class TutorialDialogScript : DialogScriptBase
         IItemFactory itemFactory,
         ISkillFactory skillFactory,
         ISpellFactory spellFactory,
-        ISimpleCache simpleCache
-    )
+        ISimpleCache simpleCache)
         : base(subject)
     {
         ItemFactory = itemFactory;
@@ -113,7 +111,7 @@ public class TutorialDialogScript : DialogScriptBase
                 {
                     source.Trackers.Enums.Set(TutorialQuestStage.GaveArmor);
                     source.Trackers.Enums.Set(ClassStatBracket.PreMaster);
-                    
+
                     var armor = source.Gender == Gender.Female ? ItemFactory.Create("blouse") : ItemFactory.Create("shirt");
 
                     source.GiveItemOrSendToBank(armor);
@@ -125,8 +123,7 @@ public class TutorialDialogScript : DialogScriptBase
                 {
                     var armor = source.Equipment[EquipmentSlot.Armor];
 
-                    if ((armor == null)
-                        || (!armor.DisplayName.EqualsI("shirt") && !armor.DisplayName.EqualsI("blouse")))
+                    if ((armor == null) || (!armor.DisplayName.EqualsI("shirt") && !armor.DisplayName.EqualsI("blouse")))
                     {
                         source.SendOrangeBarMessage("Equip armor then say Hello.");
                         Subject.Close(source);
@@ -294,9 +291,7 @@ public class TutorialDialogScript : DialogScriptBase
                     var ring2 = source.Equipment[EquipmentSlot.LeftRing];
                     var boots = source.Equipment[EquipmentSlot.Boots];
 
-                    if ((ring == null)
-                        || (boots == null)
-                        || (ring2 == null))
+                    if ((ring == null) || (boots == null) || (ring2 == null))
                     {
                         source.SendOrangeBarMessage("Buy rings and boots from Abel then equip them.");
 
@@ -368,13 +363,13 @@ public class TutorialDialogScript : DialogScriptBase
                     if (stage == TutorialQuestStage.GaveAssailAndSpell)
                     {
                         source.GiveItemOrSendToBank(ring1);
-                        source.GiveItemOrSendToBank(ring2); 
+                        source.GiveItemOrSendToBank(ring2);
                         source.GiveItemOrSendToBank(boots);
                         source.SkillBook.TryAddToNextSlot(assail);
                         source.TryGiveGold(2000);
                         ExperienceDistributionScript.GiveExp(source, 2000);
                         source.SpellBook.Remove("srad tut");
-                        
+
                         source.Trackers.Enums.Set(TutorialQuestStage.CompletedTutorial);
                         source.Trackers.Enums.Set(ClassStatBracket.PreMaster);
                         point = new Point(5, 8);

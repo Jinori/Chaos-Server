@@ -12,13 +12,13 @@ namespace Chaos.Scripting.MonsterScripts.Boss.EventBoss.Boss.DragonScaleBoss;
 
 public sealed class EdragonScaleBossEnrageScript : MonsterScriptBase
 {
-    private bool Bonus30Applied;
-    private bool Bonus50Applied;
-    private bool Bonus75Applied;
     private readonly IIntervalTimer SpellCastTimer;
     private readonly ISpellFactory SpellFactory;
     private readonly Spell SpellToCast;
     private readonly Spell SpellToCast1;
+    private bool Bonus30Applied;
+    private bool Bonus50Applied;
+    private bool Bonus75Applied;
 
     private Animation UpgradeAnimation { get; } = new()
     {
@@ -33,27 +33,33 @@ public sealed class EdragonScaleBossEnrageScript : MonsterScriptBase
         SpellFactory = spellFactory;
         SpellToCast = SpellFactory.Create("firecone");
         SpellToCast1 = SpellFactory.Create("fireflare");
-        SpellCastTimer = new RandomizedIntervalTimer(TimeSpan.FromSeconds(10), 20, RandomizationType.Balanced, false);
+
+        SpellCastTimer = new RandomizedIntervalTimer(
+            TimeSpan.FromSeconds(10),
+            20,
+            RandomizationType.Balanced,
+            false);
     }
 
     public override void Update(TimeSpan delta)
     {
         SpellCastTimer.Update(delta);
-        
+
         if (SpellCastTimer.IntervalElapsed)
         {
             if (Subject.Effects.TryGetEffect("Invulnerability", out _))
                 return;
-            
+
             var roll = IntegerRandomizer.RollSingle(100);
-            
+
             switch (roll)
             {
                 case < 50:
                 {
                     Subject.Say("Dissssturb meee? I jussst wanted a meal!");
                     Subject.TryUseSpell(SpellToCast);
-                    break; 
+
+                    break;
                 }
 
                 case < 101:
@@ -69,10 +75,15 @@ public sealed class EdragonScaleBossEnrageScript : MonsterScriptBase
         if (!Bonus75Applied && (Subject.StatSheet.HealthPercent <= 75))
         {
             Bonus75Applied = true;
+
             //Give Bonuses
-            var attrib = new Attributes { AtkSpeedPct = 15 };
+            var attrib = new Attributes
+            {
+                AtkSpeedPct = 15
+            };
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
+
             //Spawn Monsters
         }
 
@@ -107,7 +118,7 @@ public sealed class EdragonScaleBossEnrageScript : MonsterScriptBase
                 Hit = 10,
                 MagicResistance = 10,
                 SkillDamagePct = 20,
-                SpellDamagePct = 20,
+                SpellDamagePct = 20
             };
 
             Subject.StatSheet.AddBonus(attrib);

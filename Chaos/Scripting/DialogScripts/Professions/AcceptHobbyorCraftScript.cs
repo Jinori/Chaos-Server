@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Legend;
@@ -14,55 +13,54 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
 
-    public AcceptHobbyorCraftScript(Dialog subject, IItemFactory itemFactory)
-        : base(subject) =>
-        ItemFactory = itemFactory;
-    
-    private readonly List<string> TitlesToRemove = new List<string>
+    private readonly List<string> TitlesToRemove = new()
     {
-        "Novice Weaponsmith", 
-        "Initiate Weaponsmithing", 
-        "Artisan Weaponsmith", 
-        "Adept Weaponsmithing", 
-        "Advanced Weaponsmith", 
-        "Expert Weaponsmith", 
+        "Novice Weaponsmith",
+        "Initiate Weaponsmithing",
+        "Artisan Weaponsmith",
+        "Adept Weaponsmithing",
+        "Advanced Weaponsmith",
+        "Expert Weaponsmith",
         "Master Weaponsmith",
-        "Novice Armorsmith", 
-        "Initiate Armorsmith", 
-        "Artisan Armorsmith", 
-        "Artisan Armorsmith", 
-        "Adept Armorsmith", 
-        "Advanced Armorsmith", 
-        "Expert Armorsmith", 
+        "Novice Armorsmith",
+        "Initiate Armorsmith",
+        "Artisan Armorsmith",
+        "Artisan Armorsmith",
+        "Adept Armorsmith",
+        "Advanced Armorsmith",
+        "Expert Armorsmith",
         "Master Armorsmith",
-        "Novice Enchanter", 
-        "Initiate Enchanter", 
-        "Artisan Enchanter", 
-        "Adept Enchanter", 
-        "Advanced Enchanter", 
-        "Expert Enchanter", 
+        "Novice Enchanter",
+        "Initiate Enchanter",
+        "Artisan Enchanter",
+        "Adept Enchanter",
+        "Advanced Enchanter",
+        "Expert Enchanter",
         "Master Enchanter",
-        "Novice Alchemist", 
-        "Initiate Alchemist", 
-        "Artisan Alchemist", 
-        "Adept Alchemist", 
-        "Advanced Alchemist", 
-        "Expert Alchemist", 
+        "Novice Alchemist",
+        "Initiate Alchemist",
+        "Artisan Alchemist",
+        "Adept Alchemist",
+        "Advanced Alchemist",
+        "Expert Alchemist",
         "Master Alchemist",
-        "Novice Jewelcrafter", 
-        "Initiate Jewelcrafter", 
-        "Artisan Jewelcrafter", 
-        "Adept Jewelcrafter", 
-        "Advanced Jewelcrafter", 
-        "Expert Jewelcrafter", 
+        "Novice Jewelcrafter",
+        "Initiate Jewelcrafter",
+        "Artisan Jewelcrafter",
+        "Adept Jewelcrafter",
+        "Advanced Jewelcrafter",
+        "Expert Jewelcrafter",
         "Master Jewelcrafter"
     };
+
+    public AcceptHobbyorCraftScript(Dialog subject, IItemFactory itemFactory)
+        : base(subject)
+        => ItemFactory = itemFactory;
 
     public override void OnDisplaying(Aisling source)
     {
         source.Trackers.Flags.TryGetFlag(out Hobbies _);
         var hasCraft = source.Trackers.Enums.TryGetValue(out Crafts craft);
-        
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
@@ -82,7 +80,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
 
                 break;
             }
-                
+
             case "goran_initial":
             {
                 if (!source.Trackers.Flags.HasFlag(Hobbies.Foraging))
@@ -99,7 +97,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
 
                 break;
             }
-                
+
             case "foraging_accepthobby":
             {
                 source.Trackers.Flags.AddFlag(Hobbies.Foraging);
@@ -107,7 +105,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
 
                 return;
             }
-            
+
             case "fishing_accepthobby":
             {
                 source.Trackers.Flags.AddFlag(Hobbies.Fishing);
@@ -196,7 +194,6 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
 
             case "gwendolyn_initial":
             {
-
                 if (!hasCraft)
                 {
                     var option = new DialogOption
@@ -450,9 +447,7 @@ public class AcceptHobbyorCraftScript : DialogScriptBase
                 }
 
                 foreach (var title in TitlesToRemove)
-                {
                     source.Titles.Remove(title);
-                }
                 source.Trackers.Enums.Remove<Crafts>();
 
                 return;

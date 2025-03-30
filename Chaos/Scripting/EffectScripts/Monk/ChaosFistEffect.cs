@@ -30,7 +30,7 @@ public class ChaosFistEffect : ContinuousAnimationEffectBase
     public override void OnApplied()
     {
         base.OnApplied();
-        
+
         var attributes = new Attributes
         {
             Dmg = 90

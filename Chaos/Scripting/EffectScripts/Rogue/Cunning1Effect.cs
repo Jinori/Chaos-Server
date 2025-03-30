@@ -22,7 +22,7 @@ public class Cunning1Effect : EffectBase
     public override void OnApplied()
     {
         base.OnApplied();
-        
+
         var attributes = new Attributes
         {
             Dmg = 8,

@@ -15,15 +15,16 @@ using Chaos.Time;
 
 namespace Chaos.Scripting.ReactorTileScripts.Mileth;
 
-public class MilethAltarWorshipScript(ReactorTile subject, IItemFactory itemFactory, IReactorTileFactory reactorTileFactory,
-    IClientRegistry<IChaosWorldClient> clientRegistry)
-    : ReactorTileScriptBase(subject)
+public class MilethAltarWorshipScript(
+    ReactorTile subject,
+    IItemFactory itemFactory,
+    IReactorTileFactory reactorTileFactory,
+    IClientRegistry<IChaosWorldClient> clientRegistry) : ReactorTileScriptBase(subject)
 {
+    private readonly IClientRegistry<IChaosWorldClient> ClientRegistry = clientRegistry;
     private readonly IReactorTileFactory ReactorTileFactory = reactorTileFactory;
     private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
 
-    private readonly IClientRegistry<IChaosWorldClient> ClientRegistry = clientRegistry;
-    
     public override void OnItemDroppedOn(Creature source, GroundItem groundItem)
     {
         if (source is not Aisling aisling)
@@ -40,7 +41,7 @@ public class MilethAltarWorshipScript(ReactorTile subject, IItemFactory itemFact
 
                 return;
             }
-            
+
             if (source.MapInstance
                       .GetEntities<ReactorTile>()
                       .Any(x => x.ScriptKeys.ContainsI("cowPortal")))
@@ -49,16 +50,16 @@ public class MilethAltarWorshipScript(ReactorTile subject, IItemFactory itemFact
                 aisling.GiveItemOrSendToBank(item);
                 aisling.MapInstance.RemoveEntity(groundItem);
                 aisling.SendOrangeBarMessage("A rift in the realm here has already been made.");
-                
+
                 return;
             }
-            
+
             var rectangle = new Rectangle(
                 source.X,
                 source.Y,
                 2,
                 2);
-            
+
             rectangle.TryGetRandomPoint(x => aisling.MapInstance.IsWalkable(x, source.Type), out var portalpoint);
 
             if (portalpoint == null)
@@ -71,10 +72,15 @@ public class MilethAltarWorshipScript(ReactorTile subject, IItemFactory itemFact
                 return;
             }
 
-            var portal = ReactorTileFactory.Create("cowportal", aisling.MapInstance, portalpoint, null, source);
+            var portal = ReactorTileFactory.Create(
+                "cowportal",
+                aisling.MapInstance,
+                portalpoint,
+                null,
+                source);
             aisling.MapInstance.SimpleAdd(portal);
             aisling.MapInstance.RemoveEntity(groundItem);
-            
+
             foreach (var allaisling in ClientRegistry)
                 allaisling.SendServerMessage(ServerMessageType.OrangeBar2, "The ground shakes, a rift in space opens in Mileth.");
 

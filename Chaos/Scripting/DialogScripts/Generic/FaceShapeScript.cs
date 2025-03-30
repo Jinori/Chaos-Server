@@ -1,6 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
-using Chaos.Extensions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.Menu;
@@ -14,14 +12,31 @@ public class FaceShapeScript : DialogScriptBase
 {
     private static readonly string[] FaceStyles =
     {
-        "defaultfaceshape", "blushfaceshape", "derpyfaceshape", "bugfaceshape", "surprisedfaceshape", "squintfaceshape", "fishfaceshape", "oldmanfaceshape",
-        "meanfaceshape", "beautyfaceshape", "soullessfaceshape", "possessedfaceshape", "deepeyesfaceshape", "closedeyesfaceshape", "sleepyeyesfaceshape", "fakesmilefaceshape",  "steppedonalegofaceshape","restingbitchfaceshape",
+        "defaultfaceshape",
+        "blushfaceshape",
+        "derpyfaceshape",
+        "bugfaceshape",
+        "surprisedfaceshape",
+        "squintfaceshape",
+        "fishfaceshape",
+        "oldmanfaceshape",
+        "meanfaceshape",
+        "beautyfaceshape",
+        "soullessfaceshape",
+        "possessedfaceshape",
+        "deepeyesfaceshape",
+        "closedeyesfaceshape",
+        "sleepyeyesfaceshape",
+        "fakesmilefaceshape",
+        "steppedonalegofaceshape",
+        "restingbitchfaceshape"
     };
 
     private readonly IItemFactory _itemFactory;
 
     public FaceShapeScript(Dialog subject, IItemFactory itemFactory)
-        : base(subject) => _itemFactory = itemFactory;
+        : base(subject)
+        => _itemFactory = itemFactory;
 
     public override void OnDisplaying(Aisling source)
     {
@@ -29,7 +44,7 @@ public class FaceShapeScript : DialogScriptBase
         {
             if (source.Gender is Gender.Male && s.EqualsI("restingbitchfaceshape"))
                 continue;
-            
+
             var item = _itemFactory.CreateFaux(s);
             Subject.Items.Add(ItemDetails.BuyWithGold(item));
         }

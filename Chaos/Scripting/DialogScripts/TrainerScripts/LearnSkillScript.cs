@@ -86,9 +86,8 @@ public class LearnSkillScript : DialogScriptBase
     private readonly ISkillFactory SkillFactory;
     private readonly ISkillTeacherSource SkillTeacherSource;
 
-    private readonly Dictionary<string, List<string>> SkillUpgrades 
-        = new(StringComparer.OrdinalIgnoreCase)
-        {
+    private readonly Dictionary<string, List<string>> SkillUpgrades = new(StringComparer.OrdinalIgnoreCase)
+    {
         //Warrior
         {
             "scathe", new List<string>
@@ -324,12 +323,10 @@ public class LearnSkillScript : DialogScriptBase
         dialog.ReplyToUnknownInput(source);
 
         Logger.WithTopics(
-                  [
-                      Topics.Entities.Aisling,
-                      Topics.Entities.Skill,
-                      Topics.Actions.Learn,
-                      Topics.Qualifiers.Cheating
-                  ])
+                  Topics.Entities.Aisling,
+                  Topics.Entities.Skill,
+                  Topics.Actions.Learn,
+                  Topics.Qualifiers.Cheating)
               .WithProperty(Subject)
               .WithProperty(Subject.DialogSource)
               .WithProperty(source)
@@ -607,6 +604,7 @@ public class LearnSkillScript : DialogScriptBase
                       "Aisling {@AislingName} tried to learn skill {@SkillName} but is not the correct class (possibly packeting)",
                       source.Name,
                       template.Name);
+
             HandleInvalidLearningAttempt(
                 dialog,
                 source,

@@ -21,12 +21,15 @@ public class KadesCastingScript : MonsterScriptBase
 
         if (Target is not { IsAlive: true } || !ShouldUseSpell || !Target.WithinRange(Subject))
             return;
-        
-        if (Subject.MapInstance.GetEntities<Aisling>().Any(x => x.Trackers.Enums.HasValue(SummonerBossFight.FirstStage) 
-                                                                || x.Trackers.Enums.HasValue(SummonerBossFight.SecondStage) 
-                                                                || x.Trackers.Enums.HasValue(SummonerBossFight.ThirdStage) 
-                                                                || x.Trackers.Enums.HasValue(SummonerBossFight.FourthStage)
-                                                                || x.Trackers.Enums.HasValue(SummonerBossFight.FifthStage)))
+
+        if (Subject.MapInstance
+                   .GetEntities<Aisling>()
+                   .Any(
+                       x => x.Trackers.Enums.HasValue(SummonerBossFight.FirstStage)
+                            || x.Trackers.Enums.HasValue(SummonerBossFight.SecondStage)
+                            || x.Trackers.Enums.HasValue(SummonerBossFight.ThirdStage)
+                            || x.Trackers.Enums.HasValue(SummonerBossFight.FourthStage)
+                            || x.Trackers.Enums.HasValue(SummonerBossFight.FifthStage)))
             return;
 
         Spells.ShuffleInPlace();

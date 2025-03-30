@@ -89,7 +89,6 @@ public class ArdCradhEffect : EffectBase, NonOverwritableEffectComponent.INonOve
         var execution = new ComponentExecutor(source, target).WithOptions(this)
                                                              .ExecuteAndCheck<NonOverwritableEffectComponent>();
 
-        
         return execution is not null;
     }
 }

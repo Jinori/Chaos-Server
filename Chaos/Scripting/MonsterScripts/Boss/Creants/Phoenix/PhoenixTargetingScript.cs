@@ -15,8 +15,8 @@ namespace Chaos.Scripting.MonsterScripts.Boss.Creants.Phoenix;
 
 public class PhoenixTargetingScript : MonsterScriptBase
 {
-    private readonly IIntervalTimer TargetUpdateTimer = new IntervalTimer(TimeSpan.FromMilliseconds(250));
     private readonly IIntervalTimer TargetChangeTimer = new IntervalTimer(TimeSpan.FromSeconds(5));
+    private readonly IIntervalTimer TargetUpdateTimer = new IntervalTimer(TimeSpan.FromMilliseconds(250));
 
     /// <inheritdoc />
     public PhoenixTargetingScript(Monster subject)

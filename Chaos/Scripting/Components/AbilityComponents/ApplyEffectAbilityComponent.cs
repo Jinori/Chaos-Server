@@ -1,10 +1,8 @@
 using Chaos.Common.Utilities;
-using Chaos.Extensions;
 using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
-using Chaos.Scripting.MonsterScripts.Boss;
 using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.Components.AbilityComponents;

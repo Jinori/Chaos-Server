@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
@@ -14,9 +13,7 @@ public class MonsterRacingScript : DialogScriptBase
 
     /// <inheritdoc />
     public MonsterRacingScript(Dialog subject)
-        : base(subject)
-    {
-    }
+        : base(subject) { }
 
     public override void OnDisplaying(Aisling source)
     {

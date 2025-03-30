@@ -1,5 +1,4 @@
 using System.Reflection;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
 using Chaos.Models.World;
@@ -15,7 +14,9 @@ public class NewKillCounterScript(Monster subject) : ConfigurableMonsterScriptBa
         if (enumValue is null)
             return null;
 
-        var enumTypes = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsEnum);
+        var enumTypes = Assembly.GetExecutingAssembly()
+                                .GetTypes()
+                                .Where(t => t.IsEnum);
 
         foreach (var enumType in enumTypes)
             if (Enum.IsDefined(enumType, enumValue))
@@ -28,18 +29,18 @@ public class NewKillCounterScript(Monster subject) : ConfigurableMonsterScriptBa
     {
         var rewardTarget = Subject.Contribution
                                   .OrderByDescending(kvp => kvp.Value)
-                                  .Select(
-                                      kvp => Subject.MapInstance.TryGetEntity<Aisling>(kvp.Key, out var a)
-                                          ? a
-                                          : null)
+                                  .Select(kvp => Subject.MapInstance.TryGetEntity<Aisling>(kvp.Key, out var a) ? a : null)
                                   .FirstOrDefault(a => a is not null);
 
         Aisling[]? rewardTargets = null;
 
         if (rewardTarget != null)
-            rewardTargets = (rewardTarget.Group ?? (IEnumerable<Aisling>)new[] { rewardTarget })
-                            .ThatAreWithinRange(rewardTarget)
-                            .ToArray();
+            rewardTargets = (rewardTarget.Group
+                             ?? (IEnumerable<Aisling>)new[]
+                             {
+                                 rewardTarget
+                             }).ThatAreWithinRange(rewardTarget)
+                               .ToArray();
 
         if (rewardTargets is not null)
             foreach (var aisling in rewardTargets)
@@ -47,12 +48,12 @@ public class NewKillCounterScript(Monster subject) : ConfigurableMonsterScriptBa
                 var stageType = GetEnumType(QuestEnum);
 
                 if (stageType is null)
+
                     // Handle the case where Quest value is not a valid enum value
                     // You can decide what action to take or skip the iteration
                     continue;
 
-                if (Enum.TryParse(stageType, QuestEnum, out var currentStage)
-                    && (currentStage.ToString() == QuestEnum))
+                if (Enum.TryParse(stageType, QuestEnum, out var currentStage) && (currentStage.ToString() == QuestEnum))
                 {
                     aisling.Trackers.Counters.TryGetValue(Counter, out var killedamt);
                     aisling.Trackers.Enums.TryGetValue(stageType, out var stage);
@@ -70,13 +71,10 @@ public class NewKillCounterScript(Monster subject) : ConfigurableMonsterScriptBa
                         aisling.Client.SendServerMessage(
                             ServerMessageType.PersistentMessage,
                             $"{value.ToWords().Titleize()} - {Subject.Template.Name}");
-                    }
-                    else // Move the else statement here
+                    } else // Move the else statement here
                     {
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Counter, QuantityReq))
-                        {
                             aisling.SendOrangeBarMessage($"You've killed enough {Subject.Template.Name}.");
-                        }
                     }
                 }
             }

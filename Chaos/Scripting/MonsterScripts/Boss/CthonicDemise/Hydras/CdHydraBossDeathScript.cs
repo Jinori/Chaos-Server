@@ -1,9 +1,7 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
-using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Scripting.MonsterScripts.Abstractions;
@@ -15,8 +13,8 @@ namespace Chaos.Scripting.MonsterScripts.Boss.CthonicDemise.Hydras;
 // ReSharper disable once ClassCanBeSealed.Global
 public class CdHydraBossDeathScript : MonsterScriptBase
 {
-    protected IExperienceDistributionScript ExperienceDistributionScript { get; set; }
     private readonly IMonsterFactory MonsterFactory;
+    protected IExperienceDistributionScript ExperienceDistributionScript { get; set; }
 
     /// <inheritdoc />
     public CdHydraBossDeathScript(Monster subject, IMonsterFactory monsterFactory)
@@ -32,29 +30,31 @@ public class CdHydraBossDeathScript : MonsterScriptBase
         if (!Map.RemoveEntity(Subject))
             return;
 
-        var anyaisling = Subject.MapInstance.GetEntities<Aisling>()
-            .FirstOrDefault(x => x.MapInstance == Subject.MapInstance);
+        var anyaisling = Subject.MapInstance
+                                .GetEntities<Aisling>()
+                                .FirstOrDefault(x => x.MapInstance == Subject.MapInstance);
+
         if (anyaisling != null)
         {
             var rectangle = new Rectangle(anyaisling, 3, 3);
             Point point2;
+
             do
-            {
                 point2 = rectangle.GetRandomPoint();
-            } while (!Subject.MapInstance.IsWalkable(point2, CreatureType.Normal));
-            
+            while (!Subject.MapInstance.IsWalkable(point2, CreatureType.Normal));
+
             Point point3;
+
             do
-            {
                 point3 = rectangle.GetRandomPoint();
-            } while (!Subject.MapInstance.IsWalkable(point3, CreatureType.Normal));
+            while (!Subject.MapInstance.IsWalkable(point3, CreatureType.Normal));
 
             if (Subject.Template.TemplateKey == "cthonic_hydra")
             {
                 var point = new Point(Subject.X, Subject.Y);
                 var nextHydra = MonsterFactory.Create("cthonic_hydra2", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(nextHydra, point);
-                
+
                 var nextHydra2 = MonsterFactory.Create("cthonic_hydra3", Subject.MapInstance, point2);
                 Subject.MapInstance.AddEntity(nextHydra2, point2);
             }
@@ -64,7 +64,7 @@ public class CdHydraBossDeathScript : MonsterScriptBase
                 var point = new Point(Subject.X, Subject.Y);
                 var nextHydra2 = MonsterFactory.Create("cthonic_hydra3", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(nextHydra2, point);
-                
+
                 var nextHydra3 = MonsterFactory.Create("cthonic_hydra4", Subject.MapInstance, point2);
                 Subject.MapInstance.AddEntity(nextHydra3, point2);
             }
@@ -79,16 +79,19 @@ public class CdHydraBossDeathScript : MonsterScriptBase
         //get the highest contributor
         //if there are no contributor, try getting the highest aggro
         var rewardTarget = Subject.Contribution
-            .OrderByDescending(kvp => kvp.Value)
-            .Select(kvp => Map.TryGetEntity<Aisling>(kvp.Key, out var a) ? a : null)
-            .FirstOrDefault(a => a is not null);
+                                  .OrderByDescending(kvp => kvp.Value)
+                                  .Select(kvp => Map.TryGetEntity<Aisling>(kvp.Key, out var a) ? a : null)
+                                  .FirstOrDefault(a => a is not null);
 
         Aisling[]? rewardTargets = null;
 
         if (rewardTarget != null)
-            rewardTargets = (rewardTarget.Group ?? (IEnumerable<Aisling>)new[] { rewardTarget })
-                .ThatAreWithinRange(rewardTarget)
-                .ToArray();
+            rewardTargets = (rewardTarget.Group
+                             ?? (IEnumerable<Aisling>)new[]
+                             {
+                                 rewardTarget
+                             }).ThatAreWithinRange(rewardTarget)
+                               .ToArray();
 
         Subject.Items.AddRange(Subject.LootTable.GenerateLoot());
 

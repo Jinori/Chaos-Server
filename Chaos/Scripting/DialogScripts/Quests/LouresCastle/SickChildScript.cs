@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Legend;
@@ -147,10 +146,10 @@ public class SickChildScript : DialogScriptBase
                 }
 
                 Logger.WithTopics(
-                          [Topics.Entities.Aisling,
+                          Topics.Entities.Aisling,
                           Topics.Entities.Experience,
                           Topics.Entities.Dialog,
-                          Topics.Entities.Quest])
+                          Topics.Entities.Quest)
                       .WithProperty(source)
                       .WithProperty(Subject)
                       .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 20000);
@@ -183,10 +182,10 @@ public class SickChildScript : DialogScriptBase
                 }
 
                 Logger.WithTopics(
-                          [Topics.Entities.Aisling,
+                          Topics.Entities.Aisling,
                           Topics.Entities.Experience,
                           Topics.Entities.Dialog,
-                          Topics.Entities.Quest])
+                          Topics.Entities.Quest)
                       .WithProperty(source)
                       .WithProperty(Subject)
                       .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 30000);
@@ -195,10 +194,7 @@ public class SickChildScript : DialogScriptBase
                 source.Trackers.Enums.Set(SickChildStage.WhiteRose2Turn);
                 source.SendOrangeBarMessage("30,000 Exp Rewarded!");
 
-                Subject.Reply(
-                    source,
-                    "Thank you again! Please excuse me while I get this to the healers.",
-                    "whiterose2wait1");
+                Subject.Reply(source, "Thank you again! Please excuse me while I get this to the healers.", "whiterose2wait1");
             }
 
                 return;
@@ -233,11 +229,11 @@ public class SickChildScript : DialogScriptBase
                 }
 
                 Logger.WithTopics(
-                          [Topics.Entities.Aisling,
+                          Topics.Entities.Aisling,
                           Topics.Entities.Experience,
                           Topics.Entities.Gold,
                           Topics.Entities.Dialog,
-                          Topics.Entities.Quest])
+                          Topics.Entities.Quest)
                       .WithProperty(source)
                       .WithProperty(Subject)
                       .LogInformation(
@@ -291,10 +287,10 @@ public class SickChildScript : DialogScriptBase
                 source.Trackers.Enums.Set(SickChildStage.SickChildKilled);
 
                 Logger.WithTopics(
-                          [Topics.Entities.Aisling,
+                          Topics.Entities.Aisling,
                           Topics.Entities.Experience,
                           Topics.Entities.Dialog,
-                          Topics.Entities.Quest])
+                          Topics.Entities.Quest)
                       .WithProperty(source)
                       .WithProperty(Subject)
                       .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 125000);

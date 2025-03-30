@@ -20,6 +20,9 @@ public class AssassinStrikeScript : ConfigurableSkillScriptBase,
 {
     public List<string>? EffectKeysToBreak { get; set; }
 
+    public int? HealthCost { get; init; }
+    public decimal PctHealthCost { get; init; }
+
     /// <inheritdoc />
     public AssassinStrikeScript(Skill subject, IEffectFactory effectFactory)
         : base(subject)
@@ -32,10 +35,10 @@ public class AssassinStrikeScript : ConfigurableSkillScriptBase,
     public override void OnUse(ActivationContext context)
     {
         DmgMultiplier = 1.0m;
-        
+
         if (context.Source.Effects.Contains("True Hide"))
             DmgMultiplier = 1.25m;
-        
+
         new ComponentExecutor(context).WithOptions(this)
                                       .ExecuteAndCheck<GenericAbilityComponent<Creature>>()
                                       ?.Execute<AssassinStrikeComponent>();
@@ -100,7 +103,7 @@ public class AssassinStrikeScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public decimal? PctHpDamage { get; init; }
-    
+
     public decimal DmgMultiplier { get; set; } = 1.0m;
 
     /// <inheritdoc />

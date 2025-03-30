@@ -38,6 +38,8 @@ public class RemoveEffectScript : ConfigurableItemScriptBase,
     /// <inheritdoc />
     public TargetFilter Filter { get; init; }
 
+    public int? HealthCost { get; init; }
+
     public string ItemName { get; init; }
 
     /// <inheritdoc />
@@ -49,6 +51,7 @@ public class RemoveEffectScript : ConfigurableItemScriptBase,
     public bool MustHaveTargets { get; init; }
 
     public bool? NegativeEffect { get; init; }
+    public decimal PctHealthCost { get; init; }
 
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }
@@ -76,7 +79,6 @@ public class RemoveEffectScript : ConfigurableItemScriptBase,
     public bool StopOnFirstHit { get; init; }
     public bool StopOnWalls { get; init; }
 
-    /// <inheritdoc />
     public RemoveEffectScript(Item subject)
         : base(subject)
         => ItemName = Subject.DisplayName;

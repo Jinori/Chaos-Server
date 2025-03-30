@@ -1,5 +1,4 @@
 using Chaos.Collections;
-using Chaos.Models.World;
 using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
@@ -14,7 +13,8 @@ public class CloverCharmSpawnerScript : ItemSpawnerScript
     public override int SpawnChance { get; set; } = 60;
     public override int SpawnIntervalMs { get; set; } = 500000;
 
-    /// <inheritdoc />500000;
+    /// <inheritdoc />
+    /// 500000;
     public CloverCharmSpawnerScript(MapInstance subject, IItemFactory itemFactory, ISimpleCache simpleCache)
         : base(subject, itemFactory, simpleCache) { }
 }

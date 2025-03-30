@@ -12,6 +12,7 @@ public struct ManaCostAbilityComponent : IConditionalComponent
     public bool Execute(ActivationContext context, ComponentVars vars)
     {
         var options = vars.GetOptions<IManaCostComponentOptions>();
+
         // Base mana cost
         var baseCost = options.ManaCost ?? 0;
 

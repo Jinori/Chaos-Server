@@ -1,5 +1,4 @@
 ﻿using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Models.World;
 using Chaos.Scripting.MapScripts.Abstractions;
@@ -11,12 +10,12 @@ namespace Chaos.Scripting.MapScripts.DragonScale;
 
 public class DragonScaleScript : MapScriptBase
 {
+    public const int UPDATE_INTERVAL_MS = 1;
     private readonly IMonsterFactory MonsterFactory;
     private readonly TimeSpan StartDelay;
+    private readonly IIntervalTimer? UpdateTimer;
     private DateTime? StartTime;
     private ScriptState State;
-    private readonly IIntervalTimer? UpdateTimer;
-    public const int UPDATE_INTERVAL_MS = 1;
 
     public DragonScaleScript(MapInstance subject, IMonsterFactory monsterFactory)
         : base(subject)
@@ -31,8 +30,7 @@ public class DragonScaleScript : MapScriptBase
         UpdateTimer?.Update(delta);
 
         if (UpdateTimer!.IntervalElapsed)
-        {
-            
+
             // Switch statement to determine the current state of the script
             switch (State)
             {
@@ -46,65 +44,67 @@ public class DragonScaleScript : MapScriptBase
                 }
 
                     break;
+
                 // Delayed start state
                 case ScriptState.DelayedStart:
                     // Set the start time if it is not already set
                     StartTime ??= DateTime.UtcNow;
 
                     // Check if the start delay has been exceeded
-                    if (DateTime.UtcNow - StartTime > StartDelay)
+                    if ((DateTime.UtcNow - StartTime) > StartDelay)
                     {
                         // Reset the start time
                         StartTime = null;
+
                         // Set the state to spawning
                         State = ScriptState.Spawning;
 
                         // Get all Aislings in the subject
                         foreach (var aisling in Subject.GetEntities<Aisling>())
+
                             // Send an orange bar message to the Aisling
-                            aisling.Client.SendServerMessage(
-                                ServerMessageType.OrangeBar1,
-                                "You hear a loud roar in the distance...");
+                            aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You hear a loud roar in the distance...");
                     }
 
                     break;
+
                 // Spawning state
                 case ScriptState.Spawning:
                 {
-
-                    foreach (var aisling in Subject.GetEntities<Aisling>().Where(x =>
-                                 x.Trackers.Enums.TryGetValue(out Definitions.DragonScale stage) &&
-                                 stage == Definitions.DragonScale.DroppedScale))
-                    {
+                    foreach (var aisling in Subject.GetEntities<Aisling>()
+                                                   .Where(
+                                                       x => x.Trackers.Enums.TryGetValue(out Definitions.DragonScale stage)
+                                                            && (stage == Definitions.DragonScale.DroppedScale)))
                         aisling.Trackers.Enums.Set(Definitions.DragonScale.SpawnedDragon);
-                    }
 
                     // Create a monster
                     var monster = MonsterFactory.Create("dragonscale_boss", Subject, new Point(18, 25));
 
                     Subject.AddEntity(monster, monster);
+
                     // Set the state to spawned
                     State = ScriptState.Spawned;
+
                     // Reset the animation index
                 }
 
                     break;
+
                 // Spawned state
                 case ScriptState.Spawned:
                 {
-                    if (!Subject.GetEntities<Aisling>().Any(x =>
-                            x.Trackers.Enums.TryGetValue(out Definitions.DragonScale stage) && stage == Definitions.DragonScale.SpawnedDragon))
+                    if (!Subject.GetEntities<Aisling>()
+                                .Any(
+                                    x => x.Trackers.Enums.TryGetValue(out Definitions.DragonScale stage)
+                                         && (stage == Definitions.DragonScale.SpawnedDragon)))
                     {
-                        var monster = Subject.GetEntities<Monster>().FirstOrDefault(x => x.Name == "Dragon");
+                        var monster = Subject.GetEntities<Monster>()
+                                             .FirstOrDefault(x => x.Name == "Dragon");
 
                         if (monster != null)
-                        {
                             Subject.RemoveEntity(monster);
-                        }
                         else
-                        {
                             State = ScriptState.Dormant;
-                        }
                     }
                 }
 
@@ -112,7 +112,6 @@ public class DragonScaleScript : MapScriptBase
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-        }
     }
 
     private enum ScriptState

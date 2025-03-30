@@ -31,6 +31,9 @@ public class CascadingEffectScript : ConfigurableSpellScriptBase,
 
     public List<string>? EffectKeysToBreak { get; set; }
 
+    public int? HealthCost { get; init; }
+    public decimal PctHealthCost { get; init; }
+
     /// <inheritdoc />
     public CascadingEffectScript(Spell subject, IReactorTileFactory reactorTileFactory, IEffectFactory effectFactory)
         : base(subject)

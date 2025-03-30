@@ -17,8 +17,7 @@ public class SacrificeZoe : CompositeMonsterScript
     /// <inheritdoc />
     public SacrificeZoe(IScriptProvider scriptProvider, Monster subject)
     {
-        if (scriptProvider.CreateScript<IMonsterScript, Monster>(ScriptKeys, subject) is not CompositeMonsterScript
-            compositeScript)
+        if (scriptProvider.CreateScript<IMonsterScript, Monster>(ScriptKeys, subject) is not CompositeMonsterScript compositeScript)
             throw new InvalidOperationException("Unable to create componentized script");
 
         foreach (var script in compositeScript)

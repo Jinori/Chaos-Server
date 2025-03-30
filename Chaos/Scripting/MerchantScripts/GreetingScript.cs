@@ -19,9 +19,10 @@ public class GreetingScript(Merchant subject) : MerchantScriptBase(subject)
                 if (source.Trackers.Enums.HasValue(SupplyLouresStage.CompletedAssassin1))
                 {
                     Subject.Say($"{source.Name}! You are not welcome here! Leave immediately!");
+
                     return;
                 }
-                
+
                 Subject.Say($"{source.Name} enters the throne room!");
 
                 return;
@@ -85,15 +86,19 @@ public class GreetingScript(Merchant subject) : MerchantScriptBase(subject)
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.SpokeToZephyr))
                 {
                     Subject.Say($"Welcome {source.Name}, what news have you to share?");
+
                     return;
                 }
 
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.CompletedTrials))
                 {
                     Subject.Say($"That was impressive {source.Name}, come speak to me.");
+
                     return;
                 }
+
                 Subject.Say($"Welcome back {source.Name}.");
+
                 return;
             }
         }

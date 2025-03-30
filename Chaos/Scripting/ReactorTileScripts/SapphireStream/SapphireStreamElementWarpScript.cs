@@ -14,8 +14,8 @@ public class SapphireStreamElementWarpScript : ReactorTileScriptBase
 
     /// <inheritdoc />
     public SapphireStreamElementWarpScript(ReactorTile subject, ISimpleCache simpleCache)
-        : base(subject) =>
-        SimpleCache = simpleCache;
+        : base(subject)
+        => SimpleCache = simpleCache;
 
     /// <inheritdoc />
     public override void OnWalkedOn(Creature source)

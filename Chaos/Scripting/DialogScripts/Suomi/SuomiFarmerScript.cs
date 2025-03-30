@@ -11,12 +11,9 @@ public class suomiFarmerScript : DialogScriptBase
 {
     private readonly ISimpleCache SimpleCache;
 
-    public suomiFarmerScript(
-        Dialog subject,
-        ISimpleCache simpleCache
-    )
-        : base(subject) =>
-        SimpleCache = simpleCache;
+    public suomiFarmerScript(Dialog subject, ISimpleCache simpleCache)
+        : base(subject)
+        => SimpleCache = simpleCache;
 
     public override void OnDisplaying(Aisling source)
     {
@@ -31,9 +28,7 @@ public class suomiFarmerScript : DialogScriptBase
                     return;
                 }
 
-                if (source.Trackers.TimedEvents.HasActiveEvent(
-                        "SuomiGrapeCd",
-                        out var timedEvent))
+                if (source.Trackers.TimedEvents.HasActiveEvent("SuomiGrapeCd", out var timedEvent))
                 {
                     Subject.Reply(
                         source,
@@ -52,9 +47,7 @@ public class suomiFarmerScript : DialogScriptBase
                     return;
                 }
 
-                Subject.Reply(
-                    source,
-                    "Take as long as you like, however, once you've picked alot, I'm going to pull you from the field.");
+                Subject.Reply(source, "Take as long as you like, however, once you've picked alot, I'm going to pull you from the field.");
 
                 var mapInstance = SimpleCache.Get<MapInstance>("suomi");
                 var point = new Point(78, 40);
@@ -73,9 +66,7 @@ public class suomiFarmerScript : DialogScriptBase
                     return;
                 }
 
-                if (source.Trackers.TimedEvents.HasActiveEvent(
-                        "SuomiCherryCd",
-                        out var timedEvent))
+                if (source.Trackers.TimedEvents.HasActiveEvent("SuomiCherryCd", out var timedEvent))
                 {
                     Subject.Reply(
                         source,
@@ -93,9 +84,7 @@ public class suomiFarmerScript : DialogScriptBase
                     return;
                 }
 
-                Subject.Reply(
-                    source,
-                    "Thank you Aisling, enjoy your cherry farming! Once you're full up, I'll pull you from the field.");
+                Subject.Reply(source, "Thank you Aisling, enjoy your cherry farming! Once you're full up, I'll pull you from the field.");
 
                 var mapInstance = SimpleCache.Get<MapInstance>("suomi");
                 var point = new Point(29, 71);

@@ -82,7 +82,6 @@ public class RemoveEffectComponent : IComponent
         "Steak Meal"
     ];
 
-
     private static readonly HashSet<string> NegativeEffects = new()
     {
         "Poison",

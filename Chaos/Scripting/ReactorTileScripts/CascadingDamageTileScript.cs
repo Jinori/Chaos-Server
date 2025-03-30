@@ -125,7 +125,6 @@ public sealed class CascadingDamageTileScript : ConfigurableReactorTileScriptBas
                     .Execute<ApplyEffectAbilityComponent>()
                     .Check(ShouldPlaySound)
                     ?.Execute<SoundAbilityComponent>();
-            
 
             //if the sound timer is elapsed, the predicate above will play the sound
             //however, we still need to reset it
@@ -200,9 +199,7 @@ public sealed class CascadingDamageTileScript : ConfigurableReactorTileScriptBas
 
     /// <inheritdoc />
     public bool AnimatePoints { get; init; }
-    
+
     public bool IgnoreMagicResistance { get; init; }
     #endregion
-
-    
 }

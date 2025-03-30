@@ -1,4 +1,3 @@
-using Chaos.Extensions.Common;
 using Chaos.MetaData.ItemMetaData;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
@@ -10,15 +9,6 @@ namespace Chaos.Scripting.ItemScripts.Enchantments;
 public sealed class ShadedPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
     /// <inheritdoc />
-    public ShadedPrefixScript(Item subject)
-        : base(subject)
-        => IPrefixEnchantmentScript.ApplyPrefix<ShadedPrefixScript>(subject);
-
-    /// <inheritdoc />
-    public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
-        => IPrefixEnchantmentScript.Mutate<ShadedPrefixScript>(node, template);
-
-    /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
         AtkSpeedPct = 4,
@@ -27,4 +17,13 @@ public sealed class ShadedPrefixScript : ItemScriptBase, IPrefixEnchantmentScrip
 
     /// <inheritdoc />
     public static string PrefixStr => "Shaded";
+
+    /// <inheritdoc />
+    public ShadedPrefixScript(Item subject)
+        : base(subject)
+        => IPrefixEnchantmentScript.ApplyPrefix<ShadedPrefixScript>(subject);
+
+    /// <inheritdoc />
+    public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
+        => IPrefixEnchantmentScript.Mutate<ShadedPrefixScript>(node, template);
 }

@@ -12,16 +12,17 @@ namespace Chaos.Scripting.MapScripts.Arena.Arena_Modules;
 
 public sealed class AislingDeathTouchScript : MapScriptBase
 {
+    private bool AislingsTouching;
     private Aisling? TouchOne;
     private Aisling? TouchTwo;
-    private bool AislingsTouching;
     private IIntervalTimer AislingDeathTouchTimer { get; }
+    private IApplyDamageScript ApplyDamageScript { get; }
+
     private Animation BlowupAnimation { get; } = new()
     {
         AnimationSpeed = 100,
         TargetAnimation = 49
     };
-    private IApplyDamageScript ApplyDamageScript { get; }
 
     /// <inheritdoc />
     public AislingDeathTouchScript(MapInstance subject)
@@ -30,7 +31,6 @@ public sealed class AislingDeathTouchScript : MapScriptBase
         ApplyDamageScript = ApplyAttackDamageScript.Create();
         AislingDeathTouchTimer = new IntervalTimer(TimeSpan.FromMilliseconds(200), false);
     }
-        
 
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
@@ -40,10 +40,12 @@ public sealed class AislingDeathTouchScript : MapScriptBase
         if (!AislingDeathTouchTimer.IntervalElapsed)
             return;
 
-        foreach (var ghost in Subject.GetEntities<Aisling>().Where(x => x.IsDead || !x.IsAlive))
+        foreach (var ghost in Subject.GetEntities<Aisling>()
+                                     .Where(x => x.IsDead || !x.IsAlive))
             ghost.WarpTo(new Point(20, 10));
 
-        foreach (var person in Subject.GetEntities<Aisling>().Where(x => x.Group != null))
+        foreach (var person in Subject.GetEntities<Aisling>()
+                                      .Where(x => x.Group != null))
         {
             person.Group?.Kick(person);
             person.SendMessage("Removed from group to prevent seeing group members.");
@@ -51,7 +53,9 @@ public sealed class AislingDeathTouchScript : MapScriptBase
 
         if (!AislingsTouching)
         {
-            var aislings = Subject.GetEntities<Aisling>().Where(x => x.IsAlive).ToList();
+            var aislings = Subject.GetEntities<Aisling>()
+                                  .Where(x => x.IsAlive)
+                                  .ToList();
 
             foreach (var aisling in aislings)
             {
@@ -66,8 +70,7 @@ public sealed class AislingDeathTouchScript : MapScriptBase
                     break;
                 }
             }
-        }
-        else
+        } else
         {
             if ((TouchOne != null) && (TouchTwo != null))
             {
@@ -85,7 +88,7 @@ public sealed class AislingDeathTouchScript : MapScriptBase
 
                 Subject.ShowAnimation(BlowupAnimation.GetPointAnimation(TouchOne));
                 Subject.ShowAnimation(BlowupAnimation.GetPointAnimation(TouchTwo));
-                
+
                 TouchOne = null;
                 TouchTwo = null;
                 AislingsTouching = false;

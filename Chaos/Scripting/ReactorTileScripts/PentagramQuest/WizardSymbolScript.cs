@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.World;
@@ -10,9 +9,9 @@ namespace Chaos.Scripting.ReactorTileScripts.PentagramQuest;
 
 public class WizardSymbolScript : ReactorTileScriptBase
 {
+    private static readonly Point WizardSymbolSpot = new(7, 62);
     private readonly IDialogFactory DialogFactory;
     private readonly IMerchantFactory MerchantFactory;
-    private static readonly Point WizardSymbolSpot = new Point(7, 62);
 
     public WizardSymbolScript(ReactorTile subject, IDialogFactory dialogFactory, IMerchantFactory merchantFactory)
         : base(subject)
@@ -26,8 +25,7 @@ public class WizardSymbolScript : ReactorTileScriptBase
         if (source is not Aisling aisling)
             return;
 
-        if (source.Trackers.Enums.TryGetValue(out PentagramQuestStage stage)
-            && (stage == PentagramQuestStage.ReceivedClue))
+        if (source.Trackers.Enums.TryGetValue(out PentagramQuestStage stage) && (stage == PentagramQuestStage.ReceivedClue))
             if (aisling.UserStatSheet.BaseClass == BaseClass.Wizard)
             {
                 var npcpoint = new Point(aisling.X, aisling.Y);

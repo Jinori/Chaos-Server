@@ -1,9 +1,7 @@
-using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -35,21 +33,18 @@ public struct TargetDamageAndHealComponent : IComponent
                 options.MoreDmgLowTargetHp);
 
             if (damage > 0)
-            {
                 options.ApplyDamageScript.ApplyDamage(
                     context.Source,
                     target,
                     vars.GetSourceScript(),
                     damage,
                     options.Element);
-            }
         }
 
         // Apply healing based on the number of surrounding targets
         if (options.HealUser ?? false)
         {
-            ApplyHealing(context.Source, numberOfTargets,
-                options.HealMultiplierPerTarget ?? 0.05m); // Default to 5% if not specified
+            ApplyHealing(context.Source, numberOfTargets, options.HealMultiplierPerTarget ?? 0.05m); // Default to 5% if not specified
             context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
         }
     }
@@ -70,19 +65,14 @@ public struct TargetDamageAndHealComponent : IComponent
         if (moreDmgLowTargetHp == true)
         {
             var healthPercentFactor = 1 + (1 - target.StatSheet.HealthPercent / 100m);
+
             finalDamage += Convert.ToInt32(
-                MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, pctHpDamage ?? 0) *
-                healthPercentFactor);
-        }
-        else
-        {
+                MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, pctHpDamage ?? 0) * healthPercentFactor);
+        } else
             finalDamage += MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, pctHpDamage ?? 0);
-        }
 
         if (!damageStat.HasValue)
-        {
             return finalDamage;
-        }
 
         finalDamage += damageStatMultiplier.HasValue
             ? Convert.ToInt32(source.StatSheet.GetEffectiveStat(damageStat.Value) * damageStatMultiplier.Value)
@@ -90,9 +80,7 @@ public struct TargetDamageAndHealComponent : IComponent
 
         // Apply the damage multiplier based on the number of surrounding targets
         if (numberOfTargets > 1)
-        {
             finalDamage = (int)(finalDamage * (1 + damageMultiplierPerTarget * (numberOfTargets - 1)));
-        }
 
         return finalDamage;
     }
@@ -106,16 +94,16 @@ public struct TargetDamageAndHealComponent : IComponent
 }
 
 public interface IDamageComponentOptions
-    {
-        IApplyDamageScript ApplyDamageScript { get; init; }
-        int? BaseDamage { get; init; }
-        Stat? DamageStat { get; init; }
-        decimal? DamageStatMultiplier { get; init; }
-        Element? Element { get; init; }
-        bool? MoreDmgLowTargetHp { get; init; }
-        decimal? PctHpDamage { get; init; }
-        bool? SurroundingTargets { get; init; }
-        decimal? DamageMultiplierPerTarget { get; init; }
-        bool? HealUser { get; init; }  // New option to toggle healing
-        decimal? HealMultiplierPerTarget { get; init; }  // New option for heal multiplier per target
-    }
+{
+    IApplyDamageScript ApplyDamageScript { get; init; }
+    int? BaseDamage { get; init; }
+    decimal? DamageMultiplierPerTarget { get; init; }
+    Stat? DamageStat { get; init; }
+    decimal? DamageStatMultiplier { get; init; }
+    Element? Element { get; init; }
+    decimal? HealMultiplierPerTarget { get; init; } // New option for heal multiplier per target
+    bool? HealUser { get; init; } // New option to toggle healing
+    bool? MoreDmgLowTargetHp { get; init; }
+    decimal? PctHpDamage { get; init; }
+    bool? SurroundingTargets { get; init; }
+}

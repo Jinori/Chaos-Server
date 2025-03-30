@@ -17,17 +17,16 @@ namespace Chaos.Scripting.DialogScripts.Temple_of_Choosing;
 public class RogueDedicateScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
+    private readonly ILogger<RogueDedicateScript> Logger;
     private readonly ISimpleCache SimpleCache;
     private readonly ISkillFactory SkillFactory;
-    private readonly ILogger<RogueDedicateScript> Logger;
 
     public RogueDedicateScript(
         Dialog subject,
         IItemFactory itemFactory,
         ISimpleCache simpleCache,
         ISkillFactory skillFactory,
-        ILogger<RogueDedicateScript> logger
-    )
+        ILogger<RogueDedicateScript> logger)
         : base(subject)
     {
         ItemFactory = itemFactory;
@@ -79,9 +78,8 @@ public class RogueDedicateScript : DialogScriptBase
             var point = new Point(8, 5);
             source.TraverseMap(mapInstance, point);
             source.Animate(ani, source.Id);
-            
-            Logger.WithTopics(
-                      [Topics.Entities.Aisling, Topics.Actions.Promote])
+
+            Logger.WithTopics(Topics.Entities.Aisling, Topics.Actions.Promote)
                   .WithProperty(Subject)
                   .LogInformation("{@AislingName} has become rogue", source.Name);
         }

@@ -12,8 +12,8 @@ namespace Chaos.Scripting.DialogScripts;
 
 public class DamageGameScript : DialogScriptBase
 {
-    private readonly ISimpleCache SimpleCache;
     public readonly IStorage<DamageGameObj> DamageLeaderboard;
+    private readonly ISimpleCache SimpleCache;
 
     /// <inheritdoc />
     public DamageGameScript(Dialog subject, ISimpleCache simpleCache, IStorage<DamageGameObj> damageGameStorage)
@@ -37,101 +37,100 @@ public class DamageGameScript : DialogScriptBase
 
         // Order by victories (descending), then losses (ascending)
         var isSilver = true;
-        
-            foreach (var entry in leaderboard
-                                  .OrderByDescending(kvp => kvp.Value.Damage)
-                                  .ThenBy(kvp => kvp.Value.DamagePerSecond))
+
+        foreach (var entry in leaderboard.OrderByDescending(kvp => kvp.Value.Damage)
+                                         .ThenBy(kvp => kvp.Value.DamagePerSecond))
+        {
+            var stats = entry.Value;
+            var newClass = "";
+
+            if (stats.SubbedClass != BaseClass.Peasant)
             {
-                var stats = entry.Value;
-                var newClass = "";
+                //Priest Sub
+                if (stats.SubbedClass is BaseClass.Priest && stats.BaseClass is BaseClass.Warrior)
+                    newClass = "Faithblade";
 
-                if (stats.SubbedClass != BaseClass.Peasant)
-                {
-                    //Priest Sub
-                    if (stats.SubbedClass is BaseClass.Priest && stats.BaseClass is BaseClass.Warrior)
-                        newClass = "Faithblade";
-                
-                    if (stats.SubbedClass is BaseClass.Priest && stats.BaseClass is BaseClass.Monk)
-                        newClass = "Druid";
-                
-                    if (stats.SubbedClass is BaseClass.Priest && stats.BaseClass is BaseClass.Wizard)
-                        newClass = "Prizard";
-                
-                    if (stats.SubbedClass is BaseClass.Priest && stats.BaseClass is BaseClass.Rogue)
-                        newClass = "Shadowmender";   
-                    
-                    //Warrior Sub
-                    if (stats.SubbedClass is BaseClass.Warrior && stats.BaseClass is BaseClass.Rogue)
-                        newClass = "Shadowblade";   
-                    
-                    if (stats.SubbedClass is BaseClass.Warrior && stats.BaseClass is BaseClass.Wizard)
-                        newClass = "Spellblade"; 
-                    
-                    if (stats.SubbedClass is BaseClass.Warrior && stats.BaseClass is BaseClass.Monk)
-                        newClass = "Iron Fist"; 
-                    
-                    if (stats.SubbedClass is BaseClass.Warrior && stats.BaseClass is BaseClass.Priest)
-                        newClass = "Paladin"; 
-                    
-                    //Monk Sub
-                    if (stats.SubbedClass is BaseClass.Monk && stats.BaseClass is BaseClass.Wizard)
-                        newClass = "Spellfist"; 
-                    
-                    if (stats.SubbedClass is BaseClass.Monk && stats.BaseClass is BaseClass.Priest)
-                        newClass = "Spiritwalker"; 
-                    
-                    if (stats.SubbedClass is BaseClass.Monk && stats.BaseClass is BaseClass.Rogue)
-                        newClass = "Shadowhand"; 
-                    
-                    if (stats.SubbedClass is BaseClass.Monk && stats.BaseClass is BaseClass.Warrior)
-                        newClass = "Titan"; 
-                    
-                    //Wizard Sub
-                    if (stats.SubbedClass is BaseClass.Wizard && stats.BaseClass is BaseClass.Warrior)
-                        newClass = "Arcane Knight"; 
-                    
-                    if (stats.SubbedClass is BaseClass.Wizard && stats.BaseClass is BaseClass.Monk)
-                        newClass = "Arcane Striker";
-                    
-                    if (stats.SubbedClass is BaseClass.Wizard && stats.BaseClass is BaseClass.Priest)
-                        newClass = "Arcane Mystic"; 
-                    
-                    if (stats.SubbedClass is BaseClass.Wizard && stats.BaseClass is BaseClass.Rogue)
-                        newClass = "Arcane Stalker"; 
-                    
-                    if (stats.SubbedClass is BaseClass.Wizard && stats.BaseClass is BaseClass.Rogue)
-                        newClass = "Arcane Stalker"; 
-                    
-                    //Rogue Sub
-                    if (stats.SubbedClass is BaseClass.Rogue && stats.BaseClass is BaseClass.Warrior)
-                        newClass = "Blade Dancer"; 
-                    
-                    if (stats.SubbedClass is BaseClass.Rogue && stats.BaseClass is BaseClass.Monk)
-                        newClass = "Silent Fist"; 
-                    
-                    if (stats.SubbedClass is BaseClass.Rogue && stats.BaseClass is BaseClass.Wizard)
-                        newClass = "Spellthief"; 
-                    
-                    if (stats.SubbedClass is BaseClass.Rogue && stats.BaseClass is BaseClass.Priest)
-                        newClass = "Veilwalker"; 
-                }
-                else
-                    newClass = stats.BaseClass.ToString();
+                if (stats.SubbedClass is BaseClass.Priest && stats.BaseClass is BaseClass.Monk)
+                    newClass = "Druid";
 
-                // Alternate colors
-                var currentColor = isSilver ? MessageColor.Silver : MessageColor.Gainsboro;
-                builder.AppendLineFColored(currentColor, $"{entry.Key.Humanize(),-15} {stats.Damage,-10} {stats.DamagePerSecond,-10} {newClass,-10}");
+                if (stats.SubbedClass is BaseClass.Priest && stats.BaseClass is BaseClass.Wizard)
+                    newClass = "Prizard";
 
-                // Toggle the color for the next entry
-                isSilver = !isSilver;
-            }
+                if (stats.SubbedClass is BaseClass.Priest && stats.BaseClass is BaseClass.Rogue)
+                    newClass = "Shadowmender";
+
+                //Warrior Sub
+                if (stats.SubbedClass is BaseClass.Warrior && stats.BaseClass is BaseClass.Rogue)
+                    newClass = "Shadowblade";
+
+                if (stats.SubbedClass is BaseClass.Warrior && stats.BaseClass is BaseClass.Wizard)
+                    newClass = "Spellblade";
+
+                if (stats.SubbedClass is BaseClass.Warrior && stats.BaseClass is BaseClass.Monk)
+                    newClass = "Iron Fist";
+
+                if (stats.SubbedClass is BaseClass.Warrior && stats.BaseClass is BaseClass.Priest)
+                    newClass = "Paladin";
+
+                //Monk Sub
+                if (stats.SubbedClass is BaseClass.Monk && stats.BaseClass is BaseClass.Wizard)
+                    newClass = "Spellfist";
+
+                if (stats.SubbedClass is BaseClass.Monk && stats.BaseClass is BaseClass.Priest)
+                    newClass = "Spiritwalker";
+
+                if (stats.SubbedClass is BaseClass.Monk && stats.BaseClass is BaseClass.Rogue)
+                    newClass = "Shadowhand";
+
+                if (stats.SubbedClass is BaseClass.Monk && stats.BaseClass is BaseClass.Warrior)
+                    newClass = "Titan";
+
+                //Wizard Sub
+                if (stats.SubbedClass is BaseClass.Wizard && stats.BaseClass is BaseClass.Warrior)
+                    newClass = "Arcane Knight";
+
+                if (stats.SubbedClass is BaseClass.Wizard && stats.BaseClass is BaseClass.Monk)
+                    newClass = "Arcane Striker";
+
+                if (stats.SubbedClass is BaseClass.Wizard && stats.BaseClass is BaseClass.Priest)
+                    newClass = "Arcane Mystic";
+
+                if (stats.SubbedClass is BaseClass.Wizard && stats.BaseClass is BaseClass.Rogue)
+                    newClass = "Arcane Stalker";
+
+                if (stats.SubbedClass is BaseClass.Wizard && stats.BaseClass is BaseClass.Rogue)
+                    newClass = "Arcane Stalker";
+
+                //Rogue Sub
+                if (stats.SubbedClass is BaseClass.Rogue && stats.BaseClass is BaseClass.Warrior)
+                    newClass = "Blade Dancer";
+
+                if (stats.SubbedClass is BaseClass.Rogue && stats.BaseClass is BaseClass.Monk)
+                    newClass = "Silent Fist";
+
+                if (stats.SubbedClass is BaseClass.Rogue && stats.BaseClass is BaseClass.Wizard)
+                    newClass = "Spellthief";
+
+                if (stats.SubbedClass is BaseClass.Rogue && stats.BaseClass is BaseClass.Priest)
+                    newClass = "Veilwalker";
+            } else
+                newClass = stats.BaseClass.ToString();
+
+            // Alternate colors
+            var currentColor = isSilver ? MessageColor.Silver : MessageColor.Gainsboro;
+
+            builder.AppendLineFColored(
+                currentColor,
+                $"{entry.Key.Humanize(),-15} {stats.Damage,-10} {stats.DamagePerSecond,-10} {newClass,-10}");
+
+            // Toggle the color for the next entry
+            isSilver = !isSilver;
+        }
 
         // Send leaderboard to the player
         source.SendServerMessage(ServerMessageType.ScrollWindow, builder.ToString());
     }
 
-    
-    
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
@@ -141,11 +140,13 @@ public class DamageGameScript : DialogScriptBase
             {
                 var mapInstance = SimpleCache.Get<MapInstance>("hm_damagegame");
                 source.TraverseMap(mapInstance, new Point(4, 2));
+
                 break;
             }
             case "hazel_topscores":
             {
                 DamageGame(source);
+
                 break;
             }
         }

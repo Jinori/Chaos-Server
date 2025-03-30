@@ -9,14 +9,6 @@ namespace Chaos.Scripting.ItemScripts.Enchantments;
 public sealed class AncientPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
     /// <inheritdoc />
-    public AncientPrefixScript(Item subject)
-        : base(subject) => IPrefixEnchantmentScript.ApplyPrefix<AncientPrefixScript>(subject);
-
-    /// <inheritdoc />
-    public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
-        => IPrefixEnchantmentScript.Mutate<AncientPrefixScript>(node, template);
-
-    /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
         SpellDamagePct = 1,
@@ -26,4 +18,13 @@ public sealed class AncientPrefixScript : ItemScriptBase, IPrefixEnchantmentScri
 
     /// <inheritdoc />
     public static string PrefixStr => "Ancient";
+
+    /// <inheritdoc />
+    public AncientPrefixScript(Item subject)
+        : base(subject)
+        => IPrefixEnchantmentScript.ApplyPrefix<AncientPrefixScript>(subject);
+
+    /// <inheritdoc />
+    public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
+        => IPrefixEnchantmentScript.Mutate<AncientPrefixScript>(node, template);
 }

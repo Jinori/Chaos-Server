@@ -18,8 +18,8 @@ public class Cr12WarpScript : ConfigurableReactorTileScriptBase
 
     /// <inheritdoc />
     public Cr12WarpScript(ReactorTile subject, ISimpleCache simpleCache)
-        : base(subject) =>
-        SimpleCache = simpleCache;
+        : base(subject)
+        => SimpleCache = simpleCache;
 
     /// <inheritdoc />
     public override void OnWalkedOn(Creature source)
@@ -29,7 +29,7 @@ public class Cr12WarpScript : ConfigurableReactorTileScriptBase
 
         var hasStage = source.Trackers.Enums.TryGetValue(out MainStoryEnums stage);
 
-        if (!hasStage || stage != MainStoryEnums.KilledSummoner && stage != MainStoryEnums.CompletedPreMasterMainStory)
+        if (!hasStage || ((stage != MainStoryEnums.KilledSummoner) && (stage != MainStoryEnums.CompletedPreMasterMainStory)))
         {
             aisling?.SendOrangeBarMessage("You must kill the Summoner to venture further into Cthonic Remains.");
 

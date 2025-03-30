@@ -1,5 +1,4 @@
 ﻿using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
@@ -15,8 +14,8 @@ public class TeleportToTerrorBossScript : DialogScriptBase
     private readonly ISimpleCache SimpleCache;
 
     public TeleportToTerrorBossScript(Dialog subject, ISimpleCache simpleCache)
-        : base(subject) =>
-        SimpleCache = simpleCache;
+        : base(subject)
+        => SimpleCache = simpleCache;
 
     public override void OnDisplaying(Aisling source)
     {
@@ -24,9 +23,7 @@ public class TeleportToTerrorBossScript : DialogScriptBase
         if (source.Group is null || source.Group.Any(x => !x.OnSameMapAs(source) || !x.WithinRange(source)))
         {
             // Send a message to the Aisling
-           source.Client.SendServerMessage(
-                ServerMessageType.OrangeBar1,
-                "Make sure you are grouped or your group is near you.");
+            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure you are grouped or your group is near you.");
 
             // Warp the source back
             var point = source.DirectionalOffset(source.Direction.Reverse());
@@ -39,6 +36,7 @@ public class TeleportToTerrorBossScript : DialogScriptBase
         {
             source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Make sure your companions are within level range.");
             Subject.Reply(source, "Some of your companions are not within your level range.");
+
             return;
         }
 

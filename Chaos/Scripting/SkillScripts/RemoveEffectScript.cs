@@ -37,6 +37,8 @@ public class RemoveEffectScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public TargetFilter Filter { get; init; }
 
+    public int? HealthCost { get; init; }
+
     /// <inheritdoc />
     public int? ManaCost { get; init; }
 
@@ -44,6 +46,7 @@ public class RemoveEffectScript : ConfigurableSkillScriptBase,
     public bool MustHaveTargets { get; init; }
 
     public bool? NegativeEffect { get; init; }
+    public decimal PctHealthCost { get; init; }
 
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }

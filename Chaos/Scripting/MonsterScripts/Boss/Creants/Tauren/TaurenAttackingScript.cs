@@ -1,5 +1,4 @@
 using Chaos.Common.Utilities;
-using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
@@ -21,8 +20,7 @@ public class TaurenAttackingScript : MonsterScriptBase
 
         if (script is { InPhase: true })
             return;
-            
-            
+
         if (Target is not { IsAlive: true } || (Subject.ManhattanDistanceFrom(Target) != 1))
             return;
 

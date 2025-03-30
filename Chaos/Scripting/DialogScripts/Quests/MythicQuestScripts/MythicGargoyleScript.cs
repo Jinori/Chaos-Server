@@ -53,50 +53,35 @@ public class MythicGargoyleScript : DialogScriptBase
 
                 if (hasMain && !hasGargoyle)
                 {
-                    Subject.Reply(
-                        source,
-                        "Skip",
-                        "gargoyle_start1start");
+                    Subject.Reply(source, "Skip", "gargoyle_start1start");
 
                     return;
                 }
 
                 if (gargoyle == MythicGargoyle.LowerGargoyle)
                 {
-                    Subject.Reply(
-                        source,
-                        "Skip",
-                        "gargoyle_lower2start");
+                    Subject.Reply(source, "Skip", "gargoyle_lower2start");
 
                     return;
                 }
 
                 if (gargoyle == MythicGargoyle.LowerGargoyleComplete)
                 {
-                    Subject.Reply(
-                        source,
-                        "Skip",
-                        "gargoyle_start3start");
+                    Subject.Reply(source, "Skip", "gargoyle_start3start");
 
                     return;
                 }
 
                 if (gargoyle == MythicGargoyle.HigherGargoyle)
                 {
-                    Subject.Reply(
-                        source,
-                        "Skip",
-                        "gargoyle_higher2start");
+                    Subject.Reply(source, "Skip", "gargoyle_higher2start");
 
                     return;
                 }
 
                 if (gargoyle == MythicGargoyle.HigherGargoyleComplete)
                 {
-                    Subject.Reply(
-                        source,
-                        "Skip",
-                        "gargoyle_itemstart");
+                    Subject.Reply(source, "Skip", "gargoyle_itemstart");
 
                     return;
                 }
@@ -110,30 +95,21 @@ public class MythicGargoyleScript : DialogScriptBase
 
                 if (gargoyle == MythicGargoyle.ItemGargoyleComplete)
                 {
-                    Subject.Reply(
-                        source,
-                        "Skip",
-                        "gargoyle_allystart");
+                    Subject.Reply(source, "Skip", "gargoyle_allystart");
 
                     return;
                 }
 
                 if (gargoyle == MythicGargoyle.AlliedGargoyle)
                 {
-                    Subject.Reply(
-                        source,
-                        "Skip",
-                        "gargoyle_start5start");
+                    Subject.Reply(source, "Skip", "gargoyle_start5start");
 
                     return;
                 }
 
                 if (gargoyle == MythicGargoyle.BossGargoyleStarted)
                 {
-                    Subject.Reply(
-                        source,
-                        "Skip",
-                        "gargoyle_boss2start");
+                    Subject.Reply(source, "Skip", "gargoyle_boss2start");
 
                     return;
                 }
@@ -171,8 +147,7 @@ public class MythicGargoyleScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
                     source.SendOrangeBarMessage("You received 10000000 experience!");
@@ -225,8 +200,7 @@ public class MythicGargoyleScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
                     source.SendOrangeBarMessage("You received 10000000 experience!");
@@ -265,8 +239,7 @@ public class MythicGargoyleScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
                     source.SendOrangeBarMessage("You received 10000000 experience!");
@@ -349,8 +322,7 @@ public class MythicGargoyleScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, fiftyPercent);
                     source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 25000000);
                     source.SendOrangeBarMessage("You received 25000000 experience!");
@@ -360,11 +332,10 @@ public class MythicGargoyleScript : DialogScriptBase
                 source.Trackers.Enums.Set(MythicGargoyle.BossGargoyleDefeated);
                 source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);
 
-                if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5) &&
-                    !source.Trackers.Enums.HasValue(MythicQuestMain.CompletedMythic))
-                {
+                if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss)
+                    && (mythicboss >= 5)
+                    && !source.Trackers.Enums.HasValue(MythicQuestMain.CompletedMythic))
                     source.Trackers.Enums.Set(MythicQuestMain.CompletedAll);
-                }
             }
 
                 break;

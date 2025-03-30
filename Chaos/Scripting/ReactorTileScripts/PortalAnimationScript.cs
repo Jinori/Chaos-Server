@@ -9,8 +9,8 @@ namespace Chaos.Scripting.ReactorTileScripts;
 
 public class PortalAnimationScript : ReactorTileScriptBase
 {
-    protected IIntervalTimer? Timer { get; set; }
     protected IIntervalTimer AnimationTimer { get; set; }
+    protected IIntervalTimer? Timer { get; set; }
 
     protected Animation PortalAnimation { get; } = new()
     {
@@ -30,9 +30,7 @@ public class PortalAnimationScript : ReactorTileScriptBase
     public override void OnWalkedOn(Creature source)
     {
         if (source is Merchant)
-        {
             Subject.MapInstance.RemoveEntity(source);
-        }
     }
 
     /// <inheritdoc />
@@ -42,8 +40,7 @@ public class PortalAnimationScript : ReactorTileScriptBase
 
         if (AnimationTimer.IntervalElapsed)
         {
-            var aislings = Subject.MapInstance
-                                           .GetEntitiesWithinRange<Aisling>(Subject, 12);
+            var aislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 12);
 
             foreach (var aisling in aislings)
                 aisling.MapInstance.ShowAnimation(PortalAnimation.GetPointAnimation(new Point(Subject.X, Subject.Y)));

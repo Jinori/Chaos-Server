@@ -46,12 +46,14 @@ public class GuildMemberPromoteScript : GuildScriptBase
             case "generic_guild_members_transferownership_confirmation":
             {
                 OnDisplayingConfirmationTransfer(source);
+
                 break;
             }
 
             case "generic_guild_members_transferownership_accepted":
             {
                 OnDisplayingAcceptedTransfer(source);
+
                 break;
             }
 
@@ -98,7 +100,7 @@ public class GuildMemberPromoteScript : GuildScriptBase
 
             return;
         }
-        
+
         if (source.Name.EqualsI(name))
         {
             Subject.Reply(source, "You dumbly point to yourself.", "generic_guild_members_initial");
@@ -107,9 +109,11 @@ public class GuildMemberPromoteScript : GuildScriptBase
         }
 
         var targetCurrentRank = guild.RankOf(name);
+
         //leader can promote anyone that is currently 1 tier higher than them (can promote TO their own tier, from 1 rank away)
         //officer can promote anyone that is currently 2 tiers higher than them (can promote TO 1 tier higher than them, from 2 ranks away)
         var factor = sourceRank.IsLeaderRank ? 1 : 2;
+
         //ensure the player to promote is not the same or higher rank (same or lower tier)
         if (!sourceRank.IsSuperiorTo(targetCurrentRank, factor))
         {
@@ -117,16 +121,16 @@ public class GuildMemberPromoteScript : GuildScriptBase
 
             return;
         }
-        
-        if(!targetCurrentRank.CanBePromoted)
+
+        if (!targetCurrentRank.CanBePromoted)
         {
             Subject.Reply(source, $"{name} cannot be promoted any further.", "generic_guild_members_initial");
 
             return;
         }
-        
+
         guild.ChangeRank(name, targetCurrentRank.Tier - 1, source);
-        
+
         Logger.WithTopics(Topics.Entities.Guild, Topics.Actions.Promote)
               .WithProperty(Subject)
               .WithProperty(Subject.DialogSource)
@@ -139,7 +143,7 @@ public class GuildMemberPromoteScript : GuildScriptBase
                   sourceRank.Name,
                   guild.Name);
     }
-    
+
     private void OnDisplayingAcceptedTransfer(Aisling source)
     {
         //ensure the player is in a guild
@@ -178,7 +182,7 @@ public class GuildMemberPromoteScript : GuildScriptBase
         }
 
         var targetCurrentRank = guild.RankOf(name);
-        
+
         //ensure the player to promote is not the same or higher rank (same or lower tier)
         if (!sourceRank.IsSuperiorTo(targetCurrentRank))
         {
@@ -186,14 +190,14 @@ public class GuildMemberPromoteScript : GuildScriptBase
 
             return;
         }
-        
+
         guild.ChangeRank(name, 0, source);
         guild.ChangeRank(source.Name, 1, source);
         source.SendOrangeBarMessage($"You give leadership over to {name}.");
 
         foreach (var onlineMember in guild.GetOnlineMembers())
             onlineMember.SendOrangeBarMessage($"{source.Name} has transferred leadership to {name}. Long live {name}!");
-        
+
         Logger.WithTopics(Topics.Entities.Guild, Topics.Actions.Promote)
               .WithProperty(Subject)
               .WithProperty(Subject.DialogSource)
@@ -234,15 +238,15 @@ public class GuildMemberPromoteScript : GuildScriptBase
         }
 
         var targetCurrentRank = guild.RankOf(name);
-        
+
         //grab the rank the aisling will be promoted to
         if (!guild.TryGetRank(targetCurrentRank.Tier - 1, out var toRank))
             throw new UnreachableException(
                 "This should only occur if the guild does not have the rank tier - 1, but that should be checked already");
-        
+
         Subject.InjectTextParameters(name, toRank.Name);
     }
-    
+
     private void OnDisplayingConfirmationTransfer(Aisling source)
     {
         //ensure the player is in a guild
@@ -268,7 +272,7 @@ public class GuildMemberPromoteScript : GuildScriptBase
 
             return;
         }
-        
+
         //grab the rank the aisling will be promoted to
         if (!guild.TryGetRank(0, out var toRank))
             throw new UnreachableException(

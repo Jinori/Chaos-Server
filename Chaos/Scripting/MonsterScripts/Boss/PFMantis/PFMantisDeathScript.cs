@@ -14,8 +14,8 @@ public sealed class PfMantisDeathScript : MonsterScriptBase
 
     /// <inheritdoc />
     public PfMantisDeathScript(Monster subject, ISimpleCache simpleCache)
-        : base(subject) =>
-        SimpleCache = simpleCache;
+        : base(subject)
+        => SimpleCache = simpleCache;
 
     public override void OnDeath()
     {
@@ -25,7 +25,9 @@ public sealed class PfMantisDeathScript : MonsterScriptBase
             3,
             4);
 
-        foreach (var member in Subject.MapInstance.GetEntities<Aisling>().ToList())
+        foreach (var member in Subject.MapInstance
+                                      .GetEntities<Aisling>()
+                                      .ToList())
         {
             var hasStage = member.Trackers.Enums.TryGetValue(out PFQuestStage stage);
 

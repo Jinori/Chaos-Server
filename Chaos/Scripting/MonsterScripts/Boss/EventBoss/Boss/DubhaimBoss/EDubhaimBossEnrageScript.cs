@@ -19,20 +19,23 @@ public sealed class EDubhaimBossEnrageScript : MonsterScriptBase
 
     /// <inheritdoc />
     public EDubhaimBossEnrageScript(Monster subject, ISpellFactory spellFactory)
-        : base(subject)
-    {
-    }
+        : base(subject) { }
 
     public override void Update(TimeSpan delta)
     {
-
         if (!Bonus75Applied && (Subject.StatSheet.HealthPercent <= 75))
         {
             Bonus75Applied = true;
+
             //Give Bonuses
-            var attrib = new Attributes { AtkSpeedPct = 25, SkillDamagePct = 30};
+            var attrib = new Attributes
+            {
+                AtkSpeedPct = 25,
+                SkillDamagePct = 30
+            };
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
+
             //Spawn Monsters
         }
 

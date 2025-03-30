@@ -12,7 +12,8 @@ public class ArmsLoreGiveExpScript : DialogScriptBase
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     public ArmsLoreGiveExpScript(Dialog subject)
-        : base(subject) => ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
+        : base(subject)
+        => ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
 
     public override void OnDisplayed(Aisling source)
     {

@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
@@ -38,9 +37,7 @@ public class ClueScript : ReactorTileScriptBase
                     var clue = ItemFactory.Create("clue1");
                     aisling.GiveItemOrSendToBank(clue);
 
-                    aisling.Client.SendServerMessage(
-                        ServerMessageType.OrangeBar1,
-                        "You've received the first clue!");
+                    aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've received the first clue!");
                 }
 
                 break;
@@ -52,9 +49,7 @@ public class ClueScript : ReactorTileScriptBase
                     var clue = ItemFactory.Create("clue2");
                     aisling.GiveItemOrSendToBank(clue);
 
-                    aisling.Client.SendServerMessage(
-                        ServerMessageType.OrangeBar1,
-                        "You've received the second clue!");
+                    aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've received the second clue!");
                 }
 
                 break;
@@ -66,9 +61,7 @@ public class ClueScript : ReactorTileScriptBase
                     var clue = ItemFactory.Create("clue3");
                     aisling.GiveItemOrSendToBank(clue);
 
-                    aisling.Client.SendServerMessage(
-                        ServerMessageType.OrangeBar1,
-                        "You've received the third clue!");
+                    aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've received the third clue!");
                 }
 
                 break;
@@ -80,9 +73,7 @@ public class ClueScript : ReactorTileScriptBase
                     var clue = ItemFactory.Create("clue4");
                     aisling.GiveItemOrSendToBank(clue);
 
-                    aisling.Client.SendServerMessage(
-                        ServerMessageType.OrangeBar1,
-                        "You've received the fourth clue!");
+                    aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You've received the fourth clue!");
                 }
 
                 break;
@@ -109,17 +100,19 @@ public class ClueScript : ReactorTileScriptBase
                     // Check if all members of the group have the quest flag and are within level range
                     // Check if all members of the group have the quest enum and are within level range
                     var allMembersHaveQuestFlag = aisling.Group.All(
-                        member =>
-                            member.Trackers.Enums.TryGetValue(out ManorNecklaceStage value)
-                            && value is ManorNecklaceStage.AcceptedQuest or ManorNecklaceStage.SawNecklace or ManorNecklaceStage.ReturnedNecklace or ManorNecklaceStage.KeptNecklace
-                            && member.WithinLevelRange(source));
+                        member => member.Trackers.Enums.TryGetValue(out ManorNecklaceStage value)
+                                  && value is ManorNecklaceStage.AcceptedQuest
+                                              or ManorNecklaceStage.SawNecklace
+                                              or ManorNecklaceStage.ReturnedNecklace
+                                              or ManorNecklaceStage.KeptNecklace
+                                  && member.WithinLevelRange(source));
 
                     // Check if all members have all four clues
                     var allMembersHaveAllClues = aisling.Group.All(
                         member => (member.Inventory.HasCount("Clue One", 1)
-                                  && member.Inventory.HasCount("Clue Two", 1)
-                                  && member.Inventory.HasCount("Clue Three", 1)
-                                  && member.Inventory.HasCount("Clue Four", 1))
+                                   && member.Inventory.HasCount("Clue Two", 1)
+                                   && member.Inventory.HasCount("Clue Three", 1)
+                                   && member.Inventory.HasCount("Clue Four", 1))
                                   || member.Trackers.Enums.HasValue(ManorNecklaceStage.ReturnedNecklace)
                                   || member.Trackers.Enums.HasValue(ManorNecklaceStage.KeptNecklace));
 
@@ -145,16 +138,13 @@ public class ClueScript : ReactorTileScriptBase
                         foreach (var member in aisling.Group)
                         {
                             if (member.Trackers.Enums.HasValue(ManorNecklaceStage.AcceptedQuest))
-                            {
                                 member.Trackers.Enums.Set(ManorNecklaceStage.SawNecklace);
-                            }
 
                             member.Client.SendServerMessage(
                                 ServerMessageType.OrangeBar1,
                                 "You catch a glimpse of the necklace before it disappears.");
                         }
-                    }
-                    else
+                    } else
                     {
                         // Send a message to the Aisling
                         aisling.Client.SendServerMessage(

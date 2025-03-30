@@ -13,12 +13,13 @@ public sealed class AirElementalChaosScript : MapScriptBase
 {
     private readonly IApplyDamageScript ApplyDamageScript;
     private IIntervalTimer AirElementalChaosTimer { get; }
+
     private Animation LightningAnimation { get; } = new()
     {
         AnimationSpeed = 100,
         TargetAnimation = 15
     };
-    
+
     /// <inheritdoc />
     public AirElementalChaosScript(MapInstance subject)
         : base(subject)
@@ -31,30 +32,39 @@ public sealed class AirElementalChaosScript : MapScriptBase
     public override void Update(TimeSpan delta)
     {
         AirElementalChaosTimer.Update(delta);
-        
+
         if (!AirElementalChaosTimer.IntervalElapsed)
             return;
-        
+
         // Get all non-wall points on the map
         var nonWallPoints = Enumerable.Range(0, Subject.Template.Width)
-                                      .SelectMany(x => Enumerable.Range(0, Subject.Template.Height)
-                                                                 .Where(y => !Subject.IsWall(new Point(x, y)))
-                                                                 .Select(y => new Point(x, y))).ToList();
+                                      .SelectMany(
+                                          x => Enumerable.Range(0, Subject.Template.Height)
+                                                         .Where(y => !Subject.IsWall(new Point(x, y)))
+                                                         .Select(y => new Point(x, y)))
+                                      .ToList();
 
-        if (nonWallPoints.Count <= 0) 
+        if (nonWallPoints.Count <= 0)
             return;
-        
+
         // Select a random non-wall point
         var targetPoint = nonWallPoints[Random.Shared.Next(nonWallPoints.Count)];
-            
+
         Subject.ShowAnimation(LightningAnimation.GetPointAnimation(targetPoint));
 
         // Check if a player is standing on the point and apply damage
-        var targetPlayer = Subject.GetEntitiesAtPoints<Aisling>(targetPoint).FirstOrDefault();
-        if (targetPlayer == null) 
+        var targetPlayer = Subject.GetEntitiesAtPoints<Aisling>(targetPoint)
+                                  .FirstOrDefault();
+
+        if (targetPlayer == null)
             return;
-            
+
         var damage = (int)(targetPlayer.StatSheet.EffectiveMaximumHp * 0.1); // 10% of max HP
-        ApplyDamageScript.ApplyDamage(targetPlayer, targetPlayer, this, damage);
+
+        ApplyDamageScript.ApplyDamage(
+            targetPlayer,
+            targetPlayer,
+            this,
+            damage);
     }
 }

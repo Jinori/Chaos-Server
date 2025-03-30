@@ -21,19 +21,24 @@ public class PietWerewolfMerchantScript : MerchantScriptBase
         SeenByAislingWithEnum
     }
 
-    private IPathOptions Options => PathOptions.Default with
-    {
-        LimitRadius = null,
-        IgnoreBlockingReactors = true
-    };
-
-
-
     private readonly IIntervalTimer ActionTimer;
+    private readonly IIntervalTimer FasterWalkTimer;
     public readonly Location PietEmptyRoomDoorPoint = new("piet", 30, 12);
 
     private readonly IIntervalTimer WalkTimer;
-    private readonly IIntervalTimer FasterWalkTimer;
+    public bool HasSaidDialog1;
+    public bool HasSaidDialog2;
+    public bool HasSaidDialog3;
+    public bool HasSaidDialog4;
+
+    public bool HasSaidGreeting;
+
+    private IPathOptions Options
+        => PathOptions.Default with
+        {
+            LimitRadius = null,
+            IgnoreBlockingReactors = true
+        };
 
     /// <inheritdoc />
     public PietWerewolfMerchantScript(Merchant subject)
@@ -44,34 +49,28 @@ public class PietWerewolfMerchantScript : MerchantScriptBase
         ActionTimer = new IntervalTimer(TimeSpan.FromSeconds(10), false);
         Subject.PietWerewolfState = PietWerewolfState.Idle;
     }
-    
-    public bool HasSaidGreeting;
-    public bool HasSaidDialog1;
-    public bool HasSaidDialog2;
-    public bool HasSaidDialog3;
-    public bool HasSaidDialog4;
-    
-    private void HandleApproachToEmptyRoom(TimeSpan delta)
-    {
-        if (ShouldWalkTo(PietEmptyRoomDoorPoint))
-            WalkTowards(PietEmptyRoomDoorPoint, delta);
-    }
-    
-    private bool ShouldWalkTo(Location destination) =>
-        (Subject.ManhattanDistanceFrom(destination) > 0) && Subject.OnSameMapAs(destination);
-    
+
     private void AttemptToOpenDoor(IPoint doorPoint)
     {
-        var door = Subject.MapInstance.GetEntitiesAtPoints<Door>(doorPoint).FirstOrDefault();
+        var door = Subject.MapInstance
+                          .GetEntitiesAtPoints<Door>(doorPoint)
+                          .FirstOrDefault();
 
         if (door is { Closed: true })
             door.OnClicked(Subject);
     }
 
+    private void HandleApproachToEmptyRoom(TimeSpan delta)
+    {
+        if (ShouldWalkTo(PietEmptyRoomDoorPoint))
+            WalkTowards(PietEmptyRoomDoorPoint, delta);
+    }
+
     private void HandleIdleState()
     {
-        if (Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject)
-            .Any(x => x.Trackers.Enums.HasValue(WerewolfOfPiet.StartedQuest)))
+        if (Subject.MapInstance
+                   .GetEntitiesWithinRange<Aisling>(Subject)
+                   .Any(x => x.Trackers.Enums.HasValue(WerewolfOfPiet.StartedQuest)))
             Subject.PietWerewolfState = PietWerewolfState.SeenByAislingWithEnum;
 
         Subject.PietVillagerState = PietVillagerScript.PietVillagerState.Wandering;
@@ -79,29 +78,14 @@ public class PietWerewolfMerchantScript : MerchantScriptBase
         ActionTimer.Reset();
     }
 
-    private void HandleWanderingState()
-    {
-        Subject.Wander();
-
-        if (Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject)
-            .Any(x => x.Trackers.Enums.HasValue(WerewolfOfPiet.StartedQuest)))
-            Subject.PietWerewolfState = PietWerewolfState.SeenByAislingWithEnum;
-
-        if (Subject.WanderTimer.IntervalElapsed && IntegerRandomizer.RollChance(10))
-        {
-            Subject.PietWerewolfState = PietWerewolfState.Idle;
-            ActionTimer.Reset();
-        }
-
-        Subject.WanderTimer.Reset();
-    }
-
     private void HandleSeenByAislingWithEnumState(TimeSpan delta)
     {
         if (Subject.WithinRange(PietEmptyRoomDoorPoint, 1))
         {
-            var aislingsOnQuest = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject)
-                .Where(x => x.Trackers.Enums.HasValue(WerewolfOfPiet.StartedQuest)).ToList();
+            var aislingsOnQuest = Subject.MapInstance
+                                         .GetEntitiesWithinRange<Aisling>(Subject)
+                                         .Where(x => x.Trackers.Enums.HasValue(WerewolfOfPiet.StartedQuest))
+                                         .ToList();
 
             foreach (var aisling in aislingsOnQuest)
             {
@@ -114,9 +98,10 @@ public class PietWerewolfMerchantScript : MerchantScriptBase
                 {
                     // Get group members who are on the map and have started the quest
                     var groupMembers = aisling.Group
-                        .Where(member => member.MapInstance == Subject.MapInstance &&
-                                         member.Trackers.Enums.HasValue(WerewolfOfPiet.StartedQuest))
-                        .ToList();
+                                              .Where(
+                                                  member => (member.MapInstance == Subject.MapInstance)
+                                                            && member.Trackers.Enums.HasValue(WerewolfOfPiet.StartedQuest))
+                                              .ToList();
 
                     // Assign the FollowedMerchant enum to group members
                     foreach (var member in groupMembers)
@@ -129,55 +114,76 @@ public class PietWerewolfMerchantScript : MerchantScriptBase
 
             Subject.MapInstance.RemoveEntity(Subject);
         }
+
         HandleApproachToEmptyRoom(delta);
     }
 
-    private void WalkTowards(Location destination, TimeSpan delta)
+    private void HandleWanderingState()
     {
-        WalkTimer.Update(delta);
-        FasterWalkTimer.Update(delta);
-        
-        if (FasterWalkTimer.IntervalElapsed && Subject.MapInstance.Name == "Piet")
-        {
-            if (Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 4)
-                .Any(x => x.Trackers.Enums.HasValue(WerewolfOfPiet.StartedQuest)))
-            {
-                Subject.Pathfind(destination, 0, Options);
-            }
-        }
-        
-        if (WalkTimer.IntervalElapsed)
-        {
-            if (destination == PietEmptyRoomDoorPoint)
-                AttemptToOpenDoor(PietEmptyRoomDoorPoint);
+        Subject.Wander();
 
-            Subject.Pathfind(destination, 0, Options);
+        if (Subject.MapInstance
+                   .GetEntitiesWithinRange<Aisling>(Subject)
+                   .Any(x => x.Trackers.Enums.HasValue(WerewolfOfPiet.StartedQuest)))
+            Subject.PietWerewolfState = PietWerewolfState.SeenByAislingWithEnum;
+
+        if (Subject.WanderTimer.IntervalElapsed && IntegerRandomizer.RollChance(10))
+        {
+            Subject.PietWerewolfState = PietWerewolfState.Idle;
+            ActionTimer.Reset();
         }
+
+        Subject.WanderTimer.Reset();
     }
+
+    private bool ShouldWalkTo(Location destination) => (Subject.ManhattanDistanceFrom(destination) > 0) && Subject.OnSameMapAs(destination);
 
     public override void Update(TimeSpan delta)
     {
         ActionTimer.Update(delta);
-        
+
         switch (Subject.PietWerewolfState)
         {
             case PietWerewolfState.Idle:
             {
                 HandleIdleState();
+
                 break;
             }
 
             case PietWerewolfState.Wandering:
             {
                 HandleWanderingState();
+
                 break;
             }
 
             case PietWerewolfState.SeenByAislingWithEnum:
             {
                 HandleSeenByAislingWithEnumState(delta);
+
                 break;
             }
+        }
+    }
+
+    private void WalkTowards(Location destination, TimeSpan delta)
+    {
+        WalkTimer.Update(delta);
+        FasterWalkTimer.Update(delta);
+
+        if (FasterWalkTimer.IntervalElapsed && (Subject.MapInstance.Name == "Piet"))
+            if (Subject.MapInstance
+                       .GetEntitiesWithinRange<Aisling>(Subject, 4)
+                       .Any(x => x.Trackers.Enums.HasValue(WerewolfOfPiet.StartedQuest)))
+                Subject.Pathfind(destination, 0, Options);
+
+        if (WalkTimer.IntervalElapsed)
+        {
+            if (destination == PietEmptyRoomDoorPoint)
+                AttemptToOpenDoor(PietEmptyRoomDoorPoint);
+
+            Subject.Pathfind(destination, 0, Options);
         }
     }
 }

@@ -15,8 +15,8 @@ public class GatherIceScript : ReactorTileScriptBase
 
     /// <inheritdoc />
     public GatherIceScript(ReactorTile subject, IItemFactory itemFactory, ISimpleCache simpleCache)
-        : base(subject) =>
-        _itemFactory = itemFactory;
+        : base(subject)
+        => _itemFactory = itemFactory;
 
     /// <inheritdoc />
     public override void OnWalkedOn(Creature source)
@@ -24,7 +24,7 @@ public class GatherIceScript : ReactorTileScriptBase
         if (source is not Aisling aisling)
             return;
 
-        if (DateTime.Now - _lastActivationTime < _cooldownDuration)
+        if ((DateTime.Now - _lastActivationTime) < _cooldownDuration)
             return;
 
         var ice = _itemFactory.Create("ice");

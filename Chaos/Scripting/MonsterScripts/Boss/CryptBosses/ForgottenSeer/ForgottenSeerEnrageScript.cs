@@ -21,26 +21,32 @@ public sealed class ForgottenSeerEnrageScript : MonsterScriptBase
 
     /// <inheritdoc />
     public ForgottenSeerEnrageScript(Monster subject, IMonsterFactory monsterFactory)
-        : base(subject) =>
-        MonsterFactory = monsterFactory;
+        : base(subject)
+        => MonsterFactory = monsterFactory;
 
     public override void Update(TimeSpan delta)
     {
         if (!Bonus75Applied && (Subject.StatSheet.HealthPercent <= 75))
         {
             Bonus75Applied = true;
+
             //Give Bonuses
-            var attrib = new Attributes { SpellDamagePct = 30};
+            var attrib = new Attributes
+            {
+                SpellDamagePct = 30
+            };
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
+
             //Spawn Monsters
             var rectangle = new Rectangle(Subject, 8, 8);
 
             for (var i = 0; i <= 16; i++)
             {
-                if (!rectangle.GetPoints().Any(x => Subject.MapInstance.IsWalkable(x, Subject.Type)))
+                if (!rectangle.GetPoints()
+                              .Any(x => Subject.MapInstance.IsWalkable(x, Subject.Type)))
                     continue;
-                
+
                 if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
                     continue;
 
@@ -68,7 +74,7 @@ public sealed class ForgottenSeerEnrageScript : MonsterScriptBase
         if (!Bonus30Applied && (Subject.StatSheet.HealthPercent <= 30))
         {
             Bonus30Applied = true;
-            
+
             var rectangle = new Rectangle(Subject, 5, 5);
 
             for (var i = 0; i <= 5; i++)

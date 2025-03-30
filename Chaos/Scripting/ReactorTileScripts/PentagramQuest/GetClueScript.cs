@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.World;
@@ -10,13 +9,13 @@ namespace Chaos.Scripting.ReactorTileScripts.PentagramQuest;
 
 public class GetClueScript : ReactorTileScriptBase
 {
+    private static readonly Point WizardClueSpot = new(10, 13);
+    private static readonly Point WarriorClueSpot = new(7, 7);
+    private static readonly Point RogueClueSpot = new(11, 6);
+    private static readonly Point PriestClueSpot = new(13, 10);
+    private static readonly Point MonkClueSpot = new(6, 11);
     private readonly IDialogFactory DialogFactory;
     private readonly IMerchantFactory MerchantFactory;
-    private static readonly Point WizardClueSpot = new Point(10, 13);
-    private static readonly Point WarriorClueSpot = new Point(7, 7);
-    private static readonly Point RogueClueSpot = new Point(11, 6);
-    private static readonly Point PriestClueSpot = new Point(13, 10);
-    private static readonly Point MonkClueSpot = new Point(6, 11);
 
     public GetClueScript(ReactorTile subject, IDialogFactory dialogFactory, IMerchantFactory merchantFactory)
         : base(subject)
@@ -30,9 +29,7 @@ public class GetClueScript : ReactorTileScriptBase
         if (source is not Aisling aisling)
             return;
 
-        if (source.Trackers.Enums.TryGetValue(out PentagramQuestStage stage)
-            && (stage == PentagramQuestStage.StartedRitual))
-        {
+        if (source.Trackers.Enums.TryGetValue(out PentagramQuestStage stage) && (stage == PentagramQuestStage.StartedRitual))
             switch (aisling.UserStatSheet.BaseClass)
             {
                 case BaseClass.Warrior:
@@ -40,10 +37,7 @@ public class GetClueScript : ReactorTileScriptBase
                     {
                         var npcpoint = new Point(aisling.X, aisling.Y);
 
-                        var cluemerchant = MerchantFactory.Create(
-                            "pentakingrat_merchant",
-                            aisling.MapInstance,
-                            npcpoint);
+                        var cluemerchant = MerchantFactory.Create("pentakingrat_merchant", aisling.MapInstance, npcpoint);
 
                         var classDialog = DialogFactory.Create("pentaclue", cluemerchant);
                         classDialog.Display(aisling);
@@ -73,8 +67,7 @@ public class GetClueScript : ReactorTileScriptBase
                     {
                         var npcpoint = new Point(aisling.X, aisling.Y);
 
-                        var cluemerchant =
-                            MerchantFactory.Create("pentabeetle_merchant", aisling.MapInstance, npcpoint);
+                        var cluemerchant = MerchantFactory.Create("pentabeetle_merchant", aisling.MapInstance, npcpoint);
 
                         var classDialog = DialogFactory.Create("pentaclue", cluemerchant);
                         classDialog.Display(aisling);
@@ -90,8 +83,7 @@ public class GetClueScript : ReactorTileScriptBase
                     {
                         var npcpoint = new Point(aisling.X, aisling.Y);
 
-                        var cluemerchant =
-                            MerchantFactory.Create("pentaspider_merchant", aisling.MapInstance, npcpoint);
+                        var cluemerchant = MerchantFactory.Create("pentaspider_merchant", aisling.MapInstance, npcpoint);
 
                         var classDialog = DialogFactory.Create("pentaclue", cluemerchant);
                         classDialog.Display(aisling);
@@ -116,7 +108,5 @@ public class GetClueScript : ReactorTileScriptBase
 
                     break;
             }
-        }
-
     }
 }

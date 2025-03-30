@@ -36,11 +36,15 @@ public class StudyCreatureScript : ConfigurableSkillScriptBase, GenericAbilityCo
     /// <inheritdoc />
     public TargetFilter Filter { get; init; }
 
+    public int? HealthCost { get; init; }
+
     /// <inheritdoc />
     public int? ManaCost { get; init; }
 
     /// <inheritdoc />
     public bool MustHaveTargets { get; init; }
+
+    public decimal PctHealthCost { get; init; }
 
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }
@@ -84,7 +88,7 @@ public class StudyCreatureScript : ConfigurableSkillScriptBase, GenericAbilityCo
             Element.Undead   => $"{MessageColor.DarkGreen.ToPrefix()}UNDEAD{MessageColor.Orange.ToPrefix()}",
             _                => throw new ArgumentOutOfRangeException(nameof(element), element, null)
         };
-    
+
     private string GetElementScrollWindowColor(Element element)
         => element switch
         {
@@ -125,7 +129,7 @@ public class StudyCreatureScript : ConfigurableSkillScriptBase, GenericAbilityCo
                 var defenseColor = GetElementColor(mob.StatSheet.DefenseElement);
                 var offenseScrollColor = GetElementScrollWindowColor(mob.StatSheet.OffenseElement);
                 var defenseScrollColor = GetElementScrollWindowColor(mob.StatSheet.DefenseElement);
-                
+
                 context.SourceAisling?.Client.SendServerMessage(
                     ServerMessageType.ScrollWindow,
                     $"Name: {mob.Name}\nLevel: {mob.StatSheet.Level}\nHealth: {mob.StatSheet.CurrentHp}\nArmor Class: {

@@ -1,4 +1,3 @@
-using Chaos.Extensions.Common;
 using Chaos.MetaData.ItemMetaData;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
@@ -9,13 +8,6 @@ namespace Chaos.Scripting.ItemScripts.Enchantments;
 
 public sealed class PrimalPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
-    /// <inheritdoc />
-    public PrimalPrefixScript(Item subject)
-        : base(subject) => IPrefixEnchantmentScript.ApplyPrefix<PrimalPrefixScript>(subject);
-
-    /// <inheritdoc />
-    public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template) => IPrefixEnchantmentScript.Mutate<PrimalPrefixScript>(node, template);
-
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
@@ -30,4 +22,13 @@ public sealed class PrimalPrefixScript : ItemScriptBase, IPrefixEnchantmentScrip
 
     /// <inheritdoc />
     public static string PrefixStr => "Primal";
+
+    /// <inheritdoc />
+    public PrimalPrefixScript(Item subject)
+        : base(subject)
+        => IPrefixEnchantmentScript.ApplyPrefix<PrimalPrefixScript>(subject);
+
+    /// <inheritdoc />
+    public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
+        => IPrefixEnchantmentScript.Mutate<PrimalPrefixScript>(node, template);
 }

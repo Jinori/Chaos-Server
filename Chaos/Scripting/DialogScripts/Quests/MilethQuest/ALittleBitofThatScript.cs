@@ -34,9 +34,7 @@ public class ALittleBitofThatScript : DialogScriptBase
         var twentyPercent = Convert.ToInt32(.20 * tnl);
 
         if (twentyPercent > 320000)
-        {
             twentyPercent = 320000;
-        }
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
@@ -180,10 +178,10 @@ public class ALittleBitofThatScript : DialogScriptBase
                     }
 
                     Logger.WithTopics(
-                              [Topics.Entities.Aisling,
+                              Topics.Entities.Aisling,
                               Topics.Entities.Experience,
                               Topics.Entities.Dialog,
-                              Topics.Entities.Quest])
+                              Topics.Entities.Quest)
                           .WithProperty(source)
                           .WithProperty(Subject)
                           .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, twentyPercent);
@@ -209,10 +207,10 @@ public class ALittleBitofThatScript : DialogScriptBase
                     }
 
                     Logger.WithTopics(
-                              [Topics.Entities.Aisling,
+                              Topics.Entities.Aisling,
                               Topics.Entities.Experience,
                               Topics.Entities.Dialog,
-                              Topics.Entities.Quest])
+                              Topics.Entities.Quest)
                           .WithProperty(source)
                           .WithProperty(Subject)
                           .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, twentyPercent);
@@ -238,10 +236,10 @@ public class ALittleBitofThatScript : DialogScriptBase
                     }
 
                     Logger.WithTopics(
-                              [Topics.Entities.Aisling,
+                              Topics.Entities.Aisling,
                               Topics.Entities.Experience,
                               Topics.Entities.Dialog,
-                              Topics.Entities.Quest])
+                              Topics.Entities.Quest)
                           .WithProperty(source)
                           .WithProperty(Subject)
                           .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, twentyPercent);
@@ -267,10 +265,10 @@ public class ALittleBitofThatScript : DialogScriptBase
                     }
 
                     Logger.WithTopics(
-                              [Topics.Entities.Aisling,
+                              Topics.Entities.Aisling,
                               Topics.Entities.Experience,
                               Topics.Entities.Dialog,
-                              Topics.Entities.Quest])
+                              Topics.Entities.Quest)
                           .WithProperty(source)
                           .WithProperty(Subject)
                           .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, twentyPercent);
@@ -296,10 +294,10 @@ public class ALittleBitofThatScript : DialogScriptBase
                     }
 
                     Logger.WithTopics(
-                              [Topics.Entities.Aisling,
+                              Topics.Entities.Aisling,
                               Topics.Entities.Experience,
                               Topics.Entities.Dialog,
-                              Topics.Entities.Quest])
+                              Topics.Entities.Quest)
                           .WithProperty(source)
                           .WithProperty(Subject)
                           .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, twentyPercent);
@@ -325,10 +323,10 @@ public class ALittleBitofThatScript : DialogScriptBase
                     }
 
                     Logger.WithTopics(
-                              [Topics.Entities.Aisling,
+                              Topics.Entities.Aisling,
                               Topics.Entities.Experience,
                               Topics.Entities.Dialog,
-                              Topics.Entities.Quest])
+                              Topics.Entities.Quest)
                           .WithProperty(source)
                           .WithProperty(Subject)
                           .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, twentyPercent);

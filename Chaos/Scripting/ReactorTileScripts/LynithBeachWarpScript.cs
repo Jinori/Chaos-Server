@@ -33,6 +33,7 @@ public class LynithBeachWarpScript : ConfigurableReactorTileScriptBase
             aisling?.SendOrangeBarMessage($"Pirates are working to rebuild the ship. Come back (({cdtime.Remaining.Humanize()}))");
             var point = source.DirectionalOffset(source.Direction.Reverse());
             source.WarpTo(source.Trackers.LastPosition as IPoint ?? point);
+
             return;
         }
 

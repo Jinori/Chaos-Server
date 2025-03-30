@@ -2,7 +2,6 @@ using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -23,8 +22,8 @@ public class CleaveHealComponent : IComponent
     {
         var options = vars.GetOptions<ICleaveHealComponentOptions>();
         var targets = vars.GetTargets<Creature>();
-        int targetsHit = 0;
-        
+        var targetsHit = 0;
+
         foreach (var target in targets)
             if (target.IsAlive)
                 targetsHit++;
@@ -34,7 +33,11 @@ public class CleaveHealComponent : IComponent
 
         if (healAmount >= 1)
         {
-            options.ApplyHealScript.ApplyHeal(context.Source, context.Source, vars.GetSourceScript(), healAmount);
+            options.ApplyHealScript.ApplyHeal(
+                context.Source,
+                context.Source,
+                vars.GetSourceScript(),
+                healAmount);
             context.SourceAisling?.SendActiveMessage($"You've been healed by {healAmount} from {targetsHit.ToWords()} targets!");
         }
 

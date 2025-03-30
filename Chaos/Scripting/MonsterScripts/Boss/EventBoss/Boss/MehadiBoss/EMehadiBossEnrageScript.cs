@@ -21,18 +21,25 @@ public sealed class EMehadiBossEnrageScript : MonsterScriptBase
 
     /// <inheritdoc />
     public EMehadiBossEnrageScript(Monster subject, IMonsterFactory monsterFactory)
-        : base(subject) =>
-        MonsterFactory = monsterFactory;
+        : base(subject)
+        => MonsterFactory = monsterFactory;
 
     public override void Update(TimeSpan delta)
     {
         if (!Bonus75Applied && (Subject.StatSheet.HealthPercent <= 75))
         {
             Bonus75Applied = true;
+
             //Give Bonuses
-            var attrib = new Attributes { Hit = 10, MaximumMp = 10000, MagicResistance = 10};
+            var attrib = new Attributes
+            {
+                Hit = 10,
+                MaximumMp = 10000,
+                MagicResistance = 10
+            };
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
+
             //Spawn Monsters
             var rectangle = new Rectangle(Subject, 5, 5);
 
@@ -40,7 +47,7 @@ public sealed class EMehadiBossEnrageScript : MonsterScriptBase
             {
                 if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
                     continue;
-                
+
                 var mobs = MonsterFactory.Create("eanala_viper", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(mobs, point);
             }
@@ -58,14 +65,14 @@ public sealed class EMehadiBossEnrageScript : MonsterScriptBase
                 SpellDamagePct = 10,
                 Ac = -20
             };
-            
+
             var rectangle = new Rectangle(Subject, 5, 5);
 
             for (var i = 0; i <= 3; i++)
             {
                 if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
                     continue;
-                
+
                 var mobs = MonsterFactory.Create("emehadi_frog", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(mobs, point);
             }
@@ -95,14 +102,14 @@ public sealed class EMehadiBossEnrageScript : MonsterScriptBase
                 SkillDamagePct = 20,
                 SpellDamagePct = 20
             };
-            
+
             var rectangle = new Rectangle(Subject, 5, 5);
 
             for (var i = 0; i <= 2; i++)
             {
                 if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
                     continue;
-                
+
                 var mobs = MonsterFactory.Create("emehadi_shrieker", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(mobs, point);
             }

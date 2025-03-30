@@ -6,7 +6,6 @@ using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.MonsterScripts.Boss;
-using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
@@ -15,11 +14,10 @@ namespace Chaos.Scripting.EffectScripts.Monsters;
 
 public sealed class StonedEffect : ContinuousAnimationEffectBase
 {
+    private readonly IMonsterFactory MonsterFactory;
+
     /// <inheritdoc />
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromHours(3);
-    
-    private readonly IMonsterFactory MonsterFactory;
-    public StonedEffect(IMonsterFactory monsterFactory) => MonsterFactory = monsterFactory;
 
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()
@@ -43,13 +41,15 @@ public sealed class StonedEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     public override string Name => "Stoned";
 
+    public StonedEffect(IMonsterFactory monsterFactory) => MonsterFactory = monsterFactory;
+
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
     {
         Subject.Animate(Animation);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your body is turning to stone.");
         AislingSubject?.Client.SendCancelCasting();
-        
+
         if (Subject.IsGodModeEnabled())
             Subject.Effects.Dispel(Name);
 
@@ -57,7 +57,7 @@ public sealed class StonedEffect : ContinuousAnimationEffectBase
         {
             var point = new Point(Subject.X, Subject.Y);
             var medusa = MonsterFactory.Create("Medusa", Subject.MapInstance, point);
-            
+
             var dmgScript = ApplyNonAttackDamageScript.Create();
 
             dmgScript.ApplyDamage(

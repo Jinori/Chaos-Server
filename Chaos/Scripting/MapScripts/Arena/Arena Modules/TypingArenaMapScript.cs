@@ -13,13 +13,6 @@ namespace Chaos.Scripting.MapScripts.Arena.Arena_Modules;
 
 public class TypingArenaMapScript(MapInstance subject, IMonsterFactory monsterFactory, ISimpleCache simpleCache) : MapScriptBase(subject)
 {
-    private readonly IIntervalTimer SpawnTimer = new IntervalTimer(TimeSpan.FromSeconds(8));
-    private int WaveCount = 0;
-    private readonly Random Random = new();
-    private bool Sorted;
-    private bool WinnerDeclared;
-    private readonly HashSet<Point> DangerTiles = [new(10, 1), new(9, 1)];
-    private readonly List<Point> SpawnPoints = new Rectangle(6, 19, 9, 1).GetPoints().ToList();
     private static readonly List<Point> PlayerTiles =
     [
         new(6, 12),
@@ -27,68 +20,439 @@ public class TypingArenaMapScript(MapInstance subject, IMonsterFactory monsterFa
         new(14, 6),
         new(14, 12)
     ];
-    
-    private static readonly List<int> AllowedSprites = [300, 301, 302, 303, 304, 328];
-    
-    public override void Update(TimeSpan delta)
-    {
-        if (!Subject.GetEntities<Aisling>().Any())
-        {
-            if (WinnerDeclared)
-                Subject.Destroy();
 
-            return;
-        }
-        
-        
-        if (!Sorted)
-        {
-            SortAislingsIntoTiles();
-            Sorted = true;
-        }
-        
-        
-        var monsterAtDoor = Subject.GetEntities<Monster>()
-                                   .FirstOrDefault(monster => (monster.Template.TemplateKey == "typingMonster") &&
-                                                              DangerTiles.Contains(new Point(monster.X, monster.Y)));
+    private static readonly List<int> AllowedSprites =
+    [
+        300,
+        301,
+        302,
+        303,
+        304,
+        328
+    ];
 
-        if (monsterAtDoor != null)
-        {
-            EndGame(monsterAtDoor);
-            return;
-        }
-    
-        SpawnTimer.Update(delta);
+    private static readonly HashSet<int> ExcludedSprites =
+    [
+        0,
+        12,
+        18,
+        45,
+        83,
+        139,
+        140,
+        151,
+        174,
+        191,
+        190,
+        192,
+        193,
+        194,
+        196,
+        202,
+        203,
+        206,
+        207,
+        210,
+        212,
+        213,
+        214,
+        215,
+        216,
+        217,
+        218,
+        219, // 212 through 219
+        230,
+        231,
+        232,
+        233,
+        234,
+        235,
+        236,
+        237,
+        238, // 230 through 238
+        245,
+        254,
+        267,
+        288,
+        289,
+        290,
+        291,
+        292,
+        293,
+        294,
+        295,
+        296,
+        297,
+        298,
+        299, // 288 through 299
+        306,
+        315,
+        316,
+        317,
+        318,
+        325,
+        326,
+        327,
+        340,
+        374,
+        375,
+        376,
+        377,
+        378,
+        379,
+        380, // 374 through 380
+        402,
+        403,
+        404,
+        411,
+        417,
+        437,
+        493,
+        523,
+        531,
+        532,
+        533,
+        542,
+        543,
+        544
+    ];
 
-        if (!SpawnTimer.IntervalElapsed) 
-            return;
+    private readonly HashSet<Point> DangerTiles =
+    [
+        new(10, 1),
+        new(9, 1)
+    ];
 
-        WaveCount += 1;
-        var players = Subject.GetEntities<Aisling>().ToList();
-        foreach (var player in players)
-            player.SendPersistentMessage($"Wave: {WaveCount}.");
-        
-        var monstersToSpawn = 3 + (WaveCount / 2);
+    private readonly Random Random = new();
 
-        for (var i = 0; i < monstersToSpawn; i++)
-        {
-            var spawnPoint = GetRandomSpawnLocation();
-            var randomWord = GetRandomWord();
-            var point = new Point(spawnPoint.X, spawnPoint.Y);
-    
-            var typingMonster = monsterFactory.Create("typingmonster", Subject, point);
-            
-            typingMonster.TypingWave = WaveCount;
-            typingMonster.TypingWord = randomWord;
-            typingMonster.Sprite = (ushort)GetValidSprite();
-            Subject.AddEntity(typingMonster, point);
-        }
-    }
+    private readonly List<Point> SpawnPoints = new Rectangle(
+            6,
+            19,
+            9,
+            1).GetPoints()
+              .ToList();
 
+    private readonly IIntervalTimer SpawnTimer = new IntervalTimer(TimeSpan.FromSeconds(8));
+
+    // Word pool for Typing Monsters (500+ words, 5-10 characters each)
+    private readonly List<string> WordPool =
+    [
+        "attack",
+        "battle",
+        "defend",
+        "shield",
+        "strike",
+        "parry",
+        "dodge",
+        "charge",
+        "damage",
+        "counter",
+        "block",
+        "slash",
+        "pierce",
+        "combat",
+        "onslaught",
+        "skirmish",
+        "warrior",
+        "blitz",
+        "fortify",
+        "engage",
+
+        // Fantasy & RPG Terms
+        "sorcery",
+        "arcane",
+        "mystic",
+        "conjure",
+        "summon",
+        "phantom",
+        "wraith",
+        "ethereal",
+        "incant",
+        "sigil",
+        "eldritch",
+        "runes",
+        "ritual",
+        "mana",
+        "spellcast",
+        "invoke",
+        "alchemy",
+        "transmute",
+        "hex",
+        "enchant",
+
+        // Weapons & Equipment
+        "dagger",
+        "sword",
+        "bow",
+        "quiver",
+        "hammer",
+        "gauntlet",
+        "crossbow",
+        "waraxe",
+        "katana",
+        "longsword",
+        "halberd",
+        "lance",
+        "flail",
+        "buckler",
+        "greaves",
+        "plate",
+        "cuirass",
+        "helm",
+        "scabbard",
+        "bracer",
+
+        // Elemental & Magic-Related Words
+        "fireball",
+        "blizzard",
+        "tornado",
+        "earthquake",
+        "inferno",
+        "lightning",
+        "thunder",
+        "storm",
+        "frostbite",
+        "eruption",
+        "maelstrom",
+        "whirlwind",
+        "avalanche",
+        "cyclone",
+        "tsunami",
+        "pyroclasm",
+        "gale",
+        "ember",
+        "glacier",
+        "vortex",
+
+        // Mythical Creatures
+        "dragon",
+        "griffin",
+        "phoenix",
+        "basilisk",
+        "chimera",
+        "golem",
+        "minotaur",
+        "hydra",
+        "gargoyle",
+        "harpy",
+        "sphinx",
+        "wyvern",
+        "behemoth",
+        "leviathan",
+        "kraken",
+        "specter",
+        "lich",
+        "shade",
+        "banshee",
+        "daemon",
+
+        // Exploration & Adventure
+        "journey",
+        "quest",
+        "expedition",
+        "explore",
+        "venture",
+        "pilgrimage",
+        "seek",
+        "discover",
+        "traverse",
+        "wander",
+        "wayfarer",
+        "traveler",
+        "odyssey",
+        "saga",
+        "legend",
+        "folklore",
+        "parchment",
+        "artifact",
+        "map",
+        "compass",
+
+        // Status Effects & Conditions
+        "poison",
+        "curse",
+        "hexed",
+        "stunned",
+        "weaken",
+        "cripple",
+        "blind",
+        "silence",
+        "paralyze",
+        "petrify",
+        "affliction",
+        "decay",
+        "disease",
+        "drained",
+        "haunted",
+        "tainted",
+        "wither",
+        "frozen",
+        "burning",
+        "plague",
+
+        // Strategy & Tactics
+        "ambush",
+        "tactic",
+        "strategy",
+        "flank",
+        "maneuver",
+        "retreat",
+        "assault",
+        "barrage",
+        "encircle",
+        "siege",
+        "fortress",
+        "stronghold",
+        "defense",
+        "breach",
+        "counter",
+        "position",
+        "formation",
+        "resist",
+        "endurance",
+        "survival",
+
+        // Light vs. Dark Themes
+        "radiance",
+        "luminous",
+        "glow",
+        "brilliance",
+        "halo",
+        "beacon",
+        "sanctuary",
+        "divine",
+        "blessing",
+        "seraphic",
+        "shadow",
+        "darkness",
+        "gloom",
+        "shroud",
+        "veil",
+        "phantasm",
+        "eclipse",
+        "midnight",
+        "twilight",
+        "abyssal",
+
+        // Nature & Environment
+        "forest",
+        "grove",
+        "meadow",
+        "river",
+        "ocean",
+        "desert",
+        "glacier",
+        "volcano",
+        "cavern",
+        "mountain",
+        "summit",
+        "valley",
+        "marsh",
+        "swamp",
+        "rainforest",
+        "tundra",
+        "island",
+        "lake",
+        "breeze",
+        "tempest",
+
+        // Special Abilities & Powers
+        "teleport",
+        "levitate",
+        "absorb",
+        "reflect",
+        "counter",
+        "regenerate",
+        "mimic",
+        "enhance",
+        "intensify",
+        "focus",
+        "channel",
+        "unleash",
+        "dispel",
+        "banish",
+        "revive",
+        "empower",
+        "fortify",
+        "accelerate",
+        "concentrate",
+        "awaken",
+
+        // Miscellaneous Fantasy & Adventure Words
+        "realm",
+        "kingdom",
+        "citadel",
+        "sanctum",
+        "throne",
+        "oracle",
+        "prophecy",
+        "fate",
+        "destiny",
+        "omen",
+        "scroll",
+        "grimoire",
+        "codex",
+        "mystery",
+        "tome",
+        "ritual",
+        "alchemy",
+        "herb",
+        "brew",
+        "elixir",
+
+        // More Combat & War-related Words
+        "onslaught",
+        "vanguard",
+        "strike",
+        "invasion",
+        "crusade",
+        "raid",
+        "skirmish",
+        "triumph",
+        "conquer",
+        "dominate",
+        "resistance",
+        "siege",
+        "warcry",
+        "glory",
+        "victory",
+        "rampage",
+        "overthrow",
+        "uprising",
+        "rebellion",
+        "slaughter",
+
+        // Miscellaneous Words
+        "balance",
+        "chaos",
+        "order",
+        "time",
+        "immortal",
+        "ether",
+        "cosmic",
+        "void",
+        "relic",
+        "eclipse",
+        "horizon",
+        "legacy",
+        "reverence",
+        "divination",
+        "oracle",
+        "cataclysm",
+        "arcadia",
+        "guardian",
+        "watcher",
+        "monarch"
+    ];
+
+    private bool Sorted;
+    private int WaveCount;
+    private bool WinnerDeclared;
 
     private void CalculateWinner()
     {
-        var players = Subject.GetEntities<Aisling>().ToList();
+        var players = Subject.GetEntities<Aisling>()
+                             .ToList();
 
         // Dictionary to store team scores
         var teamScores = new Dictionary<ArenaTeam, int>();
@@ -113,11 +477,14 @@ public class TypingArenaMapScript(MapInstance subject, IMonsterFactory monsterFa
         {
             foreach (var player in players)
                 player.SendActiveMessage("No teams were found, or no kills were recorded.");
+
             return;
         }
 
         // Determine the winning team
-        var winningTeam = teamScores.OrderByDescending(t => t.Value).First().Key;
+        var winningTeam = teamScores.OrderByDescending(t => t.Value)
+                                    .First()
+                                    .Key;
         var winningScore = teamScores[winningTeam];
 
         // Announce the winner
@@ -132,38 +499,79 @@ public class TypingArenaMapScript(MapInstance subject, IMonsterFactory monsterFa
 
         WinnerDeclared = true;
     }
-    
-    private string GetRandomWord() => WordPool[Random.Next(WordPool.Count)];
+
+    private void EndGame(Monster monster)
+    {
+        var players = Subject.GetEntities<Aisling>()
+                             .ToList();
+
+        var creatures = Subject.GetEntities<Monster>()
+                               .ToList();
+
+        foreach (var player in players)
+            player.SendActiveMessage($"A monster has reached the door on wave {monster.TypingWave}!");
+
+        foreach (var creature in creatures)
+            Subject.RemoveEntity(creature);
+
+        WaveCount = 0;
+        CalculateWinner();
+    }
 
     private Point GetRandomSpawnLocation() => SpawnPoints[Random.Next(SpawnPoints.Count)];
-    
+
+    private string GetRandomWord() => WordPool[Random.Next(WordPool.Count)];
+
+    private int GetValidSprite() => AllowedSprites[Random.Next(AllowedSprites.Count)];
+
+    private int GetValidSpriteOld()
+    {
+        int sprite;
+
+        do
+            sprite = IntegerRandomizer.RollSingle(560);
+        while (ExcludedSprites.Contains(sprite));
+
+        return sprite;
+    }
+
     public void SortAislingsIntoTiles()
     {
-        var players = Subject.GetEntities<Aisling>().ToList();
+        var players = Subject.GetEntities<Aisling>()
+                             .ToList();
 
         foreach (var player in players)
             player.WarpTo(new Point(10, 11));
     }
-    
+
     public void SortAislingsIntoTilesTeamBased()
     {
         // Get all Aislings with valid ArenaTeam assignments
         var aislingTeams = Subject.GetEntities<Aisling>()
-                                  .Select(x => new 
-                                  { 
-                                      Aisling = x, 
-                                      Team = x.Trackers.Enums.TryGetValue(typeof(ArenaTeam), out var value) && value is ArenaTeam arenaTeam
-                                          ? arenaTeam 
-                                          : (ArenaTeam?)null
-                                  })
+                                  .Select(
+                                      x => new
+                                      {
+                                          Aisling = x,
+                                          Team = x.Trackers.Enums.TryGetValue(typeof(ArenaTeam), out var value)
+                                                 && value is ArenaTeam arenaTeam
+                                              ? arenaTeam
+                                              : (ArenaTeam?)null
+                                      })
                                   .Where(x => x.Team.HasValue) // Ensure valid teams only
-                                  .Select(x => new { x.Aisling, Team = (ArenaTeam?)x.Team!.Value })
+                                  .Select(
+                                      x => new
+                                      {
+                                          x.Aisling,
+                                          Team = (ArenaTeam?)x.Team!.Value
+                                      })
                                   .ToList();
 
         // Group by ArenaTeam
-        var teamGroups = aislingTeams
-                         .GroupBy(x => x.Team)
-                         .ToDictionary(g => g.Key, g => g.Select(a => a.Aisling).ToList());
+        var teamGroups = aislingTeams.GroupBy(x => x.Team)
+                                     .ToDictionary(
+                                         g => g.Key,
+                                         g => g.Select(a => a.Aisling)
+                                               .ToList());
 
         // Flatten teams into a mixed queue for balanced distribution
         var mixedAislingQueue = teamGroups.Values
@@ -171,7 +579,8 @@ public class TypingArenaMapScript(MapInstance subject, IMonsterFactory monsterFa
                                           .ToList();
 
         // Shuffle the player tiles to avoid stacking
-        var shuffledTiles = PlayerTiles.OrderBy(_ => Random.Next()).ToList();
+        var shuffledTiles = PlayerTiles.OrderBy(_ => Random.Next())
+                                       .ToList();
 
         var index = 0;
 
@@ -183,107 +592,63 @@ public class TypingArenaMapScript(MapInstance subject, IMonsterFactory monsterFa
             index++;
         }
     }
-    
-    private void EndGame(Monster monster)
-    {
-        var players = Subject.GetEntities<Aisling>().ToList();
-        var creatures = Subject.GetEntities<Monster>().ToList();
-        
-        foreach (var player in players)
-            player.SendActiveMessage($"A monster has reached the door on wave {monster.TypingWave}!");
-        
-        foreach (var creature in creatures)
-            Subject.RemoveEntity(creature);
-        
-        WaveCount = 0;
-        CalculateWinner();
-    }
-    
-    
-    private static readonly HashSet<int> ExcludedSprites =
-    [
-        0, 12, 18, 45, 83, 139, 140, 151, 174, 191, 190, 192, 193, 194, 196, 202, 203, 206, 207, 210,
-        212, 213, 214, 215, 216, 217, 218, 219, // 212 through 219
-        230, 231, 232, 233, 234, 235, 236, 237, 238, // 230 through 238
-        245, 254, 267,
-        288, 289, 290, 291, 292, 293, 294, 295, 296, 297, 298, 299, // 288 through 299
-        306, 315, 316, 317, 318, 325, 326, 327, 340,
-        374, 375, 376, 377, 378, 379, 380, // 374 through 380
-        402, 403, 404, 411, 417, 437, 493, 523, 531, 532, 533,
-        542, 543, 544
-    ];
 
-    private int GetValidSprite() => AllowedSprites[Random.Next(AllowedSprites.Count)];
-
-    private int GetValidSpriteOld()
+    public override void Update(TimeSpan delta)
     {
-        int sprite;
-        do
+        if (!Subject.GetEntities<Aisling>()
+                    .Any())
         {
-            sprite = IntegerRandomizer.RollSingle(560); 
+            if (WinnerDeclared)
+                Subject.Destroy();
+
+            return;
         }
-        while (ExcludedSprites.Contains(sprite));
 
-        return sprite;
+        if (!Sorted)
+        {
+            SortAislingsIntoTiles();
+            Sorted = true;
+        }
+
+        var monsterAtDoor = Subject.GetEntities<Monster>()
+                                   .FirstOrDefault(
+                                       monster => (monster.Template.TemplateKey == "typingMonster")
+                                                  && DangerTiles.Contains(new Point(monster.X, monster.Y)));
+
+        if (monsterAtDoor != null)
+        {
+            EndGame(monsterAtDoor);
+
+            return;
+        }
+
+        SpawnTimer.Update(delta);
+
+        if (!SpawnTimer.IntervalElapsed)
+            return;
+
+        WaveCount += 1;
+
+        var players = Subject.GetEntities<Aisling>()
+                             .ToList();
+
+        foreach (var player in players)
+            player.SendPersistentMessage($"Wave: {WaveCount}.");
+
+        var monstersToSpawn = 3 + WaveCount / 2;
+
+        for (var i = 0; i < monstersToSpawn; i++)
+        {
+            var spawnPoint = GetRandomSpawnLocation();
+            var randomWord = GetRandomWord();
+            var point = new Point(spawnPoint.X, spawnPoint.Y);
+
+            var typingMonster = monsterFactory.Create("typingmonster", Subject, point);
+
+            typingMonster.TypingWave = WaveCount;
+            typingMonster.TypingWord = randomWord;
+            typingMonster.Sprite = (ushort)GetValidSprite();
+            Subject.AddEntity(typingMonster, point);
+        }
     }
-
-    
-    // Word pool for Typing Monsters (500+ words, 5-10 characters each)
-    private readonly List<string> WordPool =
-    [
-        "attack", "battle", "defend", "shield", "strike", "parry", "dodge", "charge", "damage", "counter",
-        "block", "slash", "pierce", "combat", "onslaught", "skirmish", "warrior", "blitz", "fortify", "engage",
-
-        // Fantasy & RPG Terms
-        "sorcery", "arcane", "mystic", "conjure", "summon", "phantom", "wraith", "ethereal", "incant", "sigil",
-        "eldritch", "runes", "ritual", "mana", "spellcast", "invoke", "alchemy", "transmute", "hex", "enchant",
-
-        // Weapons & Equipment
-        "dagger", "sword", "bow", "quiver", "hammer", "gauntlet", "crossbow", "waraxe", "katana", "longsword",
-        "halberd", "lance", "flail", "buckler", "greaves", "plate", "cuirass", "helm", "scabbard", "bracer",
-
-        // Elemental & Magic-Related Words
-        "fireball", "blizzard", "tornado", "earthquake", "inferno", "lightning", "thunder", "storm", "frostbite", "eruption",
-        "maelstrom", "whirlwind", "avalanche", "cyclone", "tsunami", "pyroclasm", "gale", "ember", "glacier", "vortex",
-
-        // Mythical Creatures
-        "dragon", "griffin", "phoenix", "basilisk", "chimera", "golem", "minotaur", "hydra", "gargoyle", "harpy",
-        "sphinx", "wyvern", "behemoth", "leviathan", "kraken", "specter", "lich", "shade", "banshee", "daemon",
-
-        // Exploration & Adventure
-        "journey", "quest", "expedition", "explore", "venture", "pilgrimage", "seek", "discover", "traverse", "wander",
-        "wayfarer", "traveler", "odyssey", "saga", "legend", "folklore", "parchment", "artifact", "map", "compass",
-
-        // Status Effects & Conditions
-        "poison", "curse", "hexed", "stunned", "weaken", "cripple", "blind", "silence", "paralyze", "petrify",
-        "affliction", "decay", "disease", "drained", "haunted", "tainted", "wither", "frozen", "burning", "plague",
-
-        // Strategy & Tactics
-        "ambush", "tactic", "strategy", "flank", "maneuver", "retreat", "assault", "barrage", "encircle", "siege",
-        "fortress", "stronghold", "defense", "breach", "counter", "position", "formation", "resist", "endurance", "survival",
-
-        // Light vs. Dark Themes
-        "radiance", "luminous", "glow", "brilliance", "halo", "beacon", "sanctuary", "divine", "blessing", "seraphic",
-        "shadow", "darkness", "gloom", "shroud", "veil", "phantasm", "eclipse", "midnight", "twilight", "abyssal",
-
-        // Nature & Environment
-        "forest", "grove", "meadow", "river", "ocean", "desert", "glacier", "volcano", "cavern", "mountain",
-        "summit", "valley", "marsh", "swamp", "rainforest", "tundra", "island", "lake", "breeze", "tempest",
-
-        // Special Abilities & Powers
-        "teleport", "levitate", "absorb", "reflect", "counter", "regenerate", "mimic", "enhance", "intensify", "focus",
-        "channel", "unleash", "dispel", "banish", "revive", "empower", "fortify", "accelerate", "concentrate", "awaken",
-
-        // Miscellaneous Fantasy & Adventure Words
-        "realm", "kingdom", "citadel", "sanctum", "throne", "oracle", "prophecy", "fate", "destiny", "omen",
-        "scroll", "grimoire", "codex", "mystery", "tome", "ritual", "alchemy", "herb", "brew", "elixir",
-
-        // More Combat & War-related Words
-        "onslaught", "vanguard", "strike", "invasion", "crusade", "raid", "skirmish", "triumph", "conquer", "dominate",
-        "resistance", "siege", "warcry", "glory", "victory", "rampage", "overthrow", "uprising", "rebellion", "slaughter",
-
-        // Miscellaneous Words
-        "balance", "chaos", "order", "time", "immortal", "ether", "cosmic", "void", "relic", "eclipse",
-        "horizon", "legacy", "reverence", "divination", "oracle", "cataclysm", "arcadia", "guardian", "watcher", "monarch"
-    ];
 }

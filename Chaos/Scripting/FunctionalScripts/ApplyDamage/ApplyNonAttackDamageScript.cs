@@ -30,7 +30,7 @@ public class ApplyNonAttackDamageScript : ScriptBase, IApplyDamageScript
 
         if (damage <= 0)
             return;
-        
+
         if ((damage > target.StatSheet.CurrentHp) && target.IsInLastStand())
             damage = target.StatSheet.CurrentHp - 1;
 

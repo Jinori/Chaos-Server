@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
@@ -46,7 +45,8 @@ public class KillCounterScript : MonsterScriptBase
 
     private void HandleTavernRatKill(Aisling aisling)
     {
-        if (!aisling.Trackers.Enums.TryGetValue(out RionaTutorialQuestStage ratquest) || (ratquest != RionaTutorialQuestStage.StartedRatQuest))
+        if (!aisling.Trackers.Enums.TryGetValue(out RionaTutorialQuestStage ratquest)
+            || (ratquest != RionaTutorialQuestStage.StartedRatQuest))
             return;
 
         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo("tavern_rat", 5))
@@ -133,9 +133,12 @@ public class KillCounterScript : MonsterScriptBase
         Aisling[]? rewardTargets = null;
 
         if (rewardTarget != null)
-            rewardTargets = (rewardTarget.Group ?? (IEnumerable<Aisling>)new[] { rewardTarget })
-                            .ThatAreWithinRange(rewardTarget)
-                            .ToArray();
+            rewardTargets = (rewardTarget.Group
+                             ?? (IEnumerable<Aisling>)new[]
+                             {
+                                 rewardTarget
+                             }).ThatAreWithinRange(rewardTarget)
+                               .ToArray();
 
         if (rewardTargets is not null)
             foreach (var aisling in rewardTargets)

@@ -32,21 +32,22 @@ public class TSSavedChildScript : ReactorTileScriptBase
 
         if (aisling.Trackers.Flags.HasFlag(SavedChild.savedchild))
             return;
-        
+
         var randomNumber = new Random().Next(1, 101);
 
         if (randomNumber < 75)
         {
             Map.RemoveEntity(Subject);
+
             return;
         }
-        
+
         var npcpoint = new Point(aisling.X, aisling.Y);
-        
-            var child = MerchantFactory.Create("tschild", source.MapInstance, npcpoint);
-            var dialog = DialogFactory.Create("tschild_initial", child);
-            dialog.Display(aisling);
-            aisling.Trackers.Flags.AddFlag(SavedChild.savedchild);
-            aisling.SendOrangeBarMessage("You stumbled across a child hiding, bring the child back to Chloe.");
+
+        var child = MerchantFactory.Create("tschild", source.MapInstance, npcpoint);
+        var dialog = DialogFactory.Create("tschild_initial", child);
+        dialog.Display(aisling);
+        aisling.Trackers.Flags.AddFlag(SavedChild.savedchild);
+        aisling.SendOrangeBarMessage("You stumbled across a child hiding, bring the child back to Chloe.");
     }
 }

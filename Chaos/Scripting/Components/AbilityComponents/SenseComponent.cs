@@ -16,7 +16,6 @@ public sealed class SenseComponent : IComponent
         var targets = vars.GetTargets<Aisling>();
 
         foreach (var target in targets)
-        {
             if (options.OutputType != null)
             {
                 var offenseColor = GetElementColor(target.StatSheet.OffenseElement);
@@ -25,7 +24,7 @@ public sealed class SenseComponent : IComponent
                 var vitality = target.UserStatSheet.MaximumHp + target.UserStatSheet.MaximumMp * 2;
                 sb.AppendLineFColored(MessageColor.Silver, $"{target.Name}'s Stats{MessageColor.Gray.ToPrefix()}");
                 sb.AppendLine($"Defense: {defenseColor} Offense: {offenseColor}");
-                
+
                 sb.AppendLineFColored(MessageColor.Yellow, "Base Vitality", MessageColor.Gray);
                 sb.Append($"Vitality: {vitality} ");
                 sb.Append($"HP: {target.StatSheet.MaximumHp} ");
@@ -56,7 +55,7 @@ public sealed class SenseComponent : IComponent
                 sb.AppendLineF($"Spell DMG%: {target.StatSheet.SpellDamagePct} ");
 
                 sb.AppendLine("");
-                
+
                 var gearedvitality = target.UserStatSheet.EffectiveMaximumHp + target.UserStatSheet.EffectiveMaximumMp * 2;
 
                 sb.AppendLineFColored(MessageColor.Yellow, "Geared Vitality", MessageColor.Gray);
@@ -87,12 +86,11 @@ public sealed class SenseComponent : IComponent
                 sb.AppendLineF($"Skill DMG%: {target.StatSheet.EffectiveSkillDamagePct} ");
                 sb.AppendLineF($"Flat Spell DMG: {target.StatSheet.EffectiveFlatSpellDamage} ");
                 sb.AppendLineF($"Spell DMG%: {target.StatSheet.EffectiveSpellDamagePct} ");
-                
+
                 context.SourceAisling?.Client.SendServerMessage(ServerMessageType.ScrollWindow, sb.ToString());
             }
-        }
     }
-    
+
     private string GetElementColor(Element element)
         => element switch
         {

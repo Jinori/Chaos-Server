@@ -13,8 +13,8 @@ public class TutorialMerchantScript : MerchantScriptBase
 
     /// <inheritdoc />
     public TutorialMerchantScript(Merchant subject, IDialogFactory dialogFactory)
-        : base(subject) =>
-        DialogFactory = dialogFactory;
+        : base(subject)
+        => DialogFactory = dialogFactory;
 
     /// <inheritdoc />
     public override void OnPublicMessage(Creature source, string message)

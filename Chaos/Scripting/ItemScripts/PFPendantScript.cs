@@ -32,8 +32,10 @@ public class PFPendantScript : ItemScriptBase
 
         if (!source.IsAlive || !source.Inventory.Contains("Turuc Pendant") || !source.MapInstance.Name.EqualsI(mapInstance.Name))
             return false;
-        
-        var mantisIsSpawned = source.MapInstance.GetEntities<Monster>().Any(x => x.Template.TemplateKey.EqualsI("PF_giant_mantis"));
+
+        var mantisIsSpawned = source.MapInstance
+                                    .GetEntities<Monster>()
+                                    .Any(x => x.Template.TemplateKey.EqualsI("PF_giant_mantis"));
 
         if (mantisIsSpawned)
         {
@@ -45,19 +47,29 @@ public class PFPendantScript : ItemScriptBase
         return true;
     }
 
-    private Monster CreateMantis(MapInstance mapInstance, Aisling source) =>
-        MonsterFactory.Create("pf_giant_mantis", mapInstance, Point.From(source));
+    private Monster CreateMantis(MapInstance mapInstance, Aisling source)
+        => MonsterFactory.Create("pf_giant_mantis", mapInstance, Point.From(source));
 
-    private Animation GetMonsterAnimation() => new()
-        { AnimationSpeed = 100, TargetAnimation = 97 };
+    private Animation GetMonsterAnimation()
+        => new()
+        {
+            AnimationSpeed = 100,
+            TargetAnimation = 97
+        };
 
-    private Animation GetPlayerAnimation() => new()
-        { AnimationSpeed = 100, TargetAnimation = 160 };
+    private Animation GetPlayerAnimation()
+        => new()
+        {
+            AnimationSpeed = 100,
+            TargetAnimation = 160
+        };
 
     private Point GetSpawnPoint(Creature mantis, MapEntity source)
     {
         var monsterSpawn = new Rectangle(source, 10, 10);
-        var outline = monsterSpawn.GetOutline().ToList();
+
+        var outline = monsterSpawn.GetOutline()
+                                  .ToList();
         Point point;
 
         do
@@ -80,10 +92,11 @@ public class PFPendantScript : ItemScriptBase
         var mantis = CreateMantis(mapInstance, source);
         var point = GetSpawnPoint(mantis, source);
 
-        var groupLevel = source.MapInstance.GetEntities<Aisling>()
-            .Where(aisling => !aisling.Trackers.Enums.HasValue(GodMode.Yes))
-            .Select(aisling => aisling.StatSheet.Level)
-            .ToList();
+        var groupLevel = source.MapInstance
+                               .GetEntities<Aisling>()
+                               .Where(aisling => !aisling.Trackers.Enums.HasValue(GodMode.Yes))
+                               .Select(aisling => aisling.StatSheet.Level)
+                               .ToList();
 
         var attrib = new Attributes
         {
@@ -98,8 +111,9 @@ public class PFPendantScript : ItemScriptBase
             SkillDamagePct = (int)(mantis.StatSheet.SkillDamagePct + groupLevel.Average() / 3 + groupLevel.Count + 5),
             SpellDamagePct = (int)(mantis.StatSheet.SpellDamagePct + groupLevel.Average() / 3 + groupLevel.Count + 5)
         };
-        
+
         mantis.StatSheet.AddBonus(attrib);
+
         // Add HP and MP to the mantis
         mantis.StatSheet.SetHealthPct(100);
         mantis.StatSheet.SetManaPct(100);

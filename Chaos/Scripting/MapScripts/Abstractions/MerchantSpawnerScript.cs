@@ -1,5 +1,4 @@
 using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions.Common;
@@ -20,7 +19,7 @@ public abstract class MerchantSpawnerScript(MapInstance subject, IMerchantFactor
 
     public abstract int MinDistanceFromWall { get; set; }
     public abstract int SpawnIntervalMs { get; set; }
-    
+
     private Point GenerateSpawnPoint(MapInstance selectedMap)
     {
         Point point;
@@ -39,19 +38,21 @@ public abstract class MerchantSpawnerScript(MapInstance subject, IMerchantFactor
 
         Point[] directions =
         [
-            new Point(point.X - 1, point.Y),
-            new Point(point.X + 1, point.Y),
-            new Point(point.X, point.Y - 1),
-            new Point(point.X, point.Y + 1)
+            new(point.X - 1, point.Y),
+            new(point.X + 1, point.Y),
+            new(point.X, point.Y - 1),
+            new(point.X, point.Y + 1)
         ];
 
         foreach (var direction in directions)
-            if (selectedMap.IsWall(direction) || selectedMap.IsBlockingReactor(direction) || !selectedMap.IsWalkable(direction, CreatureType.Normal))
+            if (selectedMap.IsWall(direction)
+                || selectedMap.IsBlockingReactor(direction)
+                || !selectedMap.IsWalkable(direction, CreatureType.Normal))
                 return true;
 
         return false;
     }
-    
+
     public override void Update(TimeSpan delta)
     {
         SpawnTimer ??= new IntervalTimer(TimeSpan.FromMilliseconds(SpawnIntervalMs));

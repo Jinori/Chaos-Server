@@ -21,18 +21,23 @@ public sealed class NightmareCarnunEnrageScript : MonsterScriptBase
 
     /// <inheritdoc />
     public NightmareCarnunEnrageScript(Monster subject, IMonsterFactory monsterFactory)
-        : base(subject) =>
-        MonsterFactory = monsterFactory;
+        : base(subject)
+        => MonsterFactory = monsterFactory;
 
     public override void Update(TimeSpan delta)
     {
         if (!Bonus75Applied && (Subject.StatSheet.HealthPercent <= 75))
         {
             Bonus75Applied = true;
+
             //Give Bonuses
-            var attrib = new Attributes { AtkSpeedPct = 25 };
+            var attrib = new Attributes
+            {
+                AtkSpeedPct = 25
+            };
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
+
             //Spawn Monsters
             var rectangle = new Rectangle(Subject, 5, 5);
 
@@ -40,7 +45,7 @@ public sealed class NightmareCarnunEnrageScript : MonsterScriptBase
             {
                 if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
                     continue;
-                
+
                 var mobs = MonsterFactory.Create("nightmare_malewarriorminion", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(mobs, point);
             }
@@ -65,14 +70,14 @@ public sealed class NightmareCarnunEnrageScript : MonsterScriptBase
         if (!Bonus30Applied && (Subject.StatSheet.HealthPercent <= 30))
         {
             Bonus30Applied = true;
-            
+
             var rectangle = new Rectangle(Subject, 5, 5);
-            
+
             for (var i = 0; i <= 3; i++)
             {
                 if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
                     continue;
-                
+
                 var mobs = MonsterFactory.Create("nightmare_malewarriorminion", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(mobs, point);
             }

@@ -7,12 +7,14 @@ namespace Chaos.Scripting.MonsterScripts.Events.Easter;
 public class PetalpounceScript(Monster subject) : BunnyMazeBaseScript(subject)
 {
     private const int PREDICTION_DISTANCE = 4;
-    private IPathOptions Options => PathOptions.Default with
-    {
-        LimitRadius = null,
-        IgnoreBlockingReactors = true,
-        IgnoreWalls = false
-    };
+
+    private IPathOptions Options
+        => PathOptions.Default with
+        {
+            LimitRadius = null,
+            IgnoreBlockingReactors = true,
+            IgnoreWalls = false
+        };
 
     protected override void DoChase()
     {

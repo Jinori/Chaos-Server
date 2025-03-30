@@ -37,7 +37,7 @@ public struct BodyAnimationAbilityComponent : IComponent
 
                     return;
                 }
-        
+
         if ((aisling != null) && aisling.Equipment.TryGetObject((byte)EquipmentSlot.Weapon, out var item2))
             if (item2.Template.Name.ContainsI("Nunchaku") && (options.BodyAnimation == BodyAnimation.Punch))
                 if (sourceScript is SubjectiveScriptBase<Skill> { Subject.Template.IsAssail: true })

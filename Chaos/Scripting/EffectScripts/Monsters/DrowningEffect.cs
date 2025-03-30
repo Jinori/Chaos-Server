@@ -50,7 +50,7 @@ public class DrowningEffect : ContinuousAnimationEffectBase
             7,
             7,
             7);
-        
+
         var subjectPoint = new Point(Subject.X, Subject.Y);
 
         if (safeRectangle.Contains(subjectPoint))
@@ -94,7 +94,7 @@ public class DrowningEffect : ContinuousAnimationEffectBase
     {
         if (target is not Aisling)
             return false;
-        
+
         if (target.Script.Is<ThisIsABossScript>())
             return false;
 

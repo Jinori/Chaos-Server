@@ -12,7 +12,8 @@ public class TerrorOfTheCryptScript : MonsterScriptBase
     private readonly ISimpleCache SimpleCache;
 
     public TerrorOfTheCryptScript(Monster subject, ISimpleCache simpleCache)
-        : base(subject) => SimpleCache = simpleCache;
+        : base(subject)
+        => SimpleCache = simpleCache;
 
     public override void OnDeath()
     {
@@ -24,10 +25,13 @@ public class TerrorOfTheCryptScript : MonsterScriptBase
         {
             // Move the Aisling to the map instance
             aisling.TraverseMap(mapInstance, new Point(4, 5));
+
             // Remove the Terror of Crypt Hunt flag
             aisling.Trackers.Flags.RemoveFlag(QuestFlag1.TerrorOfCryptHunt);
+
             // Add the Terror of Crypt Complete flag
             aisling.Trackers.Flags.AddFlag(QuestFlag1.TerrorOfCryptComplete);
+
             // Send a message to the Aisling's client
             aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "The terror will no longer make the Old Man suffer.");
         }

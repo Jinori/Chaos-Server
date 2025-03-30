@@ -23,16 +23,16 @@ public class ComponentVars : StaticVars
     public virtual List<Point> GetAllPoints() => GetRequired<List<Point>>(CASCADE_ALL_POINTS_KEY);
 
     public virtual TOptions GetOptions<TOptions>() => GetRequired<TOptions>(OPTIONS_KEY);
-    
+
     public virtual object GetOptions() => GetRequired<object>(OPTIONS_KEY);
 
     public virtual IReadOnlyCollection<Point> GetPoints() => GetRequired<IReadOnlyCollection<Point>>(POINTS_KEY);
-    
+
+    public virtual IScript GetSourceScript() => GetRequired<IScript>(SOURCE_SCRIPT_KEY);
+
     public virtual int GetStage() => GetRequired<int>(CASCADE_STAGE_KEY);
 
     public virtual T GetSubject<T>() => GetRequired<T>(SUBJECT_KEY);
-    
-    public virtual IScript GetSourceScript() => GetRequired<IScript>(SOURCE_SCRIPT_KEY);
 
     public virtual IReadOnlyCollection<T> GetTargets<T>()
         => GetRequired<IReadOnlyCollection<MapEntity>>(TARGETS_KEY)
@@ -98,11 +98,11 @@ public class ComponentVars : StaticVars
 
     public virtual void SetPoints(IReadOnlyCollection<Point> points) => Set(POINTS_KEY, points);
 
+    public virtual void SetSourceScript(IScript script) => Set(SOURCE_SCRIPT_KEY, script);
+
     public virtual void SetStage(int stage) => Set(CASCADE_STAGE_KEY, stage);
 
     public virtual void SetSubject(object subject) => Set(SUBJECT_KEY, subject);
 
     public virtual void SetTargets(IReadOnlyCollection<MapEntity> targets) => Set(TARGETS_KEY, targets);
-    
-    public virtual void SetSourceScript(IScript script) => Set(SOURCE_SCRIPT_KEY, script);
 }

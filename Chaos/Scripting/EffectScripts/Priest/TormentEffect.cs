@@ -1,6 +1,5 @@
 ﻿using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
-using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.EffectComponents;
 using Chaos.Scripting.Components.Execution;
@@ -77,7 +76,6 @@ public class TormentEffect : EffectBase, HierarchicalEffectComponent.IHierarchic
         var execution = new ComponentExecutor(source, target).WithOptions(this)
                                                              .ExecuteAndCheck<HierarchicalEffectComponent>();
 
-        
         return execution is not null;
     }
 }

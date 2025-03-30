@@ -13,10 +13,33 @@ public class PhoenixMovementScript : MonsterScriptBase
 {
     private readonly IIntervalTimer SkyChangeDirectionTimer
         = new RandomizedIntervalTimer(TimeSpan.FromSeconds(1), 100, RandomizationType.Positive);
-    
+
     /// <inheritdoc />
     public PhoenixMovementScript(Monster subject)
         : base(subject) { }
+
+    private void ResetAttackTimerIfMoved()
+    {
+        var now = DateTime.UtcNow;
+        var lastWalk = Subject.Trackers.LastWalk;
+        var lastTurn = Subject.Trackers.LastTurn;
+
+        var walkedRecently = lastWalk.HasValue
+                             && (now.Subtract(lastWalk.Value)
+                                    .TotalMilliseconds
+                                 < Subject.Template.MoveIntervalMs);
+
+        var turnedRecently = lastTurn.HasValue
+                             && (now.Subtract(lastTurn.Value)
+                                    .TotalMilliseconds
+                                 < Subject.Template.MoveIntervalMs);
+
+        if (walkedRecently || turnedRecently)
+        {
+            Subject.WanderTimer.Reset();
+            Subject.SkillTimer.Reset();
+        }
+    }
 
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
@@ -80,7 +103,7 @@ public class PhoenixMovementScript : MonsterScriptBase
             case > 1:
             {
                 Subject.Pathfind(Target);
-                
+
                 break;
             }
             case 1:
@@ -89,32 +112,17 @@ public class PhoenixMovementScript : MonsterScriptBase
 
                 if (Subject.Direction != direction)
                     Subject.Turn(direction);
-                
+
                 break;
             }
             case 0:
             {
                 Subject.Wander();
-                
+
                 break;
             }
         }
-        
+
         ResetAttackTimerIfMoved();
-    }
-
-    private void ResetAttackTimerIfMoved()
-    {
-        var now = DateTime.UtcNow;
-        var lastWalk = Subject.Trackers.LastWalk;
-        var lastTurn = Subject.Trackers.LastTurn;
-        var walkedRecently = lastWalk.HasValue && (now.Subtract(lastWalk.Value).TotalMilliseconds < Subject.Template.MoveIntervalMs);
-        var turnedRecently = lastTurn.HasValue && (now.Subtract(lastTurn.Value).TotalMilliseconds < Subject.Template.MoveIntervalMs);
-
-        if (walkedRecently || turnedRecently)
-        {
-            Subject.WanderTimer.Reset();
-            Subject.SkillTimer.Reset();
-        }
     }
 }

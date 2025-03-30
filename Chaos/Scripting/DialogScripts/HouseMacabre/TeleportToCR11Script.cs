@@ -10,10 +10,15 @@ namespace Chaos.Scripting.DialogScripts.HouseMacabre;
 
 public class TeleportToCr11Script : DialogScriptBase
 {
+    private readonly IReactorTileFactory ReactorTileFactory;
 
     private readonly ISimpleCache SimpleCache;
-    private readonly IReactorTileFactory ReactorTileFactory;
-    public TeleportToCr11Script(Dialog subject, ILogger<DecoratingInnQuestScript> logger, ISimpleCache simpleCache, IReactorTileFactory reactorTileFactory)
+
+    public TeleportToCr11Script(
+        Dialog subject,
+        ILogger<DecoratingInnQuestScript> logger,
+        ISimpleCache simpleCache,
+        IReactorTileFactory reactorTileFactory)
         : base(subject)
     {
         SimpleCache = simpleCache;
@@ -31,7 +36,7 @@ public class TeleportToCr11Script : DialogScriptBase
                 if (source.Trackers.Enums.HasValue(MainstoryMasterEnums.FinishedDungeon))
                     if (!source.Trackers.Flags.HasFlag(CdDungeonBoss.CompletedDungeonOnce))
                         source.Trackers.Flags.AddFlag(CdDungeonBoss.CompletedDungeonOnce);
-                
+
                 if (source.Trackers.Flags.HasFlag(CdDungeonBoss.CompletedDungeonOnce))
                 {
                     var option = new DialogOption
@@ -41,10 +46,10 @@ public class TeleportToCr11Script : DialogScriptBase
                     };
 
                     if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);  
+                        Subject.Options.Insert(0, option);
                 }
-                
-                if (hasStage && stage == MainStoryEnums.CompletedPreMasterMainStory)
+
+                if (hasStage && (stage == MainStoryEnums.CompletedPreMasterMainStory))
                 {
                     var option = new DialogOption
                     {
@@ -53,18 +58,16 @@ public class TeleportToCr11Script : DialogScriptBase
                     };
 
                     if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);  
+                        Subject.Options.Insert(0, option);
                 }
-                
+
                 break;
             }
 
             case "teleportcr11_initial":
             {
                 if (source.Trackers.Enums.HasValue(MainStoryEnums.CompletedPreMasterMainStory))
-                {
                     Subject.Reply(source, "Skip", "teleportcr11_initial1");
-                }
 
                 break;
             }
@@ -74,28 +77,32 @@ public class TeleportToCr11Script : DialogScriptBase
                 if (!source.TryTakeGold(200000))
                 {
                     Subject.Reply(source, "You don't have 200,000 Gold to give Hazel.");
+
                     return;
                 }
-                
+
                 Subject.Close(source);
                 var point = new Point(3, 5);
-                var portal = ReactorTileFactory.Create("cr11portal", source.MapInstance, point, null, source);
+
+                var portal = ReactorTileFactory.Create(
+                    "cr11portal",
+                    source.MapInstance,
+                    point,
+                    null,
+                    source);
                 source.MapInstance.SimpleAdd(portal);
 
                 if (source.Group != null)
                     foreach (var aisling in source.Group)
-                    {
                         aisling.SendOrangeBarMessage($"{source.Name} opens a portal to Cthonic Remains 11.");
-                    }
+
                 break;
             }
-            
+
             case "teleportcr21_initial":
             {
                 if (source.Trackers.Flags.HasFlag(CdDungeonBoss.CompletedDungeonOnce))
-                {
                     Subject.Reply(source, "Skip", "teleportcr21_initial1");
-                }
 
                 break;
             }
@@ -105,19 +112,25 @@ public class TeleportToCr11Script : DialogScriptBase
                 if (!source.TryTakeGold(400000))
                 {
                     Subject.Reply(source, "You don't have 400,000 Gold to give Hazel.");
+
                     return;
                 }
-                
+
                 Subject.Close(source);
                 var point = new Point(3, 8);
-                var portal = ReactorTileFactory.Create("cr21portal", source.MapInstance, point, null, source);
+
+                var portal = ReactorTileFactory.Create(
+                    "cr21portal",
+                    source.MapInstance,
+                    point,
+                    null,
+                    source);
                 source.MapInstance.SimpleAdd(portal);
 
                 if (source.Group != null)
                     foreach (var aisling in source.Group)
-                    {
                         aisling.SendOrangeBarMessage($"{source.Name} opens a portal to Cthonic Remains 21.");
-                    }
+
                 break;
             }
         }

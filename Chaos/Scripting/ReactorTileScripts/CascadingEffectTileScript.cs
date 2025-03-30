@@ -2,7 +2,6 @@ using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
@@ -152,8 +151,10 @@ public sealed class CascadingEffectTileScript : ConfigurableReactorTileScriptBas
 
     /// <inheritdoc />
     public int Range { get; init; }
+
     /// <inheritdoc />
-    public bool MustHaveTargets { get; init; } 
+    public bool MustHaveTargets { get; init; }
+
     public byte? Sound { get; init; }
 
     /// <inheritdoc />

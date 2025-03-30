@@ -23,6 +23,9 @@ public class CascadingDamageScript : ConfigurableSpellScriptBase,
 {
     public List<string>? EffectKeysToBreak { get; set; }
 
+    public int? HealthCost { get; init; }
+    public decimal PctHealthCost { get; init; }
+
     /// <inheritdoc />
     public CascadingDamageScript(Spell subject, IReactorTileFactory reactorTileFactory)
         : base(subject)

@@ -11,19 +11,33 @@ public class FuryScript(Spell subject, IEffectFactory effectFactory) : SpellScri
     {
         var effectMap = new Dictionary<string, string>
         {
-            { "Fury1", "Fury2" },
-            { "Fury2", "Fury3" },
-            { "Fury3", "Fury4" },
-            { "Fury4", "Fury5" },
-            { "Fury5", "Fury6" },
-            { "Fury6", "Fury6" }
+            {
+                "Fury1", "Fury2"
+            },
+            {
+                "Fury2", "Fury3"
+            },
+            {
+                "Fury3", "Fury4"
+            },
+            {
+                "Fury4", "Fury5"
+            },
+            {
+                "Fury5", "Fury6"
+            },
+            {
+                "Fury6", "Fury6"
+            }
         };
-        
+
         string nextEffectName = null;
+
         foreach (var effect in effectMap.Keys)
             if (context.Source.Effects.Contains(effect))
             {
                 nextEffectName = effectMap[effect];
+
                 break;
             }
 

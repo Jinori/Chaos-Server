@@ -153,8 +153,7 @@ public class MythicBunnyScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
                     source.SendOrangeBarMessage("You received 10000000 experience!");
@@ -205,8 +204,7 @@ public class MythicBunnyScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
                     source.SendOrangeBarMessage("You received 10000000 experience!");
@@ -248,8 +246,7 @@ public class MythicBunnyScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
                     source.SendOrangeBarMessage("You received 10000000 experience!");
@@ -330,8 +327,7 @@ public class MythicBunnyScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, fiftyPercent);
                     source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 25000000);
                     source.SendOrangeBarMessage("You received 25000000 experience!");
@@ -341,11 +337,10 @@ public class MythicBunnyScript : DialogScriptBase
                 source.Trackers.Enums.Set(MythicBunny.BossBunnyDefeated);
                 source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);
 
-                if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5) &&
-                    !source.Trackers.Enums.HasValue(MythicQuestMain.CompletedMythic))
-                {
+                if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss)
+                    && (mythicboss >= 5)
+                    && !source.Trackers.Enums.HasValue(MythicQuestMain.CompletedMythic))
                     source.Trackers.Enums.Set(MythicQuestMain.CompletedAll);
-                }
             }
 
                 break;

@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.Common.Utilities;
+﻿using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
@@ -15,8 +14,7 @@ using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Quests.Rucesion;
 
-public class PrettyFlowerQuestScript(Dialog subject, ILogger<PrettyFlowerQuestScript> logger)
-    : DialogScriptBase(subject)
+public class PrettyFlowerQuestScript(Dialog subject, ILogger<PrettyFlowerQuestScript> logger) : DialogScriptBase(subject)
 {
     private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
 
@@ -30,7 +28,7 @@ public class PrettyFlowerQuestScript(Dialog subject, ILogger<PrettyFlowerQuestSc
             {
                 if (source.UserStatSheet.Level < 11)
                     return;
-                
+
                 var option = new DialogOption
                 {
                     DialogKey = "prettyflower_initial",
@@ -47,14 +45,16 @@ public class PrettyFlowerQuestScript(Dialog subject, ILogger<PrettyFlowerQuestSc
             {
                 if (source.Trackers.TimedEvents.HasActiveEvent("prettyflowercd", out var cdtime))
                 {
-                    Subject.Reply(source, $"I'm grateful for that flower, it makes me smile in the morning seeing it there. I'm sure it'll expire soon though, I could use another. (({cdtime.Remaining.ToReadableString()}))");
+                    Subject.Reply(
+                        source,
+                        $"I'm grateful for that flower, it makes me smile in the morning seeing it there. I'm sure it'll expire soon though, I could use another. (({cdtime.Remaining.ToReadableString()}))");
+
                     return;
                 }
-                
+
                 if (hasStage && (stage == PrettyFlower.StartedQuest))
-                {
                     Subject.Reply(source, "Skip", "prettyflower_return");
-                }
+
                 break;
             }
 
@@ -62,13 +62,14 @@ public class PrettyFlowerQuestScript(Dialog subject, ILogger<PrettyFlowerQuestSc
             {
                 source.Trackers.Enums.Set(PrettyFlower.StartedQuest);
                 source.SendOrangeBarMessage("Retrieve a Kobold Tail for Maria");
+
                 break;
             }
 
             case "prettyflower_turnin":
             {
                 var hasRequiredFlower = source.Inventory.HasCount("Kobold Tail", 1);
-                
+
                 if (hasStage && (stage == PrettyFlower.StartedQuest))
                     switch (hasRequiredFlower)
                     {
@@ -79,17 +80,14 @@ public class PrettyFlowerQuestScript(Dialog subject, ILogger<PrettyFlowerQuestSc
                             source.Trackers.TimedEvents.AddEvent("prettyflowercd", TimeSpan.FromHours(22), true);
 
                             logger.WithTopics(
-                                      [Topics.Entities.Aisling,
+                                      Topics.Entities.Aisling,
                                       Topics.Entities.Gold,
                                       Topics.Entities.Experience,
                                       Topics.Entities.Dialog,
-                                      Topics.Entities.Quest])
+                                      Topics.Entities.Quest)
                                   .WithProperty(source)
                                   .WithProperty(Subject)
-                                  .LogInformation(
-                                      "{@AislingName} has received {@ExpAmount} exp from a quest",
-                                      source.Name,
-                                      20000);
+                                  .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, 20000);
 
                             ExperienceDistributionScript.GiveExp(source, 20000);
                             source.TryGiveGamePoints(5);
@@ -105,15 +103,15 @@ public class PrettyFlowerQuestScript(Dialog subject, ILogger<PrettyFlowerQuestSc
                                         1,
                                         GameTime.Now));
 
-                                source.Client.SendServerMessage(ServerMessageType.OrangeBar1,
-                                    "You received a unique legend mark!");
+                                source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You received a unique legend mark!");
                             }
 
                             break;
                         }
                         case false:
-                            Subject.Reply(source,
-                                $"Awe, you don't have the Kobold Tail, it's such a pretty flower. When you find one, please bring it back to me.");
+                            Subject.Reply(
+                                source,
+                                "Awe, you don't have the Kobold Tail, it's such a pretty flower. When you find one, please bring it back to me.");
 
                             break;
                     }

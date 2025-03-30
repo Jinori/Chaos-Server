@@ -16,9 +16,8 @@ public sealed class TeammateAggroTargetingScript : MonsterScriptBase
 
     /// <inheritdoc />
     public TeammateAggroTargetingScript(Monster subject)
-        : base(subject) =>
-        TargetUpdateTimer =
-            new IntervalTimer(TimeSpan.FromMilliseconds(Math.Min(250, Subject.Template.SkillIntervalMs)));
+        : base(subject)
+        => TargetUpdateTimer = new IntervalTimer(TimeSpan.FromMilliseconds(Math.Min(250, Subject.Template.SkillIntervalMs)));
 
     private Monster? FindAggroedMonster(Aisling? owner)
     {
@@ -26,21 +25,21 @@ public sealed class TeammateAggroTargetingScript : MonsterScriptBase
             return null;
 
         return Map.GetEntitiesWithinRange<Monster>(owner)
-                  .FirstOrDefault(x => x.IsAlive && x.AggroList.ContainsKey(owner.Id) != x.Script.Is<NightmareTeammateScript>());
+                  .FirstOrDefault(x => x.IsAlive && (x.AggroList.ContainsKey(owner.Id) != x.Script.Is<NightmareTeammateScript>()));
     }
 
-    private Monster? FindClosestMonster() =>
-        Map.GetEntitiesWithinRange<Monster>(Subject, AggroRange)
-           .ThatAreObservedBy(Subject)
-           .Where(
-               obj => !obj.Equals(Subject)
-                      && obj.IsAlive
-                      && !obj.Script.Is<NightmareTeammateScript>()
-                      && !obj.Script.Is<PetScript>()
-                      && !obj.Name.Contains("Wind Wall")
-                      && Subject.ApproachTime.TryGetValue(obj, out var time)
-                      && ((DateTime.UtcNow - time).TotalSeconds >= 1.5))
-           .ClosestOrDefault(Subject);
+    private Monster? FindClosestMonster()
+        => Map.GetEntitiesWithinRange<Monster>(Subject, AggroRange)
+              .ThatAreObservedBy(Subject)
+              .Where(
+                  obj => !obj.Equals(Subject)
+                         && obj.IsAlive
+                         && !obj.Script.Is<NightmareTeammateScript>()
+                         && !obj.Script.Is<PetScript>()
+                         && !obj.Name.Contains("Wind Wall")
+                         && Subject.ApproachTime.TryGetValue(obj, out var time)
+                         && ((DateTime.UtcNow - time).TotalSeconds >= 1.5))
+              .ClosestOrDefault(Subject);
 
     private bool IsCurrentTargetValid() => Target is { IsAlive: true } && Target.OnSameMapAs(Subject);
 
@@ -75,7 +74,7 @@ public sealed class TeammateAggroTargetingScript : MonsterScriptBase
             return;
 
         var owner = Subject.PetOwner;
-        
+
         Target = FindAggroedMonster(owner) ?? FindClosestMonster() ?? Target;
 
         //since we grabbed a new target, give them some initial aggro so we stick to them

@@ -25,11 +25,7 @@ public class SgriosReviveScript : DialogScriptBase
 
     public override void OnDisplayed(Aisling source)
     {
-        Logger.WithTopics(
-                  [
-                      Topics.Entities.Aisling,
-                      Topics.Actions.Death
-                  ])
+        Logger.WithTopics(Topics.Entities.Aisling, Topics.Actions.Death)
               .WithProperty(source)
               .LogInformation("{@AislingName} has been revived by Sgrios", source.Name);
 

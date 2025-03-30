@@ -1,5 +1,4 @@
 using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
@@ -304,9 +303,9 @@ public class ArenaUndergroundScript : DialogScriptBase
 
             case "ophie_starttypingarena":
                 StartTypingArena(source);
-                
+
                 break;
-            
+
             case "ophie_starthiddenhavochostnotplayingstart":
                 StartHiddenHavoc(source, false);
 
@@ -584,20 +583,6 @@ public class ArenaUndergroundScript : DialogScriptBase
         Subject.Close(source);
     }
 
-    private void StartTypingArena(Aisling source)
-    {
-        var shard = ShardGenerator.CreateShardOfInstance("arena_typing");
-        shard.Shards.TryAdd(shard.InstanceId, shard);
-        FreeForAll = true;
-        var script = shard.Script.As<TypingArenaMapScript>();
-
-        if (script == null)
-            shard.AddScript<TypingArenaMapScript>();
-
-        TeleportParticipants(source, shard, shard.Template.Bounds);
-        Subject.Close(source);
-    }
-    
     private void StartHiddenHavoc(Aisling source, bool hostPlaying)
     {
         source.Trackers.Enums.Set(hostPlaying ? ArenaHostPlaying.Yes : ArenaHostPlaying.No);
@@ -667,6 +652,20 @@ public class ArenaUndergroundScript : DialogScriptBase
             TeleportToTeamStartingPoint(aisling, shard, team);
         }
 
+        Subject.Close(source);
+    }
+
+    private void StartTypingArena(Aisling source)
+    {
+        var shard = ShardGenerator.CreateShardOfInstance("arena_typing");
+        shard.Shards.TryAdd(shard.InstanceId, shard);
+        FreeForAll = true;
+        var script = shard.Script.As<TypingArenaMapScript>();
+
+        if (script == null)
+            shard.AddScript<TypingArenaMapScript>();
+
+        TeleportParticipants(source, shard, shard.Template.Bounds);
         Subject.Close(source);
     }
 

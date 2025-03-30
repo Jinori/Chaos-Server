@@ -9,22 +9,126 @@ namespace Chaos.Scripting.MonsterScripts.Pet;
 // ReSharper disable once ClassCanBeSealed.Global
 public class PetAttackingScript : MonsterScriptBase
 {
+    public readonly Dictionary<SummonChosenPet, List<string>?> PetMessages = new()
+    {
+        {
+            SummonChosenPet.Bunny, [
+                                       "Hop!",
+                                       "Nibble",
+                                       "Sniff!",
+                                       "Thump!",
+                                       "Bounce",
+                                       "Twitch",
+                                       "Flop!",
+                                       "Nuzzle",
+                                       "Squeak",
+                                       "Leap!"
+                                   ]
+        },
+        {
+            SummonChosenPet.Faerie, [
+                                        "Twirl!",
+                                        "Giggle",
+                                        "Spark!",
+                                        "Glint",
+                                        "Flutter",
+                                        "Shine!",
+                                        "Whirl",
+                                        "Tinkle",
+                                        "Glow!",
+                                        "Dance!"
+                                    ]
+        },
+        {
+            SummonChosenPet.Dog, [
+                                     "Woof!",
+                                     "Growl!",
+                                     "Bark!",
+                                     "Sniff",
+                                     "Pant!",
+                                     "Fetch!",
+                                     "Chase",
+                                     "Wag!",
+                                     "Howl!",
+                                     "Lick!"
+                                 ]
+        },
+        {
+            SummonChosenPet.Ducklings, [
+                                           "Quack!",
+                                           "Peep!",
+                                           "Splash",
+                                           "Waddle",
+                                           "Paddle",
+                                           "Dabble",
+                                           "Flap!",
+                                           "Shake",
+                                           "Preen",
+                                           "Nestle"
+                                       ]
+        },
+        {
+            SummonChosenPet.Cat, [
+                                     "Purr!",
+                                     "Meow!",
+                                     "Hiss!",
+                                     "Prowl",
+                                     "Swipe",
+                                     "Slink",
+                                     "Mew!",
+                                     "Groom",
+                                     "Nap!",
+                                     "Flick!"
+                                 ]
+        },
+        {
+            SummonChosenPet.Penguin, [
+                                         "Waddle",
+                                         "Squawk",
+                                         "Flap!",
+                                         "Slide",
+                                         "Dive!",
+                                         "Peck!",
+                                         "Huddle",
+                                         "Preen",
+                                         "Nuzzle",
+                                         "Chirp!"
+                                     ]
+        },
+        {
+            SummonChosenPet.Gloop, [
+                                       "Gloop!",
+                                       "Bubble",
+                                       "Slosh",
+                                       "Blurp",
+                                       "Glurp",
+                                       "Squelch",
+                                       "Glop!",
+                                       "Drip",
+                                       "Slime!",
+                                       "Ooze!"
+                                   ]
+        },
+        {
+            SummonChosenPet.Smoldy, [
+                                        "Smolder",
+                                        "Flicker",
+                                        "Flame!",
+                                        "Burn",
+                                        "Glow!",
+                                        "Ashen",
+                                        "Sear",
+                                        "Blaze!",
+                                        "Char",
+                                        "Ignite!"
+                                    ]
+        }
+    };
+
     /// <inheritdoc />
     public PetAttackingScript(Monster subject)
         : base(subject) { }
 
-    public readonly Dictionary<SummonChosenPet, List<string>?> PetMessages = new()
-    {
-        { SummonChosenPet.Bunny, ["Hop!", "Nibble", "Sniff!", "Thump!", "Bounce", "Twitch", "Flop!", "Nuzzle", "Squeak", "Leap!"] },
-        { SummonChosenPet.Faerie, ["Twirl!", "Giggle", "Spark!", "Glint", "Flutter", "Shine!", "Whirl", "Tinkle", "Glow!", "Dance!"] },
-        { SummonChosenPet.Dog, ["Woof!", "Growl!", "Bark!", "Sniff", "Pant!", "Fetch!", "Chase", "Wag!", "Howl!", "Lick!"] },
-        { SummonChosenPet.Ducklings, ["Quack!", "Peep!", "Splash", "Waddle", "Paddle", "Dabble", "Flap!", "Shake", "Preen", "Nestle"] },
-        { SummonChosenPet.Cat, ["Purr!", "Meow!", "Hiss!", "Prowl", "Swipe", "Slink", "Mew!", "Groom", "Nap!", "Flick!"] },
-        { SummonChosenPet.Penguin, ["Waddle", "Squawk", "Flap!", "Slide", "Dive!", "Peck!", "Huddle", "Preen", "Nuzzle", "Chirp!"] },
-        { SummonChosenPet.Gloop, ["Gloop!", "Bubble", "Slosh", "Blurp", "Glurp", "Squelch", "Glop!", "Drip", "Slime!", "Ooze!"] },
-        { SummonChosenPet.Smoldy, ["Smolder", "Flicker", "Flame!", "Burn", "Glow!", "Ashen", "Sear", "Blaze!", "Char", "Ignite!"] }
-    };
-    
     public string GetRandomChant(SummonChosenPet petType)
     {
         if (PetMessages.TryGetValue(petType, out var messages))
@@ -33,15 +137,16 @@ public class PetAttackingScript : MonsterScriptBase
 
         return "";
     }
-    
+
     public override void Update(TimeSpan delta)
     {
         if (Subject.PetOwner?.ManhattanDistanceFrom(Subject) >= 8)
         {
             Target = null;
+
             return;
         }
-        
+
         if (Target is not { IsAlive: true } || (Subject.ManhattanDistanceFrom(Target) != 1))
             return;
 
@@ -64,7 +169,7 @@ public class PetAttackingScript : MonsterScriptBase
                 foreach (var spell in Spells)
                     if (IntegerRandomizer.RollChance(10))
                         Subject.TryUseSpell(spell, Target.Id);
-        
+
         foreach (var skill in Skills)
             if (skill.Template.IsAssail)
                 attacked |= Subject.TryUseSkill(skill);
@@ -75,7 +180,7 @@ public class PetAttackingScript : MonsterScriptBase
                               .PickRandomWeightedSingleOrDefault(7);
 
             if (skill is not null)
-            {            
+            {
                 var petKey = SummonChosenPet.None;
                 var found = Subject.PetOwner?.Trackers.Enums.TryGetValue(out petKey) ?? false;
 
@@ -84,6 +189,7 @@ public class PetAttackingScript : MonsterScriptBase
                     var chant = GetRandomChant(petKey);
                     Subject.Chant(chant);
                 }
+
                 attacked |= Subject.TryUseSkill(skill);
             }
         }

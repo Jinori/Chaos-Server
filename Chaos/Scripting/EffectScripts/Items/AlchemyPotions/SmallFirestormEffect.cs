@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
@@ -13,18 +12,23 @@ public class SmallFirestormEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(8);
+
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
         TargetAnimation = 60
     };
+
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1500));
+
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(700));
+
     /// <inheritdoc />
     public override byte Icon => 100;
+
     /// <inheritdoc />
     public override string Name => "Small Firestorm";
 

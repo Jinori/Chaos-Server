@@ -8,15 +8,6 @@ namespace Chaos.Scripting.MapScripts.SpawnerScripts.Events.StPatricks;
 
 public class PotofGoldCharmSpawnerScript : ItemSpawnerScript
 {
-    public override void Update(TimeSpan delta)
-    {
-        var isEventActive = EventPeriod.IsEventActive(DateTime.UtcNow, Subject.InstanceId);
-
-        if (isEventActive)
-            base.Update(delta);
-    }
-
-    
     public override string ItemTemplateKey { get; set; } = "potofgoldcharm";
     public override int MaxAmount { get; set; } = 10;
     public override int MaxPerSpawn { get; set; } = 3;
@@ -26,4 +17,12 @@ public class PotofGoldCharmSpawnerScript : ItemSpawnerScript
     /// <inheritdoc />
     public PotofGoldCharmSpawnerScript(MapInstance subject, IItemFactory itemFactory, ISimpleCache simpleCache)
         : base(subject, itemFactory, simpleCache) { }
+
+    public override void Update(TimeSpan delta)
+    {
+        var isEventActive = EventPeriod.IsEventActive(DateTime.UtcNow, Subject.InstanceId);
+
+        if (isEventActive)
+            base.Update(delta);
+    }
 }

@@ -57,10 +57,16 @@ public sealed class BossGroupScalingScript(Monster subject, ISpellFactory spellF
         base.Update(delta);
 
         // If bonus is already applied or there's no valid target, return
-        if (GroupBonusApplied || (Target == null) || !ShouldMove || !Map.GetEntities<Aisling>().Any())
+        if (GroupBonusApplied
+            || (Target == null)
+            || !ShouldMove
+            || !Map.GetEntities<Aisling>()
+                   .Any())
             return;
 
-        var groupLevel = Map.GetEntitiesWithinRange<Aisling>(Subject, 12).Select(aisling => aisling.StatSheet.Level).ToList();
+        var groupLevel = Map.GetEntitiesWithinRange<Aisling>(Subject, 12)
+                            .Select(aisling => aisling.StatSheet.Level)
+                            .ToList();
 
         // Create bonus attributes based on the group level
         var attrib = CreateGroupBonusAttributes(groupLevel);
@@ -70,6 +76,7 @@ public sealed class BossGroupScalingScript(Monster subject, ISpellFactory spellF
 
         // Add the attributes to the monster
         Subject.StatSheet.AddBonus(attrib);
+
         // Add HP and MP to the monster
         Subject.StatSheet.SetHealthPct(100);
         Subject.StatSheet.SetManaPct(100);

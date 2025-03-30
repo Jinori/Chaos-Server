@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Scripting.ItemScripts.Abstractions;
@@ -17,7 +16,10 @@ public class KillCountMessageScript : ConfigurableItemScriptBase
     {
         if (!Admin)
         {
-            var killCounts = source.Trackers.Counters.Select(x => $"{x.Key} - {x.Value}").ToArray();
+            var killCounts = source.Trackers
+                                   .Counters
+                                   .Select(x => $"{x.Key} - {x.Value}")
+                                   .ToArray();
 
             if (killCounts.Length > 0)
                 foreach (var kill in killCounts)

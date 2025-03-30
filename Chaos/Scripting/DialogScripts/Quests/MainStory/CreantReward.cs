@@ -369,13 +369,13 @@ public class CreantReward : DialogScriptBase
                     {
                         ("989", BaseClass.Priest, Gender.Male), new[]
                         {
-                            "DivineStaff"
+                            "CelestialStaff"
                         }
                     },
                     {
                         ("989", BaseClass.Priest, Gender.Female), new[]
                         {
-                            "DivineStaff"
+                            "CelestialStaff"
                         }
                     },
                     {

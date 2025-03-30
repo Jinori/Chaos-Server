@@ -10,44 +10,41 @@ namespace Chaos.Scripting.MonsterScripts.Nightmare.RogueNightmare;
 
 public class NightmareRogueAggroTargetingScript : MonsterScriptBase
 {
-    private readonly IIntervalTimer TargetUpdateTimer;
     private readonly IIntervalTimer LastHitTimer;
+    private readonly IIntervalTimer TargetUpdateTimer;
     private int InitialAggro = 10;
 
     /// <inheritdoc />
     public NightmareRogueAggroTargetingScript(Monster subject)
         : base(subject)
     {
-        TargetUpdateTimer =
-            new IntervalTimer(TimeSpan.FromMilliseconds(Math.Min(250, Subject.Template.SkillIntervalMs)));
-        
-        LastHitTimer =
-            new IntervalTimer(TimeSpan.FromSeconds(5));
-    }
+        TargetUpdateTimer = new IntervalTimer(TimeSpan.FromMilliseconds(Math.Min(250, Subject.Template.SkillIntervalMs)));
 
+        LastHitTimer = new IntervalTimer(TimeSpan.FromSeconds(5));
+    }
 
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
         var totemaggro = 1000; // Set a fixed aggro value for the Totem
+
         var totem = Map.GetEntitiesWithinRange<Monster>(Subject, 20)
                        .ThatAreVisibleTo(Subject)
                        .Where(obj => obj.Template.Name == "Totem")
                        .ClosestOrDefault(Subject);
-        
+
         base.Update(delta);
 
         TargetUpdateTimer.Update(delta);
         LastHitTimer.Update(delta);
-        
+
         if (LastHitTimer.IntervalElapsed)
         {
             AggroList.Clear();
             LastHitTimer.Reset();
+
             if (totem != null)
-            {
                 AggroList.AddOrUpdate(totem.Id, _ => totemaggro, (_, currentAggro) => currentAggro + totemaggro);
-            }
         }
 
         if ((Target != null) && (!Target.IsAlive || !Target.OnSameMapAs(Subject)))
@@ -61,7 +58,8 @@ public class NightmareRogueAggroTargetingScript : MonsterScriptBase
 
         Target = null;
 
-        if (!Map.GetEntities<Aisling>().Any())
+        if (!Map.GetEntities<Aisling>()
+                .Any())
             return;
 
         var isBlind = Subject.IsBlind;

@@ -18,9 +18,10 @@ public class ShrineScript : MerchantScriptBase
             var worshipedDeity = ReligionScriptBase.CheckDeity(source);
 
             // Check if the player worships the deity of the shrine
-            if (worshipedDeity == null || !Subject.Template.Name.Contains(worshipedDeity))
+            if ((worshipedDeity == null) || !Subject.Template.Name.Contains(worshipedDeity))
             {
                 source.SendActiveMessage("You attempt to pray at the shrine but the god won't listen.");
+
                 return; // Exit the method if the player doesn't worship the shrine's deity
             }
 
@@ -29,27 +30,28 @@ public class ShrineScript : MerchantScriptBase
             {
                 case "Miraelis":
                     source.SendActiveMessage("You pray at the shrine to Miraelis. You received faith.");
+
                     break;
                 case "Serendael":
                     source.SendActiveMessage("You pray at the shrine to Serendael. You received faith.");
+
                     break;
                 case "Theselene":
                     source.SendActiveMessage("You pray at the shrine to Theselene. You received faith.");
+
                     break;
                 case "Skandara":
                     source.SendActiveMessage("You pray at the shrine to Skandara. You received faith.");
+
                     break;
             }
 
             // Add faith to the player
             ReligionScriptBase.TryAddFaith(source, 5);
+
             // Remove the shrine from the map
             Subject.MapInstance.RemoveEntity(Subject);
-        }
-        else
-        {
+        } else
             source.SendActiveMessage("The shrine seems to beckon you closer...");
-        }
     }
-
 }

@@ -22,15 +22,12 @@ public class JailScript : ReactorTileScriptBase
             var escape = new Point(3, 6);
             source.WarpTo(escape);
             aisling.SendOrangeBarMessage("Your jail sentence is up, stay out of trouble.");
+
             return;
         }
 
-        var timeLeft = timedEvent.Remaining.ToReadableString(
-            false,
-            true,
-            true,
-            true);
-        
+        var timeLeft = timedEvent.Remaining.ToReadableString();
+
         aisling.SendPersistentMessage($"{timeLeft} until you finish your sentence.");
         var point = source.DirectionalOffset(source.Direction.Reverse());
         source.WarpTo(point);

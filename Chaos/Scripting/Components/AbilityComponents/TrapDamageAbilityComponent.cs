@@ -1,9 +1,7 @@
-using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
-using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -48,8 +46,7 @@ public struct TrapDamageAbilityComponent : IComponent
         decimal? pctHpDamage = null,
         Stat? damageStat = null,
         decimal? damageStatMultiplier = null,
-        bool? moreDmgLowTargetHp = null
-    )
+        bool? moreDmgLowTargetHp = null)
     {
         var finalDamage = baseDamage ?? 0;
         var maxDamageFromPctHp = MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, pctHpDamage ?? 0);
@@ -60,7 +57,9 @@ public struct TrapDamageAbilityComponent : IComponent
             maxDamageFromPctHp = Convert.ToInt32(maxDamageFromPctHp * healthPercentFactor);
         }
 
-        var damageCap = ((baseDamage ?? 0) + Convert.ToInt32((source.StatSheet.GetEffectiveStat(damageStat ?? default(Stat))) * (damageStatMultiplier ?? 0))) * 10;
+        var damageCap = ((baseDamage ?? 0)
+                         + Convert.ToInt32(source.StatSheet.GetEffectiveStat(damageStat ?? default(Stat)) * (damageStatMultiplier ?? 0)))
+                        * 10;
         finalDamage += Math.Min(maxDamageFromPctHp, damageCap);
 
         if (!damageStat.HasValue)
@@ -69,6 +68,7 @@ public struct TrapDamageAbilityComponent : IComponent
         if (!damageStatMultiplier.HasValue)
         {
             finalDamage += source.StatSheet.GetEffectiveStat(damageStat.Value);
+
             return finalDamage;
         }
 

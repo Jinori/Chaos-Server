@@ -30,7 +30,7 @@ public class CascadingComponent<TTileScript> : IComponent where TTileScript: ICa
         {
             if (!context.TargetMap.IsWithinMap(point))
                 continue;
-            
+
             var tile = options.ReactorTileFactory.Create(
                 context.TargetMap,
                 point,

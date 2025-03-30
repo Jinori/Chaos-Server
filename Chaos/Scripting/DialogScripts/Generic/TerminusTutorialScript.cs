@@ -16,11 +16,7 @@ public class TerminusTutorialScript : DialogScriptBase
     private readonly ISimpleCache SimpleCache;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
-    public TerminusTutorialScript(
-        Dialog subject,
-        ISimpleCache simpleCache,
-        IMerchantFactory merchantFactory
-    )
+    public TerminusTutorialScript(Dialog subject, ISimpleCache simpleCache, IMerchantFactory merchantFactory)
         : base(subject)
     {
         SimpleCache = simpleCache;
@@ -35,15 +31,16 @@ public class TerminusTutorialScript : DialogScriptBase
         switch (Subject.Template.TemplateKey.ToLower())
         {
             case "terminus_initial":
-                
+
                 if (stage == TutorialQuestStage.GiantFloppy)
                 {
                     if (source.IsAlive)
                         return;
-                    
+
                     if (source.MapInstance.Template.TemplateKey != "19903")
                     {
                         Subject.Reply(source, "You are already in the After Life.");
+
                         return;
                     }
 

@@ -23,6 +23,7 @@ public class MiracleEffect : EffectBase
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Miraelis' miracle expands your crafting and healing.");
     }
+
     public override void OnDispelled() => OnTerminated();
 
     public override void OnTerminated()

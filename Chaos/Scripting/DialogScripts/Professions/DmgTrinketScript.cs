@@ -12,7 +12,16 @@ namespace Chaos.Scripting.DialogScripts.Professions;
 
 internal class DmgTrinketScript : DialogScriptBase
 {
-    
+    private readonly IEffectFactory EffectFactory;
+
+    private readonly ISimpleCache SimpleCache;
+
+    private Animation DmgAnimation { get; } = new()
+    {
+        TargetAnimation = 967,
+        AnimationSpeed = 100
+    };
+
     /// <inheritdoc />
     public DmgTrinketScript(Dialog subject, IEffectFactory effectFactory, ISimpleCache simpleCache)
         : base(subject)
@@ -21,14 +30,13 @@ internal class DmgTrinketScript : DialogScriptBase
         SimpleCache = simpleCache;
     }
 
-    private readonly ISimpleCache SimpleCache;
-    private readonly IEffectFactory EffectFactory;
-    private Animation DmgAnimation { get; } = new()
+    private void DamageBoost(Aisling target)
     {
-        TargetAnimation = 967,
-        AnimationSpeed = 100
-    };
-    
+        var effect = EffectFactory.Create("dmgtrinket");
+        target.Effects.Apply(target, effect);
+        target.Animate(DmgAnimation, target.Id);
+    }
+
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
@@ -45,43 +53,50 @@ internal class DmgTrinketScript : DialogScriptBase
 
                 break;
             }
-            
+
             case "dmgtrinket_dmgbuffgroupyes":
             {
                 if (source.Trackers.TimedEvents.HasActiveEvent("dmgTrinket", out var dmgTime))
                 {
-                    Subject.Reply(source, $"The mystical energies need time to restore. You must wait {dmgTime.Remaining.ToReadableString()} before attempting to buff again.");
+                    Subject.Reply(
+                        source,
+                        $"The mystical energies need time to restore. You must wait {dmgTime.Remaining.ToReadableString()} before attempting to buff again.");
+
                     return;
                 }
 
                 if (source.Group == null)
                 {
                     Subject.Reply(source, "You're not in a group.");
+
                     return;
                 }
 
                 source.Trackers.TimedEvents.AddEvent("dmgTrinket", TimeSpan.FromHours(4), true);
-                
+
                 foreach (var player in source.Group)
                     DamageBoost(player);
 
                 break;
             }
-            
+
             case "dmgtrinket_dmgbuffyourselfyes":
             {
                 if (source.Trackers.TimedEvents.HasActiveEvent("dmgTrinket", out var dmgTime))
                 {
-                    Subject.Reply(source, $"The mystical energies need time to restore. You must wait {dmgTime.Remaining.ToReadableString()} before attempting to buff again.");
+                    Subject.Reply(
+                        source,
+                        $"The mystical energies need time to restore. You must wait {dmgTime.Remaining.ToReadableString()} before attempting to buff again.");
+
                     return;
                 }
-                
+
                 source.Trackers.TimedEvents.AddEvent("dmgTrinket", TimeSpan.FromHours(2), true);
                 DamageBoost(source);
+
                 break;
             }
-            
-            
+
             case "dmgtrinket_portalforge":
             {
                 var targetMap = SimpleCache.Get<MapInstance>("tagor_forge");
@@ -91,13 +106,5 @@ internal class DmgTrinketScript : DialogScriptBase
                 break;
             }
         }
-    }
-    
-
-    private void DamageBoost(Aisling target)
-    {
-        var effect = EffectFactory.Create("dmgtrinket");
-        target.Effects.Apply(target, effect);
-        target.Animate(DmgAnimation, target.Id);
     }
 }

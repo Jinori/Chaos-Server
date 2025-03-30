@@ -31,6 +31,9 @@ public class MultiStrikeScript(Skill subject) : ConfigurableSkillScriptBase(subj
     public Stat? DamageStat { get; init; }
     public decimal? DamageStatMultiplier { get; init; }
 
+    /// <inheritdoc />
+    public decimal DmgMultiplier { get; set; } = 1.0m;
+
     public List<string>? EffectKeysToBreak { get; set; }
     public Element? Element { get; init; }
 
@@ -40,9 +43,6 @@ public class MultiStrikeScript(Skill subject) : ConfigurableSkillScriptBase(subj
     public bool? MoreDmgLowTargetHp { get; init; }
     public bool MustHaveTargets { get; init; }
     public decimal? PctHpDamage { get; init; }
-
-    /// <inheritdoc />
-    public decimal DmgMultiplier { get; set; } = 1.0m;
     public decimal PctManaCost { get; init; }
     public decimal? PctOfHealth { get; init; }
     public decimal? PctOfHealthMultiplier { get; init; }

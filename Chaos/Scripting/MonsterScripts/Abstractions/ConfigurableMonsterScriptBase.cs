@@ -29,7 +29,7 @@ public abstract class ConfigurableMonsterScriptBase : ConfigurableScriptBase<Mon
     protected virtual bool ShouldWander => Subject.WanderTimer.IntervalElapsed;
     protected virtual IList<Skill> Skills => Subject.Skills;
     protected virtual IList<Spell> Spells => Subject.Spells;
-    
+
     /// <inheritdoc />
     protected ConfigurableMonsterScriptBase(Monster subject)
         : base(subject, scriptKey => subject.Template.ScriptVars[scriptKey]) { }

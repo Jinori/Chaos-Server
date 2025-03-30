@@ -110,7 +110,6 @@ public class HealingAuraEffect : ContinuousAnimationEffectBase
             return false;
         }
 
-        
         return true;
     }
 }

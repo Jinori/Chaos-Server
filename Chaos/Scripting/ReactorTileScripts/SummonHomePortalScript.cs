@@ -1,5 +1,4 @@
 using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
@@ -15,21 +14,22 @@ namespace Chaos.Scripting.ReactorTileScripts;
 public class SummonHomePortalScript : ReactorTileScriptBase
 {
     private readonly ISimpleCache SimpleCache;
+    protected IIntervalTimer AnimationTimer { get; set; }
+
+    public string DestinationMapKey { get; set; } = null!;
+    public IEffectFactory EffectFactory { get; init; }
+
+    /// <inheritdoc />
+    public Point OriginPoint { get; set; }
+
     protected Creature? Owner { get; set; }
     protected IIntervalTimer? Timer { get; set; }
-    protected IIntervalTimer AnimationTimer { get; set; }
-    public IEffectFactory EffectFactory { get; init; }
-    
+
     protected Animation PortalAnimation { get; } = new()
     {
         AnimationSpeed = 145,
         TargetAnimation = 410
     };
-    
-    public string DestinationMapKey { get; set; } = null!;
-    /// <inheritdoc />
-    public Point OriginPoint { get; set; }
-
 
     /// <inheritdoc />
     public SummonHomePortalScript(ReactorTile subject, ISimpleCache simpleCache, IEffectFactory effectFactory)
@@ -115,12 +115,14 @@ public class SummonHomePortalScript : ReactorTileScriptBase
                     case Nation.Labyrinth:
                         OriginPoint = new Point(6, 7);
                         DestinationMapKey = "arena_entrance";
+
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
+
                 var targetMap = SimpleCache.Get<MapInstance>(DestinationMapKey);
-                
+
                 if ((aisling?.Group != null) && !aisling.Group.Contains(owner))
                     return;
 
@@ -129,15 +131,15 @@ public class SummonHomePortalScript : ReactorTileScriptBase
 
                 if (source.StatSheet.Level < (targetMap.MinimumLevel ?? 0))
                 {
-                    aisling.SendOrangeBarMessage(
-                        $"You must be at least level {targetMap.MinimumLevel} to enter this area.");
+                    aisling.SendOrangeBarMessage($"You must be at least level {targetMap.MinimumLevel} to enter this area.");
+
                     return;
                 }
 
                 if (source.StatSheet.Level > (targetMap.MaximumLevel ?? int.MaxValue))
                 {
-                    aisling.SendOrangeBarMessage(
-                        $"You must be at most level {targetMap.MaximumLevel} to enter this area.");
+                    aisling.SendOrangeBarMessage($"You must be at most level {targetMap.MaximumLevel} to enter this area.");
+
                     return;
                 }
 
@@ -145,7 +147,7 @@ public class SummonHomePortalScript : ReactorTileScriptBase
                 owner.SendActiveMessage($"{aisling.Name} has entered your portal.");
             }
 
-            Map.RemoveEntity(Subject);            
+            Map.RemoveEntity(Subject);
         }
     }
 
@@ -157,7 +159,8 @@ public class SummonHomePortalScript : ReactorTileScriptBase
         if (AnimationTimer.IntervalElapsed)
         {
             var aislings = Subject.MapInstance
-                                           .GetEntitiesWithinRange<Aisling>(Subject, 12).Where(x => (x.Group != null) && x.Group.Contains(Subject.Owner));
+                                  .GetEntitiesWithinRange<Aisling>(Subject, 12)
+                                  .Where(x => (x.Group != null) && x.Group.Contains(Subject.Owner));
 
             foreach (var aisling in aislings)
                 aisling.MapInstance.ShowAnimation(PortalAnimation.GetPointAnimation(new Point(Subject.X, Subject.Y)));

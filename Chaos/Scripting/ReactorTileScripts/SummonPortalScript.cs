@@ -13,10 +13,10 @@ namespace Chaos.Scripting.ReactorTileScripts;
 public class SummonPortalScript : ReactorTileScriptBase
 {
     private readonly ISimpleCache SimpleCache;
-    protected Creature? Owner { get; set; }
-    protected IIntervalTimer? Timer { get; set; }
     protected IIntervalTimer AnimationTimer { get; set; }
     public IEffectFactory EffectFactory { get; init; }
+    protected Creature? Owner { get; set; }
+    protected IIntervalTimer? Timer { get; set; }
 
     private Animation PortalAnimation { get; } = new()
     {
@@ -42,7 +42,7 @@ public class SummonPortalScript : ReactorTileScriptBase
         {
             var targetMap = SimpleCache.Get<MapInstance>(owner.SummonTrinketMapInstance.InstanceId);
             var aisling = source as Aisling;
-        
+
             if ((aisling?.Group != null) && !aisling.Group.Contains(owner))
                 return;
 
@@ -52,18 +52,20 @@ public class SummonPortalScript : ReactorTileScriptBase
             if (source.StatSheet.Level < (targetMap.MinimumLevel ?? 0))
             {
                 aisling.SendOrangeBarMessage($"You must be at least level {targetMap.MinimumLevel} to enter this area.");
+
                 return;
             }
 
             if (source.StatSheet.Level > (targetMap.MaximumLevel ?? int.MaxValue))
             {
                 aisling.SendOrangeBarMessage($"You must be at most level {targetMap.MaximumLevel} to enter this area.");
+
                 return;
             }
-            
+
             aisling.TraverseMap(targetMap, new Point(owner.SummonTrinketLocation.X, owner.SummonTrinketLocation.Y));
             owner.SendActiveMessage($"{aisling.Name} has entered your portal.");
-            Map.RemoveEntity(Subject);            
+            Map.RemoveEntity(Subject);
         }
     }
 
@@ -75,7 +77,8 @@ public class SummonPortalScript : ReactorTileScriptBase
         if (AnimationTimer.IntervalElapsed)
         {
             var aislings = Subject.MapInstance
-                                           .GetEntitiesWithinRange<Aisling>(Subject, 12).Where(x => (x.Group != null) && x.Group.Contains(Subject.Owner));
+                                  .GetEntitiesWithinRange<Aisling>(Subject, 12)
+                                  .Where(x => (x.Group != null) && x.Group.Contains(Subject.Owner));
 
             foreach (var aisling in aislings)
                 aisling.MapInstance.ShowAnimation(PortalAnimation.GetPointAnimation(new Point(Subject.X, Subject.Y)));

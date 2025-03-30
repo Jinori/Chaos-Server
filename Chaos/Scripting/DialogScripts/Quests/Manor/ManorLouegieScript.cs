@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Formulae;
@@ -15,12 +14,11 @@ namespace Chaos.Scripting.DialogScripts.Quests.Manor;
 public class ManorLouegieScript : DialogScriptBase
 {
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
+
     /// <inheritdoc />
     public ManorLouegieScript(Dialog subject)
         : base(subject)
-    {
-        ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
-    }
+        => ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
 
     public override void OnDisplaying(Aisling source)
     {
@@ -28,10 +26,8 @@ public class ManorLouegieScript : DialogScriptBase
         var twentypercent = Convert.ToInt32(0.20 * tnl);
 
         if (twentypercent > 320000)
-        {
             twentypercent = 320000;
-        }
-        
+
         var hasStage = source.Trackers.Enums.TryGetValue(out ManorLouegieStage stage);
 
         switch (Subject.Template.TemplateKey.ToLower())
@@ -41,15 +37,17 @@ public class ManorLouegieScript : DialogScriptBase
                 if (source.UserStatSheet.Level < 41)
                 {
                     Subject.Reply(source, "You're a little weak to be handling that second floor for me. Come back when you're stronger.");
+
                     return;
                 }
 
                 if (source.Trackers.TimedEvents.HasActiveEvent("Louegie2ndFloor", out _))
                 {
                     Subject.Reply(source, $"Those banshees are gone for now, thank you again {source.Name}.");
+
                     return;
                 }
-                
+
                 switch (stage)
                 {
                     case ManorLouegieStage.AcceptedQuestBanshee:
@@ -69,11 +67,12 @@ public class ManorLouegieScript : DialogScriptBase
                                     MarkColor.Blue,
                                     1,
                                     GameTime.Now));
-                        
+
                         source.Trackers.Enums.Set(ManorLouegieStage.None);
                         ExperienceDistributionScript.GiveExp(source, twentypercent);
                         source.TryGiveGamePoints(10);
                         source.Trackers.TimedEvents.AddEvent("Louegie2ndFloor", TimeSpan.FromHours(22), true);
+
                         return;
                     }
                 }

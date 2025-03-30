@@ -19,11 +19,7 @@ public class HelpRogerScript : DialogScriptBase
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     /// <inheritdoc />
-    public HelpRogerScript(
-        Dialog subject,
-        ISimpleCache simpleCache,
-        ILogger<PFQuestScript> logger
-    )
+    public HelpRogerScript(Dialog subject, ISimpleCache simpleCache, ILogger<PFQuestScript> logger)
         : base(subject)
     {
         SimpleCache = simpleCache;
@@ -40,20 +36,20 @@ public class HelpRogerScript : DialogScriptBase
             {
                 if (source.StatSheet.Level < 71)
                     return;
+
                 var hasStage = source.Trackers.Enums.TryGetValue(out HelpSable stage);
 
                 if (!hasStage
                     || source.Trackers.Enums.HasValue(HelpSable.FinishedRoger)
                     || source.Trackers.Enums.HasValue(HelpSable.StartedCaptain)
-                    || source.Trackers.Enums.HasValue(HelpSable.FinishedCaptain) 
-                    || source.Trackers.Enums.HasValue(HelpSable.StartedDoltoo) 
-                    || source.Trackers.Enums.HasValue(HelpSable.EscortingDoltooFailed) 
-                    || source.Trackers.Enums.HasValue(HelpSable.EscortingDoltooStart) 
-                    || source.Trackers.Enums.HasValue(HelpSable.CompletedEscort) 
-                    || source.Trackers.Enums.HasValue(HelpSable.FinishedDoltoo)
-                   )
+                    || source.Trackers.Enums.HasValue(HelpSable.FinishedCaptain)
+                    || source.Trackers.Enums.HasValue(HelpSable.StartedDoltoo)
+                    || source.Trackers.Enums.HasValue(HelpSable.EscortingDoltooFailed)
+                    || source.Trackers.Enums.HasValue(HelpSable.EscortingDoltooStart)
+                    || source.Trackers.Enums.HasValue(HelpSable.CompletedEscort)
+                    || source.Trackers.Enums.HasValue(HelpSable.FinishedDoltoo))
                     return;
-                
+
                 if (source.Trackers.Enums.HasValue(HelpSable.StartedRoger))
                 {
                     var option1 = new DialogOption
@@ -64,7 +60,7 @@ public class HelpRogerScript : DialogScriptBase
 
                     if (!Subject.HasOption(option1.OptionText))
                         Subject.Options.Insert(0, option1);
-                    
+
                     return;
                 }
 
@@ -80,27 +76,29 @@ public class HelpRogerScript : DialogScriptBase
                         Subject.Options.Insert(0, option);
                 }
             }
+
                 break;
-                
-                case "helproger_initial":
+
+            case "helproger_initial":
             {
                 if (source.Trackers.Enums.HasValue(HelpSable.FinishedSam))
                 {
                     Subject.Reply(source, "Skip", "helproger_initial2");
+
                     return;
                 }
 
                 if (source.Trackers.Enums.HasValue(HelpSable.StartedRoger))
-                {
                     Subject.Reply(source, "Skip", "helproger_return");
-                }
             }
+
                 break;
 
             case "helproger_initial3":
             {
-               source.Trackers.Enums.Set(HelpSable.StartedRoger);
-               break;
+                source.Trackers.Enums.Set(HelpSable.StartedRoger);
+
+                break;
             }
 
             case "helproger_return":
@@ -116,39 +114,46 @@ public class HelpRogerScript : DialogScriptBase
                         {
                             var mapinstance1 = SimpleCache.Get<MapInstance>("lynith_pirate_brig1");
                             source.TraverseMap(mapinstance1, point);
+
                             return;
                         }
                         case >= 25 and < 41:
                         {
                             var mapinstance1 = SimpleCache.Get<MapInstance>("lynith_pirate_brig2");
                             source.TraverseMap(mapinstance1, point);
+
                             return;
                         }
                         case >= 41 and < 55:
                         {
                             var mapinstance1 = SimpleCache.Get<MapInstance>("lynith_pirate_brig3");
                             source.TraverseMap(mapinstance1, point);
+
                             return;
                         }
                         case >= 55 and < 71:
                         {
                             var mapinstance1 = SimpleCache.Get<MapInstance>("lynith_pirate_brig4");
                             source.TraverseMap(mapinstance1, point);
+
                             return;
                         }
                         case >= 71 and < 99:
                         {
                             var mapinstance1 = SimpleCache.Get<MapInstance>("lynith_pirate_brig5");
                             source.TraverseMap(mapinstance1, point);
+
                             return;
                         }
                         case >= 99:
                         {
                             var mapinstance1 = SimpleCache.Get<MapInstance>("lynith_pirate_brig6");
                             source.TraverseMap(mapinstance1, point);
+
                             return;
                         }
                     }
+
                     return;
                 }
 
@@ -157,19 +162,16 @@ public class HelpRogerScript : DialogScriptBase
                 source.TryGiveGamePoints(5);
                 ExperienceDistributionScript.GiveExp(source, 750000);
                 source.SendOrangeBarMessage("Jolly Roger sees the good in you.");
-                
+
                 Logger.WithTopics(
-                        [Topics.Entities.Aisling,
-                        Topics.Entities.Experience,
-                        Topics.Entities.Item,
-                        Topics.Entities.Dialog,
-                        Topics.Entities.Quest])
-                    .WithProperty(source)
-                    .WithProperty(Subject)
-                    .LogInformation(
-                        "{@AislingName} has received {@ExpAmount} exp from Helping Roger",
-                        source.Name,
-                        750000);
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Experience,
+                          Topics.Entities.Item,
+                          Topics.Entities.Dialog,
+                          Topics.Entities.Quest)
+                      .WithProperty(source)
+                      .WithProperty(Subject)
+                      .LogInformation("{@AislingName} has received {@ExpAmount} exp from Helping Roger", source.Name, 750000);
             }
 
                 break;

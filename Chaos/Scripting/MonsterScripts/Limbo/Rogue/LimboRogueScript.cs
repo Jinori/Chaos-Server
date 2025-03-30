@@ -11,13 +11,13 @@ namespace Chaos.Scripting.MonsterScripts.Limbo.Rogue;
 
 public class LimboRogueScript : MonsterScriptBase
 {
+    private readonly IIntervalTimer ActionTimer;
+    private readonly Spell PitfallTrap;
+    private readonly Skill ShadowFigure;
     private readonly ISkillFactory SkillFactory;
     private readonly ISpellFactory SpellFactory;
-    private readonly IIntervalTimer ActionTimer;
-    private readonly Skill ShadowFigure;
     private readonly Skill Throw;
-    private readonly Spell PitfallTrap;
-    
+
     public LimboRogueScript(Monster subject, ISkillFactory skillFactory, ISpellFactory spellFactory)
         : base(subject)
     {
@@ -28,7 +28,6 @@ public class LimboRogueScript : MonsterScriptBase
         ShadowFigure = SkillFactory.Create("shadowfigure");
         Throw = SkillFactory.Create("throw");
         PitfallTrap = SpellFactory.Create("pitfalltrap");
-        
     }
 
     public override void Update(TimeSpan delta)
@@ -36,12 +35,12 @@ public class LimboRogueScript : MonsterScriptBase
         PitfallTrap.Update(delta);
         ShadowFigure.Update(delta);
         Throw.Update(delta);
-        
+
         ActionTimer.Update(delta);
 
         if (!ActionTimer.IntervalElapsed)
             return;
-        
+
         var target = Subject.Target;
 
         if (target is null)

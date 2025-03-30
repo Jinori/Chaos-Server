@@ -1,5 +1,4 @@
 ﻿using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Geometry;
@@ -42,8 +41,7 @@ public class FemalePriestNightmareChallengeMapScript : MapScriptBase
         MapInstance subject,
         IMonsterFactory monsterFactory,
         IItemFactory itemFactory,
-        ISimpleCache simpleCache
-    )
+        ISimpleCache simpleCache)
         : base(subject)
     {
         ItemFactory = itemFactory;
@@ -53,8 +51,13 @@ public class FemalePriestNightmareChallengeMapScript : MapScriptBase
         StartDelay = TimeSpan.FromSeconds(7);
         AnimationInterval = new IntervalTimer(TimeSpan.FromMilliseconds(100));
         AnimationShape1 = new Circle(new Point(13, 10), 6);
-        ShapeOutline1 = AnimationShape1.GetOutline().ToList();
-        ReverseOutline1 = ShapeOutline1.AsEnumerable().Reverse().ToList();
+
+        ShapeOutline1 = AnimationShape1.GetOutline()
+                                       .ToList();
+
+        ReverseOutline1 = ShapeOutline1.AsEnumerable()
+                                       .Reverse()
+                                       .ToList();
         UpdateTimer = new IntervalTimer(TimeSpan.FromMilliseconds(200));
         MonsterDelay = new IntervalTimer(TimeSpan.FromSeconds(20));
         NightmareComplete = new IntervalTimer(TimeSpan.FromMinutes(6));
@@ -76,10 +79,7 @@ public class FemalePriestNightmareChallengeMapScript : MapScriptBase
         {
             var point = GenerateSpawnPoint();
 
-            var monster = MonsterFactory.Create(
-                "nightmare_magda",
-                Subject,
-                point);
+            var monster = MonsterFactory.Create("nightmare_magda", Subject, point);
 
             monsters.Add(monster);
         }
@@ -91,10 +91,11 @@ public class FemalePriestNightmareChallengeMapScript : MapScriptBase
     {
         var teammates = new List<Monster>();
 
-        var target = Subject.GetEntities<Aisling>().Single();
+        var target = Subject.GetEntities<Aisling>()
+                            .Single();
 
         var teammatespawnRectangle = new Rectangle(target, 5, 5);
-        
+
         if (!teammatespawnRectangle.TryGetRandomPoint(x => Subject.IsWalkable(x, CreatureType.Normal), out var point1))
             point1 = Point.From(target);
 
@@ -106,26 +107,14 @@ public class FemalePriestNightmareChallengeMapScript : MapScriptBase
 
         if (!teammatespawnRectangle.TryGetRandomPoint(x => Subject.IsWalkable(x, CreatureType.Normal), out var point4))
             point4 = Point.From(target);
-        
-        var monster1 = MonsterFactory.Create(
-            "nightmare_femalewarrior",
-            Subject,
-            point1);
 
-        var monster2 = MonsterFactory.Create(
-            "nightmare_femalemonk",
-            Subject,
-            point2);
+        var monster1 = MonsterFactory.Create("nightmare_femalewarrior", Subject, point1);
 
-        var monster3 = MonsterFactory.Create(
-            "nightmare_femalerogue",
-            Subject,
-            point3);
+        var monster2 = MonsterFactory.Create("nightmare_femalemonk", Subject, point2);
 
-        var monster4 = MonsterFactory.Create(
-            "nightmare_femalewizard",
-            Subject,
-            point4);
+        var monster3 = MonsterFactory.Create("nightmare_femalerogue", Subject, point3);
+
+        var monster4 = MonsterFactory.Create("nightmare_femalewizard", Subject, point4);
 
         teammates.Add(monster1);
         teammates.Add(monster2);
@@ -142,31 +131,32 @@ public class FemalePriestNightmareChallengeMapScript : MapScriptBase
         NightmareComplete?.Update(delta);
 
         if (UpdateTimer!.IntervalElapsed)
+
             // Switch statement to determine the current state of the script
             switch (State)
             {
                 case ScriptState.Dormant:
                 {
                     if (Subject.GetEntities<Aisling>()
-                        .Any(
-                            a => a.Trackers.Enums.TryGetValue(out NightmareQuestStage stage)
-                                 && (stage == NightmareQuestStage.EnteredDream)))
-                    {
+                               .Any(
+                                   a => a.Trackers.Enums.TryGetValue(out NightmareQuestStage stage)
+                                        && (stage == NightmareQuestStage.EnteredDream)))
                         State = ScriptState.DelayedStart;
-                    }
                 }
 
                     break;
+
                 // Delayed start state
                 case ScriptState.DelayedStart:
                     // Set the start time if it is not already set
                     StartTime ??= DateTime.UtcNow;
 
                     // Check if the start delay has been exceeded
-                    if (DateTime.UtcNow - StartTime > StartDelay)
+                    if ((DateTime.UtcNow - StartTime) > StartDelay)
                     {
                         // Reset the start time
                         StartTime = null;
+
                         // Set the state to spawning
                         State = ScriptState.Spawning;
 
@@ -174,6 +164,7 @@ public class FemalePriestNightmareChallengeMapScript : MapScriptBase
 
                         // Get all Aislings in the subject
                         foreach (var aisling in Subject.GetEntities<Aisling>())
+
                             // Send an orange bar message to the Aisling
                             aisling.Client.SendServerMessage(
                                 ServerMessageType.OrangeBar1,
@@ -181,6 +172,7 @@ public class FemalePriestNightmareChallengeMapScript : MapScriptBase
                     }
 
                     break;
+
                 // Spawning state
                 case ScriptState.Spawning:
                     // Update the animation interval
@@ -193,9 +185,11 @@ public class FemalePriestNightmareChallengeMapScript : MapScriptBase
                     // Get the points for the current animation index
                     var pt1 = ShapeOutline1[AnimationIndex];
                     var pt2 = ReverseOutline1[AnimationIndex];
+
                     // Show the animations for the points
                     Subject.ShowAnimation(Animation.GetPointAnimation(pt1));
                     Subject.ShowAnimation(Animation.GetPointAnimation(pt2));
+
                     // Increment the animation index
                     AnimationIndex++;
 
@@ -211,11 +205,13 @@ public class FemalePriestNightmareChallengeMapScript : MapScriptBase
                         SpawnMonsters();
 
                         State = ScriptState.Spawned;
+
                         // Reset the animation index
                         AnimationIndex = 0;
                     }
 
                     break;
+
                 // Spawned state
                 case ScriptState.Spawned:
                 {
@@ -235,10 +231,12 @@ public class FemalePriestNightmareChallengeMapScript : MapScriptBase
                     }
 
                     // Check if there are any Aislings in the subject
-                    if (!Subject.GetEntities<Aisling>().Any())
+                    if (!Subject.GetEntities<Aisling>()
+                                .Any())
                     {
                         // Get all monsters in the subject
-                        var monsters = Subject.GetEntities<Monster>().ToList();
+                        var monsters = Subject.GetEntities<Monster>()
+                                              .ToList();
 
                         // Remove all monsters from the subject
                         foreach (var monster in monsters)
@@ -255,21 +253,66 @@ public class FemalePriestNightmareChallengeMapScript : MapScriptBase
                 {
                     var nightmaregearDictionary = new Dictionary<(BaseClass, Gender), string[]>
                     {
-                        { (BaseClass.Warrior, Gender.Male), ["malecarnunplate", "carnunhelmet"] },
-                        { (BaseClass.Warrior, Gender.Female), ["femalecarnunplate", "carnunhelmet"] },
-                        { (BaseClass.Monk, Gender.Male), ["maleaosdicpatternwalker"] },
-                        { (BaseClass.Monk, Gender.Female), ["femaleaosdicpatternwalker"] },
-                        { (BaseClass.Rogue, Gender.Male), ["malemarauderhide", "maraudermask"] },
-                        { (BaseClass.Rogue, Gender.Female), ["femalemarauderhide", "maraudermask"] },
-                        { (BaseClass.Priest, Gender.Male), ["malecthonicdisciplerobes", "cthonicdisciplecaputium"] },
-                        { (BaseClass.Priest, Gender.Female), ["morrigudisciplepellison", "holyhairband"] },
-                        { (BaseClass.Wizard, Gender.Male), ["cthonicmagusrobes", "cthonicmaguscaputium"] },
-                        { (BaseClass.Wizard, Gender.Female), ["morrigumaguspellison", "magushairband"] }
+                        {
+                            (BaseClass.Warrior, Gender.Male), [
+                                                                  "malecarnunplate",
+                                                                  "carnunhelmet"
+                                                              ]
+                        },
+                        {
+                            (BaseClass.Warrior, Gender.Female), [
+                                                                    "femalecarnunplate",
+                                                                    "carnunhelmet"
+                                                                ]
+                        },
+                        {
+                            (BaseClass.Monk, Gender.Male), ["maleaosdicpatternwalker"]
+                        },
+                        {
+                            (BaseClass.Monk, Gender.Female), ["femaleaosdicpatternwalker"]
+                        },
+                        {
+                            (BaseClass.Rogue, Gender.Male), [
+                                                                "malemarauderhide",
+                                                                "maraudermask"
+                                                            ]
+                        },
+                        {
+                            (BaseClass.Rogue, Gender.Female), [
+                                                                  "femalemarauderhide",
+                                                                  "maraudermask"
+                                                              ]
+                        },
+                        {
+                            (BaseClass.Priest, Gender.Male), [
+                                                                 "malecthonicdisciplerobes",
+                                                                 "cthonicdisciplecaputium"
+                                                             ]
+                        },
+                        {
+                            (BaseClass.Priest, Gender.Female), [
+                                                                   "morrigudisciplepellison",
+                                                                   "holyhairband"
+                                                               ]
+                        },
+                        {
+                            (BaseClass.Wizard, Gender.Male), [
+                                                                 "cthonicmagusrobes",
+                                                                 "cthonicmaguscaputium"
+                                                             ]
+                        },
+                        {
+                            (BaseClass.Wizard, Gender.Female), [
+                                                                   "morrigumaguspellison",
+                                                                   "magushairband"
+                                                               ]
+                        }
                     };
 
-                    var player = Subject.GetEntities<Aisling>().FirstOrDefault(x =>
-                        x.Trackers.Enums.TryGetValue(out NightmareQuestStage hasNightmare) &&
-                        hasNightmare == NightmareQuestStage.SpawnedNightmare);
+                    var player = Subject.GetEntities<Aisling>()
+                                        .FirstOrDefault(
+                                            x => x.Trackers.Enums.TryGetValue(out NightmareQuestStage hasNightmare)
+                                                 && (hasNightmare == NightmareQuestStage.SpawnedNightmare));
 
                     if (player != null)
                     {
@@ -291,10 +334,9 @@ public class FemalePriestNightmareChallengeMapScript : MapScriptBase
                         if (nightmaregearDictionary.TryGetValue(gearKey, out var nightmaregear))
                         {
                             var hasGear = nightmaregear.All(
-                                gearItemName =>
-                                    player.Inventory.ContainsByTemplateKey(gearItemName)
-                                    || player.Bank.Contains(gearItemName)
-                                    || player.Equipment.ContainsByTemplateKey(gearItemName));
+                                gearItemName => player.Inventory.ContainsByTemplateKey(gearItemName)
+                                                || player.Bank.Contains(gearItemName)
+                                                || player.Equipment.ContainsByTemplateKey(gearItemName));
 
                             if (!hasGear)
                                 foreach (var gearItemName in nightmaregear)
@@ -309,7 +351,6 @@ public class FemalePriestNightmareChallengeMapScript : MapScriptBase
                         player.TraverseMap(mapInstance, pointS);
                         player.SendOrangeBarMessage("You wake up from the nightmare feeling refreshed.");
                     }
- 
 
                     break;
                 }

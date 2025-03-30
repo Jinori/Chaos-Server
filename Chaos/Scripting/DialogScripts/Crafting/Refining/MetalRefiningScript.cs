@@ -143,6 +143,20 @@ public class MetalRefiningScript : CraftingBaseScript
             return;
         }
 
+        if (item.DisplayName.ContainsI("ruined"))
+        {
+            Subject.Reply(source, "This metal is ruined already.", "metal_refining_initial");
+
+            return;
+        }
+
+        if (item.DisplayName.ContainsI("polished"))
+        {
+            Subject.Reply(source, "This metal is polished already.", "metal_refining_initial");
+
+            return;
+        }
+
         var requiredCount = item.Template.TemplateKey.Contains("raw") ? 2 : 1;
 
         if (item.Count < requiredCount)

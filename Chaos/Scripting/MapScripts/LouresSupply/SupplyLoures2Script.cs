@@ -1,5 +1,4 @@
 ﻿using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Geometry;
@@ -14,18 +13,23 @@ namespace Chaos.Scripting.MapScripts.LouresSupply;
 
 public class SupplyLoures2Script : MapScriptBase
 {
+    public const int UPDATE_INTERVAL_MS = 1;
+    private readonly IDialogFactory DialogFactory;
+    private readonly IMerchantFactory MerchantFactory;
     private readonly IMonsterFactory MonsterFactory;
-    private readonly TimeSpan StartDelay;
+    private readonly ISimpleCache SimpleCache;
     private readonly TimeSpan SpawnDelay;
+    private readonly TimeSpan StartDelay;
+    private readonly IIntervalTimer? UpdateTimer;
     private DateTime? StartTime;
     private ScriptState State;
-    private readonly IIntervalTimer? UpdateTimer;
-    private readonly ISimpleCache SimpleCache;
-    private readonly IMerchantFactory MerchantFactory;
-    private readonly IDialogFactory DialogFactory;
-    public const int UPDATE_INTERVAL_MS = 1;
 
-    public SupplyLoures2Script(MapInstance subject, IMonsterFactory monsterFactory, ISimpleCache simpleCache, IMerchantFactory merchantFactory, IDialogFactory dialogFactory)
+    public SupplyLoures2Script(
+        MapInstance subject,
+        IMonsterFactory monsterFactory,
+        ISimpleCache simpleCache,
+        IMerchantFactory merchantFactory,
+        IDialogFactory dialogFactory)
         : base(subject)
     {
         MonsterFactory = monsterFactory;
@@ -42,31 +46,33 @@ public class SupplyLoures2Script : MapScriptBase
         UpdateTimer?.Update(delta);
 
         if (UpdateTimer!.IntervalElapsed)
-        {
-            
+
             // Switch statement to determine the current state of the script
             switch (State)
             {
                 case ScriptState.Dormant:
                 {
-                    foreach (var aisling in Subject.GetEntities<Aisling>().Where(x =>
-                                 x.Trackers.Enums.HasValue(SupplyLouresStage.SawAssassin)))
-                    {
+                    foreach (var aisling in Subject.GetEntities<Aisling>()
+                                                   .Where(x => x.Trackers.Enums.HasValue(SupplyLouresStage.SawAssassin)))
                         aisling.Trackers.Enums.Set(SupplyLouresStage.StartedQuest);
-                    }
-                    
-                    if (Subject.GetEntities<Aisling>().Any(x => x.Trackers.Enums.HasValue(SickChildStage.SickChildKilled) && x.Trackers.Enums.HasValue(SupplyLouresStage.StartedQuest) && x.UserStatSheet.Level > 40))
+
+                    if (Subject.GetEntities<Aisling>()
+                               .Any(
+                                   x => x.Trackers.Enums.HasValue(SickChildStage.SickChildKilled)
+                                        && x.Trackers.Enums.HasValue(SupplyLouresStage.StartedQuest)
+                                        && (x.UserStatSheet.Level > 40)))
                         State = ScriptState.DelayedStart;
                 }
 
                     break;
+
                 // Delayed start state
                 case ScriptState.DelayedStart:
                     // Set the start time if it is not already set
                     StartTime ??= DateTime.UtcNow;
 
                     // Check if the start delay has been exceeded
-                    if (DateTime.UtcNow - StartTime > StartDelay)
+                    if ((DateTime.UtcNow - StartTime) > StartDelay)
                     {
                         // Reset the start time
                         StartTime = null;
@@ -76,68 +82,67 @@ public class SupplyLoures2Script : MapScriptBase
                             var merchant = MerchantFactory.Create("louresassassin", Subject, aisling);
                             var dialog = DialogFactory.Create("louresassassin_stabyou", merchant);
                             dialog.Display(aisling);
-                            aisling.Client.SendServerMessage(
-                                ServerMessageType.OrangeBar1,
-                                "You notice something's not right...");
+                            aisling.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You notice something's not right...");
                         }
+
                         // Set the state to spawning
                         State = ScriptState.Spawning;
                     }
 
                     break;
+
                 // Spawning state
                 case ScriptState.Spawning:
                 {
                     StartTime ??= DateTime.UtcNow;
 
                     // Check if the start delay has been exceeded
-                    if (DateTime.UtcNow - StartTime > SpawnDelay)
+                    if ((DateTime.UtcNow - StartTime) > SpawnDelay)
                     {
                         StartTime = null;
-                     
-                        foreach (var aisling in Subject.GetEntities<Aisling>().Where(x =>
-                                     x.Trackers.Enums.HasValue(SickChildStage.SickChildKilled)))
-                        {
+
+                        foreach (var aisling in Subject.GetEntities<Aisling>()
+                                                       .Where(x => x.Trackers.Enums.HasValue(SickChildStage.SickChildKilled)))
                             aisling.Trackers.Enums.Set(SupplyLouresStage.SawAssassin);
-                        }
-                        
+
                         var player = Subject.GetEntities<Aisling>()
-                            .FirstOrDefault(x => x.Trackers.Enums.HasValue(SupplyLouresStage.SawAssassin));
+                                            .FirstOrDefault(x => x.Trackers.Enums.HasValue(SupplyLouresStage.SawAssassin));
+
                         if (player != null)
                         {
                             var points = player.GenerateCardinalPoints()
-                                .Where(x => Subject.IsWalkable(x, CreatureType.Normal))
-                                .ToList();
+                                               .Where(x => Subject.IsWalkable(x, CreatureType.Normal))
+                                               .ToList();
 
                             var firstPoint = points.FirstOrDefault();
-                            
+
                             var monster = MonsterFactory.Create("louressupply_assassin", Subject, firstPoint);
 
-                            Subject.AddEntity(monster, monster); 
+                            Subject.AddEntity(monster, monster);
                         }
+
                         // Set the state to spawned
                         State = ScriptState.Spawned;
+
                         // Reset the animation index
                     }
                 }
 
                     break;
+
                 // Spawned state
                 case ScriptState.Spawned:
                 {
-                    if (!Subject.GetEntities<Aisling>().Any(x =>
-                            x.Trackers.Enums.HasValue(SupplyLouresStage.SawAssassin) || x.IsDead))
+                    if (!Subject.GetEntities<Aisling>()
+                                .Any(x => x.Trackers.Enums.HasValue(SupplyLouresStage.SawAssassin) || x.IsDead))
                     {
-                        var monster = Subject.GetEntities<Monster>().FirstOrDefault(x => x.Name == "Assassin");
+                        var monster = Subject.GetEntities<Monster>()
+                                             .FirstOrDefault(x => x.Name == "Assassin");
 
                         if (monster != null)
-                        {
                             Subject.RemoveEntity(monster);
-                        }
                         else
-                        {
                             State = ScriptState.Dormant;
-                        }
                     }
                 }
 
@@ -145,7 +150,6 @@ public class SupplyLoures2Script : MapScriptBase
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-        }
     }
 
     private enum ScriptState

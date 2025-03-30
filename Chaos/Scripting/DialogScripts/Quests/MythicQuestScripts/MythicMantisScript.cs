@@ -99,10 +99,7 @@ public class MythicMantisScript : DialogScriptBase
 
                 if (mantis == MythicMantis.MantisAllied)
                 {
-                    Subject.Reply(
-                        source,
-                        "skip",
-                        "mantis_start5start");
+                    Subject.Reply(source, "skip", "mantis_start5start");
 
                     return;
                 }
@@ -150,8 +147,7 @@ public class MythicMantisScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
                     source.SendOrangeBarMessage("You received 10000000 experience!");
@@ -195,8 +191,7 @@ public class MythicMantisScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
                     source.SendOrangeBarMessage("You received 10000000 experience!");
@@ -232,8 +227,7 @@ public class MythicMantisScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
                     source.SendOrangeBarMessage("You received 10000000 experience!");
@@ -251,12 +245,9 @@ public class MythicMantisScript : DialogScriptBase
 
             case "mantis_ally":
             {
-                if (hasBee
-                    && (hasBee == bee is MythicBee.AlliedBee or MythicBee.BossBeeStarted or MythicBee.BossBeeDefeated))
+                if (hasBee && (hasBee == bee is MythicBee.AlliedBee or MythicBee.BossBeeStarted or MythicBee.BossBeeDefeated))
                 {
-                    Subject.Reply(
-                        source,
-                        "I knew something smelled weak about you. Begone traitor, you will be a fun one to kill.");
+                    Subject.Reply(source, "I knew something smelled weak about you. Begone traitor, you will be a fun one to kill.");
 
                     source.Trackers.Enums.Set(MythicMantis.EnemyAllied);
 
@@ -315,8 +306,7 @@ public class MythicMantisScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, fiftyPercent);
                     source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 25000000);
                     source.SendOrangeBarMessage("You received 25000000 experience!");
@@ -326,11 +316,10 @@ public class MythicMantisScript : DialogScriptBase
                 source.Trackers.Enums.Set(MythicMantis.BossMantisDefeated);
                 source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);
 
-                if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5) &&
-                    !source.Trackers.Enums.HasValue(MythicQuestMain.CompletedMythic))
-                {
+                if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss)
+                    && (mythicboss >= 5)
+                    && !source.Trackers.Enums.HasValue(MythicQuestMain.CompletedMythic))
                     source.Trackers.Enums.Set(MythicQuestMain.CompletedAll);
-                }
             }
 
                 break;

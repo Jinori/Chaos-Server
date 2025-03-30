@@ -24,7 +24,7 @@ public class PhoenixWindElementalMovementScript : MonsterScriptBase
                                             .ThatAreAlive()
                                             .Select(aisling => (int?)Subject.ManhattanDistanceFrom(aisling))
                                             .Min();
-            
+
             var chanceToMove = nearestAislingDistance switch
             {
                 0 => 10,
@@ -38,8 +38,8 @@ public class PhoenixWindElementalMovementScript : MonsterScriptBase
                 8 => 90,
                 _ => 100
             };
-            
-            if(IntegerRandomizer.RollChance(chanceToMove))
+
+            if (IntegerRandomizer.RollChance(chanceToMove))
                 Subject.Wander();
         }
     }

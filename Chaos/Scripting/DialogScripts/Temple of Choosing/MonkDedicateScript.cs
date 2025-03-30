@@ -17,10 +17,10 @@ namespace Chaos.Scripting.DialogScripts.Temple_of_Choosing;
 public class MonkDedicateScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
+    private readonly ILogger<MonkDedicateScript> Logger;
     private readonly ISimpleCache SimpleCache;
     private readonly ISkillFactory SkillFactory;
     private readonly ISpellFactory SpellFactory;
-    private readonly ILogger<MonkDedicateScript> Logger;
 
     public MonkDedicateScript(
         Dialog subject,
@@ -28,8 +28,7 @@ public class MonkDedicateScript : DialogScriptBase
         ISimpleCache simpleCache,
         ISkillFactory skillFactory,
         ISpellFactory spellFactory,
-        ILogger<MonkDedicateScript> logger
-    )
+        ILogger<MonkDedicateScript> logger)
         : base(subject)
     {
         ItemFactory = itemFactory;
@@ -79,19 +78,17 @@ public class MonkDedicateScript : DialogScriptBase
 
             if (!source.SkillBook.Contains(skill))
                 source.SkillBook.TryAddToNextSlot(skill);
-            
+
             source.SkillBook.Remove("assail");
 
             var mapInstance = SimpleCache.Get<MapInstance>("toc");
             var point = new Point(8, 5);
             source.TraverseMap(mapInstance, point);
             source.Animate(ani, source.Id);
-            
-            Logger.WithTopics(
-                      [Topics.Entities.Aisling, Topics.Actions.Promote])
+
+            Logger.WithTopics(Topics.Entities.Aisling, Topics.Actions.Promote)
                   .WithProperty(Subject)
                   .LogInformation("{@AislingName} has become monk", source.Name);
-            
         }
     }
 }

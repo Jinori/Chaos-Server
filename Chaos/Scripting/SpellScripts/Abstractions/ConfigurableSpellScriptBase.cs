@@ -15,6 +15,19 @@ public abstract class ConfigurableSpellScriptBase : ConfigurableScriptBase<Spell
     /// <inheritdoc />
     public virtual bool CanUse(SpellContext context)
     {
+        if (this is HealthCostAbilityComponent.IHealthCostComponentOptions options1)
+        {
+            var cost = options1.HealthCost ?? 0;
+            cost += MathEx.GetPercentOf<int>((int)context.Source.StatSheet.EffectiveMaximumHp, options1.PctHealthCost);
+
+            if (context.Source.StatSheet.CurrentHp < cost)
+            {
+                context.SourceAisling?.SendActiveMessage("You don't have enough health.");
+
+                return false;
+            }
+        }
+        
         if (this is ManaCostAbilityComponent.IManaCostComponentOptions options)
         {
             var cost = options.ManaCost ?? 0;

@@ -8,14 +8,6 @@ namespace Chaos.Scripting.MapScripts.SpawnerScripts.Events.StPatricks;
 
 public class RainbowCharmSpawnerScript : ItemSpawnerScript
 {
-    public override void Update(TimeSpan delta)
-    {
-        var isEventActive = EventPeriod.IsEventActive(DateTime.UtcNow, Subject.InstanceId);
-
-        if (isEventActive)
-            base.Update(delta);
-    }
-    
     public override string ItemTemplateKey { get; set; } = "rainbowcharm";
     public override int MaxAmount { get; set; } = 10;
     public override int MaxPerSpawn { get; set; } = 3;
@@ -25,4 +17,12 @@ public class RainbowCharmSpawnerScript : ItemSpawnerScript
     /// <inheritdoc />
     public RainbowCharmSpawnerScript(MapInstance subject, IItemFactory itemFactory, ISimpleCache simpleCache)
         : base(subject, itemFactory, simpleCache) { }
+
+    public override void Update(TimeSpan delta)
+    {
+        var isEventActive = EventPeriod.IsEventActive(DateTime.UtcNow, Subject.InstanceId);
+
+        if (isEventActive)
+            base.Update(delta);
+    }
 }

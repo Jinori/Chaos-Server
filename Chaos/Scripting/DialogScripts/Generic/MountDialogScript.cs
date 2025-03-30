@@ -12,22 +12,29 @@ public class MountDialogScript : DialogScriptBase
 
     public MountDialogScript(Dialog subject, IEffectFactory effectFactory)
         : base(subject)
-    {
-        _effectFactory = effectFactory;
-    }
+        => _effectFactory = effectFactory;
 
-    private void SetMount(Dialog dialog, Aisling source, CurrentMount mount)
+    private void AddCloakOptions(Dialog dialog, Aisling source)
     {
-        source.Trackers.Enums.Set(mount);
-        AddCloakOptions(dialog, source);
+        foreach (AvailableCloaks cloakFlag in Enum.GetValues(typeof(AvailableCloaks)))
+            if (source.Trackers.Flags.HasFlag(cloakFlag))
+            {
+                var option = new DialogOption
+                {
+                    DialogKey = $"cloak_{cloakFlag.ToString().ToLower()}",
+                    OptionText = $"{cloakFlag} Cloak"
+                };
+
+                if (!dialog.HasOption(option.OptionText))
+                    dialog.Options.Insert(0, option);
+            }
     }
 
     private void AddMountOptionIfFlag(
         Dialog dialog,
         Aisling source,
         AvailableMounts mountFlag,
-        string optionKey
-    )
+        string optionKey)
     {
         if (source.Trackers.Flags.HasFlag(mountFlag))
         {
@@ -38,29 +45,7 @@ public class MountDialogScript : DialogScriptBase
             };
 
             if (!dialog.HasOption(option.OptionText))
-            {
                 dialog.Options.Insert(0, option);
-            }
-        }
-    }
-
-    private void AddCloakOptions(Dialog dialog, Aisling source)
-    {
-        foreach (AvailableCloaks cloakFlag in Enum.GetValues(typeof(AvailableCloaks)))
-        {
-            if (source.Trackers.Flags.HasFlag(cloakFlag))
-            {
-                var option = new DialogOption
-                {
-                    DialogKey = $"cloak_{cloakFlag.ToString().ToLower()}",
-                    OptionText = $"{cloakFlag} Cloak"
-                };
-
-                if (!dialog.HasOption(option.OptionText))
-                {
-                    dialog.Options.Insert(0, option);
-                }
-            }
         }
     }
 
@@ -73,7 +58,6 @@ public class MountDialogScript : DialogScriptBase
         {
             case "terminus_initial":
                 if (flags.TryGetFlag(out AvailableMounts _))
-                {
                     Subject.Options.Insert(
                         0,
                         new DialogOption
@@ -81,7 +65,6 @@ public class MountDialogScript : DialogScriptBase
                             DialogKey = "mount_initial",
                             OptionText = "Mounts"
                         });
-                }
 
                 break;
 
@@ -186,5 +169,11 @@ public class MountDialogScript : DialogScriptBase
 
                 break;
         }
+    }
+
+    private void SetMount(Dialog dialog, Aisling source, CurrentMount mount)
+    {
+        source.Trackers.Enums.Set(mount);
+        AddCloakOptions(dialog, source);
     }
 }

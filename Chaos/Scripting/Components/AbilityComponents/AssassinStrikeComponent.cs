@@ -36,7 +36,7 @@ public struct AssassinStrikeComponent : IComponent
             if (target is Monster && !target.Script.Is<TrainingDummyScript>() && !target.Script.Is<ThisIsABossScript>())
                 if (IntegerRandomizer.RollChance(10))
                     damage = target.StatSheet.CurrentHp;
-            
+
             if (damage > 0)
                 options.ApplyDamageScript.ApplyDamage(
                     context.Source,
@@ -85,8 +85,8 @@ public struct AssassinStrikeComponent : IComponent
         int? BaseDamage { get; init; }
         Stat? DamageStat { get; init; }
         decimal? DamageStatMultiplier { get; init; }
+        decimal DmgMultiplier { get; set; }
         Element? Element { get; init; }
         decimal? PctHpDamage { get; init; }
-        decimal DmgMultiplier { get; set; }
     }
 }

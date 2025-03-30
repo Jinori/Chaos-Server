@@ -91,13 +91,11 @@ public class RecoverRudolphQuestScript(Dialog subject, ILogger<RecoverRudolphQue
                             ExperienceDistributionScript.GiveExp(source, expRewarded);
 
                             logger.WithTopics(
-                                      [
-                                          Topics.Entities.Aisling,
-                                          Topics.Entities.Gold,
-                                          Topics.Entities.Experience,
-                                          Topics.Entities.Dialog,
-                                          Topics.Entities.Quest
-                                      ])
+                                      Topics.Entities.Aisling,
+                                      Topics.Entities.Gold,
+                                      Topics.Entities.Experience,
+                                      Topics.Entities.Dialog,
+                                      Topics.Entities.Quest)
                                   .WithProperty(source)
                                   .WithProperty(Subject)
                                   .LogInformation(

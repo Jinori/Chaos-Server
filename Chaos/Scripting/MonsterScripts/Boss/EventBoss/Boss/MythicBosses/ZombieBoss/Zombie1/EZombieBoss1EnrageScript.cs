@@ -21,8 +21,8 @@ public sealed class EZombieBoss1EnrageScript : MonsterScriptBase
 
     /// <inheritdoc />
     public EZombieBoss1EnrageScript(Monster subject, IMonsterFactory monsterFactory)
-        : base(subject) =>
-        MonsterFactory = monsterFactory;
+        : base(subject)
+        => MonsterFactory = monsterFactory;
 
     public override void Update(TimeSpan delta)
     {
@@ -30,6 +30,7 @@ public sealed class EZombieBoss1EnrageScript : MonsterScriptBase
         {
             Bonus75Applied = true;
             Subject.Animate(UpgradeAnimation);
+
             //Spawn Monsters
             var rectangle = new Rectangle(Subject, 5, 5);
 

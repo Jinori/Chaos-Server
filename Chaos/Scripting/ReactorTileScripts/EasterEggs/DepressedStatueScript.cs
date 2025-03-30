@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Models.World;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
@@ -12,24 +11,22 @@ public sealed class DepressedStatueScript : ReactorTileScriptBase
 
     /// <inheritdoc />
     public DepressedStatueScript(ReactorTile subject, IItemFactory itemFactory)
-        : base(subject) =>
-        ItemFactory = itemFactory;
+        : base(subject)
+        => ItemFactory = itemFactory;
 
     /// <inheritdoc />
     public override void OnClicked(Aisling source)
     {
-        
         if (source.Trackers.Flags.HasFlag(Definitions.EasterEggs.DepressedStatue))
         {
             source.SendOrangeBarMessage("You've already found this.");
+
             return;
         }
-        
+
         source.Trackers.Flags.AddFlag(Definitions.EasterEggs.DepressedStatue);
         var bluepolyp = ItemFactory.Create("bluepolyp");
-        source.Client.SendServerMessage(
-            ServerMessageType.ScrollWindow,
-            "You noticed the depressed monk...");
+        source.Client.SendServerMessage(ServerMessageType.ScrollWindow, "You noticed the depressed monk...");
         source.TryGiveGamePoints(5);
         source.TryGiveGold(50000);
         source.GiveItemOrSendToBank(bluepolyp);

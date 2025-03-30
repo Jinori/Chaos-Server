@@ -28,9 +28,12 @@ public class HideGroupScript : ConfigurableSpellScriptBase,
     public int? ExclusionRange { get; init; }
 
     public TargetFilter Filter { get; init; }
+
+    public int? HealthCost { get; init; }
     public bool IgnoreMagicResistance { get; init; }
     public int? ManaCost { get; init; }
     public bool MustHaveTargets { get; init; }
+    public decimal PctHealthCost { get; init; }
     public decimal PctManaCost { get; init; }
     public int Range { get; init; }
     public bool? ScaleBodyAnimationSpeedByAttackSpeed { get; init; }

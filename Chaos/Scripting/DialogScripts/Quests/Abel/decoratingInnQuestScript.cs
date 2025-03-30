@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.Common.Utilities;
+﻿using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
@@ -37,7 +36,7 @@ public class DecoratingInnQuestScript : DialogScriptBase
             {
                 if (source.UserStatSheet.Level < 11)
                     return;
-                
+
                 var option = new DialogOption
                 {
                     DialogKey = "decoratinginn_initial",
@@ -54,73 +53,91 @@ public class DecoratingInnQuestScript : DialogScriptBase
             {
                 if (source.Trackers.TimedEvents.HasActiveEvent("decoratingtheinncd", out var cdtime))
                 {
-                    Subject.Reply(source, $"I appreciate your efforts in decorating the inn. These flowers won't last long, please come back soon. (({cdtime.Remaining.ToReadableString()}))");
+                    Subject.Reply(
+                        source,
+                        $"I appreciate your efforts in decorating the inn. These flowers won't last long, please come back soon. (({cdtime.Remaining.ToReadableString()}))");
+
                     return;
                 }
 
-                if (hasStage && stage == DecoratingInn.CompletedQuest)
+                if (hasStage && (stage == DecoratingInn.CompletedQuest))
                 {
                     Subject.Reply(source, "Skip", "decoratinginn_returnstart");
+
                     return;
                 }
-                
-                if (hasStage && stage == DecoratingInn.StartedPetunia)
+
+                if (hasStage && (stage == DecoratingInn.StartedPetunia))
                 {
                     Subject.Reply(source, "Skip", "decoratinginn_return1");
+
                     return;
                 }
-                if (hasStage && stage == DecoratingInn.CompletedPetunia)
+
+                if (hasStage && (stage == DecoratingInn.CompletedPetunia))
                 {
                     Subject.Reply(source, "Skip", "decoratinginn_initial2");
+
                     return;
                 }
-                if (hasStage && stage == DecoratingInn.StartedGoldRose)
+
+                if (hasStage && (stage == DecoratingInn.StartedGoldRose))
                 {
                     Subject.Reply(source, "Skip", "decoratinginn_return1");
+
                     return;
                 }
-                if (hasStage && stage == DecoratingInn.CompletedGoldRose)
+
+                if (hasStage && (stage == DecoratingInn.CompletedGoldRose))
                 {
                     Subject.Reply(source, "Skip", "decoratinginn_initial3");
+
                     return;
                 }
-                if (hasStage && stage == DecoratingInn.StartedPinkRose)
-                {
+
+                if (hasStage && (stage == DecoratingInn.StartedPinkRose))
                     Subject.Reply(source, "Skip", "decoratinginn_return1");
-                }
+
                 break;
             }
 
             case "decoratinginn_startquest":
             {
-                if (!hasStage || stage == DecoratingInn.None)
+                if (!hasStage || (stage == DecoratingInn.None))
                 {
                     Subject.Reply(source, "That's what I like to hear. See you soon!");
                     source.Trackers.Enums.Set(DecoratingInn.StartedPetunia);
                     source.SendOrangeBarMessage("Retrieve three Petunia for Runa.");
+
                     return;
                 }
-                if (hasStage && stage == DecoratingInn.CompletedPetunia)
+
+                if (hasStage && (stage == DecoratingInn.CompletedPetunia))
                 {
                     Subject.Reply(source, "Perfect. That gold rose will make a beautiful center piece.");
                     source.Trackers.Enums.Set(DecoratingInn.StartedGoldRose);
                     source.SendOrangeBarMessage("Retrieve one Gold Rose for Runa.");
+
                     return;
                 }
-                if (hasStage && stage == DecoratingInn.CompletedGoldRose)
+
+                if (hasStage && (stage == DecoratingInn.CompletedGoldRose))
                 {
                     Subject.Reply(source, "Those Pink Roses will be the finishing touch to the baskets. Please hurry.");
                     source.Trackers.Enums.Set(DecoratingInn.StartedPinkRose);
                     source.SendOrangeBarMessage("Retrieve three Pink Rose for Runa.");
+
                     return;
                 }
 
-                if (hasStage && stage == DecoratingInn.CompletedQuest)
+                if (hasStage && (stage == DecoratingInn.CompletedQuest))
                 {
-                    Subject.Reply(source, "Thank you. I will see you soon. Remember, I need three petunias, one gold rose as my center piece, and three pink flowers.");
+                    Subject.Reply(
+                        source,
+                        "Thank you. I will see you soon. Remember, I need three petunias, one gold rose as my center piece, and three pink flowers.");
                     source.SendOrangeBarMessage("Bring Runa three petunias, one gold rose, and three pink roses.");
                 }
-                
+
                 break;
             }
 
@@ -130,8 +147,7 @@ public class DecoratingInnQuestScript : DialogScriptBase
                 var hasRequiredGoldRose = source.Inventory.HasCount("Gold Rose", 1);
                 var hasRequiredPinkRose = source.Inventory.HasCount("Pink Rose", 3);
 
-
-                if (hasStage && stage == DecoratingInn.StartedPetunia)
+                if (hasStage && (stage == DecoratingInn.StartedPetunia))
                 {
                     if (hasRequiredPetunia)
                     {
@@ -139,18 +155,18 @@ public class DecoratingInnQuestScript : DialogScriptBase
                         source.Trackers.Enums.Set(DecoratingInn.CompletedPetunia);
 
                         Logger.WithTopics(
-                                [Topics.Entities.Aisling,
-                                Topics.Entities.Gold,
-                                Topics.Entities.Experience,
-                                Topics.Entities.Dialog,
-                                Topics.Entities.Quest])
-                            .WithProperty(source)
-                            .WithProperty(Subject)
-                            .LogInformation(
-                                "{@AislingName} has received {@GoldAmount} gold and {@ExpAmount} exp from a quest",
-                                source.Name,
-                                5000,
-                                15000);
+                                  Topics.Entities.Aisling,
+                                  Topics.Entities.Gold,
+                                  Topics.Entities.Experience,
+                                  Topics.Entities.Dialog,
+                                  Topics.Entities.Quest)
+                              .WithProperty(source)
+                              .WithProperty(Subject)
+                              .LogInformation(
+                                  "{@AislingName} has received {@GoldAmount} gold and {@ExpAmount} exp from a quest",
+                                  source.Name,
+                                  5000,
+                                  15000);
 
                         ExperienceDistributionScript.GiveExp(source, 5000);
                     }
@@ -162,15 +178,17 @@ public class DecoratingInnQuestScript : DialogScriptBase
                         if (petuniaCount < 1)
                         {
                             Subject.Reply(source, "I don't see any Petunias. Are you sure you found them? I need three for a basket.");
+
                             return;
                         }
-                        
-                        Subject.Reply(source,
+
+                        Subject.Reply(
+                            source,
                             $"{petuniaCount} petunias won't be enough. I need at least three to make one basket for a room.");
                     }
                 }
-                
-                if (hasStage && stage == DecoratingInn.StartedGoldRose)
+
+                if (hasStage && (stage == DecoratingInn.StartedGoldRose))
                 {
                     if (hasRequiredGoldRose)
                     {
@@ -178,18 +196,18 @@ public class DecoratingInnQuestScript : DialogScriptBase
                         source.Trackers.Enums.Set(DecoratingInn.CompletedGoldRose);
 
                         Logger.WithTopics(
-                                [Topics.Entities.Aisling,
-                                Topics.Entities.Gold,
-                                Topics.Entities.Experience,
-                                Topics.Entities.Dialog,
-                                Topics.Entities.Quest])
-                            .WithProperty(source)
-                            .WithProperty(Subject)
-                            .LogInformation(
-                                "{@AislingName} has received {@GoldAmount} gold and {@ExpAmount} exp from a quest",
-                                source.Name,
-                                5000,
-                                15000);
+                                  Topics.Entities.Aisling,
+                                  Topics.Entities.Gold,
+                                  Topics.Entities.Experience,
+                                  Topics.Entities.Dialog,
+                                  Topics.Entities.Quest)
+                              .WithProperty(source)
+                              .WithProperty(Subject)
+                              .LogInformation(
+                                  "{@AislingName} has received {@GoldAmount} gold and {@ExpAmount} exp from a quest",
+                                  source.Name,
+                                  5000,
+                                  15000);
 
                         ExperienceDistributionScript.GiveExp(source, 15000);
                     }
@@ -200,13 +218,16 @@ public class DecoratingInnQuestScript : DialogScriptBase
 
                         if (goldRoseCount < 1)
                         {
-                            Subject.Reply(source, "I really need that Gold Rose for the basket, it is the center piece. Please go find me a Gold Rose.");
+                            Subject.Reply(
+                                source,
+                                "I really need that Gold Rose for the basket, it is the center piece. Please go find me a Gold Rose.");
+
                             return;
                         }
                     }
                 }
-                
-                if (hasStage && stage == DecoratingInn.StartedPinkRose)
+
+                if (hasStage && (stage == DecoratingInn.StartedPinkRose))
                 {
                     if (hasRequiredPinkRose)
                     {
@@ -215,18 +236,18 @@ public class DecoratingInnQuestScript : DialogScriptBase
                         source.Trackers.TimedEvents.AddEvent("decoratingtheinncd", TimeSpan.FromHours(22), true);
 
                         Logger.WithTopics(
-                                [Topics.Entities.Aisling,
-                                Topics.Entities.Gold,
-                                Topics.Entities.Experience,
-                                Topics.Entities.Dialog,
-                                Topics.Entities.Quest])
-                            .WithProperty(source)
-                            .WithProperty(Subject)
-                            .LogInformation(
-                                "{@AislingName} has received {@GoldAmount} gold and {@ExpAmount} exp from a quest",
-                                source.Name,
-                                5000,
-                                15000);
+                                  Topics.Entities.Aisling,
+                                  Topics.Entities.Gold,
+                                  Topics.Entities.Experience,
+                                  Topics.Entities.Dialog,
+                                  Topics.Entities.Quest)
+                              .WithProperty(source)
+                              .WithProperty(Subject)
+                              .LogInformation(
+                                  "{@AislingName} has received {@GoldAmount} gold and {@ExpAmount} exp from a quest",
+                                  source.Name,
+                                  5000,
+                                  15000);
 
                         ExperienceDistributionScript.GiveExp(source, 40000);
                         source.TryGiveGold(25000);
@@ -243,8 +264,7 @@ public class DecoratingInnQuestScript : DialogScriptBase
                                     1,
                                     GameTime.Now));
 
-                            source.Client.SendServerMessage(ServerMessageType.OrangeBar1,
-                                "You received a unique legend mark!");
+                            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You received a unique legend mark!");
                         }
                     }
 
@@ -255,40 +275,42 @@ public class DecoratingInnQuestScript : DialogScriptBase
                         if (pinkRoseCount < 1)
                         {
                             Subject.Reply(source, "You don't have any Pink Rose. I need three for the basket.");
+
                             return;
                         }
-                        
-                        Subject.Reply(source,
+
+                        Subject.Reply(
+                            source,
                             $"{pinkRoseCount} pink roses won't be enough. I need at least three to make one basket for a room.");
                     }
                 }
 
-                if (hasStage && stage == DecoratingInn.CompletedQuest)
+                if (hasStage && (stage == DecoratingInn.CompletedQuest))
                 {
-                    var hasRequiredFlowers = source.Inventory.HasCount("Petunia", 3) 
-                                             && source.Inventory.HasCount("Gold Rose", 1) 
+                    var hasRequiredFlowers = source.Inventory.HasCount("Petunia", 3)
+                                             && source.Inventory.HasCount("Gold Rose", 1)
                                              && source.Inventory.HasCount("Pink Rose", 3);
 
                     if (hasRequiredFlowers)
                     {
-                     source.Inventory.RemoveQuantity("Petunia", 3, out _);
-                     source.Inventory.RemoveQuantity("Gold Rose", 1, out _);
-                     source.Inventory.RemoveQuantity("Pink Rose", 3, out _);
-                     source.Trackers.TimedEvents.AddEvent("decoratingtheinncd", TimeSpan.FromHours(22), true);
+                        source.Inventory.RemoveQuantity("Petunia", 3, out _);
+                        source.Inventory.RemoveQuantity("Gold Rose", 1, out _);
+                        source.Inventory.RemoveQuantity("Pink Rose", 3, out _);
+                        source.Trackers.TimedEvents.AddEvent("decoratingtheinncd", TimeSpan.FromHours(22), true);
 
                         Logger.WithTopics(
-                                [Topics.Entities.Aisling,
-                                Topics.Entities.Gold,
-                                Topics.Entities.Experience,
-                                Topics.Entities.Dialog,
-                                Topics.Entities.Quest])
-                            .WithProperty(source)
-                            .WithProperty(Subject)
-                            .LogInformation(
-                                "{@AislingName} has received {@GoldAmount} gold and {@ExpAmount} exp from a quest",
-                                source.Name,
-                                5000,
-                                15000);
+                                  Topics.Entities.Aisling,
+                                  Topics.Entities.Gold,
+                                  Topics.Entities.Experience,
+                                  Topics.Entities.Dialog,
+                                  Topics.Entities.Quest)
+                              .WithProperty(source)
+                              .WithProperty(Subject)
+                              .LogInformation(
+                                  "{@AislingName} has received {@GoldAmount} gold and {@ExpAmount} exp from a quest",
+                                  source.Name,
+                                  5000,
+                                  15000);
 
                         ExperienceDistributionScript.GiveExp(source, 75000);
                         source.TryGiveGold(30000);
@@ -305,8 +327,7 @@ public class DecoratingInnQuestScript : DialogScriptBase
                                     1,
                                     GameTime.Now));
 
-                            source.Client.SendServerMessage(ServerMessageType.OrangeBar1,
-                                "You received a unique legend mark!");
+                            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You received a unique legend mark!");
                         }
                     }
 
@@ -318,11 +339,15 @@ public class DecoratingInnQuestScript : DialogScriptBase
 
                         if ((pinkRoseCount < 1) || (goldRoseCount < 1) || (petuniaCount < 1))
                         {
-                            Subject.Reply(source, "You're missing all of one of the flowers I asked for. Remember I need three petunias, one gold rose, and three pink roses.");
+                            Subject.Reply(
+                                source,
+                                "You're missing all of one of the flowers I asked for. Remember I need three petunias, one gold rose, and three pink roses.");
+
                             return;
                         }
-                        
-                        Subject.Reply(source,
+
+                        Subject.Reply(
+                            source,
                             $"You have only brought me {petuniaCount} petunias, {goldRoseCount} gold roses, and {pinkRoseCount} pink roses. This is not enough for a basket. I really need three petunias, one gold rose, and three pink roses.");
                     }
                 }

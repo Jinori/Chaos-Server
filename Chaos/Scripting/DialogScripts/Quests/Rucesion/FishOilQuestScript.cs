@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.Common.Utilities;
+﻿using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
@@ -16,8 +15,7 @@ using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Quests.Rucesion;
 
-public class FishOilQuestScript(Dialog subject, IItemFactory itemFactory, ILogger<FishOilQuestScript> logger)
-    : DialogScriptBase(subject)
+public class FishOilQuestScript(Dialog subject, IItemFactory itemFactory, ILogger<FishOilQuestScript> logger) : DialogScriptBase(subject)
 {
     private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
 
@@ -29,10 +27,9 @@ public class FishOilQuestScript(Dialog subject, IItemFactory itemFactory, ILogge
         {
             case "antonio_initial":
             {
-
                 if (source.UserStatSheet.Level < 11)
                     return;
-                
+
                 var option = new DialogOption
                 {
                     DialogKey = "fishoil_initial",
@@ -44,7 +41,7 @@ public class FishOilQuestScript(Dialog subject, IItemFactory itemFactory, ILogge
 
                 break;
             }
-            
+
             case "kamel_initial":
             {
                 if (hasStage && (stage == FishOil.StartedQuest))
@@ -57,8 +54,8 @@ public class FishOilQuestScript(Dialog subject, IItemFactory itemFactory, ILogge
 
                     if (!Subject.HasOption(option.OptionText))
                         Subject.Options.Insert(0, option);
-   
                 }
+
                 break;
             }
 
@@ -66,10 +63,13 @@ public class FishOilQuestScript(Dialog subject, IItemFactory itemFactory, ILogge
             {
                 if (source.Trackers.TimedEvents.HasActiveEvent("fishoilcd", out var cdtime))
                 {
-                    Subject.Reply(source, $"That door is good as new. I couldn't of done it without your help. Thanks again. I'm sure I'll need more soon. (({cdtime.Remaining.ToReadableString()}))");
+                    Subject.Reply(
+                        source,
+                        $"That door is good as new. I couldn't of done it without your help. Thanks again. I'm sure I'll need more soon. (({cdtime.Remaining.ToReadableString()}))");
+
                     return;
                 }
-                
+
                 if (hasStage && (stage == FishOil.StartedQuest))
                     Subject.Reply(source, "Skip", "fishoil_return");
 
@@ -79,19 +79,27 @@ public class FishOilQuestScript(Dialog subject, IItemFactory itemFactory, ILogge
             case "fishoil_extract2":
             {
                 var hasRequiredFish = source.Inventory.HasCount("Lion Fish", 5);
-                
+
                 switch (hasRequiredFish)
                 {
                     case true:
                         source.Inventory.RemoveQuantity("Lion Fish", 5);
                         var oil = itemFactory.Create("fishoil");
                         source.GiveItemOrSendToBank(oil);
-                        Subject.Reply(source, "Thanks for the fish, here's some oil I had lying around from some previous fish. I'll make more later.", "Close");
+
+                        Subject.Reply(
+                            source,
+                            "Thanks for the fish, here's some oil I had lying around from some previous fish. I'll make more later.",
+                            "Close");
                         source.SendOrangeBarMessage("You received oil.");
+
                         return;
-                    
+
                     case false:
-                        Subject.Reply(source, "This won't be enough fish to make enough oil for a jar. Come back when you have some more fish.");
+                        Subject.Reply(
+                            source,
+                            "This won't be enough fish to make enough oil for a jar. Come back when you have some more fish.");
+
                         break;
                 }
 
@@ -102,13 +110,14 @@ public class FishOilQuestScript(Dialog subject, IItemFactory itemFactory, ILogge
             {
                 source.Trackers.Enums.Set(FishOil.StartedQuest);
                 source.SendOrangeBarMessage("Speak to Kamel about getting some oil for Antonio.");
+
                 break;
             }
 
             case "fishoil_turnin":
             {
                 var hasRequiredOil = source.Inventory.HasCount("Oil", 1);
-                
+
                 if (hasStage && (stage == FishOil.StartedQuest))
                     switch (hasRequiredOil)
                     {
@@ -119,17 +128,14 @@ public class FishOilQuestScript(Dialog subject, IItemFactory itemFactory, ILogge
                             source.Trackers.TimedEvents.AddEvent("fishoilcd", TimeSpan.FromHours(22), true);
 
                             logger.WithTopics(
-                                      [Topics.Entities.Aisling,
+                                      Topics.Entities.Aisling,
                                       Topics.Entities.Gold,
                                       Topics.Entities.Experience,
                                       Topics.Entities.Dialog,
-                                      Topics.Entities.Quest])
+                                      Topics.Entities.Quest)
                                   .WithProperty(source)
                                   .WithProperty(Subject)
-                                  .LogInformation(
-                                      "{@AislingName} has received {@ExpAmount} exp from a quest",
-                                      source.Name,
-                                      50000);
+                                  .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, 50000);
 
                             ExperienceDistributionScript.GiveExp(source, 25000);
                             source.TryGiveGamePoints(5);
@@ -145,15 +151,15 @@ public class FishOilQuestScript(Dialog subject, IItemFactory itemFactory, ILogge
                                         1,
                                         GameTime.Now));
 
-                                source.Client.SendServerMessage(ServerMessageType.OrangeBar1,
-                                    "You received a unique legend mark!");
+                                source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You received a unique legend mark!");
                             }
 
                             break;
                         }
-                        
+
                         case false:
-                            Subject.Reply(source,
+                            Subject.Reply(
+                                source,
                                 "You have come back empty handed? I guess it's okay for now. It's been creeking this long, I can live without.");
                             source.SendOrangeBarMessage("You think about the fish market.");
 

@@ -33,32 +33,32 @@ public class RemoveAndApplyEffectComponent : IConditionalComponent
             {
                 if (target.Effects.Contains("cradh"))
                 {
-                    context.SourceAisling?.SendOrangeBarMessage($"Target is already under another effect. [Cradh]");
+                    context.SourceAisling?.SendOrangeBarMessage("Target is already under another effect. [Cradh]");
 
                     return false;
                 }
-                
+
                 if (target.Effects.Contains("Mor Cradh"))
                 {
-                    context.SourceAisling?.SendOrangeBarMessage($"Target is already under another effect. [Mor Cradh]");
+                    context.SourceAisling?.SendOrangeBarMessage("Target is already under another effect. [Mor Cradh]");
 
                     return false;
                 }
-                
+
                 if (target.Effects.Contains("Ard Cradh"))
                 {
-                    context.SourceAisling?.SendOrangeBarMessage($"Target is already under another effect. [Ard Cradh]");
+                    context.SourceAisling?.SendOrangeBarMessage("Target is already under another effect. [Ard Cradh]");
 
                     return false;
                 }
-                
+
                 if (target.Effects.Contains("Dia Cradh"))
                 {
-                    context.SourceAisling?.SendOrangeBarMessage($"Target is already under another effect. [Dia Cradh]");
+                    context.SourceAisling?.SendOrangeBarMessage("Target is already under another effect. [Dia Cradh]");
 
                     return false;
                 }
-                
+
                 if (target.Effects.Contains("Beag Cradh") && options.EffectKeyToAddAfterRemoval is "preventrecradh")
                 {
                     var effect = options.EffectFactory.Create(options.EffectKeyToAddAfterRemoval);
@@ -74,26 +74,27 @@ public class RemoveAndApplyEffectComponent : IConditionalComponent
             {
                 if (target.Effects.Contains("Mor Cradh"))
                 {
-                    context.SourceAisling?.SendOrangeBarMessage($"Target is already under another effect. [Mor Cradh]");
+                    context.SourceAisling?.SendOrangeBarMessage("Target is already under another effect. [Mor Cradh]");
 
                     return false;
                 }
-                
+
                 if (target.Effects.Contains("Ard Cradh"))
                 {
-                    context.SourceAisling?.SendOrangeBarMessage($"Target is already under another effect. [Ard Cradh]");
+                    context.SourceAisling?.SendOrangeBarMessage("Target is already under another effect. [Ard Cradh]");
 
                     return false;
                 }
-                
+
                 if (target.Effects.Contains("Dia Cradh"))
                 {
-                    context.SourceAisling?.SendOrangeBarMessage($"Target is already under another effect. [Dia Cradh]");
+                    context.SourceAisling?.SendOrangeBarMessage("Target is already under another effect. [Dia Cradh]");
 
                     return false;
                 }
-                
-                if ((target.Effects.Contains("Cradh") || target.Effects.Contains("Beag Cradh") && options.EffectKeyToAddAfterRemoval is "preventrecradh"))
+
+                if (target.Effects.Contains("Cradh")
+                    || (target.Effects.Contains("Beag Cradh") && options.EffectKeyToAddAfterRemoval is "preventrecradh"))
                 {
                     var effect = options.EffectFactory.Create(options.EffectKeyToAddAfterRemoval);
                     target.Effects.Apply(context.Source, effect);
@@ -109,19 +110,21 @@ public class RemoveAndApplyEffectComponent : IConditionalComponent
             {
                 if (target.Effects.Contains("Ard Cradh"))
                 {
-                    context.SourceAisling?.SendOrangeBarMessage($"Target is already under another effect. [Ard Cradh]");
+                    context.SourceAisling?.SendOrangeBarMessage("Target is already under another effect. [Ard Cradh]");
 
                     return false;
                 }
-                
+
                 if (target.Effects.Contains("Dia Cradh"))
                 {
-                    context.SourceAisling?.SendOrangeBarMessage($"Target is already under another effect. [Dia Cradh]");
+                    context.SourceAisling?.SendOrangeBarMessage("Target is already under another effect. [Dia Cradh]");
 
                     return false;
                 }
-                
-                if (target.Effects.Contains("Mor Cradh") || target.Effects.Contains("Cradh") || (target.Effects.Contains("Beag Cradh") && options.EffectKeyToAddAfterRemoval is "preventrecradh"))
+
+                if (target.Effects.Contains("Mor Cradh")
+                    || target.Effects.Contains("Cradh")
+                    || (target.Effects.Contains("Beag Cradh") && options.EffectKeyToAddAfterRemoval is "preventrecradh"))
                 {
                     var effect = options.EffectFactory.Create(options.EffectKeyToAddAfterRemoval);
                     target.Effects.Apply(context.Source, effect);
@@ -129,6 +132,7 @@ public class RemoveAndApplyEffectComponent : IConditionalComponent
                     target.Effects.Dispel("Cradh");
                     target.Effects.Dispel(options.EffectKeyToRemove);
                     context.SourceAisling?.SendOrangeBarMessage($"{target.Name}'s curse healed and prevent recradh is now active.");
+
                     return true;
                 }
             }
@@ -137,12 +141,15 @@ public class RemoveAndApplyEffectComponent : IConditionalComponent
             {
                 if (target.Effects.Contains("Dia Cradh"))
                 {
-                    context.SourceAisling?.SendOrangeBarMessage($"Target is already under another effect. [Dia Cradh]");
+                    context.SourceAisling?.SendOrangeBarMessage("Target is already under another effect. [Dia Cradh]");
 
                     return false;
                 }
-                
-                if (target.Effects.Contains("Ard Cradh") || target.Effects.Contains("Mor Cradh") || target.Effects.Contains("Cradh") || (target.Effects.Contains("Beag Cradh") && options.EffectKeyToAddAfterRemoval is "preventrecradh"))
+
+                if (target.Effects.Contains("Ard Cradh")
+                    || target.Effects.Contains("Mor Cradh")
+                    || target.Effects.Contains("Cradh")
+                    || (target.Effects.Contains("Beag Cradh") && options.EffectKeyToAddAfterRemoval is "preventrecradh"))
                 {
                     var effect = options.EffectFactory.Create(options.EffectKeyToAddAfterRemoval);
                     target.Effects.Apply(context.Source, effect);
@@ -151,9 +158,11 @@ public class RemoveAndApplyEffectComponent : IConditionalComponent
                     target.Effects.Dispel("Mor Cradh");
                     target.Effects.Dispel(options.EffectKeyToRemove);
                     context.SourceAisling?.SendOrangeBarMessage($"{target.Name}'s curse healed and prevent recradh is now active.");
+
                     return true;
                 }
-            } 
+            }
+
             if (options.EffectKeyToRemove is "dia cradh")
             {
                 if (target.Effects.Contains("Dia Cradh") && options.EffectKeyToAddAfterRemoval is "preventrecradh")
@@ -166,19 +175,19 @@ public class RemoveAndApplyEffectComponent : IConditionalComponent
                     target.Effects.Dispel("Ard Cradh");
                     target.Effects.Dispel(options.EffectKeyToRemove);
                     context.SourceAisling?.SendOrangeBarMessage($"{target.Name}'s curse healed and prevent recradh is now active.");
+
                     return true;
                 }
-            }
-            else if (!string.IsNullOrEmpty(options.EffectKeyToRemove) && target.Effects.Contains(options.EffectKeyToRemove))
+            } else if (!string.IsNullOrEmpty(options.EffectKeyToRemove) && target.Effects.Contains(options.EffectKeyToRemove))
             {
                 target.Effects.Dispel(options.EffectKeyToRemove);
-    
+
                 if (!string.IsNullOrEmpty(options.EffectKeyToAddAfterRemoval))
                 {
                     var effect = options.EffectFactory.Create(options.EffectKeyToAddAfterRemoval);
                     target.Effects.Apply(context.Source, effect);
                 }
-    
+
                 return true;
             }
         }

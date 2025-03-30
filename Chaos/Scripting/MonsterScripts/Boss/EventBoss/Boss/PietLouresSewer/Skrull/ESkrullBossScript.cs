@@ -1,7 +1,6 @@
 using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using Chaos.Scripting.MonsterScripts.Boss.PietLouresSewer.Skrull;
 
 namespace Chaos.Scripting.MonsterScripts.Boss.EventBoss.Boss.PietLouresSewer.Skrull;
 

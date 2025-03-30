@@ -19,7 +19,7 @@ public class ZarathTheForsakenBossScript : CompositeMonsterScript
         GetScriptKey(typeof(DisplayNameScript)),
         GetScriptKey(typeof(DeathScript)),
         GetScriptKey(typeof(BossDefenseScript)),
-        GetScriptKey(typeof(ThisIsABossScript))          
+        GetScriptKey(typeof(ThisIsABossScript))
     };
 
     /// <inheritdoc />

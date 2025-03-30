@@ -8,7 +8,7 @@ public sealed class CookBookScript : ReactorTileScriptBase
 {
     /// <inheritdoc />
     public CookBookScript(ReactorTile subject)
-        : base(subject) {}
+        : base(subject) { }
 
     /// <inheritdoc />
     public override void OnClicked(Aisling source)
@@ -20,7 +20,7 @@ public sealed class CookBookScript : ReactorTileScriptBase
 
             return;
         }
+
         source.SendOrangeBarMessage("You found a cook book! But you already know how to make pie.");
-        return;
     }
 }

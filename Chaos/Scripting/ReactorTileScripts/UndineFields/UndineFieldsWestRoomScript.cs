@@ -13,16 +13,21 @@ namespace Chaos.Scripting.ReactorTileScripts.UndineFields;
 public class UndineFieldsWestRoomScript : ReactorTileScriptBase
 {
     private readonly IDialogFactory DialogFactory;
-    private readonly ISimpleCache SimpleCache;
     private readonly IItemFactory ItemFactory;
     private readonly IMerchantFactory MerchantFactory;
+    private readonly ISimpleCache SimpleCache;
 
     #region ScriptVars
     protected Location Destination { get; init; } = null!;
     #endregion
 
     /// <inheritdoc />
-    public UndineFieldsWestRoomScript(ReactorTile subject, IItemFactory itemFactory, IDialogFactory dialogFactory, ISimpleCache simpleCache, IMerchantFactory merchantFactory)
+    public UndineFieldsWestRoomScript(
+        ReactorTile subject,
+        IItemFactory itemFactory,
+        IDialogFactory dialogFactory,
+        ISimpleCache simpleCache,
+        IMerchantFactory merchantFactory)
         : base(subject)
     {
         DialogFactory = dialogFactory;
@@ -35,14 +40,15 @@ public class UndineFieldsWestRoomScript : ReactorTileScriptBase
     public override void OnWalkedOn(Creature source)
     {
         var currentMap = SimpleCache.Get<MapInstance>(source.MapInstance.InstanceId);
-        
+
         if (source is not Aisling aisling)
             return;
-        
+
         if (aisling.Group is null || aisling.Group.Any(x => !x.OnSameMapAs(aisling) || !x.WithinRange(aisling)))
         {
             // Send a message to the Aisling
             aisling.SendOrangeBarMessage("You must have a group nearby to enter the next field.");
+
             // Warp the source back
             var point = source.DirectionalOffset(source.Direction.Reverse());
             source.WarpTo(point);
@@ -50,23 +56,26 @@ public class UndineFieldsWestRoomScript : ReactorTileScriptBase
             return;
         }
 
-        var allMembersHaveQuestEnum = aisling.Group.All(member =>
-            member.Trackers.Enums.TryGetValue(out UndineFieldDungeon stage) &&
-            stage == UndineFieldDungeon.StartedDungeon || member.Trackers.Flags.TryGetFlag(out UndineFieldDungeonFlag flag) && flag == UndineFieldDungeonFlag.CompletedUF) && aisling.Group.All(member =>
-            member.Trackers.Counters.TryGetValue("orckills", out var count) && count >= 10);
+        var allMembersHaveQuestEnum
+            = aisling.Group.All(
+                  member
+                      => (member.Trackers.Enums.TryGetValue(out UndineFieldDungeon stage) && (stage == UndineFieldDungeon.StartedDungeon))
+                         || (member.Trackers.Flags.TryGetFlag(out UndineFieldDungeonFlag flag)
+                             && (flag == UndineFieldDungeonFlag.CompletedUF)))
+              && aisling.Group.All(member => member.Trackers.Counters.TryGetValue("orckills", out var count) && (count >= 10));
 
         if (allMembersHaveQuestEnum)
         {
             var npcpoint = new Point(aisling.X, aisling.Y);
             var merchant = MerchantFactory.Create("uf_entrance_merchant", aisling.MapInstance, npcpoint);
 
-                var dialog = DialogFactory.Create("uf_entrancenorth1", merchant);
-                dialog.Display(aisling);
-        }
-        else
+            var dialog = DialogFactory.Create("uf_entrancenorth1", merchant);
+            dialog.Display(aisling);
+        } else
         {
             // Send a message to the Aisling
             aisling.SendOrangeBarMessage("Not all group members have killed ten orcs.");
+
             // Warp the source back
             var point = source.DirectionalOffset(source.Direction.Reverse());
             source.WarpTo(point);

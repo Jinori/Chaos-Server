@@ -15,15 +15,21 @@ public sealed class LynithBossEnrageScript(Monster subject) : MonsterScriptBase(
         AnimationSpeed = 100,
         TargetAnimation = 189
     };
+
     public override void Update(TimeSpan delta)
     {
         if (!Bonus75Applied && (Subject.StatSheet.HealthPercent <= 75))
         {
             Bonus75Applied = true;
+
             //Give Bonuses
-            var attrib = new Attributes { AtkSpeedPct = 15 };
+            var attrib = new Attributes
+            {
+                AtkSpeedPct = 15
+            };
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
+
             //Spawn Monsters
         }
 

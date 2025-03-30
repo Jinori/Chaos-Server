@@ -9,14 +9,6 @@ namespace Chaos.Scripting.ItemScripts.Enchantments;
 public sealed class DarkenedPrefixScript : ItemScriptBase, IPrefixEnchantmentScript
 {
     /// <inheritdoc />
-    public DarkenedPrefixScript(Item subject)
-        : base(subject) => IPrefixEnchantmentScript.ApplyPrefix<DarkenedPrefixScript>(subject);
-
-    /// <inheritdoc />
-    public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
-        => IPrefixEnchantmentScript.Mutate<DarkenedPrefixScript>(node, template);
-    
-    /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
         AtkSpeedPct = 1,
@@ -25,4 +17,13 @@ public sealed class DarkenedPrefixScript : ItemScriptBase, IPrefixEnchantmentScr
 
     /// <inheritdoc />
     public static string PrefixStr => "Darkened";
+
+    /// <inheritdoc />
+    public DarkenedPrefixScript(Item subject)
+        : base(subject)
+        => IPrefixEnchantmentScript.ApplyPrefix<DarkenedPrefixScript>(subject);
+
+    /// <inheritdoc />
+    public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
+        => IPrefixEnchantmentScript.Mutate<DarkenedPrefixScript>(node, template);
 }

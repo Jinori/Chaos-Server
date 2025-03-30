@@ -1,5 +1,4 @@
 ﻿using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Formulae;
@@ -29,8 +28,7 @@ public class TerrorChestScript : DialogScriptBase
         Dialog subject,
         IItemFactory itemFactory,
         ISimpleCache simpleCache,
-        ILogger<TerrorChestScript> logger
-    )
+        ILogger<TerrorChestScript> logger)
         : base(subject)
     {
         ItemFactory = itemFactory;
@@ -52,7 +50,13 @@ public class TerrorChestScript : DialogScriptBase
 
                 if (isArmorDye)
                 {
-                    var armorDye = new List<string> { "Mileth", "Rucesion", "Suomi", "Loures" };
+                    var armorDye = new List<string>
+                    {
+                        "Mileth",
+                        "Rucesion",
+                        "Suomi",
+                        "Loures"
+                    };
                     var random = new Random();
                     var index = random.Next(armorDye.Count);
                     item = ItemFactory.Create("armorDyeContainer");
@@ -66,10 +70,22 @@ public class TerrorChestScript : DialogScriptBase
                         "Loures"   => DisplayColor.White,
                         _          => item.Color
                     };
-                }
-                else // isOvercoat
+                } else // isOvercoat
                 {
-                    var templateKeyRewards = new List<string> { "dyeableTrainingOutfit", "blackpenguincostume", "bluepenguincostume", "chickencostume", "cowcostume","dogoutfit", "jestersuit", "pumpkincostume", "reindeercostume", "sharkcostume", "sheepcostume" };
+                    var templateKeyRewards = new List<string>
+                    {
+                        "dyeableTrainingOutfit",
+                        "blackpenguincostume",
+                        "bluepenguincostume",
+                        "chickencostume",
+                        "cowcostume",
+                        "dogoutfit",
+                        "jestersuit",
+                        "pumpkincostume",
+                        "reindeercostume",
+                        "sharkcostume",
+                        "sheepcostume"
+                    };
                     var index = new Random().Next(templateKeyRewards.Count);
                     item = ItemFactory.Create(templateKeyRewards[index]);
                 }
@@ -78,17 +94,15 @@ public class TerrorChestScript : DialogScriptBase
                 var expAmount = Convert.ToInt32(0.20 * tnl);
 
                 if (expAmount > 320000)
-                {
                     expAmount = 600000;
-                }
-                
+
                 Logger.WithTopics(
-                          [Topics.Entities.Aisling,
+                          Topics.Entities.Aisling,
                           Topics.Entities.Gold,
                           Topics.Entities.Experience,
                           Topics.Entities.Dialog,
                           Topics.Entities.Quest,
-                          Topics.Entities.Item])
+                          Topics.Entities.Item)
                       .WithProperty(source)
                       .WithProperty(Subject)
                       .LogInformation(
@@ -118,8 +132,7 @@ public class TerrorChestScript : DialogScriptBase
 
                 source.Trackers.TimedEvents.AddEvent("TerrorOfTheCrypt", TimeSpan.FromHours(22), true);
             }
-        }
-        else
+        } else
             source.SendActiveMessage("You have already received today's rewards for this quest.");
 
         var mapInstance = SimpleCache.Get<MapInstance>("mileth_tavern");

@@ -1,5 +1,4 @@
 using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions.Common;
@@ -18,6 +17,18 @@ public abstract class ItemSpawnerScript : MapScriptBase
 
     private readonly ISimpleCache SimpleCache;
 
+    private readonly List<string> StPatricksCharmTemplateKeys =
+    [
+        "horseshoecharm",
+        "bluemooncharm",
+        "heartcharm",
+        "clovercharm",
+        "potofgoldcharm",
+        "rainbowcharm",
+        "starcharm",
+        "redballooncharm"
+    ];
+
     private IIntervalTimer? SpawnTimer;
     public abstract string ItemTemplateKey { get; set; }
     public abstract int MaxAmount { get; set; }
@@ -25,14 +36,23 @@ public abstract class ItemSpawnerScript : MapScriptBase
     public abstract int SpawnChance { get; set; }
     public abstract int SpawnIntervalMs { get; set; }
 
-    private List<string> StPatricksCharmTemplateKeys =
-        ["horseshoecharm", "bluemooncharm", "heartcharm", "clovercharm", "potofgoldcharm", "rainbowcharm", "starcharm", "redballooncharm"];
-
     protected ItemSpawnerScript(MapInstance subject, IItemFactory itemFactory, ISimpleCache simpleCache)
         : base(subject)
     {
         ItemFactory = itemFactory;
         SimpleCache = simpleCache;
+    }
+
+    private bool CheckToSpawnEventItems()
+    {
+        var isEventActive = EventPeriod.IsEventActive(DateTime.UtcNow, Subject.InstanceId);
+
+        return isEventActive switch
+        {
+            true when StPatricksCharmTemplateKeys.Contains(ItemTemplateKey)  => true,
+            false when StPatricksCharmTemplateKeys.Contains(ItemTemplateKey) => false,
+            _                                                                => true
+        };
     }
 
     private Point GenerateSpawnPoint(MapInstance selectedMap)
@@ -46,37 +66,25 @@ public abstract class ItemSpawnerScript : MapScriptBase
         return point;
     }
 
-    private bool CheckToSpawnEventItems()
-    {
-       var isEventActive = EventPeriod.IsEventActive(DateTime.UtcNow, Subject.InstanceId);
-
-        return isEventActive switch
-        {
-            true when StPatricksCharmTemplateKeys.Contains(ItemTemplateKey)  => true,
-            false when StPatricksCharmTemplateKeys.Contains(ItemTemplateKey) => false,
-            _                                                                => true
-        };
-    }
-    
     public override void Update(TimeSpan delta)
     {
         if (!CheckToSpawnEventItems())
             return;
-        
-        
+
         SpawnTimer ??= new IntervalTimer(TimeSpan.FromMilliseconds(SpawnIntervalMs));
 
         SpawnTimer.Update(delta);
 
         if (SpawnTimer.IntervalElapsed)
         {
-            var allCountOfItems = Subject.GetEntities<GroundItem>().Count(obj => obj.Item.Template.TemplateKey.EqualsI(ItemTemplateKey));
+            var allCountOfItems = Subject.GetEntities<GroundItem>()
+                                         .Count(obj => obj.Item.Template.TemplateKey.EqualsI(ItemTemplateKey));
 
             var maxSpawns = Math.Min(MaxAmount - allCountOfItems, MaxPerSpawn);
 
             if (maxSpawns <= 0)
                 return;
-            
+
             maxSpawns++;
 
             var spawnAmount = Random.Shared.Next(1, maxSpawns);

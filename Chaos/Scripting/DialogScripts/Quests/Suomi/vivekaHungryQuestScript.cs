@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.Common.Utilities;
+﻿using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
@@ -19,9 +18,8 @@ namespace Chaos.Scripting.DialogScripts.Quests.Suomi;
 
 public class VivekaHungryQuestScript : DialogScriptBase
 {
-    private readonly ILogger<SpareAStickScript> Logger;
-
     private readonly IItemFactory ItemFactory;
+    private readonly ILogger<SpareAStickScript> Logger;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     public VivekaHungryQuestScript(Dialog subject, IItemFactory itemFactory, ILogger<SpareAStickScript> logger)
@@ -40,7 +38,7 @@ public class VivekaHungryQuestScript : DialogScriptBase
         {
             case "viveka_initial":
             {
-                if (hasStage && stage == HungryViveka.CompletedCherryPie)
+                if (hasStage && (stage == HungryViveka.CompletedCherryPie))
                 {
                     var option2 = new DialogOption
                     {
@@ -50,10 +48,11 @@ public class VivekaHungryQuestScript : DialogScriptBase
 
                     if (!Subject.HasOption(option2.OptionText))
                         Subject.Options.Insert(0, option2);
+
                     return;
                 }
 
-                if (hasStage && stage == HungryViveka.StartedCherryPie)
+                if (hasStage && (stage == HungryViveka.StartedCherryPie))
                 {
                     var option2 = new DialogOption
                     {
@@ -63,6 +62,7 @@ public class VivekaHungryQuestScript : DialogScriptBase
 
                     if (!Subject.HasOption(option2.OptionText))
                         Subject.Options.Insert(0, option2);
+
                     return;
                 }
 
@@ -82,15 +82,15 @@ public class VivekaHungryQuestScript : DialogScriptBase
             {
                 if (source.Trackers.TimedEvents.HasActiveEvent("vivekahungrycd", out var cdtime))
                 {
-                    Subject.Reply(source,
+                    Subject.Reply(
+                        source,
                         $"I cannot express how much that cherry pie meant to me. I would eat another if you brought one in (({cdtime.Remaining.ToReadableString()}))");
+
                     return;
                 }
 
-                if (hasStage && stage == HungryViveka.StartedCherryPie)
-                {
+                if (hasStage && (stage == HungryViveka.StartedCherryPie))
                     Subject.Reply(source, "Skip", "vivekaHungry_turnin");
-                }
 
                 break;
             }
@@ -98,18 +98,16 @@ public class VivekaHungryQuestScript : DialogScriptBase
             case "vivekahungry_initial2":
             {
                 if (source.Trackers.TimedEvents.HasActiveEvent("vivekahungrycd", out var cdtime))
-                {
-                    Subject.Reply(source,
+                    Subject.Reply(
+                        source,
                         $"I cannot express how much that cherry pie meant to me. I would eat another if you brought one in (({cdtime.Remaining.ToReadableString()}))");
-                    return;
-                }
 
                 break;
             }
 
             case "vivekahungry_startquest3":
             {
-                if (!hasStage || stage == HungryViveka.None)
+                if (!hasStage || (stage == HungryViveka.None))
                 {
                     source.Trackers.Enums.Set(HungryViveka.StartedCherryPie);
                     source.SendOrangeBarMessage("Bring Viveka something to eat that has cherries.");
@@ -122,8 +120,7 @@ public class VivekaHungryQuestScript : DialogScriptBase
             {
                 var hasRequiredCherryPie = source.Inventory.HasCount("Cherry Pie", 1);
 
-                if (hasStage && stage == HungryViveka.StartedCherryPie)
-                {
+                if (hasStage && (stage == HungryViveka.StartedCherryPie))
                     if (hasRequiredCherryPie)
                     {
                         source.Inventory.RemoveQuantity("Cherry Pie", 1, out _);
@@ -135,18 +132,18 @@ public class VivekaHungryQuestScript : DialogScriptBase
                         source.GiveItemOrSendToBank(wine2);
 
                         Logger.WithTopics(
-                                [Topics.Entities.Aisling,
-                                Topics.Entities.Gold,
-                                Topics.Entities.Experience,
-                                Topics.Entities.Dialog,
-                                Topics.Entities.Quest])
-                            .WithProperty(source)
-                            .WithProperty(Subject)
-                            .LogInformation(
-                                "{@AislingName} has received {@GoldAmount} gold and {@ExpAmount} exp from a quest",
-                                source.Name,
-                                5000,
-                                15000);
+                                  Topics.Entities.Aisling,
+                                  Topics.Entities.Gold,
+                                  Topics.Entities.Experience,
+                                  Topics.Entities.Dialog,
+                                  Topics.Entities.Quest)
+                              .WithProperty(source)
+                              .WithProperty(Subject)
+                              .LogInformation(
+                                  "{@AislingName} has received {@GoldAmount} gold and {@ExpAmount} exp from a quest",
+                                  source.Name,
+                                  5000,
+                                  15000);
 
                         ExperienceDistributionScript.GiveExp(source, 25000);
 
@@ -161,11 +158,9 @@ public class VivekaHungryQuestScript : DialogScriptBase
                                     1,
                                     GameTime.Now));
 
-                            source.Client.SendServerMessage(ServerMessageType.OrangeBar1,
-                                "You received a unique legend mark!");
+                            source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You received a unique legend mark!");
                         }
                     }
-                }
 
                 if (!hasRequiredCherryPie)
                 {
@@ -173,13 +168,14 @@ public class VivekaHungryQuestScript : DialogScriptBase
 
                     if (cherryCount)
                     {
-                        Subject.Reply(source,
+                        Subject.Reply(
+                            source,
                             "I'm not eating just cherries from the garden! Gross. Go give those back to the farmer or do something good with them!");
+
                         return;
                     }
 
-                    Subject.Reply(source,
-                        $"That isn't much of a surprise. Nothing? Come back when you have my surprise sweety.");
+                    Subject.Reply(source, "That isn't much of a surprise. Nothing? Come back when you have my surprise sweety.");
                 }
 
                 break;
@@ -189,7 +185,7 @@ public class VivekaHungryQuestScript : DialogScriptBase
             {
                 var hasRequiredCherryPie = source.Inventory.HasCount("Cherry Pie", 1);
 
-                if (hasStage && stage == HungryViveka.CompletedCherryPie)
+                if (hasStage && (stage == HungryViveka.CompletedCherryPie))
                 {
                     if (hasRequiredCherryPie)
                     {
@@ -197,21 +193,17 @@ public class VivekaHungryQuestScript : DialogScriptBase
                         source.Trackers.TimedEvents.AddEvent("vivekahungrycd", TimeSpan.FromHours(22), true);
 
                         Logger.WithTopics(
-                                [Topics.Entities.Aisling,
-                                Topics.Entities.Gold,
-                                Topics.Entities.Experience,
-                                Topics.Entities.Dialog,
-                                Topics.Entities.Quest])
-                            .WithProperty(source)
-                            .WithProperty(Subject)
-                            .LogInformation(
-                                "{@AislingName} has received {@ExpAmount} exp from a quest",
-                                source.Name,
-                                5000);
+                                  Topics.Entities.Aisling,
+                                  Topics.Entities.Gold,
+                                  Topics.Entities.Experience,
+                                  Topics.Entities.Dialog,
+                                  Topics.Entities.Quest)
+                              .WithProperty(source)
+                              .WithProperty(Subject)
+                              .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, 5000);
 
                         ExperienceDistributionScript.GiveExp(source, 5000);
                     }
-
 
                     if (IntegerRandomizer.RollChance(8))
                     {
@@ -224,14 +216,13 @@ public class VivekaHungryQuestScript : DialogScriptBase
                                 1,
                                 GameTime.Now));
 
-                        source.Client.SendServerMessage(ServerMessageType.OrangeBar1,
-                            "You received a unique legend mark!");
+                        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You received a unique legend mark!");
                     }
 
                     if (!hasRequiredCherryPie)
-                    {
-                        Subject.Reply(source, "Well where is it? Did you forget my pie? I don't have time for this. *Viveka walks off and continues to work*");
-                    }
+                        Subject.Reply(
+                            source,
+                            "Well where is it? Did you forget my pie? I don't have time for this. *Viveka walks off and continues to work*");
                 }
 
                 break;

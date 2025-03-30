@@ -49,6 +49,9 @@ public class SapStabScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public decimal? DamageStatMultiplier { get; init; }
 
+    /// <inheritdoc />
+    public bool DealDamageEqualToSappedMana { get; init; }
+
     public List<string>? EffectKeysToBreak { get; set; }
 
     /// <inheritdoc />
@@ -59,7 +62,13 @@ public class SapStabScript : ConfigurableSkillScriptBase,
     public int? ExclusionRange { get; init; }
 
     /// <inheritdoc />
+    public int? ExclusionRange2 { get; init; }
+
+    /// <inheritdoc />
     public TargetFilter Filter { get; init; }
+
+    /// <inheritdoc />
+    public TargetFilter Filter2 { get; init; }
 
     /// <inheritdoc />
     public bool IsPetSap { get; init; }
@@ -77,6 +86,9 @@ public class SapStabScript : ConfigurableSkillScriptBase,
     public bool MustHaveTargets { get; init; }
 
     /// <inheritdoc />
+    public bool MustHaveTargets2 { get; init; }
+
+    /// <inheritdoc />
     public decimal? PctHpDamage { get; init; }
 
     /// <inheritdoc />
@@ -84,12 +96,6 @@ public class SapStabScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public decimal PctManaReplenish { get; init; }
-
-    /// <inheritdoc />
-    public Creature SapTarget { get; set; } = null!;
-
-    /// <inheritdoc />
-    public bool DealDamageEqualToSappedMana { get; init; }
 
     public decimal? PctOfHealth { get; init; }
 
@@ -99,14 +105,26 @@ public class SapStabScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public int Range { get; init; }
-    
+
+    /// <inheritdoc />
+    public int Range2 { get; init; }
+
+    /// <inheritdoc />
+    public Creature SapTarget { get; set; } = null!;
+
     public bool? ScaleBodyAnimationSpeedByAttackSpeed { get; init; }
 
     /// <inheritdoc />
     public AoeShape Shape { get; init; }
 
     /// <inheritdoc />
+    public AoeShape Shape2 { get; init; }
+
+    /// <inheritdoc />
     public bool SingleTarget { get; init; }
+
+    /// <inheritdoc />
+    public bool SingleTarget2 { get; init; }
 
     /// <inheritdoc />
     public byte? Sound { get; init; }
@@ -115,7 +133,14 @@ public class SapStabScript : ConfigurableSkillScriptBase,
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
     public bool StopOnFirstHit { get; init; }
+
+    /// <inheritdoc />
+    public bool StopOnFirstHit2 { get; init; }
+
     public bool StopOnWalls { get; init; }
+
+    /// <inheritdoc />
+    public bool StopOnWalls2 { get; init; }
 
     public bool? SurroundingTargets { get; init; }
 
@@ -123,6 +148,19 @@ public class SapStabScript : ConfigurableSkillScriptBase,
     public SapStabScript(Skill subject)
         : base(subject)
         => ApplyDamageScript = ApplyAttackDamageScript.Create();
+
+    private bool GetSapTarget(ComponentVars vars)
+    {
+        SapTarget = null!;
+        var targets = vars.GetTargets<Creature>();
+
+        if (targets.Count == 0)
+            return false;
+
+        SapTarget = targets.First();
+
+        return true;
+    }
 
     public override void OnUse(ActivationContext context)
         => new ComponentExecutor(context).WithOptions(this)
@@ -139,41 +177,4 @@ public class SapStabScript : ConfigurableSkillScriptBase,
                                          ?.Execute<SapNeedleComponent>()
                                          .Execute<AnimationAbilityComponent>()
                                          .Execute<CooldownComponent>();
-
-    private bool GetSapTarget(ComponentVars vars)
-    {
-        SapTarget = null!;
-        var targets = vars.GetTargets<Creature>();
-
-        if (targets.Count == 0)
-            return false;
-
-        SapTarget = targets.First();
-
-        return true;
-    }
-
-    /// <inheritdoc />
-    public int? ExclusionRange2 { get; init; }
-
-    /// <inheritdoc />
-    public TargetFilter Filter2 { get; init; }
-
-    /// <inheritdoc />
-    public bool MustHaveTargets2 { get; init; }
-
-    /// <inheritdoc />
-    public int Range2 { get; init; }
-
-    /// <inheritdoc />
-    public AoeShape Shape2 { get; init; }
-
-    /// <inheritdoc />
-    public bool SingleTarget2 { get; init; }
-
-    /// <inheritdoc />
-    public bool StopOnFirstHit2 { get; init; }
-
-    /// <inheritdoc />
-    public bool StopOnWalls2 { get; init; }
 }

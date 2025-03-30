@@ -1,7 +1,6 @@
 using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using Chaos.Scripting.MonsterScripts.Boss.MythicBosses.WolfBoss.Wolf3;
 
 namespace Chaos.Scripting.MonsterScripts.Boss.EventBoss.Boss.MythicBosses.WolfBoss.Wolf3;
 

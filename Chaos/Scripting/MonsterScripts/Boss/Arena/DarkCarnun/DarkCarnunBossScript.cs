@@ -1,7 +1,6 @@
 using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using Chaos.Scripting.MonsterScripts.Boss.CRBosses.SoulCollector;
 
 namespace Chaos.Scripting.MonsterScripts.Boss.Arena.DarkCarnun;
 

@@ -5,8 +5,7 @@ using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.MonsterScripts.Boss.MainStory.EarthGuardian;
 
-public sealed class EarthGuardianBossGroupScalingScript(Monster subject, ISpellFactory spellFactory)
-    : MonsterScriptBase(subject)
+public sealed class EarthGuardianBossGroupScalingScript(Monster subject, ISpellFactory spellFactory) : MonsterScriptBase(subject)
 {
     private static bool _groupBonusApplied;
 
@@ -58,10 +57,16 @@ public sealed class EarthGuardianBossGroupScalingScript(Monster subject, ISpellF
         base.Update(delta);
 
         // If bonus is already applied or there's no valid target, return
-        if (_groupBonusApplied || (Target == null) || !ShouldMove || !Map.GetEntities<Aisling>().Any())
+        if (_groupBonusApplied
+            || (Target == null)
+            || !ShouldMove
+            || !Map.GetEntities<Aisling>()
+                   .Any())
             return;
 
-        var groupLevel = Map.GetEntitiesWithinRange<Aisling>(Subject, 12).Select(aisling => aisling.StatSheet.Level).ToList();
+        var groupLevel = Map.GetEntitiesWithinRange<Aisling>(Subject, 12)
+                            .Select(aisling => aisling.StatSheet.Level)
+                            .ToList();
 
         // Create bonus attributes based on the group level
         var attrib = CreateGroupBonusAttributes(groupLevel);
@@ -71,6 +76,7 @@ public sealed class EarthGuardianBossGroupScalingScript(Monster subject, ISpellF
 
         // Add the attributes to the monster
         Subject.StatSheet.AddBonus(attrib);
+
         // Add HP and MP to the monster
         Subject.StatSheet.SetHealthPct(100);
         Subject.StatSheet.SetManaPct(100);

@@ -54,7 +54,7 @@ public class CreantBossMapScript : MapScriptBase
 
                         return;
                     }
-                    
+
                     if (Subject.GetEntities<Aisling>()
                                .Any(x => x.Trackers.Flags.HasFlag(CreantEnums.KilledSham))
                         && (Subject.Template.TemplateKey == "31010"))
@@ -63,7 +63,7 @@ public class CreantBossMapScript : MapScriptBase
 
                         return;
                     }
-                    
+
                     if (Subject.GetEntities<Aisling>()
                                .Any(x => x.Trackers.Flags.HasFlag(CreantEnums.KilledPhoenix))
                         && (Subject.Template.TemplateKey == "989"))
@@ -72,7 +72,7 @@ public class CreantBossMapScript : MapScriptBase
 
                         return;
                     }
-                    
+
                     if (Subject.GetEntities<Aisling>()
                                .Any(x => x.Trackers.Flags.HasFlag(CreantEnums.KilledTauren))
                         && (Subject.Template.TemplateKey == "19522"))
@@ -81,7 +81,7 @@ public class CreantBossMapScript : MapScriptBase
 
                         return;
                     }
-                    
+
                     if (Subject.Template.TemplateKey == "31010")
                         if (Subject.GetEntities<Aisling>()
                                    .Any(
@@ -208,7 +208,8 @@ public class CreantBossMapScript : MapScriptBase
                             Subject.RemoveEntity(monster);
 
                         var reactors = Subject.GetEntities<ReactorTile>()
-                                              .Where(x => !x.ScriptKeys.Contains("finishcreantreactor")).ToList();
+                                              .Where(x => !x.ScriptKeys.Contains("finishcreantreactor"))
+                                              .ToList();
 
                         foreach (var reactor in reactors)
                             Subject.RemoveEntity(reactor);

@@ -25,7 +25,7 @@ public class BountyBoardDialogScript : DialogScriptBase
         new("nyxwhisper", 13),
         new("nyxembrace", 13),
         new("radiantpearl", 24),
-        new("eclipsepearl", 24),
+        new("eclipsepearl", 24)
     ];
 
     private readonly IItemFactory ItemFactory;
@@ -128,8 +128,7 @@ public class BountyBoardDialogScript : DialogScriptBase
                     Subject.Context = currentAvailableBounties;
                     var options = currentAvailableBounties.Select(bounty => (bounty.QuestText, "bountyboard_acceptbounty"));
                     Subject.AddOptions(options);
-                } 
-                else
+                } else
                 {
                     var possibleBounties = SelectRandomBounties(source);
 
@@ -542,24 +541,21 @@ public class BountyBoardDialogScript : DialogScriptBase
                         exp = 25000000;
                         gamepoints = 20;
                         bountyPoints = 1;
-                    } 
-                    else if (selectedBounty.KillRequirement == 250)
+                    } else if (selectedBounty.KillRequirement == 250)
                     {
                         exp = 60000000;
                         gamepoints = 50;
                         bountyPoints = 2;
-                    } 
-                    else if (selectedBounty.KillRequirement == 400)
+                    } else if (selectedBounty.KillRequirement == 400)
                     {
                         exp = 100000000;
                         gamepoints = 75;
                         bountyPoints = 3;
-                    } 
-                    else if (selectedBounty.KillRequirement == 10)
+                    } else if (selectedBounty.KillRequirement == 10)
                     {
                         exp = 175000000;
                         gamepoints = 100;
-                        
+
                         var firstItemDefinition = EpicRewards.PickRandomWeighted();
                         var firstItemReward = ItemFactory.Create(firstItemDefinition);
 
@@ -573,11 +569,18 @@ public class BountyBoardDialogScript : DialogScriptBase
                                 MarkColor.DarkPurple,
                                 1,
                                 GameTime.Now));
-                        
-                        Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Dialog, Topics.Entities.Quest, Topics.Entities.Item)
+
+                        Logger.WithTopics(
+                                  Topics.Entities.Aisling,
+                                  Topics.Entities.Dialog,
+                                  Topics.Entities.Quest,
+                                  Topics.Entities.Item)
                               .WithProperty(source)
                               .WithProperty(Subject)
-                              .LogInformation("{@AislingName} completed an Epic Bounty and received {@ItemName}", source.Name, firstItemReward.DisplayName);
+                              .LogInformation(
+                                  "{@AislingName} completed an Epic Bounty and received {@ItemName}",
+                                  source.Name,
+                                  firstItemReward.DisplayName);
                     }
 
                     ExperienceDistributionScript.GiveExp(source, exp);

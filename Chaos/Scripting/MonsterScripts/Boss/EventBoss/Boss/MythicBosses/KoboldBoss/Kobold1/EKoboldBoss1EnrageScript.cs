@@ -20,8 +20,8 @@ public sealed class EKoboldBoss1EnrageScript : MonsterScriptBase
 
     /// <inheritdoc />
     public EKoboldBoss1EnrageScript(Monster subject, IMonsterFactory monsterFactory)
-        : base(subject) =>
-        MonsterFactory = monsterFactory;
+        : base(subject)
+        => MonsterFactory = monsterFactory;
 
     public override void Update(TimeSpan delta)
     {

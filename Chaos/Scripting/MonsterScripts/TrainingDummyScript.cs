@@ -1,5 +1,4 @@
 using Chaos.Models.World;
-using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
@@ -22,7 +21,7 @@ public class TrainingDummyScript(Monster subject) : MonsterScriptBase(subject)
 
         if (damageTaken > 0)
             Subject.Say($"{damageTaken:N0} damage.");
-        
+
         Subject.StatSheet.SetHealthPct(100);
     }
 }

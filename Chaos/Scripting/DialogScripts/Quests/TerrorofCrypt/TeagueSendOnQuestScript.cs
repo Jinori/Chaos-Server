@@ -51,7 +51,13 @@ public class TeagueSendOnQuestScript : DialogScriptBase
                 "Head to the crypts to end the horrific nightmares of the Old Man");
 
             member.Trackers.Flags.AddFlag(QuestFlag1.TerrorOfCryptHunt);
-            member.Animate(new Animation { AnimationSpeed = 100, TargetAnimation = 78 });
+
+            member.Animate(
+                new Animation
+                {
+                    AnimationSpeed = 100,
+                    TargetAnimation = 78
+                });
         }
     }
 }

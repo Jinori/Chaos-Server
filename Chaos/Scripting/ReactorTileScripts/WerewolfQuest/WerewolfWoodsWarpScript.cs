@@ -5,7 +5,6 @@ using Chaos.Geometry.Abstractions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
-using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 
@@ -13,16 +12,20 @@ namespace Chaos.Scripting.ReactorTileScripts.WerewolfQuest;
 
 public class WerewolfWoodsWarpScript : ConfigurableReactorTileScriptBase
 {
+    private readonly IDialogFactory DialogFactory;
+    private readonly IMerchantFactory MerchantFactory;
     private readonly ISimpleCache SimpleCache;
 
     #region ScriptVars
     protected Location Destination { get; init; } = null!;
     #endregion
 
-    private readonly IDialogFactory DialogFactory;
-    private readonly IMerchantFactory MerchantFactory;
     /// <inheritdoc />
-    public WerewolfWoodsWarpScript(ReactorTile subject, ISimpleCache simpleCache, IDialogFactory dialogFactory, IMerchantFactory merchantFactory)
+    public WerewolfWoodsWarpScript(
+        ReactorTile subject,
+        ISimpleCache simpleCache,
+        IDialogFactory dialogFactory,
+        IMerchantFactory merchantFactory)
         : base(subject)
     {
         SimpleCache = simpleCache;
@@ -44,20 +47,22 @@ public class WerewolfWoodsWarpScript : ConfigurableReactorTileScriptBase
             && !source.Trackers.Enums.HasValue(WerewolfOfPiet.ReceivedCure))
         {
             aisling.SendOrangeBarMessage("The sight ahead scares you, you decide to turn around.");
+
             return;
         }
 
         var targetMap = SimpleCache.Get<MapInstance>(Destination.Map);
-        
+
         if (source.Trackers.Enums.HasValue(WerewolfOfPiet.SpokeToWizard) || source.Trackers.Enums.HasValue(WerewolfOfPiet.RetryWerewolf))
         {
             var point = new Point(aisling.X, aisling.Y);
             var merchant = MerchantFactory.Create("blank_merchant", Subject.MapInstance, point);
             var dialog = DialogFactory.Create("werewolfwarp1", merchant);
             dialog.Display(aisling);
+
             return;
         }
-        
+
         if (aisling.StatSheet.Level < (targetMap.MinimumLevel ?? 0))
         {
             aisling.SendOrangeBarMessage($"You must be at least level {targetMap.MinimumLevel} to enter this area.");

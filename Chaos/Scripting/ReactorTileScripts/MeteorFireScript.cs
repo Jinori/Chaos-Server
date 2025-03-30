@@ -22,9 +22,9 @@ public class MeteorFireScript : ConfigurableReactorTileScriptBase,
                                 TrapDamageAbilityComponent.ITrapDamageComponentOptions,
                                 ManaDrainAbilityComponent.IManaDrainComponentOptions,
                                 ApplyEffectAbilityComponent.IApplyEffectComponentOptions
-{ 
+{
     protected IIntervalTimer DamageTimer { get; set; }
-    
+
     public ComponentExecutor Executor { get; init; }
     protected Creature Owner { get; set; }
     protected IIntervalTimer? Timer { get; set; }
@@ -34,10 +34,9 @@ public class MeteorFireScript : ConfigurableReactorTileScriptBase,
     public MeteorFireScript(ReactorTile subject, IEffectFactory effectFactory)
         : base(subject)
     {
-        
         var context = new ActivationContext(Subject.Owner!, Subject);
         var vars = new ComponentVars();
-        
+
         if (Subject.Owner == null)
             throw new Exception(
                 $"""{nameof(TrapScript)} script initialized for {Subject} that has no owner. If this reactor was created through json, you must specify the optional parameter "owningMonsterTemplateKey". If this reactor was created through a script, you must specify the owner in the {nameof(IReactorTileFactory)}.{nameof(IReactorTileFactory.Create)}() call.""");
@@ -48,12 +47,11 @@ public class MeteorFireScript : ConfigurableReactorTileScriptBase,
 
         if (DurationSecs.HasValue)
             Timer = new IntervalTimer(TimeSpan.FromSeconds(DurationSecs.Value), false);
-        
+
         DamageTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
         ApplyDamageScript = ApplyNonAttackDamageScript.Create();
-        
+
         Executor = new ComponentExecutor(context, vars).WithOptions(this);
-        
     }
 
     /// <inheritdoc />
@@ -61,7 +59,7 @@ public class MeteorFireScript : ConfigurableReactorTileScriptBase,
     {
         base.Update(delta);
         DamageTimer.Update(delta);
-        
+
         if (DamageTimer.IntervalElapsed)
         {
             if (Owner is Aisling aisling)
@@ -72,7 +70,6 @@ public class MeteorFireScript : ConfigurableReactorTileScriptBase,
                 if (aisling.IsHostileTo(Owner))
                     aisling.SendOrangeBarMessage("You're burned by fire from Meteor!");
             }
-
 
             Executor.ExecuteAndCheck<GetTargetsAbilityComponent<Creature>>()
                     ?.Execute<SoundAbilityComponent>()
@@ -117,6 +114,5 @@ public class MeteorFireScript : ConfigurableReactorTileScriptBase,
     public IEffectFactory EffectFactory { get; init; }
     public string? EffectKey { get; init; }
     public int? DurationSecs { get; init; }
-  
     #endregion
 }

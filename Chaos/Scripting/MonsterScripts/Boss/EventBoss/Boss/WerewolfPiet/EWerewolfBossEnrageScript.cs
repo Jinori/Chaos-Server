@@ -20,14 +20,15 @@ public sealed class EWerewolfBossEnrageScript : MonsterScriptBase
 
     /// <inheritdoc />
     public EWerewolfBossEnrageScript(Monster subject, IMonsterFactory monsterFactory)
-        : base(subject) =>
-        MonsterFactory = monsterFactory;
+        : base(subject)
+        => MonsterFactory = monsterFactory;
 
     public override void Update(TimeSpan delta)
     {
         if (!Bonus75Applied && (Subject.StatSheet.HealthPercent <= 75))
         {
             Bonus75Applied = true;
+
             //Give Bonuses
             var attrib = new Attributes
             {

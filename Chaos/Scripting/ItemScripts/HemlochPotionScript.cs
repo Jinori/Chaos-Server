@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Scripting.ItemScripts.Abstractions;
@@ -8,13 +7,13 @@ namespace Chaos.Scripting.ItemScripts;
 
 public class HemlochPotionScript : ItemScriptBase
 {
-
     public HemlochPotionScript(Item subject)
         : base(subject) { }
-    
+
     public override void OnUse(Aisling source)
     {
         source.Inventory.RemoveQuantity("Hemloch", 1);
+
         //Let's restore their maximums
         source.StatSheet.SetHp(1);
 

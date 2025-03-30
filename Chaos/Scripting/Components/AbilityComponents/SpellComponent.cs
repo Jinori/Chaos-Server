@@ -9,7 +9,8 @@ public class SpellComponent<TEntity> : IConditionalComponent where TEntity: MapE
 {
     /// <inheritdoc />
     public virtual bool Execute(ActivationContext context, ComponentVars vars)
-        => new ComponentExecutor(context, vars).ExecuteAndCheck<ManaCostAbilityComponent>()
+        => new ComponentExecutor(context, vars).ExecuteAndCheck<HealthCostAbilityComponent>()
+                                               ?.ExecuteAndCheck<ManaCostAbilityComponent>()
                                                ?.Execute<BreaksSpecificEffectsAbilityComponent>()
                                                .ExecuteAndCheck<GetTargetsAbilityComponent<TEntity>>()
                                                ?.Execute<RemoveShamBurningGroundComponent>()
@@ -19,7 +20,6 @@ public class SpellComponent<TEntity> : IConditionalComponent where TEntity: MapE
                                                ?.Execute<BodyAnimationAbilityComponent>()
                                                .Execute<AnimationAbilityComponent>()
                                                .Execute<SoundAbilityComponent>()
-                                               
            != null;
 
     // ReSharper disable once PossibleInterfaceMemberAmbiguity
@@ -29,6 +29,7 @@ public class SpellComponent<TEntity> : IConditionalComponent where TEntity: MapE
                                               SoundAbilityComponent.ISoundComponentOptions,
                                               BodyAnimationAbilityComponent.IBodyAnimationComponentOptions,
                                               AnimationAbilityComponent.IAnimationComponentOptions,
+                                              HealthCostAbilityComponent.IHealthCostComponentOptions,
                                               ManaCostAbilityComponent.IManaCostComponentOptions,
                                               BreaksSpecificEffectsAbilityComponent.IBreaksSpecificEffectsComponentOptions { }
 }

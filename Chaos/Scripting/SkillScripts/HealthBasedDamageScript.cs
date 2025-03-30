@@ -54,6 +54,9 @@ public class HealthBasedDamageScript : ConfigurableSkillScriptBase,
     /// <inheritdoc />
     public bool MustHaveTargets { get; init; }
 
+    public int? HealthCost { get; init; }
+    public decimal PctHealthCost { get; init; }
+
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }
 

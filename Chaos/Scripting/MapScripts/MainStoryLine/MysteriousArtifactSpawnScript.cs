@@ -47,10 +47,8 @@ public class MysteriousArtifactSpawnScript : MapScriptBase
 
             // Check if the random point is not on a wall or blocking reactor
             isValidPoint = !Subject.IsWall(randomPoint) && !Subject.IsBlockingReactor(randomPoint);
-
         } while (!isValidPoint);
 
         return randomPoint;
     }
-
 }

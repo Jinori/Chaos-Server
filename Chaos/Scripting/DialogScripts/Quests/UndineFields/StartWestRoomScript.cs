@@ -1,5 +1,4 @@
 ﻿using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
@@ -16,8 +15,8 @@ public class StartWestRoomScript : DialogScriptBase
 
     /// <inheritdoc />
     public StartWestRoomScript(Dialog subject, ISimpleCache simpleCache)
-        : base(subject) =>
-        SimpleCache = simpleCache;
+        : base(subject)
+        => SimpleCache = simpleCache;
 
     public override void OnDisplaying(Aisling source)
     {
@@ -28,21 +27,25 @@ public class StartWestRoomScript : DialogScriptBase
         {
             source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You cannot venture the fields alone.");
             Subject.Reply(source, "You must have a group to continue venturing the fields.");
+
             return; // Exit early if there is no group
         }
 
-        var rectangle = new Rectangle(36, 19, 2, 2);
+        var rectangle = new Rectangle(
+            36,
+            19,
+            2,
+            2);
 
         var allGroupMembersNearby = true;
 
         foreach (var member in group)
-        {
             if (!member.MapInstance.IsWithinMap(member))
             {
                 allGroupMembersNearby = false;
+
                 break; // If any member is not nearby, exit the loop
             }
-        }
 
         if (allGroupMembersNearby)
         {
@@ -53,16 +56,15 @@ public class StartWestRoomScript : DialogScriptBase
                 var mapInstance = SimpleCache.Get<MapInstance>("undine_field_west");
 
                 Point newPoint;
+
                 do
-                {
                     newPoint = rectangle.GetRandomPoint();
-                } while (!mapInstance.IsWalkable(newPoint, member.Type));
+                while (!mapInstance.IsWalkable(newPoint, member.Type));
 
                 member.Trackers.Counters.Remove("orckills", out _);
                 member.TraverseMap(mapInstance, newPoint);
             }
-        }
-        else
+        } else
         {
             source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your group must be nearby.");
             Subject.Reply(source, "Your group is not near.");

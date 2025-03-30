@@ -9,10 +9,11 @@ namespace Chaos.Scripting.SpellScripts;
 public class ShadowTouchScript : SpellScriptBase
 {
     private readonly IMonsterFactory MonsterFactory;
+
     /// <inheritdoc />
     public ShadowTouchScript(Spell subject, IMonsterFactory monsterFactory)
-        : base(subject) =>
-        MonsterFactory = monsterFactory;
+        : base(subject)
+        => MonsterFactory = monsterFactory;
 
     /// <inheritdoc />
     public override void OnUse(SpellContext context)
@@ -20,13 +21,14 @@ public class ShadowTouchScript : SpellScriptBase
         if ((context.SourceAisling != null) && !context.SourceAisling.StatSheet.TrySubtractMp(1200))
         {
             context.SourceAisling.SendMessage("You don't have enough mana.");
+
             return;
         }
-        
+
         context.SourceAisling?.Client.SendAttributes(StatUpdateType.Vitality);
         var newMonster = MonsterFactory.Create("shadowPet", context.SourceMap, context.Source);
         newMonster.PetOwner = context.SourceAisling;
-        
+
         newMonster.Direction = context.Source.Direction;
         context.SourceMap.AddEntity(newMonster, context.Source);
     }

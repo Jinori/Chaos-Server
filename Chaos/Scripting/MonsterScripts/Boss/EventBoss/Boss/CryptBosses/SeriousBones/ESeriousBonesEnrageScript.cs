@@ -21,18 +21,23 @@ public sealed class ESeriousBonesEnrageScript : MonsterScriptBase
 
     /// <inheritdoc />
     public ESeriousBonesEnrageScript(Monster subject, IMonsterFactory monsterFactory)
-        : base(subject) =>
-        MonsterFactory = monsterFactory;
+        : base(subject)
+        => MonsterFactory = monsterFactory;
 
     public override void Update(TimeSpan delta)
     {
         if (!Bonus75Applied && (Subject.StatSheet.HealthPercent <= 75))
         {
             Bonus75Applied = true;
+
             //Give Bonuses
-            var attrib = new Attributes { AtkSpeedPct = 25 };
+            var attrib = new Attributes
+            {
+                AtkSpeedPct = 25
+            };
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
+
             //Spawn Monsters
             var rectangle = new Rectangle(Subject, 5, 5);
 
@@ -65,14 +70,14 @@ public sealed class ESeriousBonesEnrageScript : MonsterScriptBase
         if (!Bonus30Applied && (Subject.StatSheet.HealthPercent <= 30))
         {
             Bonus30Applied = true;
-            
+
             var rectangle = new Rectangle(Subject, 5, 5);
 
             for (var i = 0; i <= 3; i++)
             {
                 if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
                     continue;
-                
+
                 var mobs = MonsterFactory.Create("ecrypt_marauder15", Subject.MapInstance, point);
                 Subject.MapInstance.AddEntity(mobs, point);
             }

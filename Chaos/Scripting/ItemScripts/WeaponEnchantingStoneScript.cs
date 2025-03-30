@@ -9,25 +9,24 @@ namespace Chaos.Scripting.ItemScripts;
 public class WeaponEnchantingStoneScript : ItemScriptBase
 {
     private readonly IDialogFactory DialogFactory;
-    
+
     public WeaponEnchantingStoneScript(Item subject, IDialogFactory dialogFactory)
         : base(subject)
-    {
-        DialogFactory = dialogFactory;
-    }
+        => DialogFactory = dialogFactory;
 
     public override void OnUse(Aisling source)
     {
         if (!source.UserStatSheet.Master)
         {
             source.SendOrangeBarMessage("You must be a master to use this stone.");
+
             return;
         }
-        
+
         // Create an item dictionary with template keys (or other identifiers)
-        var itemDictionary = new[] 
+        var itemDictionary = new[]
         {
-            "kalkuri",  // Replace with actual template keys
+            "kalkuri", // Replace with actual template keys
             "holyhybrasylgnarl",
             "hybrasylazoth",
             "hybrasylescalon",
@@ -35,14 +34,12 @@ public class WeaponEnchantingStoneScript : ItemScriptBase
         };
 
         // Check if any item in the dictionary is in the player's inventory
-        var matchingItem = source.Inventory.FirstOrDefault(item => 
-            itemDictionary.ContainsI(item.Template.TemplateKey));
+        var matchingItem = source.Inventory.FirstOrDefault(item => itemDictionary.ContainsI(item.Template.TemplateKey));
 
         if (matchingItem == null)
-        {
+
             // Send an orange bar message if no matching item is found
             source.SendOrangeBarMessage("You do not have a master weapon to enchant.");
-        }
         else
         {
             // Create a dialog using the matching item

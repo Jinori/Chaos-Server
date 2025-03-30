@@ -1,5 +1,4 @@
 using System.Reflection;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
 using Chaos.Models.World;
@@ -19,7 +18,9 @@ public class MythicKillCounterScript : ConfigurableMonsterScriptBase
         if (enumValue is null)
             return null;
 
-        var enumTypes = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsEnum);
+        var enumTypes = Assembly.GetExecutingAssembly()
+                                .GetTypes()
+                                .Where(t => t.IsEnum);
 
         foreach (var enumType in enumTypes)
             if (Enum.IsDefined(enumType, enumValue))
@@ -39,9 +40,12 @@ public class MythicKillCounterScript : ConfigurableMonsterScriptBase
         Aisling[]? rewardTargets = null;
 
         if (rewardTarget != null)
-            rewardTargets = (rewardTarget.Group ?? (IEnumerable<Aisling>)new[] { rewardTarget })
-                            .ThatAreWithinRange(rewardTarget)
-                            .ToArray();
+            rewardTargets = (rewardTarget.Group
+                             ?? (IEnumerable<Aisling>)new[]
+                             {
+                                 rewardTarget
+                             }).ThatAreWithinRange(rewardTarget)
+                               .ToArray();
 
         if (rewardTargets is not null)
             foreach (var aisling in rewardTargets)
@@ -49,6 +53,7 @@ public class MythicKillCounterScript : ConfigurableMonsterScriptBase
                 var stageType = GetEnumType(QuestEnum);
 
                 if (stageType is null)
+
                     // Handle the case where Quest value is not a valid enum value
                     // You can decide what action to take or skip the iteration
                     continue;
@@ -74,12 +79,10 @@ public class MythicKillCounterScript : ConfigurableMonsterScriptBase
                     }
 
                     if (IsMythicBoss)
-                    {
                         aisling.SendOrangeBarMessage(
                             aisling.Trackers.Counters.CounterLessThanOrEqualTo(Counter, QuantityReq - 1)
                                 ? $"{Subject.Template.Name} has retreated."
                                 : $"{Subject.Template.Name} has been defeated. Return to {Leader}.");
-                    }
                     else // Move the else statement here
                     {
                         if (aisling.Trackers.Counters.CounterGreaterThanOrEqualTo(Counter, QuantityReq))

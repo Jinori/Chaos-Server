@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.World;
@@ -25,8 +24,7 @@ public class PriestSymbolScript : ReactorTileScriptBase
         if (source is not Aisling aisling)
             return;
 
-        if (source.Trackers.Enums.TryGetValue(out PentagramQuestStage stage)
-            && (stage == PentagramQuestStage.ReceivedClue))
+        if (source.Trackers.Enums.TryGetValue(out PentagramQuestStage stage) && (stage == PentagramQuestStage.ReceivedClue))
             if (aisling.UserStatSheet.BaseClass == BaseClass.Priest)
             {
                 var npcpoint = new Point(aisling.X, aisling.Y);

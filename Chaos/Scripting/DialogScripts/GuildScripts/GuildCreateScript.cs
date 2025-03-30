@@ -104,7 +104,6 @@ public class GuildCreateScript : GuildScriptBase
             Guid.NewGuid()
                 .ToString());
 
-        
         newGuild.AddMember(source, source);
         newGuild.ChangeRank(source.Name, 0, source);
         GuildStore.Save(newGuild);

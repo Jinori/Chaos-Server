@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Extensions.Common;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
@@ -13,7 +12,8 @@ public class AnnaGiveArmorScript : DialogScriptBase
     private readonly IItemFactory ItemFactory;
 
     public AnnaGiveArmorScript(Dialog subject, IItemFactory itemFactory)
-        : base(subject) => ItemFactory = itemFactory;
+        : base(subject)
+        => ItemFactory = itemFactory;
 
     public override void OnDisplayed(Aisling source)
     {
@@ -23,8 +23,7 @@ public class AnnaGiveArmorScript : DialogScriptBase
                 return;
 
             source.GiveItemOrSendToBank(ItemFactory.Create("blouse"));
-        }
-        else
+        } else
         {
             if (source.Inventory.Any(Item => Item.Template.TemplateKey.EqualsI("shirt")))
                 return;

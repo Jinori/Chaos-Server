@@ -16,8 +16,8 @@ public class MultiplexingWarpScript : ConfigurableReactorTileScriptBase
     #endregion
 
     public MultiplexingWarpScript(ReactorTile subject, ISimpleCache simpleCache)
-        : base(subject) =>
-        SimpleCache = simpleCache;
+        : base(subject)
+        => SimpleCache = simpleCache;
 
     public override void OnWalkedOn(Creature source)
     {

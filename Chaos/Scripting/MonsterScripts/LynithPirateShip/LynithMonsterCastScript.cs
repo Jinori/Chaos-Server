@@ -23,7 +23,12 @@ public sealed class LynithMonsterCastScript : MonsterScriptBase
         SpellToCast = spellFactory.Create("morcradh");
         SpellToCast1 = spellFactory.Create("SeaMonsterSpell2");
         SpellToCast2 = spellFactory.Create("SeaMonsterSpell3");
-        SpellCastTimer = new RandomizedIntervalTimer(TimeSpan.FromSeconds(15), 20, RandomizationType.Balanced, false);
+
+        SpellCastTimer = new RandomizedIntervalTimer(
+            TimeSpan.FromSeconds(15),
+            20,
+            RandomizationType.Balanced,
+            false);
     }
 
     public override void Update(TimeSpan delta)
@@ -33,7 +38,7 @@ public sealed class LynithMonsterCastScript : MonsterScriptBase
         if (SpellCastTimer.IntervalElapsed)
         {
             var roll = IntegerRandomizer.RollSingle(100);
-            
+
             switch (roll)
             {
                 case < 25:
@@ -42,18 +47,20 @@ public sealed class LynithMonsterCastScript : MonsterScriptBase
                     break;
                 case < 50:
                     Subject.TryUseSpell(SpellToCast1);
+
                     break;
-                
-                    case < 75:
+
+                case < 75:
                     Subject.TryUseSpell(SpellToCast2);
+
                     break;
-                    
+
                 case < 101:
                     foreach (var target in Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject, 10))
                     {
                         if (target.IsDead)
                             continue;
-                        
+
                         Subject.TryUseSpell(SpellToCast, target.Id);
                         Subject.TryUseSpell(SpellToCast1, target.Id);
                     }

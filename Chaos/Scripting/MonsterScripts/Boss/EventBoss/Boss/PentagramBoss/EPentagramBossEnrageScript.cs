@@ -12,14 +12,14 @@ namespace Chaos.Scripting.MonsterScripts.Boss.EventBoss.Boss.PentagramBoss;
 
 public sealed class EPentagramBossEnrageScript : MonsterScriptBase
 {
-    private bool Bonus30Applied;
-    private bool Bonus50Applied;
-    private bool Bonus75Applied;
     private readonly IIntervalTimer SpellCastTimer;
     private readonly ISpellFactory SpellFactory;
     private readonly Spell SpellToCast;
     private readonly Spell SpellToCast1;
     private readonly Spell SpellToCast2;
+    private bool Bonus30Applied;
+    private bool Bonus50Applied;
+    private bool Bonus75Applied;
 
     private Animation UpgradeAnimation { get; } = new()
     {
@@ -35,7 +35,12 @@ public sealed class EPentagramBossEnrageScript : MonsterScriptBase
         SpellToCast = SpellFactory.Create("darkcone");
         SpellToCast1 = SpellFactory.Create("shadowflare");
         SpellToCast2 = SpellFactory.Create("morcradh");
-        SpellCastTimer = new RandomizedIntervalTimer(TimeSpan.FromSeconds(10), 20, RandomizationType.Balanced, false);
+
+        SpellCastTimer = new RandomizedIntervalTimer(
+            TimeSpan.FromSeconds(10),
+            20,
+            RandomizationType.Balanced,
+            false);
     }
 
     public override void Update(TimeSpan delta)
@@ -45,7 +50,7 @@ public sealed class EPentagramBossEnrageScript : MonsterScriptBase
         if (SpellCastTimer.IntervalElapsed)
         {
             var roll = IntegerRandomizer.RollSingle(100);
-            
+
             switch (roll)
             {
                 case < 40:
@@ -65,7 +70,7 @@ public sealed class EPentagramBossEnrageScript : MonsterScriptBase
                     {
                         if (target.IsDead)
                             continue;
-                        
+
                         Subject.TryUseSpell(SpellToCast2, target.Id);
                         Subject.TryUseSpell(SpellToCast, target.Id);
                     }
@@ -77,10 +82,15 @@ public sealed class EPentagramBossEnrageScript : MonsterScriptBase
         if (!Bonus75Applied && (Subject.StatSheet.HealthPercent <= 75))
         {
             Bonus75Applied = true;
+
             //Give Bonuses
-            var attrib = new Attributes { AtkSpeedPct = 25 };
+            var attrib = new Attributes
+            {
+                AtkSpeedPct = 25
+            };
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
+
             //Spawn Monsters
         }
 

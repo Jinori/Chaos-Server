@@ -55,11 +55,15 @@ public class DevourScript : ConfigurableSkillScriptBase,
     public TargetFilter Filter { get; init; }
 
     public decimal HealPercentMissingHealth { get; init; }
+
+    public int? HealthCost { get; init; }
     public int? ManaCost { get; init; }
     public bool? MoreDmgLowTargetHp { get; init; }
 
     /// <inheritdoc />
     public bool MustHaveTargets { get; init; }
+
+    public decimal PctHealthCost { get; init; }
 
     public decimal? PctHpDamage { get; init; }
 

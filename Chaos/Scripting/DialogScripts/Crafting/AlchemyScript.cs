@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
@@ -19,7 +18,9 @@ public class AlchemyScript : DialogScriptBase
     private const string ITEM_COUNTER_PREFIX = "[Alchemy]";
     private const string LEGENDMARK_KEY = "alch";
     private const double BASE_SUCCESS_RATE = 60;
+
     private const double SUCCESSRATEMAX = 95;
+
     //Ranks from lowest to highest
     private const string RANK_ONE_TITLE = "Beginner Alchemist";
     private const string RANK_TWO_TITLE = "Novice Alchemist";
@@ -28,7 +29,9 @@ public class AlchemyScript : DialogScriptBase
     private const string RANK_FIVE_TITLE = "Adept Alchemist";
     private const string RANK_SIX_TITLE = "Advanced Alchemist";
     private const string RANK_SEVEN_TITLE = "Expert Alchemist";
+
     private const string RANK_EIGHT_TITLE = "Master Alchemist";
+
     //Set this to true if doing armorsmithing type crafting
     private readonly bool Craftgoodgreatgrand = false;
     private readonly IDialogFactory DialogFactory;
@@ -39,6 +42,7 @@ public class AlchemyScript : DialogScriptBase
         AnimationSpeed = 100,
         TargetAnimation = 59
     };
+
     private Animation SuccessAnimation { get; } = new()
     {
         AnimationSpeed = 100,
@@ -53,14 +57,21 @@ public class AlchemyScript : DialogScriptBase
         DialogFactory = dialogFactory;
     }
 
+    private double AdjustSuccessRateForEffects(double baseSuccessRate, Aisling source)
+    {
+        if (source.Effects.Contains("Miracle"))
+            return baseSuccessRate + 15.0;
+
+        return baseSuccessRate;
+    }
+
     // Calculates the success rate of crafting an item
     private double CalculateSuccessRate(
         int totalTimesCrafted,
         int timesCraftedThisItem,
         double baseSuccessRate,
         int recipeRank,
-        int difficulty
-    )
+        int difficulty)
     {
         var rankDifficultyReduction = recipeRank switch
         {
@@ -79,15 +90,14 @@ public class AlchemyScript : DialogScriptBase
         var multiplier = GetMultiplier(totalTimesCrafted);
 
         // Calculate the success rate with all the factors
-        var successRate = (baseSuccessRate - rankDifficultyReduction - difficulty + timesCraftedThisItem / 10.0)
-                          * multiplier;
+        var successRate = (baseSuccessRate - rankDifficultyReduction - difficulty + timesCraftedThisItem / 10.0) * multiplier;
 
         // Ensure the success rate does not exceed the maximum allowed value
         return Math.Min(successRate, SUCCESSRATEMAX);
     }
 
-    private double GetMultiplier(int totalTimesCrafted) =>
-        totalTimesCrafted switch
+    private double GetMultiplier(int totalTimesCrafted)
+        => totalTimesCrafted switch
         {
             <= 25   => 1.0,
             <= 75   => 1.05,
@@ -104,14 +114,30 @@ public class AlchemyScript : DialogScriptBase
     {
         var rankMappings = new Dictionary<string, int>
         {
-            { RANK_EIGHT_TITLE, 8 },
-            { RANK_SEVEN_TITLE, 7 },
-            { RANK_SIX_TITLE, 6 },
-            { RANK_FIVE_TITLE, 5 },
-            { RANK_FOUR_TITLE, 4 },
-            { RANK_THREE_TITLE, 3 },
-            { RANK_TWO_TITLE, 2 },
-            { RANK_ONE_TITLE, 1 }
+            {
+                RANK_EIGHT_TITLE, 8
+            },
+            {
+                RANK_SEVEN_TITLE, 7
+            },
+            {
+                RANK_SIX_TITLE, 6
+            },
+            {
+                RANK_FIVE_TITLE, 5
+            },
+            {
+                RANK_FOUR_TITLE, 4
+            },
+            {
+                RANK_THREE_TITLE, 3
+            },
+            {
+                RANK_TWO_TITLE, 2
+            },
+            {
+                RANK_ONE_TITLE, 1
+            }
         };
 
         if (rankMappings.TryGetValue(rank, out var i))
@@ -125,20 +151,61 @@ public class AlchemyScript : DialogScriptBase
     {
         var statusMappings = new Dictionary<string, int>
         {
-            { "Beginner", 1 },
-            { "Basic", 2 },
-            { "Initiate", 3 },
-            { "Artisan", 4 },
-            { "Adept", 5 },
-            { "Advanced", 6 },
-            { "Expert", 7 },
-            { "Master", 8 }
+            {
+                "Beginner", 1
+            },
+            {
+                "Basic", 2
+            },
+            {
+                "Initiate", 3
+            },
+            {
+                "Artisan", 4
+            },
+            {
+                "Adept", 5
+            },
+            {
+                "Advanced", 6
+            },
+            {
+                "Expert", 7
+            },
+            {
+                "Master", 8
+            }
         };
 
         if (statusMappings.TryGetValue(status, out var i))
             return i;
 
         return 0;
+    }
+
+    /// <summary>
+    ///     Gives the player a reward when reaching Rank 7 or above.
+    /// </summary>
+    private void GiveRankReward(Aisling source, string title)
+    {
+        const string ITEM_KEY = "alchemytrinket";
+        const string REWARD_LEGEND_KEY = "alchemytrinket";
+
+        if (!source.Legend.ContainsKey(REWARD_LEGEND_KEY))
+        {
+            var rewardLegendMark = new LegendMark(
+                "Obtained the legendary Bialann Sruthmhor",
+                REWARD_LEGEND_KEY,
+                MarkIcon.Victory,
+                MarkColor.Yellow,
+                1,
+                GameTime.Now);
+
+            source.Legend.AddOrAccumulate(rewardLegendMark);
+            var trinket = ItemFactory.Create(ITEM_KEY);
+            source.GiveItemOrSendToBank(trinket);
+            source.SendOrangeBarMessage($"You have received Bialann Sruthmhor for reaching {title}!");
+        }
     }
 
     /// <inheritdoc />
@@ -176,8 +243,7 @@ public class AlchemyScript : DialogScriptBase
             return;
         }
 
-        var recipe =
-            CraftingRequirements.AlchemyRequirements.Values.FirstOrDefault(recipe1 => recipe1.Name.EqualsI(selectedRecipeName));
+        var recipe = CraftingRequirements.AlchemyRequirements.Values.FirstOrDefault(recipe1 => recipe1.Name.EqualsI(selectedRecipeName));
 
         if (recipe is null)
         {
@@ -206,14 +272,13 @@ public class AlchemyScript : DialogScriptBase
         var unused = source.Legend.TryGetValue(LEGENDMARK_KEY, out var existingMark);
         var legendMarkCount = existingMark?.Count ?? 0;
 
-        var timesCraftedThisItem =
-            source.Trackers.Counters.TryGetValue(ITEM_COUNTER_PREFIX + recipe.Name, out var value) ? value : 0;
+        var timesCraftedThisItem = source.Trackers.Counters.TryGetValue(ITEM_COUNTER_PREFIX + recipe.Name, out var value) ? value : 0;
 
         foreach (var removeRegant in recipe.Ingredients)
             source.Inventory.RemoveQuantity(removeRegant.DisplayName, removeRegant.Amount);
 
         var adjustedSuccessRate = AdjustSuccessRateForEffects(BASE_SUCCESS_RATE, source);
-        
+
         if (!IntegerRandomizer.RollChance(
                 (int)CalculateSuccessRate(
                     legendMarkCount,
@@ -229,13 +294,15 @@ public class AlchemyScript : DialogScriptBase
             dialog.InjectTextParameters(recipe.Name);
             dialog.Display(source);
             source.Animate(FailAnimation);
+
             //Give item counter exp even if failure
             source.Trackers.Counters.AddOrIncrement(ITEM_COUNTER_PREFIX + recipe.Name);
+
             return;
         }
 
         source.Trackers.Counters.AddOrIncrement(ITEM_COUNTER_PREFIX + recipe.Name);
-        
+
         if (existingMark is null)
             UpdateLegendmark(source, legendMarkCount);
 
@@ -244,29 +311,25 @@ public class AlchemyScript : DialogScriptBase
             var recipeStatus = GetStatusAsInt(recipe.Rank);
             var playerRank = GetRankAsInt(existingMark.Text);
 
-            if ((playerRank >= 2) && (playerRank - 1 > recipeStatus))
-            {
+            if ((playerRank >= 2) && ((playerRank - 1) > recipeStatus))
                 source.SendOrangeBarMessage("You can no longer gain rank experience from this recipe.");
-            }
 
-            if ((playerRank >= recipeStatus) && (playerRank <= recipeStatus + 1))
-            {
-                if (recipe.TemplateKey != "stronghealthpotionformula"
-                    && recipe.TemplateKey != "strongmanapotionformula"
-                    && recipe.TemplateKey != "strongrejuvenationpotionformula"
-                    && recipe.TemplateKey != "healthpotionformula"
-                    && recipe.TemplateKey != "manapotionformula"
-                    && recipe.TemplateKey != "rejuvenationpotionformula"
-                    && recipe.TemplateKey != "potenthealthpotionformula"
-                    && recipe.TemplateKey != "potentmanapotionformula"
-                    && recipe.TemplateKey != "potentrejuvenationpotionformula")
+            if ((playerRank >= recipeStatus) && (playerRank <= (recipeStatus + 1)))
+                if ((recipe.TemplateKey != "stronghealthpotionformula")
+                    && (recipe.TemplateKey != "strongmanapotionformula")
+                    && (recipe.TemplateKey != "strongrejuvenationpotionformula")
+                    && (recipe.TemplateKey != "healthpotionformula")
+                    && (recipe.TemplateKey != "manapotionformula")
+                    && (recipe.TemplateKey != "rejuvenationpotionformula")
+                    && (recipe.TemplateKey != "potenthealthpotionformula")
+                    && (recipe.TemplateKey != "potentmanapotionformula")
+                    && (recipe.TemplateKey != "potentrejuvenationpotionformula"))
                 {
                     UpdateLegendmark(source, legendMarkCount);
 
                     if (playerRank == recipeStatus)
                         UpdateLegendmark(source, legendMarkCount);
                 }
-            }
         }
 
         if (Craftgoodgreatgrand)
@@ -285,22 +348,18 @@ public class AlchemyScript : DialogScriptBase
             {
                 source.Bank.Deposit(newCraft);
                 source.SendOrangeBarMessage("You have no space. It was sent to your bank.");
-            }
-            else
+            } else
                 source.GiveItemOrSendToBank(newCraft);
 
             Subject.InjectTextParameters(newCraft.DisplayName);
-        }
-        else
+        } else
         {
-            var templateKeyWithoutFormula =
-                recipe.TemplateKey.Replace("formula", ""); // Remove "formula" from the template key
+            var templateKeyWithoutFormula = recipe.TemplateKey.Replace("formula", ""); // Remove "formula" from the template key
 
             var newCraft = ItemFactory.Create(templateKeyWithoutFormula);
             newCraft.Count = IntegerRandomizer.RollSingle(3);
 
             source.GiveItemOrSendToBank(newCraft);
-            
 
             Subject.InjectTextParameters(newCraft.DisplayName);
         }
@@ -318,8 +377,7 @@ public class AlchemyScript : DialogScriptBase
             return;
         }
 
-        var recipe =
-            CraftingRequirements.AlchemyRequirements.Values.FirstOrDefault(recipe1 => recipe1.Name.EqualsI(selectedRecipeName));
+        var recipe = CraftingRequirements.AlchemyRequirements.Values.FirstOrDefault(recipe1 => recipe1.Name.EqualsI(selectedRecipeName));
 
         if (recipe is null)
         {
@@ -441,32 +499,7 @@ public class AlchemyScript : DialogScriptBase
                 }
         }
     }
-    
-    /// <summary>
-    ///     Gives the player a reward when reaching Rank 7 or above.
-    /// </summary>
-    private void GiveRankReward(Aisling source, string title)
-    {
-        const string ITEM_KEY = "alchemytrinket";
-        const string REWARD_LEGEND_KEY = "alchemytrinket";
 
-        if (!source.Legend.ContainsKey(REWARD_LEGEND_KEY))
-        {
-            var rewardLegendMark = new LegendMark(
-                "Obtained the legendary Bialann Sruthmhor",
-                REWARD_LEGEND_KEY,
-                MarkIcon.Victory,
-                MarkColor.Yellow,
-                1,
-                GameTime.Now);
-
-            source.Legend.AddOrAccumulate(rewardLegendMark);
-            var trinket = ItemFactory.Create(ITEM_KEY);
-            source.GiveItemOrSendToBank(trinket);
-            source.SendOrangeBarMessage($"You have received Bialann Sruthmhor for reaching {title}!");
-        }
-    }
-    
     /// <summary>
     ///     Updates the player's title and sends a profile update.
     /// </summary>
@@ -489,14 +522,4 @@ public class AlchemyScript : DialogScriptBase
 
         source.Client.SendSelfProfile();
     }
-    
-    
-    private double AdjustSuccessRateForEffects(double baseSuccessRate, Aisling source)
-    {
-        if (source.Effects.Contains("Miracle"))
-            return baseSuccessRate + 15.0;
-
-        return baseSuccessRate;
-    }
-
 }

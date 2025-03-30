@@ -1,7 +1,6 @@
 using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using Chaos.Scripting.MonsterScripts.Boss.WestWoodlands.Grunk;
 
 namespace Chaos.Scripting.MonsterScripts.Boss.WestWoodlands.Grunk;
 

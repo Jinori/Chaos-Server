@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Menu;
@@ -9,21 +8,15 @@ namespace Chaos.Scripting.DialogScripts.Generic;
 
 public class LanternDialogScript : DialogScriptBase
 {
-
     public LanternDialogScript(Dialog subject)
-        : base(subject)
-    {
-    }
+        : base(subject) { }
 
     public override void OnDisplaying(Aisling source)
     {
         switch (Subject.Template.TemplateKey.ToLower())
         {
-
             case "terminus_initial":
-                if (source.Trackers.Flags.HasFlag(LanternSizes.SmallLantern) ||
-                    source.Trackers.Flags.HasFlag(LanternSizes.LargeLantern))
-                {
+                if (source.Trackers.Flags.HasFlag(LanternSizes.SmallLantern) || source.Trackers.Flags.HasFlag(LanternSizes.LargeLantern))
                     Subject.Options.Insert(
                         0,
                         new DialogOption
@@ -31,7 +24,6 @@ public class LanternDialogScript : DialogScriptBase
                             DialogKey = "lantern_initial",
                             OptionText = "Lantern"
                         });
-                }
 
                 break;
 
@@ -44,9 +36,8 @@ public class LanternDialogScript : DialogScriptBase
                         DialogKey = "lantern_none",
                         OptionText = "Unequip Lantern"
                     });
-                
+
                 if (source.Trackers.Flags.HasFlag(LanternSizes.SmallLantern))
-                {
                     Subject.Options.Insert(
                         0,
                         new DialogOption
@@ -54,10 +45,8 @@ public class LanternDialogScript : DialogScriptBase
                             DialogKey = "lantern_small",
                             OptionText = "Small Lantern"
                         });
-                }
 
                 if (source.Trackers.Flags.HasFlag(LanternSizes.LargeLantern))
-                {
                     Subject.Options.Insert(
                         0,
                         new DialogOption
@@ -65,7 +54,6 @@ public class LanternDialogScript : DialogScriptBase
                             DialogKey = "lantern_large",
                             OptionText = "Large Lantern"
                         });
-                }
 
                 break;
             }
@@ -74,7 +62,7 @@ public class LanternDialogScript : DialogScriptBase
             {
                 source.SetLanternSize(LanternSize.Small);
                 source.Display();
-                
+
                 break;
             }
 
@@ -82,14 +70,14 @@ public class LanternDialogScript : DialogScriptBase
             {
                 source.SetLanternSize(LanternSize.Large);
                 source.Display();
-                
+
                 break;
             }
             case "lantern_none":
             {
                 source.SetLanternSize(LanternSize.None);
                 source.Display();
-                
+
                 break;
             }
         }

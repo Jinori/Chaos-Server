@@ -1,5 +1,4 @@
 ﻿using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
@@ -17,8 +16,8 @@ public class StartUndineFieldsSouthScript : DialogScriptBase
 
     /// <inheritdoc />
     public StartUndineFieldsSouthScript(Dialog subject, ISimpleCache simpleCache)
-        : base(subject) =>
-        SimpleCache = simpleCache;
+        : base(subject)
+        => SimpleCache = simpleCache;
 
     public override void OnDisplaying(Aisling source)
     {
@@ -29,21 +28,25 @@ public class StartUndineFieldsSouthScript : DialogScriptBase
         {
             source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You cannot venture the fields alone.");
             Subject.Reply(source, "You must have a group to venture the fields.");
+
             return; // Exit early if there is no group
         }
 
-        var rectangle = new Rectangle(36, 19, 2, 2);
+        var rectangle = new Rectangle(
+            36,
+            19,
+            2,
+            2);
 
         var allGroupMembersNearby = true;
 
         foreach (var member in group)
-        {
             if (!member.WithinRange(point, 100))
             {
                 allGroupMembersNearby = false;
+
                 break; // If any member is not nearby, exit the loop
             }
-        }
 
         if (allGroupMembersNearby)
         {
@@ -54,16 +57,15 @@ public class StartUndineFieldsSouthScript : DialogScriptBase
                 var mapInstance = SimpleCache.Get<MapInstance>("undine_field_south");
 
                 Point newPoint;
+
                 do
-                {
                     newPoint = rectangle.GetRandomPoint();
-                } while (!mapInstance.IsWalkable(newPoint, member.Type));
+                while (!mapInstance.IsWalkable(newPoint, member.Type));
 
                 member.Trackers.Enums.Set(UndineFieldDungeon.StartedDungeon);
                 member.TraverseMap(mapInstance, newPoint);
             }
-        }
-        else
+        } else
         {
             source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your group must be nearby.");
             Subject.Reply(source, "Your group is not near.");

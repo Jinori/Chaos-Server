@@ -11,7 +11,7 @@ public sealed class NisComponent : IComponent
     public void Execute(ActivationContext context, ComponentVars vars)
     {
         var options = vars.GetOptions<INisComponentOptions>();
-        
+
         if (options.OutputType != null)
         {
             var gameTime = GameTime.Now.GetDetailedTimeInfo();

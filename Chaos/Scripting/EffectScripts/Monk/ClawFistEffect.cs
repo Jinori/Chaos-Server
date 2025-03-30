@@ -30,7 +30,7 @@ public class ClawFistEffect : ContinuousAnimationEffectBase
     public override void OnApplied()
     {
         base.OnApplied();
-        
+
         var attributes = new Attributes
         {
             Dmg = 20

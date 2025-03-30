@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Legend;
@@ -28,8 +27,7 @@ public class UndineFieldsScript : DialogScriptBase
         Dialog subject,
         IItemFactory itemFactory,
         ISimpleCache simpleCache,
-        ILogger<PFQuestScript> logger
-    )
+        ILogger<PFQuestScript> logger)
         : base(subject)
     {
         ItemFactory = itemFactory;
@@ -53,7 +51,7 @@ public class UndineFieldsScript : DialogScriptBase
 
                 if (flag == UndineFieldDungeonFlag.CompletedUF)
                     return;
-                
+
                 var option = new DialogOption
                 {
                     DialogKey = "undinefields_initial",
@@ -63,9 +61,10 @@ public class UndineFieldsScript : DialogScriptBase
                 if (!Subject.HasOption(option.OptionText))
                     Subject.Options.Insert(0, option);
             }
+
                 break;
-                
-                case "undinefields_initial":
+
+            case "undinefields_initial":
             {
                 if (stage == UndineFieldDungeon.StartedDungeon)
                 {
@@ -78,6 +77,7 @@ public class UndineFieldsScript : DialogScriptBase
                 {
                     Subject.Reply(source, "I see you tried. That's okay. I know you'll get it, go back and try again.");
                     source.Trackers.Enums.Set(UndineFieldDungeon.StartedDungeon);
+
                     return;
                 }
 
@@ -85,15 +85,12 @@ public class UndineFieldsScript : DialogScriptBase
                 {
                     Subject.Reply(source, "I see you tried. That's okay. I know you'll get it, go back and try again.");
                     source.Trackers.Enums.Set(UndineFieldDungeon.StartedDungeon);
+
                     return;
                 }
 
                 if (stage == UndineFieldDungeon.KilledCarnun)
-                {
                     Subject.Reply(source, "Skip", "uf_turnin");
-
-                    return;
-                }
             }
 
                 break;
@@ -111,7 +108,7 @@ public class UndineFieldsScript : DialogScriptBase
                     ExperienceDistributionScript.GiveExp(source, 750000);
                     source.Trackers.Flags.AddFlag(AvailableCloaks.Red);
                     source.SendOrangeBarMessage("You've unlocked the Red Cloak for mounts!");
-                    
+
                     source.Legend.AddOrAccumulate(
                         new LegendMark(
                             "Challenged the Carnun and declared Victory",
@@ -120,20 +117,21 @@ public class UndineFieldsScript : DialogScriptBase
                             MarkColor.Blue,
                             1,
                             GameTime.Now));
-                    
+
                     Logger.WithTopics(
-                            [Topics.Entities.Aisling,
-                            Topics.Entities.Experience,
-                            Topics.Entities.Item,
-                            Topics.Entities.Dialog,
-                            Topics.Entities.Quest])
-                        .WithProperty(source)
-                        .WithProperty(Subject)
-                        .LogInformation(
-                            "{@AislingName} has received {@ExpAmount} exp and Red Cloak from Undine Fields Dungeon",
-                            source.Name,
-                            750000);
+                              Topics.Entities.Aisling,
+                              Topics.Entities.Experience,
+                              Topics.Entities.Item,
+                              Topics.Entities.Dialog,
+                              Topics.Entities.Quest)
+                          .WithProperty(source)
+                          .WithProperty(Subject)
+                          .LogInformation(
+                              "{@AislingName} has received {@ExpAmount} exp and Red Cloak from Undine Fields Dungeon",
+                              source.Name,
+                              750000);
                 }
+
                 break;
         }
     }

@@ -21,6 +21,9 @@ public class CascadingSkillDamageScript : ConfigurableSkillScriptBase,
 {
     public List<string>? EffectKeysToBreak { get; set; }
 
+    public int? HealthCost { get; init; }
+    public decimal PctHealthCost { get; init; }
+
     /// <inheritdoc />
     public CascadingSkillDamageScript(Skill subject, IReactorTileFactory reactorTileFactory)
         : base(subject)

@@ -1,5 +1,4 @@
 using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
@@ -12,18 +11,16 @@ namespace Chaos.Scripting.DialogScripts.Quests.Nightmare;
 
 public class NightmareWarriorScript : DialogScriptBase
 {
-    private readonly ISimpleCache _simpleCache; 
-    
+    private readonly ISimpleCache _simpleCache;
+
     public NightmareWarriorScript(Dialog subject, ISimpleCache simpleCache)
         : base(subject)
-    {
-        _simpleCache = simpleCache;
-    }
+        => _simpleCache = simpleCache;
 
     public override void OnDisplaying(Aisling source)
     {
         var hasStage = source.Trackers.Enums.TryGetValue(out NightmareQuestStage stage);
-        
+
         if (source.UserStatSheet is not { BaseClass: BaseClass.Warrior, Level: >= 80 })
             return;
 
@@ -33,35 +30,41 @@ public class NightmareWarriorScript : DialogScriptBase
             {
                 if (!hasStage)
                 {
-                    Subject.AddOption($"I am the hunter", "nightmarewarrior1");
+                    Subject.AddOption("I am the hunter", "nightmarewarrior1");
 
                     return;
                 }
 
                 if (hasStage && (stage == NightmareQuestStage.CompletedNightmareWin1))
                 {
-                    Subject.Reply(source, "Impressive, you have returned. I am surprised you are still alive. You have my respect. Please, take this.");
+                    Subject.Reply(
+                        source,
+                        "Impressive, you have returned. I am surprised you are still alive. You have my respect. Please, take this.");
                     source.Trackers.Enums.Set(NightmareQuestStage.CompletedNightmareWin2);
                     source.TryGiveGamePoints(20);
                     source.SendOrangeBarMessage("You received 20 Game Points.");
 
                     return;
                 }
+
                 if (hasStage && (stage == NightmareQuestStage.CompletedNightmareWin2))
                 {
                     Subject.Reply(source, "I am still amazed by your abilities Brave Champion. Go forth and show the world your strength.");
 
                     return;
                 }
-                
+
                 if (hasStage && (stage == NightmareQuestStage.CompletedNightmareLoss1))
                 {
                     Subject.Reply(source, "I knew you couldn't handle it, at least you are still alive. Get out of my hut.");
 
                     return;
                 }
-                
-                Subject.Reply(source, "What are you still doing here? Are you afraid? Go find the tree the Carnun fought his battles nearby in the last area of West Woodlands.");
+
+                Subject.Reply(
+                    source,
+                    "What are you still doing here? Are you afraid? Go find the tree the Carnun fought his battles nearby in the last area of West Woodlands.");
+
                 break;
             }
 
@@ -75,22 +78,21 @@ public class NightmareWarriorScript : DialogScriptBase
             case "carnunglade1":
             {
                 if (source.UserStatSheet.CurrentHp != 1)
-                {
                     Subject.Reply(source, "You have no respect for the Carnun Champion. Begone.", "Close");
 
-                    return;
-                }
                 break;
             }
 
             case "carnunglade2":
             {
-                if ((hasStage && (stage == NightmareQuestStage.MetRequirementsToEnter1)) || (stage == NightmareQuestStage.EnteredDream) || (stage == NightmareQuestStage.SpawnedNightmare))
+                if ((hasStage && (stage == NightmareQuestStage.MetRequirementsToEnter1))
+                    || (stage == NightmareQuestStage.EnteredDream)
+                    || (stage == NightmareQuestStage.SpawnedNightmare))
                 {
                     Point point2;
                     point2 = new Point(18, 5);
                     var mapInstance2 = _simpleCache.Get<MapInstance>("warriornightmarechallenge");
-                    source.TraverseMap(mapInstance2, point2, false);
+                    source.TraverseMap(mapInstance2, point2);
                     source.Trackers.Enums.Set(NightmareQuestStage.EnteredDream);
                     Subject.Close(source);
                     source.UserStatSheet.SetHealthPct(100);
@@ -102,7 +104,7 @@ public class NightmareWarriorScript : DialogScriptBase
 
             case "nightmare_priestsupport_heal":
             {
-                var ani = new Animation()
+                var ani = new Animation
                 {
                     AnimationSpeed = 100,
                     TargetAnimation = 4
@@ -110,11 +112,14 @@ public class NightmareWarriorScript : DialogScriptBase
                 source.Animate(ani);
                 source.UserStatSheet.SetHealthPct(100);
                 source.Client.SendAttributes(StatUpdateType.Vitality);
-                var priest = source.MapInstance.GetEntities<Merchant>().FirstOrDefault(x => x.Name == "Priest");
+
+                var priest = source.MapInstance
+                                   .GetEntities<Merchant>()
+                                   .FirstOrDefault(x => x.Name == "Priest");
                 priest!.MapInstance.RemoveEntity(priest);
+
                 break;
             }
-            
         }
     }
 }

@@ -68,7 +68,7 @@ public class ExecuteComponent : IComponent
                 } else
                 {
                     var onepercent = MathEx.GetPercentOf<int>((int)context.Source.StatSheet.EffectiveMaximumHp, options.DmgHealthPct);
-                    
+
                     if (onepercent >= 100000)
                         onepercent = 100000;
 

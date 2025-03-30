@@ -21,12 +21,11 @@ public sealed class KingOfCowsEnrageScript : MonsterScriptBase
 
     /// <inheritdoc />
     public KingOfCowsEnrageScript(Monster subject, IMonsterFactory monsterFactory)
-        : base(subject) =>
-        MonsterFactory = monsterFactory;
+        : base(subject)
+        => MonsterFactory = monsterFactory;
 
     public override void Update(TimeSpan delta)
     {
-        
         if (!Bonus75Applied && (Subject.StatSheet.HealthPercent <= 75))
         {
             Bonus75Applied = true;
@@ -52,10 +51,11 @@ public sealed class KingOfCowsEnrageScript : MonsterScriptBase
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
         }
-        
+
         if (!Bonus50Applied && (Subject.StatSheet.HealthPercent <= 50))
         {
             Bonus50Applied = true;
+
             //Give Bonuses
             var attrib = new Attributes
             {
@@ -63,6 +63,7 @@ public sealed class KingOfCowsEnrageScript : MonsterScriptBase
             };
             Subject.StatSheet.AddBonus(attrib);
             Subject.Animate(UpgradeAnimation);
+
             //Spawn Monsters
             var rectangle = new Rectangle(Subject, 5, 5);
 

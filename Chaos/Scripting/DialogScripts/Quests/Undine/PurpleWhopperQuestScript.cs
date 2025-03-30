@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.Common.Utilities;
+﻿using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
@@ -15,8 +14,7 @@ using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Quests.Undine;
 
-public class PurpleWhopperQuestScript(Dialog subject, ILogger<PurpleWhopperQuestScript> logger)
-    : DialogScriptBase(subject)
+public class PurpleWhopperQuestScript(Dialog subject, ILogger<PurpleWhopperQuestScript> logger) : DialogScriptBase(subject)
 {
     private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
 
@@ -28,10 +26,9 @@ public class PurpleWhopperQuestScript(Dialog subject, ILogger<PurpleWhopperQuest
         {
             case "ayumi_initial":
             {
-                
                 if (source.UserStatSheet.Level < 11)
                     return;
-                
+
                 var option = new DialogOption
                 {
                     DialogKey = "purplewhopper_initial",
@@ -48,14 +45,16 @@ public class PurpleWhopperQuestScript(Dialog subject, ILogger<PurpleWhopperQuest
             {
                 if (source.Trackers.TimedEvents.HasActiveEvent("purplewhoppercd", out var cdtime))
                 {
-                    Subject.Reply(source, $"*Ayumi seems a bit out of it* o you back, that some gud fish. I like more soon. See me in (({cdtime.Remaining.ToReadableString()}))");
+                    Subject.Reply(
+                        source,
+                        $"*Ayumi seems a bit out of it* o you back, that some gud fish. I like more soon. See me in (({cdtime.Remaining.ToReadableString()}))");
+
                     return;
                 }
-                
-                if (hasStage && stage == PurpleWhopper.StartedQuest)
-                {
+
+                if (hasStage && (stage == PurpleWhopper.StartedQuest))
                     Subject.Reply(source, "Skip", "purplewhopper_return");
-                }
+
                 break;
             }
 
@@ -63,15 +62,15 @@ public class PurpleWhopperQuestScript(Dialog subject, ILogger<PurpleWhopperQuest
             {
                 source.Trackers.Enums.Set(PurpleWhopper.StartedQuest);
                 source.SendOrangeBarMessage("Bring Ayumi a Purple Whopper");
+
                 break;
             }
 
             case "purplewhopper_turnin":
             {
                 var hasRequiredPurpleWhopper = source.Inventory.HasCount("Purple Whopper", 1);
-                
-                if (hasStage && stage == PurpleWhopper.StartedQuest)
-                {
+
+                if (hasStage && (stage == PurpleWhopper.StartedQuest))
                     switch (hasRequiredPurpleWhopper)
                     {
                         case true:
@@ -81,11 +80,11 @@ public class PurpleWhopperQuestScript(Dialog subject, ILogger<PurpleWhopperQuest
                             source.Trackers.TimedEvents.AddEvent("purplewhoppercd", TimeSpan.FromHours(22), true);
 
                             logger.WithTopics(
-                                      [Topics.Entities.Aisling,
+                                      Topics.Entities.Aisling,
                                       Topics.Entities.Gold,
                                       Topics.Entities.Experience,
                                       Topics.Entities.Dialog,
-                                      Topics.Entities.Quest])
+                                      Topics.Entities.Quest)
                                   .WithProperty(source)
                                   .WithProperty(Subject)
                                   .LogInformation(
@@ -109,19 +108,18 @@ public class PurpleWhopperQuestScript(Dialog subject, ILogger<PurpleWhopperQuest
                                         1,
                                         GameTime.Now));
 
-                                source.Client.SendServerMessage(ServerMessageType.OrangeBar1,
-                                    "You received a unique legend mark!");
+                                source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You received a unique legend mark!");
                             }
 
                             break;
                         }
                         case false:
                         {
-                                Subject.Reply(source, "There no fish there. Where fish?");
-                                return;
+                            Subject.Reply(source, "There no fish there. Where fish?");
+
+                            return;
                         }
                     }
-                }
 
                 break;
             }

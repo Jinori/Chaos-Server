@@ -1,15 +1,19 @@
-using Chaos.Definitions;
-using Chaos.Extensions;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
-using Chaos.Services.Factories.Abstractions;
-using Direction = Chaos.Geometry.Abstractions.Definitions.Direction;
 
 namespace Chaos.Scripting.DialogScripts.GuildScripts;
 
 public class GuildSimulationScript(Dialog subject) : DialogScriptBase(subject)
 {
+    private static void ClearMonsters(Aisling source)
+    {
+        foreach (var monster in source.MapInstance
+                                      .GetEntities<Monster>()
+                                      .ToList())
+            source.MapInstance.RemoveEntity(monster);
+    }
+
     public override void OnDisplaying(Aisling source)
     {
         switch (Subject.Template.TemplateKey.ToLower())
@@ -18,7 +22,9 @@ public class GuildSimulationScript(Dialog subject) : DialogScriptBase(subject)
             {
                 ClearMonsters(source);
 
-                foreach (var guildMember in source.MapInstance.GetEntities<Aisling>().Where(x => x.IsDead || !x.IsAlive))
+                foreach (var guildMember in source.MapInstance
+                                                  .GetEntities<Aisling>()
+                                                  .Where(x => x.IsDead || !x.IsAlive))
                 {
                     RevivePlayer(guildMember);
                     guildMember.SendPersistentMessage($"Simulation has been ended by {source.Name}.");
@@ -26,10 +32,11 @@ public class GuildSimulationScript(Dialog subject) : DialogScriptBase(subject)
 
                 break;
             }
-            
+
             case "simm_revive":
             {
                 RevivePlayer(source);
+
                 break;
             }
         }
@@ -42,13 +49,5 @@ public class GuildSimulationScript(Dialog subject) : DialogScriptBase(subject)
         player.StatSheet.SetManaPct(100);
         player.Refresh(true);
         player.Display();
-    }
-
-    private static void ClearMonsters(Aisling source)
-    {
-        foreach (var monster in source.MapInstance.GetEntities<Monster>().ToList())
-        {
-            source.MapInstance.RemoveEntity(monster);
-        }
     }
 }

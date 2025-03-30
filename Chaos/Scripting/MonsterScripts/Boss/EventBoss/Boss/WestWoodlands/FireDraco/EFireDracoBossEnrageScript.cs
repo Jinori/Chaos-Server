@@ -22,14 +22,15 @@ public sealed class EFireDracoBossEnrageScript : MonsterScriptBase
 
     /// <inheritdoc />
     public EFireDracoBossEnrageScript(Monster subject, IMonsterFactory monsterFactory)
-        : base(subject) =>
-        MonsterFactory = monsterFactory;
+        : base(subject)
+        => MonsterFactory = monsterFactory;
 
     public override void Update(TimeSpan delta)
     {
         if (!Bonus75Applied && (Subject.StatSheet.HealthPercent <= 75))
         {
             Bonus75Applied = true;
+
             var attrib = new Attributes
             {
                 AtkSpeedPct = 25,
@@ -62,10 +63,11 @@ public sealed class EFireDracoBossEnrageScript : MonsterScriptBase
             Bonus30Applied = true;
             var rectangle = new Rectangle(Subject, 5, 5);
             Subject.StatSheet.SetHealthPct(45);
+
             var attrib = new Attributes
             {
                 AtkSpeedPct = 10,
-                MagicResistance = 10,   
+                MagicResistance = 10,
                 SkillDamagePct = 5,
                 SpellDamagePct = 5
             };
@@ -81,16 +83,17 @@ public sealed class EFireDracoBossEnrageScript : MonsterScriptBase
 
             Subject.Animate(UpgradeAnimation);
         }
-        
+
         if (!Bonus10Applied && (Subject.StatSheet.HealthPercent <= 10))
         {
             Bonus10Applied = true;
             var rectangle = new Rectangle(Subject, 5, 5);
             Subject.StatSheet.SetHealthPct(25);
+
             var attrib = new Attributes
             {
                 AtkSpeedPct = 10,
-                MagicResistance = 5,   
+                MagicResistance = 5,
                 SkillDamagePct = 10,
                 SpellDamagePct = 10
             };

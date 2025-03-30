@@ -8,7 +8,7 @@ public sealed class AlchemyBookScript : ReactorTileScriptBase
 {
     /// <inheritdoc />
     public AlchemyBookScript(ReactorTile subject)
-        : base(subject) {}
+        : base(subject) { }
 
     /// <inheritdoc />
     public override void OnClicked(Aisling source)
@@ -20,7 +20,7 @@ public sealed class AlchemyBookScript : ReactorTileScriptBase
 
             return;
         }
+
         source.SendOrangeBarMessage("You found an Alchemy Book, but you already know Antidote Potion.");
-        return;
     }
 }

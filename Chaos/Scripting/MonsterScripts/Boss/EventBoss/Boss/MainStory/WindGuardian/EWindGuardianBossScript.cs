@@ -1,7 +1,6 @@
 using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using Chaos.Scripting.MonsterScripts.Boss.MainStory;
 using Chaos.Scripting.MonsterScripts.Boss.MainStory.WindGuardian;
 
 namespace Chaos.Scripting.MonsterScripts.Boss.EventBoss.Boss.MainStory.WindGuardian;

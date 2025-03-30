@@ -1,6 +1,4 @@
-using AutoMapper.Execution;
 using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
@@ -20,16 +18,17 @@ namespace Chaos.Scripting.DialogScripts.Quests.LynithPirateShip;
 
 public class HelpDoltooScript : DialogScriptBase
 {
+    private readonly IItemFactory ItemFactory;
     private readonly ILogger<PFQuestScript> Logger;
     private readonly ISimpleCache SimpleCache;
-    private readonly IItemFactory ItemFactory;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     /// <inheritdoc />
     public HelpDoltooScript(
         Dialog subject,
         ISimpleCache simpleCache,
-        ILogger<PFQuestScript> logger, IItemFactory itemFactory)
+        ILogger<PFQuestScript> logger,
+        IItemFactory itemFactory)
         : base(subject)
     {
         SimpleCache = simpleCache;
@@ -37,6 +36,26 @@ public class HelpDoltooScript : DialogScriptBase
         ItemFactory = itemFactory;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
     }
+
+    private List<Aisling>? GetNearbyGroupMembers(Aisling source)
+        => source.Group
+                 ?.Where(x => x.WithinRange(new Point(source.X, source.Y)))
+                 .ToList();
+
+    private bool IsGroupEligible(Aisling source)
+        => (source.Group != null)
+           && source.Group.All(
+               x => x.Trackers.Enums.HasValue(HelpSable.FinishedCaptain)
+                    || x.Trackers.Enums.HasValue(HelpSable.EscortingDoltooFailed)
+                    || x.Trackers.Enums.HasValue(HelpSable.StartedDoltoo)
+                    || x.Trackers.Enums.HasValue(HelpSable.EscortingDoltooStart)
+                    || x.Trackers.Flags.HasFlag(ShipAttackFlags.FinishedDoltoo));
+
+    private bool IsGroupValid(Aisling source)
+        => (source.Group != null) && !source.Group.Any(x => !x.OnSameMapAs(source) || !x.WithinRange(source));
+
+    private bool IsGroupWithinLevelRange(Aisling source, List<Aisling> group)
+        => group.All(member => member.WithinLevelRange(source) && member.UserStatSheet.Master);
 
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
@@ -47,39 +66,39 @@ public class HelpDoltooScript : DialogScriptBase
             {
                 if (!source.UserStatSheet.Master)
                     return;
-                
+
                 if (source.Trackers.Flags.HasFlag(ShipAttackFlags.FinishedDoltoo))
                 {
                     Subject.Reply(source, "Thanks again for showing me the way out! I just love it down here, free meals and a cot.");
+
                     return;
                 }
-                
+
                 if (source.Trackers.Enums.HasValue(HelpSable.CompletedEscort))
                 {
                     Subject.Reply(source, "Skip", "helpdoltoo_finished");
+
                     return;
                 }
-                
-                if (source.Trackers.Enums.HasValue(HelpSable.StartedDoltoo) 
-                    || source.Trackers.Enums.HasValue(HelpSable.EscortingDoltooStart))
-                {
-                    Subject.Reply(source, "Skip", "helpdoltoo_return");
-                }
 
-                if (!source.Trackers.Enums.HasValue(HelpSable.FinishedCaptain) 
-                    && !source.Trackers.Enums.HasValue(HelpSable.StartedDoltoo) 
-                    && !source.Trackers.Enums.HasValue(HelpSable.EscortingDoltooStart) 
+                if (source.Trackers.Enums.HasValue(HelpSable.StartedDoltoo)
+                    || source.Trackers.Enums.HasValue(HelpSable.EscortingDoltooStart))
+                    Subject.Reply(source, "Skip", "helpdoltoo_return");
+
+                if (!source.Trackers.Enums.HasValue(HelpSable.FinishedCaptain)
+                    && !source.Trackers.Enums.HasValue(HelpSable.StartedDoltoo)
+                    && !source.Trackers.Enums.HasValue(HelpSable.EscortingDoltooStart)
                     && !source.Trackers.Enums.HasValue(HelpSable.EscortingDoltooFailed)
                     && !source.Trackers.Enums.HasValue(HelpSable.CompletedEscort))
                     return;
-                
+
                 var hasStage = source.Trackers.Enums.TryGetValue(out HelpSable stage);
 
                 if (!hasStage)
                     return;
 
                 if (source.Trackers.Enums.HasValue(HelpSable.FinishedCaptain)
-                    || source.Trackers.Enums.HasValue(HelpSable.StartedDoltoo) 
+                    || source.Trackers.Enums.HasValue(HelpSable.StartedDoltoo)
                     || source.Trackers.Enums.HasValue(HelpSable.EscortingDoltooStart))
                 {
                     var option1 = new DialogOption
@@ -90,7 +109,7 @@ public class HelpDoltooScript : DialogScriptBase
 
                     if (!Subject.HasOption(option1.OptionText))
                         Subject.Options.Insert(0, option1);
-                    
+
                     return;
                 }
 
@@ -103,16 +122,15 @@ public class HelpDoltooScript : DialogScriptBase
                 if (!Subject.HasOption(option.OptionText))
                     Subject.Options.Insert(0, option);
             }
+
                 break;
 
             case "helpdoltoo_initial":
             {
                 if (source.Trackers.Enums.HasValue(HelpSable.FinishedCaptain))
-                {
                     Subject.Reply(source, "Skip", "helpdoltoo_initial2");
-                    return;
-                }
             }
+
                 break;
 
             case "helpdoltoo_initial4":
@@ -122,55 +140,64 @@ public class HelpDoltooScript : DialogScriptBase
                 if (group == null)
                 {
                     TeleportPlayerToBrigQuest(source);
+
                     return;
                 }
-                
+
                 if (!IsGroupWithinLevelRange(source, group))
                 {
                     SendLevelRangeInvalidMessage(source);
+
                     return;
                 }
 
                 if (!IsGroupEligible(source))
                 {
                     SendGroupEligibleMessage(source);
+
                     return;
                 }
 
                 TeleportGroupToBrigQuest(source, group);
+
                 break;
             }
 
             case "helpdoltoo_return3":
-            { 
+            {
                 var group = GetNearbyGroupMembers(source);
 
                 if (group == null)
                 {
                     TeleportPlayerToBrigQuest(source);
+
                     return;
                 }
-                
+
                 if (!IsGroupWithinLevelRange(source, group))
                 {
                     SendLevelRangeInvalidMessage(source);
+
                     return;
                 }
 
                 if (!IsGroupEligible(source))
                 {
                     SendGroupEligibleMessage(source);
+
                     return;
                 }
-                
+
                 if (!IsGroupValid(source))
                 {
                     Subject.Reply(source, "Not all of your group members are here.");
                     source.SendOrangeBarMessage("Not all of your group members are here.");
+
                     return;
                 }
 
                 TeleportGroupToBrigQuest(source, group);
+
                 break;
             }
 
@@ -183,43 +210,20 @@ public class HelpDoltooScript : DialogScriptBase
                 var item = ItemFactory.Create("Shinguards");
                 source.GiveItemOrSendToBank(item);
                 source.SendOrangeBarMessage("Doltoo hands you some Shinguards.");
-                
+
                 Logger.WithTopics(
-                        [Topics.Entities.Aisling,
-                        Topics.Entities.Experience,
-                        Topics.Entities.Item,
-                        Topics.Entities.Dialog,
-                        Topics.Entities.Quest])
-                    .WithProperty(source)
-                    .WithProperty(Subject)
-                    .LogInformation(
-                        "{@AislingName} has received {@ExpAmount} exp from Helping Doltoo.",
-                        source.Name,
-                        20000000);
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Experience,
+                          Topics.Entities.Item,
+                          Topics.Entities.Dialog,
+                          Topics.Entities.Quest)
+                      .WithProperty(source)
+                      .WithProperty(Subject)
+                      .LogInformation("{@AislingName} has received {@ExpAmount} exp from Helping Doltoo.", source.Name, 20000000);
+
                 break;
             }
         }
-    }
-    
-    private bool IsGroupEligible(Aisling source) =>
-        source.Group != null && source.Group.All(x =>
-            x.Trackers.Enums.HasValue(HelpSable.FinishedCaptain)
-            || x.Trackers.Enums.HasValue(HelpSable.EscortingDoltooFailed)
-            || x.Trackers.Enums.HasValue(HelpSable.StartedDoltoo)
-            || x.Trackers.Enums.HasValue(HelpSable.EscortingDoltooStart)
-            || x.Trackers.Flags.HasFlag(ShipAttackFlags.FinishedDoltoo));
-    private bool IsGroupValid(Aisling source) =>
-        source.Group != null && !source.Group.Any(x => !x.OnSameMapAs(source) || !x.WithinRange(source));
-
-    private List<Aisling>? GetNearbyGroupMembers(Aisling source) =>
-        source.Group?.Where(x => x.WithinRange(new Point(source.X, source.Y))).ToList();
-
-    private bool IsGroupWithinLevelRange(Aisling source, List<Aisling> group) =>
-        group.All(member => member.WithinLevelRange(source) && member.UserStatSheet.Master);
-    private void SendLevelRangeInvalidMessage(Aisling source)
-    {
-        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "All of your group members must be within level range.");
-        Subject.Reply(source, "Some of your companions are not within your level range.");
     }
 
     private void SendGroupEligibleMessage(Aisling source)
@@ -227,29 +231,31 @@ public class HelpDoltooScript : DialogScriptBase
         source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Not all group members are on this quest.");
         Subject.Reply(source, "A member of your group isn't on this part of the quest.");
     }
-    
+
+    private void SendLevelRangeInvalidMessage(Aisling source)
+    {
+        source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "All of your group members must be within level range.");
+        Subject.Reply(source, "Some of your companions are not within your level range.");
+    }
+
     private void TeleportGroupToBrigQuest(Aisling source, List<Aisling> group)
     {
         var mapInstance = SimpleCache.Get<MapInstance>("lynith_pirate_brigquest");
 
         foreach (var member in group)
         {
-            
             Point point;
+
             do
-            {
                 point = new Point(member.X, member.Y);
-            }
             while (!mapInstance.IsWalkable(point, member.Type));
-            
+
             var dialog = member.ActiveDialog.Get();
             dialog?.Close(member);
             Subject.Close(source);
 
             if (!member.Trackers.Flags.HasFlag(ShipAttackFlags.FinishedDoltoo))
-            {
-                member.Trackers.Enums.Set(HelpSable.StartedDoltoo); 
-            }
+                member.Trackers.Enums.Set(HelpSable.StartedDoltoo);
             member.TraverseMap(mapInstance, point);
         }
     }
@@ -259,7 +265,7 @@ public class HelpDoltooScript : DialogScriptBase
         var mapInstance = SimpleCache.Get<MapInstance>("lynith_pirate_brigquest");
 
         var point = new Point(source.X, source.Y);
-        
+
         source.Trackers.Enums.Set(HelpSable.StartedDoltoo);
         source.TraverseMap(mapInstance, point);
     }

@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions.Geometry;
@@ -57,7 +56,7 @@ public class TwentyOneScript : DialogScriptBase
                 source.BetGoldOnTwentyOne = true;
                 HasPaid = true;
             }
-            
+
             merchant.CurrentlyHosting21Game = true;
             var roll = IntegerRandomizer.RollDouble(6);
             source.CurrentDiceScore += roll;
@@ -91,7 +90,7 @@ public class TwentyOneScript : DialogScriptBase
 
             return;
         }
-        
+
         if (source.TwentyOneStayOption || source.TwentyOneBust)
             Subject.Reply(source, $"Please wait while everyone has finished. Your score was {source.CurrentDiceScore}.");
     }

@@ -22,6 +22,14 @@ public class SellAnyItemShopScript : DialogScriptBase
         SellShopSource = (ISellShopSource)subject.DialogSource;
     }
 
+    private static string GetDisplayNameWithPlural(string baseName, int amount)
+    {
+        if ((amount == 1) || string.IsNullOrWhiteSpace(baseName))
+            return baseName;
+
+        return baseName.Pluralize();
+    }
+
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
@@ -56,9 +64,7 @@ public class SellAnyItemShopScript : DialogScriptBase
 
     private void OnDisplayingAccepted(Aisling source)
     {
-        if (!TryFetchArgs<byte, int>(out var slot, out var amount)
-            || (amount <= 0)
-            || !source.Inventory.TryGetObject(slot, out var item))
+        if (!TryFetchArgs<byte, int>(out var slot, out var amount) || (amount <= 0) || !source.Inventory.TryGetObject(slot, out var item))
         {
             Subject.ReplyToUnknownInput(source);
 
@@ -67,6 +73,7 @@ public class SellAnyItemShopScript : DialogScriptBase
 
         var totalSellValue = amount * (item.Template.SellValue / 3);
         var perItem = item.Template.SellValue / 3;
+
         var sellItemResult = ComplexActionHelper.SellItem(
             source,
             slot,
@@ -77,10 +84,10 @@ public class SellAnyItemShopScript : DialogScriptBase
         {
             case ComplexActionHelper.SellItemResult.Success:
                 Logger.WithTopics(
-                          [Topics.Entities.Aisling,
+                          Topics.Entities.Aisling,
                           Topics.Entities.Item,
                           Topics.Entities.Gold,
-                          Topics.Actions.Sell])
+                          Topics.Actions.Sell)
                       .WithProperty(Subject)
                       .WithProperty(Subject.DialogSource)
                       .WithProperty(source)
@@ -146,11 +153,10 @@ public class SellAnyItemShopScript : DialogScriptBase
 
     private void OnDisplayingConfirmation(Aisling source)
     {
-        if (!TryFetchArgs<byte, int>(out var slot, out var amount)
-            || (amount <= 0)
-            || !source.Inventory.TryGetObject(slot, out var item))
+        if (!TryFetchArgs<byte, int>(out var slot, out var amount) || (amount <= 0) || !source.Inventory.TryGetObject(slot, out var item))
         {
             Subject.ReplyToUnknownInput(source);
+
             return;
         }
 
@@ -159,17 +165,7 @@ public class SellAnyItemShopScript : DialogScriptBase
 
         Subject.InjectTextParameters(amount.ToWords(), itemName, totalValue);
     }
-    
-    private static string GetDisplayNameWithPlural(string baseName, int amount)
-    {
-        if ((amount == 1) || string.IsNullOrWhiteSpace(baseName))
-            return baseName;
 
-        return baseName.Pluralize();
-    }
-
-
-    
     private void OnDisplayingInitial(Aisling source)
         => Subject.Slots = source.Inventory
                                  .Where(x => x.Template.SellValue >= 2)

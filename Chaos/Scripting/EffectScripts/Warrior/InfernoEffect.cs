@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.Common.Utilities;
+﻿using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
@@ -28,10 +27,10 @@ public class InfernoEffect : EffectBase
     protected IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1500), false);
     protected IApplyDamageScript ApplyDamageScript { get; } = ApplyAttackDamageScript.Create();
 
+    protected IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000), false);
+
     /// <inheritdoc />
     public override byte Icon => 98;
-
-    protected IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000), false);
 
     /// <inheritdoc />
     public override string Name => "Inferno";
@@ -50,9 +49,9 @@ public class InfernoEffect : EffectBase
         // so we need to adjust the health subtraction based on attack speed to maintain 3% per second
         var healthPercentToSubtract = 5.0m;
         var effectiveAtkSpeedPct = 1.0m + (decimal)(Subject.StatSheet.EffectiveAttackSpeedPct / 100.0);
-        
+
         healthPercentToSubtract /= effectiveAtkSpeedPct;
-        
+
         Subject.StatSheet.SubtractHealthPct(healthPercentToSubtract);
         AislingSubject?.ShowHealth();
         AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
@@ -95,7 +94,7 @@ public class InfernoEffect : EffectBase
 
         return true;
     }
-    
+
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
@@ -103,7 +102,7 @@ public class InfernoEffect : EffectBase
         var effectiveAttackSpeedPct = Subject.StatSheet.EffectiveAttackSpeedPct;
         var modifier = 1.0 + effectiveAttackSpeedPct / 100.0;
         var modifiedDelta = delta.Multiply(modifier);
-        
+
         AnimationInterval.Update(modifiedDelta);
         Interval.Update(modifiedDelta);
 
@@ -112,8 +111,8 @@ public class InfernoEffect : EffectBase
             Animation.AnimationSpeed = (ushort)(100 / modifier);
             Subject.Animate(Animation);
         }
-        
-        if(Interval.IntervalElapsed)
+
+        if (Interval.IntervalElapsed)
             OnIntervalElapsed();
 
         base.Update(delta);

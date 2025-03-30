@@ -14,24 +14,28 @@ public class PlantTradeScript : DialogScriptBase
 
     private readonly List<string> PlantTemplateKeys =
     [
-        "blossomofbetrayal", "bocanbough", "cactusflower", "dochasbloom", "kabineblossom", "koboldtail", "lilypad", "passionflower",
-        "raineach", "sparkflower"
+        "blossomofbetrayal",
+        "bocanbough",
+        "cactusflower",
+        "dochasbloom",
+        "kabineblossom",
+        "koboldtail",
+        "lilypad",
+        "passionflower",
+        "raineach",
+        "sparkflower"
     ];
 
     /// <inheritdoc />
-    public PlantTradeScript(
-        Dialog subject,
-        IItemFactory itemFactory,
-        IDialogFactory dialogFactory
-    )
+    public PlantTradeScript(Dialog subject, IItemFactory itemFactory, IDialogFactory dialogFactory)
         : base(subject)
     {
         ItemFactory = itemFactory;
         DialogFactory = dialogFactory;
     }
 
-    private int GetTradeCost(string itemKey) =>
-        itemKey.ToLower() switch
+    private int GetTradeCost(string itemKey)
+        => itemKey.ToLower() switch
         {
             "blossomofbetrayal" => 75000,
             "bocanbough"        => 50000,
@@ -87,9 +91,11 @@ public class PlantTradeScript : DialogScriptBase
             return;
         }
 
-        var newPlant = ItemFactory.Create(previous.ToLowerInvariant().Replace(" ", string.Empty));
+        var newPlant = ItemFactory.Create(
+            previous.ToLowerInvariant()
+                    .Replace(" ", string.Empty));
 
-        if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item) || item.Count < 1)
+        if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item) || (item.Count < 1))
         {
             Subject.Reply(source, "You ran out of those plants to trade.", "plant_trade_initial");
 
@@ -112,7 +118,7 @@ public class PlantTradeScript : DialogScriptBase
 
     public void OnDisplayingConfirmation(Aisling source)
     {
-        if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item) || item.Count < 1)
+        if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item) || (item.Count < 1))
         {
             Subject.Reply(source, "Skip", "plant_trade_initial");
 
@@ -141,10 +147,11 @@ public class PlantTradeScript : DialogScriptBase
             }
     }
 
-    public void OnDisplayingShowPlayerItems(Aisling source) => Subject.Slots =
-        source.Inventory.Where(x => PlantTemplateKeys.Contains(x.Template.TemplateKey.ToLower()))
-              .Select(x => x.Slot)
-              .ToList();
+    public void OnDisplayingShowPlayerItems(Aisling source)
+        => Subject.Slots = source.Inventory
+                                 .Where(x => PlantTemplateKeys.Contains(x.Template.TemplateKey.ToLower()))
+                                 .Select(x => x.Slot)
+                                 .ToList();
 
     public override void OnNext(Aisling source, byte? optionIndex = null)
     {
@@ -166,7 +173,7 @@ public class PlantTradeScript : DialogScriptBase
 
                 return;
             }
-            
+
             if (!TryFetchArg<byte>(0, out var slot) || !source.Inventory.TryGetObject(slot, out var item) || (item.Count < 1))
             {
                 Subject.Reply(source, "You ran out of those plants to trade.", "plant_trade_initial");

@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
@@ -36,22 +35,16 @@ public class DarkThingsQuestScript : DialogScriptBase
         var tenpercent = Convert.ToInt32(.10 * tnl);
 
         if (tenpercent > 320000)
-        {
             tenpercent = 320000;
-        }
 
         var fifteenpercent = Convert.ToInt32(0.15 * tnl);
 
         if (fifteenpercent > 480000)
-        {
             fifteenpercent = 480000;
-        }
         var twentypercent = Convert.ToInt32(0.20 * tnl);
 
         if (twentypercent > 640000)
-        {
             twentypercent = 640000;
-        }
 
         switch (Subject.Template.TemplateKey.ToLower())
         {
@@ -122,16 +115,16 @@ public class DarkThingsQuestScript : DialogScriptBase
 
                 if (stage == DarkThingsStage.StartedScorpionSting)
                     Subject.Reply(source, "skip", "darkthings_startscs");
-                
+
                 if (stage == DarkThingsStage.StartedMarauderSpine)
                     Subject.Reply(source, "skip", "darkthings_startms");
-                
+
                 if (stage == DarkThingsStage.StartedKardiFur)
                     Subject.Reply(source, "skip", "darkthings_startkf");
-                
+
                 if (stage == DarkThingsStage.StartedMimicTeeth)
                     Subject.Reply(source, "skip", "darkthings_startmt");
-                
+
                 if (stage == DarkThingsStage.StartedSuccubusHair)
                     Subject.Reply(source, "skip", "darkthings_startsh");
 
@@ -146,7 +139,9 @@ public class DarkThingsQuestScript : DialogScriptBase
                     {
                         randomDarkThingsStage = new[]
                         {
-                            DarkThingsStage.StartedSpidersEye, DarkThingsStage.StartedCentipedesGland, DarkThingsStage.StartedSpidersSilk
+                            DarkThingsStage.StartedSpidersEye,
+                            DarkThingsStage.StartedCentipedesGland,
+                            DarkThingsStage.StartedSpidersSilk
                         }.PickRandom();
 
                         source.Trackers.Enums.Set(randomDarkThingsStage);
@@ -156,7 +151,9 @@ public class DarkThingsQuestScript : DialogScriptBase
                     {
                         randomDarkThingsStage = new[]
                         {
-                            DarkThingsStage.StartedSpidersEye, DarkThingsStage.StartedCentipedesGland, DarkThingsStage.StartedSpidersSilk,
+                            DarkThingsStage.StartedSpidersEye,
+                            DarkThingsStage.StartedCentipedesGland,
+                            DarkThingsStage.StartedSpidersSilk,
                             DarkThingsStage.StartedBatsWing
                         }.PickRandom();
 
@@ -167,7 +164,9 @@ public class DarkThingsQuestScript : DialogScriptBase
                     {
                         randomDarkThingsStage = new[]
                         {
-                            DarkThingsStage.StartedBatsWing, DarkThingsStage.StartedCentipedesGland, DarkThingsStage.StartedScorpionSting
+                            DarkThingsStage.StartedBatsWing,
+                            DarkThingsStage.StartedCentipedesGland,
+                            DarkThingsStage.StartedScorpionSting
                         }.PickRandom();
 
                         source.Trackers.Enums.Set(randomDarkThingsStage);
@@ -177,17 +176,22 @@ public class DarkThingsQuestScript : DialogScriptBase
                     {
                         randomDarkThingsStage = new[]
                         {
-                            DarkThingsStage.StartedGiantBatsWing, DarkThingsStage.StartedScorpionSting, DarkThingsStage.StartedWhiteBatsWing
+                            DarkThingsStage.StartedGiantBatsWing,
+                            DarkThingsStage.StartedScorpionSting,
+                            DarkThingsStage.StartedWhiteBatsWing
                         }.PickRandom();
 
                         source.Trackers.Enums.Set(randomDarkThingsStage);
                     }
-                    
+
                     if (source.UserStatSheet.Level >= 51)
                     {
                         randomDarkThingsStage = new[]
                         {
-                            DarkThingsStage.StartedMarauderSpine, DarkThingsStage.StartedKardiFur, DarkThingsStage.StartedMimicTeeth, DarkThingsStage.StartedSuccubusHair
+                            DarkThingsStage.StartedMarauderSpine,
+                            DarkThingsStage.StartedKardiFur,
+                            DarkThingsStage.StartedMimicTeeth,
+                            DarkThingsStage.StartedSuccubusHair
                         }.PickRandom();
 
                         source.Trackers.Enums.Set(randomDarkThingsStage);
@@ -240,28 +244,28 @@ public class DarkThingsQuestScript : DialogScriptBase
                         }
 
                             break;
-                        
+
                         case DarkThingsStage.StartedMarauderSpine:
                         {
                             Subject.Reply(source, "You will? Okay, bring me one Marauder's Spine.");
                         }
 
                             break;
-                        
+
                         case DarkThingsStage.StartedKardiFur:
                         {
                             Subject.Reply(source, "You will? Okay, bring me one Kardi Fur.");
                         }
 
                             break;
-                        
+
                         case DarkThingsStage.StartedMimicTeeth:
                         {
                             Subject.Reply(source, "You will? Okay, bring me one Mimic Teeth.");
                         }
 
                             break;
-                        
+
                         case DarkThingsStage.StartedSuccubusHair:
                         {
                             Subject.Reply(source, "You will? Okay, bring me one Succubus's Hair.");
@@ -291,10 +295,10 @@ public class DarkThingsQuestScript : DialogScriptBase
                     }
 
                     Logger.WithTopics(
-                              [Topics.Entities.Aisling,
+                              Topics.Entities.Aisling,
                               Topics.Entities.Experience,
                               Topics.Entities.Dialog,
-                              Topics.Entities.Quest])
+                              Topics.Entities.Quest)
                           .WithProperty(source)
                           .WithProperty(Subject)
                           .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, tenpercent);
@@ -322,10 +326,10 @@ public class DarkThingsQuestScript : DialogScriptBase
                     }
 
                     Logger.WithTopics(
-                              [Topics.Entities.Aisling,
+                              Topics.Entities.Aisling,
                               Topics.Entities.Experience,
                               Topics.Entities.Dialog,
-                              Topics.Entities.Quest])
+                              Topics.Entities.Quest)
                           .WithProperty(source)
                           .WithProperty(Subject)
                           .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, tenpercent);
@@ -353,10 +357,10 @@ public class DarkThingsQuestScript : DialogScriptBase
                     }
 
                     Logger.WithTopics(
-                              [Topics.Entities.Aisling,
+                              Topics.Entities.Aisling,
                               Topics.Entities.Experience,
                               Topics.Entities.Dialog,
-                              Topics.Entities.Quest])
+                              Topics.Entities.Quest)
                           .WithProperty(source)
                           .WithProperty(Subject)
                           .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, tenpercent);
@@ -384,10 +388,10 @@ public class DarkThingsQuestScript : DialogScriptBase
                     }
 
                     Logger.WithTopics(
-                              [Topics.Entities.Aisling,
+                              Topics.Entities.Aisling,
                               Topics.Entities.Experience,
                               Topics.Entities.Dialog,
-                              Topics.Entities.Quest])
+                              Topics.Entities.Quest)
                           .WithProperty(source)
                           .WithProperty(Subject)
                           .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, tenpercent);
@@ -414,10 +418,10 @@ public class DarkThingsQuestScript : DialogScriptBase
                     }
 
                     Logger.WithTopics(
-                              [Topics.Entities.Aisling,
+                              Topics.Entities.Aisling,
                               Topics.Entities.Experience,
                               Topics.Entities.Dialog,
-                              Topics.Entities.Quest])
+                              Topics.Entities.Quest)
                           .WithProperty(source)
                           .WithProperty(Subject)
                           .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, tenpercent);
@@ -445,10 +449,10 @@ public class DarkThingsQuestScript : DialogScriptBase
                     }
 
                     Logger.WithTopics(
-                              [Topics.Entities.Aisling,
+                              Topics.Entities.Aisling,
                               Topics.Entities.Experience,
                               Topics.Entities.Dialog,
-                              Topics.Entities.Quest])
+                              Topics.Entities.Quest)
                           .WithProperty(source)
                           .WithProperty(Subject)
                           .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, tenpercent);
@@ -476,10 +480,10 @@ public class DarkThingsQuestScript : DialogScriptBase
                     }
 
                     Logger.WithTopics(
-                              [Topics.Entities.Aisling,
+                              Topics.Entities.Aisling,
                               Topics.Entities.Experience,
                               Topics.Entities.Dialog,
-                              Topics.Entities.Quest])
+                              Topics.Entities.Quest)
                           .WithProperty(source)
                           .WithProperty(Subject)
                           .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, tenpercent);
@@ -494,7 +498,7 @@ public class DarkThingsQuestScript : DialogScriptBase
                 }
 
                 break;
-            
+
             case "darkthings_startedmarauderspine":
                 if (stage == DarkThingsStage.StartedMarauderSpine)
                 {
@@ -507,13 +511,13 @@ public class DarkThingsQuestScript : DialogScriptBase
                     }
 
                     Logger.WithTopics(
-                            [Topics.Entities.Aisling,
-                            Topics.Entities.Experience,
-                            Topics.Entities.Dialog,
-                            Topics.Entities.Quest])
-                        .WithProperty(source)
-                        .WithProperty(Subject)
-                        .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, tenpercent);
+                              Topics.Entities.Aisling,
+                              Topics.Entities.Experience,
+                              Topics.Entities.Dialog,
+                              Topics.Entities.Quest)
+                          .WithProperty(source)
+                          .WithProperty(Subject)
+                          .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, tenpercent);
 
                     source.Inventory.RemoveQuantity("Marauder's Spine", 1);
                     ExperienceDistributionScript.GiveExp(source, twentypercent);
@@ -525,7 +529,7 @@ public class DarkThingsQuestScript : DialogScriptBase
                 }
 
                 break;
-            
+
             case "darkthings_startedkardifur":
                 if (stage == DarkThingsStage.StartedKardiFur)
                 {
@@ -538,13 +542,13 @@ public class DarkThingsQuestScript : DialogScriptBase
                     }
 
                     Logger.WithTopics(
-                            [Topics.Entities.Aisling,
-                            Topics.Entities.Experience,
-                            Topics.Entities.Dialog,
-                            Topics.Entities.Quest])
-                        .WithProperty(source)
-                        .WithProperty(Subject)
-                        .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, tenpercent);
+                              Topics.Entities.Aisling,
+                              Topics.Entities.Experience,
+                              Topics.Entities.Dialog,
+                              Topics.Entities.Quest)
+                          .WithProperty(source)
+                          .WithProperty(Subject)
+                          .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, tenpercent);
 
                     source.Inventory.RemoveQuantity("Kardi Fur", 1);
                     ExperienceDistributionScript.GiveExp(source, twentypercent);
@@ -556,7 +560,7 @@ public class DarkThingsQuestScript : DialogScriptBase
                 }
 
                 break;
-            
+
             case "darkthings_startedmimicteeth":
                 if (stage == DarkThingsStage.StartedMimicTeeth)
                 {
@@ -569,13 +573,13 @@ public class DarkThingsQuestScript : DialogScriptBase
                     }
 
                     Logger.WithTopics(
-                            [Topics.Entities.Aisling,
-                            Topics.Entities.Experience,
-                            Topics.Entities.Dialog,
-                            Topics.Entities.Quest])
-                        .WithProperty(source)
-                        .WithProperty(Subject)
-                        .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, tenpercent);
+                              Topics.Entities.Aisling,
+                              Topics.Entities.Experience,
+                              Topics.Entities.Dialog,
+                              Topics.Entities.Quest)
+                          .WithProperty(source)
+                          .WithProperty(Subject)
+                          .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, tenpercent);
 
                     source.Inventory.RemoveQuantity("Mimic Teeth", 1);
                     ExperienceDistributionScript.GiveExp(source, twentypercent);
@@ -587,7 +591,7 @@ public class DarkThingsQuestScript : DialogScriptBase
                 }
 
                 break;
-            
+
             case "darkthings_startedsuccubushair":
                 if (stage == DarkThingsStage.StartedSuccubusHair)
                 {
@@ -600,13 +604,13 @@ public class DarkThingsQuestScript : DialogScriptBase
                     }
 
                     Logger.WithTopics(
-                            [Topics.Entities.Aisling,
-                            Topics.Entities.Experience,
-                            Topics.Entities.Dialog,
-                            Topics.Entities.Quest])
-                        .WithProperty(source)
-                        .WithProperty(Subject)
-                        .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, tenpercent);
+                              Topics.Entities.Aisling,
+                              Topics.Entities.Experience,
+                              Topics.Entities.Dialog,
+                              Topics.Entities.Quest)
+                          .WithProperty(source)
+                          .WithProperty(Subject)
+                          .LogInformation("{@AislingName} has received {@ExpAmount} exp from a quest", source.Name, tenpercent);
 
                     source.Inventory.RemoveQuantity("Succubus's Hair", 1);
                     ExperienceDistributionScript.GiveExp(source, twentypercent);

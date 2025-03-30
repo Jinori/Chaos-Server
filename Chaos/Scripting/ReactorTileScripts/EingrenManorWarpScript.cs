@@ -18,8 +18,8 @@ public class EingrenManorWarpScript : ConfigurableReactorTileScriptBase
 
     /// <inheritdoc />
     public EingrenManorWarpScript(ReactorTile subject, ISimpleCache simpleCache)
-        : base(subject) =>
-        SimpleCache = simpleCache;
+        : base(subject)
+        => SimpleCache = simpleCache;
 
     /// <inheritdoc />
     public override void OnWalkedOn(Creature source)
@@ -28,8 +28,7 @@ public class EingrenManorWarpScript : ConfigurableReactorTileScriptBase
         var aisling = source as Aisling;
 
         if (source.MapInstance.Template.TemplateKey.Equals("24011"))
-            if (source.Trackers.Enums.TryGetValue(out ManorNecklaceStage manorStage)
-                && (manorStage == ManorNecklaceStage.SawNecklace))
+            if (source.Trackers.Enums.TryGetValue(out ManorNecklaceStage manorStage) && (manorStage == ManorNecklaceStage.SawNecklace))
             {
                 aisling?.SendOrangeBarMessage("You must defeat all ghost to escape!");
 

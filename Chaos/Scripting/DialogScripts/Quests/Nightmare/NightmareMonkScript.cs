@@ -1,5 +1,4 @@
 using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
@@ -12,22 +11,23 @@ namespace Chaos.Scripting.DialogScripts.Quests.Nightmare;
 
 public class NightmareMonkScript : DialogScriptBase
 {
-    private readonly ISimpleCache _simpleCache; 
-    
+    private readonly ISimpleCache _simpleCache;
+
     public NightmareMonkScript(Dialog subject, ISimpleCache simpleCache)
-        : base(subject) =>
-        _simpleCache = simpleCache;
+        : base(subject)
+        => _simpleCache = simpleCache;
 
     public override void OnDisplaying(Aisling source)
     {
         var hasStage = source.Trackers.Enums.TryGetValue(out NightmareQuestStage stage);
 
-        var ani1 = new Animation()
+        var ani1 = new Animation
         {
             AnimationSpeed = 100,
             TargetAnimation = 75
         };
-        var ani2 = new Animation()
+
+        var ani2 = new Animation
         {
             AnimationSpeed = 100,
             TargetAnimation = 54
@@ -46,22 +46,28 @@ public class NightmareMonkScript : DialogScriptBase
                 switch (hasStage)
                 {
                     case false:
-                        Subject.AddOption($"Pattern Walker Legend", "nightmaremonk1");
+                        Subject.AddOption("Pattern Walker Legend", "nightmaremonk1");
 
                         return;
-                    case true when (stage == NightmareQuestStage.Started):
-                        Subject.AddOption($"Pattern Walker Legend", "nightmaremonk1");
-                       
+                    case true when stage == NightmareQuestStage.Started:
+                        Subject.AddOption("Pattern Walker Legend", "nightmaremonk1");
+
                         return;
-                    case true when (stage == NightmareQuestStage.CompletedNightmareWin1):
-                        Subject.Reply(source, "I see you have protected the slaves. That is good. Here, take this as a reward for your hard work.", "bodil_initial");
+                    case true when stage == NightmareQuestStage.CompletedNightmareWin1:
+                        Subject.Reply(
+                            source,
+                            "I see you have protected the slaves. That is good. Here, take this as a reward for your hard work.",
+                            "bodil_initial");
                         source.Trackers.Enums.Set(NightmareQuestStage.CompletedNightmareWin2);
                         source.TryGiveGamePoints(20);
                         source.SendOrangeBarMessage("You received 20 Game Points.");
 
                         return;
-                    case true when (stage == NightmareQuestStage.CompletedNightmareLoss1):
-                        Subject.Reply(source, "One day you will learn to use your abilities. Take it as a lesson learned.", "bodil_initial");
+                    case true when stage == NightmareQuestStage.CompletedNightmareLoss1:
+                        Subject.Reply(
+                            source,
+                            "One day you will learn to use your abilities. Take it as a lesson learned.",
+                            "bodil_initial");
                         source.Trackers.Enums.Set(NightmareQuestStage.CompletedNightmareLoss2);
 
                         return;
@@ -80,25 +86,29 @@ public class NightmareMonkScript : DialogScriptBase
             case "tocpattern1":
             {
                 source.Animate(ani1);
+
                 break;
             }
-            
+
             case "tocpattern7":
             {
                 source.Animate(ani2);
                 source.Trackers.Enums.Set(NightmareQuestStage.MetRequirementsToEnter1);
+
                 break;
             }
 
             case "tocpattern12":
             {
-                if ((hasStage && (stage == NightmareQuestStage.MetRequirementsToEnter1)) || (stage == NightmareQuestStage.EnteredDream) || (stage == NightmareQuestStage.SpawnedNightmare))
+                if ((hasStage && (stage == NightmareQuestStage.MetRequirementsToEnter1))
+                    || (stage == NightmareQuestStage.EnteredDream)
+                    || (stage == NightmareQuestStage.SpawnedNightmare))
                 {
                     Subject.Close(source);
                     Point point2;
                     point2 = new Point(12, 12);
                     var mapInstance2 = _simpleCache.Get<MapInstance>("monknightmarechallenge");
-                    source.TraverseMap(mapInstance2, point2, false);
+                    source.TraverseMap(mapInstance2, point2);
                     source.Trackers.Enums.Set(NightmareQuestStage.EnteredDream);
                     source.UserStatSheet.SetHealthPct(100);
                     source.Client.SendAttributes(StatUpdateType.Vitality);
@@ -106,7 +116,6 @@ public class NightmareMonkScript : DialogScriptBase
 
                 break;
             }
-            
         }
     }
 }

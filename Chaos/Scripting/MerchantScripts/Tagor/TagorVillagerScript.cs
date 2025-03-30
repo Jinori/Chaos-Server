@@ -303,8 +303,11 @@ public class TagorVillagerScript : MerchantScriptBase
     {
         if (!HasPickedAnAisling)
         {
-            var aislings = Subject.MapInstance.GetEntitiesWithinRange<Aisling>(Subject).ThatAreObservedBy(Subject).ThatAreVisibleTo(Subject).ToList();
-
+            var aislings = Subject.MapInstance
+                                  .GetEntitiesWithinRange<Aisling>(Subject)
+                                  .ThatAreObservedBy(Subject)
+                                  .ThatAreVisibleTo(Subject)
+                                  .ToList();
 
             if (aislings.Count > 0)
             {

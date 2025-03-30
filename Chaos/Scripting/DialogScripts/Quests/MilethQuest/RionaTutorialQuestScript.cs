@@ -23,7 +23,11 @@ public class RionaTutorialQuestScript : DialogScriptBase
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     /// <inheritdoc />
-    public RionaTutorialQuestScript(Dialog subject, IItemFactory itemFactory, ILogger<RionaTutorialQuestScript> logger, ISkillFactory skillFactory)
+    public RionaTutorialQuestScript(
+        Dialog subject,
+        IItemFactory itemFactory,
+        ILogger<RionaTutorialQuestScript> logger,
+        ISkillFactory skillFactory)
         : base(subject)
     {
         ItemFactory = itemFactory;

@@ -23,6 +23,7 @@ public class Cunning3Effect : EffectBase
     {
         base.OnApplied();
         AislingSubject?.Effects.Terminate("Cunning2");
+
         var attributes = new Attributes
         {
             Dmg = 28,
@@ -56,6 +57,7 @@ public class Cunning3Effect : EffectBase
         AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your cunning returns to normal.");
     }
+
     public override bool ShouldApply(Creature source, Creature target)
     {
         if (!target.Effects.Contains("Cunning3") && (target.StatSheet.CurrentMp <= 16000))

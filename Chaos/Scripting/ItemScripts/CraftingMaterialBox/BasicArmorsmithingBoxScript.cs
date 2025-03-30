@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.Models.Panel;
+﻿using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Scripting.ItemScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
@@ -27,22 +26,18 @@ public class BasicArmorsmithingBoxScript : ItemScriptBase
         // Create items
         var linen = _itemFactory.Create("linen");
         var cotton = _itemFactory.Create("cotton");
-        
-        for (int i = 0; i < linenAmount; i++)
-        {
-            source.GiveItemOrSendToBank(_itemFactory.Create("linen"));
-        }
 
-        for (int i = 0; i < cottonAmount; i++)
-        {
+        for (var i = 0; i < linenAmount; i++)
+            source.GiveItemOrSendToBank(_itemFactory.Create("linen"));
+
+        for (var i = 0; i < cottonAmount; i++)
             source.GiveItemOrSendToBank(_itemFactory.Create("cotton"));
-        }
 
         // Add items to the player's inventory
         source.GiveItemOrSendToBank(linen);
         source.GiveItemOrSendToBank(cotton);
 
         // Notify the player
-        source.SendOrangeBarMessage($"You received {linenAmount +1} Linen and {cottonAmount +1} Cotton!");
+        source.SendOrangeBarMessage($"You received {linenAmount + 1} Linen and {cottonAmount + 1} Cotton!");
     }
 }

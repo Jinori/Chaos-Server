@@ -1,5 +1,4 @@
 using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
@@ -12,22 +11,23 @@ namespace Chaos.Scripting.DialogScripts.Quests.Nightmare;
 
 public class NightmareRogueScript : DialogScriptBase
 {
-    private readonly ISimpleCache SimpleCache; 
-    
+    private readonly ISimpleCache SimpleCache;
+
     public NightmareRogueScript(Dialog subject, ISimpleCache simpleCache)
-        : base(subject) =>
-        SimpleCache = simpleCache;
+        : base(subject)
+        => SimpleCache = simpleCache;
 
     public override void OnDisplaying(Aisling source)
     {
         var hasStage = source.Trackers.Enums.TryGetValue(out NightmareQuestStage stage);
 
-        var ani1 = new Animation()
+        var ani1 = new Animation
         {
             AnimationSpeed = 100,
             TargetAnimation = 75
         };
-        var ani2 = new Animation()
+
+        var ani2 = new Animation
         {
             AnimationSpeed = 100,
             TargetAnimation = 54
@@ -42,26 +42,32 @@ public class NightmareRogueScript : DialogScriptBase
 
                 if (source.UserStatSheet.Level < 80)
                     return;
-                
+
                 switch (hasStage)
                 {
                     case false:
-                        Subject.AddOption($"Marauder Legend", "nightmarerogue1");
+                        Subject.AddOption("Marauder Legend", "nightmarerogue1");
 
                         return;
-                    case true when (stage == NightmareQuestStage.Started):
-                        Subject.AddOption($"Marauder Legend", "nightmarerogue1");
-                       
+                    case true when stage == NightmareQuestStage.Started:
+                        Subject.AddOption("Marauder Legend", "nightmarerogue1");
+
                         return;
-                    case true when (stage == NightmareQuestStage.CompletedNightmareWin1):
-                        Subject.Reply(source, "You protected the totem and completed the challenge before you... You are better than I thought. Take this as a reward.", "varuna_initial");
+                    case true when stage == NightmareQuestStage.CompletedNightmareWin1:
+                        Subject.Reply(
+                            source,
+                            "You protected the totem and completed the challenge before you... You are better than I thought. Take this as a reward.",
+                            "varuna_initial");
                         source.Trackers.Enums.Set(NightmareQuestStage.CompletedNightmareWin2);
                         source.TryGiveGamePoints(20);
                         source.SendOrangeBarMessage("You received 20 Game Points.");
 
                         return;
-                    case true when (stage == NightmareQuestStage.CompletedNightmareLoss1):
-                        Subject.Reply(source, "Even though you met the Legend, you succumbed to the challenge as most do. That is okay...", "varuna_initial");
+                    case true when stage == NightmareQuestStage.CompletedNightmareLoss1:
+                        Subject.Reply(
+                            source,
+                            "Even though you met the Legend, you succumbed to the challenge as most do. That is okay...",
+                            "varuna_initial");
                         source.Trackers.Enums.Set(NightmareQuestStage.CompletedNightmareLoss2);
 
                         return;
@@ -80,6 +86,7 @@ public class NightmareRogueScript : DialogScriptBase
             case "nightmareblackrose1":
             {
                 source.Animate(ani1);
+
                 break;
             }
 
@@ -91,33 +98,32 @@ public class NightmareRogueScript : DialogScriptBase
                 Point point2;
                 point2 = new Point(12, 13);
                 var mapInstance2 = SimpleCache.Get<MapInstance>("wildernessold");
-                source.TraverseMap(mapInstance2, point2, false);
+                source.TraverseMap(mapInstance2, point2);
                 source.UserStatSheet.SetHealthPct(100);
                 source.Client.SendAttributes(StatUpdateType.Vitality);
+
                 break;
             }
-            
-            
+
             case "nightmaretotem1":
             {
                 if (source.MapInstance.Name != "Old Wilderness")
-                {
                     Subject.Close(source);
-                    return;
-                }
 
                 break;
             }
 
             case "nightmaretotem4":
             {
-                if ((hasStage && (stage == NightmareQuestStage.MetRequirementsToEnter1)) || (stage == NightmareQuestStage.EnteredDream) || (stage == NightmareQuestStage.SpawnedNightmare))
+                if ((hasStage && (stage == NightmareQuestStage.MetRequirementsToEnter1))
+                    || (stage == NightmareQuestStage.EnteredDream)
+                    || (stage == NightmareQuestStage.SpawnedNightmare))
                 {
                     Subject.Close(source);
                     Point point2;
                     point2 = new Point(source.X, source.Y);
                     var mapInstance2 = SimpleCache.Get<MapInstance>("wildernessroguechallenge");
-                    source.TraverseMap(mapInstance2, point2, false);
+                    source.TraverseMap(mapInstance2, point2);
                     source.Trackers.Enums.Set(NightmareQuestStage.EnteredDream);
                     source.UserStatSheet.SetHealthPct(100);
                     source.Client.SendAttributes(StatUpdateType.Vitality);

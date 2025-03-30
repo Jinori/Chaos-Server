@@ -22,20 +22,19 @@ public class PhoenixCastingScript : MonsterScriptBase
     public override void Update(TimeSpan delta)
     {
         HailOfFeathers.Update(delta);
-        
+
         if (!ShouldUseSpell)
             return;
-        
+
         if (Map.LoadedFromInstanceId.ContainsI("sky"))
             return;
 
         //do not use spells while in abduct or drop phase
-        var currentPhase = Subject.Script.As<PhoenixPhaseScript>()!
-                                  .CurrentPhase;
+        var currentPhase = Subject.Script.As<PhoenixPhaseScript>()!.CurrentPhase;
 
         if (currentPhase != PhoenixPhaseScript.Phase.Normal)
             return;
-        
+
         //get nearby aislings
         var nearbyAislings = Map.GetEntitiesWithinRange<Aisling>(Subject)
                                 .ThatAreObservedBy(Subject)
@@ -50,7 +49,7 @@ public class PhoenixCastingScript : MonsterScriptBase
                              .ThenBy(_ => Random.Shared.Next())
                              .FirstOrDefault()
                              ?.FirstOrDefault();
-        
+
         if (target is not { IsAlive: true } || !target.WithinRange(Subject))
             return;
 

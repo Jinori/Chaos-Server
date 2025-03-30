@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Menu;
@@ -9,28 +8,6 @@ namespace Chaos.Scripting.DialogScripts.Class_Related;
 
 public class AreiniPetsScript(Dialog subject) : DialogScriptBase(subject)
 {
-    public override void OnDisplaying(Aisling source)
-    {
-        if (!string.Equals(Subject.Template.TemplateKey, "areini_initial", StringComparison.OrdinalIgnoreCase))
-            return;
-
-        if (source.UserStatSheet.BaseClass != BaseClass.Priest)
-            RemoveAllPetOptions();
-        else
-            HandlePriestClassOptions(source);
-    }
-
-    private void RemoveAllPetOptions()
-    {
-        RemoveOption("Learn Summon Pet");
-        RemoveOption("Pet Level 10 Ability");
-        RemoveOption("Pet Level 25 Ability");
-        RemoveOption("Pet Level 40 Ability");
-        RemoveOption("Pet Level 55 Ability");
-        RemoveOption("Pet Level 80 Ability");
-        RemoveOption("Change Pet Appearance");
-    }
-
     private void HandlePriestClassOptions(Aisling source)
     {
         if (source.SkillBook.Contains("Summon Pet"))
@@ -43,10 +20,15 @@ public class AreiniPetsScript(Dialog subject) : DialogScriptBase(subject)
         RemoveOptionIfNotEligible(source.UserStatSheet.Level, 80, "Pet Level 80 Ability");
     }
 
-    private void RemoveOptionIfNotEligible(int characterLevel, int requiredLevel, string optionName)
+    public override void OnDisplaying(Aisling source)
     {
-        if (characterLevel < requiredLevel)
-            RemoveOption(optionName);
+        if (!string.Equals(Subject.Template.TemplateKey, "areini_initial", StringComparison.OrdinalIgnoreCase))
+            return;
+
+        if (source.UserStatSheet.BaseClass != BaseClass.Priest)
+            RemoveAllPetOptions();
+        else
+            HandlePriestClassOptions(source);
     }
 
     public override void OnNext(Aisling source, byte? optionIndex = null)
@@ -94,7 +76,7 @@ public class AreiniPetsScript(Dialog subject) : DialogScriptBase(subject)
                 }
 
                 break;
-            } 
+            }
             case "areini_picksnoutstun":
             {
                 if (optionIndex != 2)
@@ -193,7 +175,7 @@ public class AreiniPetsScript(Dialog subject) : DialogScriptBase(subject)
 
                 break;
             }
-            
+
             case "areini_pickpawstrike":
             {
                 if (optionIndex != 2)
@@ -272,6 +254,17 @@ public class AreiniPetsScript(Dialog subject) : DialogScriptBase(subject)
         }
     }
 
+    private void RemoveAllPetOptions()
+    {
+        RemoveOption("Learn Summon Pet");
+        RemoveOption("Pet Level 10 Ability");
+        RemoveOption("Pet Level 25 Ability");
+        RemoveOption("Pet Level 40 Ability");
+        RemoveOption("Pet Level 55 Ability");
+        RemoveOption("Pet Level 80 Ability");
+        RemoveOption("Change Pet Appearance");
+    }
+
     private void RemoveExistingPets(Aisling source)
     {
         var monsters = source.MapInstance.GetEntities<Monster>();
@@ -287,5 +280,11 @@ public class AreiniPetsScript(Dialog subject) : DialogScriptBase(subject)
 
         if (optionIndex.HasValue)
             Subject.Options.RemoveAt(optionIndex.Value);
+    }
+
+    private void RemoveOptionIfNotEligible(int characterLevel, int requiredLevel, string optionName)
+    {
+        if (characterLevel < requiredLevel)
+            RemoveOption(optionName);
     }
 }

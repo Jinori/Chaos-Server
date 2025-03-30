@@ -11,8 +11,6 @@ namespace Chaos.Scripting.DialogScripts.Quests.DeepCrypt;
 
 public class DCEasyLockedChestScript(Dialog subject, IItemFactory itemFactory) : DialogScriptBase(subject)
 {
-    private readonly IItemFactory ItemFactory = itemFactory;
-    
     private static readonly List<KeyValuePair<string, decimal>> ChestPrizes =
     [
         new("leafnecklace", 3),
@@ -29,7 +27,9 @@ public class DCEasyLockedChestScript(Dialog subject, IItemFactory itemFactory) :
         new("artisanarmorsmithingbox", 15),
         new("artisanalchemybox", 15)
     ];
-    
+
+    private readonly IItemFactory ItemFactory = itemFactory;
+
     private void AttemptToPickLock(Aisling source, int numberGuessed)
     {
         var numberToWinChest = IntegerRandomizer.RollSingle(4);
@@ -42,15 +42,6 @@ public class DCEasyLockedChestScript(Dialog subject, IItemFactory itemFactory) :
         } else
             HandleFailedAttempt(source);
 
-        Subject.Close(source);
-    }
-    
-    private void OpenChest(Aisling source)
-    {
-        source.Inventory.RemoveQuantityByTemplateKey("easycrypttreasurekey", 1);
-        source.SendServerMessage(ServerMessageType.OrangeBar1, "You opened the chest!");
-        AwardPrize(source);
-        RemoveChest();
         Subject.Close(source);
     }
 
@@ -75,12 +66,12 @@ public class DCEasyLockedChestScript(Dialog subject, IItemFactory itemFactory) :
         {
             case "dceasylockedchest_initial":
             {
-                
                 if (Subject.DialogSource is MapEntity chestEntity)
                     if (!source.WithinRange(chestEntity, 1))
                     {
                         source.SendOrangeBarMessage("You are too far away from the chest!");
                         Subject.Close(source);
+
                         return;
                     }
 
@@ -128,6 +119,7 @@ public class DCEasyLockedChestScript(Dialog subject, IItemFactory itemFactory) :
             case "dceasyopenchest_initial":
             {
                 OpenChest(source);
+
                 break;
             }
         }
@@ -151,6 +143,15 @@ public class DCEasyLockedChestScript(Dialog subject, IItemFactory itemFactory) :
                 break;
             }
         }
+    }
+
+    private void OpenChest(Aisling source)
+    {
+        source.Inventory.RemoveQuantityByTemplateKey("easycrypttreasurekey", 1);
+        source.SendServerMessage(ServerMessageType.OrangeBar1, "You opened the chest!");
+        AwardPrize(source);
+        RemoveChest();
+        Subject.Close(source);
     }
 
     private void RemoveChest()

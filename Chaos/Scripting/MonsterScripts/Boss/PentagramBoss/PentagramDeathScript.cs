@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
@@ -16,8 +15,8 @@ namespace Chaos.Scripting.MonsterScripts.Boss.PentagramBoss;
 // ReSharper disable once ClassCanBeSealed.Global
 public class PentagramDeathScript : MonsterScriptBase
 {
-    protected IExperienceDistributionScript ExperienceDistributionScript { get; set; }
     private readonly IItemFactory ItemFactory;
+    protected IExperienceDistributionScript ExperienceDistributionScript { get; set; }
 
     /// <inheritdoc />
     public PentagramDeathScript(Monster subject, IItemFactory itemFactory)
@@ -42,16 +41,19 @@ public class PentagramDeathScript : MonsterScriptBase
         //get the highest contributor
         //if there are no contributor, try getting the highest aggro
         var rewardTarget = Subject.Contribution
-            .OrderByDescending(kvp => kvp.Value)
-            .Select(kvp => Map.TryGetEntity<Aisling>(kvp.Key, out var a) ? a : null)
-            .FirstOrDefault(a => a is not null);
+                                  .OrderByDescending(kvp => kvp.Value)
+                                  .Select(kvp => Map.TryGetEntity<Aisling>(kvp.Key, out var a) ? a : null)
+                                  .FirstOrDefault(a => a is not null);
 
         Aisling[]? rewardTargets = null;
 
         if (rewardTarget != null)
-            rewardTargets = (rewardTarget.Group ?? (IEnumerable<Aisling>)new[] { rewardTarget })
-                .ThatAreWithinRange(rewardTarget)
-                .ToArray();
+            rewardTargets = (rewardTarget.Group
+                             ?? (IEnumerable<Aisling>)new[]
+                             {
+                                 rewardTarget
+                             }).ThatAreWithinRange(rewardTarget)
+                               .ToArray();
 
         Subject.Items.AddRange(Subject.LootTable.GenerateLoot());
 
@@ -76,16 +78,66 @@ public class PentagramDeathScript : MonsterScriptBase
 
             var pentagearDictionary = new Dictionary<(BaseClass, Gender), string[]>
             {
-                { (BaseClass.Warrior, Gender.Male), ["malescarletcarapace", "scarletchitinhelmet"] },
-                { (BaseClass.Warrior, Gender.Female), ["femalescarletcarapace", "scarletchitinhelmet"] },
-                { (BaseClass.Monk, Gender.Male), ["malenagatiercloak", "nagatierjaw"] },
-                { (BaseClass.Monk, Gender.Female), ["femalenagatiercloak", "nagatierjaw"] },
-                { (BaseClass.Rogue, Gender.Male), ["malereitermail", "kopfloserhood"] },
-                { (BaseClass.Rogue, Gender.Female), ["femalereitermail", "kopfloserhood"] },
-                { (BaseClass.Priest, Gender.Male), ["maledarkclericrobes", "darkclericbrim"] },
-                { (BaseClass.Priest, Gender.Female), ["femaledarkclericrobes", "darkclericbrim"] },
-                { (BaseClass.Wizard, Gender.Male), ["malelichrobe", "lichhood"] },
-                { (BaseClass.Wizard, Gender.Female), ["femalelichrobe", "lichhood"] }
+                {
+                    (BaseClass.Warrior, Gender.Male), [
+                                                          "malescarletcarapace",
+                                                          "scarletchitinhelmet"
+                                                      ]
+                },
+                {
+                    (BaseClass.Warrior, Gender.Female), [
+                                                            "femalescarletcarapace",
+                                                            "scarletchitinhelmet"
+                                                        ]
+                },
+                {
+                    (BaseClass.Monk, Gender.Male), [
+                                                       "malenagatiercloak",
+                                                       "nagatierjaw"
+                                                   ]
+                },
+                {
+                    (BaseClass.Monk, Gender.Female), [
+                                                         "femalenagatiercloak",
+                                                         "nagatierjaw"
+                                                     ]
+                },
+                {
+                    (BaseClass.Rogue, Gender.Male), [
+                                                        "malereitermail",
+                                                        "kopfloserhood"
+                                                    ]
+                },
+                {
+                    (BaseClass.Rogue, Gender.Female), [
+                                                          "femalereitermail",
+                                                          "kopfloserhood"
+                                                      ]
+                },
+                {
+                    (BaseClass.Priest, Gender.Male), [
+                                                         "maledarkclericrobes",
+                                                         "darkclericbrim"
+                                                     ]
+                },
+                {
+                    (BaseClass.Priest, Gender.Female), [
+                                                           "femaledarkclericrobes",
+                                                           "darkclericbrim"
+                                                       ]
+                },
+                {
+                    (BaseClass.Wizard, Gender.Male), [
+                                                         "malelichrobe",
+                                                         "lichhood"
+                                                     ]
+                },
+                {
+                    (BaseClass.Wizard, Gender.Female), [
+                                                           "femalelichrobe",
+                                                           "lichhood"
+                                                       ]
+                }
             };
 
             foreach (var target in rewardTargets)
@@ -96,7 +148,7 @@ public class PentagramDeathScript : MonsterScriptBase
 
                 if (target.Inventory.HasCount("pentagram", 1))
                     target.Inventory.RemoveQuantity("pentagram", 1);
-                
+
                 target.Legend.AddOrAccumulate(
                     new LegendMark(
                         "Completed the Pentagram Quest",
@@ -107,15 +159,13 @@ public class PentagramDeathScript : MonsterScriptBase
                         GameTime.Now));
 
                 var gearKey = (target.UserStatSheet.BaseClass, target.Gender);
-                if (pentagearDictionary.TryGetValue(gearKey, out var pentagear))
-                {
-                        foreach (var gearItemName in pentagear)
-                        {
-                            var gearItem = ItemFactory.Create(gearItemName);
-                            target.GiveItemOrSendToBank(gearItem);
-                        }
-                }
 
+                if (pentagearDictionary.TryGetValue(gearKey, out var pentagear))
+                    foreach (var gearItemName in pentagear)
+                    {
+                        var gearItem = ItemFactory.Create(gearItemName);
+                        target.GiveItemOrSendToBank(gearItem);
+                    }
 
                 if (target.Trackers.Counters.TryGetValue("pentabosskills", out var kills) && (kills == 10))
                 {

@@ -14,9 +14,7 @@ public class IntelligenceTrialStoneScript : MerchantScriptBase
     /// <inheritdoc />
     public IntelligenceTrialStoneScript(Merchant subject, ISimpleCache simpleCache)
         : base(subject)
-    {
-        SimpleCache = simpleCache;
-    }
+        => SimpleCache = simpleCache;
 
     public override void OnClicked(Aisling source)
     {
@@ -25,11 +23,11 @@ public class IntelligenceTrialStoneScript : MerchantScriptBase
             if (source.ManhattanDistanceFrom(Subject) >= 3)
             {
                 source.SendOrangeBarMessage("Move closer to touch the stone.");
+
                 return;
             }
 
             if (source.ManhattanDistanceFrom(Subject) <= 3)
-            {
                 if (source.Trackers.Enums.HasValue(IntelligenceTrial.StartedTrial))
                 {
                     source.Trackers.Enums.Set(IntelligenceTrial.CompletedTrial);
@@ -40,8 +38,6 @@ public class IntelligenceTrialStoneScript : MerchantScriptBase
                     source.TraverseMap(mapinstance, point);
                     source.SendOrangeBarMessage("Congratulations! You have completed the Trial of Intelligence!");
                 }
-            }
         }
     }
 }
- 

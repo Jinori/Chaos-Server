@@ -11,8 +11,8 @@ public class GoldExchangeScript : DialogScriptBase
 
     /// <inheritdoc />
     public GoldExchangeScript(Dialog subject, IItemFactory itemFactory)
-        : base(subject) =>
-        ItemFactory = itemFactory;
+        : base(subject)
+        => ItemFactory = itemFactory;
 
     public override void OnDisplaying(Aisling source)
     {
@@ -23,7 +23,7 @@ public class GoldExchangeScript : DialogScriptBase
                 OnDisplayingPlataChequeBuy(source);
 
                 break;
-            }            
+            }
             case "goldexchange_platachequesell":
             {
                 OnDisplayingPlataChequeSell(source);
@@ -57,66 +57,12 @@ public class GoldExchangeScript : DialogScriptBase
         }
     }
 
-    private void OnDisplayingCarmesiChequeSell(Aisling source)
-    {
-        if (source.Inventory.CountOfByTemplateKey("carmesicheque") == 0)
-        {
-            Subject.Reply(source, "You do not have any Carmesi cheques to sell.");
-
-            return;
-        }
-
-        if (!source.TryGiveGold(15000000))
-        {
-            Subject.Reply(source, "You cannot hold this much gold in your inventory.");
-            
-        }
-        
-        source.Inventory.RemoveQuantityByTemplateKey("carmesicheque", 1);
-    }
-
-    private void OnDisplayingVerdeChequeSell(Aisling source)
-    {
-        if (source.Inventory.CountOfByTemplateKey("verdecheque") == 0)
-        {
-            Subject.Reply(source, "You do not have any Verde cheques to sell.");
-
-            return;
-        }
-
-        if (!source.TryGiveGold(10000000))
-        {
-            Subject.Reply(source, "You cannot hold this much gold in your inventory.");
-            
-        }
-        
-        source.Inventory.RemoveQuantityByTemplateKey("verdecheque", 1);
-    }
-
-    private void OnDisplayingPlataChequeSell(Aisling source)
-    {
-        if (source.Inventory.CountOfByTemplateKey("platacheque") == 0)
-        {
-            Subject.Reply(source, "You do not have any Plata cheques to sell.");
-
-            return;
-        }
-
-        if (!source.TryGiveGold(5000000))
-        {
-            Subject.Reply(source, "You cannot hold this much gold in your inventory.");
-            
-        }
-        
-        source.Inventory.RemoveQuantityByTemplateKey("platacheque", 1);
-    }
-
     private void OnDisplayingCarmeChequeBuy(Aisling source)
     {
         if (source.Gold < 15000000)
         {
             Subject.Reply(source, "You don't have that much gold on you.");
-            
+
             return;
         }
 
@@ -134,12 +80,65 @@ public class GoldExchangeScript : DialogScriptBase
         }
     }
 
+    private void OnDisplayingCarmesiChequeSell(Aisling source)
+    {
+        if (source.Inventory.CountOfByTemplateKey("carmesicheque") == 0)
+        {
+            Subject.Reply(source, "You do not have any Carmesi cheques to sell.");
+
+            return;
+        }
+
+        if (!source.TryGiveGold(15000000))
+            Subject.Reply(source, "You cannot hold this much gold in your inventory.");
+
+        source.Inventory.RemoveQuantityByTemplateKey("carmesicheque", 1);
+    }
+
+    private void OnDisplayingPlataChequeBuy(Aisling source)
+    {
+        if (source.Gold < 5000000)
+        {
+            Subject.Reply(source, "You don't have that much gold on you.");
+
+            return;
+        }
+
+        if (source.Inventory.IsFull)
+        {
+            Subject.Reply(source, "You don't have enough inventory space. Please make room.");
+
+            return;
+        }
+
+        if (source.TryTakeGold(5000000))
+        {
+            var cheque = ItemFactory.Create("platacheque");
+            source.GiveItemOrSendToBank(cheque);
+        }
+    }
+
+    private void OnDisplayingPlataChequeSell(Aisling source)
+    {
+        if (source.Inventory.CountOfByTemplateKey("platacheque") == 0)
+        {
+            Subject.Reply(source, "You do not have any Plata cheques to sell.");
+
+            return;
+        }
+
+        if (!source.TryGiveGold(5000000))
+            Subject.Reply(source, "You cannot hold this much gold in your inventory.");
+
+        source.Inventory.RemoveQuantityByTemplateKey("platacheque", 1);
+    }
+
     private void OnDisplayingVerdeChequeBuy(Aisling source)
     {
         if (source.Gold < 10000000)
         {
             Subject.Reply(source, "You don't have that much gold on you.");
-            
+
             return;
         }
 
@@ -157,26 +156,18 @@ public class GoldExchangeScript : DialogScriptBase
         }
     }
 
-    private void OnDisplayingPlataChequeBuy(Aisling source)
+    private void OnDisplayingVerdeChequeSell(Aisling source)
     {
-        if (source.Gold < 5000000)
+        if (source.Inventory.CountOfByTemplateKey("verdecheque") == 0)
         {
-            Subject.Reply(source, "You don't have that much gold on you.");
-            
-            return;
-        }
-
-        if (source.Inventory.IsFull)
-        {
-            Subject.Reply(source, "You don't have enough inventory space. Please make room.");
+            Subject.Reply(source, "You do not have any Verde cheques to sell.");
 
             return;
         }
 
-        if (source.TryTakeGold(5000000))
-        {
-            var cheque = ItemFactory.Create("platacheque");
-            source.GiveItemOrSendToBank(cheque);
-        }
+        if (!source.TryGiveGold(10000000))
+            Subject.Reply(source, "You cannot hold this much gold in your inventory.");
+
+        source.Inventory.RemoveQuantityByTemplateKey("verdecheque", 1);
     }
 }

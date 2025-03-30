@@ -308,12 +308,10 @@ public class SupplyLouresArmy : DialogScriptBase
                 source.Trackers.Enums.Set(SupplyLouresStage.TurnedInSupply);
 
                 Logger.WithTopics(
-                          [
-                              Topics.Entities.Aisling,
-                              Topics.Entities.Experience,
-                              Topics.Entities.Dialog,
-                              Topics.Entities.Quest
-                          ])
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Experience,
+                          Topics.Entities.Dialog,
+                          Topics.Entities.Quest)
                       .WithProperty(source)
                       .WithProperty(Subject)
                       .LogInformation(
@@ -406,12 +404,10 @@ public class SupplyLouresArmy : DialogScriptBase
                 source.SendOrangeBarMessage("Knight Thibault hands you Silk Boots.");
 
                 Logger.WithTopics(
-                          [
-                              Topics.Entities.Aisling,
-                              Topics.Entities.Experience,
-                              Topics.Entities.Dialog,
-                              Topics.Entities.Quest
-                          ])
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Experience,
+                          Topics.Entities.Dialog,
+                          Topics.Entities.Quest)
                       .WithProperty(source)
                       .WithProperty(Subject)
                       .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 300000);
@@ -462,12 +458,10 @@ public class SupplyLouresArmy : DialogScriptBase
                 source.SendOrangeBarMessage("King Bruce orders his men to give you a Sparkle Ring.");
 
                 Logger.WithTopics(
-                          [
-                              Topics.Entities.Aisling,
-                              Topics.Entities.Experience,
-                              Topics.Entities.Dialog,
-                              Topics.Entities.Quest
-                          ])
+                          Topics.Entities.Aisling,
+                          Topics.Entities.Experience,
+                          Topics.Entities.Dialog,
+                          Topics.Entities.Quest)
                       .WithProperty(source)
                       .WithProperty(Subject)
                       .LogInformation("{@AislingName} has received {@ExpAmount} exp", source.Name, 150000);

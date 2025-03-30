@@ -20,22 +20,21 @@ public class UndineFieldsArenaStartScript : ReactorTileScriptBase
     /// <inheritdoc />
     public UndineFieldsArenaStartScript(ReactorTile subject, ISimpleCache simpleCache)
         : base(subject)
-    {
-        SimpleCache = simpleCache;
-    }
+        => SimpleCache = simpleCache;
 
     /// <inheritdoc />
     public override void OnWalkedOn(Creature source)
     {
         var currentMap = SimpleCache.Get<MapInstance>(source.MapInstance.InstanceId);
-        
+
         if (source is not Aisling aisling)
             return;
-        
+
         if (aisling.Group is null || aisling.Group.Any(x => !x.OnSameMapAs(aisling) || !x.WithinRange(aisling)))
         {
             // Send a message to the Aisling
             aisling.SendOrangeBarMessage("You must have a group nearby to enter Carnun's Arena.");
+
             // Warp the source back
             var point = source.DirectionalOffset(source.Direction.Reverse());
             source.WarpTo(point);
@@ -43,19 +42,18 @@ public class UndineFieldsArenaStartScript : ReactorTileScriptBase
             return;
         }
 
-        var allMembersHaveQuestEnum = aisling.Group.All(member =>
-            member.Trackers.Enums.TryGetValue(out UndineFieldDungeon stage) &&
-            stage == UndineFieldDungeon.StartedDungeon || member.Trackers.Flags.TryGetFlag(out UndineFieldDungeonFlag flag) && flag == UndineFieldDungeonFlag.CompletedUF);
+        var allMembersHaveQuestEnum = aisling.Group.All(
+            member => (member.Trackers.Enums.TryGetValue(out UndineFieldDungeon stage) && (stage == UndineFieldDungeon.StartedDungeon))
+                      || (member.Trackers.Flags.TryGetFlag(out UndineFieldDungeonFlag flag)
+                          && (flag == UndineFieldDungeonFlag.CompletedUF)));
 
         if (allMembersHaveQuestEnum)
-        {
             aisling.Trackers.Enums.Set(UndineFieldDungeon.EnteredArena);
-            return;
-        }
         else
         {
             // Send a message to the Aisling
             aisling.SendOrangeBarMessage("Not going to work.");
+
             // Warp the source back
             var point = source.DirectionalOffset(source.Direction.Reverse());
             source.WarpTo(point);

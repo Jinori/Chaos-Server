@@ -13,8 +13,16 @@ public class TheseleneTempleScript : ReligionScriptBase
     private const string GODNAME = "Theselene";
 
     /// <inheritdoc />
-    public TheseleneTempleScript(Dialog subject, IClientRegistry<IChaosWorldClient> clientRegistry, IItemFactory itemFactory, IEffectFactory effectFactory)
-        : base(subject, clientRegistry, itemFactory, effectFactory) { }
+    public TheseleneTempleScript(
+        Dialog subject,
+        IClientRegistry<IChaosWorldClient> clientRegistry,
+        IItemFactory itemFactory,
+        IEffectFactory effectFactory)
+        : base(
+            subject,
+            clientRegistry,
+            itemFactory,
+            effectFactory) { }
 
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
@@ -44,29 +52,29 @@ public class TheseleneTempleScript : ReligionScriptBase
 
             case "theselene_temple_divineblessing25":
                 BuffGroup(source, GODNAME, 25);
-                
+
                 break;
-            
+
             case "theselene_temple_divineblessing50":
                 BuffGroup(source, GODNAME, 50);
-                
+
                 break;
-            
+
             case "theselene_temple_divineblessing75":
                 BuffGroup(source, GODNAME, 75);
-                
+
                 break;
-            
+
             case "theselene_temple_divineblessing100":
                 BuffGroup(source, GODNAME, 100);
 
                 break;
-            
+
             case "theselene_temple_divineblessing300":
                 BuffGroup(source, GODNAME, 300);
 
                 break;
-            
+
             case "theselene_temple_holdmass":
                 if (source.Trackers.TimedEvents.HasActiveEvent("Mass", out var timedEvent))
                     Subject.Reply(
@@ -75,7 +83,7 @@ public class TheseleneTempleScript : ReligionScriptBase
                             timedEvent.Remaining.ToReadableString()}.");
 
                 break;
-            
+
             case "theselene_temple_holdmassself5minute":
                 AnnounceMassStart(source, GODNAME, true);
 
@@ -107,7 +115,10 @@ public class TheseleneTempleScript : ReligionScriptBase
     private void PrayToTheselene(Aisling source)
     {
         Pray(source, "Theselene");
-        Subject.InjectTextParameters(DeityPrayers["Theselene"].PickRandom());
+
+        Subject.InjectTextParameters(
+            DeityPrayers["Theselene"]
+                .PickRandom());
     }
 
     public void TempleInitial(Aisling source) => HideDialogOptions(source, GODNAME, Subject);

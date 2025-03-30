@@ -19,7 +19,7 @@ public sealed class BossRoomHazardScript : MonsterScriptBase
     private readonly List<IPoint> SafePoints = new();
     private bool IsAnimating;
     private bool IsPreAnimating;
-    private Rectangle SafeRectangle = null!;// Store the safeRectangle here
+    private Rectangle SafeRectangle = null!; // Store the safeRectangle here
     private double TimePassedSinceMainAnimationStart;
     private double TimePassedSincePreAnimationStart;
     private double TimePassedSinceTileAnimation;
@@ -29,6 +29,7 @@ public sealed class BossRoomHazardScript : MonsterScriptBase
         AnimationSpeed = 100,
         TargetAnimation = 13
     };
+
     private IIntervalTimer AnimationTimer { get; }
     private IApplyDamageScript ApplyDamageScript { get; }
 
@@ -37,6 +38,7 @@ public sealed class BossRoomHazardScript : MonsterScriptBase
         AnimationSpeed = 100,
         TargetAnimation = 214
     };
+
     private IIntervalTimer PreAnimationTimer { get; }
 
     private IIntervalTimer PunishTimer { get; }
@@ -66,7 +68,7 @@ public sealed class BossRoomHazardScript : MonsterScriptBase
     {
         foreach (var point in rectangle.GetPoints())
             if (Map.IsWall(point) || Map.IsBlockingReactor(point))
-                
+
                 return true;
 
         return false;
@@ -91,7 +93,6 @@ public sealed class BossRoomHazardScript : MonsterScriptBase
 
     private void GenerateSafeRectangle()
     {
-        
         const int MAX_ATTEMPTS = 100;
         var attempts = 0;
         const int WIDTH = 3; // Set the width of the rectangle
@@ -155,7 +156,8 @@ public sealed class BossRoomHazardScript : MonsterScriptBase
         PreAnimationTimer.Update(delta);
         AnimationTimer.Update(delta);
 
-        if (!Map.GetEntities<Aisling>().Any())
+        if (!Map.GetEntities<Aisling>()
+                .Any())
             return;
 
         if (PunishTimer.IntervalElapsed)
@@ -191,8 +193,7 @@ public sealed class BossRoomHazardScript : MonsterScriptBase
                     IsPreAnimating = false;
                     TimePassedSinceTileAnimation = 0; // Reset the tile animation timer after the pre-animation ends
                 }
-            }
-            else
+            } else
             {
                 // Start the main animation
                 var currentSecond = (int)Math.Floor(TimePassedSinceMainAnimationStart);

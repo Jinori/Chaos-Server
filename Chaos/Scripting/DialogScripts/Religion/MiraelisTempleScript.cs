@@ -13,8 +13,16 @@ public class MiraelisTempleScript : ReligionScriptBase
     private const string GODNAME = "Miraelis";
 
     /// <inheritdoc />
-    public MiraelisTempleScript(Dialog subject, IClientRegistry<IChaosWorldClient> clientRegistry, IItemFactory itemFactory, IEffectFactory effectFactory)
-        : base(subject, clientRegistry, itemFactory, effectFactory) { }
+    public MiraelisTempleScript(
+        Dialog subject,
+        IClientRegistry<IChaosWorldClient> clientRegistry,
+        IItemFactory itemFactory,
+        IEffectFactory effectFactory)
+        : base(
+            subject,
+            clientRegistry,
+            itemFactory,
+            effectFactory) { }
 
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
@@ -44,29 +52,29 @@ public class MiraelisTempleScript : ReligionScriptBase
 
             case "miraelis_temple_divineblessing25":
                 BuffGroup(source, GODNAME, 25);
-                
+
                 break;
-            
+
             case "miraelis_temple_divineblessing50":
                 BuffGroup(source, GODNAME, 50);
-                
+
                 break;
-            
+
             case "miraelis_temple_divineblessing75":
                 BuffGroup(source, GODNAME, 75);
-                
+
                 break;
-            
+
             case "miraelis_temple_divineblessing100":
                 BuffGroup(source, GODNAME, 100);
-                
+
                 break;
-            
+
             case "miraelis_temple_divineblessing300":
                 BuffGroup(source, GODNAME, 300);
-                
+
                 break;
-            
+
             case "miraelis_temple_holdmass":
                 if (source.Trackers.TimedEvents.HasActiveEvent("Mass", out var timedEvent))
                     Subject.Reply(
@@ -79,7 +87,7 @@ public class MiraelisTempleScript : ReligionScriptBase
                 AnnounceMassStart(source, GODNAME, true);
 
                 break;
-            
+
             case "miraelis_temple_holdmassself1minute":
                 AnnounceOneMinuteWarning(source, GODNAME, true);
 
@@ -107,7 +115,10 @@ public class MiraelisTempleScript : ReligionScriptBase
     private void PrayToMiraelis(Aisling source)
     {
         Pray(source, "Miraelis");
-        Subject.InjectTextParameters(DeityPrayers["Miraelis"].PickRandom());
+
+        Subject.InjectTextParameters(
+            DeityPrayers["Miraelis"]
+                .PickRandom());
     }
 
     public void TempleInitial(Aisling source) => HideDialogOptions(source, GODNAME, Subject);

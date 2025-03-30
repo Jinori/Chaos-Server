@@ -9,16 +9,16 @@ namespace Chaos.Scripting.EffectScripts.Warrior;
 
 public class ArmorBreakEffect : EffectBase, NonOverwritableEffectComponent.INonOverwritableEffectComponentOptions
 {
+    public List<string> ConflictingEffectNames { get; init; } = ["Armor Break"];
+
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(10);
+
     protected Animation? Animation { get; } = new()
     {
         TargetAnimation = 547,
         AnimationSpeed = 100
     };
-    public List<string> ConflictingEffectNames { get; init; } =
-    [
-        "Armor Break"
-    ];
+
     public override byte Icon => 65;
     public override string Name => "Armor Break";
     protected byte? Sound => 22;
@@ -52,7 +52,7 @@ public class ArmorBreakEffect : EffectBase, NonOverwritableEffectComponent.INonO
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Armor has been repaired, AC and MR restored.");
     }
-    
+
     public override bool ShouldApply(Creature source, Creature target)
     {
         var execution = new ComponentExecutor(source, target).WithOptions(this)

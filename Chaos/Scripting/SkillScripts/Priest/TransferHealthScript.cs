@@ -16,6 +16,9 @@ public class TransferHealthScript(Skill subject) : ConfigurableSkillScriptBase(s
 {
     public List<string>? EffectKeysToBreak { get; set; }
 
+    public int? HealthCost { get; init; }
+    public decimal PctHealthCost { get; init; }
+
     /// <inheritdoc />
     public override void OnUse(ActivationContext context)
         => new ComponentExecutor(context).WithOptions(this)

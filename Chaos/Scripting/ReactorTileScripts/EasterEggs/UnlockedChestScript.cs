@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Models.World;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
@@ -12,21 +11,22 @@ public sealed class UnlockedChestScript : ReactorTileScriptBase
 
     /// <inheritdoc />
     public UnlockedChestScript(ReactorTile subject, IItemFactory itemFactory)
-        : base(subject) =>
-        ItemFactory = itemFactory;
+        : base(subject)
+        => ItemFactory = itemFactory;
 
     /// <inheritdoc />
     public override void OnClicked(Aisling source)
     {
-        
         if (source.Trackers.Flags.HasFlag(Definitions.EasterEggs.UnlockedChest))
         {
             source.SendOrangeBarMessage("You've already found this.");
+
             return;
         }
-        
+
         source.Trackers.Flags.AddFlag(Definitions.EasterEggs.UnlockedChest);
         var toydoll = ItemFactory.Create("toydoll");
+
         source.Client.SendServerMessage(
             ServerMessageType.ScrollWindow,
             "This chest is unlocked! You open and rummage through its contents.");

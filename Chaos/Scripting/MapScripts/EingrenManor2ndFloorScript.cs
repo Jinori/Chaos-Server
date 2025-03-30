@@ -15,10 +15,6 @@ namespace Chaos.Scripting.MapScripts;
 public class EingrenManor2NdFloorScript(MapInstance subject, ISimpleCache simpleCache, IMonsterFactory monsterFactory)
     : MapScriptBase(subject)
 {
-    private readonly IIntervalTimer UpdateTimer = new IntervalTimer(TimeSpan.FromMilliseconds(1000));
-    private readonly Random Random = new();
-    private DateTime? TransitionTime;
-
     private readonly string[] MapKeys =
     [
         "manor_library",
@@ -36,21 +32,92 @@ public class EingrenManor2NdFloorScript(MapInstance subject, ISimpleCache simple
         "manor_master_suite"
     ];
 
+    private readonly Random Random = new();
+    private readonly IIntervalTimer UpdateTimer = new IntervalTimer(TimeSpan.FromMilliseconds(1000));
+    private DateTime? TransitionTime;
+
+    private void CheckForTransition()
+    {
+        var hasMonsters = Subject.GetEntities<Monster>()
+                                 .Any(x => x.PetOwner is null);
+
+        var hasPlayers = Subject.GetEntities<Aisling>()
+                                .ToList()
+                                .Count
+                         != 0;
+
+        if (Subject.GetEntities<Aisling>()
+                   .Any(x => x.Trackers.Counters.CounterGreaterThanOrEqualTo("bansheekills", 100)))
+        {
+            var rectangle = new Rectangle(
+                25,
+                3,
+                2,
+                2);
+
+            foreach (var member in Subject.GetEntities<Aisling>())
+            {
+                var mapInstance = simpleCache.Get<MapInstance>("manor_main_hall");
+
+                Point newPoint;
+
+                do
+                    newPoint = rectangle.GetRandomPoint();
+                while (!mapInstance.IsWalkable(newPoint, member.Type));
+
+                member.Trackers.Counters.Remove("bansheekills", out _);
+                member.Trackers.Enums.Set(ManorLouegieStage.CompletedQuest);
+                member.TraverseMap(mapInstance, newPoint);
+            }
+
+            return;
+        }
+
+        if (!hasMonsters && hasPlayers && (TransitionTime == null))
+            TransitionTime = DateTime.UtcNow.AddSeconds(8);
+    }
+
     public override void OnEntered(Creature creature)
     {
         if (creature is not Aisling)
             return;
 
-        var hasSpawns = Subject.GetEntities<Monster>().Any(x => x.PetOwner is null);
+        var hasSpawns = Subject.GetEntities<Monster>()
+                               .Any(x => x.PetOwner is null);
+
         if (hasSpawns)
             return;
 
         SpawnMonsters();
     }
 
+    private void PerformDelayedTransition()
+    {
+        var selectedMapKey = MapKeys[Random.Shared.Next(MapKeys.Length)];
+        var mapInstance = simpleCache.Get<MapInstance>(selectedMapKey);
+
+        if (!mapInstance.TryGetRandomWalkablePoint(out var point))
+        {
+            var manorHall = simpleCache.Get<MapInstance>("manor_main_hall");
+
+            foreach (var player in Subject.GetEntities<Aisling>())
+                player.TraverseMap(manorHall, new Point(20, 3));
+        }
+
+        foreach (var player in Subject.GetEntities<Aisling>())
+            if (point != null)
+                player.TraverseMap(mapInstance, point);
+    }
+
     private void SpawnMonsters()
     {
-        var monsterTypes = new[] { "enragedbanshee", "annoyedbanshee", "flowingbanshee" };
+        var monsterTypes = new[]
+        {
+            "enragedbanshee",
+            "annoyedbanshee",
+            "flowingbanshee"
+        };
+
         for (var i = 0; i < 10; i++)
         {
             var randomMonsterType = monsterTypes[Random.Next(0, monsterTypes.Length)];
@@ -72,65 +139,14 @@ public class EingrenManor2NdFloorScript(MapInstance subject, ISimpleCache simple
     public override void Update(TimeSpan delta)
     {
         UpdateTimer.Update(delta);
-        
+
         if (UpdateTimer.IntervalElapsed)
-        {
             CheckForTransition();
-        }
 
         if (TransitionTime.HasValue && (DateTime.UtcNow >= TransitionTime.Value))
         {
             PerformDelayedTransition();
             TransitionTime = null;
         }
-    }
-
-    private void CheckForTransition()
-    {
-        var hasMonsters = Subject.GetEntities<Monster>().Any(x => x.PetOwner is null);
-        var hasPlayers = Subject.GetEntities<Aisling>().ToList().Count != 0;
-
-        if (Subject.GetEntities<Aisling>()
-            .Any(x => x.Trackers.Counters.CounterGreaterThanOrEqualTo("bansheekills", 100)))
-        {
-            var rectangle = new Rectangle(25, 3, 2, 2);
-
-            foreach (var member in Subject.GetEntities<Aisling>())
-            {
-                var mapInstance = simpleCache.Get<MapInstance>("manor_main_hall");
-
-                Point newPoint;
-                do
-                {
-                    newPoint = rectangle.GetRandomPoint();
-                } while (!mapInstance.IsWalkable(newPoint, member.Type));
-                
-                member.Trackers.Counters.Remove("bansheekills", out _);
-                member.Trackers.Enums.Set(ManorLouegieStage.CompletedQuest);
-                member.TraverseMap(mapInstance, newPoint);
-            }
-
-            return;
-        }
-
-        if (!hasMonsters && hasPlayers && (TransitionTime == null))
-            TransitionTime = DateTime.UtcNow.AddSeconds(8);
-    }
-
-    private void PerformDelayedTransition()
-    {
-        var selectedMapKey = MapKeys[Random.Shared.Next(MapKeys.Length)];
-        var mapInstance = simpleCache.Get<MapInstance>(selectedMapKey);
-        
-        if (!mapInstance.TryGetRandomWalkablePoint(out var point))
-        {
-            var manorHall = simpleCache.Get<MapInstance>("manor_main_hall");
-            foreach (var player in Subject.GetEntities<Aisling>())
-                player.TraverseMap(manorHall, new Point(20, 3));
-        }
-        
-        foreach (var player in Subject.GetEntities<Aisling>())
-            if (point != null)
-                player.TraverseMap(mapInstance, point);
     }
 }

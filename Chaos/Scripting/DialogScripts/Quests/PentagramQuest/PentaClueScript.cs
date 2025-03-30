@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
@@ -28,7 +27,7 @@ public class PentaClueScript(Dialog subject) : DialogScriptBase(subject)
 
             case BaseClass.Wizard:
             {
-                Subject.AddOption("Listen closely","pentawarriorclue");
+                Subject.AddOption("Listen closely", "pentawarriorclue");
             }
 
                 break;

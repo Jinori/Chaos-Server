@@ -10,6 +10,7 @@ namespace Chaos.Scripting.ReactorTileScripts.Casino;
 public class CasinoLockTwentyOneScript : ReactorTileScriptBase
 {
     private readonly IIntervalTimer AnimationTimer;
+
     protected Animation AvailableTile { get; } = new()
     {
         AnimationSpeed = 100,
@@ -18,8 +19,8 @@ public class CasinoLockTwentyOneScript : ReactorTileScriptBase
 
     /// <inheritdoc />
     public CasinoLockTwentyOneScript(ReactorTile subject)
-        : base(subject) =>
-        AnimationTimer = new IntervalTimer(TimeSpan.FromMilliseconds(2000));
+        : base(subject)
+        => AnimationTimer = new IntervalTimer(TimeSpan.FromMilliseconds(2000));
 
     /// <inheritdoc />
     public override void OnWalkedOn(Creature source)

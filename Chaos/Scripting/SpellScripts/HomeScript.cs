@@ -1,5 +1,4 @@
-﻿using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
+﻿using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Scripting.Components.AbilityComponents;
@@ -15,10 +14,13 @@ public class HomeScript(Spell subject, ISimpleCache simpleCache) : ConfigurableS
 {
     /// <inheritdoc />
     public string DestinationMapKey { get; set; } = null!;
+
     /// <inheritdoc />
     public int? ManaCost { get; init; }
+
     /// <inheritdoc />
     public Point OriginPoint { get; set; }
+
     /// <inheritdoc />
     public decimal PctManaCost { get; init; }
 
@@ -96,11 +98,14 @@ public class HomeScript(Spell subject, ISimpleCache simpleCache) : ConfigurableS
             case Nation.Labyrinth:
                 OriginPoint = new Point(6, 7);
                 DestinationMapKey = "arena_entrance";
+
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
 
-        new ComponentExecutor(context).WithOptions(this).ExecuteAndCheck<ManaCostAbilityComponent>()?.Execute<TeleportComponent>();
+        new ComponentExecutor(context).WithOptions(this)
+                                      .ExecuteAndCheck<ManaCostAbilityComponent>()
+                                      ?.Execute<TeleportComponent>();
     }
 }

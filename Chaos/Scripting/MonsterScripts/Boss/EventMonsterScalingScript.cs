@@ -1,22 +1,21 @@
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using System.Linq;
 
 namespace Chaos.Scripting.MonsterScripts.Boss;
 
 /// <summary>
-/// Script that scales the boss monster based on the number and average level of non-admin Aislings on the map.
+///     Script that scales the boss monster based on the number and average level of non-admin Aislings on the map.
 /// </summary>
 public sealed class EventMonsterScalingScript(Monster subject) : MonsterScriptBase(subject)
 {
     private static bool MapBonusApplied;
-    
+
     /// <summary>
-    /// Creates bonus attributes for the boss based on the number and average level of Aislings on the map.
+    ///     Creates bonus attributes for the boss based on the number and average level of Aislings on the map.
     /// </summary>
-    private Attributes CreateBonusAttributes(int aislingCount, double averageLevel) =>
-        new()
+    private Attributes CreateBonusAttributes(int aislingCount, double averageLevel)
+        => new()
         {
             Con = ((int)averageLevel + Subject.StatSheet.Level) * aislingCount / 50,
             Dex = ((int)averageLevel + Subject.StatSheet.Level) * aislingCount / 50,
@@ -31,7 +30,7 @@ public sealed class EventMonsterScalingScript(Monster subject) : MonsterScriptBa
         };
 
     /// <summary>
-    /// Updates the boss' stats and applies scaling based on non-admin Aislings present on the map.
+    ///     Updates the boss' stats and applies scaling based on non-admin Aislings present on the map.
     /// </summary>
     public override void Update(TimeSpan delta)
     {
@@ -61,7 +60,7 @@ public sealed class EventMonsterScalingScript(Monster subject) : MonsterScriptBa
         Subject.StatSheet.AddBonus(bonusAttributes);
         Subject.StatSheet.SetHealthPct(100);
         Subject.StatSheet.SetManaPct(100);
-        
+
         // Mark that the scaling has been applied.
         MapBonusApplied = true;
     }

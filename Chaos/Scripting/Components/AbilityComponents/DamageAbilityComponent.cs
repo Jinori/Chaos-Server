@@ -1,13 +1,11 @@
 #region
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
-using Chaos.Extensions;
 using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
-using Chaos.Scripting.MonsterScripts.Boss;
 using Chaos.Utilities;
 #endregion
 
@@ -44,7 +42,7 @@ public struct DamageAbilityComponent : IComponent
 
             if (!sourceScript.ScriptKey.Contains("AssassinStrike") && (damage > 1000000))
                 damage = 1000000;
-            
+
             if (damage > 0)
                 options.ApplyDamageScript.ApplyDamage(
                     context.Source,
@@ -84,7 +82,7 @@ public struct DamageAbilityComponent : IComponent
         if (pctHpDamage.HasValue)
         {
             var pctDmg = DamageHelper.CalculatePercentDamage(source, target, pctHpDamage.Value);
-            
+
             finalDamage += pctDmg;
         }
 

@@ -18,7 +18,7 @@ public class MythicGargoyleWarpScript(Dialog subject, ISimpleCache simpleCache) 
             case "gargoylewarp_initial":
             {
                 var vitality = source.StatSheet.MaximumHp + source.StatSheet.MaximumMp * 2;
-                
+
                 if ((source.StatSheet.Level >= 99) && (vitality >= 80000))
                 {
                     var option3 = new DialogOption

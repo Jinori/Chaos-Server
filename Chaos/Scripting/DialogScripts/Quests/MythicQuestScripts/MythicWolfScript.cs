@@ -145,8 +145,7 @@ public class MythicWolfScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
                     source.SendOrangeBarMessage("You received 10000000 experience!");
@@ -192,8 +191,7 @@ public class MythicWolfScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
                     source.SendOrangeBarMessage("You received 10000000 experience!");
@@ -230,8 +228,7 @@ public class MythicWolfScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, twentyPercent);
                     source.SendOrangeBarMessage($"You received {twentyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 10000000);
                     source.SendOrangeBarMessage("You received 10000000 experience!");
@@ -248,8 +245,7 @@ public class MythicWolfScript : DialogScriptBase
 
             case "wolf_ally":
             {
-                if (hasFrog
-                    && (hasFrog == frog is MythicFrog.AlliedFrog or MythicFrog.BossFrogStarted or MythicFrog.BossFrogDefeated))
+                if (hasFrog && (hasFrog == frog is MythicFrog.AlliedFrog or MythicFrog.BossFrogStarted or MythicFrog.BossFrogDefeated))
                 {
                     Subject.Reply(source, "You are already allied with the Frogs? *The wolf pack leader begins to growl* Begone!");
                     source.Trackers.Enums.Set(MythicWolf.EnemyWolfAllied);
@@ -297,8 +293,7 @@ public class MythicWolfScript : DialogScriptBase
                 {
                     ExperienceDistributionScript.GiveExp(source, fiftyPercent);
                     source.SendOrangeBarMessage($"You received {fiftyPercent} experience!");
-                }
-                else
+                } else
                 {
                     ExperienceDistributionScript.GiveExp(source, 25000000);
                     source.SendOrangeBarMessage("You received 25000000 experience!");
@@ -308,11 +303,10 @@ public class MythicWolfScript : DialogScriptBase
                 source.Trackers.Enums.Set(MythicWolf.BossWolfDefeated);
                 source.Trackers.Counters.AddOrIncrement("MythicBoss", 1);
 
-                if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss) && (mythicboss >= 5) &&
-                    !source.Trackers.Enums.HasValue(MythicQuestMain.CompletedMythic))
-                {
+                if (source.Trackers.Counters.TryGetValue("MythicBoss", out var mythicboss)
+                    && (mythicboss >= 5)
+                    && !source.Trackers.Enums.HasValue(MythicQuestMain.CompletedMythic))
                     source.Trackers.Enums.Set(MythicQuestMain.CompletedAll);
-                }
             }
 
                 break;

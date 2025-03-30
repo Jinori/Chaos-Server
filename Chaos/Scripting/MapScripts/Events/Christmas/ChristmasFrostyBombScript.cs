@@ -128,15 +128,13 @@ public class ChristmasFrostyBombScript : MapScriptBase
 
         foreach (var present in presents)
             Subject.RemoveEntity(present);
-        
+
         var reindeers = Subject.GetEntities<Monster>()
-                              .Where(x => x.Name == "Reindeer")
-                              .ToList();
-        
+                               .Where(x => x.Name == "Reindeer")
+                               .ToList();
+
         foreach (var reindeer in reindeers)
             Subject.RemoveEntity(reindeer);
-        
-        
 
         // Reset the state of the event
         UsedReindeerSpawnPoints.Clear();
@@ -263,7 +261,6 @@ public class ChristmasFrostyBombScript : MapScriptBase
                     aisling.SendOrangeBarMessage("Round is starting! Dodge for your life!");
                     aisling.Trackers.Counters.Remove("frostychallenge", out _);
                 }
-                    
 
                 npc.Say("Round is starting, good luck!");
                 CurrentStage = ScriptStage.InProgress;
