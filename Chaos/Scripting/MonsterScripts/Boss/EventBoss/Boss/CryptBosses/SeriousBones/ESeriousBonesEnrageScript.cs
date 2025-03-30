@@ -38,7 +38,7 @@ public sealed class ESeriousBonesEnrageScript : MonsterScriptBase
 
             for (var i = 0; i <= 2; i++)
             {
-                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
+                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: Subject.Type), out var point))
                     continue;
 
                 var mobs = MonsterFactory.Create("ecrypt_kardi15", Subject.MapInstance, point);
@@ -70,7 +70,7 @@ public sealed class ESeriousBonesEnrageScript : MonsterScriptBase
 
             for (var i = 0; i <= 3; i++)
             {
-                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
+                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: Subject.Type), out var point))
                     continue;
                 
                 var mobs = MonsterFactory.Create("ecrypt_marauder15", Subject.MapInstance, point);

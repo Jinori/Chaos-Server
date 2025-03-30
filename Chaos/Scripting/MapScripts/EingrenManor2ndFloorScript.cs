@@ -103,7 +103,7 @@ public class EingrenManor2NdFloorScript(MapInstance subject, ISimpleCache simple
                 do
                 {
                     newPoint = rectangle.GetRandomPoint();
-                } while (!mapInstance.IsWalkable(newPoint, member.Type));
+                } while (!mapInstance.IsWalkable(newPoint, collisionType: member.Type));
                 
                 member.Trackers.Counters.Remove("bansheekills", out _);
                 member.Trackers.Enums.Set(ManorLouegieStage.CompletedQuest);

@@ -91,7 +91,7 @@ public class TeleportToQueenOctopusScript : DialogScriptBase
             {
                 point = rectangle.GetRandomPoint();
             }
-            while (!mapInstance.IsWalkable(point, member.Type));
+            while (!mapInstance.IsWalkable(point, collisionType: member.Type));
 
             member.TraverseMap(mapInstance, point);
             member.Trackers.Enums.Set(QueenOctopusQuest.QueenSpawning);

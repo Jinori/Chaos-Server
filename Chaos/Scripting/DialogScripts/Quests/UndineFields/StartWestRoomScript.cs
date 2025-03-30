@@ -22,7 +22,7 @@ public class StartWestRoomScript : DialogScriptBase
     public override void OnDisplaying(Aisling source)
     {
         var point = new Point(source.X, source.Y);
-        var group = source.Group?.Where(x => x.WithinRange(point));
+        var group = source.Group?.Where(x => x.WithinRange(point)).ToList();
 
         if (group is null)
         {
@@ -56,7 +56,7 @@ public class StartWestRoomScript : DialogScriptBase
                 do
                 {
                     newPoint = rectangle.GetRandomPoint();
-                } while (!mapInstance.IsWalkable(newPoint, member.Type));
+                } while (!mapInstance.IsWalkable(newPoint, collisionType: member.Type));
 
                 member.Trackers.Counters.Remove("orckills", out _);
                 member.TraverseMap(mapInstance, newPoint);

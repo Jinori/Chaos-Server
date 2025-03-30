@@ -126,7 +126,7 @@ public class ScChallengeScript : DialogScriptBase
 
             do
                 point = rectangle.GetRandomPoint();
-            while (!mapInstance.IsWalkable(point, member.Type));
+            while (!mapInstance.IsWalkable(point, collisionType: member.Type));
 
             member.Trackers.Counters.Set("scwave", 1);
 

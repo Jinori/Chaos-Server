@@ -1,5 +1,4 @@
 ﻿using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
@@ -90,7 +89,7 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
                 do
                 {
                     point = rect.GetRandomPoint();
-                } while (!mapInstance.IsWalkable(point, aisling.Type));
+                } while (!mapInstance.IsWalkable(point, collisionType: aisling.Type));
                 
                 aisling.SendOrangeBarMessage("The Sea Monsters took over the ship and you swam to shore.");
                 aisling.Trackers.TimedEvents.AddEvent("lynithpirateshipcd", TimeSpan.FromHours(8), true);
@@ -380,10 +379,7 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
             }
         }
 
-        private static bool IsPointInRectangle(Point point, IRectangle rect)
-        {
-            return point.X >= rect.Left && point.X <= rect.Right && point.Y >= rect.Top && point.Y <= rect.Bottom;
-        }
+        private static bool IsPointInRectangle(Point point, IRectangle rect) => (point.X >= rect.Left) && (point.X <= rect.Right) && (point.Y >= rect.Top) && (point.Y <= rect.Bottom);
 
         private bool EnoughMonstersOnShip()
         {
@@ -404,12 +400,10 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
         
         private bool CheckAllMonstersCleared(PirateShip trial)
         {
-            if (!Subject.GetEntities<Monster>().Any(m => !m.Script.Is<PetScript>()))
+            if (Subject.GetEntities<Monster>().All(m => m.Script.Is<PetScript>()))
             {
                 foreach (var aisling in Subject.GetEntities<Aisling>())
-                {
                     aisling.Trackers.Enums.Set(trial);
-                }
 
                 return true;
             }
@@ -423,7 +417,7 @@ namespace Chaos.Scripting.MapScripts.PirateShipOverrun
                 ClearMonsters();
                 State = ScriptState.Dormant;
             }
-            else if (!Subject.GetEntities<Monster>().Any(m => !m.Script.Is<PetScript>()))
+            else if (Subject.GetEntities<Monster>().All(m => m.Script.Is<PetScript>()))
             {
                 foreach (var aisling in Subject.GetEntities<Aisling>())
                 {

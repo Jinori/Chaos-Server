@@ -60,7 +60,7 @@ public class PhoenixMovementScript : MonsterScriptBase
                                                .Take(3);
 
                 var pointToFlyTo = pointsAroundTarget.OfType<Point?>()
-                                                     .FirstOrDefault(point => Map.IsWalkable(point!.Value, Subject.Type));
+                                                     .FirstOrDefault(point => Map.IsWalkable(point!.Value, collisionType: Subject.Type));
 
                 if (pointToFlyTo.HasValue)
                 {

@@ -164,7 +164,7 @@ public sealed class CountEnrageScript : MonsterScriptBase
 
                 // Continue spawning until 5 mobs are spawned
                 while (mobsSpawned < 5)
-                    if (rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
+                    if (rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: Subject.Type), out var point))
                     {
                         var mob = MonsterFactory.Create("count_bat", Subject.MapInstance, point);
                         Subject.MapInstance.AddEntity(mob, point);

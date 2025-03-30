@@ -61,7 +61,7 @@ public class TagorPetScript : MerchantScriptBase
     private Aisling? RandomAisling;
 
     private IPathOptions Options
-        => PathOptions.Default with
+        => PathOptions.Default.ForCreatureType(Subject.Type) with
         {
             LimitRadius = null,
             IgnoreBlockingReactors = true

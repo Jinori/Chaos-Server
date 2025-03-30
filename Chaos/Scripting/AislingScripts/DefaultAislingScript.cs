@@ -804,7 +804,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
             do
                 point = outline.PickRandom();
-            while (!source.MapInstance.IsWalkable(point, terminus.Type));
+            while (!source.MapInstance.IsWalkable(point, collisionType: terminus.Type));
 
             source.MapInstance.AddEntity(terminus, point);
         }
@@ -1359,7 +1359,8 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
                     Subject.MapInstance.RemoveEntity(egg);
                     Subject.SendPersistentMessage($"{Subject.Inventory.CountOf("Undine Golden Chicken Egg")} golden eggs!");
-
+                    Subject.Client.SendSound(177, false);
+                    
                     foreach (var bunny in Subject.MapInstance.GetEntities<Monster>())
                         bunny.Trackers.Counters.AddOrIncrement("Frightened");
 

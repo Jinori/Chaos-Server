@@ -34,7 +34,7 @@ public sealed class EBunnyBoss1EnrageScript : MonsterScriptBase
 
             for (var i = 0; i <= 1; i++)
             {
-                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
+                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: Subject.Type), out var point))
                     continue;
 
                 var mobs = MonsterFactory.Create("bunny1-1", Subject.MapInstance, point);
@@ -51,7 +51,7 @@ public sealed class EBunnyBoss1EnrageScript : MonsterScriptBase
 
             for (var i = 0; i <= 2; i++)
             {
-                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
+                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: Subject.Type), out var point))
                     continue;
 
                 var mobs = MonsterFactory.Create("bunny1-2", Subject.MapInstance, point);
@@ -68,7 +68,7 @@ public sealed class EBunnyBoss1EnrageScript : MonsterScriptBase
 
             for (var i = 0; i <= 2; i++)
             {
-                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
+                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: Subject.Type), out var point))
                     continue;
 
                 var mobs = MonsterFactory.Create("bunny1-3", Subject.MapInstance, point);

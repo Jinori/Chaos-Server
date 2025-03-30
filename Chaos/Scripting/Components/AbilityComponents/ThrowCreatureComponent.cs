@@ -49,7 +49,7 @@ public struct ThrowCreatureComponent : IComponent
                 if (context.SourceMap.IsWall(point))
                     break;
 
-                if (context.SourceMap.IsWalkable(point, CreatureType.Aisling, false))
+                if (context.SourceMap.IsWalkable(point, collisionType: CreatureType.Aisling))
                 {
                     // Warp the target to the point and add it to the set of thrown targets
                     target.WarpTo(point);

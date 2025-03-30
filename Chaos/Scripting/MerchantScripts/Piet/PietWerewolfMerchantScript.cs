@@ -21,7 +21,7 @@ public class PietWerewolfMerchantScript : MerchantScriptBase
         SeenByAislingWithEnum
     }
 
-    private IPathOptions Options => PathOptions.Default with
+    private IPathOptions Options => PathOptions.Default.ForCreatureType(Subject.Type) with
     {
         LimitRadius = null,
         IgnoreBlockingReactors = true

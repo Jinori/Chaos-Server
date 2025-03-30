@@ -1,3 +1,4 @@
+using Chaos.Extensions;
 using Chaos.Models.World;
 using Chaos.Pathfinding;
 using Chaos.Pathfinding.Abstractions;
@@ -8,7 +9,7 @@ public class BurrowglintScript(Monster subject) : BunnyMazeBaseScript(subject)
 {
     private const int PREDICTION_DISTANCE = 2;
 
-    private IPathOptions Options => PathOptions.Default with
+    private IPathOptions Options => PathOptions.Default.ForCreatureType(Subject.Type) with
     {
         LimitRadius = null,
         IgnoreBlockingReactors = true,
@@ -31,7 +32,7 @@ public class BurrowglintScript(Monster subject) : BunnyMazeBaseScript(subject)
         if (hopscare == null)
         {
             if (Subject.MoveTimer.IntervalElapsed) 
-                Subject.Pathfind(projectedPoint, 0, Options);
+                Subject.Pathfind(projectedPoint, 0, Options, true);
             
             return;
         }
@@ -42,13 +43,14 @@ public class BurrowglintScript(Monster subject) : BunnyMazeBaseScript(subject)
 
         var targetFlank = new Point(hopscare.X + 2 * vectorX, hopscare.Y + 2 * vectorY);
 
-        if (!Map.IsWalkable(targetFlank, Subject.Type))
+        if (!Map.IsWalkable(targetFlank, true, false, true))
         {
+            
             // Fallback to player position if target is blocked
             targetFlank = new Point(Target.X, Target.Y);
         }
 
         if (Subject.MoveTimer.IntervalElapsed) 
-            Subject.Pathfind(targetFlank, 0, Options);
+            Subject.Pathfind(targetFlank, 0, Options, true);
     }
 }

@@ -34,7 +34,7 @@ public sealed class PfMantisDeathScript : MonsterScriptBase
 
             do
                 point = rectangle.GetRandomPoint();
-            while (!mapInstance.IsWalkable(point, member.Type));
+            while (!mapInstance.IsWalkable(point, collisionType: member.Type));
 
             member.TraverseMap(mapInstance, point);
             member.Trackers.Enums.Set(PFQuestStage.KilledGiantMantis);

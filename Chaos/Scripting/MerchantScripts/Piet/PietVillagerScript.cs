@@ -35,7 +35,7 @@ public class PietVillagerScript : MerchantScriptBase
         Eating
     }
 
-    private IPathOptions Options => PathOptions.Default with
+    private IPathOptions Options => PathOptions.Default.ForCreatureType(Subject.Type) with
     {
         LimitRadius = null,
         IgnoreBlockingReactors = true

@@ -88,7 +88,7 @@ public class QueenOctopusDeathScript : MonsterScriptBase
 
                 do
                     point = rectangle.GetRandomPoint();
-                while (!mapInstance.IsWalkable(point, member.Type));
+                while (!mapInstance.IsWalkable(point, collisionType: member.Type));
 
                 var hasStage = member.Trackers.Enums.TryGetValue(out QueenOctopusQuest stage);
 

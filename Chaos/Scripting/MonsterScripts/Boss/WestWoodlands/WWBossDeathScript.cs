@@ -172,7 +172,7 @@ public class WWBossDeathScript : MonsterScriptBase
 
             do
                 point = outline.PickRandom();
-            while (!Subject.MapInstance.IsWalkable(point, player.Type));
+            while (!Subject.MapInstance.IsWalkable(point, collisionType: player.Type));
 
             var reactortile = ReactorTileFactory.Create("wwdungeonescapeportal", Subject.MapInstance, Point.From(point));
 

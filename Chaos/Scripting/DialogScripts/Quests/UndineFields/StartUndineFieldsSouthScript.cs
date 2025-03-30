@@ -1,5 +1,4 @@
 ﻿using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
@@ -23,7 +22,7 @@ public class StartUndineFieldsSouthScript : DialogScriptBase
     public override void OnDisplaying(Aisling source)
     {
         var point = new Point(source.X, source.Y);
-        var group = source.Group?.Where(x => x.WithinRange(point));
+        var group = source.Group?.Where(x => x.WithinRange(point)).ToList();
 
         if (group is null)
         {
@@ -57,7 +56,7 @@ public class StartUndineFieldsSouthScript : DialogScriptBase
                 do
                 {
                     newPoint = rectangle.GetRandomPoint();
-                } while (!mapInstance.IsWalkable(newPoint, member.Type));
+                } while (!mapInstance.IsWalkable(newPoint, collisionType: member.Type));
 
                 member.Trackers.Enums.Set(UndineFieldDungeon.StartedDungeon);
                 member.TraverseMap(mapInstance, newPoint);

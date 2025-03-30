@@ -47,7 +47,7 @@ public sealed class FireDracoBossEnrageScript : MonsterScriptBase
 
             for (var i = 0; i <= 3; i++)
             {
-                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
+                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: Subject.Type), out var point))
                     continue;
 
                 var mobs = MonsterFactory.Create("LW_Wisp", Subject.MapInstance, point);
@@ -72,7 +72,7 @@ public sealed class FireDracoBossEnrageScript : MonsterScriptBase
 
             for (var i = 0; i <= 4; i++)
             {
-                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
+                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: Subject.Type), out var point))
                     continue;
 
                 var mobs = MonsterFactory.Create("LW_Faerie", Subject.MapInstance, point);

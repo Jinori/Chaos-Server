@@ -123,7 +123,7 @@ public class RockFallScript : ConfigurableReactorTileScriptBase,
                     var randomDirection = (Direction)new Random().Next(0, 4); // Assuming 8 directions
                     var randomOffset = creature.DirectionalOffset(randomDirection);
 
-                    if (Subject.MapInstance.IsWalkable(randomOffset, CreatureType.Normal)) // Ensure the point is walkable
+                    if (Subject.MapInstance.IsWalkable(randomOffset, collisionType: CreatureType.Normal)) // Ensure the point is walkable
                         creature.WarpTo(randomOffset);
                 }
             }

@@ -38,7 +38,7 @@ public sealed class SoulCollectorEnrageScript : MonsterScriptBase
 
             for (var i = 0; i <= 2; i++)
             {
-                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
+                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: Subject.Type), out var point))
                     continue;
 
                 var mobs = MonsterFactory.Create("mummy10", Subject.MapInstance, point);

@@ -1,5 +1,4 @@
 ﻿using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
@@ -112,7 +111,7 @@ public class TeleportToFloor3Script : DialogScriptBase
             {
                 point = rectangle.GetRandomPoint();
             }
-            while (!mapInstance.IsWalkable(point, member.Type));
+            while (!mapInstance.IsWalkable(point, collisionType: member.Type));
 
             if (member.Trackers.Enums.HasValue(MainStoryEnums.SearchForSummoner) ||
                 member.Trackers.Enums.HasValue(MainStoryEnums.RetryServant))

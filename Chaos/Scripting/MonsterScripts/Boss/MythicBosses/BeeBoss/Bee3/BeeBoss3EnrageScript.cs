@@ -38,7 +38,7 @@ public sealed class BeeBoss3EnrageScript : MonsterScriptBase
 
             for (var i = 0; i <= 3; i++)
             {
-                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
+                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: Subject.Type), out var point))
                     continue;
 
                 var mobs = MonsterFactory.Create("bee3-2", Subject.MapInstance, point);

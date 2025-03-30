@@ -78,7 +78,7 @@ public class AggroTargetingScript : MonsterScriptBase
             return;
         }
         
-        if ((Target != null) && (!Target.IsAlive || !Target.OnSameMapAs(Subject) || Target.MapInstance.IsWalkable(Target, CreatureType.Normal)))
+        if ((Target != null) && (!Target.IsAlive || !Target.OnSameMapAs(Subject) || Target.MapInstance.IsWalkable(Target, collisionType: Subject.Type)))
         {
             AggroList.Remove(Target.Id, out _);
             Target = null;
@@ -102,7 +102,7 @@ public class AggroTargetingScript : MonsterScriptBase
             if (!Map.TryGetEntity<Creature>(kvp.Key, out var possibleTarget))
                 continue;
 
-            if (!possibleTarget.IsAlive || !Subject.CanSee(possibleTarget) || !possibleTarget.WithinRange(Subject) || Subject.MapInstance.IsWalkable(possibleTarget, Subject.Type))
+            if (!possibleTarget.IsAlive || !Subject.CanSee(possibleTarget) || !possibleTarget.WithinRange(Subject) || Subject.MapInstance.IsWalkable(possibleTarget, collisionType: Subject.Type))
                 continue;
 
             //if we're blind, we can only target things within 1 tile

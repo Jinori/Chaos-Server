@@ -29,7 +29,7 @@ public class CasterMovementScript : MonsterScriptBase
         {
             var pathtopoint = Subject.SpiralSearch(3)
                                      .OrderByDescending(point => point.ManhattanDistanceFrom(Target))
-                                     .FirstOrDefault(point => Subject.MapInstance.IsWalkable(point, Subject.Type));
+                                     .FirstOrDefault(point => Subject.MapInstance.IsWalkable(point, collisionType: Subject.Type));
 
             Subject.Pathfind(pathtopoint);
         } else

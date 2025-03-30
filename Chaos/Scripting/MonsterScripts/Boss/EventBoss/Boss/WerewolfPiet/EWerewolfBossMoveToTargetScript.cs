@@ -24,7 +24,7 @@ public sealed class EWerewolfBossMoveToTargetScript(Monster subject) : MonsterSc
 
         var point = Target.GenerateCardinalPoints()
                           .OfType<IPoint>()
-                          .FirstOrDefault(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
+                          .FirstOrDefault(x => Subject.MapInstance.IsWalkable(x, collisionType: Subject.Type));
 
         //Remove aggro if we can't get to the target so we have a chance to attack someone else
         if (point is null
@@ -48,7 +48,7 @@ public sealed class EWerewolfBossMoveToTargetScript(Monster subject) : MonsterSc
             {
                 var safeSpot = Target.GenerateCardinalPoints()
                                      .OfType<IPoint>()
-                                     .FirstOrDefault(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
+                                     .FirstOrDefault(x => Subject.MapInstance.IsWalkable(x, collisionType: Subject.Type));
 
                 if (safeSpot is null)
                 {

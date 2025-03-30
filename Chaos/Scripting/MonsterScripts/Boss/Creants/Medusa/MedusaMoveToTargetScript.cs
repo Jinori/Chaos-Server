@@ -60,7 +60,7 @@ public sealed class MedusaMoveToTargetScript : MonsterScriptBase
 
                 var points = AoeShape.AllAround.ResolvePoints(options).ToList();
                 var randomPoint = points.PickRandom();
-                if (Map.IsWalkable(randomPoint, Subject.Type))
+                if (Map.IsWalkable(randomPoint, collisionType: Subject.Type))
                     Subject.WarpTo(randomPoint);
             }
             else

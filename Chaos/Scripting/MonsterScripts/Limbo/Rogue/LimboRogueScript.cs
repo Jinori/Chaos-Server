@@ -62,7 +62,7 @@ public class LimboRogueScript : MonsterScriptBase
         {
             var oppositePoint = target.DirectionalOffset(targetDirection);
 
-            if (Map.IsWalkable(oppositePoint, Subject.Type))
+            if (Map.IsWalkable(oppositePoint, collisionType: Subject.Type))
             {
                 Subject.TryUseSpell(PitfallTrap);
                 Subject.TryUseSkill(ShadowFigure);

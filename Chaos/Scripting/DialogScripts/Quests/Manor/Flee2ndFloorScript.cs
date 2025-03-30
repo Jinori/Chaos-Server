@@ -1,4 +1,5 @@
 ﻿using Chaos.Collections;
+using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
@@ -7,13 +8,8 @@ using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Quests.Manor;
 
-public class Flee2NdFloorScript : DialogScriptBase
+public class Flee2NdFloorScript(Dialog subject, ISimpleCache simpleCache) : DialogScriptBase(subject)
 {
-    private readonly ISimpleCache SimpleCache;
-
-    public Flee2NdFloorScript(Dialog subject, ISimpleCache simpleCache)
-        : base(subject) => SimpleCache = simpleCache;
-    
     private readonly string[] MapKeys =
     [
         "manor_library",
@@ -37,19 +33,7 @@ public class Flee2NdFloorScript : DialogScriptBase
         {
                 case "terminus_initial":
                 {
-                    if (source.MapInstance.InstanceId != "manor_library" 
-                        && source.MapInstance.InstanceId != "manor_study"
-                        && source.MapInstance.InstanceId != "manor_study_2"
-                        && source.MapInstance.InstanceId != "manor_kitchen"
-                        && source.MapInstance.InstanceId != "manor_kitchen_2"
-                        && source.MapInstance.InstanceId != "manor_commons"
-                        && source.MapInstance.InstanceId != "manor_storage"
-                        && source.MapInstance.InstanceId != "manor_depot"
-                        && source.MapInstance.InstanceId != "manor_bedroom"
-                        && source.MapInstance.InstanceId != "manor_bedroom_2"
-                        && source.MapInstance.InstanceId != "manor_bedroom_3"
-                        && source.MapInstance.InstanceId != "manor_bunks"
-                        && source.MapInstance.InstanceId != "manor_master_suite")
+                    if (MapKeys.ContainsI(source.MapInstance.InstanceId))
                         return;
                     
                     var option = new DialogOption
@@ -69,13 +53,13 @@ public class Flee2NdFloorScript : DialogScriptBase
                 foreach (var member in source.MapInstance.GetEntities<Aisling>())
                 {
                     var rectangle = new Rectangle(25, 3, 2, 2);
-                    var mapInstance = SimpleCache.Get<MapInstance>("manor_main_hall");
+                    var mapInstance = simpleCache.Get<MapInstance>("manor_main_hall");
 
                     Point newPoint;
                     do
                     {
                         newPoint = rectangle.GetRandomPoint();
-                    } while (!mapInstance.IsWalkable(newPoint, member.Type));
+                    } while (!mapInstance.IsWalkable(newPoint, collisionType: member.Type));
                     
                     member.TraverseMap(mapInstance, newPoint);
                 }

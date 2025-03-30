@@ -4,7 +4,7 @@ using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.CRBosses.UndeadKing;
+namespace Chaos.Scripting.MonsterScripts.Boss.CR_Bosses.UndeadKing;
 
 public sealed class UndeadKingEnrageScript : MonsterScriptBase
 {
@@ -55,7 +55,7 @@ public sealed class UndeadKingEnrageScript : MonsterScriptBase
 
             for (var i = 0; i <= 3; i++)
             {
-                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
+                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: Subject.Type), out var point))
                     continue;
 
                 var mobs = MonsterFactory.Create("kopfloser_reiter15", Subject.MapInstance, point);

@@ -127,7 +127,7 @@ public sealed class TgAntEnrageScript : MonsterScriptBase
 
             // Continue spawning until 5 mobs are spawned
             while (mobsSpawned < 4)
-                if (rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
+                if (rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: Subject.Type), out var point))
                 {
                     var mob = MonsterFactory.Create("tg_antwarrior", Subject.MapInstance, point);
                     Subject.MapInstance.AddEntity(mob, point);

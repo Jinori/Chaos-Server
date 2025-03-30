@@ -186,7 +186,7 @@ public class SnagglesMonster(Monster subject, IMerchantFactory merchantFactory, 
             .Where(dir =>
             {
                 var nextPoint = Subject.DirectionalOffset(dir);
-                return Subject.MapInstance.IsWalkable(nextPoint, Subject.Type) &&
+                return Subject.MapInstance.IsWalkable(nextPoint, collisionType: Subject.Type) &&
                        safeFromWalls.Contains(nextPoint) &&
                        IsWithinSafeMapBounds(nextPoint);
             })

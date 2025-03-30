@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Legend;
@@ -7,33 +6,24 @@ using Chaos.Models.World;
 using Chaos.NLog.Logging.Definitions;
 using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
-using Chaos.Scripting.DialogScripts.Quests.PFQuest;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
-using Chaos.Services.Factories.Abstractions;
-using Chaos.Storage.Abstractions;
 using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Quests.UndineFields;
 
 public class UndineFieldsScript : DialogScriptBase
 {
-    private readonly IItemFactory ItemFactory;
-    private readonly ILogger<PFQuestScript> Logger;
-    private readonly ISimpleCache SimpleCache;
+    private readonly ILogger<UndineFieldsScript> Logger;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     /// <inheritdoc />
     public UndineFieldsScript(
         Dialog subject,
-        IItemFactory itemFactory,
-        ISimpleCache simpleCache,
-        ILogger<PFQuestScript> logger
+        ILogger<UndineFieldsScript> logger
     )
         : base(subject)
     {
-        ItemFactory = itemFactory;
-        SimpleCache = simpleCache;
         Logger = logger;
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
     }

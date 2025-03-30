@@ -438,7 +438,7 @@ public class AdminTrinketScript : DialogScriptBase
 
         for (var i = 0; i < quantity; i++)
         {
-            if (!rectangle.TryGetRandomPoint(x => source.MapInstance.IsWalkable(x, source.Type), out var point))
+            if (!rectangle.TryGetRandomPoint(x => source.MapInstance.IsWalkable(x, collisionType: CreatureType.Normal), out var point))
                 continue;
 
             var mobName = mobType == "random" ? GetRandomDarkMob(level) : mobType;

@@ -1,5 +1,4 @@
 ﻿using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
@@ -22,7 +21,7 @@ public class StartNorth1RoomScript : DialogScriptBase
     public override void OnDisplaying(Aisling source)
     {
             var point = new Point(source.X, source.Y);
-            var group = source.Group?.Where(x => x.WithinRange(point));
+            var group = source.Group?.Where(x => x.WithinRange(point)).ToList();
 
             if (group is null)
             {
@@ -56,7 +55,7 @@ public class StartNorth1RoomScript : DialogScriptBase
                     do
                     {
                         newPoint = rectangle.GetRandomPoint();
-                    } while (!mapInstance.IsWalkable(newPoint, member.Type));
+                    } while (!mapInstance.IsWalkable(newPoint, collisionType: member.Type));
 
                     member.Trackers.Counters.Remove("orckills", out _);
                     member.TraverseMap(mapInstance, newPoint);
@@ -67,5 +66,5 @@ public class StartNorth1RoomScript : DialogScriptBase
                 source.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your group must be nearby.");
                 Subject.Reply(source, "Your group is not near.");
             }
-        }
+    }
 }

@@ -7,8 +7,8 @@ namespace Chaos.Scripting.MonsterScripts.Boss.EventBoss.Boss.CR_Bosses.ExiledDra
 
 public class EExiledDracoBossScript : CompositeMonsterScript
 {
-    private static readonly ICollection<string> ScriptKeys = new[]
-    {
+    private static readonly ICollection<string> ScriptKeys =
+    [
         GetScriptKey(typeof(DefaultBehaviorsScript)),
         GetScriptKey(typeof(EventMonsterScalingScript)),
         GetScriptKey(typeof(BossMoveToTargetScript)),
@@ -21,7 +21,7 @@ public class EExiledDracoBossScript : CompositeMonsterScript
         GetScriptKey(typeof(ArenaDeathScript)),
         GetScriptKey(typeof(DisplayNameScript)),
         GetScriptKey(typeof(ThisIsABossScript))
-    };
+    ];
 
     /// <inheritdoc />
     public EExiledDracoBossScript(IScriptProvider scriptProvider, Monster subject)

@@ -484,7 +484,7 @@ public class PFQuestScript : DialogScriptBase
                 do
                     point = rectangle.GetRandomPoint();
 
-                while (!mapInstance.IsWalkable(point, source.Type));
+                while (!mapInstance.IsWalkable(point, collisionType: source.Type));
 
                 source.TraverseMap(mapInstance, point);
                 source.Trackers.Enums.Set(PFQuestStage.CompletedPFQuest);

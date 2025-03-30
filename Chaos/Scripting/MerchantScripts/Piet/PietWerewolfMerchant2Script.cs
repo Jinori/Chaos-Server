@@ -1,6 +1,7 @@
 using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Models.World;
 using Chaos.Pathfinding;
@@ -21,7 +22,7 @@ public class PietWerewolfMerchant2Script : MerchantScriptBase
         InsideHouse
     }
 
-    private IPathOptions Options => PathOptions.Default with
+    private IPathOptions Options => PathOptions.Default.ForCreatureType(Subject.Type) with
     {
         LimitRadius = null,
         IgnoreBlockingReactors = true

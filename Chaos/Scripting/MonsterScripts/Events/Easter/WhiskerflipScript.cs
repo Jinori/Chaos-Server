@@ -1,3 +1,4 @@
+using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
 using Chaos.Pathfinding;
@@ -8,7 +9,7 @@ namespace Chaos.Scripting.MonsterScripts.Events.Easter;
 public class WhiskerflipScript(Monster subject) : BunnyMazeBaseScript(subject)
 {
     private const int CHASE_DISTANCE_THRESHOLD = 2;
-    private IPathOptions Options => PathOptions.Default with
+    private IPathOptions Options => PathOptions.Default.ForCreatureType(Subject.Type) with
     {
         LimitRadius = null,
         IgnoreBlockingReactors = true,
@@ -26,10 +27,10 @@ public class WhiskerflipScript(Monster subject) : BunnyMazeBaseScript(subject)
         if ((distance >= CHASE_DISTANCE_THRESHOLD))
         {
             if (Subject.MoveTimer.IntervalElapsed) 
-                Subject.Pathfind(Target, 0, Options);   
+                Subject.Pathfind(Target, 0, Options, true);   
         }
         else
             if (Subject.WanderTimer.IntervalElapsed) 
-                Subject.Wander(Options);
+                Subject.Wander(Options, true);
     }
 }

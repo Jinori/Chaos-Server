@@ -9,7 +9,7 @@ using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 
-namespace Chaos.Scripting.DialogScripts;
+namespace Chaos.Scripting.DialogScripts.Professions;
 
 public class PortalTrinketScript : DialogScriptBase
 {
@@ -277,7 +277,7 @@ public class PortalTrinketScript : DialogScriptBase
                                 member.Y - 2,
                                 4,
                                 4);
-                            rectangle.TryGetRandomPoint(x => member.MapInstance.IsWalkable(x, member.Type), out var point);
+                            rectangle.TryGetRandomPoint(x => member.MapInstance.IsWalkable(x, collisionType: member.Type), out var point);
 
                             if (point == null)
                             {
@@ -310,7 +310,7 @@ public class PortalTrinketScript : DialogScriptBase
                                         4,
                                         4);
 
-                                    rectangle.TryGetRandomPoint(x => member.MapInstance.IsWalkable(x, member.Type), out var point);
+                                    rectangle.TryGetRandomPoint(x => member.MapInstance.IsWalkable(x, collisionType: member.Type), out var point);
 
                                     if (point == null)
                                     {

@@ -51,7 +51,7 @@ public sealed class MythicMantis1MoveToTargetScript : MonsterScriptBase
                             var destinationPoint = entity.DirectionalOffset(direction);
 
                             //if that point is not walkable or is a reactor, continue
-                            if (!Subject.MapInstance.IsWalkable(destinationPoint, Subject.Type)
+                            if (!Subject.MapInstance.IsWalkable(destinationPoint, collisionType: Subject.Type)
                                 || Subject.MapInstance.IsBlockingReactor(destinationPoint))
                                 continue;
 

@@ -59,7 +59,7 @@ public class MilethAltarWorshipScript(ReactorTile subject, IItemFactory itemFact
                 2,
                 2);
             
-            rectangle.TryGetRandomPoint(x => aisling.MapInstance.IsWalkable(x, source.Type), out var portalpoint);
+            rectangle.TryGetRandomPoint(x => aisling.MapInstance.IsWalkable(x, collisionType: source.Type), out var portalpoint);
 
             if (portalpoint == null)
             {

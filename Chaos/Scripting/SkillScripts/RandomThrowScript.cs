@@ -49,7 +49,7 @@ namespace Chaos.Scripting.SkillScripts
                 {
                     randomSpot = mapInstance.Template.Bounds.GetRandomPoint();
                 }
-                while (!mapInstance.IsWalkable(randomSpot, CreatureType.Normal));
+                while (!mapInstance.IsWalkable(randomSpot, false, collisionType: creature.Type));
 
                 // Show the impact animation at the new spot
                 sourceMap.ShowAnimation(ThrowAnimation.GetPointEffectAnimation(randomSpot));

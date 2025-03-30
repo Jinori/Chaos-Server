@@ -56,8 +56,8 @@ public sealed class ESummonerKadesFleeScript : MonsterScriptBase
             Subject.Y,
             7,
             7);
-        rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, CreatureType.Normal), out var point1);
-        rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, CreatureType.Normal), out var point2);
+        rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: CreatureType.Normal), out var point1);
+        rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: CreatureType.Normal), out var point2);
 
         if ((point1 != null) && (point2 != null))
         {

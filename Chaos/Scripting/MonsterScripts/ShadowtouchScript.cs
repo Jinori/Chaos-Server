@@ -67,7 +67,7 @@ public class ShadowtouchScript : MonsterScriptBase
             var nextPoint = Subject.DirectionalOffset(Subject.Direction);
 
             // Check if the next point is walkable
-            if (!Subject.MapInstance.IsWalkable(nextPoint, Subject.Type))
+            if (!Subject.MapInstance.IsWalkable(nextPoint, collisionType: Subject.Type))
 
                 // Reverse direction if facing a wall
                 Subject.Direction = Subject.Direction.Reverse();

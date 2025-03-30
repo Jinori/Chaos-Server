@@ -63,7 +63,7 @@ public class CthonicDemiseScript : MapScriptBase
 
         do
             point = outline.PickRandom();
-        while (!Subject.IsWalkable(point, aislingportal.Type));
+        while (!Subject.IsWalkable(point, collisionType: aislingportal.Type));
 
         var reactortile = ReactorTileFactory.Create("cdescapeportal", Subject, Point.From(point));
 

@@ -75,7 +75,7 @@ public class PullAggroComponent : IComponent
             foreach (var point in pointsAroundSource)
 
                 // Check if there's a direct line of sight and the point is walkable
-                if (source.MapInstance.IsWalkable(point, CreatureType.Normal, false))
+                if (source.MapInstance.IsWalkable(point, collisionType: target.Type))
                 {
                     target.WarpTo(point);
 

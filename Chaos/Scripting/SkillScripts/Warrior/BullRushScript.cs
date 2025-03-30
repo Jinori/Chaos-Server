@@ -132,7 +132,7 @@ public class BullRushScript : ConfigurableSkillScriptBase,
             var point = points[i];
             
             //if the point we're looking at is not walkable
-            if (!context.SourceMap.IsWalkable(point, context.Source.Type, false))
+            if (!context.SourceMap.IsWalkable(point, false, collisionType: context.Source.Type))
             {
                 //if it's the first point, just break
                 //we're already standing on the point to charge to

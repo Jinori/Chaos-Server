@@ -92,7 +92,7 @@ namespace Chaos.Scripting.MonsterScripts.Events
             {
                 var nextPosition = aisling.DirectionalOffset(direction);
 
-                if (Map.IsWalkable(nextPosition, aisling.Type))
+                if (Map.IsWalkable(nextPosition, collisionType: aisling.Type))
                 {
                     aisling.WarpTo(nextPosition);
                     aisling.Animate(Throw);

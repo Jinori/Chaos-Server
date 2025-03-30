@@ -1,12 +1,10 @@
 ﻿using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
 using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
-using Chaos.Storage.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
@@ -20,16 +18,14 @@ public class SupplyLoures2Script : MapScriptBase
     private DateTime? StartTime;
     private ScriptState State;
     private readonly IIntervalTimer? UpdateTimer;
-    private readonly ISimpleCache SimpleCache;
     private readonly IMerchantFactory MerchantFactory;
     private readonly IDialogFactory DialogFactory;
     public const int UPDATE_INTERVAL_MS = 1;
 
-    public SupplyLoures2Script(MapInstance subject, IMonsterFactory monsterFactory, ISimpleCache simpleCache, IMerchantFactory merchantFactory, IDialogFactory dialogFactory)
+    public SupplyLoures2Script(MapInstance subject, IMonsterFactory monsterFactory, IMerchantFactory merchantFactory, IDialogFactory dialogFactory)
         : base(subject)
     {
         MonsterFactory = monsterFactory;
-        SimpleCache = simpleCache;
         MerchantFactory = merchantFactory;
         DialogFactory = dialogFactory;
         StartDelay = TimeSpan.FromSeconds(1);
@@ -106,7 +102,7 @@ public class SupplyLoures2Script : MapScriptBase
                         if (player != null)
                         {
                             var points = player.GenerateCardinalPoints()
-                                .Where(x => Subject.IsWalkable(x, CreatureType.Normal))
+                                .Where(x => Subject.IsWalkable(x, collisionType: CreatureType.Normal))
                                 .ToList();
 
                             var firstPoint = points.FirstOrDefault();

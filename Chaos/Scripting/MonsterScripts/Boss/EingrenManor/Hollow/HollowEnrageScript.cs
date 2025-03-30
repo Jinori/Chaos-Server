@@ -43,7 +43,7 @@ public sealed class HollowEnrageScript : MonsterScriptBase
 
             for (var i = 0; i <= 4; i++)
             {
-                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
+                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: Subject.Type), out var point))
                     continue;
                 
                 var mobs = MonsterFactory.Create("EM_vengefulDoll", Subject.MapInstance, point);

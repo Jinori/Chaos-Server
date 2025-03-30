@@ -1,4 +1,4 @@
-using Chaos.Common.Definitions;
+
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
@@ -41,13 +41,13 @@ public class CdHydraBossDeathScript : MonsterScriptBase
             do
             {
                 point2 = rectangle.GetRandomPoint();
-            } while (!Subject.MapInstance.IsWalkable(point2, CreatureType.Normal));
+            } while (!Subject.MapInstance.IsWalkable(point2, collisionType: CreatureType.Normal));
             
             Point point3;
             do
             {
                 point3 = rectangle.GetRandomPoint();
-            } while (!Subject.MapInstance.IsWalkable(point3, CreatureType.Normal));
+            } while (!Subject.MapInstance.IsWalkable(point3, collisionType: CreatureType.Normal));
 
             if (Subject.Template.TemplateKey == "cthonic_hydra")
             {

@@ -1,3 +1,4 @@
+using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Geometry.Abstractions;
 using Chaos.Geometry.Abstractions.Definitions;
@@ -20,14 +21,14 @@ public abstract class BunnyMazeBaseScript(Monster subject) : MonsterScriptBase(s
         Frightened,
     }
     
-    private IPathOptions Options => PathOptions.Default with
+    private IPathOptions Options => PathOptions.Default.ForCreatureType(Subject.Type) with
     {
         LimitRadius = null,
         IgnoreBlockingReactors = true,
         IgnoreWalls = false
     };
     
-    private IPathOptions FrightOptions => PathOptions.Default with
+    private IPathOptions FrightOptions => PathOptions.Default.ForCreatureType(Subject.Type) with
     {
         LimitRadius = null,
         IgnoreBlockingReactors = true,
@@ -35,10 +36,10 @@ public abstract class BunnyMazeBaseScript(Monster subject) : MonsterScriptBase(s
     };
     
     private BunnyState CurrentState = BunnyState.Chase;
-    
+    private bool PlayFrightSound;
     private readonly IIntervalTimer ChaseTimer = new IntervalTimer(TimeSpan.FromSeconds(20), false);
-    private readonly IIntervalTimer ScatterTimer = new IntervalTimer(TimeSpan.FromSeconds(3), false);
-    private readonly IIntervalTimer FrightenedTimer = new IntervalTimer(TimeSpan.FromSeconds(8), false);
+    private readonly IIntervalTimer ScatterTimer = new IntervalTimer(TimeSpan.FromSeconds(5), false);
+    private readonly IIntervalTimer FrightenedTimer = new IntervalTimer(TimeSpan.FromSeconds(12), false);
 
     protected readonly IPoint HomePoint = new Point(10, 8);
 
@@ -127,7 +128,7 @@ public abstract class BunnyMazeBaseScript(Monster subject) : MonsterScriptBase(s
                 CurrentState = BunnyState.Chase;
                 ChaseTimer.Reset();
                 ScatterTimer.Reset();
-                
+                PlayFrightSound = false;
                 break;
         }
     }
@@ -135,16 +136,20 @@ public abstract class BunnyMazeBaseScript(Monster subject) : MonsterScriptBase(s
     protected virtual void DoScatter()
     {
         if ((Subject.EuclideanDistanceFrom(HomePoint) > 2) && Subject.MoveTimer.IntervalElapsed)
-            Subject.Pathfind(HomePoint, 0, Options);
-        
-        else if (Subject.WanderTimer.IntervalElapsed)
-            Subject.Wander(Options);
+            Subject.Pathfind(HomePoint, 0, Options, true);
     }
 
     protected virtual void DoFrightened()
     {
         if (Subject.MoveTimer.IntervalElapsed && (Subject.ManhattanDistanceFrom(HomePoint) >= 1))
-            Subject.Pathfind(HomePoint, 0, FrightOptions);
+            Subject.Pathfind(HomePoint, 0, FrightOptions, true);
+
+        if (!PlayFrightSound)
+        {
+            var ais = Target as Aisling;
+            ais?.Client.SendSound(178, false);
+            PlayFrightSound = true;
+        }
     }
 
     protected abstract void DoChase();

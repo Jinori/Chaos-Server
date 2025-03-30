@@ -1,5 +1,6 @@
 using Chaos.Collections;
 using Chaos.DarkAges.Definitions;
+using Chaos.Extensions;
 using Chaos.Models.World;
 using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
@@ -12,6 +13,7 @@ public sealed class HopocalypseScript : MapScriptBase
 {
     private bool AnnounceStart;
     private bool SpawnedBunnies;
+    private bool PlayStartSound;
     private readonly IIntervalTimer MessageTimer;
     private readonly Point PlayerStartPoint = new(10, 14);
     private readonly IMonsterFactory MonsterFactory;
@@ -39,8 +41,11 @@ public sealed class HopocalypseScript : MapScriptBase
         foreach (var player in Subject.GetEntities<Aisling>())
             player.SendServerMessage(ServerMessageType.ActiveMessage, message);
     }
-    
-    
+
+    /// <inheritdoc />
+    /// <inheritdoc />
+    public override void OnMorphed() => Subject.Pathfinder.RegisterGrid(Subject);
+
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
@@ -56,6 +61,12 @@ public sealed class HopocalypseScript : MapScriptBase
                 var point = new Point(aisling.X, aisling.Y);
                 if (point != PlayerStartPoint)
                     aisling.WarpTo(PlayerStartPoint);
+                
+                if (!PlayStartSound)
+                {
+                    aisling.Client.SendSound(174, false);
+                    PlayStartSound = true;
+                }
             }
         }
         

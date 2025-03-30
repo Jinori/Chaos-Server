@@ -1,3 +1,4 @@
+using Chaos.Extensions;
 using Chaos.Models.World;
 using Chaos.Pathfinding;
 using Chaos.Pathfinding.Abstractions;
@@ -6,7 +7,7 @@ namespace Chaos.Scripting.MonsterScripts.Events.Easter;
 
 public class HopscareScript(Monster subject) : BunnyMazeBaseScript(subject)
 {
-    private IPathOptions Options => PathOptions.Default with
+    private IPathOptions Options => PathOptions.Default.ForCreatureType(Subject.Type) with
     {
         LimitRadius = null,
         IgnoreBlockingReactors = true,
@@ -19,6 +20,6 @@ public class HopscareScript(Monster subject) : BunnyMazeBaseScript(subject)
             return;
         
         if (Subject.MoveTimer.IntervalElapsed) 
-            Subject.Pathfind(Target, 0, Options);
+            Subject.Pathfind(Target, 0, Options, true);
     }
 }

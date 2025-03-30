@@ -22,7 +22,7 @@ public class ZertaScript : MerchantScriptBase
     private readonly IIntervalTimer WalkTimer;
     public bool AnnouncedPutItOnRed;
     public bool AnnouncedWinOrLoss;
-    private IPathOptions Options => PathOptions.Default with
+    private IPathOptions Options => PathOptions.Default.ForCreatureType(Subject.Type) with
     {
         LimitRadius = null,
         IgnoreBlockingReactors = true

@@ -4,7 +4,7 @@ using Chaos.Scripting.MonsterScripts.Abstractions;
 
 namespace Chaos.Scripting.MonsterScripts.Events.BabyErbie;
 
-public class BabyErbieDefenseMoveToTargetScript : MonsterScriptBase
+public sealed class BabyErbieDefenseMoveToTargetScript : MonsterScriptBase
 {
     /// <inheritdoc />
     public BabyErbieDefenseMoveToTargetScript(Monster subject)
@@ -28,7 +28,7 @@ public class BabyErbieDefenseMoveToTargetScript : MonsterScriptBase
         {
             var pathtopoint = Subject.SpiralSearch(3)
                                      .OrderByDescending(point => point.ManhattanDistanceFrom(Target))
-                                     .FirstOrDefault(point => Subject.MapInstance.IsWalkable(point, Subject.Type));
+                                     .FirstOrDefault(point => Subject.MapInstance.IsWalkable(point, collisionType: Subject.Type));
 
             Subject.Pathfind(pathtopoint);
         }

@@ -1,5 +1,4 @@
 using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions.Common;
@@ -34,7 +33,7 @@ public abstract class MerchantSpawnerScript(MapInstance subject, IMerchantFactor
 
     private bool IsTooCloseToObstacle(MapInstance selectedMap, Point point)
     {
-        if (selectedMap.IsWall(point) || selectedMap.IsBlockingReactor(point) || !selectedMap.IsWalkable(point, CreatureType.Normal))
+        if (selectedMap.IsWall(point) || selectedMap.IsBlockingReactor(point) || !selectedMap.IsWalkable(point, collisionType: CreatureType.Merchant))
             return true;
 
         Point[] directions =
@@ -46,7 +45,7 @@ public abstract class MerchantSpawnerScript(MapInstance subject, IMerchantFactor
         ];
 
         foreach (var direction in directions)
-            if (selectedMap.IsWall(direction) || selectedMap.IsBlockingReactor(direction) || !selectedMap.IsWalkable(direction, CreatureType.Normal))
+            if (selectedMap.IsWall(direction) || selectedMap.IsBlockingReactor(direction) || !selectedMap.IsWalkable(direction, collisionType: CreatureType.Merchant))
                 return true;
 
         return false;

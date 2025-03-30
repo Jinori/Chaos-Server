@@ -24,7 +24,7 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
     private readonly IMonsterFactory MonsterFactory;
     private readonly IntervalTimer NukeRoomTimer;
     private readonly IntervalTimer PhaseDelay;
-    private readonly IReactorTileFactory reactorTileFactory;
+    private readonly IReactorTileFactory ReactorTileFactory;
     private readonly IIntervalTimer RockFallTimer;
     private readonly IntervalTimer SafePointAnimationTimer;
     private readonly List<Point> SafePoints;
@@ -100,7 +100,7 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
         MonsterFactory = monsterFactory;
         SkillFactory = skillFactory;
         SpellFactory = spellFactory;
-        this.reactorTileFactory = reactorTileFactory;
+        this.ReactorTileFactory = reactorTileFactory;
         SplitPhaseTimer = new IntervalTimer(TimeSpan.FromSeconds(10), false);
     }
 
@@ -124,7 +124,7 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
                 if (furthestAisling != null)
                 {
                     // Create and spawn the reactor tile
-                    var rockFallTile = reactorTileFactory.Create(
+                    var rockFallTile = ReactorTileFactory.Create(
                         "rockfall",
                         Subject.MapInstance,
                         furthestAisling,
@@ -208,7 +208,7 @@ public sealed class TaurenPhaseScript : MonsterScriptBase
 
                 var points = AoeShape.AllAround.ResolvePoints(options);
 
-                var validPoint = points.Where(validPoints => Subject.MapInstance.IsWalkable(validPoints, CreatureType.Normal))
+                var validPoint = points.Where(validPoints => Subject.MapInstance.IsWalkable(validPoints, collisionType: CreatureType.Normal))
                                        .ToList();
                 var point = validPoint.PickRandom();
 

@@ -17,7 +17,7 @@ namespace Chaos.Scripting.DialogScripts.Events.Thanksgiving;
 public class TgChallengeScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
-    private readonly ILogger<PFQuestScript> Logger;
+    private readonly ILogger<TgChallengeScript> Logger;
     private readonly ISimpleCache SimpleCache;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
@@ -25,7 +25,7 @@ public class TgChallengeScript : DialogScriptBase
     public TgChallengeScript(
         Dialog subject,
         ISimpleCache simpleCache,
-        ILogger<PFQuestScript> logger,
+        ILogger<TgChallengeScript> logger,
         IItemFactory itemFactory)
         : base(subject)
     {
@@ -127,7 +127,7 @@ public class TgChallengeScript : DialogScriptBase
 
             do
                 point = rectangle.GetRandomPoint();
-            while (!mapInstance.IsWalkable(point, member.Type));
+            while (!mapInstance.IsWalkable(point, collisionType: member.Type));
 
             member.Trackers.Counters.Set("tgwave", 1);
 

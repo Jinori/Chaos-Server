@@ -22,7 +22,7 @@ public class TeleportComponent : IComponent
 
         var possiblePoints = mapInstance.Template.Bounds
                                         .GetPoints()
-                                        .Where(pt => mapInstance.IsWalkable(pt, CreatureType.Aisling) && !mapInstance.IsBlockingReactor(pt))
+                                        .Where(pt => mapInstance.IsWalkable(pt, collisionType: CreatureType.Aisling) && !mapInstance.IsBlockingReactor(pt))
                                         .FloodFill(origin)
                                         .ToList();
 

@@ -134,7 +134,7 @@ public class MultiStrikeScript(Skill subject) : ConfigurableSkillScriptBase(subj
                 {
                     var potentialPoint = target.DirectionalOffset(direction);
 
-                    if (target.MapInstance.IsWalkable(potentialPoint, CreatureType.Normal)
+                    if (target.MapInstance.IsWalkable(potentialPoint, collisionType: CreatureType.Normal)
                         && !target.MapInstance.IsBlockingReactor(potentialPoint))
                     {
                         destinationPoint = potentialPoint;

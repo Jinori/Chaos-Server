@@ -1,5 +1,4 @@
 using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
@@ -10,7 +9,6 @@ using Chaos.Models.World;
 using Chaos.NLog.Logging.Definitions;
 using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
-using Chaos.Scripting.DialogScripts.Quests.PFQuest;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Storage.Abstractions;
@@ -21,7 +19,7 @@ namespace Chaos.Scripting.DialogScripts.Quests.LynithPirateShip;
 
 public class PirateShipOverrunScript : DialogScriptBase
 {
-    private readonly ILogger<PFQuestScript> Logger;
+    private readonly ILogger<PirateShipOverrunScript> Logger;
     private readonly ISimpleCache SimpleCache;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
@@ -29,7 +27,7 @@ public class PirateShipOverrunScript : DialogScriptBase
     public PirateShipOverrunScript(
         Dialog subject,
         ISimpleCache simpleCache,
-        ILogger<PFQuestScript> logger
+        ILogger<PirateShipOverrunScript> logger
     )
         : base(subject)
     {
@@ -151,7 +149,7 @@ public class PirateShipOverrunScript : DialogScriptBase
                     {
                         point = rect.GetRandomPoint();
                     }
-                    while (!mapinstance.IsWalkable(point, member.Type));
+                    while (!mapinstance.IsWalkable(point, collisionType: member.Type));
                     member.TraverseMap(mapinstance, point);
                 }
                 break;

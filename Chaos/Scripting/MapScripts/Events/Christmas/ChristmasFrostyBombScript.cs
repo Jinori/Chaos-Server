@@ -153,7 +153,7 @@ public class ChristmasFrostyBombScript : MapScriptBase
 
         do
             spawnPoint = availableSpawnPoints[RandomGenerator.Next(availableSpawnPoints.Count)];
-        while (!Subject.IsWalkable(spawnPoint, CreatureType.WalkThrough));
+        while (!Subject.IsWalkable(spawnPoint, collisionType: CreatureType.WalkThrough));
 
         UsedReindeerSpawnPoints.Add(spawnPoint);
 
@@ -180,7 +180,7 @@ public class ChristmasFrostyBombScript : MapScriptBase
 
             do
                 spawnPoint = BombSpawnArea.GetRandomPoint();
-            while (!Subject.IsWalkable(spawnPoint, CreatureType.Aisling) || IsCreatureAtPosition(spawnPoint));
+            while (!Subject.IsWalkable(spawnPoint, collisionType: CreatureType.Aisling) || IsCreatureAtPosition(spawnPoint));
 
             var prizeBox = ItemFactory.Create("mountmerrybox");
             var groundItem = new GroundItem(prizeBox, Subject, spawnPoint);
@@ -194,7 +194,7 @@ public class ChristmasFrostyBombScript : MapScriptBase
 
         do
             spawnPoint = BombSpawnArea.GetRandomPoint();
-        while (!Subject.IsWalkable(spawnPoint, CreatureType.Aisling) || IsBombAtPosition(spawnPoint));
+        while (!Subject.IsWalkable(spawnPoint, collisionType: CreatureType.Aisling) || IsBombAtPosition(spawnPoint));
 
         var bomb = MonsterFactory.Create("smiley_blob_bomb", Subject, spawnPoint);
         Subject.AddEntity(bomb, bomb);
@@ -282,7 +282,7 @@ public class ChristmasFrostyBombScript : MapScriptBase
 
                     var points = AoeShape.AllAround.ResolvePoints(options);
 
-                    var validPoint = points.Where(point => Subject.IsWalkable(point, CreatureType.Aisling))
+                    var validPoint = points.Where(point => Subject.IsWalkable(point, collisionType: CreatureType.Aisling))
                                            .ToList();
                     var point = validPoint.PickRandom();
                     var bomb = MonsterFactory.Create("smiley_blob_bomb", Subject, point);

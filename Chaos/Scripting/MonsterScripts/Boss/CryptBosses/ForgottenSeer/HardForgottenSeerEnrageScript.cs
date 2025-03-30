@@ -38,10 +38,10 @@ public sealed class HardForgottenSeerEnrageScript : MonsterScriptBase
 
             for (var i = 0; i <= 6; i++)
             {
-                if (!rectangle.GetPoints().Any(x => Subject.MapInstance.IsWalkable(x, Subject.Type)))
+                if (!rectangle.GetPoints().Any(x => Subject.MapInstance.IsWalkable(x, collisionType: Subject.Type)))
                     continue;
                 
-                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
+                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: Subject.Type), out var point))
                     continue;
 
                 var mobs = MonsterFactory.Create("deepcrypt_succubus3", Subject.MapInstance, point);
@@ -57,7 +57,7 @@ public sealed class HardForgottenSeerEnrageScript : MonsterScriptBase
             
             for (var i = 0; i <= 20; i++)
             {
-                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
+                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: Subject.Type), out var point))
                     continue;
 
                 var mobs = MonsterFactory.Create("deepcrypt_rat3", Subject.MapInstance, point);
@@ -84,7 +84,7 @@ public sealed class HardForgottenSeerEnrageScript : MonsterScriptBase
 
             for (var i = 0; i <= 1; i++)
             {
-                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
+                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: Subject.Type), out var point))
                     continue;
 
                 var mobs = MonsterFactory.Create("deepcrypt_reaper3", Subject.MapInstance, point);

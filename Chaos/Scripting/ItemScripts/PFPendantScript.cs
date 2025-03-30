@@ -13,22 +13,12 @@ using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts;
 
-public class PFPendantScript : ItemScriptBase
+public class PFPendantScript(Item subject, ISimpleCache simpleCache, IMonsterFactory monsterFactory)
+    : ItemScriptBase(subject)
 {
-    private readonly IMonsterFactory MonsterFactory;
-    private readonly ISimpleCache SimpleCache;
-
-    public PFPendantScript(Item subject, ISimpleCache simpleCache, IMonsterFactory monsterFactory)
-        : base(subject)
-    {
-        SimpleCache = simpleCache;
-        MonsterFactory = monsterFactory;
-    }
-
     private bool CanSpawnMantis(Aisling source, out MapInstance mapInstance)
     {
-        mapInstance = SimpleCache.Get<MapInstance>("PF_peak");
-        source.Trackers.Enums.TryGetValue(out PFQuestStage stage);
+        mapInstance = simpleCache.Get<MapInstance>("PF_peak");
 
         if (!source.IsAlive || !source.Inventory.Contains("Turuc Pendant") || !source.MapInstance.Name.EqualsI(mapInstance.Name))
             return false;
@@ -46,7 +36,7 @@ public class PFPendantScript : ItemScriptBase
     }
 
     private Monster CreateMantis(MapInstance mapInstance, Aisling source) =>
-        MonsterFactory.Create("pf_giant_mantis", mapInstance, Point.From(source));
+        monsterFactory.Create("pf_giant_mantis", mapInstance, Point.From(source));
 
     private Animation GetMonsterAnimation() => new()
         { AnimationSpeed = 100, TargetAnimation = 97 };
@@ -62,7 +52,7 @@ public class PFPendantScript : ItemScriptBase
 
         do
             point = outline.PickRandom();
-        while (!source.MapInstance.IsWalkable(point, mantis.Type));
+        while (!source.MapInstance.IsWalkable(point, collisionType: mantis.Type));
 
         return point;
     }

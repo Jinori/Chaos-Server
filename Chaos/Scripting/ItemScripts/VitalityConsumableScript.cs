@@ -197,11 +197,9 @@ public class VitalityConsumableScript : ConfigurableItemScriptBase,
 
     /// <inheritdoc />
     public decimal PctManaReplenish { get; init; }
-
-    /// <inheritdoc />
+    
     public bool ReplenishGroup { get; init; }
-
-    /// <inheritdoc />
+    
     public string ItemName { get; init; }
 
     public bool Message { get; init; } = true;

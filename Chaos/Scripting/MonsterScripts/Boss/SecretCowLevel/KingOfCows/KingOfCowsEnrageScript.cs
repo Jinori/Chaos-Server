@@ -42,7 +42,7 @@ public sealed class KingOfCowsEnrageScript : MonsterScriptBase
 
             for (var i = 0; i <= 3; i++)
             {
-                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
+                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: Subject.Type), out var point))
                     continue;
 
                 var mobs = MonsterFactory.Create("hell_bovine1", Subject.MapInstance, point);
@@ -68,7 +68,7 @@ public sealed class KingOfCowsEnrageScript : MonsterScriptBase
 
             for (var i = 0; i <= 5; i++)
             {
-                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
+                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: Subject.Type), out var point))
                     continue;
 
                 var mobs = MonsterFactory.Create("hell_bovine1", Subject.MapInstance, point);
@@ -95,7 +95,7 @@ public sealed class KingOfCowsEnrageScript : MonsterScriptBase
 
             for (var i = 0; i <= 7; i++)
             {
-                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
+                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: Subject.Type), out var point))
                     continue;
 
                 var mobs = MonsterFactory.Create("hell_bovine1", Subject.MapInstance, point);

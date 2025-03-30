@@ -1,5 +1,4 @@
 ﻿using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
@@ -56,7 +55,7 @@ public class TeleportToPfBossScript : DialogScriptBase
 
                 do
                     point = rectangle.GetRandomPoint();
-                while (!mapInstance.IsWalkable(point, member.Type));
+                while (!mapInstance.IsWalkable(point, collisionType: member.Type));
 
                 member.TraverseMap(mapInstance, point);
         }

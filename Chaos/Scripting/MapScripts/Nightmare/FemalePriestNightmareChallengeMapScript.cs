@@ -1,5 +1,4 @@
 ﻿using Chaos.Collections;
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Geometry;
@@ -95,16 +94,16 @@ public class FemalePriestNightmareChallengeMapScript : MapScriptBase
 
         var teammatespawnRectangle = new Rectangle(target, 5, 5);
         
-        if (!teammatespawnRectangle.TryGetRandomPoint(x => Subject.IsWalkable(x, CreatureType.Normal), out var point1))
+        if (!teammatespawnRectangle.TryGetRandomPoint(x => Subject.IsWalkable(x, collisionType: CreatureType.Normal), out var point1))
             point1 = Point.From(target);
 
-        if (!teammatespawnRectangle.TryGetRandomPoint(x => Subject.IsWalkable(x, CreatureType.Normal), out var point2))
+        if (!teammatespawnRectangle.TryGetRandomPoint(x => Subject.IsWalkable(x, collisionType: CreatureType.Normal), out var point2))
             point2 = Point.From(target);
 
-        if (!teammatespawnRectangle.TryGetRandomPoint(x => Subject.IsWalkable(x, CreatureType.Normal), out var point3))
+        if (!teammatespawnRectangle.TryGetRandomPoint(x => Subject.IsWalkable(x, collisionType: CreatureType.Normal), out var point3))
             point3 = Point.From(target);
 
-        if (!teammatespawnRectangle.TryGetRandomPoint(x => Subject.IsWalkable(x, CreatureType.Normal), out var point4))
+        if (!teammatespawnRectangle.TryGetRandomPoint(x => Subject.IsWalkable(x, collisionType: CreatureType.Normal), out var point4))
             point4 = Point.From(target);
         
         var monster1 = MonsterFactory.Create(

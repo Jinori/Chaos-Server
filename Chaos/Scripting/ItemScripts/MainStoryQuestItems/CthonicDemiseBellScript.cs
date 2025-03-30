@@ -13,7 +13,8 @@ using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.ItemScripts.MainStoryQuestItems;
 
-public class Cdbell : ItemScriptBase
+public class CthonicDemiseBellScript(Item subject, ISimpleCache simpleCache, IMonsterFactory monsterFactory)
+    : ItemScriptBase(subject)
 {
     private readonly Rectangle JaneRectangle = new(
         165,
@@ -39,8 +40,6 @@ public class Cdbell : ItemScriptBase
         19,
         14);
 
-    private readonly IMonsterFactory MonsterFactory;
-
     private readonly Rectangle PamRectangle = new(
         5,
         106,
@@ -65,8 +64,6 @@ public class Cdbell : ItemScriptBase
         21,
         30);
 
-    private readonly ISimpleCache SimpleCache;
-
     private readonly Rectangle WandaRectangle = new(
         71,
         72,
@@ -78,13 +75,6 @@ public class Cdbell : ItemScriptBase
         8,
         21,
         26);
-
-    public Cdbell(Item subject, ISimpleCache simpleCache, IMonsterFactory monsterFactory)
-        : base(subject)
-    {
-        SimpleCache = simpleCache;
-        MonsterFactory = monsterFactory;
-    }
 
     private void Bell(Aisling source)
     {
@@ -107,11 +97,11 @@ public class Cdbell : ItemScriptBase
             var monsterSpawn = new Rectangle(source, 5, 5);
             var point1 = monsterSpawn.GetRandomPoint();
             source.Inventory.RemoveQuantity(Subject.DisplayName, 1);
-            var monster1 = MonsterFactory.Create("darkmasterray", source.MapInstance, point1);
+            var monster1 = monsterFactory.Create("darkmasterray", source.MapInstance, point1);
 
             do
                 point1 = monsterSpawn.GetRandomPoint();
-            while (!source.MapInstance.IsWalkable(point1, CreatureType.Normal));
+            while (!source.MapInstance.IsWalkable(point1, collisionType: CreatureType.Normal));
 
             source.MapInstance.AddEntity(monster1, point1);
         } else if (RoyRectangle.Contains(sourcePoint))
@@ -129,11 +119,11 @@ public class Cdbell : ItemScriptBase
             source.SendOrangeBarMessage("You ring the bell loudly then it breaks.");
             var monsterSpawn = new Rectangle(source, 5, 5);
             var point1 = monsterSpawn.GetRandomPoint();
-            var monster1 = MonsterFactory.Create("darkmasterroy", source.MapInstance, point1);
+            var monster1 = monsterFactory.Create("darkmasterroy", source.MapInstance, point1);
 
             do
                 point1 = monsterSpawn.GetRandomPoint();
-            while (!source.MapInstance.IsWalkable(point1, CreatureType.Normal));
+            while (!source.MapInstance.IsWalkable(point1, collisionType: CreatureType.Normal));
 
             source.MapInstance.AddEntity(monster1, point1);
         } else if (JohnRectangle.Contains(sourcePoint))
@@ -151,11 +141,11 @@ public class Cdbell : ItemScriptBase
             source.Inventory.RemoveQuantity(Subject.DisplayName, 1);
             var monsterSpawn = new Rectangle(source, 5, 5);
             var point1 = monsterSpawn.GetRandomPoint();
-            var monster1 = MonsterFactory.Create("darkmasterjohn", source.MapInstance, point1);
+            var monster1 = monsterFactory.Create("darkmasterjohn", source.MapInstance, point1);
 
             do
                 point1 = monsterSpawn.GetRandomPoint();
-            while (!source.MapInstance.IsWalkable(point1, CreatureType.Normal));
+            while (!source.MapInstance.IsWalkable(point1, collisionType: CreatureType.Normal));
 
             source.MapInstance.AddEntity(monster1, point1);
         } else if (JaneRectangle.Contains(sourcePoint))
@@ -173,11 +163,11 @@ public class Cdbell : ItemScriptBase
             source.Inventory.RemoveQuantity(Subject.DisplayName, 1);
             var monsterSpawn = new Rectangle(source, 5, 5);
             var point1 = monsterSpawn.GetRandomPoint();
-            var monster1 = MonsterFactory.Create("darkmasterjane", source.MapInstance, point1);
+            var monster1 = monsterFactory.Create("darkmasterjane", source.MapInstance, point1);
 
             do
                 point1 = monsterSpawn.GetRandomPoint();
-            while (!source.MapInstance.IsWalkable(point1, CreatureType.Normal));
+            while (!source.MapInstance.IsWalkable(point1, collisionType: CreatureType.Normal));
 
             source.MapInstance.AddEntity(monster1, point1);
         } else if (MikeRectangle.Contains(sourcePoint))
@@ -195,11 +185,11 @@ public class Cdbell : ItemScriptBase
             source.Inventory.RemoveQuantity(Subject.DisplayName, 1);
             var monsterSpawn = new Rectangle(source, 5, 5);
             var point1 = monsterSpawn.GetRandomPoint();
-            var monster1 = MonsterFactory.Create("darkmastermike", source.MapInstance, point1);
+            var monster1 = monsterFactory.Create("darkmastermike", source.MapInstance, point1);
 
             do
                 point1 = monsterSpawn.GetRandomPoint();
-            while (!source.MapInstance.IsWalkable(point1, CreatureType.Normal));
+            while (!source.MapInstance.IsWalkable(point1, collisionType: CreatureType.Normal));
 
             source.MapInstance.AddEntity(monster1, point1);
         } else if (MaryRectangle.Contains(sourcePoint))
@@ -217,11 +207,11 @@ public class Cdbell : ItemScriptBase
             source.Inventory.RemoveQuantity(Subject.DisplayName, 1);
             var monsterSpawn = new Rectangle(source, 5, 5);
             var point1 = monsterSpawn.GetRandomPoint();
-            var monster1 = MonsterFactory.Create("darkmastermary", source.MapInstance, point1);
+            var monster1 = monsterFactory.Create("darkmastermary", source.MapInstance, point1);
 
             do
                 point1 = monsterSpawn.GetRandomPoint();
-            while (!source.MapInstance.IsWalkable(point1, CreatureType.Normal));
+            while (!source.MapInstance.IsWalkable(point1, collisionType: CreatureType.Normal));
 
             source.MapInstance.AddEntity(monster1, point1);
         } else if (PhilRectangle.Contains(sourcePoint))
@@ -239,11 +229,11 @@ public class Cdbell : ItemScriptBase
             source.Inventory.RemoveQuantity(Subject.DisplayName, 1);
             var monsterSpawn = new Rectangle(source, 5, 5);
             var point1 = monsterSpawn.GetRandomPoint();
-            var monster1 = MonsterFactory.Create("darkmasterphil", source.MapInstance, point1);
+            var monster1 = monsterFactory.Create("darkmasterphil", source.MapInstance, point1);
 
             do
                 point1 = monsterSpawn.GetRandomPoint();
-            while (!source.MapInstance.IsWalkable(point1, CreatureType.Normal));
+            while (!source.MapInstance.IsWalkable(point1, collisionType: CreatureType.Normal));
 
             source.MapInstance.AddEntity(monster1, point1);
         } else if (PamRectangle.Contains(sourcePoint))
@@ -261,11 +251,11 @@ public class Cdbell : ItemScriptBase
             source.Inventory.RemoveQuantity(Subject.DisplayName, 1);
             var monsterSpawn = new Rectangle(source, 5, 5);
             var point1 = monsterSpawn.GetRandomPoint();
-            var monster1 = MonsterFactory.Create("darkmasterpam", source.MapInstance, point1);
+            var monster1 = monsterFactory.Create("darkmasterpam", source.MapInstance, point1);
 
             do
                 point1 = monsterSpawn.GetRandomPoint();
-            while (!source.MapInstance.IsWalkable(point1, CreatureType.Normal));
+            while (!source.MapInstance.IsWalkable(point1, collisionType: CreatureType.Normal));
 
             source.MapInstance.AddEntity(monster1, point1);
         } else if (WilliamRectangle.Contains(sourcePoint))
@@ -283,11 +273,11 @@ public class Cdbell : ItemScriptBase
             source.Inventory.RemoveQuantity(Subject.DisplayName, 1);
             var monsterSpawn = new Rectangle(source, 5, 5);
             var point1 = monsterSpawn.GetRandomPoint();
-            var monster1 = MonsterFactory.Create("darkmasterwilliam", source.MapInstance, point1);
+            var monster1 = monsterFactory.Create("darkmasterwilliam", source.MapInstance, point1);
 
             do
                 point1 = monsterSpawn.GetRandomPoint();
-            while (!source.MapInstance.IsWalkable(point1, CreatureType.Normal));
+            while (!source.MapInstance.IsWalkable(point1, collisionType: CreatureType.Normal));
 
             source.MapInstance.AddEntity(monster1, point1);
         } else if (WandaRectangle.Contains(sourcePoint))
@@ -305,11 +295,11 @@ public class Cdbell : ItemScriptBase
             source.Inventory.RemoveQuantity(Subject.DisplayName, 1);
             var monsterSpawn = new Rectangle(source, 5, 5);
             var point1 = monsterSpawn.GetRandomPoint();
-            var monster1 = MonsterFactory.Create("darkmasterwanda", source.MapInstance, point1);
+            var monster1 = monsterFactory.Create("darkmasterwanda", source.MapInstance, point1);
 
             do
                 point1 = monsterSpawn.GetRandomPoint();
-            while (!source.MapInstance.IsWalkable(point1, CreatureType.Normal));
+            while (!source.MapInstance.IsWalkable(point1, collisionType: CreatureType.Normal));
 
             source.MapInstance.AddEntity(monster1, point1);
         } else
@@ -318,7 +308,7 @@ public class Cdbell : ItemScriptBase
 
     private bool CanUseBell(Aisling source)
     {
-        var mapInstance = SimpleCache.Get<MapInstance>("cthonic_demise");
+        var mapInstance = simpleCache.Get<MapInstance>("cthonic_demise");
         source.Trackers.Enums.TryGetValue(out MainstoryMasterEnums stage);
 
         if (!source.MapInstance.Name.EqualsI(mapInstance.Name))

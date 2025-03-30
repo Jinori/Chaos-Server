@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Formulae;
@@ -17,10 +16,8 @@ public class ManorLouegieScript : DialogScriptBase
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
     /// <inheritdoc />
     public ManorLouegieScript(Dialog subject)
-        : base(subject)
-    {
+        : base(subject) =>
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
-    }
 
     public override void OnDisplaying(Aisling source)
     {

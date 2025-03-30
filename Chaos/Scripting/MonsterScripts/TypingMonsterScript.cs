@@ -1,3 +1,4 @@
+using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.World;
@@ -26,7 +27,7 @@ public class TypingMonsterScript : MonsterScriptBase
         Priority = 80,
     };
 
-    private IPathOptions Options => PathOptions.Default with
+    private IPathOptions Options => PathOptions.Default.ForCreatureType(Subject.Type) with
     {
         LimitRadius = null,
         IgnoreBlockingReactors = true

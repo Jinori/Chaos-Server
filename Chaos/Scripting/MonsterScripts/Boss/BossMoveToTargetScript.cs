@@ -23,7 +23,7 @@ public sealed class BossMoveToTargetScript(Monster subject) : MonsterScriptBase(
 
         var point = Target.GenerateCardinalPoints()
                           .OfType<IPoint>()
-                          .FirstOrDefault(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
+                          .FirstOrDefault(x => Subject.MapInstance.IsWalkable(x, collisionType: Subject.Type));
 
         //Remove aggro if we can't get to the target so we have a chance to attack someone else
         if (point is null
@@ -47,7 +47,7 @@ public sealed class BossMoveToTargetScript(Monster subject) : MonsterScriptBase(
             {
                 var safeSpot = Target.GenerateCardinalPoints()
                                      .OfType<IPoint>()
-                                     .FirstOrDefault(x => Subject.MapInstance.IsWalkable(x, Subject.Type));
+                                     .FirstOrDefault(x => Subject.MapInstance.IsWalkable(x, collisionType: Subject.Type));
 
                 if (safeSpot is null)
                 {

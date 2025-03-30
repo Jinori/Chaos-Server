@@ -84,7 +84,7 @@ public class EDragonScaleAggroTargetingScript : MonsterScriptBase
         if (Subject.Effects.TryGetEffect("Invulnerability", out _))
             return;
         
-        if ((Target != null) && (!Target.IsAlive || !Target.OnSameMapAs(Subject) || Target.MapInstance.IsWalkable(Target, CreatureType.Normal)))
+        if ((Target != null) && (!Target.IsAlive || !Target.OnSameMapAs(Subject) || Target.MapInstance.IsWalkable(Target, collisionType: CreatureType.Normal)))
         {
             AggroList.Remove(Target.Id, out _);
             Target = null;
@@ -108,7 +108,7 @@ public class EDragonScaleAggroTargetingScript : MonsterScriptBase
             if (!Map.TryGetEntity<Creature>(kvp.Key, out var possibleTarget))
                 continue;
 
-            if (!possibleTarget.IsAlive || !Subject.CanSee(possibleTarget) || !possibleTarget.WithinRange(Subject) || Subject.MapInstance.IsWalkable(possibleTarget, Subject.Type))
+            if (!possibleTarget.IsAlive || !Subject.CanSee(possibleTarget) || !possibleTarget.WithinRange(Subject) || Subject.MapInstance.IsWalkable(possibleTarget, collisionType: Subject.Type))
                 continue;
 
             //if we're blind, we can only target things within 1 tile

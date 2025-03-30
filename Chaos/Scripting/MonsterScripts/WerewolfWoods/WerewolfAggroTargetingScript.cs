@@ -46,7 +46,7 @@ public class WerewolfAggroTargetingScript : MonsterScriptBase
 
         TargetUpdateTimer.Update(delta);
 
-        if ((Target != null) && (!Target.IsAlive || !Target.OnSameMapAs(Subject) || Target.MapInstance.IsWalkable(Target, CreatureType.Normal)))
+        if ((Target != null) && (!Target.IsAlive || !Target.OnSameMapAs(Subject) || Target.MapInstance.IsWalkable(Target, collisionType: Subject.Type)))
         {
             Target.Trackers.Enums.Set(AttackedWerewolf.No);
             AggroList.Remove(Target.Id, out _);
@@ -71,7 +71,7 @@ public class WerewolfAggroTargetingScript : MonsterScriptBase
             if (!Map.TryGetEntity<Creature>(kvp.Key, out var possibleTarget))
                 continue;
 
-            if (!possibleTarget.IsAlive || !Subject.CanSee(possibleTarget) || !possibleTarget.WithinRange(Subject) || Subject.MapInstance.IsWalkable(possibleTarget, Subject.Type))
+            if (!possibleTarget.IsAlive || !Subject.CanSee(possibleTarget) || !possibleTarget.WithinRange(Subject) || Subject.MapInstance.IsWalkable(possibleTarget, collisionType: Subject.Type))
                 continue;
 
             //if we're blind, we can only target things within 1 tile

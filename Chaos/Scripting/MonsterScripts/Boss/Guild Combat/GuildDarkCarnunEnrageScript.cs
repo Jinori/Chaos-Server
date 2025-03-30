@@ -38,7 +38,7 @@ public sealed class GuildDarkCarnunEnrageScript : MonsterScriptBase
 
             for (var i = 0; i <= 1; i++)
             {
-                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
+                if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: Subject.Type), out var point))
                     continue;
 
                 var mobs1 = MonsterFactory.Create("guildrogue", Subject.MapInstance, point);

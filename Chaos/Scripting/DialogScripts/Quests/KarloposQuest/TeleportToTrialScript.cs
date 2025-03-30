@@ -127,7 +127,7 @@ public class TeleportToTrialScript : DialogScriptBase
 
             do
                 point = currentTrial.GetRandomPoint();
-            while (!nextInstance.IsWalkable(point, member.Type));
+            while (!nextInstance.IsWalkable(point, collisionType: member.Type));
 
             var dialog = member.ActiveDialog.Get();
             dialog?.Close(member);

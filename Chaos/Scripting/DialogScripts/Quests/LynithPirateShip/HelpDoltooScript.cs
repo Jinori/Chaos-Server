@@ -240,7 +240,7 @@ public class HelpDoltooScript : DialogScriptBase
             {
                 point = new Point(member.X, member.Y);
             }
-            while (!mapInstance.IsWalkable(point, member.Type));
+            while (!mapInstance.IsWalkable(point,collisionType: member.Type));
             
             var dialog = member.ActiveDialog.Get();
             dialog?.Close(member);

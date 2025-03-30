@@ -122,7 +122,7 @@ namespace Chaos.Scripting.MapScripts.MainStoryLine.EingrenManor3
 
                 do
                     point = outline.PickRandom();
-                while (!Subject.IsWalkable(point, aislingportal.Type));
+                while (!Subject.IsWalkable(point, collisionType: aislingportal.Type));
                 
                 var reactortile = ReactorTileFactory.Create("eingrenescapePortal", Subject, Point.From(point));
                 

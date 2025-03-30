@@ -128,14 +128,11 @@ public class UndineFieldsArenaMapScript : MapScriptBase
             {
                 case ScriptState.Dormant:
                 {
-                    if (Subject.GetEntities<Aisling>().Any(x => x.Trackers.Enums.TryGetValue(out UndineFieldDungeon stage) && stage == UndineFieldDungeon.EnteredArena))
+                    if (Subject.GetEntities<Aisling>().Any(x => x.Trackers.Enums.TryGetValue(out UndineFieldDungeon stage) && (stage == UndineFieldDungeon.EnteredArena)))
                     {
                         foreach (var member in Subject.GetEntities<Aisling>().ToList())
-                        {
-                            var hasStage = member.Trackers.Enums.TryGetValue(out UndineFieldDungeon stage);
-                            
                             member.Trackers.Enums.Set(UndineFieldDungeon.EnteredArena);
-                        }
+
                         State = ScriptState.DelayedStart;
                     }
                 }
@@ -157,17 +154,15 @@ public class UndineFieldsArenaMapScript : MapScriptBase
                         
                         if (Subject.GetEntities<Aisling>().Any(x =>
                                 x.Trackers.Enums.TryGetValue(out UndineFieldDungeon stage) &&
-                                stage == UndineFieldDungeon.EnteredArena))
+                                (stage == UndineFieldDungeon.EnteredArena)))
                         {
                             foreach (var member in Subject.GetEntities<Aisling>().ToList())
                             {
-                                var hasStage = member.Trackers.Enums.TryGetValue(out UndineFieldDungeon stage);
-
                                 Point point;
                                 
                                 do
                                     point = rectangle.GetRandomPoint();
-                                while (!Subject.IsWalkable(point, member.Type));
+                                while (!Subject.IsWalkable(point, collisionType: member.Type));
                                 
                                 member.TraverseMap(Subject, point);
                                 member.Trackers.Enums.Set(UndineFieldDungeon.StartedCarnun);

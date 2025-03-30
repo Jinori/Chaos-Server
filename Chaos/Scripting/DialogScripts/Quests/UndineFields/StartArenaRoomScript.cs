@@ -56,7 +56,7 @@ public class StartArenaRoomScript : DialogScriptBase
                 do
                 {
                     newPoint = rectangle.GetRandomPoint();
-                } while (!mapInstance.IsWalkable(newPoint, member.Type));
+                } while (!mapInstance.IsWalkable(newPoint, collisionType: member.Type));
 
                 member.Trackers.Counters.Remove("orckills", out _);
                 member.TraverseMap(mapInstance, newPoint);

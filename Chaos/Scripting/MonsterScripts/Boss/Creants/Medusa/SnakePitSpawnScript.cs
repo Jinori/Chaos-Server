@@ -37,7 +37,7 @@ public sealed class SnakePitSpawnScript : MonsterScriptBase
             //Spawn Monsters
             var rectangle = new Rectangle(Subject, 5, 5);
 
-            if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, Subject.Type), out var point))
+            if (!rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: Subject.Type), out var point))
                 return;
 
             var whitesnake = MonsterFactory.Create("OR_whitemedusasnake", Subject.MapInstance, point);

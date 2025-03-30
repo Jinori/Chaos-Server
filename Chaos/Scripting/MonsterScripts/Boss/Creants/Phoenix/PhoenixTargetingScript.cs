@@ -34,7 +34,7 @@ public class PhoenixTargetingScript : MonsterScriptBase
         if ((Target != null)
             && (!Target.IsAlive
                 || !Target.OnSameMapAs(Subject)
-                || Target.MapInstance.IsWalkable(Target, CreatureType.Normal)
+                || Target.MapInstance.IsWalkable(Target, collisionType: CreatureType.Normal)
                 || !Subject.CanObserve(Target)
                 || !Subject.CanSee(Target)
                 || Subject.IsGodModeEnabled()

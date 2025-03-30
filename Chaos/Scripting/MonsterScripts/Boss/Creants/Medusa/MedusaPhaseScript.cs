@@ -114,7 +114,7 @@ public sealed class MedusaPhaseScript : MonsterScriptBase
             {
                 var candidatePoint = rectangle.GetRandomPoint();
 
-                if (Subject.MapInstance.IsWalkable(candidatePoint, CreatureType.Normal))
+                if (Subject.MapInstance.IsWalkable(candidatePoint, collisionType: CreatureType.Normal))
                 {
                     spawnPoint = candidatePoint;
 

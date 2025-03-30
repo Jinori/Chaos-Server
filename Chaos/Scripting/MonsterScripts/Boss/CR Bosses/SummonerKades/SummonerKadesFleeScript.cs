@@ -1,13 +1,10 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.World;
-using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MapScripts.MainStoryLine.CR11;
 using Chaos.Scripting.MonsterScripts.Abstractions;
-using Chaos.Services.Factories;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
@@ -63,7 +60,7 @@ public sealed class SummonerKadesFleeScript : MonsterScriptBase
             if (!PortalOpened)
             {
                 var rectangle = new Rectangle(Subject.X, Subject.Y, 7, 7);
-                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, CreatureType.Normal), out var portalpoint1);
+                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: CreatureType.Normal), out var portalpoint1);
                 if (portalpoint1 != null) PortalPoint = portalpoint1.Value;
                 PortalOpened = true;
                 var portal = ReactorTileFactory.Create("SummonerEscapePortal", Subject.MapInstance, PortalPoint);
@@ -109,13 +106,13 @@ public sealed class SummonerKadesFleeScript : MonsterScriptBase
             {
                 PortalOpened = true;
                 var rectangle = new Rectangle(Subject.X, Subject.Y, 7, 7);
-                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, CreatureType.Normal), out var portalpoint1);
+                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: CreatureType.Normal), out var portalpoint1);
                 if (portalpoint1 != null) PortalPoint = portalpoint1.Value;
                 var portal = ReactorTileFactory.Create("SummonerEscapePortal", Subject.MapInstance, PortalPoint);
                 Subject.MapInstance.SimpleAdd(portal);
                 Subject.Say("Destroy them all. I must go now.");
-                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, CreatureType.Normal), out var point2);
-                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, CreatureType.Normal), out var point3);
+                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: CreatureType.Normal), out var point2);
+                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: CreatureType.Normal), out var point3);
                 var monster = MonsterFactory.Create("terra_guardian", Subject.MapInstance, point2!);
                 var monster2 = MonsterFactory.Create("terra_guardian", Subject.MapInstance, point3!);
                 Subject.MapInstance.AddEntity(monster, point2!);
@@ -159,13 +156,13 @@ public sealed class SummonerKadesFleeScript : MonsterScriptBase
             {
                 PortalOpened = true;
                 var rectangle = new Rectangle(Subject.X, Subject.Y, 7, 7);
-                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, CreatureType.Normal), out var portalpoint1);
+                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: CreatureType.Normal), out var portalpoint1);
                 if (portalpoint1 != null) PortalPoint = portalpoint1.Value;
                 var portal = ReactorTileFactory.Create("SummonerEscapePortal", Subject.MapInstance, PortalPoint);
                 Subject.MapInstance.SimpleAdd(portal);
                 Subject.Say("Slice them to pieces.");
-                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, CreatureType.Normal), out var point2);
-                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, CreatureType.Normal), out var point3);
+                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: CreatureType.Normal), out var point2);
+                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: CreatureType.Normal), out var point3);
                 var monster = MonsterFactory.Create("gale_guardian", Subject.MapInstance, point2!);
                 var monster2 = MonsterFactory.Create("gale_guardian", Subject.MapInstance, point3!);
                 
@@ -212,13 +209,13 @@ public sealed class SummonerKadesFleeScript : MonsterScriptBase
             {
                 PortalOpened = true;
                 var rectangle = new Rectangle(Subject.X, Subject.Y, 7, 7);
-                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, CreatureType.Normal), out var portalpoint1);
+                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: CreatureType.Normal), out var portalpoint1);
                 if (portalpoint1 != null) PortalPoint = portalpoint1.Value;
                 var portal = ReactorTileFactory.Create("SummonerEscapePortal", Subject.MapInstance, PortalPoint);
                 Subject.MapInstance.SimpleAdd(portal);
                 Subject.Say("Drown them all.");
-                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, CreatureType.Normal), out var point2);
-                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, CreatureType.Normal), out var point3);
+                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: CreatureType.Normal), out var point2);
+                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: CreatureType.Normal), out var point3);
                 var monster = MonsterFactory.Create("tide_guardian", Subject.MapInstance, point2!);
                 var monster2 = MonsterFactory.Create("tide_guardian", Subject.MapInstance, point3!);
                 foreach (var aisling in Subject.MapInstance.GetEntities<Aisling>())
@@ -264,13 +261,13 @@ public sealed class SummonerKadesFleeScript : MonsterScriptBase
             {
                 PortalOpened = true;
                 var rectangle = new Rectangle(Subject.X, Subject.Y, 7, 7);
-                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, CreatureType.Normal), out var portalpoint1);
+                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: CreatureType.Normal), out var portalpoint1);
                 if (portalpoint1 != null) PortalPoint = portalpoint1.Value;
                 var portal = ReactorTileFactory.Create("SummonerEscapePortal", Subject.MapInstance, PortalPoint);
                 Subject.MapInstance.SimpleAdd(portal);
                 Subject.Say("Handle this minions!");
-                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, CreatureType.Normal), out var point2);
-                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, CreatureType.Normal), out var point3);
+                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: CreatureType.Normal), out var point2);
+                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: CreatureType.Normal), out var point3);
                 var monster = MonsterFactory.Create("ignis_guardian", Subject.MapInstance, point2!);
                 var monster2 = MonsterFactory.Create("ignis_guardian", Subject.MapInstance, point3!);
                 Subject.MapInstance.AddEntity(monster, point2!);
@@ -300,13 +297,13 @@ public sealed class SummonerKadesFleeScript : MonsterScriptBase
             {
                 HitSixthHp = true;
                 var rectangle = new Rectangle(Subject.X, Subject.Y, 7, 7);
-                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, CreatureType.Normal),
+                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: CreatureType.Normal),
                     out var walkablepoint1);
-                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, CreatureType.Normal),
+                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: CreatureType.Normal),
                     out var walkablepoint2);
-                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, CreatureType.Normal),
+                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: CreatureType.Normal),
                     out var walkablepoint3);
-                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, CreatureType.Normal),
+                rectangle.TryGetRandomPoint(x => Subject.MapInstance.IsWalkable(x, collisionType: CreatureType.Normal),
                     out var walkablepoint4);
                 Subject.Say("Summons! Attack!");
                 var monster = MonsterFactory.Create("ignis_guardian", Subject.MapInstance, walkablepoint1!);

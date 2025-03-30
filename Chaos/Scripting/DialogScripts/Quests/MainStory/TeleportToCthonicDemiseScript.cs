@@ -61,7 +61,7 @@ public class TeleportToCthonicDemiseScript : DialogScriptBase
 
             do
                 point = rectangle.GetRandomPoint();
-            while (!mapInstance.IsWalkable(point, source.Type));
+            while (!mapInstance.IsWalkable(point, collisionType: source.Type));
 
             var dialog = source.ActiveDialog.Get();
             dialog?.Close(source);
@@ -175,7 +175,7 @@ public class TeleportToCthonicDemiseScript : DialogScriptBase
 
             do
                 point = rectangle.GetRandomPoint();
-            while (!mapInstance.IsWalkable(point, member.Type));
+            while (!mapInstance.IsWalkable(point, collisionType: member.Type));
 
             var dialog = member.ActiveDialog.Get();
             dialog?.Close(member);
