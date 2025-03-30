@@ -55,7 +55,11 @@ public class ThrowScript : SkillScriptBase
             }
 
             foreach (var point in potentialTargetPoints)
-                if (context.SourceMap.IsWalkable(point, CreatureType.Aisling, false))
+                if (context.SourceMap.IsWalkable(
+                        point,
+                        false,
+                        false,
+                        collisionType: CreatureType.Aisling))
                 {
                     var aislingPoint = Point.From(aisling);
 
