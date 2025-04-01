@@ -37,6 +37,9 @@ public class MultiStrikeScript(Skill subject) : ConfigurableSkillScriptBase(subj
     public List<string>? EffectKeysToBreak { get; set; }
     public Element? Element { get; init; }
 
+    /// <inheritdoc />
+    public decimal? PctVitalityDmg { get; init; }
+
     public int? ExclusionRange { get; init; }
     public TargetFilter Filter { get; init; }
     public int? ManaCost { get; init; }

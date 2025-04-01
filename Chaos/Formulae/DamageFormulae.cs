@@ -5,6 +5,7 @@ namespace Chaos.Formulae;
 
 public static class DamageFormulae
 {
-    public static readonly IDamageFormula Default = new DefaultDamageFormula();
-    public static readonly IDamageFormula PureDamage = new PureDamageFormula();
+    public static DefaultDamageFormula Default => new();
+    public static PureDamageFormula PureDamage => new();
+    public static ElementalEffectDamageFormula ElementalEffect => new();
 }

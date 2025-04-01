@@ -3,6 +3,7 @@ using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
+using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
@@ -98,6 +99,9 @@ public class AssassinStrikeScript : ConfigurableSkillScriptBase,
 
     /// <inheritdoc />
     public Element? Element { get; init; }
+
+    /// <inheritdoc />
+    public decimal? PctVitalityDmg { get; init; }
 
     public bool? MoreDmgHighTargetHp { get; init; }
 

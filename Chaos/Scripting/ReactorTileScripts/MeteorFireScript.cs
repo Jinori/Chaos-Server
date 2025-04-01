@@ -1,6 +1,8 @@
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
+using Chaos.Formulae;
+using Chaos.Formulae.Damage;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -50,6 +52,12 @@ public class MeteorFireScript : ConfigurableReactorTileScriptBase,
 
         DamageTimer = new IntervalTimer(TimeSpan.FromSeconds(1), false);
         ApplyDamageScript = ApplyNonAttackDamageScript.Create();
+        
+        //element effect damage formula
+        //spell/skill modifiers will apply
+        var damageFormula = DamageFormulae.ElementalEffect;
+        damageFormula.ShouldApplySourceModifiers = true;
+        ApplyDamageScript.DamageFormula = damageFormula;
 
         Executor = new ComponentExecutor(context, vars).WithOptions(this);
     }
@@ -104,7 +112,7 @@ public class MeteorFireScript : ConfigurableReactorTileScriptBase,
     public int? BaseDamage { get; init; }
     public Stat? DamageStat { get; init; }
     public decimal? DamageStatMultiplier { get; init; }
-    public Element? Element { get; init; }
+    public Element? Element { get; init; } = DarkAges.Definitions.Element.Fire;
     public bool? MoreDmgLowTargetHp { get; init; }
     public decimal? PctHpDamage { get; init; }
     public int? ManaDrain { get; init; }

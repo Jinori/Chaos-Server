@@ -7,7 +7,8 @@ namespace Chaos.Scripting.MonsterScripts.Elements;
 
 public class RandomOffenseElementScript : ConfigurableMonsterScriptBase
 {
-    private Element[] Elements { get; } = Array.Empty<Element>();
+    // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Local
+    private Element[] Elements { get; init; } = Array.Empty<Element>();
 
     /// <inheritdoc />
     public RandomOffenseElementScript(Monster subject)
