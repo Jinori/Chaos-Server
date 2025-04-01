@@ -532,7 +532,8 @@ public static class CraftingRequirements
                 TemplateKey = "knowledgeelixirformula",
                 Ingredients =
                 [
-                    new Ingredient("greatermonsterextract", "Greater Monster Extract", 1),
+                    new Ingredient("icesporesac", "Ice Spore Sac", 1),
+                    new Ingredient("greatermonsterextract", "Greater Monster Extract", 2),
                     new Ingredient("lionfish", "Lion Fish", 1),
                     new Ingredient("emptybottle", "Empty Bottle", 1)
                 ],
@@ -803,10 +804,9 @@ public static class CraftingRequirements
                 TemplateKey = "strongknowledgeelixirformula",
                 Ingredients =
                 [
-                    new Ingredient("blackshockerpiece", "Black Shocker Piece", 1),
-                    new Ingredient("iceelementalflame", "Ice Elemental Flame", 1),
-                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 2),
-                    new Ingredient("rockfish", "Rock Fish", 1),
+                    new Ingredient("skeletonbone", "Skeleton Bones", 1),
+                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 3),
+                    new Ingredient("lionfish", "Lion Fish", 1),
                     new Ingredient("emptybottle", "Empty Bottle", 1)
                 ],
                 Rank = "Expert",

@@ -670,7 +670,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 2 Kabine Blossom, 1 Basic Monster Extract and 1 Empty Bottle.",
+                            } requires 1 Kabine Blossom, 1 Basic Monster Extract and 1 Empty Bottle.",
                             "alchemybook");
 
                         return;
@@ -798,7 +798,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 Ancient Bone, 1 Lion Fish and 1 Empty Bottle.",
+                            } requires 1 Ice Spore Sac, 2 Greater Monster Extract, 1 Lion Fish and 1 Empty Bottle.",
                             "alchemybook");
 
                         return;
@@ -937,7 +937,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 Black Shocker Piece, 1 Ice Elemental Flame, 1 Rock Fish, 3 Superior Monster Extract and 1 Empty Bottle.",
+                            } requires 1 Skeleton Bones, 1 Lion Fish, 3 Superior Monster Extract and 1 Empty Bottle.",
                             "alchemybook");
 
                         return;

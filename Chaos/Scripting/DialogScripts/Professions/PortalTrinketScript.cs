@@ -251,7 +251,7 @@ public class PortalTrinketScript : DialogScriptBase
                     if (!member.Equals(source))
                     {
                         if (source.MapInstance.MaximumLevel.HasValue)
-                            if (member.UserStatSheet.Level >= source.MapInstance.MaximumLevel.Value)
+                            if (member.UserStatSheet.Level > source.MapInstance.MaximumLevel.Value)
                             {
                                 Subject.Reply(source, "One member of your party is not within the level range for this location.");
 
@@ -261,7 +261,7 @@ public class PortalTrinketScript : DialogScriptBase
                             }
 
                         if (source.MapInstance.MinimumLevel.HasValue)
-                            if (member.UserStatSheet.Level <= source.MapInstance.MinimumLevel.Value)
+                            if (member.UserStatSheet.Level < source.MapInstance.MinimumLevel.Value)
                             {
                                 Subject.Reply(source, "One member of your party is not within the level range for this location.");
 
