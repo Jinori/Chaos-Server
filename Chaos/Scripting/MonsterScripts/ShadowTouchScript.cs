@@ -36,8 +36,9 @@ public class ShadowTouchScript : MonsterScriptBase
         AnimationSpeed = 100
     };
 
-    private readonly IIntervalTimer WalkInterval;
     private readonly IPoint SpawnPoint;
+
+    private readonly IIntervalTimer WalkInterval;
     private int StepCounter;
 
     /// <inheritdoc />
