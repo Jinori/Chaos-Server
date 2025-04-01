@@ -18,15 +18,19 @@ public class NyxSetBonusScript : SetBonusItemScriptBase
         {
             3, new Attributes
             {
-                AtkSpeedPct = 12,
-                CooldownReductionPct = 3
+                AtkSpeedPct = 6,
+                Dmg = 6,
+                Hit = 3,
+                CooldownReductionPct = 5
             }
         },
         {
             4, new Attributes
             {
-                SkillDamagePct = 15,
-                SpellDamagePct = 10,
+                SkillDamagePct = 5,
+                SpellDamagePct = 5,
+                FlatSkillDamage = 50,
+                FlatSpellDamage = 50,
                 Ac = -5
             }
         }

@@ -17,7 +17,7 @@ public class DragonScaleSetBonusScript : SetBonusItemScriptBase
         {
             3, new Attributes
             {
-                AtkSpeedPct = 12
+                FlatSkillDamage = 100
             }
         }
     };

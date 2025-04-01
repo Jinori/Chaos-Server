@@ -11,19 +11,23 @@ public class ForsakenSetBonusScript : SetBonusItemScriptBase
         {
             2, new Attributes
             {
-                MaximumHp = 1000
+                MaximumHp = 1000,
+                Dmg = 4,
+                AtkSpeedPct = 4
             }
         },
         {
             3, new Attributes
             {
-                AtkSpeedPct = 16
+                SkillDamagePct = 8,
+                FlatSkillDamage = 75
             }
         },
         {
             4, new Attributes
             {
-                SkillDamagePct = 15
+                CooldownReductionPct = 5,
+                MagicResistance = 10
             }
         }
     };

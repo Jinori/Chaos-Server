@@ -11,19 +11,24 @@ public class DarkAislingSetBonusScript : SetBonusItemScriptBase
         {
             2, new Attributes
             {
-                MaximumHp = 500
+                MaximumHp = 250,
+                MaximumMp = 250
             }
         },
         {
             3, new Attributes
             {
-                MaximumMp = 500
+                MaximumMp = 250,
+                MaximumHp = 250
             }
         },
         {
             4, new Attributes
             {
-                SpellDamagePct = 8
+                SpellDamagePct = 5,
+                SkillDamagePct = 5,
+                FlatSpellDamage = 50,
+                FlatSkillDamage = 50
             }
         }
     };

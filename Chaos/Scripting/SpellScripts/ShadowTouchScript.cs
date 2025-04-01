@@ -1,4 +1,5 @@
 using Chaos.DarkAges.Definitions;
+using Chaos.Extensions;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Scripting.SpellScripts.Abstractions;
@@ -30,6 +31,14 @@ public class ShadowTouchScript : SpellScriptBase
         newMonster.PetOwner = context.SourceAisling;
 
         newMonster.Direction = context.Source.Direction;
+
+        var shadowTouchScript = newMonster.Script.As<MonsterScripts.ShadowTouchScript>();
+
+        if (shadowTouchScript is null)
+            return;
+
+        shadowTouchScript.SourceScript = this;
+        
         context.SourceMap.AddEntity(newMonster, context.Source);
     }
 }

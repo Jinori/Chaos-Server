@@ -11,19 +11,24 @@ public class SacredSetBonusScript : SetBonusItemScriptBase
         {
             2, new Attributes
             {
-                MaximumMp = 1000
+                MaximumMp = 1000,
+                Hit = 2
             }
         },
         {
             3, new Attributes
             {
-                SpellDamagePct = 15
+                SpellDamagePct = 8,
+                HealBonusPct = 8,
+                FlatSpellDamage = 75,
+                HealBonus = 75
             }
         },
         {
             4, new Attributes
             {
-                CooldownReductionPct = 5
+                CooldownReductionPct = 5,
+                MagicResistance = 10
             }
         }
     };
