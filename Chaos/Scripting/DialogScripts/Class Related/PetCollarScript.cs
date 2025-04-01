@@ -219,15 +219,18 @@ public class PetCollarScript(
 
         var attributes = new Attributes
         {
-            Ac = 100 - source.StatSheet.Level,
+            Ac = 100 - (int)(source.StatSheet.Level * 1.30m + 5), //average body armor is (Level / 3) + 5 AC
             Con = source.StatSheet.EffectiveCon + source.StatSheet.Level,
             Dex = source.StatSheet.EffectiveDex + source.StatSheet.Level,
             Int = source.StatSheet.EffectiveInt + source.StatSheet.Level,
             Str = source.StatSheet.EffectiveStr + source.StatSheet.Level,
             Wis = source.StatSheet.EffectiveWis + source.StatSheet.Level,
             AtkSpeedPct = source.StatSheet.Level / 2,
-            MaximumHp = source.StatSheet.Level * 1000 / 7 + 1000,
-            MaximumMp = source.StatSheet.Level * 500 / 7 + 1000
+            Dmg = source.StatSheet.Level / 2,
+            SkillDamagePct = source.StatSheet.Level / 5,
+            SpellDamagePct = source.StatSheet.Level / 5,
+            MaximumHp = source.StatSheet.Level * 1000 / 10 + 1000,
+            MaximumMp = source.StatSheet.Level * 500 / 10 + 1000
         };
 
         newMonster.StatSheet.SetOffenseElement(Elements.PickRandom());
