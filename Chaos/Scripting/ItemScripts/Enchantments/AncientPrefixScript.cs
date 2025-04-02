@@ -11,7 +11,7 @@ public sealed class AncientPrefixScript : ItemScriptBase, IPrefixEnchantmentScri
     /// <inheritdoc />
     public static Attributes Modifiers { get; } = new()
     {
-        SpellDamagePct = 1,
+        SpellDamagePct = 2,
         FlatSpellDamage = 30,
         Ac = 1
     };
