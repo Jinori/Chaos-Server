@@ -38,7 +38,7 @@ public sealed class BlindEffect : ContinuousAnimationEffectBase
 
     public override void OnApplied()
     {
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are unable to see.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are unable to see.//please notify a gm if you get this");
         Subject.SetVision(VisionType.TrueBlind);
     }
 
