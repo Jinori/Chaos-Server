@@ -169,7 +169,7 @@ public class LimboPriestScript : MonsterScriptBase
         }
 
         //ao self blind
-        if (Subject.IsBlind)
+        if (Subject.IsDall)
         {
             if (Subject.TryUseSpell(AoDall, Subject.Id))
                 ResetMovementTimer();
@@ -206,7 +206,7 @@ public class LimboPriestScript : MonsterScriptBase
                 return;
             }
 
-            if (monster.IsBlind)
+            if (monster.IsDall)
             {
                 if (Subject.TryUseSpell(AoDall, monster.Id))
                     ResetMovementTimer();

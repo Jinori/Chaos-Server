@@ -99,7 +99,7 @@ public class LimboWizardScript : MonsterScriptBase
 
     private bool DoDall(List<Aisling> nearbyAislings)
     {
-        var notDalled = nearbyAislings.Where(aisling => !aisling.IsBlind)
+        var notDalled = nearbyAislings.Where(aisling => !aisling.IsDall)
                                       .ToList();
 
         if (notDalled.Count == 0)

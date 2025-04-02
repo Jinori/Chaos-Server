@@ -112,11 +112,7 @@ public sealed class LynithBossDefenseScript : MonsterScriptBase
                     Subject.Say("Not a chance!");
 
                     break;
-                case "blind":
-                    RemoveEffectAndHeal(effect);
-                    Subject.Say("Not a chance!");
 
-                    break;
                 case "dall":
                     RemoveEffectAndHeal(effect);
                     Subject.Say("Not a chance!");

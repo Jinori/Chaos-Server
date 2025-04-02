@@ -80,11 +80,7 @@ public sealed class ForgottenSeerDefenseScript : MonsterScriptBase
                     Subject.Say("Not a chance!");
 
                     break;
-                case "blind":
-                    RemoveEffect(effect);
-                    Subject.Say("You cannot blind the blind!");
 
-                    break;
                 case "dall":
                     RemoveEffect(effect);
                     Subject.Say("You cannot blind the blind!");

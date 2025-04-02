@@ -112,11 +112,7 @@ public sealed class EPentaDefenseScript : MonsterScriptBase
                     Subject.Say("Not a chance!");
 
                     break;
-                case "blind":
-                    RemoveEffect(effect);
-                    Subject.Say("Not a chance!");
 
-                    break;
                 case "dall":
                     RemoveEffect(effect);
                     Subject.Say("Not a chance!");

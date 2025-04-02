@@ -79,7 +79,6 @@ public sealed class DelayDefenseScript : MonsterScriptBase
 
                             break;
                         case "Beag Suain":
-                        case "blind":
                         case "dall":
                             RemoveEffect(effect);
                             Subject.Say("Not a chance!");

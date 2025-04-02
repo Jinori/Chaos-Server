@@ -76,7 +76,6 @@ public sealed class DeepCryptRatDelayDefenseScript : MonsterScriptBase
 
                             break;
                         case "Beag Suain":
-                        case "blind":
                         case "dall":
                             RemoveEffect(effect);
 

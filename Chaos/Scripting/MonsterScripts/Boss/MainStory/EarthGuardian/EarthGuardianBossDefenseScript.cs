@@ -118,11 +118,7 @@ public sealed class EarthGuardianBossDefenseScript : MonsterScriptBase
                     Subject.Say("*squish*");
 
                     break;
-                case "blind":
-                    RemoveEffect(effect);
-                    Subject.Say("*squish*");
 
-                    break;
                 case "dall":
                     RemoveEffect(effect);
                     Subject.Say("*squish*");

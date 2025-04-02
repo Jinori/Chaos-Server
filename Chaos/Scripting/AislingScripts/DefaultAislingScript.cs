@@ -433,17 +433,6 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         ProcessItemDurabilityAndScripts(Subject.Bank);
     }
 
-    private void ItemUpdater(Item item)
-    {
-        if ((item.Template.TemplateKey == "DivineStaff") && !Subject.IsPurePriestMaster())
-        {
-            Subject.Inventory.RemoveByTemplateKey("DivineStaff");
-            var celestialstaff = ItemFactory.Create("celestialstaff");
-            Subject.GiveItemOrSendToBank(celestialstaff);
-            Subject.SendOrangeBarMessage("Your Divine Staff has been replaced with a Celestial Staff.");
-        }
-    }
-
     private void ClearOrangeBarMessage()
     {
         var lastOrangeBarMessage = Subject.Trackers.LastOrangeBarMessage;
@@ -661,6 +650,17 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     /// <inheritdoc />
     public override bool IsHostileTo(Creature creature) => RelationshipBehavior.IsHostileTo(Subject, creature);
 
+    private void ItemUpdater(Item item)
+    {
+        if ((item.Template.TemplateKey == "DivineStaff") && !Subject.IsPurePriestMaster())
+        {
+            Subject.Inventory.RemoveByTemplateKey("DivineStaff");
+            var celestialstaff = ItemFactory.Create("celestialstaff");
+            Subject.GiveItemOrSendToBank(celestialstaff);
+            Subject.SendOrangeBarMessage("Your Divine Staff has been replaced with a Celestial Staff.");
+        }
+    }
+
     private void NotifyPlayerSkills(string keyToRemove, string keyToKeep)
     {
         var nameToKeep = SkillFactory.Create(keyToKeep);
@@ -771,7 +771,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         if (Subject.IsSmokeStanced() && IntegerRandomizer.RollChance(15))
             if (!source.Script.Is<ThisIsABossScript>())
             {
-                var effect = EffectFactory.Create("Blind");
+                var effect = EffectFactory.Create("Dall");
                 source.Effects.Apply(Subject, effect);
             }
 
@@ -779,7 +779,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         {
             if (!source.Script.Is<ThisIsABossScript>())
             {
-                var effect = EffectFactory.Create("Blind");
+                var effect = EffectFactory.Create("Dall");
                 source.Effects.Apply(Subject, effect);
             }
 
@@ -1645,7 +1645,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                     Subject.MapInstance.RemoveEntity(egg);
                     Subject.SendPersistentMessage($"{Subject.Inventory.CountOf("Undine Golden Chicken Egg")} golden eggs!");
                     Subject.Client.SendSound(177, false);
-                    
+
                     foreach (var bunny in Subject.MapInstance.GetEntities<Monster>())
                         bunny.Trackers.Counters.AddOrIncrement("Frightened");
 

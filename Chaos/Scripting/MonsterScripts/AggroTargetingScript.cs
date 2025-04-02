@@ -1,4 +1,3 @@
-using Chaos.Common.Definitions;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
@@ -33,35 +32,41 @@ public class AggroTargetingScript : MonsterScriptBase
             return;
 
         if (source is Aisling aisling)
-        {
             switch (aisling.UserStatSheet.BaseClass)
             {
                 case BaseClass.Peasant:
                     AggroList.AddOrUpdate(source.Id, _ => aggro, (_, currentAggro) => currentAggro + aggro);
+
                     break;
                 case BaseClass.Warrior:
                     AggroList.AddOrUpdate(source.Id, _ => aggro, (_, currentAggro) => currentAggro + (int)(aggro * 1.2));
+
                     break;
                 case BaseClass.Rogue:
                     AggroList.AddOrUpdate(source.Id, _ => aggro, (_, currentAggro) => currentAggro + (int)(aggro * 1.6));
+
                     break;
                 case BaseClass.Wizard:
                     AggroList.AddOrUpdate(source.Id, _ => aggro, (_, currentAggro) => currentAggro + (int)(aggro * 1.8));
+
                     break;
                 case BaseClass.Priest:
                     AggroList.AddOrUpdate(source.Id, _ => aggro, (_, currentAggro) => currentAggro + (int)(aggro * 1.4));
+
                     break;
                 case BaseClass.Monk:
                     AggroList.AddOrUpdate(source.Id, _ => aggro, (_, currentAggro) => currentAggro + aggro * 4);
+
                     break;
                 case BaseClass.Diacht:
                     AggroList.AddOrUpdate(source.Id, _ => aggro, (_, currentAggro) => currentAggro + aggro);
+
                     break;
                 default:
                     AggroList.AddOrUpdate(source.Id, _ => aggro, (_, currentAggro) => currentAggro + aggro);
+
                     break;
             }
-        }        
         else
             AggroList.AddOrUpdate(source.Id, _ => aggro, (_, currentAggro) => currentAggro + aggro);
     }
@@ -74,16 +79,15 @@ public class AggroTargetingScript : MonsterScriptBase
         TargetUpdateTimer.Update(delta);
 
         if (Subject.Effects.TryGetEffect("amnesia", out _))
-        {
             return;
-        }
-        
-        if ((Target != null) && (!Target.IsAlive || !Target.OnSameMapAs(Subject) || Target.MapInstance.IsWalkable(Target, collisionType: Subject.Type)))
+
+        if ((Target != null)
+            && (!Target.IsAlive || !Target.OnSameMapAs(Subject) || Target.MapInstance.IsWalkable(Target, collisionType: Subject.Type)))
         {
             AggroList.Remove(Target.Id, out _);
             Target = null;
         }
-        
+
         if (!TargetUpdateTimer.IntervalElapsed)
             return;
 
@@ -93,7 +97,7 @@ public class AggroTargetingScript : MonsterScriptBase
                 .Any())
             return;
 
-        var isBlind = Subject.IsBlind;
+        var isBlind = Subject.IsDall;
 
         //first try to get target via aggro list
         //if something is already aggro, ignore aggro range
@@ -102,7 +106,10 @@ public class AggroTargetingScript : MonsterScriptBase
             if (!Map.TryGetEntity<Creature>(kvp.Key, out var possibleTarget))
                 continue;
 
-            if (!possibleTarget.IsAlive || !Subject.CanSee(possibleTarget) || !possibleTarget.WithinRange(Subject) || Subject.MapInstance.IsWalkable(possibleTarget, collisionType: Subject.Type))
+            if (!possibleTarget.IsAlive
+                || !Subject.CanSee(possibleTarget)
+                || !possibleTarget.WithinRange(Subject)
+                || Subject.MapInstance.IsWalkable(possibleTarget, collisionType: Subject.Type))
                 continue;
 
             //if we're blind, we can only target things within 1 tile

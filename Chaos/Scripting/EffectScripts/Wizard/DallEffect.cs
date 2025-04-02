@@ -34,7 +34,7 @@ public sealed class DallEffect : ContinuousAnimationEffectBase
     public override byte Icon => 2;
 
     /// <inheritdoc />
-    public override string Name => "Blind";
+    public override string Name => "Dall";
 
     public override void OnApplied()
     {
@@ -62,7 +62,7 @@ public sealed class DallEffect : ContinuousAnimationEffectBase
         if (target.StatSheet.DefenseElement == Element.Holy)
             return false;
 
-        if (target.Effects.Contains("Blind"))
+        if (target.Effects.Contains("Dall"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "That target is already blinded.");
 

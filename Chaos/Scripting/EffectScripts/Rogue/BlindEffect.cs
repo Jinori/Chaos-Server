@@ -62,7 +62,7 @@ public sealed class BlindEffect : ContinuousAnimationEffectBase
         if (target.StatSheet.DefenseElement == Element.Holy)
             return false;
 
-        if (target.Effects.Contains("Blind"))
+        if (target.Effects.Contains("Dall"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "That target is already blinded.");
 

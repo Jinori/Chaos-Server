@@ -1,5 +1,3 @@
-using Chaos.Common.Definitions;
-using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
@@ -32,7 +30,7 @@ public class WerewolfAggroTargetingScript : MonsterScriptBase
 
         if (aggro == 0)
             return;
-        
+
         source.Trackers.Enums.Set(AttackedWerewolf.Yes);
 
         // Always add to aggro list when attacked
@@ -46,7 +44,8 @@ public class WerewolfAggroTargetingScript : MonsterScriptBase
 
         TargetUpdateTimer.Update(delta);
 
-        if ((Target != null) && (!Target.IsAlive || !Target.OnSameMapAs(Subject) || Target.MapInstance.IsWalkable(Target, collisionType: Subject.Type)))
+        if ((Target != null)
+            && (!Target.IsAlive || !Target.OnSameMapAs(Subject) || Target.MapInstance.IsWalkable(Target, collisionType: Subject.Type)))
         {
             Target.Trackers.Enums.Set(AttackedWerewolf.No);
             AggroList.Remove(Target.Id, out _);
@@ -62,7 +61,7 @@ public class WerewolfAggroTargetingScript : MonsterScriptBase
                 .Any())
             return;
 
-        var isBlind = Subject.IsBlind;
+        var isBlind = Subject.IsDall;
 
         //first try to get target via aggro list
         //if something is already aggro, ignore aggro range
@@ -71,7 +70,10 @@ public class WerewolfAggroTargetingScript : MonsterScriptBase
             if (!Map.TryGetEntity<Creature>(kvp.Key, out var possibleTarget))
                 continue;
 
-            if (!possibleTarget.IsAlive || !Subject.CanSee(possibleTarget) || !possibleTarget.WithinRange(Subject) || Subject.MapInstance.IsWalkable(possibleTarget, collisionType: Subject.Type))
+            if (!possibleTarget.IsAlive
+                || !Subject.CanSee(possibleTarget)
+                || !possibleTarget.WithinRange(Subject)
+                || Subject.MapInstance.IsWalkable(possibleTarget, collisionType: Subject.Type))
                 continue;
 
             //if we're blind, we can only target things within 1 tile
@@ -79,7 +81,9 @@ public class WerewolfAggroTargetingScript : MonsterScriptBase
                 continue;
 
             // Check if the target has the werewolf effect
-            if (possibleTarget is Aisling aisling && aisling.Effects.Contains("Werewolf") && !possibleTarget.Trackers.Enums.HasValue(AttackedWerewolf.Yes))
+            if (possibleTarget is Aisling aisling
+                && aisling.Effects.Contains("Werewolf")
+                && !possibleTarget.Trackers.Enums.HasValue(AttackedWerewolf.Yes))
                 continue;
 
             Target = possibleTarget;
@@ -97,12 +101,10 @@ public class WerewolfAggroTargetingScript : MonsterScriptBase
         Target ??= Map.GetEntitiesWithinRange<Aisling>(Subject, range)
                       .ThatAreVisibleTo(Subject)
                       .Where(
-                          obj => !obj.Equals(Subject)
-                                 && obj.IsAlive
-                                 && !obj.Effects.Contains("werewolf")
-                                 || obj.Trackers.Enums.HasValue(AttackedWerewolf.Yes)// Exclude Aislings with the werewolf effect
-                                 && Subject.ApproachTime.TryGetValue(obj, out var time)
-                                 && ((DateTime.UtcNow - time).TotalSeconds >= 1.5))
+                          obj => (!obj.Equals(Subject) && obj.IsAlive && !obj.Effects.Contains("werewolf"))
+                                 || (obj.Trackers.Enums.HasValue(AttackedWerewolf.Yes) // Exclude Aislings with the werewolf effect
+                                     && Subject.ApproachTime.TryGetValue(obj, out var time)
+                                     && ((DateTime.UtcNow - time).TotalSeconds >= 1.5)))
                       .ClosestOrDefault(Subject);
 
         //since we grabbed a new target, give them some initial aggro so we stick to them

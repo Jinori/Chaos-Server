@@ -428,7 +428,7 @@ public class SupplyLouresArmy : DialogScriptBase
             }
             case "louresassassin_stabyou":
             {
-                var blindeffect = EffectFactory.Create("Blind");
+                var blindeffect = EffectFactory.Create("Dall");
                 source.UserStatSheet.SetHealthPct(65);
                 source.Effects.Apply(source, blindeffect);
                 source.Client.SendAttributes(StatUpdateType.Vitality);

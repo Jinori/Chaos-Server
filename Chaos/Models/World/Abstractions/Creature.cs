@@ -37,9 +37,9 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
     public int Gold { get; set; }
     public virtual bool IsDead { get; set; }
     public Trackers Trackers { get; set; }
+    public int TypingWave { get; set; }
 
     public string TypingWord { get; set; }
-    public int TypingWave { get; set; }
     public VisionType Vision { get; protected set; }
     public Dictionary<VisibleEntity, DateTime> ApproachTime { get; }
     public abstract int AssailIntervalMs { get; }
@@ -56,7 +56,7 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
     public abstract CreatureType Type { get; }
     public int EffectiveAssailIntervalMs => StatSheet.CalculateEffectiveAssailInterval(AssailIntervalMs);
     public virtual bool IsAlive => StatSheet.CurrentHp > 0;
-    public virtual bool IsBlind => Vision is not VisionType.Normal;
+    public virtual bool IsDall => Vision is not VisionType.Normal;
 
     protected Creature(
         string name,
@@ -275,12 +275,7 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
             source.Client.SendAttributes(StatUpdateType.ExpGold);
             Script.OnGoldDroppedOn(source, amount);
 
-            Logger.WithTopics(
-                      [
-                          Topics.Entities.Creature,
-                          Topics.Entities.Gold,
-                          Topics.Actions.Drop
-                      ])
+            Logger.WithTopics(Topics.Entities.Creature, Topics.Entities.Gold, Topics.Actions.Drop)
                   .WithProperty(source)
                   .LogInformation(
                       "Aisling {@AislingName} dropped {Amount} gold on creature {@CreatureName}",
@@ -311,12 +306,7 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
         if (source.Inventory.RemoveQuantity(slot, count, out var items))
             foreach (var item in items)
             {
-                Logger.WithTopics(
-                          [
-                              Topics.Entities.Creature,
-                              Topics.Entities.Item,
-                              Topics.Actions.Drop
-                          ])
+                Logger.WithTopics(Topics.Entities.Creature, Topics.Entities.Item, Topics.Actions.Drop)
                       .WithProperty(source)
                       .WithProperty(item)
                       .WithProperty(this)
@@ -418,7 +408,7 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
             case PublicMessageType.Chant:
                 creaturesWithinRange = MapInstance.GetEntities<Creature>()
                                                   .ThatCanObserve(this);
-                
+
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(publicMessageType), publicMessageType, null);
@@ -488,12 +478,7 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
                         await onTraverse();
                 } catch (Exception e)
                 {
-                    Logger.WithTopics(
-                              [
-                                  Topics.Entities.MapInstance,
-                                  Topics.Entities.Creature,
-                                  Topics.Actions.Traverse
-                              ])
+                    Logger.WithTopics(Topics.Entities.MapInstance, Topics.Entities.Creature, Topics.Actions.Traverse)
                           .WithProperty(this)
                           .WithProperty(currentMap)
                           .WithProperty(destinationMap)
@@ -586,12 +571,7 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
 
         foreach (var groundItem in groundItems)
         {
-            Logger.WithTopics(
-                      [
-                          Topics.Entities.Creature,
-                          Topics.Entities.Item,
-                          Topics.Actions.Drop
-                      ])
+            Logger.WithTopics(Topics.Entities.Creature, Topics.Entities.Item, Topics.Actions.Drop)
                   .WithProperty(this)
                   .WithProperty(groundItem)
                   .LogInformation(
@@ -627,12 +607,7 @@ public abstract class Creature : NamedEntity, IAffected, IScripted<ICreatureScri
 
         MapInstance.AddEntity(money, point);
 
-        Logger.WithTopics(
-                  [
-                      Topics.Entities.Creature,
-                      Topics.Entities.Gold,
-                      Topics.Actions.Drop
-                  ])
+        Logger.WithTopics(Topics.Entities.Creature, Topics.Entities.Gold, Topics.Actions.Drop)
               .WithProperty(this)
               .WithProperty(money)
               .LogInformation(

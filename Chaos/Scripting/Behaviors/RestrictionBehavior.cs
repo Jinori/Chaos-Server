@@ -61,7 +61,7 @@ public class RestrictionBehavior
                 return false;
             }
             case Monster monster when monster.IsSuained()
-                                      || monster.IsBlind
+                                      || monster.IsDall
                                       || monster.IsPramhed()
                                       || monster.IsBeagSuained()
                                       || monster.IsRooted():

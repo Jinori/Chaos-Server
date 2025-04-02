@@ -62,7 +62,7 @@ public class NightmareRogueAggroTargetingScript : MonsterScriptBase
                 .Any())
             return;
 
-        var isBlind = Subject.IsBlind;
+        var isBlind = Subject.IsDall;
 
         //first try to get target via aggro list
         //if something is already aggro, ignore aggro range

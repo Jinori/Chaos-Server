@@ -72,11 +72,7 @@ public sealed class WindGuardianBossDefenseScript : MonsterScriptBase
                     Subject.Say("*unaffected*");
 
                     break;
-                case "blind":
-                    RemoveEffect(effect);
-                    Subject.Say("*unaffected*");
 
-                    break;
                 case "dall":
                     RemoveEffect(effect);
                     Subject.Say("*unaffected*");

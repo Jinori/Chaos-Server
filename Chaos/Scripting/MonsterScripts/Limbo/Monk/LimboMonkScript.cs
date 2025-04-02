@@ -34,7 +34,7 @@ public class LimboMonkScript : MonsterScriptBase
         if (!ActionTimer.IntervalElapsed)
             return;
 
-        if (Subject.IsBlind || Subject.IsSuained() || Subject.Effects.Contains("Poison"))
+        if (Subject.IsDall || Subject.IsSuained() || Subject.Effects.Contains("Poison"))
             Subject.TryUseSpell(CureAilments);
     }
 }

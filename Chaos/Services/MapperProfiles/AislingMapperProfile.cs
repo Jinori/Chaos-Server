@@ -147,7 +147,7 @@ public sealed class AislingMapperProfile(
         {
             Ability = (byte)obj.UserStatSheet.AbilityLevel,
             Ac = obj.UserStatSheet.EffectiveAc,
-            Blind = obj.IsBlind,
+            Blind = obj.IsDall,
             Con = (byte)Math.Clamp(obj.UserStatSheet.EffectiveCon, byte.MinValue, byte.MaxValue),
             CurrentHp = (uint)Math.Clamp(obj.UserStatSheet.CurrentHp, 0, int.MaxValue),
             CurrentMp = (uint)Math.Clamp(obj.UserStatSheet.CurrentMp, 0, int.MaxValue),
@@ -182,9 +182,7 @@ public sealed class AislingMapperProfile(
     DisplayAislingArgs IMapperProfile<Aisling, DisplayAislingArgs>.Map(Aisling obj)
     {
         if (obj == null)
-        {
             throw new ArgumentNullException(nameof(obj), "Aisling object cannot be null.");
-        }
 
         var hasArenaTeam = obj.Trackers.Enums.TryGetValue(out ArenaTeam arenaTeam);
         var gearFlags = obj.Trackers.Flags.TryGetFlag(out InvisibleGear invisibleGear);
@@ -249,13 +247,12 @@ public sealed class AislingMapperProfile(
                 headColor = obj.HairColor;
             else
                 headColor = obj.HairColor;
-        }
-        else
+        } else
             headColor = DisplayColor.Default;
 
         if (hideHelmet)
             headColor = obj.HairColor;
-        
+
         // Determine boots sprite
         if (hideBoots || shouldOverrideBootsSprite)
             bootsSprite = 0;

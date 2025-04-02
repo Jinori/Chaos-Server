@@ -70,10 +70,7 @@ public sealed class TotemDefenseScript : MonsterScriptBase
                     RemoveEffectAndHeal(effect);
 
                     break;
-                case "blind":
-                    RemoveEffect(effect);
 
-                    break;
                 case "dall":
                     RemoveEffect(effect);
 

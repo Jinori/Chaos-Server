@@ -117,11 +117,7 @@ public sealed class EServantDefenseScript : MonsterScriptBase
                     Subject.Say("What a joke.");
 
                     break;
-                case "blind":
-                    RemoveEffect(effect);
-                    Subject.Say("I have too many eyes for your nonsense.");
 
-                    break;
                 case "dall":
                     RemoveEffect(effect);
                     Subject.Say("I have too many eyes for your nonsense.");
