@@ -22,26 +22,9 @@ public sealed class ResilientPrefixScript : ItemScriptBase, IPrefixEnchantmentSc
 
     /// <inheritdoc />
     public ResilientPrefixScript(Item subject)
-        : base(subject)
-    {
-        Subject.Prefix = "Resilient";
-
-        var attributes = new Attributes
-        {
-            MagicResistance = 2,
-            Ac = -1
-        };
-
-        subject.Modifiers.Add(attributes);
-    }
+        : base(subject) => IPrefixEnchantmentScript.ApplyPrefix<ResilientPrefixScript>(subject);
 
     /// <inheritdoc />
     public static IEnumerable<ItemMetaNode> Mutate(ItemMetaNode node, ItemTemplate template)
-    {
-        if (!node.Name.StartsWithI("Resilient"))
-            yield return node with
-            {
-                Name = $"Resilient {node.Name}"
-            };
-    }
+        => IPrefixEnchantmentScript.Mutate<ResilientPrefixScript>(node, template);
 }
