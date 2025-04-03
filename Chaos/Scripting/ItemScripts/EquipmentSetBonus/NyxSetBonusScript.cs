@@ -11,27 +11,28 @@ public class NyxSetBonusScript : SetBonusItemScriptBase
         {
             2, new Attributes
             {
-                MaximumHp = 3000,
-                MaximumMp = 1500
+                MaximumHp = 1500,
+                MaximumMp = 750,
+                Dmg = 4,
+                AtkSpeedPct = 4,
+                Hit = 2,
             }
         },
         {
             3, new Attributes
             {
-                AtkSpeedPct = 6,
-                Dmg = 6,
-                Hit = 3,
-                CooldownReductionPct = 5
+                SkillDamagePct = 5,
+                SpellDamagePct = 5,
+                FlatSkillDamage = 50,
+                FlatSpellDamage = 50,
             }
         },
         {
             4, new Attributes
             {
-                SkillDamagePct = 5,
-                SpellDamagePct = 5,
-                FlatSkillDamage = 50,
-                FlatSpellDamage = 50,
-                Ac = -5
+                Ac = -3,
+                MagicResistance = 3,
+                CooldownReductionPct = 3
             }
         }
     };

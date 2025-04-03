@@ -12,7 +12,7 @@ public class SacredSetBonusScript : SetBonusItemScriptBase
             2, new Attributes
             {
                 MaximumMp = 1000,
-                Hit = 2
+                Hit = 3
             }
         },
         {
