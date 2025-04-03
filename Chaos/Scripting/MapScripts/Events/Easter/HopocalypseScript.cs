@@ -2,37 +2,52 @@ using Chaos.Collections;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
 using Chaos.Models.World;
+using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MapScripts.Abstractions;
+using Chaos.Scripting.ReactorTileScripts.Events;
 using Chaos.Services.Factories.Abstractions;
+using Chaos.Storage.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
+using Humanizer;
 
-namespace Chaos.Scripting.MapScripts.Events;
+namespace Chaos.Scripting.MapScripts.Events.Easter;
 
 public sealed class HopocalypseScript : MapScriptBase
 {
+    private readonly IStorage<HopocalypseLeaderboardScript.HopocalypseLeaderboardObj> LeaderboardStorage;
     private bool AnnounceStart;
     private bool SpawnedBunnies;
+    private bool GameEnded;
     private bool PlayStartSound;
+    private int GameLevel;
     private readonly IIntervalTimer MessageTimer;
+    private readonly IIntervalTimer CheckTouchTimer;
+    private readonly IIntervalTimer CheckEggTimer;
     private readonly Point PlayerStartPoint = new(10, 14);
     private readonly IMonsterFactory MonsterFactory;
     private readonly IItemFactory ItemFactory;
+    private readonly List<string> BunnyNames = ["Burrowglint", "Hopscare", "Petalpounce", "Whiskerflip"];
+    private readonly ISimpleCache SimpleCache;
 
     /// <inheritdoc />
-    public HopocalypseScript(MapInstance subject, IMonsterFactory monsterFactory, IItemFactory itemFactory)
+    public HopocalypseScript(MapInstance subject, IMonsterFactory monsterFactory, IItemFactory itemFactory, ISimpleCache simpleCache, IStorage<HopocalypseLeaderboardScript.HopocalypseLeaderboardObj> leaderboardStorage)
         : base(subject)
     {
         MessageTimer = new PeriodicMessageTimer(
-            TimeSpan.FromSeconds(15),
+            TimeSpan.FromSeconds(7),
+            TimeSpan.FromSeconds(3),
             TimeSpan.FromSeconds(5),
-            TimeSpan.FromSeconds(10),
             TimeSpan.FromSeconds(1),
             "Get ready to collect eggs in {Time}!",
             SendMessage);
-        
+
+        CheckTouchTimer = new IntervalTimer(TimeSpan.FromMilliseconds(350));
+        CheckEggTimer = new IntervalTimer(TimeSpan.FromSeconds(1));
+        LeaderboardStorage = leaderboardStorage;
         MonsterFactory = monsterFactory;
         ItemFactory = itemFactory;
+        SimpleCache = simpleCache;
     }
 
 
@@ -50,7 +65,47 @@ public sealed class HopocalypseScript : MapScriptBase
     public override void Update(TimeSpan delta)
     {
         MessageTimer.Update(delta);
+        CheckTouchTimer.Update(delta);
+        CheckEggTimer.Update(delta);
 
+
+        if (CheckEggTimer.IntervalElapsed && !GameEnded && AnnounceStart)
+        {
+            var eggs = Subject.GetEntities<GroundItem>()
+                              .Where(x => x.Item.Template.TemplateKey is "undinechickenegg" or "undinegoldenchickenegg").ToList();
+
+            if (eggs.Count is 0)
+            {
+                AnnounceStart = false;
+                SpawnedBunnies = false;
+                PlayStartSound = false;
+                GameEnded = true;
+                MessageTimer.Reset();
+                
+                foreach (var bunny in Subject.GetEntities<Monster>())
+                    Subject.RemoveEntity(bunny);
+    
+                Subject.Morph("26022");
+            }
+        }
+        
+        if (CheckTouchTimer.IntervalElapsed)
+        {
+            var players = Subject.GetEntities<Aisling>().Where(p => p.IsAlive).ToList();
+            var bunnies = Subject.GetEntities<Monster>().Where(m => m.IsAlive && BunnyNames.Contains(m.Name)).ToList();
+
+            foreach (var bunny in bunnies)
+            {
+                foreach (var player in players)
+                    if ((bunny.X == player.X) && (bunny.Y == player.Y))
+                    {
+                        OnBunnyTouchPlayer(bunny, player);
+                        return;
+                    }
+            }
+        }
+
+        
         if (!AnnounceStart)
         {
             foreach (var aisling in Subject.GetEntities<Aisling>())
@@ -70,39 +125,61 @@ public sealed class HopocalypseScript : MapScriptBase
             }
         }
         
-        if (MessageTimer.IntervalElapsed)
+        if (MessageTimer.IntervalElapsed && !AnnounceStart)
         {
-            if (!AnnounceStart)
+            if (Subject.Name == "Undine Hopocalypse")
+                Subject.Morph("26021");
+
+            GameLevel++;
+            SendMessage($"Get the eggs! Level {GameLevel.ToWords()} start!");
+
+            if (!SpawnedBunnies)
             {
-                if (Subject.Name == "Undine Hopocalypse")
-                    Subject.Morph("26021");
-            
-                SendMessage("Get the eggs! Match start!");
-                if (!SpawnedBunnies)
+                var bunnySpawns = new (string baseId, Point position)[]
                 {
-                    // Hopscare at (1, 1)
-                    var hopscare = MonsterFactory.Create("hopscare", Subject, new Point(1, 1));
-                    Subject.AddEntity(hopscare, new Point(1, 1));
+                    ("hopscare", new Point(1, 1)),
+                    ("whiskerflip", new Point(19, 1)),
+                    ("petalpounce", new Point(19, 19)),
+                    ("burrowglint", new Point(1, 19))
+                };
 
-                    // Whiskerflip at (19, 1)
-                    var whiskerflip = MonsterFactory.Create("whiskerflip", Subject, new Point(19, 1));
-                    Subject.AddEntity(whiskerflip, new Point(19, 1));
-
-                    // Petalpounce at (19, 19)
-                    var petalpounce = MonsterFactory.Create("petalpounce", Subject, new Point(19, 19));
-                    Subject.AddEntity(petalpounce, new Point(19, 19));
-
-                    // Burrowglint at (1, 19)
-                    var burrowglint = MonsterFactory.Create("burrowglint", Subject, new Point(1, 19));
-                    Subject.AddEntity(burrowglint, new Point(1, 19));
-
-                    SpawnEggs();
-                    
-                    SpawnedBunnies = true;
+                foreach ((var baseId, var position) in bunnySpawns)
+                {
+                    var leveledId = GetLeveledBunnyId(baseId, GameLevel);
+                    var bunny = MonsterFactory.Create(leveledId, Subject, position);
+                    Subject.AddEntity(bunny, position);
                 }
-                AnnounceStart = true;
+
+                SpawnEggs();
+                SpawnedBunnies = true;
             }
+
+            AnnounceStart = true;
+            GameEnded = false;
         }
+    }
+    
+    private string GetLeveledBunnyId(string baseId, int level)
+    {
+        var clampedLevel = Math.Clamp(level, 1, 4);
+        return $"{baseId}{clampedLevel}";
+    }
+    
+    private void OnBunnyTouchPlayer(Creature bunny, Aisling player)
+    {
+        RecordStats(player);
+        player.SendMessage($"{bunny.Name} caught you and took the stolen eggs back!");
+        player.Inventory.RemoveByTemplateKey("undinechickenegg");
+        player.Inventory.RemoveByTemplateKey("undinegoldenchickenegg");
+        var mapInstance = SimpleCache.Get<MapInstance>("undine");
+        player.TraverseMap(mapInstance, new Point(21, 26));
+        player.Client.SendSound(176, false);
+    }
+    
+    private void RecordStats(Aisling player)
+    {
+        var leaderboard = LeaderboardStorage.Value;
+        leaderboard.UpdateBoard(player.Name, player.Inventory.CountOfByTemplateKey("undinechickenegg"), player.Inventory.CountOfByTemplateKey("undinegoldenchickenegg"), GameLevel);
     }
     
     private void SpawnEggs()
