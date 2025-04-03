@@ -72,9 +72,7 @@ public class ElementalEffectDamageFormula : IDamageFormula
 
         return damage;
     }
-
-    protected virtual void ApplyAcModifier(ref int damage, int defenderAc) => damage = Convert.ToInt32(damage * (1 + defenderAc / 100m));
-
+    
     protected virtual void ApplyElementalModifier(
         ref int damage,
         Element attackElement,
@@ -122,16 +120,6 @@ public class ElementalEffectDamageFormula : IDamageFormula
             }
         }
     }
-
-    protected virtual int GetDefenderAc(Creature defender)
-        => defender switch
-        {
-            Aisling aisling => Math.Clamp(
-                aisling.UserStatSheet.EffectiveAc,
-                WorldOptions.Instance.MinimumAislingAc,
-                WorldOptions.Instance.MaximumAislingAc),
-            _ => Math.Clamp(defender.StatSheet.EffectiveAc, WorldOptions.Instance.MinimumMonsterAc, WorldOptions.Instance.MaximumMonsterAc)
-        };
 
     protected virtual void HandleAite(ref int damage, Creature defender)
     {
