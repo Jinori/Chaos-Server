@@ -71,13 +71,8 @@ public class MeteorFireScript : ConfigurableReactorTileScriptBase,
         if (DamageTimer.IntervalElapsed)
         {
             if (Owner is Aisling aisling)
-            {
-                if (aisling.IsGodModeEnabled())
-                    return;
-
                 if (aisling.IsHostileTo(Owner))
                     aisling.SendOrangeBarMessage("You're burned by fire from Meteor!");
-            }
 
             Executor.ExecuteAndCheck<GetTargetsAbilityComponent<Creature>>()
                     ?.Execute<SoundAbilityComponent>()

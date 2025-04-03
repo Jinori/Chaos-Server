@@ -61,8 +61,8 @@ public class ShadowTouchScript : MonsterScriptBase
         
         if(targets.Count == 0)
             return;
-        
-        var manaDmg = MathEx.GetPercentOf<int>((int)Subject.PetOwner!.StatSheet.EffectiveMaximumMp, 0.015m);
+
+        var manaDmg = MathEx.GetPercentOf<int>((int)Subject.PetOwner!.StatSheet.EffectiveMaximumMp, 1.5m);
         var damage = 750;
         damage += Subject.PetOwner.StatSheet.EffectiveInt * 5 + (int)(Subject.PetOwner.StatSheet.EffectiveWis * 2.5m);
         var finalDmg = manaDmg + damage;
