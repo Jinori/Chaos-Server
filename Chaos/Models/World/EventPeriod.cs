@@ -118,11 +118,10 @@ public class EventPeriod
                 ]
             ),
             
-            // Easter Event (April 14 - April 28)
-            // Easter Event (Testing: March 28 - March 31)
+            // Easter Event
             new(
-                "0 6 28 3 *", // March 28th at 6 AM
-                "0 6 31 3 *", // March 31st at 6 AM
+                "0 6 4 4 *", // March 28th at 6 AM
+                "0 6 2 5 *", // March 31st at 6 AM
                 [
                     "undine", "hopmaze"
                 ]

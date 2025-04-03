@@ -7,7 +7,7 @@ namespace Chaos.Scripting.MonsterScripts.Events.Easter;
 
 public class BurrowglintScript(Monster subject) : BunnyMazeBaseScript(subject)
 {
-    private const int PREDICTION_DISTANCE = 2;
+    private const int PREDICTION_DISTANCE = 3;
 
     private IPathOptions Options => PathOptions.Default.ForCreatureType(Subject.Type) with
     {
@@ -20,9 +20,8 @@ public class BurrowglintScript(Monster subject) : BunnyMazeBaseScript(subject)
     {
         if (Target == null)
             return;
-
-        var direction = GetTargetDirection(Target);
-        var projectedPoint = PredictAhead(Target, direction, PREDICTION_DISTANCE);
+        
+        var projectedPoint = PredictAheadWithTurns(Target, PREDICTION_DISTANCE);
 
         // Find Hopscare (must be alive and on same map)
         var hopscare = Map
