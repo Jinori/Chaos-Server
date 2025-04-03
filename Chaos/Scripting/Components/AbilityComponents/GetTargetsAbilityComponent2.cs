@@ -31,6 +31,7 @@ public struct GetTargetsAbilityComponent2<TEntity> : IConditionalComponent where
 
         var targetEntities = map.GetEntitiesAtPoints<TEntity>(targetPoints)
                                 .WithFilter(context.Source, options.Filter2)
+                                .ExcludeHiddenGms()
                                 .ToList();
 
         if (options.StopOnFirstHit2)

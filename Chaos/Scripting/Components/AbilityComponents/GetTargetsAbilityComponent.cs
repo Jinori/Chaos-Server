@@ -5,6 +5,7 @@ using Chaos.Extensions.Geometry;
 using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Geometry.EqualityComparers;
 using Chaos.Models.Data;
+using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
@@ -31,6 +32,7 @@ public struct GetTargetsAbilityComponent<TEntity> : IConditionalComponent where 
 
         var targetEntities = map.GetEntitiesAtPoints<TEntity>(targetPoints)
                                 .WithFilter(context.Source, options.Filter)
+                                .ExcludeHiddenGms()
                                 .ToList();
 
         if (options.StopOnFirstHit)

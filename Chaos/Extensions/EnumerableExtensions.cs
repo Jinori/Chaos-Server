@@ -101,4 +101,8 @@ public static class EnumerableExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IEnumerable<T> WithFilter<T>(this IEnumerable<T> objs, Creature source, TargetFilter filter) where T: MapEntity
         => objs.Where(obj => obj is not Creature creature || filter.IsValidTarget(source, creature));
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IEnumerable<T> ExcludeHiddenGms<T>(this IEnumerable<T> objs) where T: MapEntity
+        => objs.Where(target => target is not Aisling aisling || !aisling.Effects.Contains("gm hide"));
 }
