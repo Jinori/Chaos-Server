@@ -974,8 +974,14 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 "inferno",
                 "whirlwind"
             },
-            {"warcry", "rage"},
-            {"battlecry", "rage"},
+            {
+                "warcry",
+                "rage"
+            },
+            {
+                "battlecry",
+                "rage"
+            },
             {
                 "fury",
                 "berserk"
@@ -1266,9 +1272,18 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 "backstab",
                 "stab"
             },
-            {"shadowfigure", "backstab"},
-            {"shadowfigure", "stab"},
-            {"essencesiphon", "sapneedle"},
+            {
+                "shadowfigure",
+                "backstab"
+            },
+            {
+                "shadowfigure",
+                "stab"
+            },
+            {
+                "essencesiphon",
+                "sapneedle"
+            },
             {
                 "skewer",
                 "pierce"
@@ -1352,40 +1367,187 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
     private void ItemUpdater(Item item)
     {
-        if ((item.Template.TemplateKey == "DivineStaff") && !Subject.IsPurePriestMaster())
+        if (item.Template.TemplateKey.EqualsI("DivineStaff") && !Subject.IsPurePriestMaster())
         {
             Subject.Inventory.RemoveByTemplateKey("DivineStaff");
             var celestialstaff = ItemFactory.Create("celestialstaff");
             Subject.GiveItemOrSendToBank(celestialstaff);
             Subject.SendOrangeBarMessage("Your Divine Staff has been replaced with a Celestial Staff.");
         }
-        
-        if (Subject.Inventory.Contains("Invisible Helmet"))
+
+        if (item.Template.TemplateKey.EqualsI("invisiblehelmet"))
         {
             Subject.Inventory.Remove("Invisible Helmet");
             Subject.TryGiveGamePoints(100);
         }
-        
-        if (Subject.Inventory.Contains("Invisible Shield"))
+
+        if (item.Template.TemplateKey.EqualsI("invisibleshield"))
         {
             Subject.Inventory.Remove("Invisible Shield");
             Subject.TryGiveGamePoints(100);
         }
-        
+
         if (Subject.Bank.Contains("Invisible Helmet"))
             if (Subject.Bank.TryWithdraw("Invisible Helmet", 1, out _))
-            {
-                Subject.Inventory.Remove("Invisible Helmet");
                 Subject.TryGiveGamePoints(100);
-            }
 
         if (Subject.Bank.Contains("Invisible Shield"))
             if (Subject.Bank.TryWithdraw("Invisible Shield", 1, out _))
-            {
-                Subject.Inventory.Remove("Invisible Shield");
                 Subject.TryGiveGamePoints(100);
-            }
-        
+
+        if (item.Template.TemplateKey.EqualsI("smalljewelcraftingbox"))
+        {
+            var amount = Subject.Inventory.CountOfByTemplateKey("smalljewelcraftingbox");
+            var newBox = ItemFactory.Create("novicejewelcraftingbox");
+            var oldBox = ItemFactory.Create("smalljewelcraftingbox");
+            newBox.Count = amount;
+            Subject.Inventory.RemoveQuantityByTemplateKey("smalljewelcraftingbox", amount);
+            Subject.GiveItemOrSendToBank(newBox);
+            Subject.SendOrangeBarMessage($"Your {oldBox.DisplayName} ({amount}) swapped for {newBox.DisplayName} ({amount}).");
+        }
+
+        if (Subject.Bank.Contains("Small Jewelcrafting Box"))
+        {
+            var amount = Subject.Bank.CountOf("Small Jewelcrafting Box");
+            var newBox = ItemFactory.Create("novicejewelcraftingbox");
+            var oldBox = ItemFactory.Create("smalljewelcraftingbox");
+            newBox.Count = amount;
+            Subject.Bank.TryWithdraw("Small Jewelcrafting Box", amount, out _);
+            Subject.GiveItemOrSendToBank(newBox);
+            Subject.SendOrangeBarMessage($"Your {oldBox.DisplayName} ({amount}) swapped for {newBox.DisplayName} ({amount}).");
+        }
+
+        if (item.Template.TemplateKey.EqualsI("largejewelcraftingbox"))
+        {
+            var amount = Subject.Inventory.CountOfByTemplateKey("largejewelcraftingbox");
+            var newBox = ItemFactory.Create("initiatejewelcraftingbox");
+            var oldBox = ItemFactory.Create("largejewelcraftingbox");
+            newBox.Count = amount;
+            Subject.Inventory.RemoveQuantityByTemplateKey("largejewelcraftingbox", amount);
+            Subject.GiveItemOrSendToBank(newBox);
+            Subject.SendOrangeBarMessage($"Your {oldBox.DisplayName} ({amount}) swapped for {newBox.DisplayName} ({amount}).");
+        }
+
+        if (Subject.Bank.Contains("Large Jewelcrafting Box"))
+        {
+            var amount = Subject.Bank.CountOf("Large Jewelcrafting Box");
+            var newBox = ItemFactory.Create("initiatejewelcraftingbox");
+            var oldBox = ItemFactory.Create("largejewelcraftingbox");
+            Subject.SendOrangeBarMessage($"Your {oldBox.DisplayName} ({amount}) swapped for {newBox.DisplayName} ({amount}).");
+            newBox.Count = amount;
+            Subject.Bank.TryWithdraw("Large Jewelcrafting Box", amount, out _);
+            Subject.GiveItemOrSendToBank(newBox);
+        }
+
+        if (item.Template.TemplateKey.EqualsI("basicalchemybox"))
+        {
+            var amount = Subject.Inventory.CountOfByTemplateKey("basicalchemybox");
+            var newBox = ItemFactory.Create("novicealchemybox");
+            var oldBox = ItemFactory.Create("basicalchemybox");
+            Subject.SendOrangeBarMessage($"Your {oldBox.DisplayName} ({amount}) swapped for {newBox.DisplayName} ({amount}).");
+            newBox.Count = amount;
+            Subject.Inventory.RemoveQuantityByTemplateKey("basicalchemybox", amount);
+            Subject.GiveItemOrSendToBank(newBox);
+        }
+
+        if (Subject.Bank.Contains("Basic Alchemy Box"))
+        {
+            var amount = Subject.Bank.CountOf("Basic Alchemy Box");
+            var newBox = ItemFactory.Create("novicealchemybox");
+            var oldBox = ItemFactory.Create("basicalchemybox");
+            Subject.SendOrangeBarMessage($"Your {oldBox.DisplayName} ({amount}) swapped for {newBox.DisplayName} ({amount}).");
+            newBox.Count = amount;
+            Subject.Bank.TryWithdraw("Basic Alchemy Box", amount, out _);
+            Subject.GiveItemOrSendToBank(newBox);
+        }
+
+        if (item.Template.TemplateKey.EqualsI("basicarmorsmithingbox"))
+        {
+            var amount = Subject.Inventory.CountOfByTemplateKey("basicarmorsmithingbox");
+            var newBox = ItemFactory.Create("novicearmorsmithingbox");
+            var oldBox = ItemFactory.Create("basicarmorsmithingbox");
+            Subject.SendOrangeBarMessage($"Your {oldBox.DisplayName} ({amount}) swapped for {newBox.DisplayName} ({amount}).");
+            Subject.Inventory.RemoveQuantityByTemplateKey("basicarmorsmithingbox", amount);
+            newBox.Count = amount;
+            Subject.GiveItemOrSendToBank(newBox);
+        }
+
+        if (Subject.Bank.Contains("Basic Armorsmithing Box"))
+        {
+            var amount = Subject.Bank.CountOf("Basic Armorsmithing Box");
+            var newBox = ItemFactory.Create("novicearmorsmithingbox");
+            var oldBox = ItemFactory.Create("basicarmorsmithingbox");
+            Subject.SendOrangeBarMessage($"Your {oldBox.DisplayName} ({amount}) swapped for {newBox.DisplayName} ({amount}).");
+            newBox.Count = amount;
+            Subject.Bank.TryWithdraw("Basic Armorsmithing Box", amount, out _);
+            Subject.GiveItemOrSendToBank(newBox);
+        }
+
+        if (item.Template.TemplateKey.EqualsI("largeenchantingbox"))
+        {
+            var amount = Subject.Inventory.CountOfByTemplateKey("largeenchantingbox");
+            var newBox = ItemFactory.Create("initiateenchantingbox");
+            var oldBox = ItemFactory.Create("largeenchantingbox");
+            Subject.SendOrangeBarMessage($"Your {oldBox.DisplayName} ({amount}) swapped for {newBox.DisplayName} ({amount}).");
+            newBox.Count = amount;
+            Subject.Inventory.RemoveQuantityByTemplateKey("largeenchantingbox", amount);
+            Subject.GiveItemOrSendToBank(newBox);
+        }
+
+        if (Subject.Bank.Contains("Large Enchanting Box"))
+        {
+            var amount = Subject.Bank.CountOf("Large Enchanting Box");
+            var newBox = ItemFactory.Create("initiateenchantingbox");
+            var oldBox = ItemFactory.Create("largeenchantingbox");
+            Subject.SendOrangeBarMessage($"Your {oldBox.DisplayName} ({amount}) swapped for {newBox.DisplayName} ({amount}).");
+            newBox.Count = amount;
+            Subject.Bank.TryWithdraw("Large Enchanting Box", amount, out _);
+            Subject.GiveItemOrSendToBank(newBox);
+        }
+
+        if (item.Template.TemplateKey.EqualsI("basicweaponsmithing"))
+        {
+            var amount = Subject.Inventory.CountOfByTemplateKey("basicweaponsmithing");
+            var newBox = ItemFactory.Create("noviceweaponsmithingbox");
+            var oldBox = ItemFactory.Create("basicweaponsmithingbox");
+            Subject.SendOrangeBarMessage($"Your {oldBox.DisplayName} ({amount}) swapped for {newBox.DisplayName} ({amount}).");
+            newBox.Count = amount;
+            Subject.Inventory.RemoveQuantityByTemplateKey("basicweaponsmithing", amount);
+            Subject.GiveItemOrSendToBank(newBox);
+        }
+
+        if (Subject.Bank.Contains("Basic Weaponsmithing Box"))
+        {
+            var amount = Subject.Bank.CountOf("Basic Weaponsmithing Box");
+            var newBox = ItemFactory.Create("noviceweaponsmithingbox");
+            var oldBox = ItemFactory.Create("basicweaponsmithingbox");
+            Subject.SendOrangeBarMessage($"Your {oldBox.DisplayName} ({amount}) swapped for {newBox.DisplayName} ({amount}).");
+            newBox.Count = amount;
+            Subject.Bank.TryWithdraw("Basic Weaponsmithing Box", amount, out _);
+            Subject.GiveItemOrSendToBank(newBox);
+        }
+
+        if (item.Template.TemplateKey.EqualsI("smallenchantingbox"))
+        {
+            var amount = Subject.Inventory.CountOfByTemplateKey("smallenchantingbox");
+            var newBox = ItemFactory.Create("noviceenchantingbox");
+            var oldBox = ItemFactory.Create("smallenchantingbox");
+            Subject.SendOrangeBarMessage($"Your {oldBox.DisplayName} ({amount}) swapped for {newBox.DisplayName} ({amount}).");
+            newBox.Count = amount;
+            Subject.Inventory.RemoveQuantityByTemplateKey("smallenchantingbox", amount);
+            Subject.GiveItemOrSendToBank(newBox);
+        }
+
+        if (Subject.Bank.Contains("Small Enchanting Box"))
+        {
+            var amount = Subject.Bank.CountOf("Small Enchanting Box");
+            var newBox = ItemFactory.Create("noviceenchantingbox");
+            var oldBox = ItemFactory.Create("smallenchantingbox");
+            Subject.SendOrangeBarMessage($"Your {oldBox.DisplayName} ({amount}) swapped for {newBox.DisplayName} ({amount}).");
+            newBox.Count = amount;
+            Subject.Bank.TryWithdraw("Small Enchanting Box", amount, out _);
+            Subject.GiveItemOrSendToBank(newBox);
+        }
     }
 
     private void NotifyPlayerSkills(string keyToRemove, string keyToKeep)

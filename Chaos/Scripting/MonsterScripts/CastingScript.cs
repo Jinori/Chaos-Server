@@ -30,7 +30,7 @@ public class CastingScript : MonsterScriptBase
                                   Target,
                                   null,
                                   out _))
-                          .PickRandomWeightedSingleOrDefault(7);
+                          .PickRandomWeightedSingleOrDefault(8);
 
         if (spell is null)
             return;

@@ -843,7 +843,7 @@ public class RecipeLibraryScript : DialogScriptBase
                             "alchemybook");
 
                         return;
-                    case "potentaccuracybrewformula":
+                    case "potentaccuracypotionformula":
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name

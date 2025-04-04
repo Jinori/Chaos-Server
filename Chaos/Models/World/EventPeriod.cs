@@ -120,8 +120,8 @@ public class EventPeriod
             
             // Easter Event
             new(
-                "0 6 4 4 *", // March 28th at 6 AM
-                "0 6 2 5 *", // March 31st at 6 AM
+                "0 6 16 4 *", // April 16th at 6 AM
+                "0 0 25 4 *", // April 25th at 12 AM
                 [
                     "undine", "hopmaze"
                 ]

@@ -1280,7 +1280,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }
@@ -1310,7 +1310,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }
@@ -1338,7 +1338,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }
@@ -1367,7 +1367,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }
@@ -1395,7 +1395,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }
@@ -1424,7 +1424,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }
@@ -1453,7 +1453,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }
@@ -1482,7 +1482,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }
@@ -1510,7 +1510,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }
@@ -1538,7 +1538,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }
@@ -1567,7 +1567,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }
@@ -1595,7 +1595,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }
@@ -1623,7 +1623,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }
@@ -1651,7 +1651,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }
@@ -1680,7 +1680,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }
@@ -1712,7 +1712,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }
@@ -1741,7 +1741,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }
@@ -1769,7 +1769,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }
@@ -1797,7 +1797,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }
@@ -1824,7 +1824,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }
@@ -1853,7 +1853,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }
@@ -1880,7 +1880,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }
@@ -1908,7 +1908,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }
@@ -1936,7 +1936,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }
@@ -1963,7 +1963,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }
@@ -1992,7 +1992,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }
@@ -2020,7 +2020,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }
@@ -2050,7 +2050,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }
@@ -2077,7 +2077,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }
@@ -2104,7 +2104,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }
@@ -2133,7 +2133,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }
@@ -2161,7 +2161,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }
@@ -2188,7 +2188,7 @@ public class RecipeItemScript : ItemScriptBase
                 {
                     if (craft != Crafts.Weaponsmithing)
                     {
-                        source.SendOrangeBarMessage("You must be an Weaponsmith to learn this recipe.");
+                        source.SendOrangeBarMessage("You must be a Weaponsmith to learn this recipe.");
 
                         return;
                     }

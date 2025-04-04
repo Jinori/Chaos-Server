@@ -88,19 +88,25 @@ public class BuyBugPointsShopScript : DialogScriptBase
             "rawmeat", (1, 5)
         },
         {
-            "smallenchantingbox", (2, 1)
+            "noviceenchantingbox", (2, 1)
         },
         {
-            "largeenchantingbox", (5, 1)
+            "initiateenchantingbox", (3, 1)
         },
         {
-            "smalljewelcraftingbox", (2, 1)
+            "artisanenchantingbox", (4, 1)
         },
         {
-            "largejewelcraftingbox", (5, 1)
+            "novicejewelcraftingbox", (2, 1)
         },
         {
-            "basicarmorsmithingbox", (2, 1)
+            "initiatejewelcraftingbox", (3, 1)
+        },
+        {
+            "artisanjewelcraftingbox", (4, 1)
+        },
+        {
+            "novicearmorsmithingbox", (2, 1)
         },
         {
             "initiatearmorsmithingbox", (3, 1)
@@ -109,7 +115,7 @@ public class BuyBugPointsShopScript : DialogScriptBase
             "artisanarmorsmithingbox", (4, 1)
         },
         {
-            "basicweaponsmithingbox", (2, 1)
+            "noviceweaponsmithingbox", (2, 1)
         },
         {
             "initiateweaponsmithingbox", (3, 1)
@@ -118,7 +124,7 @@ public class BuyBugPointsShopScript : DialogScriptBase
             "artisanweaponsmithingbox", (4, 1)
         },
         {
-            "basicalchemybox", (2, 1)
+            "novicealchemybox", (2, 1)
         },
         {
             "initiatealchemybox", (3, 1)
@@ -344,7 +350,7 @@ public class BuyBugPointsShopScript : DialogScriptBase
                 // Get the price and quantity from the dictionary or use default values if not found
                 if (ItemData.TryGetValue(item.Template.TemplateKey, out var itemInfo))
                 {
-                    (var price, var quantity) = itemInfo;
+                    (var price, _) = itemInfo;
 
                     // Pass the custom price and quantity to the BuyWithBp method
                     Subject.Items.Add(ItemDetails.BuyWithBp(item, price)); // Assuming BuyWithBp can take just the price

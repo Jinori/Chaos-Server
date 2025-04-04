@@ -290,7 +290,7 @@ public class EnchantingScrollScript : DialogScriptBase
 
         if (modifiableItems.Count == 0)
         {
-            Subject.Reply(source, "You don’t have any items that can be enchanted.", "Close");
+            Subject.Reply(source, "You do not have any items that can be enchanted.", "Close");
 
             return;
         }
