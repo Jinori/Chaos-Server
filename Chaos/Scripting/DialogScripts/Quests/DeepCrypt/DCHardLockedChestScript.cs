@@ -13,16 +13,24 @@ public class DCHardLockedChestScript(Dialog subject, IItemFactory itemFactory) :
 {
     private static readonly List<KeyValuePair<string, decimal>> ChestPrizes =
     [
-        new("shinguards", 10),
+        // Four “other” items
+        new("shinguards", 6),
+        new("spikedbracer", 6),
+        new("slatespirelegplates", 6),
+        new("bonecharmseal", 6),
+
+        // mithrildice
         new("mithrildice", 6),
-        new("blooddiamond", 3),
-        new("radiantpearl", 15),
-        new("eclipsepearl", 15),
-        new("largejewelcraftingbox", 15),
-        new("largeenchantingbox", 15),
-        new("artisanweaponsmithingbox", 15),
-        new("artisanarmorsmithingbox", 15),
-        new("artisanalchemybox", 15)
+
+        // blooddiamond
+        new("blooddiamond", 5),
+
+        // Five crafting boxes, all the same
+        new("expertjewelcraftingbox", 13),
+        new("expertenchantingbox", 13),
+        new("expertweaponsmithingbox", 13),
+        new("expertarmorsmithingbox", 13),
+        new("expertalchemybox", 13)
     ];
 
     private readonly IItemFactory ItemFactory = itemFactory;

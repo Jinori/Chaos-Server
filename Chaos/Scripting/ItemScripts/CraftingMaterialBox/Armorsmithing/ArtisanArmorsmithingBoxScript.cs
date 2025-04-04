@@ -3,7 +3,7 @@ using Chaos.Models.World;
 using Chaos.Scripting.ItemScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.ItemScripts.CraftingMaterialBox;
+namespace Chaos.Scripting.ItemScripts.CraftingMaterialBox.Armorsmithing;
 
 public class ArtisanArmorsmithingBoxScript : ItemScriptBase
 {
@@ -20,24 +20,18 @@ public class ArtisanArmorsmithingBoxScript : ItemScriptBase
         source.Inventory.RemoveQuantity(Subject.Slot, 1);
 
         // Generate random quantities of Wool and Silk
-        var woolAmount = Random.Next(2, 7); // 3-7
-        var silkAmount = Random.Next(2, 7); // 3-7
+        var woolAmount = Random.Next(4, 20); // 5-20
 
         // Create items
         var wool = _itemFactory.Create("wool");
-        var silk = _itemFactory.Create("silk");
 
         for (var i = 0; i < woolAmount; i++)
             source.GiveItemOrSendToBank(_itemFactory.Create("wool"));
 
-        for (var i = 0; i < silkAmount; i++)
-            source.GiveItemOrSendToBank(_itemFactory.Create("silk"));
-
         // Add items to the player's inventory
         source.GiveItemOrSendToBank(wool);
-        source.GiveItemOrSendToBank(silk);
 
         // Notify the player
-        source.SendOrangeBarMessage($"You received {woolAmount + 1} Wool and {silkAmount + 1} Silk!");
+        source.SendOrangeBarMessage($"You received {woolAmount + 1} Wool!");
     }
 }

@@ -3,15 +3,15 @@ using Chaos.Models.World;
 using Chaos.Scripting.ItemScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.ItemScripts.CraftingMaterialBox;
+namespace Chaos.Scripting.ItemScripts.CraftingMaterialBox.Jewelcrafting;
 
-public class LargeJewelcraftingBoxScript : ItemScriptBase
+public class NoviceJewelcraftingBoxScript : ItemScriptBase
 {
     private static readonly Random Random = new();
 
     private readonly IItemFactory _itemFactory;
 
-    public LargeJewelcraftingBoxScript(Item subject, IItemFactory itemFactory)
+    public NoviceJewelcraftingBoxScript(Item subject, IItemFactory itemFactory)
         : base(subject)
         => _itemFactory = itemFactory;
 
@@ -19,12 +19,12 @@ public class LargeJewelcraftingBoxScript : ItemScriptBase
     {
         source.Inventory.RemoveQuantity(Subject.Slot, 1);
 
-        // Generate random quantities of raw gems
-        var rubyAmount = Random.Next(2, 7); // 3-7
-        var sapphireAmount = Random.Next(2, 7); // 3-7
-        var emeraldAmount = Random.Next(2, 7); // 3-7
-        var berylAmount = Random.Next(2, 7); // 3-7
-        var heartstoneAmount = Random.Next(2, 7); // 3-7
+        // Generate random quantities of Linen and Cotton
+        var rubyAmount = Random.Next(0, 3); // 1-3
+        var sapphireAmount = Random.Next(0, 3); // 1-3
+        var emeraldAmount = Random.Next(0, 3); // 1-3
+        var berylAmount = Random.Next(0, 3); // 1-3
+        var heartstoneAmount = Random.Next(0, 3); // 1-3
 
         // Create items
         var ruby = _itemFactory.Create("rawruby");
@@ -55,7 +55,9 @@ public class LargeJewelcraftingBoxScript : ItemScriptBase
         source.GiveItemOrSendToBank(beryl);
         source.GiveItemOrSendToBank(heartstone);
 
+        var totalgems = rubyAmount + heartstoneAmount + sapphireAmount + emeraldAmount + berylAmount + 5;
+
         // Notify the player
-        source.SendOrangeBarMessage("You received alot of raw gems!");
+        source.SendOrangeBarMessage($"You received {totalgems} raw gems!");
     }
 }

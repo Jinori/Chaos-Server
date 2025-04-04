@@ -3,14 +3,14 @@ using Chaos.Models.World;
 using Chaos.Scripting.ItemScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.ItemScripts.CraftingMaterialBox;
+namespace Chaos.Scripting.ItemScripts.CraftingMaterialBox.Enchanting;
 
-public class LargeEnchantingBoxScript : ItemScriptBase
+public class NoviceEnchantingBoxScript : ItemScriptBase
 {
     private static readonly Random Random = new();
     private readonly IItemFactory _itemFactory;
 
-    public LargeEnchantingBoxScript(Item subject, IItemFactory itemFactory)
+    public NoviceEnchantingBoxScript(Item subject, IItemFactory itemFactory)
         : base(subject)
         => _itemFactory = itemFactory;
 
@@ -18,8 +18,7 @@ public class LargeEnchantingBoxScript : ItemScriptBase
     {
         source.Inventory.RemoveQuantity(Subject.Slot, 1);
 
-        // Generate a random number of essences to give between 10 and 20
-        var totalEssences = Random.Next(9, 20); // Random number between 10 and 20
+        var totalEssences = Random.Next(2, 8);
 
         // List of essence types to distribute
         var essences = new[]
@@ -45,6 +44,6 @@ public class LargeEnchantingBoxScript : ItemScriptBase
         }
 
         // Notify the player
-        source.SendOrangeBarMessage($"You received {totalEssences + 1} random essences of the gods!");
+        source.SendOrangeBarMessage($"You received {totalEssences} random essences of the gods!");
     }
 }

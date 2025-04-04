@@ -13,19 +13,24 @@ public class DCEasyLockedChestScript(Dialog subject, IItemFactory itemFactory) :
 {
     private static readonly List<KeyValuePair<string, decimal>> ChestPrizes =
     [
-        new("leafnecklace", 3),
+        // Accessories
+        new("leafnecklace", 4),
         new("salveearrings", 8),
         new("powerearrings", 8),
-        new("hybrasylbattleaxe", 2),
-        new("nunchaku", 2),
-        new("oakstaff", 2),
-        new("nagetierdagger", 2),
-        new("staffofwisdom", 2),
-        new("largejewelcraftingbox", 15),
-        new("largeenchantingbox", 15),
-        new("artisanweaponsmithingbox", 15),
-        new("artisanarmorsmithingbox", 15),
-        new("artisanalchemybox", 15)
+
+        // Weapons (increased from 1 to 4 each)
+        new("hybrasylbattleaxe", 4),
+        new("nunchaku", 4),
+        new("oakstaff", 4),
+        new("nagetierdagger", 4),
+        new("staffofwisdom", 4),
+
+        // Crafting boxes (reduced from 15 to 12 each)
+        new("adeptjewelcraftingbox", 12),
+        new("adeptenchantingbox", 12),
+        new("adeptweaponsmithingbox", 12),
+        new("adeptarmorsmithingbox", 12),
+        new("adeptalchemybox", 12)
     ];
 
     private readonly IItemFactory ItemFactory = itemFactory;

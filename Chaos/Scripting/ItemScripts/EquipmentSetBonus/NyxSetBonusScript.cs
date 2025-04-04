@@ -42,7 +42,10 @@ public class NyxSetBonusScript : SetBonusItemScriptBase
         "nyxembrace",
         "nyxwhisper",
         "nyxtwilightband",
-        "nyxumbralshield"
+        "nyxumbralshield",
+        "grandnyxumbralshield",
+        "goodnyxumbralshield",
+        "greatnyxumbralshield",
     };
 
     public NyxSetBonusScript(Item subject)

@@ -77,9 +77,13 @@ public class ArenaBattleRingScript : DialogScriptBase
                     return;
                 }
 
-                source.StatSheet.SetHealthPct(100);
-                source.StatSheet.SetManaPct(100);
-                source.Client.SendAttributes(StatUpdateType.Vitality);
+                if (!source.MapInstance.Template.TemplateKey.Equals("349", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    source.StatSheet.SetHealthPct(100);
+                    source.StatSheet.SetManaPct(100);
+                    source.Client.SendAttributes(StatUpdateType.Vitality);
+                }
+
 
                 var mapInstance = SimpleCache.Get<MapInstance>("arena_battle_ring");
                 source.TraverseMap(mapInstance, new Point(3, 3));
@@ -97,9 +101,12 @@ public class ArenaBattleRingScript : DialogScriptBase
                     return;
                 }
 
-                source.StatSheet.SetHealthPct(100);
-                source.StatSheet.SetManaPct(100);
-                source.Client.SendAttributes(StatUpdateType.Vitality);
+                if (!source.MapInstance.Template.TemplateKey.Equals("349", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    source.StatSheet.SetHealthPct(100);
+                    source.StatSheet.SetManaPct(100);
+                    source.Client.SendAttributes(StatUpdateType.Vitality);
+                }
 
                 var mapInstance = SimpleCache.Get<MapInstance>("arena_battle_ring");
                 source.TraverseMap(mapInstance, new Point(53, 3));
@@ -117,9 +124,12 @@ public class ArenaBattleRingScript : DialogScriptBase
                     return;
                 }
 
-                source.StatSheet.SetHealthPct(100);
-                source.StatSheet.SetManaPct(100);
-                source.Client.SendAttributes(StatUpdateType.Vitality);
+                if (!source.MapInstance.Template.TemplateKey.Equals("349", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    source.StatSheet.SetHealthPct(100);
+                    source.StatSheet.SetManaPct(100);
+                    source.Client.SendAttributes(StatUpdateType.Vitality);
+                }
 
                 var mapInstance = SimpleCache.Get<MapInstance>("arena_battle_ring");
                 source.TraverseMap(mapInstance, new Point(53, 53));
@@ -137,15 +147,109 @@ public class ArenaBattleRingScript : DialogScriptBase
                     return;
                 }
 
-                source.StatSheet.SetHealthPct(100);
-                source.StatSheet.SetManaPct(100);
-                source.Client.SendAttributes(StatUpdateType.Vitality);
+                if (!source.MapInstance.Template.TemplateKey.Equals("349", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    source.StatSheet.SetHealthPct(100);
+                    source.StatSheet.SetManaPct(100);
+                    source.Client.SendAttributes(StatUpdateType.Vitality);
+                }
 
                 var mapInstance = SimpleCache.Get<MapInstance>("arena_battle_ring");
                 source.TraverseMap(mapInstance, new Point(3, 53));
 
                 break;
             }
+
+            case "alex_innernorth":
+            {
+                Subject.Close(source);
+
+                if (source.Effects.Contains("Arena Revive"))
+                {
+                    source.SendActiveMessage("You must wait to enter the Battle Ring.");
+
+                    return;
+                }
+
+                if (!source.MapInstance.Template.TemplateKey.Equals("349", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    source.StatSheet.SetHealthPct(100);
+                    source.StatSheet.SetManaPct(100);
+                    source.Client.SendAttributes(StatUpdateType.Vitality);
+                }
+
+
+                source.WarpTo(new Point(18, 18));
+
+                break;
+            }
+            case "alex_innereast":
+            {
+                Subject.Close(source);
+
+                if (source.Effects.Contains("Arena Revive"))
+                {
+                    source.SendActiveMessage("You must wait to enter the Battle Ring.");
+
+                    return;
+                }
+
+                if (!source.MapInstance.Template.TemplateKey.Equals("349", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    source.StatSheet.SetHealthPct(100);
+                    source.StatSheet.SetManaPct(100);
+                    source.Client.SendAttributes(StatUpdateType.Vitality);
+                }
+
+                source.WarpTo(new Point(38, 18));
+
+                break;
+            }
+            case "alex_innersouth":
+            {
+                Subject.Close(source);
+
+                if (source.Effects.Contains("Arena Revive"))
+                {
+                    source.SendActiveMessage("You must wait to enter the Battle Ring.");
+
+                    return;
+                }
+
+                if (!source.MapInstance.Template.TemplateKey.Equals("349", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    source.StatSheet.SetHealthPct(100);
+                    source.StatSheet.SetManaPct(100);
+                    source.Client.SendAttributes(StatUpdateType.Vitality);
+                }
+
+                source.WarpTo(new Point(38, 38));
+
+                break;
+            }
+            case "alex_innerwest":
+            {
+                Subject.Close(source);
+
+                if (source.Effects.Contains("Arena Revive"))
+                {
+                    source.SendActiveMessage("You must wait to enter the Battle Ring.");
+
+                    return;
+                }
+
+                if (!source.MapInstance.Template.TemplateKey.Equals("349", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    source.StatSheet.SetHealthPct(100);
+                    source.StatSheet.SetManaPct(100);
+                    source.Client.SendAttributes(StatUpdateType.Vitality);
+                }
+
+                source.WarpTo(new Point(18, 38));
+
+                break;
+            }
+
 
             case "alex_hostedstaging":
             {

@@ -33,7 +33,7 @@ public class Flee2NdFloorScript(Dialog subject, ISimpleCache simpleCache) : Dial
         {
                 case "terminus_initial":
                 {
-                    if (MapKeys.ContainsI(source.MapInstance.InstanceId))
+                    if (!MapKeys.ContainsI(source.MapInstance.InstanceId))
                         return;
                     
                     var option = new DialogOption

@@ -13,19 +13,25 @@ public class DCMediumLockedChestScript(Dialog subject, IItemFactory itemFactory)
 {
     private static readonly List<KeyValuePair<string, decimal>> ChestPrizes =
     [
-        new("blackstonering", 8),
-        new("ringoffire", 8),
-        new("largeemeraldring", 8),
-        new("scurvygauntlet", 8),
-        new("scurvygreaves", 8),
-        new("amorphousgauntlet", 8),
-        new("radiantpearl", 10),
-        new("eclipsepearl", 10),
-        new("largejewelcraftingbox", 15),
-        new("largeenchantingbox", 15),
-        new("artisanweaponsmithingbox", 15),
-        new("artisanarmorsmithingbox", 15),
-        new("artisanalchemybox", 15)
+        // Group 1: 7 “other” items => weight = 4
+        new("blackstonering", 4),
+        new("ringoffire", 4),
+        new("largeemeraldring", 4),
+        new("scurvygauntlet", 4),
+        new("scurvygreaves", 4),
+        new("reinforcedspikedgreaves", 4),
+        new("amorphousgauntlet", 4),
+
+        // Group 2: 2 pearls => weight = 11
+        new("radiantpearl", 11),
+        new("eclipsepearl", 11),
+
+        // Group 3: 5 boxes => weight = 10
+        new("advancedjewelcraftingbox", 10),
+        new("advancedenchantingbox", 10),
+        new("advancedweaponsmithingbox", 10),
+        new("advancedarmorsmithingbox", 10),
+        new("advancedalchemybox", 10)
     ];
 
     private readonly IItemFactory ItemFactory = itemFactory;

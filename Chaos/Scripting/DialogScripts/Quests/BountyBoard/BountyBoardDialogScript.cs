@@ -20,12 +20,21 @@ public class BountyBoardDialogScript : DialogScriptBase
 {
     private static readonly List<KeyValuePair<string, decimal>> EpicRewards =
     [
-        new("nyxtwilightband", 16),
-        new("nyxumbralshield", 10),
-        new("nyxwhisper", 13),
-        new("nyxembrace", 13),
-        new("radiantpearl", 24),
-        new("eclipsepearl", 24)
+        new("nyxumbralshield", 4), // Lowest
+        new("nyxtwilightband", 7),
+        new("nyxwhisper", 8),
+        new("nyxembrace", 9),
+
+        // Pearls (same value, less than boxes)
+        new("radiantpearl", 6),
+        new("eclipsepearl", 6),
+
+        // Crafting boxes (all the same value)
+        new("advancedalchemybox", 12),
+        new("advancedweaponsmithingbox", 12),
+        new("advancedenchantingbox", 12),
+        new("advancedjewelcraftingbox", 12),
+        new("advancedarmorsmithingbox", 12)
     ];
 
     private readonly IItemFactory ItemFactory;
@@ -556,9 +565,37 @@ public class BountyBoardDialogScript : DialogScriptBase
                         exp = 175000000;
                         gamepoints = 100;
 
+                        // Start by picking an item
                         var firstItemDefinition = EpicRewards.PickRandomWeighted();
                         var firstItemReward = ItemFactory.Create(firstItemDefinition);
 
+                        var isNyx = firstItemReward.Template.TemplateKey.Contains("nyx", StringComparison.OrdinalIgnoreCase);
+
+                        // Check how many the player already has
+                        var amountInventory = source.Inventory.CountOfByTemplateKey(firstItemReward.Template.TemplateKey);
+                        var amountBanked = source.Bank.CountOf(firstItemReward.Template.TemplateKey);
+                        var totalAmount = amountInventory + amountBanked;
+
+                        // If it’s Nyx and the player already has >= 2, keep picking until valid
+                        const int MAX_ATTEMPTS = 50;
+                        var attempts = 0;
+
+                        while (isNyx && (totalAmount >= 3) && (attempts < MAX_ATTEMPTS))
+                        {
+                            // Pick again
+                            firstItemDefinition = EpicRewards.PickRandomWeighted();
+                            firstItemReward = ItemFactory.Create(firstItemDefinition);
+
+                            // Re-check
+                            isNyx = firstItemReward.Template.TemplateKey.Contains("nyx", StringComparison.OrdinalIgnoreCase);
+                            amountInventory = source.Inventory.CountOfByTemplateKey(firstItemReward.Template.TemplateKey);
+                            amountBanked = source.Bank.CountOf(firstItemReward.Template.TemplateKey);
+                            totalAmount = amountInventory + amountBanked;
+
+                            attempts++;
+                        }
+
+                        // Finally, give the chosen item
                         source.GiveItemOrSendToBank(firstItemReward);
 
                         source.Legend.AddOrAccumulate(
