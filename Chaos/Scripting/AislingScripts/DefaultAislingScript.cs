@@ -339,7 +339,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         ExperienceDistributionScript = DefaultExperienceDistributionScript.Create();
         SleepAnimationTimer = new IntervalTimer(TimeSpan.FromSeconds(5), false);
         ClearOrangeBarTimer = new IntervalTimer(TimeSpan.FromSeconds(WorldOptions.Instance.ClearOrangeBarTimerSecs), false);
-        PickupUndineEggsTimer = new IntervalTimer(TimeSpan.FromMilliseconds(300), false);
+        PickupUndineEggsTimer = new IntervalTimer(TimeSpan.FromMilliseconds(100), false);
 
         CleanupSkillsSpellsTimer = new RandomizedIntervalTimer(
             TimeSpan.FromMinutes(3),
@@ -2298,6 +2298,53 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         }
     }
 
+    private void PickupUndineEggs()
+    {
+        var egg = Subject.MapInstance
+                         .GetEntitiesAtPoints<GroundItem>(Subject)
+                         .FirstOrDefault(x => x.Name is "Undine Chicken Egg" or "Undine Golden Chicken Egg");
+
+        switch (egg?.Item.DisplayName)
+        {
+            case "Undine Chicken Egg":
+            {
+                var item = ItemFactory.Create("undinechickenegg");
+
+                if (!Subject.Inventory.TryAddToNextSlot(item))
+                {
+                    Subject.SendOrangeBarMessage("You need space to pickup eggs!");
+
+                    return;
+                }
+
+                Subject.MapInstance.RemoveEntity(egg);
+                Subject.SendPersistentMessage($"{Subject.Inventory.CountOf("Undine Chicken Egg")} eggs!");
+
+                break;
+            }
+            case "Undine Golden Chicken Egg":
+            {
+                var item = ItemFactory.Create("undinegoldenchickenegg");
+
+                if (!Subject.Inventory.TryAddToNextSlot(item))
+                {
+                    Subject.SendOrangeBarMessage("You need space to pickup Golden eggs!");
+
+                    return;
+                }
+
+                Subject.MapInstance.RemoveEntity(egg);
+                Subject.SendPersistentMessage($"{Subject.Inventory.CountOf("Undine Golden Chicken Egg")} golden eggs!");
+                Subject.Client.SendSound(177, false);
+
+                foreach (var bunny in Subject.MapInstance.GetEntities<Monster>())
+                    bunny.Trackers.Counters.AddOrIncrement("Frightened");
+
+                break;
+            }
+        }
+    }
+    
     public override void Update(TimeSpan delta)
     {
         SleepAnimationTimer.Update(delta);
@@ -2309,51 +2356,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         PickupUndineEggsTimer.Update(delta);
 
         if (PickupUndineEggsTimer.IntervalElapsed)
-        {
-            var egg = Subject.MapInstance
-                             .GetEntitiesAtPoints<GroundItem>(Subject)
-                             .FirstOrDefault(x => x.Name is "Undine Chicken Egg" or "Undine Golden Chicken Egg");
-
-            switch (egg?.Item.DisplayName)
-            {
-                case "Undine Chicken Egg":
-                {
-                    var item = ItemFactory.Create("undinechickenegg");
-
-                    if (!Subject.Inventory.TryAddToNextSlot(item))
-                    {
-                        Subject.SendOrangeBarMessage("You need space to pickup eggs!");
-
-                        return;
-                    }
-
-                    Subject.MapInstance.RemoveEntity(egg);
-                    Subject.SendPersistentMessage($"{Subject.Inventory.CountOf("Undine Chicken Egg")} eggs!");
-
-                    break;
-                }
-                case "Undine Golden Chicken Egg":
-                {
-                    var item = ItemFactory.Create("undinegoldenchickenegg");
-
-                    if (!Subject.Inventory.TryAddToNextSlot(item))
-                    {
-                        Subject.SendOrangeBarMessage("You need space to pickup Golden eggs!");
-
-                        return;
-                    }
-
-                    Subject.MapInstance.RemoveEntity(egg);
-                    Subject.SendPersistentMessage($"{Subject.Inventory.CountOf("Undine Golden Chicken Egg")} golden eggs!");
-                    Subject.Client.SendSound(177, false);
-
-                    foreach (var bunny in Subject.MapInstance.GetEntities<Monster>())
-                        bunny.Trackers.Counters.AddOrIncrement("Frightened");
-
-                    break;
-                }
-            }
-        }
+            PickupUndineEggs();
 
         if (CleanupSkillsSpellsTimer.IntervalElapsed && !Subject.IsDiacht())
         {
