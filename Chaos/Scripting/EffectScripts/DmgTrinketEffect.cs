@@ -8,7 +8,7 @@ public class DmgTrinketEffect : EffectBase
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromHours(6);
     public override byte Icon => 87;
-    public override string Name => "Dmg Trinket";
+    public override string Name => "DmgTrinket";
 
     public override void OnApplied()
     {
