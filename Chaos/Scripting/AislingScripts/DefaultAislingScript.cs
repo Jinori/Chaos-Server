@@ -1,4 +1,5 @@
 #region
+using System.Reactive.Subjects;
 using System.Text;
 using Chaos.Collections;
 using Chaos.Collections.Abstractions;
@@ -1369,7 +1370,25 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     {
         if (item.Template.TemplateKey.EqualsI("DivineStaff") && !Subject.IsPurePriestMaster())
         {
+            // Prevent duplicate replacements by ensuring only one match
+            if (!Subject.Inventory.ContainsByTemplateKey("DivineStaff") &&
+                !Subject.Equipment.ContainsByTemplateKey("DivineStaff") &&
+                !Subject.Bank.Any(i => i.Template.TemplateKey.EqualsI("DivineStaff")))
+                return;
+
+            // Remove from all possible locations
             Subject.Inventory.RemoveByTemplateKey("DivineStaff");
+            Subject.Equipment.RemoveByTemplateKey("DivineStaff");
+
+            var bankItem = Subject.Bank.FirstOrDefault(i => i.Template.TemplateKey.EqualsI("DivineStaff"));
+            
+            if (bankItem != null)
+            {
+                Subject.Bank.TryWithdraw(bankItem.Template.Name, 1, out _);
+                Subject.Inventory.RemoveByTemplateKey("DivineStaff");
+            }
+
+            // Only give 1 replacement
             var celestialstaff = ItemFactory.Create("celestialstaff");
             Subject.GiveItemOrSendToBank(celestialstaff);
             Subject.SendOrangeBarMessage("Your Divine Staff has been replaced with a Celestial Staff.");
