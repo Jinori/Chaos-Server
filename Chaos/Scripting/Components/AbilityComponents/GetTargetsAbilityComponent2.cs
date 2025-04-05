@@ -31,8 +31,11 @@ public struct GetTargetsAbilityComponent2<TEntity> : IConditionalComponent where
 
         var targetEntities = map.GetEntitiesAtPoints<TEntity>(targetPoints)
                                 .WithFilter(context.Source, options.Filter2)
-                                .ExcludeHiddenGms()
                                 .ToList();
+        
+        if (context.SourceAisling is { IsAdmin: false })
+            targetEntities = targetEntities.ExcludeHiddenGms()
+                                           .ToList();
 
         if (options.StopOnFirstHit2)
             targetEntities = targetEntities.Where(
