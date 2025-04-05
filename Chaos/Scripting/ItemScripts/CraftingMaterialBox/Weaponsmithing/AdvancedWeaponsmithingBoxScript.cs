@@ -19,9 +19,8 @@ public class AdvancedWeaponsmithingBoxScript : ItemScriptBase
     {
         source.Inventory.RemoveQuantity(Subject.Slot, 1);
 
-        // Generate random quantities of Mythril and Hy-Brasyl
-        var azuriumAmount = Random.Next(4, 15); // 3-7
-        var crimsoniteAmount = Random.Next(4, 15); // 3-7
+        var azuriumAmount = Random.Next(4, 15); // 5-15
+        var crimsoniteAmount = Random.Next(4, 15); // 5-15
 
         // Create items
         var azurium = _itemFactory.Create("rawazurium");

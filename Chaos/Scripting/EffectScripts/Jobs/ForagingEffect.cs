@@ -95,7 +95,7 @@ public class ForagingEffect(IItemFactory itemFactory, ILogger<ForagingEffect> lo
             "Raineach", 0.01
         },
         {
-            "Sparkflower", 0.01
+            "Spark Flower", 0.01
         }
     };
 

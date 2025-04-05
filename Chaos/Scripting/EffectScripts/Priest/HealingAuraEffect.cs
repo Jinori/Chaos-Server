@@ -15,7 +15,7 @@ namespace Chaos.Scripting.EffectScripts.Priest;
 public class HealingAuraEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(20);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(15);
 
     private Creature SourceOfEffect { get; set; } = null!;
 

@@ -2518,7 +2518,6 @@ public static class CraftingRequirements
                 Difficulty = 7
             }
         },
-
         {
             JewelcraftingRecipes2.AzuriumBerylRing, new Recipe
             {

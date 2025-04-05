@@ -1,5 +1,4 @@
 #region
-using System.Reactive.Subjects;
 using System.Text;
 using Chaos.Collections;
 using Chaos.Collections.Abstractions;
@@ -122,6 +121,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     private readonly IDialogFactory DialogFactory;
     private readonly IEffectFactory EffectFactory;
     private readonly IItemFactory ItemFactory;
+    private readonly ILogger<DefaultAislingScript> logger;
     private readonly ILogger<DefaultAislingScript> Logger;
     private readonly IStore<MailBox> MailStore;
 
@@ -328,6 +328,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     {
         MailStore = mailStore;
         BoardStore = boardStore;
+        this.logger = logger;
         Logger = logger;
         ItemFactory = itemFactory;
         SpellFactory = spellFactory;
@@ -1370,23 +1371,10 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     {
         if (item.Template.TemplateKey.EqualsI("DivineStaff") && !Subject.IsPurePriestMaster())
         {
-            // Prevent duplicate replacements by ensuring only one match
-            if (!Subject.Inventory.ContainsByTemplateKey("DivineStaff") &&
-                !Subject.Equipment.ContainsByTemplateKey("DivineStaff") &&
-                !Subject.Bank.Any(i => i.Template.TemplateKey.EqualsI("DivineStaff")))
-                return;
-
             // Remove from all possible locations
             Subject.Inventory.RemoveByTemplateKey("DivineStaff");
             Subject.Equipment.RemoveByTemplateKey("DivineStaff");
-
-            var bankItem = Subject.Bank.FirstOrDefault(i => i.Template.TemplateKey.EqualsI("DivineStaff"));
-            
-            if (bankItem != null)
-            {
-                Subject.Bank.TryWithdraw(bankItem.Template.Name, 1, out _);
-                Subject.Inventory.RemoveByTemplateKey("DivineStaff");
-            }
+            Subject.Bank.TryWithdraw("Divine Staff", 1, out _);
 
             // Only give 1 replacement
             var celestialstaff = ItemFactory.Create("celestialstaff");
@@ -1396,23 +1384,63 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
         if (item.Template.TemplateKey.EqualsI("invisiblehelmet"))
         {
-            Subject.Inventory.Remove("Invisible Helmet");
-            Subject.TryGiveGamePoints(100);
+            if (Subject.Inventory.Remove("Invisible Helmet"))
+            {
+                Subject.TryGiveGamePoints(100);
+
+                Logger.WithTopics(Topics.Entities.Aisling)
+                      .WithProperty(Subject)
+                      .LogInformation("Aisling {@AislingName} received 100 gamepoints from Invisible Helmet in inventory", Subject.Name);
+            }
+
+            if (Subject.Bank.TryWithdraw("Invisible Helmet", 1, out _))
+            {
+                Subject.TryGiveGamePoints(100);
+
+                Logger.WithTopics(Topics.Entities.Aisling)
+                      .WithProperty(Subject)
+                      .LogInformation("Aisling {@AislingName} received 100 gamepoints from Invisible Helmet in bank", Subject.Name);
+            }
+
+            if (Subject.Equipment.Remove("Invisible Helmet"))
+            {
+                Subject.TryGiveGamePoints(100);
+
+                Logger.WithTopics(Topics.Entities.Aisling)
+                      .WithProperty(Subject)
+                      .LogInformation("Aisling {@AislingName} received 100 gamepoints from Invisible Helmet in equipment", Subject.Name);
+            }
         }
 
         if (item.Template.TemplateKey.EqualsI("invisibleshield"))
         {
-            Subject.Inventory.Remove("Invisible Shield");
-            Subject.TryGiveGamePoints(100);
-        }
-
-        if (Subject.Bank.Contains("Invisible Helmet"))
-            if (Subject.Bank.TryWithdraw("Invisible Helmet", 1, out _))
+            if (Subject.Inventory.Remove("Invisible Shield"))
+            {
                 Subject.TryGiveGamePoints(100);
 
-        if (Subject.Bank.Contains("Invisible Shield"))
+                Logger.WithTopics(Topics.Entities.Aisling)
+                      .WithProperty(Subject)
+                      .LogInformation("Aisling {@AislingName} received 100 gamepoints from Invisible Shield in inventory", Subject.Name);
+            }
+
             if (Subject.Bank.TryWithdraw("Invisible Shield", 1, out _))
+            {
                 Subject.TryGiveGamePoints(100);
+
+                Logger.WithTopics(Topics.Entities.Aisling)
+                      .WithProperty(Subject)
+                      .LogInformation("Aisling {@AislingName} received 100 gamepoints from Invisible Shield in bank", Subject.Name);
+            }
+
+            if (Subject.Equipment.Remove("Invisible Shield"))
+            {
+                Subject.TryGiveGamePoints(100);
+
+                Logger.WithTopics(Topics.Entities.Aisling)
+                      .WithProperty(Subject)
+                      .LogInformation("Aisling {@AislingName} received 100 gamepoints from Invisible Shield in equipment", Subject.Name);
+            }
+        }
 
         if (item.Template.TemplateKey.EqualsI("smalljewelcraftingbox"))
         {
@@ -1423,6 +1451,14 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             Subject.Inventory.RemoveQuantityByTemplateKey("smalljewelcraftingbox", amount);
             Subject.GiveItemOrSendToBank(newBox);
             Subject.SendOrangeBarMessage($"Your {oldBox.DisplayName} ({amount}) swapped for {newBox.DisplayName} ({amount}).");
+
+            Logger.WithTopics(Topics.Entities.Aisling)
+                  .WithProperty(Subject)
+                  .LogInformation(
+                      "Aisling {@AislingName} received {amount} {newBox.DisplayName} from trade in",
+                      Subject.Name,
+                      amount,
+                      newBox.DisplayName);
         }
 
         if (Subject.Bank.Contains("Small Jewelcrafting Box"))
@@ -1434,6 +1470,14 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             Subject.Bank.TryWithdraw("Small Jewelcrafting Box", amount, out _);
             Subject.GiveItemOrSendToBank(newBox);
             Subject.SendOrangeBarMessage($"Your {oldBox.DisplayName} ({amount}) swapped for {newBox.DisplayName} ({amount}).");
+
+            Logger.WithTopics(Topics.Entities.Aisling)
+                  .WithProperty(Subject)
+                  .LogInformation(
+                      "Aisling {@AislingName} received {amount} {newBox.DisplayName} from trade in",
+                      Subject.Name,
+                      amount,
+                      newBox.DisplayName);
         }
 
         if (item.Template.TemplateKey.EqualsI("largejewelcraftingbox"))
@@ -1445,6 +1489,14 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             Subject.Inventory.RemoveQuantityByTemplateKey("largejewelcraftingbox", amount);
             Subject.GiveItemOrSendToBank(newBox);
             Subject.SendOrangeBarMessage($"Your {oldBox.DisplayName} ({amount}) swapped for {newBox.DisplayName} ({amount}).");
+
+            Logger.WithTopics(Topics.Entities.Aisling)
+                  .WithProperty(Subject)
+                  .LogInformation(
+                      "Aisling {@AislingName} received {amount} {newBox.DisplayName} from trade in",
+                      Subject.Name,
+                      amount,
+                      newBox.DisplayName);
         }
 
         if (Subject.Bank.Contains("Large Jewelcrafting Box"))
@@ -1456,6 +1508,14 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             newBox.Count = amount;
             Subject.Bank.TryWithdraw("Large Jewelcrafting Box", amount, out _);
             Subject.GiveItemOrSendToBank(newBox);
+
+            Logger.WithTopics(Topics.Entities.Aisling)
+                  .WithProperty(Subject)
+                  .LogInformation(
+                      "Aisling {@AislingName} received {amount} {newBox.DisplayName} from trade in",
+                      Subject.Name,
+                      amount,
+                      newBox.DisplayName);
         }
 
         if (item.Template.TemplateKey.EqualsI("basicalchemybox"))
@@ -1467,6 +1527,14 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             newBox.Count = amount;
             Subject.Inventory.RemoveQuantityByTemplateKey("basicalchemybox", amount);
             Subject.GiveItemOrSendToBank(newBox);
+
+            Logger.WithTopics(Topics.Entities.Aisling)
+                  .WithProperty(Subject)
+                  .LogInformation(
+                      "Aisling {@AislingName} received {amount} {newBox.DisplayName} from trade in",
+                      Subject.Name,
+                      amount,
+                      newBox.DisplayName);
         }
 
         if (Subject.Bank.Contains("Basic Alchemy Box"))
@@ -1478,6 +1546,14 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             newBox.Count = amount;
             Subject.Bank.TryWithdraw("Basic Alchemy Box", amount, out _);
             Subject.GiveItemOrSendToBank(newBox);
+
+            Logger.WithTopics(Topics.Entities.Aisling)
+                  .WithProperty(Subject)
+                  .LogInformation(
+                      "Aisling {@AislingName} received {amount} {newBox.DisplayName} from trade in",
+                      Subject.Name,
+                      amount,
+                      newBox.DisplayName);
         }
 
         if (item.Template.TemplateKey.EqualsI("basicarmorsmithingbox"))
@@ -1489,6 +1565,14 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             Subject.Inventory.RemoveQuantityByTemplateKey("basicarmorsmithingbox", amount);
             newBox.Count = amount;
             Subject.GiveItemOrSendToBank(newBox);
+
+            Logger.WithTopics(Topics.Entities.Aisling)
+                  .WithProperty(Subject)
+                  .LogInformation(
+                      "Aisling {@AislingName} received {amount} {newBox.DisplayName} from trade in",
+                      Subject.Name,
+                      amount,
+                      newBox.DisplayName);
         }
 
         if (Subject.Bank.Contains("Basic Armorsmithing Box"))
@@ -1500,6 +1584,14 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             newBox.Count = amount;
             Subject.Bank.TryWithdraw("Basic Armorsmithing Box", amount, out _);
             Subject.GiveItemOrSendToBank(newBox);
+
+            Logger.WithTopics(Topics.Entities.Aisling)
+                  .WithProperty(Subject)
+                  .LogInformation(
+                      "Aisling {@AislingName} received {amount} {newBox.DisplayName} from trade in",
+                      Subject.Name,
+                      amount,
+                      newBox.DisplayName);
         }
 
         if (item.Template.TemplateKey.EqualsI("largeenchantingbox"))
@@ -1511,6 +1603,14 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             newBox.Count = amount;
             Subject.Inventory.RemoveQuantityByTemplateKey("largeenchantingbox", amount);
             Subject.GiveItemOrSendToBank(newBox);
+
+            Logger.WithTopics(Topics.Entities.Aisling)
+                  .WithProperty(Subject)
+                  .LogInformation(
+                      "Aisling {@AislingName} received {amount} {newBox.DisplayName} from trade in",
+                      Subject.Name,
+                      amount,
+                      newBox.DisplayName);
         }
 
         if (Subject.Bank.Contains("Large Enchanting Box"))
@@ -1522,6 +1622,14 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             newBox.Count = amount;
             Subject.Bank.TryWithdraw("Large Enchanting Box", amount, out _);
             Subject.GiveItemOrSendToBank(newBox);
+
+            Logger.WithTopics(Topics.Entities.Aisling)
+                  .WithProperty(Subject)
+                  .LogInformation(
+                      "Aisling {@AislingName} received {amount} {newBox.DisplayName} from trade in",
+                      Subject.Name,
+                      amount,
+                      newBox.DisplayName);
         }
 
         if (item.Template.TemplateKey.EqualsI("basicweaponsmithing"))
@@ -1533,6 +1641,14 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             newBox.Count = amount;
             Subject.Inventory.RemoveQuantityByTemplateKey("basicweaponsmithing", amount);
             Subject.GiveItemOrSendToBank(newBox);
+
+            Logger.WithTopics(Topics.Entities.Aisling)
+                  .WithProperty(Subject)
+                  .LogInformation(
+                      "Aisling {@AislingName} received {amount} {newBox.DisplayName} from trade in",
+                      Subject.Name,
+                      amount,
+                      newBox.DisplayName);
         }
 
         if (Subject.Bank.Contains("Basic Weaponsmithing Box"))
@@ -1544,6 +1660,14 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             newBox.Count = amount;
             Subject.Bank.TryWithdraw("Basic Weaponsmithing Box", amount, out _);
             Subject.GiveItemOrSendToBank(newBox);
+
+            Logger.WithTopics(Topics.Entities.Aisling)
+                  .WithProperty(Subject)
+                  .LogInformation(
+                      "Aisling {@AislingName} received {amount} {newBox.DisplayName} from trade in",
+                      Subject.Name,
+                      amount,
+                      newBox.DisplayName);
         }
 
         if (item.Template.TemplateKey.EqualsI("smallenchantingbox"))
@@ -1555,6 +1679,14 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             newBox.Count = amount;
             Subject.Inventory.RemoveQuantityByTemplateKey("smallenchantingbox", amount);
             Subject.GiveItemOrSendToBank(newBox);
+
+            Logger.WithTopics(Topics.Entities.Aisling)
+                  .WithProperty(Subject)
+                  .LogInformation(
+                      "Aisling {@AislingName} received {amount} {newBox.DisplayName} from trade in",
+                      Subject.Name,
+                      amount,
+                      newBox.DisplayName);
         }
 
         if (Subject.Bank.Contains("Small Enchanting Box"))
@@ -1566,6 +1698,14 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             newBox.Count = amount;
             Subject.Bank.TryWithdraw("Small Enchanting Box", amount, out _);
             Subject.GiveItemOrSendToBank(newBox);
+
+            Logger.WithTopics(Topics.Entities.Aisling)
+                  .WithProperty(Subject)
+                  .LogInformation(
+                      "Aisling {@AislingName} received {amount} {newBox.DisplayName} from trade in",
+                      Subject.Name,
+                      amount,
+                      newBox.DisplayName);
         }
     }
 
@@ -2242,6 +2382,53 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         }
     }
 
+    private void PickupUndineEggs()
+    {
+        var egg = Subject.MapInstance
+                         .GetEntitiesAtPoints<GroundItem>(Subject)
+                         .FirstOrDefault(x => x.Name is "Undine Chicken Egg" or "Undine Golden Chicken Egg");
+
+        switch (egg?.Item.DisplayName)
+        {
+            case "Undine Chicken Egg":
+            {
+                var item = ItemFactory.Create("undinechickenegg");
+
+                if (!Subject.Inventory.TryAddToNextSlot(item))
+                {
+                    Subject.SendOrangeBarMessage("You need space to pickup eggs!");
+
+                    return;
+                }
+
+                Subject.MapInstance.RemoveEntity(egg);
+                Subject.SendPersistentMessage($"{Subject.Inventory.CountOf("Undine Chicken Egg")} eggs!");
+
+                break;
+            }
+            case "Undine Golden Chicken Egg":
+            {
+                var item = ItemFactory.Create("undinegoldenchickenegg");
+
+                if (!Subject.Inventory.TryAddToNextSlot(item))
+                {
+                    Subject.SendOrangeBarMessage("You need space to pickup Golden eggs!");
+
+                    return;
+                }
+
+                Subject.MapInstance.RemoveEntity(egg);
+                Subject.SendPersistentMessage($"{Subject.Inventory.CountOf("Undine Golden Chicken Egg")} golden eggs!");
+                Subject.Client.SendSound(177, false);
+
+                foreach (var bunny in Subject.MapInstance.GetEntities<Monster>())
+                    bunny.Trackers.Counters.AddOrIncrement("Frightened");
+
+                break;
+            }
+        }
+    }
+
     private void ProcessItemDurabilityAndScripts(IEnumerable<Item> items)
     {
         foreach (var item in items)
@@ -2479,53 +2666,6 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         }
     }
 
-    private void PickupUndineEggs()
-    {
-        var egg = Subject.MapInstance
-                         .GetEntitiesAtPoints<GroundItem>(Subject)
-                         .FirstOrDefault(x => x.Name is "Undine Chicken Egg" or "Undine Golden Chicken Egg");
-
-        switch (egg?.Item.DisplayName)
-        {
-            case "Undine Chicken Egg":
-            {
-                var item = ItemFactory.Create("undinechickenegg");
-
-                if (!Subject.Inventory.TryAddToNextSlot(item))
-                {
-                    Subject.SendOrangeBarMessage("You need space to pickup eggs!");
-
-                    return;
-                }
-
-                Subject.MapInstance.RemoveEntity(egg);
-                Subject.SendPersistentMessage($"{Subject.Inventory.CountOf("Undine Chicken Egg")} eggs!");
-
-                break;
-            }
-            case "Undine Golden Chicken Egg":
-            {
-                var item = ItemFactory.Create("undinegoldenchickenegg");
-
-                if (!Subject.Inventory.TryAddToNextSlot(item))
-                {
-                    Subject.SendOrangeBarMessage("You need space to pickup Golden eggs!");
-
-                    return;
-                }
-
-                Subject.MapInstance.RemoveEntity(egg);
-                Subject.SendPersistentMessage($"{Subject.Inventory.CountOf("Undine Golden Chicken Egg")} golden eggs!");
-                Subject.Client.SendSound(177, false);
-
-                foreach (var bunny in Subject.MapInstance.GetEntities<Monster>())
-                    bunny.Trackers.Counters.AddOrIncrement("Frightened");
-
-                break;
-            }
-        }
-    }
-    
     public override void Update(TimeSpan delta)
     {
         SleepAnimationTimer.Update(delta);
