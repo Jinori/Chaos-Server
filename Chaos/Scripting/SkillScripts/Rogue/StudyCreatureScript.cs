@@ -77,7 +77,7 @@ public class StudyCreatureScript : ConfigurableSkillScriptBase, GenericAbilityCo
         => element switch
         {
             Element.Fire     => $"{MessageColor.Red.ToPrefix()}FIRE{MessageColor.Orange.ToPrefix()}",
-            Element.Water    => $"{MessageColor.Blue.ToPrefix()}WATER{MessageColor.Orange.ToPrefix()}",
+            Element.Water    => $"{MessageColor.Silver.ToPrefix()}WATER{MessageColor.Orange.ToPrefix()}",
             Element.Earth    => $"{MessageColor.Yellow.ToPrefix()}EARTH{MessageColor.Orange.ToPrefix()}",
             Element.Wind     => $"{MessageColor.NeonGreen.ToPrefix()}WIND{MessageColor.Orange.ToPrefix()}",
             Element.None     => $"{MessageColor.Gray.ToPrefix()}NONE{MessageColor.Orange.ToPrefix()}",
@@ -93,7 +93,7 @@ public class StudyCreatureScript : ConfigurableSkillScriptBase, GenericAbilityCo
         => element switch
         {
             Element.Fire     => $"{MessageColor.Red.ToPrefix()}FIRE{MessageColor.Gray.ToPrefix()}",
-            Element.Water    => $"{MessageColor.Blue.ToPrefix()}WATER{MessageColor.Gray.ToPrefix()}",
+            Element.Water    => $"{MessageColor.Silver.ToPrefix()}WATER{MessageColor.Gray.ToPrefix()}",
             Element.Earth    => $"{MessageColor.Yellow.ToPrefix()}EARTH{MessageColor.Gray.ToPrefix()}",
             Element.Wind     => $"{MessageColor.NeonGreen.ToPrefix()}WIND{MessageColor.Gray.ToPrefix()}",
             Element.None     => $"{MessageColor.Gray.ToPrefix()}NONE{MessageColor.Gray.ToPrefix()}",

@@ -32,7 +32,7 @@ public class RegenerationEffect : ContinuousAnimationEffectBase
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000), false);
 
     /// <inheritdoc />
-    public override byte Icon => 98;
+    public override byte Icon => 82;
 
     /// <inheritdoc />
     public override string Name => "Regeneration";
