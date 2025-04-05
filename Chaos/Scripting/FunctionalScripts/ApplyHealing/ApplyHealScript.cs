@@ -14,27 +14,6 @@ public class ApplyHealScript : ScriptBase, IApplyHealScript
     public IHealFormula HealFormula { get; set; } = HealFormulae.Default;
 
     public static string Key { get; } = GetScriptKey(typeof(ApplyHealScript));
-
-    private int ApplyHealingBonuses(Creature source, int baseHealing)
-    {
-        if (baseHealing <= 0)
-            return 0;
-
-        var healing = baseHealing;
-
-        // Flat heal bonus
-        if (source.StatSheet.EffectiveHealBonus > 0)
-            healing += source.StatSheet.EffectiveHealBonus;
-
-        // Percent heal bonus
-        if (source.StatSheet.EffectiveHealBonusPct > 0)
-        {
-            var bonusPct = source.StatSheet.EffectiveHealBonusPct / 100m;
-            healing += (int)(healing * bonusPct);
-        }
-
-        return healing;
-    }
     
     public virtual void ApplyHeal(
         Creature source,
@@ -46,9 +25,7 @@ public class ApplyHealScript : ScriptBase, IApplyHealScript
 
         if (healing <= 0)
             return;
-
-        healing = ApplyHealingBonuses(source, healing);
-
+        
         switch (target)
         {
             case Aisling aisling:
