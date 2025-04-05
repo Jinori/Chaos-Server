@@ -77,19 +77,11 @@ public class HealingAuraEffect : ContinuousAnimationEffectBase
             var targetMaxHp = target.StatSheet.EffectiveMaximumHp;
             var baseHealAmount = wis * 5 + targetMaxHp * 0.02; // WIS multiplier + 2% of target's max HP
 
-            // Step 2: Add the source's EffectiveHealBonus to the base heal amount
-            var healBonus = SourceOfEffect.StatSheet.EffectiveHealBonus;
-            var totalHealWithBonus = baseHealAmount + healBonus;
-
-            // Step 3: Multiply the result by the source's EffectiveHealBonusPct
-            var healBonusPct = SourceOfEffect.StatSheet.EffectiveHealBonusPct / 100f;
-            var finalHealAmount = totalHealWithBonus * (1 + healBonusPct); // Add 1 to include the base amount
-
             ApplyHealScript.ApplyHeal(
                 SourceOfEffect,
                 target,
                 ApplyHealScript,
-                (int)finalHealAmount);
+                (int)baseHealAmount);
 
             // Notify the target
             target.Client.SendAttributes(StatUpdateType.Vitality);

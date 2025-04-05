@@ -53,21 +53,14 @@ public class RegenerationEffect : ContinuousAnimationEffectBase
         var wis = SourceOfEffect.StatSheet.Wis;
         var targetMaxHp = Subject.StatSheet.EffectiveMaximumHp;
         var baseHealAmount = wis * 5 + targetMaxHp / 100; // WIS multiplier + 1% of target's max HP
-
-        // Step 2: Add the source's EffectiveHealBonus to the base heal amount
-        var healBonus = SourceOfEffect.StatSheet.EffectiveHealBonus;
-        var totalHealWithBonus = baseHealAmount + healBonus;
-
-        // Step 3: Multiply the result by the source's EffectiveHealBonusPct
-        var healBonusPct = SourceOfEffect.StatSheet.EffectiveHealBonusPct / 100f;
-        var finalHealAmount = totalHealWithBonus * (1 + healBonusPct); // Add 1 to include the base amount
+        
 
         // Apply the calculated heal to the target
         ApplyHealScript.ApplyHeal(
             SourceOfEffect,
             Subject,
             ApplyHealScript,
-            (int)finalHealAmount);
+            (int)baseHealAmount);
 
         // Animate the target
         Subject.Animate(Animation);
