@@ -1,6 +1,7 @@
 using Chaos.Collections;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Models.World;
 using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Storage.Abstractions;
@@ -39,7 +40,7 @@ public sealed class DeclareWinnerScript : MapScriptBase
 
         // Filtering out the host if they are not playing
         var aliveAislings = GetAliveAislings(allAislings)
-                            .Where(aisling => IsHostPlaying || !IsHost(aisling))
+                            .Where(aisling => (!aisling.IsGodModeEnabled() && IsHostPlaying) || !IsHost(aisling))
                             .ToList();
 
         switch (aliveAislings.Count)
@@ -52,6 +53,7 @@ public sealed class DeclareWinnerScript : MapScriptBase
                 DeclareWinners(aliveAislings);
 
                 break;
+            
             default:
             {
                 if (aliveAislings.Any(x => x.Effects.Contains("HiddenHavocHide")) && (aliveAislings.Count <= 2))
@@ -193,7 +195,7 @@ public sealed class DeclareWinnerScript : MapScriptBase
         {
             DetermineIfTeamGameOrFfa = true;
 
-            var allAislings = Subject.GetEntities<Aisling>()
+            var allAislings = Subject.GetEntities<Aisling>().Where(x => !x.IsGodModeEnabled())
                                      .ToList();
 
             IsHostPlaying = Subject.GetEntities<Aisling>()
@@ -209,7 +211,7 @@ public sealed class DeclareWinnerScript : MapScriptBase
     private List<ArenaTeam> GetActiveTeams(IEnumerable<Aisling> allAislings)
     {
         var activeTeams = allAislings
-                          .Where(x => x.IsAlive && x.Trackers.Enums.TryGetValue(out ArenaTeam value) && (value != ArenaTeam.None))
+                          .Where(x => x.IsAlive && !x.IsGodModeEnabled() && x.Trackers.Enums.TryGetValue(out ArenaTeam value) && (value != ArenaTeam.None))
                           .Select(x => x.Trackers.Enums.TryGetValue(out ArenaTeam value) ? value : ArenaTeam.None)
                           .Distinct()
                           .ToList();
@@ -218,7 +220,7 @@ public sealed class DeclareWinnerScript : MapScriptBase
     }
 
     private IEnumerable<Aisling> GetAliveAislings(IEnumerable<Aisling> allAislings)
-        => allAislings.Where(x => x.IsAlive && (IsHostPlaying || !IsHost(x)))
+        => allAislings.Where(x => !x.IsGodModeEnabled() && x.IsAlive && (IsHostPlaying || !IsHost(x)))
                       .ToList();
 
     private bool IsHost(Aisling aisling)

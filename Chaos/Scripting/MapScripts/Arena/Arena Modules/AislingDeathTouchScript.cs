@@ -1,4 +1,5 @@
 using Chaos.Collections;
+using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 using Chaos.Models.World;
@@ -58,14 +59,14 @@ public sealed class AislingDeathTouchScript : MapScriptBase
     {
         var recentlyTalked = Subject.GetEntities<Aisling>()
                                     .Where(aisling => aisling.Trackers.LastTalk.HasValue &&
-                                                      (DateTime.UtcNow - aisling.Trackers.LastTalk.Value).TotalSeconds <= 1)
+                                                      ((DateTime.UtcNow - aisling.Trackers.LastTalk.Value).TotalSeconds <= 1))
                                     .ToList();
 
         if (recentlyTalked.Count > 1)
         {
             foreach (var aisling in recentlyTalked)
             {
-                ApplyDamageScript.ApplyDamage(aisling, aisling, this, 500_000);
+                ApplyDamageScript.ApplyDamage(aisling, aisling, this, 500000);
                 aisling.SendMessage("Shhh. Don't speak or die.");
                 Subject.ShowAnimation(_blowupAnimation.GetPointAnimation(aisling));
             }
@@ -76,7 +77,7 @@ public sealed class AislingDeathTouchScript : MapScriptBase
     {
         var ghosts = Subject.GetEntities<Aisling>()
                             .Where(aisling =>
-                                (aisling.IsDead && (aisling.X != _ghostPoint.X || aisling.Y != _ghostPoint.Y)) ||
+                                (aisling.IsDead && ((aisling.X != _ghostPoint.X) || (aisling.Y != _ghostPoint.Y))) ||
                                 !aisling.IsAlive);
 
         foreach (var ghost in ghosts)
@@ -100,7 +101,7 @@ public sealed class AislingDeathTouchScript : MapScriptBase
         if (!_aislingsTouching)
         {
             var living = Subject.GetEntities<Aisling>()
-                                .Where(x => x.IsAlive)
+                                .Where(x => x.IsAlive && !x.IsGodModeEnabled())
                                 .ToList();
 
             foreach (var aisling in living)
