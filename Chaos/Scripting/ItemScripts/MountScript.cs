@@ -1,4 +1,5 @@
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Scripting.ItemScripts.Abstractions;
@@ -104,17 +105,6 @@ public class MountScript(Item subject, IEffectFactory effectFactory) : ItemScrip
 
         // Add more mount and cloak combinations here as needed
     };
-
-    private readonly HashSet<string> ArenaKeys = new(StringComparer.OrdinalIgnoreCase)
-    {
-        "arena_battle_ring",
-        "arena_lava",
-        "arena_lavateams",
-        "arena_colorclash",
-        "arena_escort",
-        "mtmerry_frostychallenge"
-    };
-
     public override void OnUse(Aisling source)
     {
         if (source.Effects.Contains("Hide"))
@@ -138,7 +128,7 @@ public class MountScript(Item subject, IEffectFactory effectFactory) : ItemScrip
             return;
         }
 
-        if (ArenaKeys.Contains(source.MapInstance.LoadedFromInstanceId))
+        if (source.IsOnArenaMap())
         {
             source.SendOrangeBarMessage("You cannot mount on an arena map.");
 

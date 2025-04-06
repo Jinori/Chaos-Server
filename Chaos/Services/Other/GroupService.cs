@@ -1,6 +1,7 @@
 #region
 using Chaos.Collections;
 using Chaos.DarkAges.Definitions;
+using Chaos.Extensions;
 using Chaos.Messaging.Abstractions;
 using Chaos.Models.World;
 using Chaos.NLog.Logging.Definitions;
@@ -19,12 +20,14 @@ public sealed class GroupService(ILogger<GroupService> logger, IChannelService c
     private readonly HashSet<TimedRequest> PendingRequests = [];
     private readonly Lock Sync = new();
 
+    private static bool AreOnArenaMap(Aisling a, Aisling b) => a.IsOnArenaMap() && b.IsOnArenaMap();
+
     /// <inheritdoc />
     public void AcceptInvite(Aisling sender, Aisling receiver)
     {
         using var @lock = Sync.EnterScope();
         var key = new TimedRequest(sender.Name, receiver.Name);
-
+        
         if (!PendingInvites.TryGetValue(key, out var invite))
             return;
 
@@ -62,7 +65,8 @@ public sealed class GroupService(ILogger<GroupService> logger, IChannelService c
         {
             if (receiver.Group == null)
             {
-                if (sender.Group.Count >= WorldOptions.Instance.MaxGroupSize)
+                if (!AreOnArenaMap(sender, receiver) &&
+                    (sender.Group.Count >= WorldOptions.Instance.MaxGroupSize))
                 {
                     receiver.SendActiveMessage("The group is full");
 
@@ -113,7 +117,8 @@ public sealed class GroupService(ILogger<GroupService> logger, IChannelService c
                 receiver.Group = group;
             } else
             {
-                if (receiver.Group.Count >= WorldOptions.Instance.MaxGroupSize)
+                if (!AreOnArenaMap(sender, receiver) &&
+                    (receiver.Group.Count >= WorldOptions.Instance.MaxGroupSize))
                 {
                     sender.SendActiveMessage("The group is full");
 
@@ -204,7 +209,8 @@ public sealed class GroupService(ILogger<GroupService> logger, IChannelService c
         {
             if (receiver.Group == null)
             {
-                if (sender.Group.Count >= WorldOptions.Instance.MaxGroupSize)
+                if (!AreOnArenaMap(sender, receiver) &&
+                    (sender.Group.Count >= WorldOptions.Instance.MaxGroupSize))
                     sender.SendActiveMessage("Your group is full");
                 else
                     SendInvite(sender, receiver);
@@ -246,6 +252,10 @@ public sealed class GroupService(ILogger<GroupService> logger, IChannelService c
         }
 
         group.Kick(receiver);
+        
+        Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Group)
+              .WithProperty(sender)
+              .LogInformation("{@AislingName} kicked {@ReceiverName} from their group", sender.Name, receiver.Name);
     }
 
     /// <inheritdoc />
@@ -275,6 +285,10 @@ public sealed class GroupService(ILogger<GroupService> logger, IChannelService c
         }
 
         group.Promote(receiver);
+        
+        Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Group)
+              .WithProperty(sender)
+              .LogInformation("{@AislingName} promoted {@ReceiverName} to group leader", sender.Name, receiver.Name);
     }
 
     public void RequestToJoin(Aisling sender, Aisling receiver)
@@ -342,7 +356,8 @@ public sealed class GroupService(ILogger<GroupService> logger, IChannelService c
         {
             if (receiver.Group == null)
                 SendRequestToJoin(sender, receiver);
-            else if (receiver.Group.Count >= WorldOptions.Instance.MaxGroupSize)
+            else if (!AreOnArenaMap(sender, receiver) &&
+                     (receiver.Group.Count >= WorldOptions.Instance.MaxGroupSize))
                 sender.SendActiveMessage($"{receiver.Name}'s group is full");
             else
                 SendRequestToJoin(sender, receiver);
@@ -363,6 +378,10 @@ public sealed class GroupService(ILogger<GroupService> logger, IChannelService c
                 existingInvite.Refresh();
 
         receiver.Client.SendDisplayGroupInvite(ServerGroupSwitch.Invite, sender.Name);
+        
+        Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Group)
+              .WithProperty(sender)
+              .LogInformation("{@AislingName} invited {@ReceiverName} to join their group", sender.Name, receiver.Name);
     }
 
     private void SendRequestToJoin(Aisling sender, Aisling receiver)
@@ -377,6 +396,10 @@ public sealed class GroupService(ILogger<GroupService> logger, IChannelService c
                 existingInvite.Refresh();
 
         receiver.Client.SendDisplayGroupInvite(ServerGroupSwitch.Invite, sender.Name);
+        
+        Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Group)
+              .WithProperty(sender)
+              .LogInformation("{@AislingName} requested to join {@ReceiverName}'s group", sender.Name, receiver.Name);
     }
 
     private sealed record TimedRequest(string Sender, string Receiver) : IComparable<TimedRequest>

@@ -41,79 +41,6 @@ namespace Chaos.Scripting.AislingScripts;
 
 public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHealComponentOptions
 {
-    private static readonly HashSet<string> SkippedEffects =
-    [
-        "Arena Revive",
-        "Hot Chocolate",
-        "ValentinesCandy",
-        "Invulnerability",
-        "Mount",
-        "GMKnowledge",
-        "Strong Knowledge",
-        "Knowledge",
-        "Werewolf",
-        "Fishing",
-        "Foraging",
-        "Celebration",
-        "Marriage",
-        "DropBoost",
-        "DmgTrinket",
-        "Prevent Recradh",
-        "Miracle",
-        "Strength Potion",
-        "Intellect Potion",
-        "Wisdom Potion",
-        "Constitution Potion",
-        "Dexterity Potion",
-        "Small Haste",
-        "Haste",
-        "Strong Haste",
-        "Potent Haste",
-        "Small Power",
-        "Power",
-        "Strong Power",
-        "Potent Power",
-        "Small Accuracy",
-        "Accuracy",
-        "Strong Accuracy",
-        "Potent Accuracy",
-        "Juggernaut",
-        "Strong Juggernaut",
-        "Potent Juggernaut",
-        "Astral",
-        "Strong Astral",
-        "Potent Astral",
-        "Poison Immunity",
-        "Strong Stat Boost",
-        "Stat Boost",
-        "Dinner Plate",
-        "Sweet Buns",
-        "Fruit Basket",
-        "Lobster Dinner",
-        "Pie Acorn",
-        "Pie Apple",
-        "Pie Cherry",
-        "Pie Grape",
-        "PieGreengrapes",
-        "Pie Strawberry",
-        "Pie Tangerines",
-        "Salad",
-        "Sandwich",
-        "Soup",
-        "Steak Meal"
-    ];
-
-    private readonly HashSet<string> ArenaKeys = new(StringComparer.OrdinalIgnoreCase)
-    {
-        "arena_battle_ring",
-        "arena_lava",
-        "arena_lavateams",
-        "arena_colorclash",
-        "arena_escort",
-        "arena_hidden_havoc",
-        "arena_pitfight"
-    };
-
     private readonly IStore<BulletinBoard> BoardStore;
     private readonly IIntervalTimer CleanupSkillsSpellsTimer;
     private readonly IIntervalTimer ClearOrangeBarTimer;
@@ -121,135 +48,9 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     private readonly IDialogFactory DialogFactory;
     private readonly IEffectFactory EffectFactory;
     private readonly IItemFactory ItemFactory;
-    private readonly ILogger<DefaultAislingScript> logger;
     private readonly ILogger<DefaultAislingScript> Logger;
     private readonly IStore<MailBox> MailStore;
-
-    private readonly List<string> MapsToNotPunishDeathOn =
-    [
-        "Mr. Hopps's Home",
-        "Mythic",
-        "Nightmare",
-        "Cain's Farm",
-        "Labyrinth Battle Ring",
-        "Drowned Labyrinth - Pit",
-        "Lava Arena",
-        "Lava Arena - Teams",
-        "Color Clash - Teams",
-        "Hidden Havoc",
-        "Escort - Teams",
-        "Trial of Sacrifice",
-        "Trial of Combat",
-        "Trial of Luck",
-        "Trial of Intelligence",
-        "Mileth",
-        "Abel",
-        "Rucesion",
-        "Undine",
-        "Suomi",
-        "Loures Castle",
-        "Loures Castle Way",
-        "Tagor",
-        "Piet",
-        "Rucesion Village Way",
-        "Mileth Village Way",
-        "Abel Port",
-        "Suomi Village Way",
-        "Undine Village Way",
-        "Piet Village Way",
-        "Nobis",
-        "Macabre Yard",
-        "Macabre Mansion",
-        "Weapon Shop",
-        "Armor Shop",
-        "Rucesion Bank",
-        "Mileth Storage",
-        "Black Market",
-        "Rucesion Jeweler",
-        "Rucesion Church",
-        "Rucesion Casino",
-        "Rucesion Tailor",
-        "Skills Master",
-        "Rucesion Inn",
-        "Shrine of Skandara",
-        "Shrine of Miraelis",
-        "Shrine of Theselene",
-        "Shrine of Serendael",
-        "Piet Empty Room",
-        "Piet Inn",
-        "Mileth Inn",
-        "Abel Inn",
-        "Suomi Inn",
-        "Piet Storage",
-        "Mileth Storage",
-        "Piet Alchemy Lab",
-        "Piet Tavern",
-        "Mileth Tavern",
-        "Undine Tavern",
-        "Mileth Kitchen",
-        "Piet Restaurant",
-        "Piet Priestess",
-        "Piet Magic Shop",
-        "Piet Sewer Entrance",
-        "Tagor Forge",
-        "Tagor Inn",
-        "Tagor Messenger",
-        "Tagor Pet Store",
-        "Tagor Storage",
-        "Tagor Restaurant",
-        "Tagor Tavern",
-        "Tagor Church",
-        "Abel Combat Skill Master",
-        "Abel Fish Market",
-        "Abel Tavern",
-        "Abel Restaurant",
-        "Abel Empty Room",
-        "Abel Storage",
-        "Abel Goods Shop",
-        "Abel Magic Shop",
-        "Abel Weapon Shop",
-        "Abel Armor Shop",
-        "Special Skills Masters",
-        "Mileth Armor Shop",
-        "Mileth Weapon Shop",
-        "Special Spells Master",
-        "Mileth Church",
-        "Kitchen",
-        "Restaurant",
-        "Tavern",
-        "Mileth Beauty Shop",
-        "Temple of Choosing",
-        "Undine Armor Shop",
-        "Undine Weapon Shop",
-        "Enchanted Haven",
-        "Undine Goods Shop",
-        "Undine Black Magic Master",
-        "Undine Storage",
-        "Undine Restaurant",
-        "Undine Tavern",
-        "Suomi Special Skill Master",
-        "Garamonde Theatre",
-        "Suomi Armor Shop",
-        "Suomi Weapon Shop",
-        "Suomi Cherry Farmer",
-        "Suomi White Magic Master",
-        "Suomi Combat Skill Master",
-        "Suomi Black Magic Master",
-        "Suomi Grape Farmer",
-        "Suomi Restaurant",
-        "Suomi Tavern",
-        "Nobis Restaurant",
-        "Nobis Tavern",
-        "Nobis House",
-        "Nobis Storage",
-        "Nobis Weapon Shop",
-        "Mileth Tailor",
-        "Thanksgiving Challenge",
-        "Santa's Challenge",
-        "Training Grounds",
-        "Damage Game"
-    ];
-
+    
     private readonly IMerchantFactory MerchantFactory;
     private readonly IIntervalTimer OneSecondTimer;
     private readonly IIntervalTimer PickupUndineEggsTimer;
@@ -277,7 +78,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
     public decimal? PctMptoHpHeal { get; init; }
 
-    private SocialStatus PreAfkSocialStatus { get; set; }
+    private SocialStatus PreAfkSocialStatus { get; }
 
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
@@ -328,7 +129,6 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     {
         MailStore = mailStore;
         BoardStore = boardStore;
-        this.logger = logger;
         Logger = logger;
         ItemFactory = itemFactory;
         SpellFactory = spellFactory;
@@ -1333,6 +1133,20 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             Subject.Options.SocialStatus = PreAfkSocialStatus;
     }
 
+    private void HandleGroupMaxSize()
+    {
+        if (Subject.Group is { Count: > 6 })
+        {
+            if (!Subject.IsOnArenaMap())
+            {
+                foreach (var player in Subject.Group)
+                    player.SendServerMessage(ServerMessageType.GroupChat, $"Group too large for non-arena map. Kicked {Subject.Name}.");
+
+                Subject.Group.Kick(Subject);   
+            }
+        }
+    }
+    
     private void HandleWerewolfEffect()
     {
         if (!Subject.Trackers.Enums.HasValue(WerewolfOfPiet.KilledandGotCursed)
@@ -1455,7 +1269,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             Logger.WithTopics(Topics.Entities.Aisling)
                   .WithProperty(Subject)
                   .LogInformation(
-                      "Aisling {@AislingName} received {amount} {newBox.DisplayName} from trade in",
+                      "Aisling {@AislingName} received {Amount} {NewBoxDisplayName} from trade in",
                       Subject.Name,
                       amount,
                       newBox.DisplayName);
@@ -1474,7 +1288,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             Logger.WithTopics(Topics.Entities.Aisling)
                   .WithProperty(Subject)
                   .LogInformation(
-                      "Aisling {@AislingName} received {amount} {newBox.DisplayName} from trade in",
+                      "Aisling {@AislingName} received {Amount} {NewBoxDisplayName} from trade in",
                       Subject.Name,
                       amount,
                       newBox.DisplayName);
@@ -1493,7 +1307,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             Logger.WithTopics(Topics.Entities.Aisling)
                   .WithProperty(Subject)
                   .LogInformation(
-                      "Aisling {@AislingName} received {amount} {newBox.DisplayName} from trade in",
+                      "Aisling {@AislingName} received {Amount} {NewBoxDisplayName} from trade in",
                       Subject.Name,
                       amount,
                       newBox.DisplayName);
@@ -1512,7 +1326,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             Logger.WithTopics(Topics.Entities.Aisling)
                   .WithProperty(Subject)
                   .LogInformation(
-                      "Aisling {@AislingName} received {amount} {newBox.DisplayName} from trade in",
+                      "Aisling {@AislingName} received {Amount} {NewBoxDisplayName} from trade in",
                       Subject.Name,
                       amount,
                       newBox.DisplayName);
@@ -1531,7 +1345,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             Logger.WithTopics(Topics.Entities.Aisling)
                   .WithProperty(Subject)
                   .LogInformation(
-                      "Aisling {@AislingName} received {amount} {newBox.DisplayName} from trade in",
+                      "Aisling {@AislingName} received {Amount} {NewBoxDisplayName} from trade in",
                       Subject.Name,
                       amount,
                       newBox.DisplayName);
@@ -1550,7 +1364,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             Logger.WithTopics(Topics.Entities.Aisling)
                   .WithProperty(Subject)
                   .LogInformation(
-                      "Aisling {@AislingName} received {amount} {newBox.DisplayName} from trade in",
+                      "Aisling {@AislingName} received {Amount} {NewBoxDisplayName} from trade in",
                       Subject.Name,
                       amount,
                       newBox.DisplayName);
@@ -1569,7 +1383,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             Logger.WithTopics(Topics.Entities.Aisling)
                   .WithProperty(Subject)
                   .LogInformation(
-                      "Aisling {@AislingName} received {amount} {newBox.DisplayName} from trade in",
+                      "Aisling {@AislingName} received {Amount} {NewBoxDisplayName} from trade in",
                       Subject.Name,
                       amount,
                       newBox.DisplayName);
@@ -1588,7 +1402,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             Logger.WithTopics(Topics.Entities.Aisling)
                   .WithProperty(Subject)
                   .LogInformation(
-                      "Aisling {@AislingName} received {amount} {newBox.DisplayName} from trade in",
+                      "Aisling {@AislingName} received {Amount} {NewBoxDisplayName} from trade in",
                       Subject.Name,
                       amount,
                       newBox.DisplayName);
@@ -1607,7 +1421,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             Logger.WithTopics(Topics.Entities.Aisling)
                   .WithProperty(Subject)
                   .LogInformation(
-                      "Aisling {@AislingName} received {amount} {newBox.DisplayName} from trade in",
+                      "Aisling {@AislingName} received {Amount} {NewBoxDisplayName} from trade in",
                       Subject.Name,
                       amount,
                       newBox.DisplayName);
@@ -1626,7 +1440,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             Logger.WithTopics(Topics.Entities.Aisling)
                   .WithProperty(Subject)
                   .LogInformation(
-                      "Aisling {@AislingName} received {amount} {newBox.DisplayName} from trade in",
+                      "Aisling {@AislingName} received {Amount} {NewBoxDisplayName} from trade in",
                       Subject.Name,
                       amount,
                       newBox.DisplayName);
@@ -1645,7 +1459,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             Logger.WithTopics(Topics.Entities.Aisling)
                   .WithProperty(Subject)
                   .LogInformation(
-                      "Aisling {@AislingName} received {amount} {newBox.DisplayName} from trade in",
+                      "Aisling {@AislingName} received {Amount} {NewBoxDisplayName} from trade in",
                       Subject.Name,
                       amount,
                       newBox.DisplayName);
@@ -1664,7 +1478,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             Logger.WithTopics(Topics.Entities.Aisling)
                   .WithProperty(Subject)
                   .LogInformation(
-                      "Aisling {@AislingName} received {amount} {newBox.DisplayName} from trade in",
+                      "Aisling {@AislingName} received {Amount} {NewBoxDisplayName} from trade in",
                       Subject.Name,
                       amount,
                       newBox.DisplayName);
@@ -1683,7 +1497,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             Logger.WithTopics(Topics.Entities.Aisling)
                   .WithProperty(Subject)
                   .LogInformation(
-                      "Aisling {@AislingName} received {amount} {newBox.DisplayName} from trade in",
+                      "Aisling {@AislingName} received {Amount} {NewBoxDisplayName} from trade in",
                       Subject.Name,
                       amount,
                       newBox.DisplayName);
@@ -1702,7 +1516,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             Logger.WithTopics(Topics.Entities.Aisling)
                   .WithProperty(Subject)
                   .LogInformation(
-                      "Aisling {@AislingName} received {amount} {newBox.DisplayName} from trade in",
+                      "Aisling {@AislingName} received {Amount} {NewBoxDisplayName} from trade in",
                       Subject.Name,
                       amount,
                       newBox.DisplayName);
@@ -2017,7 +1831,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
         foreach (var effect in effects)
         {
-            if (SkippedEffects.Contains(effect.Name))
+            if (EffectsToPersistExtension.EffectsToPersistOnDeath.Contains(effect.Name))
                 continue;
 
             Subject.Effects.Dispel(effect.Name);
@@ -2149,7 +1963,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             return;
         }
 
-        if (ArenaKeys.Contains(Subject.MapInstance.LoadedFromInstanceId))
+        if (Subject.IsOnArenaMap())
         {
             var aislings = Subject.MapInstance.GetEntities<Aisling>();
 
@@ -2157,7 +1971,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 aisling.SendServerMessage(ServerMessageType.OrangeBar1, $"{Subject.Name} was killed by {source?.Name}.");
         }
 
-        if (MapsToNotPunishDeathOn.Contains(Subject.MapInstance.Name))
+        if (MapsToNotPunishDeathExtension.MapList.Contains(Subject.MapInstance.Name))
             return;
 
         if (Subject.MapInstance is { IsShard: true, LoadedFromInstanceId: "guildhallmain" })
@@ -2672,8 +2486,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         ClearOrangeBarTimer.Update(delta);
         OneSecondTimer.Update(delta);
         CleanupSkillsSpellsTimer.Update(delta);
-
-        //if (EventPeriod.IsEventActive(DateTime.Now, "hopmaze"))
+        
         PickupUndineEggsTimer.Update(delta);
 
         if (PickupUndineEggsTimer.IntervalElapsed)
@@ -2690,7 +2503,10 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         }
 
         if (OneSecondTimer.IntervalElapsed)
+        {
+            HandleGroupMaxSize();
             HandleWerewolfEffect();
+        }
 
         if (SleepAnimationTimer.IntervalElapsed)
             HandleSleepAnimation();

@@ -30,6 +30,7 @@ public static class Topics
         public static string Listening => nameof(Listening);
         public static string Load => nameof(Load);
         public static string Login => nameof(Login);
+        public static string LockPick => nameof(LockPick);
         public static string Logout => nameof(Logout);
         public static string Penalty => nameof(Penalty);
         public static string Pickup => nameof(Pickup);

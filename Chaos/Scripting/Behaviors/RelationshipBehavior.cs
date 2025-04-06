@@ -1,4 +1,5 @@
 using Chaos.DarkAges.Definitions;
+using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -13,16 +14,6 @@ namespace Chaos.Scripting.Behaviors;
 
 public class RelationshipBehavior
 {
-    private readonly HashSet<string> ArenaKeys = new(StringComparer.OrdinalIgnoreCase)
-    {
-        "arena_battle_ring",
-        "arena_lava",
-        "arena_lavateams",
-        "arena_colorclash",
-        "arena_escort",
-        "arena_pitfight"
-    };
-
     public virtual bool IsFriendlyTo(Creature source, Creature target)
         => source switch
         {
@@ -61,7 +52,7 @@ public class RelationshipBehavior
         if (source.Equals(target))
             return true;
 
-        var inPvpMap = ArenaKeys.Contains(source.MapInstance.LoadedFromInstanceId);
+        var inPvpMap = source.IsOnArenaMap();
 
         var inGroup = source.Group?.Contains(target) ?? false;
 
@@ -203,15 +194,23 @@ public class RelationshipBehavior
         if (source.Equals(target))
             return false;
 
-        var onPvpMap = ArenaKeys.Contains(source.MapInstance.LoadedFromInstanceId);
-
-        var inGroup = source.Group?.Contains(target) ?? false;
-
-        // Comment this if you want friendly fire in PvP maps
-        if (inGroup)
+        if (!source.IsOnArenaMap())
             return false;
 
-        return onPvpMap;
+        // Prevent friendly fire: don't attack group members
+        if (source.Group?.Contains(target) == true)
+            return false;
+
+        // Retrieve team enums if present
+        var sourceHasTeam = source.Trackers.Enums.TryGetValue(out ArenaTeam sourceTeam);
+        var targetHasTeam = target.Trackers.Enums.TryGetValue(out ArenaTeam targetTeam);
+
+        // Same team = not hostile
+        if (sourceHasTeam && targetHasTeam && (sourceTeam == targetTeam))
+            return false;
+
+        // On PvP map, not grouped, and not same team (or no team info): assume hostile
+        return true;
     }
 
     protected virtual bool IsHostileTo(Aisling source, Merchant target) => false;

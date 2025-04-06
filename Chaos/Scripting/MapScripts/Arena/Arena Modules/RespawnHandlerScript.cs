@@ -37,22 +37,31 @@ public sealed class RespawnHandlerScript(MapInstance subject) : MapScriptBase(su
 
     private void InitializeDeath(Aisling aisling)
     {
-        const int BASE_RESPAWN_DURATION = 7;
-        const int ADDITIONAL_TIME_PER_DEATH = 10;
+        const int BASE_RESPAWN_DURATION = 5;
 
+        // Determine per-death penalty
+        var additionalTimePerDeath = 10;
+
+        if (Subject.Name == "Escort - Teams")
+            if (aisling.Trackers.Enums.TryGetValue(out ArenaSide side) && (side == ArenaSide.Defender))
+                additionalTimePerDeath = 4;
+
+        // Track death count
         if (!DeathCounts.TryGetValue(aisling.Id, out var deaths))
             deaths = 0;
 
         DeathCounts[aisling.Id] = deaths + 1;
 
-        var respawnDuration = BASE_RESPAWN_DURATION + ADDITIONAL_TIME_PER_DEATH * DeathCounts[aisling.Id];
-        RespawnTimes[aisling.Id] = DateTime.Now.TimeOfDay + TimeSpan.FromSeconds(respawnDuration);
+        var totalRespawnTime = BASE_RESPAWN_DURATION + (additionalTimePerDeath * DeathCounts[aisling.Id]);
+        RespawnTimes[aisling.Id] = DateTime.Now.TimeOfDay + TimeSpan.FromSeconds(totalRespawnTime);
 
-        aisling.SendActiveMessage($"Deaths: {DeathCounts[aisling.Id]}, Respawning in: {respawnDuration} seconds.");
+        // Feedback
+        aisling.SendActiveMessage($"Deaths: {DeathCounts[aisling.Id]}, Respawning in: {totalRespawnTime} seconds.");
 
         if (DeathCounts[aisling.Id] > 1)
             aisling.SendOrangeBarMessage("Warning: Your respawn time is increasing with each death.");
     }
+
 
     private void MoveToHoldingArea(Aisling aisling)
     {

@@ -4,120 +4,129 @@ using Chaos.Models.Data;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Class_Related;
 
-public class LightPriestScript(Dialog subject, ISpellFactory spellFactory) : DialogScriptBase(subject)
+public class LightPriestScript : DialogScriptBase
 {
+    private readonly ISpellFactory SpellFactory;
+    private readonly ILogger<LightPriestScript> Logger;
+
+    public LightPriestScript(Dialog subject, ISpellFactory spellFactory, ILogger<LightPriestScript> logger)
+        : base(subject)
+    {
+        SpellFactory = spellFactory;
+        Logger = logger;
+    }
+
     public override void OnDisplaying(Aisling source)
     {
-        var hasStage = source.Trackers.Enums.TryGetValue(out MasterPriestPath stage);
+        if (!source.Trackers.Enums.TryGetValue(out MasterPriestPath stage))
+            stage = MasterPriestPath.None;
 
-        switch (Subject.Template.TemplateKey.ToLower())
+        switch (Subject.Template.TemplateKey.ToLowerInvariant())
         {
             case "saintaugustine_initial":
-            {
-                if (source.UserStatSheet.Level < 99)
-                {
-                    Subject.Reply(
-                        source,
-                        "You so far to be here, you must be tired little thing. I'm sorry, but I cannot help you in any way.");
-
-                    return;
-                }
-
-                if (source.UserStatSheet.BaseClass != BaseClass.Priest)
-                {
-                    Subject.Reply(
-                        source,
-                        "I see you are another class, I cannot teach you the magic I possess. Only a master priest may grasp my knowledge.");
-
-                    return;
-                }
-
-                if (!source.UserStatSheet.Master)
-                {
-                    Subject.Reply(
-                        source,
-                        "I'm sorry dear, only a master priest would understand these secrets... Please return to me when you are a master of your class.");
-
-                    return;
-                }
-
-                if (!hasStage)
-                {
-                    var option = new DialogOption
-                    {
-                        DialogKey = "lightpriest_initial",
-                        OptionText = "Light Priest"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
-
-                if (hasStage && (stage == MasterPriestPath.Light))
-                {
-                    var option1 = new DialogOption
-                    {
-                        DialogKey = "generic_forgetspell_initial",
-                        OptionText = "Forget Spells"
-                    };
-
-                    if (!Subject.HasOption(option1.OptionText))
-                        Subject.Options.Insert(0, option1);
-
-                    var option = new DialogOption
-                    {
-                        DialogKey = "generic_learnspell_initial",
-                        OptionText = "Learn Spells"
-                    };
-
-                    if (!Subject.HasOption(option.OptionText))
-                        Subject.Options.Insert(0, option);
-                }
-
-                if (hasStage && (stage == MasterPriestPath.Dark))
-                    Subject.Reply(source, "I can see the darkness inside of you, begone!");
-
+                HandleInitialLightPriestDialog(source, stage);
                 break;
-            }
 
             case "lightpriest_initial5":
+                PromoteToLightPriest(source);
+                break;
+        }
+    }
+
+    private void HandleInitialLightPriestDialog(Aisling source, MasterPriestPath stage)
+    {
+        if (source.UserStatSheet.Level < 99)
+        {
+            Subject.Reply(source, "You so far to be here, you must be tired little thing. I'm sorry, but I cannot help you in any way.");
+            return;
+        }
+
+        if (source.UserStatSheet.BaseClass != BaseClass.Priest)
+        {
+            Subject.Reply(source, "I see you are another class, I cannot teach you the magic I possess. Only a master priest may grasp my knowledge.");
+            return;
+        }
+
+        if (!source.UserStatSheet.Master)
+        {
+            Subject.Reply(source, "I'm sorry dear, only a master priest would understand these secrets... Please return to me when you are a master of your class.");
+            
+            Logger.WithTopics(Topics.Entities.Aisling, Topics.Actions.Promote)
+                  .WithProperty(Subject)
+                  .LogInformation("{@AislingName} tried to become Light Priest before Mastering", source.Name);
+
+            return;
+        }
+
+        if (stage == MasterPriestPath.None)
+        {
+            AddDialogOption("Light Priest", "lightpriest_initial");
+        }
+
+        if (stage == MasterPriestPath.Light)
+        {
+            AddDialogOption("Forget Spells", "generic_forgetspell_initial");
+            AddDialogOption("Learn Spells", "generic_learnspell_initial");
+        }
+
+        if (stage == MasterPriestPath.Dark)
+        {
+            Subject.Reply(source, "I can see the darkness inside of you, begone!");
+
+            Logger.WithTopics(Topics.Entities.Aisling, Topics.Actions.Promote)
+                  .WithProperty(Subject)
+                  .LogInformation("{@AislingName} is a Dark Priest and spoke to Saint Augustine. Rejected", source.Name);
+        }
+    }
+
+    private void PromoteToLightPriest(Aisling source)
+    {
+        source.Trackers.Enums.Set(MasterPriestPath.Light);
+
+        source.Legend.AddUnique(new LegendMark(
+            "Walked the path of Light Priest",
+            "lightpriest",
+            MarkIcon.Priest,
+            MarkColor.Pink,
+            1,
+            GameTime.Now
+        ));
+
+        // Remove pet collar if present
+        source.Bank.TryWithdraw("Pet Collar", 1, out _);
+        if (source.Inventory.Contains("Pet Collar"))
+            source.Inventory.Remove("Pet Collar");
+
+        // Add Light Priest spell
+        var spell = SpellFactory.Create("auraofblessing");
+        source.SpellBook.TryAddToNextSlot(spell);
+
+        // Animate and give feedback
+        source.SendOrangeBarMessage("You feel a burst of energy, Light fills your body.");
+        source.Animate(new Animation { TargetAnimation = 93, AnimationSpeed = 100 });
+
+        Logger.WithTopics(Topics.Entities.Aisling, Topics.Actions.Promote)
+              .WithProperty(Subject)
+              .LogInformation("{@AislingName} became a Light Priest through Saint Augustine", source.Name);
+    }
+
+    private void AddDialogOption(string optionText, string dialogKey)
+    {
+        if (!Subject.HasOption(optionText))
+        {
+            Subject.Options.Insert(0, new DialogOption
             {
-                var animation = new Animation
-                {
-                    TargetAnimation = 93,
-                    AnimationSpeed = 100
-                };
-
-                source.Trackers.Enums.Set(MasterPriestPath.Light);
-
-                source.Legend.AddUnique(
-                    new LegendMark(
-                        "Walked the path of Light Priest",
-                        "lightpriest",
-                        MarkIcon.Priest,
-                        MarkColor.Pink,
-                        1,
-                        GameTime.Now));
-
-                if (source.Bank.Contains("Pet Collar"))
-                    source.Bank.TryWithdraw("Pet Collar", 1, out _);
-
-                if (source.Inventory.Contains("Pet Collar"))
-                    source.Inventory.Remove("Pet Collar");
-
-                var spell = spellFactory.Create("auraofblessing");
-                source.SpellBook.TryAddToNextSlot(spell);
-                source.SendOrangeBarMessage("You feel a burst of energy, Light fills your body.");
-                source.Animate(animation);
-
-                return;
-            }
+                OptionText = optionText,
+                DialogKey = dialogKey
+            });
         }
     }
 }

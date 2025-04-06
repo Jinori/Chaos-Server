@@ -4,6 +4,7 @@ using Chaos.Extensions.Common;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Networking.Abstractions;
+using Chaos.Scripting.MapScripts.Arena.Non_Combat;
 
 namespace Chaos.Extensions;
 
@@ -12,6 +13,8 @@ public static class StatusExtensions
     public static bool IsOnline(this Aisling aisling, IClientRegistry<IChaosWorldClient> clientRegistry) =>
         clientRegistry.Select(client => client.Aisling).Any(a => a.Name.EqualsI(aisling.Name));
 
+
+    public static bool IsOnArenaMap(this Creature creature) => creature.MapInstance.Script.Is<ArenaMapTagScript>();
     public static bool IsAited(this Creature creature) => creature.Effects.Contains("Naomh Aite");
     public static bool IsAmnesiad(this Creature creature) => creature.Effects.Contains("Amnesia");
     public static bool IsArdAited(this Creature creature) => creature.Effects.Contains("Ard Naomh Aite");

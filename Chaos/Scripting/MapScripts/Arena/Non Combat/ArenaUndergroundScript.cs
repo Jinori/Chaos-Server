@@ -1,6 +1,7 @@
 using Chaos.Collections;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Geometry.Abstractions;
 using Chaos.Models.World;
@@ -8,6 +9,7 @@ using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MapScripts.Abstractions;
 
 namespace Chaos.Scripting.MapScripts.Arena.Non_Combat;
+
 
 public class ArenaUndergroundScript(MapInstance subject) : MapScriptBase(subject)
 {
@@ -48,7 +50,12 @@ public class ArenaUndergroundScript(MapInstance subject) : MapScriptBase(subject
             aisling.IsDead = false;
 
         foreach (var effect in aisling.Effects)
+        {
+            if (EffectsToPersistExtension.EffectsToPersistOnHostedArenaDeath.Contains(effect.Name))
+                continue;
+            
             aisling.Effects.Dispel(effect.Name);
+        }
 
         aisling.StatSheet.SetHealthPct(100);
         aisling.StatSheet.SetManaPct(100);

@@ -18,18 +18,7 @@ namespace Chaos.Scripting.FunctionalScripts.ApplyDamage;
 public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<ApplyAttackDamageScript> logger) : ScriptBase, IApplyDamageScript
 {
     protected readonly IEffectFactory EffectFactory = effectFactory;
-
-    private readonly List<string> MapsToNotPunishDurability =
-    [
-        "Labyrinth Battle Ring",
-        "Drowned Labyrinth - Pit",
-        "Lava Arena",
-        "Lava Arena - Teams",
-        "Color Clash - Teams",
-        "Hidden Havoc",
-        "Escort - Teams"
-    ];
-
+    
     public IDamageFormula DamageFormula { get; set; } = DamageFormulae.Default;
     public static string Key { get; } = GetScriptKey(typeof(ApplyAttackDamageScript));
 
@@ -112,7 +101,7 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
         if (skillSource is not SubjectiveScriptBase<Skill> skillScript)
             return;
 
-        if (MapsToNotPunishDurability.Contains(aisling.MapInstance.Name) || aisling.IsGodModeEnabled())
+        if (aisling.IsOnArenaMap() || aisling.IsGodModeEnabled())
             return;
 
         if (source.MapInstance is { IsShard: true, LoadedFromInstanceId: "guildhallmain" })

@@ -26,7 +26,7 @@ public class KillerInstinctEffect : IntervalEffectBase
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
     {
-        if (Subject.MapInstance.Script.Is<ArenaMapTagScript>())
+        if (Subject.IsOnArenaMap())
         {
             if (Subject is Aisling aisling)
                 aisling.SendOrangeBarMessage("Killer Instinct cannot be used in the arena.");
