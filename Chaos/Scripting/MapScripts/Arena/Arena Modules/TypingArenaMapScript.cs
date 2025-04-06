@@ -446,7 +446,7 @@ public class TypingArenaMapScript(MapInstance subject, IMonsterFactory monsterFa
     ];
 
     private bool Sorted;
-    private int WaveCount;
+    public int WaveCount { get; set; }
     private bool WinnerDeclared;
 
     private void CalculateWinner()

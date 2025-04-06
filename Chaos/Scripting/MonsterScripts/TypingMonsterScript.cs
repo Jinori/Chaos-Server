@@ -5,6 +5,7 @@ using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Pathfinding;
 using Chaos.Pathfinding.Abstractions;
+using Chaos.Scripting.MapScripts.Arena.Arena_Modules;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
@@ -13,12 +14,9 @@ namespace Chaos.Scripting.MonsterScripts;
 
 public class TypingMonsterScript : MonsterScriptBase
 {
-    private readonly IIntervalTimer MovementTimer;
-
     /// <inheritdoc />
     public TypingMonsterScript(Monster subject)
-        : base(subject) =>
-        MovementTimer = new IntervalTimer(GetMovementInterval());
+        : base(subject) { }
 
     private readonly Animation TypingDeathAnimation = new()
     {
@@ -77,16 +75,22 @@ public class TypingMonsterScript : MonsterScriptBase
     /// <inheritdoc />
     public override void Update(TimeSpan delta)
     {
-        MovementTimer.Update(delta);
+        const double SPEED_INCREASE_PER_WAVE = 0.05;
 
-        if (!MovementTimer.IntervalElapsed) 
+        if (Subject.MapInstance.Script.Is<TypingArenaMapScript>(out var typingMapScript))
+            delta *= 1 + typingMapScript.WaveCount * SPEED_INCREASE_PER_WAVE;
+            
+        
+        Subject.MoveTimer.Update(delta);
+        
+        
+
+        if (!ShouldMove) 
             return;
         
         Subject.Pathfind(new Point(10, 0), 1, Options);
         Subject.Chant(Subject.TypingWord);
     }
-
-    private TimeSpan GetMovementInterval() => TimeSpan.FromSeconds(Math.Max(0.5, 2.5 - (Subject.TypingWave * 0.1)));
-
+    
     public override void OnDeath() => Subject.MapInstance.RemoveEntity(Subject);
 }
