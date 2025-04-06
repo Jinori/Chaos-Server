@@ -7,6 +7,7 @@ using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
+using FluentAssertions.Extensions;
 
 namespace Chaos.Scripting.MapScripts.Arena.Arena_Modules;
 
@@ -23,7 +24,8 @@ public sealed class AislingDeathTouchScript : MapScriptBase
         AnimationSpeed = 100,
         TargetAnimation = 49
     };
-
+    private Point GhostPoint = new(20, 10);
+    
     /// <inheritdoc />
     public AislingDeathTouchScript(MapInstance subject)
         : base(subject)
@@ -39,10 +41,14 @@ public sealed class AislingDeathTouchScript : MapScriptBase
 
         if (!AislingDeathTouchTimer.IntervalElapsed)
             return;
+        
+        var ghostsToWarp = Subject.GetEntities<Aisling>()
+                                  .Where(ghost =>
+                                      (ghost.IsDead && ((ghost.X != GhostPoint.X) || (ghost.Y != GhostPoint.Y))) ||
+                                      !ghost.IsAlive);
 
-        foreach (var ghost in Subject.GetEntities<Aisling>()
-                                     .Where(x => x.IsDead || !x.IsAlive))
-            ghost.WarpTo(new Point(20, 10));
+        foreach (var ghost in ghostsToWarp)
+            ghost.WarpTo(GhostPoint);
 
         foreach (var person in Subject.GetEntities<Aisling>()
                                       .Where(x => x.Group != null))

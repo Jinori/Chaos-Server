@@ -132,6 +132,31 @@ public class AdminTrinketScript : DialogScriptBase
         Subject.Close(source);
     }
 
+    private void HandleJailSetPlayerFreeRequest(Aisling source)
+    {
+        if (!Subject.MenuArgs.TryGetNext<string>(out var playerName))
+        {
+            Subject.ReplyToUnknownInput(source);
+
+            return;
+        }
+        
+        var player = GetPlayerByName(playerName);
+
+        if (player == null)
+        {
+            source.SendOrangeBarMessage($"{playerName} is not online");
+
+            return;
+        }
+        
+        player.SendOrangeBarMessage($"You have been released from Jail by {source.Name}");
+        player.Legend.Remove("arrested", out _);
+        player.Trackers.TimedEvents.ForceRemoveEvent("Jail");
+        source.SendOrangeBarMessage($"You have freed {playerName} from Jail.");
+        Subject.Close(source);
+    }
+    
     private void HandleJailPlayerRequest(Aisling source)
     {
         if (!Subject.MenuArgs.TryGetNext<string>(out var playerName))
@@ -152,7 +177,7 @@ public class AdminTrinketScript : DialogScriptBase
         }
 
         player.TraverseMap(mapInstance, new Point(3, 1), true);
-        player.SendOrangeBarMessage("You have been jailed for four hours.");
+        player.SendOrangeBarMessage($"You have been jailed for four hours by {source.Name}.");
 
         player.Legend.AddOrAccumulate(
             new LegendMark(
@@ -409,6 +434,11 @@ public class AdminTrinketScript : DialogScriptBase
 
             case "admintrinket_jailplayer":
                 HandleJailPlayerRequest(source);
+
+                break;
+            
+            case "admintrinket_jailsetplayerfree":
+                HandleJailSetPlayerFreeRequest(source);
 
                 break;
         }

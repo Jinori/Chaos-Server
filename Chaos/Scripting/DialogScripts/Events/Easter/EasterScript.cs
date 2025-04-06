@@ -3,6 +3,7 @@ using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.ReactorTileScripts.Events;
+using Chaos.Scripting.ReactorTileScripts.Events.Easter;
 using Chaos.Services.Storage.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Events.Easter;

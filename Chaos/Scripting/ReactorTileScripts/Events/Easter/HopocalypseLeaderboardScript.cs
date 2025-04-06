@@ -7,7 +7,7 @@ using Chaos.Scripting.ReactorTileScripts.Abstractions;
 using Chaos.Storage.Abstractions;
 #endregion
 
-namespace Chaos.Scripting.ReactorTileScripts.Events;
+namespace Chaos.Scripting.ReactorTileScripts.Events.Easter;
 
 public class HopocalypseLeaderboardScript : ReactorTileScriptBase
 {

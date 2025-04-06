@@ -2,7 +2,7 @@ using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.ReactorTileScripts.Abstractions;
 
-namespace Chaos.Scripting.ReactorTileScripts.Events;
+namespace Chaos.Scripting.ReactorTileScripts.Events.Easter;
 
 public class HopocalypseScript : ReactorTileScriptBase
 {

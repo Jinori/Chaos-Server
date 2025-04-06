@@ -5,6 +5,7 @@ using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Scripting.ReactorTileScripts.Events;
+using Chaos.Scripting.ReactorTileScripts.Events.Easter;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
@@ -161,7 +162,7 @@ public sealed class HopocalypseScript : MapScriptBase
     
     private string GetLeveledBunnyId(string baseId, int level)
     {
-        var clampedLevel = Math.Clamp(level, 1, 4);
+        var clampedLevel = Math.Clamp(level, 1, 5);
         return $"{baseId}{clampedLevel}";
     }
     

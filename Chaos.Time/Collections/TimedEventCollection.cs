@@ -108,6 +108,27 @@ public sealed class TimedEventCollection : IEnumerable<KeyValuePair<string, Time
     }
 
     /// <summary>
+    /// Removes the event with the specified event ID from the collection by force.
+    /// </summary>
+    /// <param name="eventId">The ID of the event to remove.</param>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="eventId"/> is null or empty.</exception>
+    /// <exception cref="KeyNotFoundException">Thrown when no event with the specified ID exists.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when the event removal fails unexpectedly.</exception>
+    public void ForceRemoveEvent(string eventId)
+    {
+        using var sync = Sync.EnterScope();
+
+        if (string.IsNullOrEmpty(eventId))
+            throw new ArgumentException("Event ID cannot be null or empty", nameof(eventId));
+
+        if (!Events.TryGetValue(eventId, out var existingEvent))
+            throw new KeyNotFoundException($"No event with ID '{eventId}' exists.");
+
+        if (!Events.Remove(eventId))
+            throw new InvalidOperationException($"Failed to remove event with ID '{eventId}'.");
+    }
+    
+    /// <summary>
     ///     Attempts to retreive an active event
     /// </summary>
     /// <param name="eventId">

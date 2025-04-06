@@ -28,7 +28,6 @@ public class PietVillagerScript : MerchantScriptBase
         WalkingToRestaurant,
         TalkingToAnotherMerchant,
         TalkingToPlayer,
-        FollowingPlayer,
         CalloutPasserby,
         HandleWerewolfConversation,
         WalkToSpawnPoint,
@@ -446,8 +445,7 @@ public class PietVillagerScript : MerchantScriptBase
         new(PietVillagerState.WalkingToRestaurant, 10),
         new(PietVillagerState.WalkingToTailor, 10),
         new(PietVillagerState.WalkingToArmory, 10),
-        new(PietVillagerState.FollowingPlayer, 5),
-        new(PietVillagerState.CalloutPasserby, 5),
+        new(PietVillagerState.CalloutPasserby, 10),
     ];
 
     private void HandleIdleState()
@@ -668,11 +666,6 @@ public class PietVillagerScript : MerchantScriptBase
             case PietVillagerState.TalkingToAnotherMerchant:
                 break;
             case PietVillagerState.TalkingToPlayer:
-                break;
-
-            case PietVillagerState.FollowingPlayer:
-                HandleFollowingPlayer(delta);
-
                 break;
 
             case PietVillagerState.Eating:

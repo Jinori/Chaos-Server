@@ -26,7 +26,6 @@ public class VillagerScript : MerchantScriptBase
         WalkingToRestaurant,
         TalkingToAnotherMerchant,
         TalkingToPlayer,
-        FollowingPlayer,
         CalloutPasserby,
         HandleWerewolfConversation,
         WalkToSpawnPoint,
@@ -36,7 +35,7 @@ public class VillagerScript : MerchantScriptBase
     private IPathOptions Options => PathOptions.Default.ForCreatureType(Subject.Type) with
     {
         LimitRadius = null,
-        IgnoreBlockingReactors = true,
+        IgnoreBlockingReactors = true
     };
 
     
@@ -365,8 +364,7 @@ public class VillagerScript : MerchantScriptBase
         new KeyValuePair<VillagerState, decimal>(VillagerState.WalkingToRestaurant, 10),
         new KeyValuePair<VillagerState, decimal>(VillagerState.WalkingToTailor, 10),
         new KeyValuePair<VillagerState, decimal>(VillagerState.WalkingToArmory, 10),
-        new KeyValuePair<VillagerState, decimal>(VillagerState.FollowingPlayer, 5),
-        new KeyValuePair<VillagerState, decimal>(VillagerState.CalloutPasserby, 5),
+        new KeyValuePair<VillagerState, decimal>(VillagerState.CalloutPasserby, 10),
     ];
 
     private void HandleIdleState()
@@ -582,11 +580,6 @@ public class VillagerScript : MerchantScriptBase
             case VillagerState.TalkingToAnotherMerchant:
                 break;
             case VillagerState.TalkingToPlayer:
-                break;
-
-            case VillagerState.FollowingPlayer:
-                HandleFollowingPlayer(delta);
-
                 break;
 
             case VillagerState.Eating:

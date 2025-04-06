@@ -26,7 +26,6 @@ public class TagorVillagerScript : MerchantScriptBase
         WalkingToRestaurant,
         TalkingToAnotherMerchant,
         TalkingToPlayer,
-        FollowingPlayer,
         CalloutPasserby,
         HandleWerewolfConversation,
         WalkToSpawnPoint,
@@ -40,8 +39,7 @@ public class TagorVillagerScript : MerchantScriptBase
         new(TagorVillagerState.WalkingToRestaurant, 10),
         new(TagorVillagerState.WalkingToTailor, 10),
         new(TagorVillagerState.WalkingToArmory, 10),
-        new(TagorVillagerState.FollowingPlayer, 5),
-        new(TagorVillagerState.CalloutPasserby, 5)
+        new(TagorVillagerState.CalloutPasserby, 10)
     ];
 
     private readonly IIntervalTimer ActionTimer;
@@ -590,12 +588,7 @@ public class TagorVillagerScript : MerchantScriptBase
                 break;
             case TagorVillagerState.TalkingToPlayer:
                 break;
-
-            case TagorVillagerState.FollowingPlayer:
-                HandleFollowingPlayer(delta);
-
-                break;
-
+            
             case TagorVillagerState.Eating:
                 HandleEatingState();
 
