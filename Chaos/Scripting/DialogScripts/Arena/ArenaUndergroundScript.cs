@@ -26,9 +26,10 @@ namespace Chaos.Scripting.DialogScripts.Arena;
 
 public class ArenaUndergroundScript : DialogScriptBase
 {
-    private const string BotToken = @"";
-    private const ulong ChannelId = 1136412469762470038;
-    private const ulong ArenaWinChannelId = 1136426304300916786;
+    private const string BOT_TOKEN = @"";
+    private const ulong CHANNEL_ID = 1136412469762470038;
+    private const ulong ARENA_WIN_CHANNEL_ID = 1136426304300916786;
+    
     private static bool FreeForAll;
     private readonly Point CenterWarp = new(11, 10);
     private readonly IClientRegistry<IChaosWorldClient> ClientRegistry;
@@ -65,10 +66,13 @@ public class ArenaUndergroundScript : DialogScriptBase
         ShardGenerator = shardGenerator;
     }
 
-    private void AnnouceToWorld(string message)
+    private void AnnouceToWorld(string message, Aisling source)
     {
         foreach (var aisling in ClientRegistry)
             aisling.SendServerMessage(ServerMessageType.OrangeBar2, message);
+        
+        if (source.IsArenaHost()) 
+            source.Trackers.Enums.Set(HostingArena.Yes);
     }
 
     private void AwardEveryone(Aisling source)
@@ -137,11 +141,11 @@ public class ArenaUndergroundScript : DialogScriptBase
 
     private static int CalculateBaseExperience(Aisling aisling)
     {
-        const int maxLevel = 99;
-        const int maxLevelExperience = 15000000;
+        const int MAX_LEVEL = 99;
+        const int MAX_LEVEL_EXPERIENCE = 15000000;
 
-        return aisling.UserStatSheet.Level == maxLevel
-            ? maxLevelExperience
+        return aisling.UserStatSheet.Level == MAX_LEVEL
+            ? MAX_LEVEL_EXPERIENCE
             : Convert.ToInt32(0.30 * LevelUpFormulae.Default.CalculateTnl(aisling));
     }
 
@@ -215,14 +219,20 @@ public class ArenaUndergroundScript : DialogScriptBase
                 LeaveArena(source);
 
                 break;
-            case "ophie_skandaragauntlet":
-                AnnouceToWorld($"Host {source.Name} is announcing a Skandara's Gauntlet event!");
+            case "ophie_allmodes":
+                AnnouceToWorld($"{{=a{source.Name} is hosting {{=bPvP {{=aand {{=qPvE {{=amodes in Drowned Labyrinth.", source);
 
                 break;
-            case "ophie_serendaelsandbox":
-                AnnouceToWorld($"Host {source.Name} is announcing a Serendael Sandbox event!");
+            case "ophie_pvpmodes":
+                AnnouceToWorld($"{{=a{source.Name} is hosting {{=bPvP {{=aonly modes in Drowned Labyrinth.", source);
 
                 break;
+            
+            case "ophie_pvemodes":
+                AnnouceToWorld($"{{=a{source.Name} is hosting {{=qPvE {{=aonly modes in Drowned Labyrinth.", source);
+
+                break;
+
             default:
                 source.SendServerMessage(ServerMessageType.OrangeBar2, "Unrecognized event command.");
 
@@ -238,10 +248,10 @@ public class ArenaUndergroundScript : DialogScriptBase
             RemoveOption(Subject, "Host Options");
     }
 
-    private static bool IsPointTooCloseToOthers(Point point, List<Point> points, int minDistance = 1)
-        => points.Any(
-            existingPoint => (Math.Abs(existingPoint.X - point.X) <= minDistance) && (Math.Abs(existingPoint.Y - point.Y) <= minDistance));
-
+    private static bool IsPointTooCloseToOthers(Point point, List<Point> points, int minDistance = 3)
+        => points.Any(existingPoint =>
+            Math.Abs(existingPoint.X - point.X) + Math.Abs(existingPoint.Y - point.Y) < minDistance);
+    
     private void LeaveArena(Aisling source)
     {
         Subject.Close(source);
@@ -261,6 +271,9 @@ public class ArenaUndergroundScript : DialogScriptBase
             source.Display();
         }
 
+        if (source.IsArenaHost()) 
+            source.Trackers.Enums.Set(HostingArena.None);
+        
         source.Trackers.Enums.Remove<ArenaTeam>();
         source.MapInstance.RemoveEntity(source);
         source.Client.SendWorldMap(worldMap);
@@ -352,8 +365,9 @@ public class ArenaUndergroundScript : DialogScriptBase
             case "ophie_battlering":
             case "ophie_revive":
             case "ophie_leave":
-            case "ophie_skandaragauntlet":
-            case "ophie_serendaelsandbox":
+            case "ophie_pvpmodes":
+            case "ophie_pvemodes":
+            case "ophie_allmodes":
                 HandleSpecialEvents(source, key);
 
                 break;
@@ -474,9 +488,9 @@ public class ArenaUndergroundScript : DialogScriptBase
             async () =>
             {
                 await using var client = new DiscordSocketClient();
-                await client.LoginAsync(TokenType.Bot, BotToken);
+                await client.LoginAsync(TokenType.Bot, BOT_TOKEN);
                 await client.StartAsync();
-                var channel = await client.GetChannelAsync(ArenaWinChannelId) as IMessageChannel;
+                var channel = await client.GetChannelAsync(ARENA_WIN_CHANNEL_ID) as IMessageChannel;
                 await channel!.SendMessageAsync(message);
                 await client.StopAsync();
             });
@@ -676,8 +690,8 @@ public class ArenaUndergroundScript : DialogScriptBase
         foreach (var aisling in source.MapInstance.GetEntities<Aisling>())
         {
             if (FreeForAll && !aisling.IsGodModeEnabled())
-                if (aisling.Group?.Count > 0)
-                    aisling.Group.Leave(aisling);
+                if (aisling.Group?.Count > 1)
+                    aisling.Group.Kick(aisling);
 
             var point = GetValidTeleportPoint(shard, bounds, teleportPoints);
             teleportPoints.Add(point);
