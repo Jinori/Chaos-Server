@@ -1155,6 +1155,10 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             && !Subject.Trackers.Enums.HasValue(WerewolfOfPiet.CollectedBlueFlower))
             return;
 
+        if ((Subject.MapInstance.Template.TemplateKey != "18014")
+            && (Subject.MapInstance.Template.TemplateKey != "18015"))
+            return;
+
         var lightlevel = Subject.MapInstance.CurrentLightLevel;
 
         if ((lightlevel == LightLevel.Darkest_A)
