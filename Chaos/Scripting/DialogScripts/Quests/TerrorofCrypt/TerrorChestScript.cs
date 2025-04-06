@@ -52,24 +52,15 @@ public class TerrorChestScript : DialogScriptBase
                 {
                     var armorDye = new List<string>
                     {
-                        "Mileth",
-                        "Rucesion",
-                        "Suomi",
-                        "Loures"
+                        "miletharmordye",
+                        "rucesionarmordye",
+                        "suomiarmordye",
+                        "louresarmordye"
                     };
                     var random = new Random();
                     var index = random.Next(armorDye.Count);
-                    item = ItemFactory.Create("armorDyeContainer");
-                    item.CustomNameOverride = $"{armorDye[index]} Armor Dye";
-
-                    item.Color = armorDye[index] switch
-                    {
-                        "Mileth"   => DisplayColor.Green,
-                        "Rucesion" => DisplayColor.Blue,
-                        "Suomi"    => DisplayColor.Apple,
-                        "Loures"   => DisplayColor.White,
-                        _          => item.Color
-                    };
+                    item = ItemFactory.Create($"{armorDye[index]}");
+                    
                 } else // isOvercoat
                 {
                     var templateKeyRewards = new List<string>
