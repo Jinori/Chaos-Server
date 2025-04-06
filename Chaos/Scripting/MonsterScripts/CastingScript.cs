@@ -22,15 +22,18 @@ public class CastingScript : MonsterScriptBase
         if (Target is not { IsAlive: true } || !ShouldUseSpell || !Target.WithinRange(Subject))
             return;
 
-        Spells.ShuffleInPlace();
+        var chance = 10;
 
+        if (Target.WithinRange(Subject, 1))
+            chance /= 5;
+        
         var spell = Spells.Where(
                               spell => Subject.CanUse(
                                   spell,
                                   Target,
                                   null,
                                   out _))
-                          .PickRandomWeightedSingleOrDefault(8);
+                          .PickRandomWeightedSingleOrDefault(chance);
 
         if (spell is null)
             return;
