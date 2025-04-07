@@ -12,10 +12,7 @@ public static class StatusExtensions
 {
     public static bool IsOnline(this Aisling aisling, IClientRegistry<IChaosWorldClient> clientRegistry) =>
         clientRegistry.Select(client => client.Aisling).Any(a => a.Name.EqualsI(aisling.Name));
-
-    public static bool IsHostingArena(this Aisling aisling) => aisling.IsOnArenaMap() && aisling.Trackers.Enums.TryGetValue(out HostingArena value) && value is HostingArena.Yes;
-    public static bool IsArenaHost(this Aisling aisling) => aisling.Trackers.Enums.TryGetValue(out ArenaHost value) && value is ArenaHost.Host or ArenaHost.MasterHost;
-    public static bool IsOnArenaMap(this Creature creature) => creature.MapInstance.Script.Is<ArenaMapTagScript>();
+    
     public static bool IsAited(this Creature creature) => creature.Effects.Contains("Naomh Aite");
     public static bool IsAmnesiad(this Creature creature) => creature.Effects.Contains("Amnesia");
     public static bool IsArdAited(this Creature creature) => creature.Effects.Contains("Ard Naomh Aite");

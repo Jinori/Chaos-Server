@@ -52,14 +52,13 @@ public class RelationshipBehavior
         if (source.Equals(target))
             return true;
 
-        var inPvpMap = source.IsOnArenaMap();
-
-        var inGroup = source.Group?.Contains(target) ?? false;
-
-        if (inGroup)
+        if (source.Group?.Contains(target) == true)
             return true;
 
-        if (inPvpMap)
+        if (source.IsOnPvEArenaMap())
+            return true;
+
+        if (source.IsOnPvPArenaMap())
             return false;
 
         return false;
@@ -194,22 +193,23 @@ public class RelationshipBehavior
         if (source.Equals(target))
             return false;
 
+        // Non-arena maps: not hostile
         if (!source.IsOnArenaMap())
             return false;
 
-        // Prevent friendly fire: don't attack group members
+        // PvE arena maps (lobbies, etc.): not hostile
+        if (source.IsOnPvEArenaMap())
+            return false;
+
+        // Group members: not hostile
         if (source.Group?.Contains(target) == true)
             return false;
 
-        // Retrieve team enums if present
-        var sourceHasTeam = source.Trackers.Enums.TryGetValue(out ArenaTeam sourceTeam);
-        var targetHasTeam = target.Trackers.Enums.TryGetValue(out ArenaTeam targetTeam);
-
-        // Same team = not hostile
-        if (sourceHasTeam && targetHasTeam && (sourceTeam == targetTeam))
+        // Same team: not hostile
+        if (source.IsOnSameArenaTeam(target))
             return false;
 
-        // On PvP map, not grouped, and not same team (or no team info): assume hostile
+        // On PvP arena, not grouped, not same team: hostile
         return true;
     }
 

@@ -8,6 +8,9 @@ public class MapsToNotPunishDeathExtension
         "Mythic",
         "Nightmare",
         "Cain's Farm",
+        //Arena
+        "Arena Underground",
+        "Drowned Labyrinth Entrance",
         "Labyrinth Battle Ring",
         "Drowned Labyrinth - Pit",
         "Lava Arena",
@@ -15,6 +18,8 @@ public class MapsToNotPunishDeathExtension
         "Color Clash - Teams",
         "Hidden Havoc",
         "Escort - Teams",
+        "Typing Arena",
+        //End of Arena
         "Trial of Sacrifice",
         "Trial of Combat",
         "Trial of Luck",
