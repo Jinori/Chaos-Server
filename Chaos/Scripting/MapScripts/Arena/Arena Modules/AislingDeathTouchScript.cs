@@ -16,7 +16,7 @@ public sealed class AislingDeathTouchScript : MapScriptBase
     private bool _aislingsTouching;
     private Aisling? _touchOne;
     private Aisling? _touchTwo;
-
+    private readonly HashSet<Aisling> WarpedGhosts = [];
     private IIntervalTimer AislingDeathTouchTimer { get; }
     private IIntervalTimer CleanupTimer { get; }
     private IApplyDamageScript ApplyDamageScript { get; }
@@ -34,7 +34,7 @@ public sealed class AislingDeathTouchScript : MapScriptBase
     {
         ApplyDamageScript = ApplyAttackDamageScript.Create();
         AislingDeathTouchTimer = new IntervalTimer(TimeSpan.FromMilliseconds(200), false);
-        CleanupTimer = new IntervalTimer(TimeSpan.FromSeconds(600), false);
+        CleanupTimer = new IntervalTimer(TimeSpan.FromMilliseconds(600), false);
     }
 
     public override void Update(TimeSpan delta)
@@ -44,7 +44,7 @@ public sealed class AislingDeathTouchScript : MapScriptBase
 
         if (CleanupTimer.IntervalElapsed)
         {
-            HandleRecentTalkers();
+            HandleRecentActions();
             RemoveFromGroup();
         }
 
@@ -55,33 +55,56 @@ public sealed class AislingDeathTouchScript : MapScriptBase
         }
     }
 
-    private void HandleRecentTalkers()
+    private void HandleRecentActions()
     {
-        var recentlyTalked = Subject.GetEntities<Aisling>()
-                                    .Where(aisling => aisling.Trackers.LastTalk.HasValue &&
-                                                      ((DateTime.UtcNow - aisling.Trackers.LastTalk.Value).TotalSeconds <= 1))
-                                    .ToList();
+        var now = DateTime.UtcNow;
 
-        if (recentlyTalked.Count > 1)
+        var violators = Subject.GetEntities<Aisling>()
+                               .Where(aisling => !WarpedGhosts.Contains(aisling))
+                               .Select(aisling => new
+                               {
+                                   Aisling = aisling,
+                                   Talked = aisling.Trackers.LastTalk.HasValue &&
+                                            ((now - aisling.Trackers.LastTalk.Value).TotalSeconds <= 5),
+
+                                   CastSpell = aisling.Trackers.LastSpellUse.HasValue &&
+                                               ((now - aisling.Trackers.LastSpellUse.Value).TotalSeconds <= 5),
+
+                                   UsedSkill = aisling.Trackers.LastSkillUse.HasValue &&
+                                               ((now - aisling.Trackers.LastSkillUse.Value).TotalSeconds <= 5)
+                               })
+                               .Where(x => x.Talked || x.CastSpell || x.UsedSkill)
+                               .ToList();
+
+        foreach (var offender in violators)
         {
-            foreach (var aisling in recentlyTalked)
-            {
-                ApplyDamageScript.ApplyDamage(aisling, aisling, this, 500000);
-                aisling.SendMessage("Shhh. Don't speak or die.");
-                Subject.ShowAnimation(_blowupAnimation.GetPointAnimation(aisling));
-            }
+            var aisling = offender.Aisling;
+            ApplyDamageScript.ApplyDamage(aisling, aisling, this, 500000);
+            Subject.ShowAnimation(_blowupAnimation.GetPointAnimation(aisling));
+
+            if (offender.Talked)
+                aisling.SendMessage("Shhh. You shouldn't speak!");
+            else if (offender.CastSpell)
+                aisling.SendMessage("Don't cast spells!");
+            else if (offender.UsedSkill)
+                aisling.SendMessage("Don't use skills!");
         }
     }
+
 
     private void WarpGhostsToPoint()
     {
         var ghosts = Subject.GetEntities<Aisling>()
                             .Where(aisling =>
-                                (aisling.IsDead && ((aisling.X != _ghostPoint.X) || (aisling.Y != _ghostPoint.Y))) ||
-                                !aisling.IsAlive);
+                                aisling.IsDead &&
+                                !WarpedGhosts.Contains(aisling))
+                            .ToList();
 
         foreach (var ghost in ghosts)
+        {
             ghost.WarpTo(_ghostPoint);
+            WarpedGhosts.Add(ghost);
+        }
     }
 
     private void RemoveFromGroup()
