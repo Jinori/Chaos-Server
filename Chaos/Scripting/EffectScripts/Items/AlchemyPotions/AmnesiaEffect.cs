@@ -39,19 +39,32 @@ public class AmnesiaEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
     {
+        //effect terminates immediately if not on a monster
         if (Subject is not Monster monster)
+        {
+            Subject.Effects.Terminate(Name);
+            
             return;
+        }
 
         monster.ResetAggro();
+    }
+
+    /// <inheritdoc />
+    public override void OnApplied()
+    {
+        //clears lastDamagedBy for all creatures
+        Subject.Trackers.LastDamagedBy = null;
+        
+        //resets monster aggro
+        if(Subject is Monster monster)
+            monster.ResetAggro();
     }
 
     public override bool ShouldApply(Creature source, Creature target)
     {
         SourceOfEffect = source as Aisling;
-
-        if (Subject is not Monster monster)
-            return false;
-
+        
         if (Subject.Script.Is<ThisIsABossScript>())
         {
             SourceOfEffect?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "The target is not affected by Amnesia.");
@@ -61,9 +74,7 @@ public class AmnesiaEffect : ContinuousAnimationEffectBase
 
         if (Subject.Effects.Contains("Amnesia"))
             return false;
-
-        monster.ResetAggro();
-
+        
         return true;
     }
 }
