@@ -50,7 +50,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     private readonly IItemFactory ItemFactory;
     private readonly ILogger<DefaultAislingScript> Logger;
     private readonly IStore<MailBox> MailStore;
-    
+
     private readonly IMerchantFactory MerchantFactory;
     private readonly IIntervalTimer OneSecondTimer;
     private readonly IIntervalTimer PickupUndineEggsTimer;
@@ -78,8 +78,6 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
     public decimal? PctMptoHpHeal { get; init; }
 
-    private SocialStatus PreAfkSocialStatus { get; }
-
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     private Animation FlameHit { get; } = new()
@@ -99,6 +97,8 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         AnimationSpeed = 100,
         TargetAnimation = 646
     };
+
+    private SocialStatus PreAfkSocialStatus { get; }
 
     protected virtual RelationshipBehavior RelationshipBehavior { get; }
     protected virtual RestrictionBehavior RestrictionBehavior { get; }
@@ -341,6 +341,18 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                                  .Any(x => x.Script.Is<ForagingSpotScript>() || x.Script.Is<FishingSpotScript>());
 
         Subject.Options.SocialStatus = isGathering ? SocialStatus.Gathering : SocialStatus.DayDreaming;
+    }
+
+    private void HandleGroupMaxSize()
+    {
+        if (Subject.Group is { Count: > 6 })
+            if (!Subject.IsOnArenaMap())
+            {
+                foreach (var player in Subject.Group)
+                    player.SendServerMessage(ServerMessageType.GroupChat, $"Group too large for non-arena map. Kicked {Subject.Name}.");
+
+                Subject.Group.Kick(Subject);
+            }
     }
 
     private void HandleSkillReplacements()
@@ -1133,20 +1145,6 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             Subject.Options.SocialStatus = PreAfkSocialStatus;
     }
 
-    private void HandleGroupMaxSize()
-    {
-        if (Subject.Group is { Count: > 6 })
-        {
-            if (!Subject.IsOnArenaMap())
-            {
-                foreach (var player in Subject.Group)
-                    player.SendServerMessage(ServerMessageType.GroupChat, $"Group too large for non-arena map. Kicked {Subject.Name}.");
-
-                Subject.Group.Kick(Subject);   
-            }
-        }
-    }
-    
     private void HandleWerewolfEffect()
     {
         if (!Subject.Trackers.Enums.HasValue(WerewolfOfPiet.KilledandGotCursed)
@@ -1155,16 +1153,15 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             && !Subject.Trackers.Enums.HasValue(WerewolfOfPiet.CollectedBlueFlower))
             return;
 
-        if ((Subject.MapInstance.Template.TemplateKey != "18014")
-            && (Subject.MapInstance.Template.TemplateKey != "18015"))
-            return;
-
         var lightlevel = Subject.MapInstance.CurrentLightLevel;
 
         if ((lightlevel == LightLevel.Darkest_A)
             && !Subject.Effects.Contains("Werewolf")
             && Subject.MapInstance.AutoDayNightCycle.Equals(true))
         {
+            if ((Subject.MapInstance.Template.TemplateKey != "18014") && (Subject.MapInstance.Template.TemplateKey != "18015"))
+                return;
+
             if (Subject.Effects.Contains("Mount"))
             {
                 Subject.Effects.Dispel("Mount");
@@ -2490,7 +2487,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         ClearOrangeBarTimer.Update(delta);
         OneSecondTimer.Update(delta);
         CleanupSkillsSpellsTimer.Update(delta);
-        
+
         PickupUndineEggsTimer.Update(delta);
 
         if (PickupUndineEggsTimer.IntervalElapsed)
