@@ -62,7 +62,7 @@ public class TormentEffect : EffectBase, HierarchicalEffectComponent.IHierarchic
         {
             Dmg = 14,
             Hit = 22,
-            AtkSpeedPct = 45,
+            AtkSpeedPct = 30,
             CooldownReductionPct = 5
         };
 

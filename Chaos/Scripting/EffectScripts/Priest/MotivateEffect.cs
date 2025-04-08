@@ -48,7 +48,7 @@ public class MotivateEffect : EffectBase, HierarchicalEffectComponent.IHierarchi
     {
         var attributes = new Attributes
         {
-            AtkSpeedPct = 40
+            AtkSpeedPct = 25
         };
 
         Subject.StatSheet.SubtractBonus(attributes);
