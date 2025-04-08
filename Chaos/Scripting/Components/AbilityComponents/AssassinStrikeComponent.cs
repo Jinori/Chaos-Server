@@ -75,7 +75,7 @@ public struct AssassinStrikeComponent : IComponent
 
         //10x stat dmg vs monsters
         if (target is Monster)
-            finalDamage *= 15;
+            finalDamage *= 10;
 
         if (pctVitalityDmg.HasValue)
             finalDamage += MathEx.GetPercentOf<int>(source.StatSheet.MaximumHp + source.StatSheet.MaximumMp * 2, pctVitalityDmg.Value); 
