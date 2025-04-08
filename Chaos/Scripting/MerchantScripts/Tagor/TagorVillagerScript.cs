@@ -42,6 +42,7 @@ public class TagorVillagerScript : MerchantScriptBase
         new(TagorVillagerState.CalloutPasserby, 10)
     ];
 
+    
     private readonly IIntervalTimer ActionTimer;
     private readonly IDialogFactory DialogFactory;
     private readonly IIntervalTimer DialogueTimer;
@@ -419,7 +420,7 @@ public class TagorVillagerScript : MerchantScriptBase
 
     private void HandleIdleState()
     {
-        var state = StateData.PickRandomWeightedSingleOrDefault();
+        var state = StateData.PickRandomWeighted();
         Subject.TagorVillagerState = state;
 
         ActionTimer.Reset();

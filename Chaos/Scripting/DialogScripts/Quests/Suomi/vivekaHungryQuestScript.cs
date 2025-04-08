@@ -19,10 +19,10 @@ namespace Chaos.Scripting.DialogScripts.Quests.Suomi;
 public class VivekaHungryQuestScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
-    private readonly ILogger<SpareAStickScript> Logger;
+    private readonly ILogger<VivekaHungryQuestScript> Logger;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
-    public VivekaHungryQuestScript(Dialog subject, IItemFactory itemFactory, ILogger<SpareAStickScript> logger)
+    public VivekaHungryQuestScript(Dialog subject, IItemFactory itemFactory, ILogger<VivekaHungryQuestScript> logger)
         : base(subject)
     {
         Logger = logger;

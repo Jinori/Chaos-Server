@@ -359,18 +359,18 @@ public class VillagerScript : MerchantScriptBase
 
     private static readonly List<KeyValuePair<VillagerState, decimal>> StateData =
     [
-        new KeyValuePair<VillagerState, decimal>(VillagerState.Wandering, 40),
-        new KeyValuePair<VillagerState, decimal>(VillagerState.SayRandomMessage, 20),
-        new KeyValuePair<VillagerState, decimal>(VillagerState.WalkingToRestaurant, 10),
-        new KeyValuePair<VillagerState, decimal>(VillagerState.WalkingToTailor, 10),
-        new KeyValuePair<VillagerState, decimal>(VillagerState.WalkingToArmory, 10),
-        new KeyValuePair<VillagerState, decimal>(VillagerState.CalloutPasserby, 10),
+        new(VillagerState.Wandering, 40),
+        new(VillagerState.SayRandomMessage, 20),
+        new(VillagerState.WalkingToRestaurant, 10),
+        new(VillagerState.WalkingToTailor, 10),
+        new(VillagerState.WalkingToArmory, 10),
+        new(VillagerState.CalloutPasserby, 10),
     ];
 
     private void HandleIdleState()
     {
-        var state = StateData.PickRandomWeightedSingleOrDefault();
-        Subject.VillagerState = state;
+        var state = StateData.PickRandomWeighted();
+         Subject.VillagerState = state;
 
         ActionTimer.Reset();
     }

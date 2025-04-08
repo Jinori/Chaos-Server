@@ -7,7 +7,6 @@ using Chaos.Models.World;
 using Chaos.NLog.Logging.Definitions;
 using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
-using Chaos.Scripting.DialogScripts.Mileth;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Services.Factories.Abstractions;
@@ -18,10 +17,10 @@ namespace Chaos.Scripting.DialogScripts.Quests.DragonScale;
 public class DragonScaleQuestScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
-    private readonly ILogger<SpareAStickScript> Logger;
+    private readonly ILogger<DragonScaleQuestScript> Logger;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
-    public DragonScaleQuestScript(Dialog subject, IItemFactory itemFactory, ILogger<SpareAStickScript> logger)
+    public DragonScaleQuestScript(Dialog subject, IItemFactory itemFactory, ILogger<DragonScaleQuestScript> logger)
         : base(subject)
     {
         ItemFactory = itemFactory;

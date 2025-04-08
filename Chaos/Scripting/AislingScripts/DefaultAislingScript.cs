@@ -2124,7 +2124,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 if (player.Aisling.Guild == Subject.Guild)
                     player.Aisling.SendServerMessage(
                         ServerMessageType.ActiveMessage,
-                        $"({Subject.Guild.Name}) - {Subject.Name} has appeared online.");
+                        $"{Subject.Guild.Name} member {Subject.Name} has appeared online.");
     }
 
     /// <inheritdoc />

@@ -11,6 +11,8 @@ namespace Chaos.Scripting.DialogScripts.Generic;
 
 public class TerminusHomeOptionsScript : DialogScriptBase
 {
+    private readonly IStorage<GuildHouseState> GuildHouseStateStorage;
+    
     private static readonly Dictionary<Nation, (IPoint Origin, string? DestinationMapKey)> NATION_MAPPINGS = new()
     {
         {
@@ -60,23 +62,33 @@ public class TerminusHomeOptionsScript : DialogScriptBase
     private readonly ISimpleCache _simpleCache;
 
     /// <inheritdoc />
-    public TerminusHomeOptionsScript(Dialog subject, ISimpleCache simpleCache)
+    public TerminusHomeOptionsScript(Dialog subject, ISimpleCache simpleCache, IStorage<GuildHouseState> guildHouseStateStorage)
         : base(subject)
-        => _simpleCache = simpleCache;
-
+    {
+        GuildHouseStateStorage = guildHouseStateStorage;
+        _simpleCache = simpleCache;
+    }
+    
+        
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
-        if (source.Guild != null)
+        if ((source.Guild != null))
         {
-            var option = new DialogOption
-            {
-                DialogKey = "terminus_homeoptions",
-                OptionText = "Guild Hall"
-            };
+            var guildHouseState = GuildHouseStateStorage.Value;
+            guildHouseState.SetStorage(GuildHouseStateStorage);
 
-            if (!Subject.HasOption(option.OptionText))
-                Subject.Options.Add(option);
+            if (guildHouseState.HasProperty(source.Guild.Name, "deed"))
+            {
+                var option = new DialogOption
+                {
+                    DialogKey = "terminus_homeoptions",
+                    OptionText = "Guild Hall"
+                };
+
+                if (!Subject.HasOption(option.OptionText))
+                    Subject.Options.Add(option);
+            }
         }
 
         Subject.InjectTextParameters(

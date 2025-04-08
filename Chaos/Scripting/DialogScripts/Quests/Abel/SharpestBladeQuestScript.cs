@@ -19,10 +19,10 @@ namespace Chaos.Scripting.DialogScripts.Quests.Abel;
 public class SharpestBladeQuestScript : DialogScriptBase
 {
     private readonly IItemFactory ItemFactory;
-    private readonly ILogger<SpareAStickScript> Logger;
+    private readonly ILogger<SharpestBladeQuestScript> Logger;
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
-    public SharpestBladeQuestScript(Dialog subject, IItemFactory itemFactory, ILogger<SpareAStickScript> logger)
+    public SharpestBladeQuestScript(Dialog subject, IItemFactory itemFactory, ILogger<SharpestBladeQuestScript> logger)
         : base(subject)
     {
         ItemFactory = itemFactory;

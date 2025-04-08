@@ -450,7 +450,7 @@ public class PietVillagerScript : MerchantScriptBase
 
     private void HandleIdleState()
     {
-        var state = StateData.PickRandomWeightedSingleOrDefault();
+        var state = StateData.PickRandomWeighted();
         Subject.PietVillagerState = state;
 
         ActionTimer.Reset();
