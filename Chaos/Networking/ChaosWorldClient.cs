@@ -275,14 +275,15 @@ public sealed class ChaosWorldClient : WorldClientBase, IChaosWorldClient
 
             //if we're not an admin, and the aisling is not visible
             if (!Aisling.IsAdmin && aisling.Visibility is not VisibilityType.Normal)
-            {
-                //remove the name
-                args.Name = string.Empty;
 
                 //if we cant see the aisling, hide it (it is otherwise transparent)
                 if (!Aisling.Script.CanSee(aisling))
+                {
                     args.IsHidden = true;
-            }
+
+                    //remove the name
+                    args.Name = string.Empty;
+                }
         }
 
         Send(args);
