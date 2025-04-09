@@ -54,7 +54,7 @@ public class PoisonEffect : ContinuousAnimationEffectBase
         var damage = DamageHelper.CalculatePercentDamage(
             Source,
             Subject,
-            0.005m,
+            0.5m,
             true);
 
         ApplyDamageScript.ApplyDamage(

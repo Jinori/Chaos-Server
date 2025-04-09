@@ -52,7 +52,7 @@ public class MiasmaEffect : ContinuousAnimationEffectBase
         var damage = DamageHelper.CalculatePercentDamage(
             Source,
             Subject,
-            0.0075m,
+            0.75m,
             true);
 
         ApplyDamageScript.ApplyDamage(
