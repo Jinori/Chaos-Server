@@ -726,7 +726,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 Bocan Bough, 1 Greater Monster Extract and 1 Empty Bottle.",
+                            } requires 2 Bocan Bough, 1 Greater Monster Extract and 1 Empty Bottle.",
                             "alchemybook");
 
                         return;

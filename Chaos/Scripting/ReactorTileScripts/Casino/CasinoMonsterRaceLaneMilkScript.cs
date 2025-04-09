@@ -1,4 +1,5 @@
 using Chaos.Extensions;
+using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 using Chaos.Models.World;
@@ -41,7 +42,7 @@ public class CasinoMonsterRaceLaneMilkScript : ReactorTileScriptBase
         if (source is not Monster)
             return;
 
-        foreach (var tile in Subject.MapInstance.GetEntities<ReactorTile>())
+        foreach (var tile in Subject.MapInstance.GetEntities<ReactorTile>().Shuffle())
         {
             if (tile.Script.Is<CasinoMonsterRaceLaneGrassScript>(out var grass))
                 grass.GameOver = true;
@@ -87,7 +88,7 @@ public class CasinoMonsterRaceLaneMilkScript : ReactorTileScriptBase
                 var winner = AislingsThatWon.First();
 
                 foreach (var aisling in AislingsAtCompletion)
-                    aisling.SendActiveMessage($"{winner.Name} wins on lane Grass!");
+                    aisling.SendActiveMessage($"{winner.Name} wins on lane Milk!");
 
                 var winnings = AislingsAtCompletion.Count() * 25000;
 

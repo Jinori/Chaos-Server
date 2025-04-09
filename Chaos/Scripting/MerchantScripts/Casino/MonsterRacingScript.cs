@@ -1,5 +1,6 @@
 using Chaos.Common.Utilities;
 using Chaos.Extensions;
+using Chaos.Extensions.Common;
 using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Models.World;
 using Chaos.Scripting.MerchantScripts.Abstractions;
@@ -45,7 +46,7 @@ public sealed class MonsterRacingScript : MerchantScriptBase
         var racingStallWater = new Point(2, 4);
         var racingStallGrass = new Point(2, 3);
         var racingStallLava = new Point(2, 2);
-
+        
         var monsterOne = MonsterFactory.Create("amusementMonster", Subject.MapInstance, racingStallMilk);
         monsterOne.Direction = Direction.Right;
         monsterOne.Sprite = (ushort)IntegerRandomizer.RollSingle(965);
@@ -70,12 +71,14 @@ public sealed class MonsterRacingScript : MerchantScriptBase
         monsterSix.Direction = Direction.Right;
         monsterSix.Sprite = (ushort)IntegerRandomizer.RollSingle(965);
 
-        Subject.MapInstance.AddEntity(monsterOne, racingStallMilk);
-        Subject.MapInstance.AddEntity(monsterTwo, racingStallSky);
-        Subject.MapInstance.AddEntity(monsterThree, racingStallSand);
-        Subject.MapInstance.AddEntity(monsterFour, racingStallWater);
-        Subject.MapInstance.AddEntity(monsterFive, racingStallGrass);
-        Subject.MapInstance.AddEntity(monsterSix, racingStallLava);
+        Point[] stalls = [racingStallMilk, racingStallSky, racingStallSand, racingStallWater, racingStallGrass, racingStallLava];
+        Monster[] monsterList = [ monsterOne, monsterTwo, monsterThree, monsterFour, monsterFive, monsterSix];
+
+        stalls.ShuffleInPlace();
+        monsterList.ShuffleInPlace();
+
+        foreach (var pair in stalls.Zip(monsterList))
+            Subject.MapInstance.AddEntity(pair.Second, pair.First);
 
         CreatedMonsters = true;
     }
