@@ -188,7 +188,7 @@ public class LimboWizardScript : MonsterScriptBase
         if (!ActionTimer.IntervalElapsed)
             return;
 
-        var nearbyAislings = Map.GetEntitiesWithinRange<Aisling>(Subject, 8)
+        var nearbyAislings = Map.GetEntitiesWithinRange<Aisling>(Subject, 10)
                                 .ThatAreObservedBy(Subject)
                                 .ThatAreVisibleTo(Subject)
                                 .ToList();
@@ -202,6 +202,12 @@ public class LimboWizardScript : MonsterScriptBase
                 return;
 
         var counter = 0;
+
+        //if no nearby aislings within 8 spaces
+        //then dont cast on anyone
+        //this forces them to walk up some rather than casting from edge of screen
+        if (!nearbyAislings.Any(x => Subject.WithinRange(x, 8)))
+            return;
 
         //try up to 5 times picking random actions until one of them succeeds
         while (counter++ < 5)
