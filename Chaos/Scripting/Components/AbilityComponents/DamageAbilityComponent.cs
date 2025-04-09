@@ -21,7 +21,7 @@ public struct DamageAbilityComponent : IComponent
         var sourceScript = vars.GetSourceScript();
 
         var surroundingTargets = options.SurroundingTargets ?? false;
-        var numberOfTargets = surroundingTargets ? targets.Count() : 1;
+        var numberOfTargets = surroundingTargets ? targets.Count : 1;
 
         foreach (var target in targets)
         {
