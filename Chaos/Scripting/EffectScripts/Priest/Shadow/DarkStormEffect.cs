@@ -34,7 +34,7 @@ public class DarkStormEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1500));
 
-    private IApplyDamageScript ApplyDamageScript { get; } = ApplyAttackDamageScript.Create();
+    private IApplyDamageScript ApplyDamageScript { get; } = ApplyNonAttackDamageScript.Create();
 
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000));
@@ -77,7 +77,6 @@ public class DarkStormEffect : ContinuousAnimationEffectBase
                     target,
                     this,
                     damage);
-                target.ShowHealth();
             }
         }
     }

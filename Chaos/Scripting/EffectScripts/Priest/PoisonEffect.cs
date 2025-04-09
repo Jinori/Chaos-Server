@@ -1,11 +1,16 @@
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
+using Chaos.Formulae;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
+using Chaos.Scripting.FunctionalScripts.Abstractions;
+using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
+using Chaos.Utilities;
+using NLog.Targets;
 
 namespace Chaos.Scripting.EffectScripts.Priest;
 
@@ -34,27 +39,29 @@ public class PoisonEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     public override string Name => "Poison";
 
+    private readonly IApplyDamageScript ApplyDamageScript = ApplyNonAttackDamageScript.Create();
+
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
     {
-        double maxHp = Subject.StatSheet.MaximumHp;
-        const double DAMAGE_PERCENTAGE = 0.01;
-        const int DAMAGE_CAP = 500;
-
-        var damage = (int)Math.Min(maxHp * DAMAGE_PERCENTAGE, DAMAGE_CAP);
-
-        if (Subject.StatSheet.CurrentHp <= damage)
-            return;
-
         if (Subject.IsGodModeEnabled() || Subject.Effects.Contains("Invulnerability"))
         {
             Subject.Effects.Terminate("Poison");
 
             return;
         }
+        
+        var damage = DamageHelper.CalculatePercentDamage(
+            Source,
+            Subject,
+            0.005m,
+            true);
 
-        if (Subject.StatSheet.TrySubtractHp(damage))
-            AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
+        ApplyDamageScript.ApplyDamage(
+            Source,
+            Subject,
+            this,
+            damage);
 
         Subject.Animate(Animation);
     }

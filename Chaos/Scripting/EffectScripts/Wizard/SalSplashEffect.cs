@@ -1,6 +1,7 @@
 ﻿using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
+using Chaos.Formulae;
 using Chaos.Geometry.Abstractions;
 using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Models.Data;
@@ -16,10 +17,8 @@ namespace Chaos.Scripting.EffectScripts.Wizard;
 public class SalSplashEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(7);
-
-    private Creature? SourceOfEffect { get; set; }
-
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(6);
+    
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()
     {
@@ -28,9 +27,9 @@ public class SalSplashEffect : ContinuousAnimationEffectBase
     };
 
     /// <inheritdoc />
-    protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(20000), false);
+    protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromSeconds(2), false);
 
-    protected IApplyDamageScript ApplyDamageScript { get; }
+    private readonly IApplyDamageScript ApplyDamageScript;
 
     protected Animation CreatureAnimation { get; } = new()
     {
@@ -39,30 +38,34 @@ public class SalSplashEffect : ContinuousAnimationEffectBase
     };
 
     /// <inheritdoc />
-    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000), false);
+    protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromSeconds(1), false);
 
     /// <inheritdoc />
     public override byte Icon => 38;
 
     /// <inheritdoc />
     public override string Name => "Sal Splash";
-
-    public SalSplashEffect() => ApplyDamageScript = ApplyAttackDamageScript.Create();
+    
+    private int DmgPerTick => GetVar<int>("dmgPerTick");
 
     public override void OnApplied()
         => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Powerful water surrounds you.");
 
     /// <inheritdoc />
+    public override void PrepareSnapshot(Creature source)
+        => SetVar("dmgPerTick", 100 + Source.StatSheet.EffectiveInt * 20 + Source.StatSheet.EffectiveMaximumMp * 0.02);
+    
+    public SalSplashEffect()
+    {
+        var applyDamageScript = ApplyNonAttackDamageScript.Create();
+        applyDamageScript.DamageFormula = DamageFormulae.ElementalEffect;
+        ApplyDamageScript = applyDamageScript;
+    }
+    
+    /// <inheritdoc />
     protected override void OnIntervalElapsed()
     {
-        if (SourceOfEffect == null)
-        {
-            AislingSubject?.Effects.Terminate(Name);
-
-            return;
-        }
-
-        if (Subject.MapInstance != SourceOfEffect.MapInstance)
+        if (Subject.MapInstance != Source.MapInstance)
         {
             Subject.Effects.Terminate("Sal Splash");
 
@@ -71,23 +74,12 @@ public class SalSplashEffect : ContinuousAnimationEffectBase
 
         // Animate the subject of the effect
         Subject.Animate(Animation);
-
-        // Get the points around the subject where the effect is applied
-        var options = new AoeShapeOptions
-        {
-            Source = new Point(Subject.X, Subject.Y),
-            Range = 1,
-            Direction = Direction.All
-        };
-
-        var points = AoeShape.AllAround.ResolvePoints(options);
-
+        
         // Retrieve and filter targets at those points
         var targets = Subject.MapInstance
-                             .GetEntitiesAtPoints<Creature>(points.Cast<IPoint>())
-                             .WithFilter(SourceOfEffect, TargetFilter.HostileOnly)
-                             .WithFilter(Subject, TargetFilter.AliveOnly)
-                             .Where(x => !x.Equals(Subject) && !x.MapInstance.IsWall(x))
+                             .GetEntitiesWithinRange<Creature>(Subject, 1)
+                             .WithFilter(Source, TargetFilter.HostileOnly | TargetFilter.AliveOnly)
+                             .Where(x => !x.Equals(Subject))
                              .ToList();
 
         // Apply damage to each valid target
@@ -97,14 +89,12 @@ public class SalSplashEffect : ContinuousAnimationEffectBase
                 continue;
 
             ApplyDamageScript.ApplyDamage(
-                SourceOfEffect,
+                Source,
                 target,
                 this,
-                (SourceOfEffect.StatSheet.Level + SourceOfEffect.StatSheet.EffectiveInt) * 4 + 800,
+                DmgPerTick,
                 Element.Water);
-
-            // Show target health status and animate the effect
-            target.ShowHealth();
+            
             target.Animate(CreatureAnimation);
         }
     }
@@ -114,8 +104,6 @@ public class SalSplashEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     public override bool ShouldApply(Creature source, Creature target)
     {
-        SourceOfEffect = source;
-
         if (target.IsFriendlyTo(source) || target.IsGodModeEnabled() || target.Effects.Contains("Invulnerability"))
             return false;
 

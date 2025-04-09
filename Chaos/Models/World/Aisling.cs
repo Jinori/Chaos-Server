@@ -288,7 +288,14 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         foreach (var effect in Effects)
         {
             effect.Subject = this;
-            effect.OnReApplied();
+
+            try
+            {
+                effect.OnReApplied();
+            } catch
+            {
+                Effects.Dispel(effect.Name);
+            }
         }
 
         Effects.ResetDisplay();

@@ -26,6 +26,15 @@ public class TormentEffect : EffectBase, HierarchicalEffectComponent.IHierarchic
             "motivate"
         ];
 
+    private Attributes GetSnapshotAttributes
+        => new()
+        {
+            Dmg = GetVar<int>("dmg"),
+            Hit = GetVar<int>("hit"),
+            AtkSpeedPct = GetVar<int>("atkSpeedPct"),
+            CooldownReductionPct = GetVar<int>("cooldownReductionPct")
+        };
+    
     protected Animation? Animation { get; } = new()
     {
         TargetAnimation = 75,
@@ -40,33 +49,26 @@ public class TormentEffect : EffectBase, HierarchicalEffectComponent.IHierarchic
     public override void OnApplied()
     {
         base.OnApplied();
-
-        var attributes = new Attributes
-        {
-            Dmg = 14,
-            Hit = 22,
-            AtkSpeedPct = 30,
-            CooldownReductionPct = 5
-        };
-
+        
         Subject.Animate(Animation!);
-        Subject.StatSheet.AddBonus(attributes);
+        Subject.StatSheet.AddBonus(GetSnapshotAttributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
+    }
+
+    /// <inheritdoc />
+    public override void PrepareSnapshot(Creature source)
+    {
+        SetVar("dmg", 14);
+        SetVar("hit", 22);
+        SetVar("atkSpeedPct", 30);
+        SetVar("cooldownReductionPct", 5);
     }
 
     public override void OnDispelled() => OnTerminated();
 
     public override void OnTerminated()
     {
-        var attributes = new Attributes
-        {
-            Dmg = 14,
-            Hit = 22,
-            AtkSpeedPct = 30,
-            CooldownReductionPct = 5
-        };
-
-        Subject.StatSheet.SubtractBonus(attributes);
+        Subject.StatSheet.SubtractBonus(GetSnapshotAttributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Torment has faded.");
     }

@@ -23,8 +23,8 @@ public class FocusEffect : EffectBase, NonOverwritableEffectComponent.INonOverwr
     private Attributes GetSnapshotAttributes
         => new()
         {
-            SkillDamagePct = SnapshotVars.Get<int>("skillDmgPct"),
-            FlatSkillDamage = SnapshotVars.Get<int>("flatSkillDmg")
+            SkillDamagePct = GetVar<int>("skillDmgPct"),
+            FlatSkillDamage = GetVar<int>("flatSkillDmg")
         };
 
     public override byte Icon => 100;
@@ -61,8 +61,8 @@ public class FocusEffect : EffectBase, NonOverwritableEffectComponent.INonOverwr
         var skillDamagePctBonus = 10 + Subject.StatSheet.EffectiveDex / 20;
         var flatSkillDamageBonus = 25 + Subject.StatSheet.EffectiveDex;
 
-        SnapshotVars.Set("skillDmgPct", skillDamagePctBonus);
-        SnapshotVars.Set("flatSkillDmg", flatSkillDamageBonus);
+        SetVar("skillDmgPct", skillDamagePctBonus);
+        SetVar("flatSkillDmg", flatSkillDamageBonus);
     }
 
     public override bool ShouldApply(Creature source, Creature target)

@@ -1,12 +1,15 @@
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
+using Chaos.Formulae;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.EffectComponents;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.EffectScripts.Abstractions;
+using Chaos.Scripting.FunctionalScripts.Abstractions;
+using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
@@ -25,7 +28,9 @@ public class BurnEffect : ContinuousAnimationEffectBase, HierarchicalEffectCompo
             "Small Firestorm"
         ];
 
-    protected virtual decimal AislingBurnPercentage { get; } = 2.5m;
+    private readonly IApplyDamageScript ApplyDamageScript;
+
+    protected virtual decimal AislingBurnPercentage => 2.5m;
 
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()
@@ -50,11 +55,20 @@ public class BurnEffect : ContinuousAnimationEffectBase, HierarchicalEffectCompo
     /// <inheritdoc />
     public override string Name => "Burn";
 
+    private int GetSnapshotTickDamage => GetVar<int>("dmgPerTick");
+
     public override void OnApplied() => AislingSubject?.SendOrangeBarMessage("Your body catches fire.");
 
     public override void OnTerminated()
         => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are no longer burning.");
 
+    public BurnEffect()
+    {
+        var applyDamageScript = ApplyNonAttackDamageScript.Create();
+        applyDamageScript.DamageFormula = DamageFormulae.ElementalEffect;
+        ApplyDamageScript = applyDamageScript;
+    }
+    
     public override bool ShouldApply(Creature source, Creature target)
     {
         if (target.Name == "Shamensyth")
@@ -69,40 +83,13 @@ public class BurnEffect : ContinuousAnimationEffectBase, HierarchicalEffectCompo
         return execution is not null;
     }
 
-    protected virtual int EstimateDamage()
-    {
-        //5  = 1,500
-        //15 = 4,500
-        //30 = 9,000
-        //50 = 15,000
-        //75 = 22,500
-        //99 = 29,700
-
-        //Scaling cap based on level and estimate of normal monster hp
-        var coefficient = Subject.StatSheet.Level > 99 ? 600 : 300;
-        var estimatedHp = Subject.StatSheet.Level * coefficient;
-        var estimatedBurn = MathEx.GetPercentOf<int>(estimatedHp, BurnPercentage);
-
-        if (Subject is Aisling)
-        {
-            var potentialBurn = MathEx.GetPercentOf<int>((int)Subject.StatSheet.EffectiveMaximumHp, AislingBurnPercentage);
-            var damage = Math.Min(estimatedBurn, potentialBurn);
-
-            return damage;
-        } else
-        {
-            var potentialBurn = MathEx.GetPercentOf<int>((int)Subject.StatSheet.EffectiveMaximumHp, BurnPercentage);
-            var damage = Math.Min(estimatedBurn, potentialBurn);
-
-            return damage;
-        }
-    }
-
+    /// <inheritdoc />
+    public override void PrepareSnapshot(Creature source)
+        => SetVar("dmgPerTick", 75 + Source.StatSheet.EffectiveInt * 15 + Source.StatSheet.EffectiveMaximumMp * 0.015);
+    
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
     {
-        var damagePerTick = EstimateDamage();
-
         if (Subject.IsGodModeEnabled() || Subject.Effects.Contains("invulnerability"))
         {
             Subject.Effects.Terminate("burn");
@@ -110,13 +97,18 @@ public class BurnEffect : ContinuousAnimationEffectBase, HierarchicalEffectCompo
             return;
         }
 
-        if (Subject.StatSheet.CurrentHp <= damagePerTick)
+        if (Subject.StatSheet.DefenseElement == Element.Fire)
             return;
 
-        if (Subject.StatSheet.TrySubtractHp(damagePerTick))
-        {
-            AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
-            Subject.ShowHealth();
-        }
+        var maxPct = Subject is Aisling ? 2.5m : 5m;
+        var maxPctDmg = MathEx.GetPercentOf<int>((int)Subject.StatSheet.EffectiveMaximumHp, maxPct);
+        var dmgPerTick = Math.Min(maxPctDmg, GetSnapshotTickDamage);
+
+        ApplyDamageScript.ApplyDamage(
+            Source,
+            Subject,
+            this,
+            dmgPerTick,
+            Element.Fire);
     }
 }

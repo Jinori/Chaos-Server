@@ -4,9 +4,12 @@ using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
+using Chaos.Scripting.FunctionalScripts.Abstractions;
+using Chaos.Scripting.FunctionalScripts.ApplyDamage;
 using Chaos.Scripting.MonsterScripts.Boss;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
+using Chaos.Utilities;
 
 namespace Chaos.Scripting.EffectScripts.Priest;
 
@@ -33,24 +36,30 @@ public class MiasmaEffect : ContinuousAnimationEffectBase
 
     /// <inheritdoc />
     public override string Name => "Miasma";
+    
+    private readonly IApplyDamageScript ApplyDamageScript = ApplyNonAttackDamageScript.Create();
 
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
     {
-        double maxHp = Subject.StatSheet.MaximumHp;
-        const double DAMAGE_PERCENTAGE = 0.02;
-        const int DAMAGE_CAP = 1000;
+        if (Subject.IsGodModeEnabled() || Subject.Effects.Contains("Invulnerability"))
+        {
+            Subject.Effects.Terminate("Poison");
 
-        var damage = (int)Math.Min(maxHp * DAMAGE_PERCENTAGE, DAMAGE_CAP);
-
-        if (Subject.StatSheet.CurrentHp <= damage)
             return;
+        }
 
-        if (Subject.IsGodModeEnabled())
-            return;
+        var damage = DamageHelper.CalculatePercentDamage(
+            Source,
+            Subject,
+            0.0075m,
+            true);
 
-        if (Subject.StatSheet.TrySubtractHp(damage))
-            AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
+        ApplyDamageScript.ApplyDamage(
+            Source,
+            Subject,
+            this,
+            damage);
 
         Subject.Animate(Animation);
     }

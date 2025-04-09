@@ -8,7 +8,7 @@ namespace Chaos.Utilities;
 
 public static class DamageHelper
 {
-    public static int CalculatePercentDamage(Creature source, Creature target, decimal percent)
+    public static int CalculatePercentDamage(Creature source, Creature target, decimal percent, bool useCurrent = false)
     {
         if (target.Script.Is<ThisIsAWorldBossScript>())
         {
@@ -29,7 +29,9 @@ public static class DamageHelper
             if (percent > 5)
                 percent = 5;
         }
+        
+        var hp = useCurrent ? target.StatSheet.CurrentHp : (int)target.StatSheet.EffectiveMaximumHp;
 
-        return MathEx.GetPercentOf<int>((int)target.StatSheet.EffectiveMaximumHp, percent);
+        return MathEx.GetPercentOf<int>(hp, percent);
     }
 }

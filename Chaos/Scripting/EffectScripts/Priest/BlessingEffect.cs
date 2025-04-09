@@ -28,6 +28,14 @@ public class BlessingEffect : EffectBase, HierarchicalEffectComponent.IHierarchi
         AnimationSpeed = 100
     };
 
+    private Attributes GetSnapshotAttributes
+        => new()
+        {
+            Ac = GetVar<int>("ac"),
+            MagicResistance = GetVar<int>("magicResistance"),
+            HealBonusPct = GetVar<int>("healBonusPct")
+        };
+
     public override byte Icon => 10;
     public override string Name => "Blessing";
 
@@ -36,31 +44,25 @@ public class BlessingEffect : EffectBase, HierarchicalEffectComponent.IHierarchi
     public override void OnApplied()
     {
         base.OnApplied();
-
-        var attributes = new Attributes
-        {
-            Ac = -15,
-            MagicResistance = 20,
-            HealBonusPct = 25
-        };
-
+        
         Subject.Animate(Animation!);
-        Subject.StatSheet.AddBonus(attributes);
+        Subject.StatSheet.AddBonus(GetSnapshotAttributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
     }
 
     public override void OnDispelled() => OnTerminated();
 
+    /// <inheritdoc />
+    public override void PrepareSnapshot(Creature source)
+    {
+        SetVar("ac", -15);
+        SetVar("magicResistance", 20);
+        SetVar("healBonusPct", 25);
+    }
+
     public override void OnTerminated()
     {
-        var attributes = new Attributes
-        {
-            Ac = -15,
-            MagicResistance = 20,
-            HealBonusPct = 25
-        };
-
-        Subject.StatSheet.SubtractBonus(attributes);
+        Subject.StatSheet.SubtractBonus(GetSnapshotAttributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Blessing has faded.");
     }

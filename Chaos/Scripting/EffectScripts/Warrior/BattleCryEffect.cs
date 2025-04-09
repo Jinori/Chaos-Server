@@ -13,9 +13,9 @@ public class BattleCryEffect : EffectBase
     private Attributes GetSnapshotAttributes
         => new()
         {
-            AtkSpeedPct = SnapshotVars.Get<int>("atkSpeedPct"),
-            Dmg = SnapshotVars.Get<int>("dmg"),
-            FlatSkillDamage = SnapshotVars.Get<int>("flatSkillDmg")
+            AtkSpeedPct = GetVar<int>("atkSpeedPct"),
+            Dmg = GetVar<int>("dmg"),
+            FlatSkillDamage = GetVar<int>("flatSkillDmg")
         };
 
     public override byte Icon => 89;
@@ -49,9 +49,9 @@ public class BattleCryEffect : EffectBase
         var buff = 15 + source.StatSheet.EffectiveStr / 10;
         var flat = 25 + source.StatSheet.EffectiveStr;
 
-        SnapshotVars.Set("dmg", buff);
-        SnapshotVars.Set("atkSpeedPct", buff);
-        SnapshotVars.Set("flatSkillDmg", flat);
+        SetVar("dmg", buff);
+        SetVar("atkSpeedPct", buff);
+        SetVar("flatSkillDmg", flat);
     }
 
     public override bool ShouldApply(Creature source, Creature target)

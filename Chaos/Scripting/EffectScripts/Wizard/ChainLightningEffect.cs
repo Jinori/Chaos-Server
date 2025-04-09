@@ -20,8 +20,7 @@ public sealed class ChainLightningEffect : ContinuousAnimationEffectBase
 
     /// <inheritdoc />
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(1);
-
-    private Creature SourceOfEffect { get; set; } = null!;
+    
     private Creature Target { get; set; } = null!;
 
     /// <inheritdoc />
@@ -56,10 +55,10 @@ public sealed class ChainLightningEffect : ContinuousAnimationEffectBase
         // Add the target's ID to the HitTargets set
         HitTargetIds.Add(target.Id);
 
-        var manaBonus = Convert.ToInt32(SourceOfEffect.StatSheet.EffectiveMaximumMp * 0.04m);
+        var manaBonus = Convert.ToInt32(Source.StatSheet.EffectiveMaximumMp * 0.04m);
 
         // Base damage calculation
-        var baseDamage = SourceOfEffect.StatSheet.EffectiveInt * 32 + 1000 + manaBonus;
+        var baseDamage = Source.StatSheet.EffectiveInt * 32 + 1000 + manaBonus;
 
         var addedFromPct = baseDamage * (source.StatSheet.EffectiveSpellDamagePct / 100m);
         baseDamage += Convert.ToInt32(source.StatSheet.EffectiveFlatSpellDamage + addedFromPct);
@@ -71,7 +70,7 @@ public sealed class ChainLightningEffect : ContinuousAnimationEffectBase
 
         // Apply the reduced damage
         ApplyDamageScript.ApplyDamage(
-            SourceOfEffect,
+            Source,
             target,
             this,
             (int)finalDamage,
@@ -83,10 +82,10 @@ public sealed class ChainLightningEffect : ContinuousAnimationEffectBase
         var nearbyTargets = target.MapInstance
                                   .GetEntitiesWithinRange<Creature>(target, 2)
                                   .OrderBy(t => t.ManhattanDistanceFrom(target))
-                                  .Where(t => !HitTargetIds.Contains(t.Id) && ShouldApply(SourceOfEffect, t) && !t.MapInstance.IsWall(t))
+                                  .Where(t => !HitTargetIds.Contains(t.Id) && ShouldApply(Source, t) && !t.MapInstance.IsWall(t))
                                   .ToList();
 
-        if (nearbyTargets.Any())
+        if (nearbyTargets.Count != 0)
         {
             var nextTarget = nearbyTargets.First();
             var effect = EffectFactory.Create("chainlightning");
@@ -95,7 +94,7 @@ public sealed class ChainLightningEffect : ContinuousAnimationEffectBase
             if (effect is ChainLightningEffect chainLightningEffect)
                 chainLightningEffect.HitTargetIds = new HashSet<uint>(HitTargetIds);
 
-            nextTarget.Effects.Apply(SourceOfEffect, effect);
+            nextTarget.Effects.Apply(Source, effect);
             nextTarget.Animate(Animation);
         }
 
@@ -106,11 +105,11 @@ public sealed class ChainLightningEffect : ContinuousAnimationEffectBase
     public override void OnApplied() { }
 
     /// <inheritdoc />
-    protected override void OnIntervalElapsed() => BounceToNextTarget(SourceOfEffect, Target);
+    protected override void OnIntervalElapsed() => BounceToNextTarget(Source, Target);
 
     public override bool ShouldApply(Creature source, Creature target)
     {
-        SourceOfEffect = source;
+        Source = source;
         Target = target;
 
         if (HitTargetIds.Count >= MAX_BOUNCES)
