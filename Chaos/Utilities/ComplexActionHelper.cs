@@ -60,7 +60,8 @@ public static class ComplexActionHelper
         DontHaveThatMany,
         NotEnoughGold,
         BadInput,
-        ItemDamaged
+        ItemDamaged,
+        ItemAccountBound
     }
 
     public enum LearnSkillResult
@@ -285,6 +286,19 @@ public static class ComplexActionHelper
         source.Client.SendSound(171, false);
         return DepositGoldResult.Success;
     }
+    
+    public static DepositGoldResult DepositGuildGold(Aisling source, int amount)
+    {
+        if (amount < 0)
+            return DepositGoldResult.BadInput;
+
+        if (!source.TryTakeGold(amount))
+            return DepositGoldResult.DontHaveThatMany;
+
+        source.Guild?.Bank.AddGold((uint)amount);
+        source.Client.SendSound(171, false);
+        return DepositGoldResult.Success;
+    }
 
     public static DepositItemResult DepositItem(
         Aisling source,
@@ -376,6 +390,106 @@ public static class ComplexActionHelper
 
         foreach (var item in items!)
             source.Bank.Deposit(item);
+
+        return DepositItemResult.Success;
+    }
+    
+    public static DepositItemResult DepositGuildItem(
+        Aisling source,
+        byte slot,
+        int amount,
+        int costPerItem = 0)
+    {
+        ArgumentNullException.ThrowIfNull(source);
+
+        if (amount < 1)
+            return DepositItemResult.BadInput;
+
+        if (costPerItem < 0)
+            return DepositItemResult.BadInput;
+
+        var slotItem = source.Inventory[slot];
+
+        if (slotItem == null)
+            return DepositItemResult.BadInput;
+
+        if (!source.Inventory.HasCount(slotItem.DisplayName, amount))
+            return DepositItemResult.DontHaveThatMany;
+
+        if (slotItem.Template.AccountBound || slotItem.Template.NoTrade)
+            return DepositItemResult.ItemAccountBound;
+
+        if (slotItem.CurrentDurability != slotItem.Template.MaxDurability)
+            return DepositItemResult.ItemDamaged;
+
+        var totalCost = amount * costPerItem;
+
+        if (!source.TryTakeGold(totalCost))
+            return DepositItemResult.NotEnoughGold;
+
+        source.Inventory.RemoveQuantity(slot, amount, out var items);
+
+        //if any item is damaged, return it to the inventory
+        //and return the result
+        if (items!.Any(i => i.CurrentDurability != i.Template.MaxDurability))
+        {
+            foreach (var item in items!)
+                source.Inventory.TryAdd(item.Slot, item);
+
+            return DepositItemResult.ItemDamaged;
+        }
+
+        foreach (var item in items!)
+            source.Guild?.Bank.Deposit(item);
+
+        return DepositItemResult.Success;
+    }
+
+    public static DepositItemResult DepositGuildItem(
+        Aisling source,
+        string itemName,
+        int amount,
+        int costPerItem = 0)
+    {
+        if (amount < 1)
+            return DepositItemResult.BadInput;
+
+        if (costPerItem < 0)
+            return DepositItemResult.BadInput;
+
+        var slotItem = source.Inventory[itemName];
+
+        if (slotItem == null)
+            return DepositItemResult.BadInput;
+
+        if (!source.Inventory.HasCount(slotItem.DisplayName, amount))
+            return DepositItemResult.DontHaveThatMany;
+        
+        if (slotItem.Template.AccountBound || slotItem.Template.NoTrade)
+            return DepositItemResult.ItemAccountBound;
+
+        if (slotItem.CurrentDurability != slotItem.Template.MaxDurability)
+            return DepositItemResult.ItemDamaged;
+
+        var totalCost = amount * costPerItem;
+
+        if (!source.TryTakeGold(totalCost))
+            return DepositItemResult.NotEnoughGold;
+
+        source.Inventory.RemoveQuantity(itemName, amount, out var items);
+
+        //if any item is damaged, return it to the inventory
+        //and return the result
+        if (items!.Any(i => i.CurrentDurability != i.Template.MaxDurability))
+        {
+            foreach (var item in items!)
+                source.Inventory.TryAdd(item.Slot, item);
+
+            return DepositItemResult.ItemDamaged;
+        }
+
+        foreach (var item in items!)
+            source.Guild?.Bank.Deposit(item);
 
         return DepositItemResult.Success;
     }
@@ -575,6 +689,47 @@ public static class ComplexActionHelper
             return WithdrawItemResult.CantCarry;
 
         source.Bank.TryWithdraw(itemName, amount, out var items);
+
+        foreach (var item in items!)
+            source.Inventory.TryAddToNextSlot(item);
+
+        return WithdrawItemResult.Success;
+    }
+    
+    public static WithdrawGoldResult WithdrawGuildGold(Aisling source, int amount)
+    {
+        if (amount < 0)
+            return WithdrawGoldResult.BadInput;
+
+        if (source.Guild?.Bank.Gold < amount)
+            return WithdrawGoldResult.DontHaveThatMany;
+
+        if (!source.TryGiveGold(amount))
+            return WithdrawGoldResult.TooMuchGold;
+
+        source.Guild!.Bank.RemoveGold((uint)amount);
+        source.Client.SendSound(171, false);
+
+        return WithdrawGoldResult.Success;
+    }
+
+    public static WithdrawItemResult WithdrawGuildItem(Aisling source, string itemName, int amount)
+    {
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(itemName);
+
+        if (amount < 1)
+            return WithdrawItemResult.BadInput;
+
+        if (!source.Guild!.Bank.HasCount(itemName, amount))
+            return WithdrawItemResult.DontHaveThatMany;
+
+        var bankItem = source.Guild.Bank.First(i => i.DisplayName.EqualsI(itemName));
+
+        if (!source.CanCarry((bankItem, amount)))
+            return WithdrawItemResult.CantCarry;
+
+        source.Guild.Bank.TryWithdraw(itemName, amount, out var items);
 
         foreach (var item in items!)
             source.Inventory.TryAddToNextSlot(item);
