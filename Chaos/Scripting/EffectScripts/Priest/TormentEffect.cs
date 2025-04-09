@@ -26,14 +26,7 @@ public class TormentEffect : EffectBase, HierarchicalEffectComponent.IHierarchic
             "Motivate"
         ];
 
-    private Attributes GetSnapshotAttributes
-        => new()
-        {
-            Dmg = GetVar<int>("dmg"),
-            Hit = GetVar<int>("hit"),
-            AtkSpeedPct = GetVar<int>("atkSpeedPct"),
-            CooldownReductionPct = GetVar<int>("cooldownReductionPct")
-        };
+    private Attributes BonusAttributes = null!;
     
     protected Animation? Animation { get; } = new()
     {
@@ -49,9 +42,17 @@ public class TormentEffect : EffectBase, HierarchicalEffectComponent.IHierarchic
     public override void OnApplied()
     {
         base.OnApplied();
+
+        BonusAttributes = new Attributes
+        {
+            Dmg = GetVar<int>("dmg"),
+            Hit = GetVar<int>("hit"),
+            AtkSpeedPct = GetVar<int>("atkSpeedPct"),
+            CooldownReductionPct = GetVar<int>("cooldownReductionPct")
+        };
         
         Subject.Animate(Animation!);
-        Subject.StatSheet.AddBonus(GetSnapshotAttributes);
+        Subject.StatSheet.AddBonus(BonusAttributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
     }
 
@@ -68,7 +69,7 @@ public class TormentEffect : EffectBase, HierarchicalEffectComponent.IHierarchic
 
     public override void OnTerminated()
     {
-        Subject.StatSheet.SubtractBonus(GetSnapshotAttributes);
+        Subject.StatSheet.SubtractBonus(BonusAttributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Torment has faded.");
     }

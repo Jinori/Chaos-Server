@@ -55,9 +55,13 @@ public class BurnEffect : ContinuousAnimationEffectBase, HierarchicalEffectCompo
     /// <inheritdoc />
     public override string Name => "Burn";
 
-    private int GetSnapshotTickDamage => GetVar<int>("dmgPerTick");
+    private int DmgPerTick;
 
-    public override void OnApplied() => AislingSubject?.SendOrangeBarMessage("Your body catches fire.");
+    public override void OnApplied()
+    {
+        AislingSubject?.SendOrangeBarMessage("Your body catches fire.");
+        DmgPerTick = GetVar<int>("dmgPerTick");
+    }
 
     public override void OnTerminated()
         => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are no longer burning.");
@@ -102,7 +106,7 @@ public class BurnEffect : ContinuousAnimationEffectBase, HierarchicalEffectCompo
 
         var maxPct = Subject is Aisling ? 2.5m : 5m;
         var maxPctDmg = MathEx.GetPercentOf<int>((int)Subject.StatSheet.EffectiveMaximumHp, maxPct);
-        var dmgPerTick = Math.Min(maxPctDmg, GetSnapshotTickDamage);
+        var dmgPerTick = Math.Min(maxPctDmg, DmgPerTick);
 
         ApplyDamageScript.ApplyDamage(
             Source,

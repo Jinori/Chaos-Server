@@ -11,11 +11,7 @@ public class MotivateEffect : EffectBase, HierarchicalEffectComponent.IHierarchi
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(2);
 
-    private Attributes GetSnapshotAttributes
-        => new()
-        {
-            AtkSpeedPct = GetVar<int>("atkSpeedPct")
-        };
+    private Attributes BonusAttributes = null!;
     
     /// <inheritdoc />
     public List<string> EffectNameHierarchy { get; init; } =
@@ -37,9 +33,14 @@ public class MotivateEffect : EffectBase, HierarchicalEffectComponent.IHierarchi
     public override void OnApplied()
     {
         base.OnApplied();
+
+        BonusAttributes = new Attributes
+        {
+            AtkSpeedPct = GetVar<int>("atkSpeedPct")
+        };
         
         Subject.Animate(Animation!);
-        Subject.StatSheet.AddBonus(GetSnapshotAttributes);
+        Subject.StatSheet.AddBonus(BonusAttributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
     }
 
@@ -50,7 +51,7 @@ public class MotivateEffect : EffectBase, HierarchicalEffectComponent.IHierarchi
 
     public override void OnTerminated()
     {
-        Subject.StatSheet.SubtractBonus(GetSnapshotAttributes);
+        Subject.StatSheet.SubtractBonus(BonusAttributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Attack Speed has returned to normal.");
     }

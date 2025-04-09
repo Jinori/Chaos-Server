@@ -20,12 +20,7 @@ public class FocusEffect : EffectBase, NonOverwritableEffectComponent.INonOverwr
         Priority = 5
     };
 
-    private Attributes GetSnapshotAttributes
-        => new()
-        {
-            SkillDamagePct = GetVar<int>("skillDmgPct"),
-            FlatSkillDamage = GetVar<int>("flatSkillDmg")
-        };
+    private Attributes BonusAttributes = null!;
 
     public override byte Icon => 100;
     public override string Name => "Focus";
@@ -35,10 +30,14 @@ public class FocusEffect : EffectBase, NonOverwritableEffectComponent.INonOverwr
     public override void OnApplied()
     {
         base.OnApplied();
+        
+        BonusAttributes = new Attributes
+        {
+            SkillDamagePct = GetVar<int>("skillDmgPct"),
+            FlatSkillDamage = GetVar<int>("flatSkillDmg")
+        };
 
-        var attributes = GetSnapshotAttributes;
-
-        Subject.StatSheet.AddBonus(attributes);
+        Subject.StatSheet.AddBonus(BonusAttributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are now focused.");
         Subject.Animate(Animation);
@@ -48,9 +47,7 @@ public class FocusEffect : EffectBase, NonOverwritableEffectComponent.INonOverwr
 
     public override void OnTerminated()
     {
-        var attributes = GetSnapshotAttributes;
-
-        Subject.StatSheet.SubtractBonus(attributes);
+        Subject.StatSheet.SubtractBonus(BonusAttributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You lost your focus.");
     }

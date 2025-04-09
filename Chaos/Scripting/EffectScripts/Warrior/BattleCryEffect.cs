@@ -10,13 +10,7 @@ public class BattleCryEffect : EffectBase
 {
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(20);
 
-    private Attributes GetSnapshotAttributes
-        => new()
-        {
-            AtkSpeedPct = GetVar<int>("atkSpeedPct"),
-            Dmg = GetVar<int>("dmg"),
-            FlatSkillDamage = GetVar<int>("flatSkillDmg")
-        };
+    private Attributes BonusAttributes = null!;
 
     public override byte Icon => 89;
     public override string Name => "Battle Cry";
@@ -25,9 +19,14 @@ public class BattleCryEffect : EffectBase
     {
         base.OnApplied();
 
-        var attributes = GetSnapshotAttributes;
+        BonusAttributes = new Attributes
+        {
+            AtkSpeedPct = GetVar<int>("atkSpeedPct"),
+            Dmg = GetVar<int>("dmg"),
+            FlatSkillDamage = GetVar<int>("flatSkillDmg")
+        };
 
-        AislingSubject?.StatSheet.AddBonus(attributes);
+        AislingSubject?.StatSheet.AddBonus(BonusAttributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your accelerate faster as your damage rises.");
     }
@@ -36,9 +35,7 @@ public class BattleCryEffect : EffectBase
 
     public override void OnTerminated()
     {
-        var attributes = GetSnapshotAttributes;
-
-        AislingSubject?.StatSheet.SubtractBonus(attributes);
+        AislingSubject?.StatSheet.SubtractBonus(BonusAttributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your body has returned to normal.");
     }

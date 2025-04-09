@@ -1,5 +1,6 @@
 using Chaos.Common.Utilities;
 using Chaos.Models.Data;
+using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyDamage;
@@ -16,6 +17,8 @@ public class BleedEffect : ContinuousAnimationEffectBase
     /// <inheritdoc />
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(4);
 
+    private int DmgPerTick;
+    
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()
     {
@@ -31,13 +34,10 @@ public class BleedEffect : ContinuousAnimationEffectBase
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(500), false);
 
     /// <inheritdoc />
-    public override byte Icon => 39;
+    public override void OnApplied() => DmgPerTick = GetVar<int>("dmgPerTick"); 
 
     /// <inheritdoc />
-    public override string Name => "Bleed";
-
-    /// <inheritdoc />
-    protected override void OnIntervalElapsed()
+    public override void PrepareSnapshot(Creature source)
     {
         var pctDmg = DamageHelper.CalculatePercentDamage(Source, Subject, 1);
         var flatDmg = Source.StatSheet.EffectiveDex * (Source.StatSheet.Level / 5);
@@ -46,10 +46,19 @@ public class BleedEffect : ContinuousAnimationEffectBase
         var finalDmg = pctDmg + flatDmg;
         finalDmg = Math.Min(finalDmg, capDmg);
 
-        DamageScript.ApplyDamage(
-            Source,
-            Subject,
-            this,
-            finalDmg);
+        SetVar("dmgPerTick", finalDmg);
     }
+
+    /// <inheritdoc />
+    public override byte Icon => 39;
+
+    /// <inheritdoc />
+    public override string Name => "Bleed";
+
+    /// <inheritdoc />
+    protected override void OnIntervalElapsed() => DamageScript.ApplyDamage(
+        Source,
+        Subject,
+        this,
+        DmgPerTick);
 }
