@@ -29,16 +29,11 @@ public abstract class SetBonusItemScriptBase : ItemScriptBase
 
     public override void OnEquipped(Aisling aisling)
     {
-        if (aisling.Equipment.Count(item => item.Template.TemplateKey.EqualsI(Subject.Template.TemplateKey)) > 1)
-            return;
-
-        var countOfUniqueSetItems = aisling.Equipment
-                                           .DistinctBy(item => item.Template.TemplateKey)
-                                           .Count(item => SetItemTemplateKeys.Contains(item.Template.TemplateKey));
+        var countOfSetItems = aisling.Equipment.Count(item => SetItemTemplateKeys.Contains(item.Template.TemplateKey));
 
         //we have equipped an item, so the previous bonus is from 1 less than the current number of set items
-        var previousBonus = GetCumulativeBonus(countOfUniqueSetItems - 1);
-        var newBonus = GetCumulativeBonus(countOfUniqueSetItems);
+        var previousBonus = GetCumulativeBonus(countOfSetItems - 1);
+        var newBonus = GetCumulativeBonus(countOfSetItems);
 
         aisling.UserStatSheet.SubtractBonus(previousBonus);
         aisling.UserStatSheet.AddBonus(newBonus);
@@ -47,16 +42,11 @@ public abstract class SetBonusItemScriptBase : ItemScriptBase
 
     public override void OnUnEquipped(Aisling aisling)
     {
-        if (aisling.Equipment.Any(item => item.Template.TemplateKey.EqualsI(Subject.Template.TemplateKey)))
-            return;
-
-        var countOfUniqueSetItems = aisling.Equipment
-                                           .DistinctBy(item => item.Template.TemplateKey)
-                                           .Count(item => SetItemTemplateKeys.Contains(item.Template.TemplateKey));
+        var countOfSetItems = aisling.Equipment.Count(item => SetItemTemplateKeys.Contains(item.Template.TemplateKey));
 
         //we have unequipped an item, so the previous bonus is from 1 more than the current number of set items
-        var previousBonus = GetCumulativeBonus(countOfUniqueSetItems + 1);
-        var newBonus = GetCumulativeBonus(countOfUniqueSetItems);
+        var previousBonus = GetCumulativeBonus(countOfSetItems + 1);
+        var newBonus = GetCumulativeBonus(countOfSetItems);
 
         aisling.UserStatSheet.SubtractBonus(previousBonus);
         aisling.UserStatSheet.AddBonus(newBonus);

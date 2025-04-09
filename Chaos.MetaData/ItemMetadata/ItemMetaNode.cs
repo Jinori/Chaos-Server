@@ -8,10 +8,9 @@ namespace Chaos.MetaData.ItemMetaData;
 /// <summary>
 ///     A node that stores metadata about an item
 /// </summary>
-/// <param name="Name">
-/// </param>
-public sealed record ItemMetaNode(string Name) : IMetaNode
+public sealed record ItemMetaNode : IMetaNode
 {
+    private static Encoding Encoding { get; } = Encoding.GetEncoding(949);
     /// <summary>
     ///     The category of the item, used for bank sorting
     /// </summary>
@@ -35,28 +34,36 @@ public sealed record ItemMetaNode(string Name) : IMetaNode
     /// <summary>
     ///     The name of the item
     /// </summary>
-    public string Name { get; init; } = Name;
+    public string Name { get; init; }
 
     /// <summary>
     ///     The weight of the item
     /// </summary>
     public int Weight { get; set; }
 
+    private readonly Lazy<int> _length;
+
+    /// <summary>
+    ///     Creates a new instance of <see cref="ItemMetaNode" />
+    /// </summary>
+    public ItemMetaNode(string name)
+    {
+        Name = name;
+        _length = new Lazy<int>(
+            () => 14
+                  + Encoding.GetByteCount(Name)
+                  + Encoding.GetByteCount(Category)
+                  + Encoding.GetByteCount(Description)
+                  + Level.ToString()
+                         .Length
+                  + Weight.ToString()
+                          .Length);
+    }
+
     /// <summary>
     ///     The length of the serialized data
     /// </summary>
-    public int Length
-        => 14
-           + Encoding.GetEncoding(949)
-                     .GetByteCount(Name)
-           + Encoding.GetEncoding(949)
-                     .GetByteCount(Category)
-           + Encoding.GetEncoding(949)
-                     .GetByteCount(Description)
-           + Level.ToString()
-                  .Length
-           + Weight.ToString()
-                   .Length;
+    public int Length => _length.Value;
 
     /// <inheritdoc />
     public void Serialize(ref SpanWriter writer)
