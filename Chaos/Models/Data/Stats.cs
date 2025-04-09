@@ -1,5 +1,8 @@
 // ReSharper disable InconsistentNaming
 
+using System.Text;
+using Chaos.DarkAges.Extensions;
+
 namespace Chaos.Models.Data;
 
 public record Stats
@@ -38,5 +41,28 @@ public record Stats
     {
         get => _wis;
         init => _wis = value;
+    }
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        //only return the properties that are not 0
+        var sb = new StringBuilder();
+        if (Str != 0)
+            sb.AppendLineF($"Str: {Str}");
+        
+        if(Int != 0)
+            sb.AppendLineF($"Int: {Int}");
+        
+        if(Wis != 0)
+            sb.AppendLineF($"Wis: {Wis}");
+
+        if (Con != 0)
+            sb.AppendLineF($"Con: {Con}");
+
+        if (Dex != 0)
+            sb.AppendLineF($"Dex: {Dex}");
+
+        return sb.ToString();
     }
 }

@@ -1,5 +1,8 @@
 // ReSharper disable InconsistentNaming
 
+using System.Text;
+using Chaos.DarkAges.Extensions;
+
 namespace Chaos.Models.Data;
 
 public record Attributes : Stats
@@ -156,5 +159,61 @@ public record Attributes : Stats
         Interlocked.Add(ref _healBonusPct, other.HealBonusPct);
         Interlocked.Add(ref _cooldownReduction, other.CooldownReduction);
         Interlocked.Add(ref _healBonus, other.HealBonus);
+    }
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        //append all properties that are not 0
+        var sb = new StringBuilder();
+
+        sb.Append(base.ToString());
+        
+        if (Ac != 0)
+            sb.AppendLineF($"AC: {Ac}");
+        
+        if (AtkSpeedPct != 0)
+            sb.AppendLineF($"Attack Speed%: {AtkSpeedPct}");
+        
+        if (CooldownReduction != 0)
+            sb.AppendLineF($"Cooldown Reduction: {CooldownReduction}");
+        
+        if (CooldownReductionPct != 0)
+            sb.AppendLineF($"Cooldown Reduction%: {CooldownReductionPct}");
+        
+        if (Dmg != 0)
+            sb.AppendLineF($"DMG: {Dmg}");
+        
+        if (FlatSkillDamage != 0)
+            sb.AppendLineF($"Flat Skill DMG: {FlatSkillDamage}");
+        
+        if (FlatSpellDamage != 0)
+            sb.AppendLineF($"Flat Spell DMG: {FlatSpellDamage}");
+        
+        if (HealBonus != 0)
+            sb.AppendLineF($"Heal Bonus: {HealBonus}");
+        
+        if (HealBonusPct != 0)
+            sb.AppendLineF($"Heal Bonus%: {HealBonusPct}");
+        
+        if (Hit != 0)
+            sb.AppendLineF($"HIT: {Hit}");
+        
+        if (MagicResistance != 0)
+            sb.AppendLineF($"MR: {MagicResistance}");
+        
+        if (MaximumHp != 0)
+            sb.AppendLineF($"HP: {MaximumHp}");
+        
+        if (MaximumMp != 0)
+            sb.AppendLineF($"MP: {MaximumMp}");
+        
+        if (SkillDamagePct != 0)
+            sb.AppendLineF($"Skill DMG%: {SkillDamagePct}");
+        
+        if (SpellDamagePct != 0)
+            sb.AppendLineF($"Spell DMG%: {SpellDamagePct}");
+
+        return sb.ToString();
     }
 }
