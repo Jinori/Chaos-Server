@@ -1,5 +1,6 @@
 using Chaos.Common.Utilities;
 using Chaos.Extensions;
+using Chaos.Extensions.Common;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -150,6 +151,7 @@ public class LimboWizardScript : MonsterScriptBase
 
         //target the aisling that will cause the meall to hit the most targets
         var optimalTarget = nearbyAislings.ToDictionary(aisling => aisling, aisling => nearbyAislings.Count(x => aisling.WithinRange(x, 1)))
+                                          .Shuffle()
                                           .MaxBy(kvp => kvp.Value)
                                           .Key;
 

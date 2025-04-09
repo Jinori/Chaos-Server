@@ -18,6 +18,7 @@ public class LimboWarriorScript : MonsterScriptBase
     private readonly Skill Shockwave;
     private readonly ISkillFactory SkillFactory;
     private readonly Skill TempestBlade;
+    private readonly Skill AoBeagSuain;
 
     public LimboWarriorScript(Monster subject, ISkillFactory skillFactory)
         : base(subject)
@@ -26,6 +27,7 @@ public class LimboWarriorScript : MonsterScriptBase
         Charge = SkillFactory.Create("charge");
         TempestBlade = SkillFactory.Create("tempestBlade");
         Shockwave = SkillFactory.Create("shockwave");
+        AoBeagSuain = SkillFactory.Create("aoBeagSuain");
         ActionTimer = new RandomizedIntervalTimer(TimeSpan.FromMilliseconds(1000), 25, startAsElapsed: false);
     }
 
@@ -44,7 +46,7 @@ public class LimboWarriorScript : MonsterScriptBase
                 Direction = direction
             };
 
-            var points = AoeShape.FrontalCone.ResolvePoints(options);
+            var points = aoeShape.ResolvePoints(options);
 
             var numTargets = Subject.MapInstance
                                     .GetEntitiesAtPoints<Aisling>(points)
@@ -63,6 +65,7 @@ public class LimboWarriorScript : MonsterScriptBase
         Charge.Update(delta);
         TempestBlade.Update(delta);
         Shockwave.Update(delta);
+        AoBeagSuain.Update(delta);
 
         ActionTimer.Update(delta);
 
@@ -82,6 +85,9 @@ public class LimboWarriorScript : MonsterScriptBase
             && (target.DirectionalRelationTo(Subject) == Subject.Direction))
             if (Subject.TryUseSkill(Charge))
                 return;
+
+        if (Subject.IsBeagSuained() && Subject.TryUseSkill(AoBeagSuain))
+            return;
 
         if (Subject.WithinRange(target, 2) && Subject.CanUse(TempestBlade, out _))
         {

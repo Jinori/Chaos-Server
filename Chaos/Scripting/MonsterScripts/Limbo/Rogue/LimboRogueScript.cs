@@ -1,3 +1,4 @@
+using Chaos.Common.Utilities;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Panel;
@@ -17,6 +18,16 @@ public class LimboRogueScript : MonsterScriptBase
     private readonly ISkillFactory SkillFactory;
     private readonly ISpellFactory SpellFactory;
     private readonly Skill Throw;
+    private readonly IIntervalTimer AggroWipeTimer;
+    private static readonly int[] ClassWeights =
+    [
+        0, //peasant
+        0, //warrior
+        0, //rogue
+        1, //wizard
+        2, //priest
+        0 //monk
+    ];
 
     public LimboRogueScript(Monster subject, ISkillFactory skillFactory, ISpellFactory spellFactory)
         : base(subject)
@@ -24,6 +35,7 @@ public class LimboRogueScript : MonsterScriptBase
         SkillFactory = skillFactory;
         SpellFactory = spellFactory;
         ActionTimer = new RandomizedIntervalTimer(TimeSpan.FromMilliseconds(1000), 25, startAsElapsed: false);
+        AggroWipeTimer = new RandomizedIntervalTimer(TimeSpan.FromSeconds(3), 25, startAsElapsed: false);
 
         ShadowFigure = SkillFactory.Create("shadowfigure");
         Throw = SkillFactory.Create("throw");
@@ -35,9 +47,35 @@ public class LimboRogueScript : MonsterScriptBase
         PitfallTrap.Update(delta);
         ShadowFigure.Update(delta);
         Throw.Update(delta);
-
+        
+        AggroWipeTimer.Update(delta);
         ActionTimer.Update(delta);
 
+        if (AggroWipeTimer.IntervalElapsed)
+        {
+            Subject.ResetAggro();
+
+            var possibleTargets = Map.GetEntitiesWithinRange<Aisling>(Subject, 10)
+                                     .ThatAreVisibleTo(Subject)
+                                     .Where(obj => !obj.Equals(Subject) && obj.IsAlive)
+                                     .ToList();
+
+            if (possibleTargets.Count > 0)
+            {
+
+                var targetClass = possibleTargets.Select(aisling => aisling.UserStatSheet.BaseClass)
+                                                 .Distinct()
+                                                 .ToDictionary(@class => @class, @class => ClassWeights[(int)@class])
+                                                 .PickRandomWeighted();
+
+                Target = possibleTargets.Where(t => t.UserStatSheet.BaseClass == targetClass)
+                                        .ToList()
+                                        .PickRandom();
+
+                Subject.AggroList[Target.Id] = 100_000;
+            }
+        }
+        
         if (!ActionTimer.IntervalElapsed)
             return;
 

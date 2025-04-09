@@ -178,6 +178,9 @@ public class RestrictionBehavior
             }
             case Monster monster when monster.IsSuained() || monster.IsPramhed() || monster.IsBeagSuained():
             {
+                if (skill.Template.Name.EqualsI("aobeagsuain"))
+                    return true;
+                
                 return false;
             }
             case Aisling aisling when aisling.Effects.Contains("Mount"):

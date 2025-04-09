@@ -38,8 +38,18 @@ public class AttackingScript : MonsterScriptBase
 
         if (ShouldUseSkill)
         {
+            var chanceMax = 12;
+            var chanceMin = 6;
+
+            var chance = MathEx.ScaleRange(
+                Math.Clamp(Subject.StatSheet.Level, 1, 99),
+                1,
+                99,
+                chanceMin,
+                chanceMax);
+
             var skill = Skills.Where(skill => Subject.CanUse(skill, out _))
-                              .PickRandomWeightedSingleOrDefault(7);
+                              .PickRandomWeightedSingleOrDefault(chance);
 
             if (skill is not null)
                 attacked |= Subject.TryUseSkill(skill);

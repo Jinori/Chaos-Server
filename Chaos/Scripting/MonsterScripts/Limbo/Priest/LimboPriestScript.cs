@@ -14,12 +14,12 @@ public class LimboPriestScript : MonsterScriptBase
 {
     private static readonly int[] ClassWeights =
     [
-        1,
-        1,
-        3,
-        3,
-        2,
-        1
+        1, //peasant
+        1, //warrior
+        3, //rogue
+        3, //wizard
+        2, //priest
+        1 //monk
     ];
 
     private readonly IIntervalTimer ActionTimer;
