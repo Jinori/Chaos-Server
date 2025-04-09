@@ -23,7 +23,8 @@ public abstract class GuildScriptBase : DialogScriptBase
         IClientRegistry<IChaosWorldClient> clientRegistry,
         IStore<Guild> guildStore,
         IFactory<Guild> guildFactory,
-        ILogger logger)
+        ILogger logger
+    )
         : base(subject)
     {
         ClientRegistry = clientRegistry;

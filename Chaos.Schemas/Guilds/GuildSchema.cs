@@ -18,4 +18,9 @@ public sealed record GuildSchema
     /// </summary>
     [JsonRequired]
     public string Name { get; set; } = null!;
+    
+    /// <summary>
+    ///     The tax rate (as a percentage from 0 to 100) for guild transactions
+    /// </summary>
+    public double TaxRatePercent { get; set; } = 0;
 }

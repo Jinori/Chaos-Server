@@ -4,7 +4,7 @@ using Chaos.Models.World;
 using Chaos.NLog.Logging.Definitions;
 using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
-using Chaos.Scripting.DialogScripts.BankScripts;
+using Chaos.Storage.Abstractions;
 using Chaos.Utilities;
 #endregion
 
@@ -13,11 +13,19 @@ namespace Chaos.Scripting.DialogScripts.GuildScripts.GuildBank;
 public class GuildDepositItemScript : DialogScriptBase
 {
     private readonly ILogger<GuildDepositItemScript> Logger;
+    private readonly IStorage<GuildHouseState> GuildHouseStateStorage;
 
     /// <inheritdoc />
-    public GuildDepositItemScript(Dialog subject, ILogger<GuildDepositItemScript> logger)
+    public GuildDepositItemScript(
+        Dialog subject,
+        ILogger<GuildDepositItemScript> logger,
+        IStorage<GuildHouseState> guildHouseStateStorage
+    )
         : base(subject)
-        => Logger = logger;
+    {
+        Logger = logger;
+        GuildHouseStateStorage = guildHouseStateStorage;
+    }
 
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
@@ -113,7 +121,11 @@ public class GuildDepositItemScript : DialogScriptBase
                           amount,
                           item.DisplayName,
                           source.Guild.Name);
-
+                
+                var guildHouseState = GuildHouseStateStorage.Value;
+                guildHouseState.SetStorage(GuildHouseStateStorage);
+                
+                guildHouseState.LogItemTransaction(source.Guild.Name, source.Name, item.DisplayName, GuildHouseState.TransactionType.Deposit);
                 return;
             
             case ComplexActionHelper.DepositItemResult.ItemAccountBound:

@@ -38,6 +38,12 @@ public sealed class Guild : IDedicatedChannel, IEquatable<Guild>
     /// </summary>
     public string Name { get; }
 
+    
+    /// <summary>
+    ///     The tax rate for guild transactions (0 to 100).
+    /// </summary>
+    public double TaxRatePercent { get; private set; }
+    
     /// <summary>
     ///     Initializes a new instance of the <see cref="Guild" /> class.
     /// </summary>
@@ -610,5 +616,17 @@ public sealed class Guild : IDedicatedChannel, IEquatable<Guild>
         guildRank = GuildHierarchy.FirstOrDefault(rank => rank.Tier == tier);
 
         return guildRank is not null;
+    }
+    
+    /// <summary>
+    ///     Sets the guild tax rate percentage.
+    /// </summary>
+    /// <param name="ratePercent">The tax rate from 0 to 100.</param>
+    public void SetTaxRate(double ratePercent)
+    {
+        if (ratePercent is < 0 or > 100)
+            throw new ArgumentOutOfRangeException(nameof(ratePercent), "Tax rate must be between 0 and 100.");
+
+        TaxRatePercent = ratePercent;
     }
 }

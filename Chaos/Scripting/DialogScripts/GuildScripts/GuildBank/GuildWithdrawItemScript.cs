@@ -1,4 +1,5 @@
 #region
+using Chaos.DarkAges.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.Menu;
 using Chaos.Models.Panel;
@@ -7,7 +8,9 @@ using Chaos.NLog.Logging.Definitions;
 using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.DialogScripts.BankScripts;
+using Chaos.Storage.Abstractions;
 using Chaos.Utilities;
+using Humanizer;
 #endregion
 
 namespace Chaos.Scripting.DialogScripts.GuildScripts.GuildBank;
@@ -15,11 +18,19 @@ namespace Chaos.Scripting.DialogScripts.GuildScripts.GuildBank;
 public class GuildWithdrawItemScript : DialogScriptBase
 {
     private readonly ILogger<GuildWithdrawItemScript> Logger;
+    private readonly IStorage<GuildHouseState> GuildHouseStateStorage;
 
     /// <inheritdoc />
-    public GuildWithdrawItemScript(Dialog subject, ILogger<GuildWithdrawItemScript> logger)
+    public GuildWithdrawItemScript(
+        Dialog subject,
+        ILogger<GuildWithdrawItemScript> logger,
+        IStorage<GuildHouseState> guildHouseStateStorage
+    )
         : base(subject)
-        => Logger = logger;
+    {
+        GuildHouseStateStorage = guildHouseStateStorage;
+        Logger = logger;
+    }
 
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
@@ -123,6 +134,20 @@ public class GuildWithdrawItemScript : DialogScriptBase
                           amount,
                           item.DisplayName,
                           source.Guild.Name);
+                
+                var guildHouseState = GuildHouseStateStorage.Value;
+                guildHouseState.SetStorage(GuildHouseStateStorage);
+                
+                guildHouseState.LogItemTransaction(source.Guild.Name, source.Name, item.DisplayName, GuildHouseState.TransactionType.Withdrawal);
+
+                foreach (var member in source.Guild.GetOnlineMembers())
+                {
+                    member.SendServerMessage(
+                        ServerMessageType.GuildChat,
+                        amount > 1
+                            ? $"{source.Name} has withdrawn {amount} of {item.DisplayName.Pluralize()}."
+                            : $"{source.Name} has withdrawn {item.DisplayName}.");
+                }
 
                 return;
             case ComplexActionHelper.WithdrawItemResult.CantCarry:
