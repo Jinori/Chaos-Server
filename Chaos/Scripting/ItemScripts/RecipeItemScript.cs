@@ -23,6 +23,22 @@ public class RecipeItemScript : ItemScriptBase
         source.SendOrangeBarMessage($"You've learned {serverMessage}.");
         source.Inventory.RemoveQuantityByTemplateKey(templatekey, 1);
     }
+    
+    public static void AlchemyRecipeLearn2Recipes(
+        Aisling source,
+        Animation ani,
+        AlchemyRecipes recipe,
+        AlchemyRecipes recipe2,
+        string serverMessage,
+        string serverMessage2,
+        string templatekey)
+    {
+        source.Animate(ani);
+        source.Trackers.Flags.AddFlag(recipe);
+        source.Trackers.Flags.AddFlag(recipe2);
+        source.SendOrangeBarMessage($"You've learned {serverMessage} and {serverMessage2}.");
+        source.Inventory.RemoveQuantityByTemplateKey(templatekey, 1);
+    }
 
     public static void ArmorSmithRecipeLearn(
         Aisling source,
@@ -2639,12 +2655,9 @@ public class RecipeItemScript : ItemScriptBase
 
                         return;
                     }
-
-                    source.Inventory.RemoveQuantityByTemplateKey(Subject.Template.TemplateKey, 1);
+                    
                     source.Trackers.Flags.AddFlag(AlchemyCategories.StrongVitalityBrew);
-                    source.Trackers.Flags.AddFlag(AlchemyRecipes.StrongJuggernautBrew);
-                    source.Trackers.Flags.AddFlag(AlchemyRecipes.StrongAstralBrew);
-
+                    AlchemyRecipeLearn2Recipes(source, ani, AlchemyRecipes.StrongJuggernautBrew, AlchemyRecipes.StrongAstralBrew, "Strong Juggernaut Brew", "Strong Astral Brew", $"{Subject.Template.TemplateKey}");
                     return;
                 }
 
@@ -2662,11 +2675,9 @@ public class RecipeItemScript : ItemScriptBase
 
                         return;
                     }
-
-                    source.Inventory.RemoveQuantityByTemplateKey(Subject.Template.TemplateKey, 1);
+                    
                     source.Trackers.Flags.AddFlag(AlchemyCategories.PotentVitalityBrew);
-                    source.Trackers.Flags.AddFlag(AlchemyRecipes.PotentJuggernautBrew);
-                    source.Trackers.Flags.AddFlag(AlchemyRecipes.PotentAstralBrew);
+                    AlchemyRecipeLearn2Recipes(source, ani, AlchemyRecipes.PotentJuggernautBrew, AlchemyRecipes.PotentAstralBrew, "Potent Juggernaut Brew", "Potent Astral Brew", $"{Subject.Template.TemplateKey}");
 
                     return;
                 }

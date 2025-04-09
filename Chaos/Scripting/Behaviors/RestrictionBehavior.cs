@@ -4,6 +4,7 @@ using Chaos.Extensions.Common;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
+using Chaos.Scripting.MapScripts.Functional;
 #endregion
 
 namespace Chaos.Scripting.Behaviors;
@@ -112,150 +113,159 @@ public class RestrictionBehavior
     {
         if (aisling.IsAlive)
         {
-            if (aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out _) || aisling.MapInstance.LoadedFromInstanceId.EqualsI("hopmaze"))
+            if (IsItemUsageRestricted(aisling, item))
             {
                 aisling.SendOrangeBarMessage("You can't do that now.");
-
-                return false;
-            }
-
-            if (aisling.IsPramhed() || aisling.IsSuained())
-            {
-                aisling.SendOrangeBarMessage("You can't do that now.");
-
-                return false;
-            }
-
-            if (aisling.IsStoned() && !item.Template.TemplateKey.EqualsI("lightPotion"))
-                return false;
-
-            if (aisling.MapInstance.LoadedFromInstanceId.StartsWithI("phoenix_sky"))
-            {
-                aisling.SendOrangeBarMessage("You are in Lady Phoenix's clutches");
-
-                return false;
-            }
-
-            if (aisling.MapInstance.LoadedFromInstanceId.StartsWithI("snaggleschallenge"))
-            {
-                aisling.SendOrangeBarMessage("You can't use items here.");
-
                 return false;
             }
 
             return true;
         }
 
+        // Special case: allow using revive item while dead
         if (aisling.IsDead && item.Template.TemplateKey.EqualsI("revivePotion"))
             return true;
 
         aisling.SendOrangeBarMessage("You can't do that now.");
+        return false;
+    }
+
+    private bool IsItemUsageRestricted(Aisling aisling, Item item)
+    {
+        // General Restrictions
+        if (aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out _)
+            || aisling.MapInstance.Script.Is<NoItemUsageScript>())
+            return true;
+
+        // Status Restrictions
+        if (aisling.IsPramhed() || aisling.IsSuained())
+            return true;
+
+        // Stoned: can only use specific item
+        if (aisling.IsStoned() && !item.Template.TemplateKey.EqualsI("lightPotion"))
+            return true;
+
+        // Map-specific restrictions
+        var mapId = aisling.MapInstance.LoadedFromInstanceId;
+        if (mapId.StartsWithI("phoenix_sky"))
+        {
+            aisling.SendOrangeBarMessage("You are in Lady Phoenix's clutches");
+            return true;
+        }
 
         return false;
     }
+
 
     public virtual bool CanUseSkill(Creature creature, Skill skill)
     {
         switch (creature)
         {
-            case Aisling aisling when aisling.IsSuained()
-                                      || aisling.IsPramhed()
-                                      || aisling.IsStoned()
-                                      || aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out _)
-                                      || aisling.MapInstance.Name.EqualsI("Frosty's Challenge")
-                                      || aisling.MapInstance.Name.EqualsI("Snaggles Secret Sweetroom")
-                                      || (aisling.MapInstance.LoadedFromInstanceId.EqualsI("hopmaze") && !aisling.IsGodModeEnabled()):
+            case Aisling aisling:
             {
-                aisling.SendOrangeBarMessage("You cannot use skills.");
+                if (!aisling.IsGodModeEnabled() && IsSkillUsageRestricted(aisling))
+                {
+                    aisling.SendOrangeBarMessage("You cannot use skills.");
+                    return false;
+                }
 
+                if (!aisling.IsAdmin && aisling.MapInstance.LoadedFromInstanceId.StartsWithI("phoenix_sky"))
+                {
+                    aisling.SendOrangeBarMessage("You are in Lady Phoenix's clutches");
+                    return false;
+                }
+                
+                if (aisling.Effects.Contains("Mount"))
+                {
+                    aisling.Effects.Dispel("Mount");
+                    return true;
+                }
+
+                if (aisling.Effects.Contains("Rumination"))
+                {
+                    aisling.Effects.Dispel("Rumination");
+                    aisling.SendOrangeBarMessage("You ended your rumination.");
+                    return true;
+                }
+
+                break;
+            }
+            
+            case Monster monster when IsSkillUsageRestricted(monster):
                 return false;
-            }
-            case Aisling { IsAdmin: false } aisling when aisling.MapInstance.LoadedFromInstanceId.StartsWithI("phoenix_sky"):
-            {
-                aisling.SendOrangeBarMessage("You are in Lady Phoenix's clutches");
-
-                return false;
-            }
-            case Monster monster when monster.IsSuained() || monster.IsPramhed() || monster.IsBeagSuained():
-            {
-                return false;
-            }
-            case Aisling aisling when aisling.Effects.Contains("Mount"):
-            {
-                aisling.Effects.Dispel("Mount");
-
-                return true;
-            }
-            case Aisling aisling when aisling.Effects.Contains("Rumination"):
-            {
-                aisling.Effects.Dispel("Rumination");
-                aisling.SendOrangeBarMessage("You ended your rumination.");
-
-                return true;
-            }
         }
 
         return creature.IsAlive;
     }
+    
+    private bool IsSkillUsageRestricted(Creature creature) =>
+        creature.IsSuained()
+        || creature.IsPramhed()
+        || creature.IsStoned()
+        || creature.Trackers.TimedEvents.HasActiveEvent("Jail", out _)
+        || creature.MapInstance.Script.Is<NoSkillSpellUsageScript>()
+        || creature.MapInstance.Script.Is<NoSkillUsageScript>();
 
     public virtual bool CanUseSpell(Creature creature, Spell spell)
     {
-        switch (creature)
-        {
-            case not null when creature.IsSuained() && (spell.Template.Name == "ao suain"):
-            {
-                return true;
-            }
-            case not null when creature.IsSuained() && (spell.Template.Name == "Cure Ailments"):
-            {
-                return true;
-            }
-            case not null when creature.IsPramhed() && (spell.Template.Name == "dinarcoli"):
-            {
-                return true;
-            }
+        if (IsSpellAllowedWhileRestricted(creature, spell))
+            return true;
 
-            case Aisling aisling when aisling.IsSuained()
-                                      || aisling.IsPramhed()
-                                      || aisling.IsStoned()
-                                      || aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out _)
-                                      || aisling.MapInstance.Name.EqualsI("Frosty's Challenge")
-                                      || aisling.MapInstance.Name.EqualsI("Snaggles Secret Sweetroom")
-                                      || (aisling.MapInstance.LoadedFromInstanceId.EqualsI("hopmaze") && !aisling.IsGodModeEnabled()):
+        if (creature is Aisling aisling)
+        {
+            if (!aisling.IsGodModeEnabled() && IsSpellUsageRestricted(aisling))
             {
                 aisling.SendOrangeBarMessage("You cannot use spells.");
-
                 return false;
             }
-            case Aisling { IsAdmin: false } aisling when aisling.MapInstance.LoadedFromInstanceId.StartsWithI("phoenix_sky"):
+
+            if (!aisling.IsAdmin && aisling.MapInstance.LoadedFromInstanceId.StartsWithI("phoenix_sky"))
             {
                 aisling.SendOrangeBarMessage("You are in Lady Phoenix's clutches");
+                return false;
+            }
 
-                return false;
-            }
-            case Monster monster when monster.IsSuained() || monster.IsPramhed():
-            {
-                return false;
-            }
-            case Aisling aisling when aisling.Effects.Contains("Mount"):
+            if (aisling.Effects.Contains("Mount"))
             {
                 aisling.Effects.Dispel("Mount");
                 aisling.Refresh();
-
                 return true;
             }
-            case Aisling aisling when aisling.Effects.Contains("Rumination"):
+
+            if (aisling.Effects.Contains("Rumination"))
             {
                 aisling.Effects.Dispel("Rumination");
                 aisling.SendOrangeBarMessage("You ended your Rumination.");
-
                 return true;
             }
         }
 
-        if (creature is { IsDead: true } && (spell.Template.Name == "Self Revive"))
+        if (creature is Monster monster && IsSpellUsageRestricted(monster))
+            return false;
+
+        if (creature.IsDead && (spell.Template.Name == "Self Revive"))
             return true;
 
-        return creature is { IsAlive: true };
+        return creature.IsAlive;
     }
+
+    private bool IsSpellAllowedWhileRestricted(Creature creature, Spell spell)
+    {
+        var name = spell.Template.Name.ToLowerInvariant();
+
+        return (creature.IsSuained() && name is "ao suain" or "cure ailments")
+               || (creature.IsPramhed() && (name == "dinarcoli"));
+    }
+
+    private bool IsSpellUsageRestricted(Aisling aisling) =>
+        aisling.IsSuained()
+        || aisling.IsPramhed()
+        || aisling.IsStoned()
+        || aisling.Trackers.TimedEvents.HasActiveEvent("Jail", out _)
+        || aisling.MapInstance.Script.Is<NoSkillSpellUsageScript>()
+        || aisling.MapInstance.Script.Is<NoSpellUsageScript>();
+
+    private bool IsSpellUsageRestricted(Monster monster) =>
+        monster.IsSuained()
+        || monster.IsPramhed();
 }
