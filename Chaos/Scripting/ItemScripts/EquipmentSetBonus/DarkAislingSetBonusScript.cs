@@ -25,10 +25,10 @@ public class DarkAislingSetBonusScript : SetBonusItemScriptBase
         {
             4, new Attributes
             {
-                SpellDamagePct = 5,
-                SkillDamagePct = 5,
-                FlatSpellDamage = 50,
-                FlatSkillDamage = 50
+                SpellDamagePct = 3,
+                SkillDamagePct = 3,
+                FlatSpellDamage = 30,
+                FlatSkillDamage = 30
             }
         }
     };

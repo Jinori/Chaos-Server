@@ -18,10 +18,10 @@ public class SacredSetBonusScript : SetBonusItemScriptBase
         {
             3, new Attributes
             {
-                SpellDamagePct = 8,
-                HealBonusPct = 8,
-                FlatSpellDamage = 75,
-                HealBonus = 75
+                SpellDamagePct = 6,
+                HealBonusPct = 6,
+                FlatSpellDamage = 60,
+                HealBonus = 60
             }
         },
         {

@@ -21,10 +21,10 @@ public class NyxSetBonusScript : SetBonusItemScriptBase
         {
             3, new Attributes
             {
-                SkillDamagePct = 5,
-                SpellDamagePct = 5,
-                FlatSkillDamage = 50,
-                FlatSpellDamage = 50,
+                SkillDamagePct = 4,
+                SpellDamagePct = 4,
+                FlatSkillDamage = 40,
+                FlatSpellDamage = 40,
             }
         },
         {

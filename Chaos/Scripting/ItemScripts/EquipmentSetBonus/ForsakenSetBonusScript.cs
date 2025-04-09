@@ -19,8 +19,8 @@ public class ForsakenSetBonusScript : SetBonusItemScriptBase
         {
             3, new Attributes
             {
-                SkillDamagePct = 8,
-                FlatSkillDamage = 75
+                SkillDamagePct = 6,
+                FlatSkillDamage = 60
             }
         },
         {
