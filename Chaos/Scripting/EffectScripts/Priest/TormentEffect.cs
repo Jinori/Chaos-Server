@@ -23,7 +23,7 @@ public class TormentEffect : EffectBase, HierarchicalEffectComponent.IHierarchic
             "Beannaich",
             "Mor Fas Deireas",
             "Fas Deireas",
-            "motivate"
+            "Motivate"
         ];
 
     private Attributes GetSnapshotAttributes
