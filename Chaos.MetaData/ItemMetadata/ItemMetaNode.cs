@@ -12,7 +12,6 @@ namespace Chaos.MetaData.ItemMetaData;
 /// </summary>
 public sealed record ItemMetaNode : IMetaNode
 {
-    private static Encoding Encoding { get; } = Encoding.GetEncoding(949);
     /// <summary>
     ///     The category of the item, used for bank sorting
     /// </summary>
