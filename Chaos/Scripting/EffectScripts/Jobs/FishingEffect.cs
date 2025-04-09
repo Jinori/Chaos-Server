@@ -200,7 +200,7 @@ public class FishingEffect(IItemFactory itemFactory, ILogger<FishingEffect> logg
                   .WithProperty(aisling)
                   .WithProperty(Subject)
                   .LogInformation(
-                      "{@AislingName} has received {@fish} and {@Experience} from fishing.",
+                      "{@AislingName} has received {@Fish} and {@Experience} experience from fishing",
                       aisling.Name,
                       fish.DisplayName,
                       expGain);
