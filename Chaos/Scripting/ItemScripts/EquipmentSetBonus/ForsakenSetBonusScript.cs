@@ -6,7 +6,7 @@ namespace Chaos.Scripting.ItemScripts.EquipmentSetBonus;
 
 public class ForsakenSetBonusScript : SetBonusItemScriptBase
 {
-    protected override Dictionary<int, Attributes> SetBonus { get; } = new()
+    public override Dictionary<int, Attributes> SetBonus { get; } = new()
     {
         {
             2, new Attributes

@@ -65,7 +65,7 @@ public static class StringBuilderExtensions
     /// <param name="value">
     ///     The string to append before a newline
     /// </param>
-    public static StringBuilder AppendLineF(this StringBuilder builder, string? value)
+    public static StringBuilder AppendLineF(this StringBuilder builder, string? value = null)
     {
         builder.Append(value);
         builder.Append('\n');

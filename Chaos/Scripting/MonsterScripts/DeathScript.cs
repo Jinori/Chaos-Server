@@ -83,7 +83,7 @@ public class DeathScript(Monster subject) : MonsterScriptBase(subject)
     private static Aisling[] GetRewardTargets(Aisling rewardTarget)
     {
         IEnumerable<Aisling> groupOrSingle = rewardTarget.Group != null
-            ? rewardTarget.Group.Members
+            ? rewardTarget.Group
             : new[]
             {
                 rewardTarget

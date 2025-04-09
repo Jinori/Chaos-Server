@@ -10,13 +10,13 @@ namespace Chaos.Scripting.ItemScripts.Abstractions;
 
 public abstract class SetBonusItemScriptBase : ItemScriptBase
 {
-    protected abstract Dictionary<int, Attributes> SetBonus { get; }
+    public abstract Dictionary<int, Attributes> SetBonus { get; }
     protected abstract HashSet<string> SetItemTemplateKeys { get; }
 
     protected SetBonusItemScriptBase(Item subject)
         : base(subject) { }
 
-    private Attributes GetCumulativeBonus(int currentSetBonusCount)
+    public Attributes GetCumulativeBonus(int currentSetBonusCount)
     {
         var cumulativeBonus = new Attributes();
 
