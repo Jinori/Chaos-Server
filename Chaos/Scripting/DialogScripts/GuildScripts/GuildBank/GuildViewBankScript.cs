@@ -30,8 +30,15 @@ public class GuildViewBankScript : DialogScriptBase
 
     private void OnDisplayingInitial(Aisling source)
     {
+        if(source.Guild == null)
+        {
+            Subject.ReplyToUnknownInput(source);
+
+            return;
+        }
+        
         Subject.Items.AddRange(
-                    source.Guild!.Bank
+                    source.Guild.Bank
                           .Select(ItemDetails.WithdrawItem)
                           .OrderBy(x => x.Item.Template.Category));
         

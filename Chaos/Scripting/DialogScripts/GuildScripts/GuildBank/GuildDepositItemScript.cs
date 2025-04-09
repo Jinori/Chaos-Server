@@ -12,10 +12,10 @@ namespace Chaos.Scripting.DialogScripts.GuildScripts.GuildBank;
 
 public class GuildDepositItemScript : DialogScriptBase
 {
-    private readonly ILogger<DepositItemScript> Logger;
+    private readonly ILogger<GuildDepositItemScript> Logger;
 
     /// <inheritdoc />
-    public GuildDepositItemScript(Dialog subject, ILogger<DepositItemScript> logger)
+    public GuildDepositItemScript(Dialog subject, ILogger<GuildDepositItemScript> logger)
         : base(subject)
         => Logger = logger;
 
@@ -89,6 +89,13 @@ public class GuildDepositItemScript : DialogScriptBase
             return;
         }
 
+        if (source.Guild == null)
+        {
+            Subject.ReplyToUnknownInput(source);
+
+            return;
+        }
+
         var depositItemResult = ComplexActionHelper.DepositGuildItem(source, slot, amount);
 
         switch (depositItemResult)
@@ -99,12 +106,13 @@ public class GuildDepositItemScript : DialogScriptBase
                       .WithProperty(Subject.DialogSource)
                       .WithProperty(source)
                       .WithProperty(item)
+                      .WithProperty(source.Guild)
                       .LogInformation(
-                          "Aisling {@AislingName} deposited {Amount} {@ItemName} in the {guildName} bank",
+                          "Aisling {@AislingName} deposited {Amount} {@ItemName} in the {GuildName} bank",
                           source.Name,
                           amount,
                           item.DisplayName,
-                          source.Guild?.Name);
+                          source.Guild.Name);
 
                 return;
             

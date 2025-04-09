@@ -31,6 +31,22 @@ public class GuildWithdrawGoldScript : DialogScriptBase
             return;
         }
 
+        if(source.Guild == null)
+        {
+            Subject.ReplyToUnknownInput(source);
+
+            return;
+        }
+
+        var guildRank = source.Guild.RankOf(source.Name);
+        
+        if(!guildRank.IsOfficerRank)
+        {
+            Subject.Reply(source, "You are not authorized to withdraw gold from the guild bank.", "top");
+
+            return;
+        }
+        
         var withdrawResult = ComplexActionHelper.WithdrawGuildGold(source, amount);
 
         switch (withdrawResult)
@@ -40,7 +56,12 @@ public class GuildWithdrawGoldScript : DialogScriptBase
                       .WithProperty(Subject)
                       .WithProperty(Subject.DialogSource)
                       .WithProperty(source)
-                      .LogInformation("Aisling {@AislingName} withdrew {Amount} gold from the {guildName} bank", source, amount, source.Guild?.Name);
+                      .WithProperty(source.Guild)
+                      .LogInformation(
+                          "Aisling {@AislingName} withdrew {Amount} gold from the {GuildName} bank",
+                          source,
+                          amount,
+                          source.Guild.Name);
 
                 break;
             case ComplexActionHelper.WithdrawGoldResult.TooMuchGold:

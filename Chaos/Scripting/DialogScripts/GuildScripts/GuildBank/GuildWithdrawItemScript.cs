@@ -14,10 +14,10 @@ namespace Chaos.Scripting.DialogScripts.GuildScripts.GuildBank;
 
 public class GuildWithdrawItemScript : DialogScriptBase
 {
-    private readonly ILogger<WithdrawItemScript> Logger;
+    private readonly ILogger<GuildWithdrawItemScript> Logger;
 
     /// <inheritdoc />
-    public GuildWithdrawItemScript(Dialog subject, ILogger<WithdrawItemScript> logger)
+    public GuildWithdrawItemScript(Dialog subject, ILogger<GuildWithdrawItemScript> logger)
         : base(subject)
         => Logger = logger;
 
@@ -89,6 +89,22 @@ public class GuildWithdrawItemScript : DialogScriptBase
 
             return;
         }
+        
+        if(source.Guild == null)
+        {
+            Subject.ReplyToUnknownInput(source);
+
+            return;
+        }
+
+        var guildRank = source.Guild.RankOf(source.Name);
+
+        if (!guildRank.IsOfficerRank)
+        {
+            Subject.Reply(source, "You are not authorized to withdraw items from the guild bank.", "top");
+
+            return;
+        }
 
         var withdrawResult = ComplexActionHelper.WithdrawGuildItem(source, item.DisplayName, amount);
 
@@ -100,12 +116,13 @@ public class GuildWithdrawItemScript : DialogScriptBase
                       .WithProperty(Subject.DialogSource)
                       .WithProperty(source)
                       .WithProperty(item)
+                      .WithProperty(source.Guild)
                       .LogInformation(
-                          "Aisling {@AislingName} withdrew {Amount} {@ItemName} from the {guildName} bank",
+                          "Aisling {@AislingName} withdrew {Amount} {@ItemName} from the {GuildName} bank",
                           source.Name,
                           amount,
                           item.DisplayName,
-                          source.Guild?.Name);
+                          source.Guild.Name);
 
                 return;
             case ComplexActionHelper.WithdrawItemResult.CantCarry:
