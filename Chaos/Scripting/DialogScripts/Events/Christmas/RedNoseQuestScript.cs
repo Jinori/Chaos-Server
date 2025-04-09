@@ -100,7 +100,7 @@ public class RedNoseQuestScript(Dialog subject, ILogger<RedNose> logger, IItemFa
                                   .WithProperty(source)
                                   .WithProperty(Subject)
                                   .LogInformation(
-                                      "{@AislingName} has received {@ExpAmount} exp from returning Rudolph.",
+                                      "{@AislingName} has received {@ExpAmount} exp from returning Rudolph",
                                       source.Name,
                                       expRewarded);
 

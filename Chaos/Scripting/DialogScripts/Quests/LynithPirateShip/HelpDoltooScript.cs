@@ -193,7 +193,7 @@ public class HelpDoltooScript : DialogScriptBase
                     .WithProperty(source)
                     .WithProperty(Subject)
                     .LogInformation(
-                        "{@AislingName} has received {@ExpAmount} exp from Helping Doltoo.",
+                        "{@AislingName} has received {@ExpAmount} exp from Helping Doltoo",
                         source.Name,
                         20000000);
                 break;

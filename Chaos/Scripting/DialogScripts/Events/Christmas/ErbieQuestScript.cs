@@ -109,7 +109,7 @@ public class ErbieQuestScript(Dialog subject, ILogger<Erbie> logger, IItemFactor
                                   .WithProperty(source)
                                   .WithProperty(Subject)
                                   .LogInformation(
-                                      "{@AislingName} has received {@ExpAmount} exp from returning Baby Erbies.",
+                                      "{@AislingName} has received {@ExpAmount} exp from returning Baby Erbies",
                                       source.Name,
                                       expRewarded);
                         } else

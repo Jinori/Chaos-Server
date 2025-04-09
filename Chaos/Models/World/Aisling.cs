@@ -506,6 +506,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         foreach (var single in items)
             if (!CanCarry(single) || !Inventory.TryAddToNextSlot(single))
             {
+                var amount = single.Count;
                 Bank.Deposit(single);
 
                 Logger.WithTopics(
@@ -516,10 +517,11 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
                       .WithProperty(single)
                       .WithProperty(this)
                       .LogInformation(
-                          "{@Amount} {@ItemName} was sent to {@AislingName}'s bank.",
-                          single.Count,
+                          "{@Amount} {@ItemName} was sent to {@AislingName}'s bank",
+                          amount,
                           single.DisplayName,
                           Name);
+                
                 SendOrangeBarMessage($"{single.DisplayName} was sent to your bank as overflow.");
             }
     }

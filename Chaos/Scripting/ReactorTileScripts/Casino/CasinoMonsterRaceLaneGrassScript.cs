@@ -94,7 +94,7 @@ public class CasinoMonsterRaceLaneGrassScript : ReactorTileScriptBase
                 Logger.WithTopics(Topics.Entities.Aisling, Topics.Entities.Gold)
                       .WithProperty(winner)
                       .WithProperty(Subject)
-                      .LogInformation("{@AislingName} has received {@GoldAmount} gold from a casino win.", winner.Name, winnings);
+                      .LogInformation("{@AislingName} has received {@GoldAmount} gold from a casino win", winner.Name, winnings);
 
                 winner.TryGiveGold(winnings);
                 winner.SendActiveMessage($"You won the game and receive {winnings.ToWords()} gold!");

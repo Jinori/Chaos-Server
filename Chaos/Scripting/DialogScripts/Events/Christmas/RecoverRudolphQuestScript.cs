@@ -99,7 +99,7 @@ public class RecoverRudolphQuestScript(Dialog subject, ILogger<RecoverRudolphQue
                                   .WithProperty(source)
                                   .WithProperty(Subject)
                                   .LogInformation(
-                                      "{@AislingName} has received {@ExpAmount} exp from returning Rudolph.",
+                                      "{@AislingName} has received {@ExpAmount} exp from returning Rudolph",
                                       source.Name,
                                       expRewarded);
 

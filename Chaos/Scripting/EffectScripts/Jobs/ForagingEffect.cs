@@ -250,7 +250,7 @@ public class ForagingEffect(IItemFactory itemFactory, ILogger<ForagingEffect> lo
                   .WithProperty(aisling)
                   .WithProperty(Subject)
                   .LogInformation(
-                      "{@AislingName} has received {@Herb} and {@Experience} from foraging.",
+                      "{@AislingName} has received {@Herb} and {@Experience} from foraging",
                       aisling.Name,
                       herb.DisplayName,
                       expGain);

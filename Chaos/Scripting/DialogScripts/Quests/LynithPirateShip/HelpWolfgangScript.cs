@@ -166,7 +166,7 @@ public class HelpWolfgangScript : DialogScriptBase
                           Topics.Entities.Quest)
                       .WithProperty(source)
                       .WithProperty(Subject)
-                      .LogInformation("{@AislingName} has received {@ExpAmount} exp from Helping Captain Wolfgang.", source.Name, 1500000);
+                      .LogInformation("{@AislingName} has received {@ExpAmount} exp from Helping Captain Wolfgang", source.Name, 1500000);
             }
 
                 break;
