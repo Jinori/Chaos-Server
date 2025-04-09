@@ -84,6 +84,54 @@ public sealed class GuildHouseState
         Storage.Save();
     }
 
+    public IReadOnlyList<ItemTransactionLog> GetItemTransactions(string guildName)
+    {
+        if (GuildProperties.Entries.TryGetValue(guildName, out var houseProperties))
+        {
+            return houseProperties.ItemLogs;
+        }
+
+        return Array.Empty<ItemTransactionLog>();
+    }
+    
+    public void LogItemTransaction(string guildName, string member, string itemName, TransactionType action)
+    {
+        if (!GuildProperties.Entries.TryGetValue(guildName, out var houseProperties))
+        {
+            houseProperties = new GuildHousePropertiesObj.HouseProperties();
+            GuildProperties.Entries[guildName] = houseProperties;
+        }
+
+        houseProperties.ItemLogs.Add(new ItemTransactionLog
+        {
+            Member = member,
+            ItemName = itemName,
+            Action = action,
+            Timestamp = DateTime.UtcNow
+        });
+
+        houseProperties.ItemLogs = action switch
+        {
+            // Prune logs based on action type
+            TransactionType.Withdrawal => houseProperties.ItemLogs.OrderByDescending(log => log.Timestamp)
+                                                         .Where(log => log.Action == TransactionType.Withdrawal)
+                                                         .Take(30)
+                                                         .Concat(
+                                                             houseProperties.ItemLogs.Where(
+                                                                 log => log.Action != TransactionType.Withdrawal))
+                                                         .ToList(),
+            TransactionType.Deposit => houseProperties.ItemLogs.OrderByDescending(log => log.Timestamp)
+                                                      .Where(log => log.Action == TransactionType.Deposit)
+                                                      .Take(30)
+                                                      .Concat(houseProperties.ItemLogs.Where(log => log.Action != TransactionType.Deposit))
+                                                      .ToList(),
+            _ => houseProperties.ItemLogs
+        };
+
+        SaveChanges();
+    }
+
+    
     public sealed class GuildHousePropertiesObj
     {
         public Dictionary<string, HouseProperties> Entries { get; set; } = new(StringComparer.OrdinalIgnoreCase);
@@ -95,6 +143,22 @@ public sealed class GuildHouseState
             public bool Bank { get; set; }
             public bool Tailor { get; set; }
             public bool Combatroom { get; set; }
+            
+            public List<ItemTransactionLog> ItemLogs { get; set; } = [];
         }
+    }
+    
+    public sealed class ItemTransactionLog
+    {
+        public string Member { get; set; } = string.Empty;
+        public string ItemName { get; set; } = string.Empty;
+        public TransactionType Action { get; set; }
+        public DateTime Timestamp { get; set; } = DateTime.UtcNow;
+    }
+
+    public enum TransactionType
+    {
+        Deposit,
+        Withdrawal
     }
 }

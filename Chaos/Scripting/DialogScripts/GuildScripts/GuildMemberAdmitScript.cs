@@ -94,15 +94,17 @@ public class GuildMemberAdmitScript : GuildScriptBase
             return;
         }
 
-        if (aislingToAdmit.MapInstance.Name != "Abel Tavern")
+        if ((aislingToAdmit.MapInstance.Name != "Abel Tavern") && 
+            (aislingToAdmit.MapInstance.LoadedFromInstanceId != "guildhallmain"))
         {
             Subject.Reply(
                 source,
-                $"{name} is not in the tavern to be admitted. To add aislings on your guild registar, I need them to be present.",
+                $"{name} is not in the tavern to be admitted. To add Aislings to your guild register, I need them to be present.",
                 "generic_guild_members_initial");
 
             return;
         }
+
 
         if (aislingToAdmit.Name == source.Name)
         {

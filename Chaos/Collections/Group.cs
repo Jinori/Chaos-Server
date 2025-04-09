@@ -1,4 +1,5 @@
 #region
+using System.Text;
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
@@ -195,27 +196,42 @@ public sealed class Group : IEnumerable<Aisling>, IDedicatedChannel
         if ((Members.Count == 0) || (gold <= 1))
             return;
 
-        // Filter group members who are on the same map as the monster
-        var eligibleMembers = Members.Where(member => member.MapInstance == monster.MapInstance)
-                                     .ToList();
+        var eligibleMembers = Members
+                              .Where(member => member.MapInstance == monster.MapInstance)
+                              .ToList();
 
-        // If there are no eligible members, skip the gold distribution
         if (eligibleMembers.Count == 0)
             return;
 
-        // Calculate gold per eligible member
         var amountPerMember = gold / eligibleMembers.Count;
 
-        // Distribute gold evenly among eligible members
         foreach (var member in eligibleMembers)
         {
-            member.GiveGoldOrSendToBank(amountPerMember);
+            var finalAmount = amountPerMember;
 
-            member.SendServerMessage(
-                ServerMessageType.ActiveMessage,
-                boosted
-                    ? $"Your split of the group gold is {amountPerMember}, boosted by Serendael!"
-                    : $"Your split of the group gold is {amountPerMember}.");
+            if ((member.Guild != null) && (member.Guild.TaxRatePercent > 0))
+            {
+                var taxedAmount = (int)Math.Round(amountPerMember * (member.Guild.TaxRatePercent / 100.0));
+                finalAmount = Math.Max(0, amountPerMember - taxedAmount);
+
+                if (taxedAmount > 0)
+                {
+                    member.Guild.Bank.AddGold((uint)taxedAmount);
+                    member.SendMessage($"Orig. Gold: {amountPerMember}");
+                    member.SendMessage($"Guild: {taxedAmount}");
+                    member.SendMessage($"After tax : {finalAmount}");
+                }
+                    
+            }
+
+            member.GiveGoldOrSendToBank(finalAmount);
+
+            var message = new StringBuilder();
+            message.Append(boosted
+                ? $"Your split of the group gold is {finalAmount}, boosted by Serendael!"
+                : $"Your split of the group gold is {finalAmount}.");
+            
+            member.SendServerMessage(ServerMessageType.ActiveMessage, message.ToString());
         }
     }
 

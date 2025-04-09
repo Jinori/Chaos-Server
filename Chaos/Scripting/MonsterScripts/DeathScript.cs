@@ -96,14 +96,41 @@ public class DeathScript(Monster subject) : MonsterScriptBase(subject)
     private void HandleLootDrop(Aisling[]? rewardTargets, bool lockToTargets = false, Aisling? lockToLeader = null)
     {
         var hasGoldBoost = rewardTargets?.Any(a => a.Effects.Contains("DropBoost"));
-        var goldAmount = Subject.Gold;
+        var originalGoldAmount = Subject.Gold;
 
-        // Apply gold boost if it's `true`
+        // Apply gold boost if it's active
         if (hasGoldBoost == true)
-            goldAmount = (int)(goldAmount * 1.25);
-        var droppedGold = Subject.TryDropGold(Subject, goldAmount, out var money);
+            originalGoldAmount = (int)(originalGoldAmount * 1.25);
+
+        // Determine how much to tax and adjust final drop amount
+        var taxAmount = 0;
+        var finalGoldAmount = originalGoldAmount;
+
+        if (rewardTargets is { Length: > 0 })
+        {
+            // Distribute tax equally among members with guilds that have a tax rate
+            foreach (var aisling in rewardTargets)
+            {
+                if ((aisling.Guild != null) && (aisling.Guild.TaxRatePercent > 0))
+                {
+                    var share = originalGoldAmount / rewardTargets.Length;
+                    var taxShare = (int)Math.Round(share * (aisling.Guild.TaxRatePercent / 100.0));
+
+                    if (taxShare > 0)
+                        aisling.Guild.Bank.AddGold((uint)taxShare);
+
+                    taxAmount += taxShare;
+                }
+            }
+
+            finalGoldAmount = Math.Max(0, originalGoldAmount - taxAmount);
+        }
+
+        // Attempt to drop the adjusted amount of gold
+        var droppedGold = Subject.TryDropGold(Subject, finalGoldAmount, out var money);
         var droppedItems = Subject.TryDrop(Subject, Subject.Items, out var groundItems);
 
+        // Lock gold/items to players if configured
         if (WorldOptions.Instance.LootDropsLockToRewardTargetSecs.HasValue)
         {
             var lockSecs = WorldOptions.Instance.LootDropsLockToRewardTargetSecs.Value;
@@ -117,13 +144,18 @@ public class DeathScript(Monster subject) : MonsterScriptBase(subject)
             }
 
             if (droppedItems && (groundItems != null))
+            {
                 foreach (var groundItem in groundItems)
+                {
                     if (lockToLeader != null)
                         groundItem.LockToAislings(lockSecs, lockToLeader);
                     else if (lockToTargets && (rewardTargets != null))
                         groundItem.LockToAislings(lockSecs, rewardTargets);
+                }
+            }
         }
     }
+
 
     public override void OnDeath()
     {
