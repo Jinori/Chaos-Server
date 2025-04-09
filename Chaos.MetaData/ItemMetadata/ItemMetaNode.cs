@@ -40,30 +40,24 @@ public sealed record ItemMetaNode : IMetaNode
     ///     The weight of the item
     /// </summary>
     public int Weight { get; set; }
-
-    private readonly Lazy<int> _length;
-
+    
     /// <summary>
     ///     Creates a new instance of <see cref="ItemMetaNode" />
     /// </summary>
-    public ItemMetaNode(string name)
-    {
-        Name = name;
-        _length = new Lazy<int>(
-            () => 14
-                  + Encoding.GetByteCount(Name)
-                  + Encoding.GetByteCount(Category)
-                  + Encoding.GetByteCount(Description)
-                  + Level.ToString()
-                         .Length
-                  + Weight.ToString()
-                          .Length);
-    }
+    public ItemMetaNode(string name) => Name = name;
 
     /// <summary>
     ///     The length of the serialized data
     /// </summary>
-    public int Length => _length.Value;
+    public int Length
+        => 14
+           + Encoding.GetByteCount(Name)
+           + Encoding.GetByteCount(Category)
+           + Encoding.GetByteCount(Description)
+           + Level.ToString()
+                  .Length
+           + Weight.ToString()
+                   .Length;
 
     /// <inheritdoc />
     public void Serialize(ref SpanWriter writer)
