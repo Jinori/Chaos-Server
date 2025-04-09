@@ -29,7 +29,7 @@ public struct DamageAbilityComponent : IComponent
                 context.Source,
                 target,
                 numberOfTargets,
-                options.DamageMultiplierPerTarget ?? 0.05m, // Default to 5% if not specified
+                options.DamageMultiplierPerTarget ?? 0,
                 options.BaseDamage,
                 options.PctHpDamage,
                 options.DamageStat,

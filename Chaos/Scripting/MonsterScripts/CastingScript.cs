@@ -22,7 +22,15 @@ public class CastingScript : MonsterScriptBase
         if (Target is not { IsAlive: true } || !ShouldUseSpell || !Target.WithinRange(Subject))
             return;
 
-        var chance = 10;
+        var chanceMax = 12;
+        var chanceMin = 6;
+
+        var chance = MathEx.ScaleRange(
+            Math.Clamp(Subject.StatSheet.Level, 1, 99),
+            1,
+            99,
+            chanceMin,
+            chanceMax);
 
         if (Target.WithinRange(Subject, 1))
             chance /= 5;
