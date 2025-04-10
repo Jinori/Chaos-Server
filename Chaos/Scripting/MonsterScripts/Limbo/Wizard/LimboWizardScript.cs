@@ -81,8 +81,21 @@ public class LimboWizardScript : MonsterScriptBase
                 DoMeall, 25
             },
             {
-                //do nothing
-                _ => true, 9
+                //regenerate mana
+                _ =>
+                {
+                    if (Subject.StatSheet.ManaPercent <= 60)
+                    {
+                        if (Subject.StatSheet.HealthPercent >= 75)
+                        {
+                            Subject.StatSheet.SubtractHealthPct(3);
+                            Subject.StatSheet.AddManaPct(10);
+                        } else
+                            Subject.StatSheet.AddManaPct(5);
+                    }
+
+                    return true;
+                }, 9
             }
         };
     }
@@ -97,7 +110,7 @@ public class LimboWizardScript : MonsterScriptBase
 
         return false;
     }
-
+    
     private bool DoDall(List<Aisling> nearbyAislings)
     {
         var notDalled = nearbyAislings.Where(aisling => !aisling.IsDall)
