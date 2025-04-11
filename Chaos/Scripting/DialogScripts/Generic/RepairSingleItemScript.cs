@@ -69,14 +69,16 @@ public class RepairSingleItemScript(Dialog subject, ILogger<RepairSingleItemScri
             return;
         }
 
-        if (item is { CurrentDurability: not null, Template.MaxDurability: not null })
+        if (item is { CurrentDurability: not null, Template.MaxDurability: not null }
+            && (item.CurrentDurability != item.Template.MaxDurability))
         {
             RepairCost = CalculateNewRepairCostForItem(source, item);
 
-            if (!source.TryTakeGold((int)RepairCost))
+            // Only deduct gold if cost is greater than 0
+            if ((RepairCost > 0) && !source.TryTakeGold((int)RepairCost))
             {
                 Subject.Close(source);
-                source.SendOrangeBarMessage($"You do not have enough gold. You need {RepairCost} gold.");
+                source.SendOrangeBarMessage($"You do not have enough gold. You need {(int)RepairCost} gold.");
 
                 return;
             }
@@ -92,14 +94,18 @@ public class RepairSingleItemScript(Dialog subject, ILogger<RepairSingleItemScri
 
             source.Inventory.Update(
                 slot,
-                item1 =>
+                i =>
                 {
-                    item1.CurrentDurability = item1.Template.MaxDurability;
-                    item1.LastWarningLevel = 100;
+                    i.CurrentDurability = i.Template.MaxDurability;
+                    i.LastWarningLevel = 100;
                 });
 
-            source.SendOrangeBarMessage($"Your {item.DisplayName} has been repaired.");
-            Subject.InjectTextParameters(item.DisplayName, RepairCost);
+            source.SendOrangeBarMessage(
+                RepairCost > 0
+                    ? $"Your {item.DisplayName} has been repaired."
+                    : $"Your slightly damaged {item.DisplayName} was repaired for free.");
+
+            Subject.InjectTextParameters(item.DisplayName, (int)RepairCost);
             source.Client.SendSound(172, false);
         }
     }

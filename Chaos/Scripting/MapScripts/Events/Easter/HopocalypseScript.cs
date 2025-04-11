@@ -1,6 +1,8 @@
 using Chaos.Collections;
 using Chaos.DarkAges.Definitions;
+using Chaos.Definitions;
 using Chaos.Extensions;
+using Chaos.Models.Legend;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MapScripts.Abstractions;
@@ -165,18 +167,50 @@ public sealed class HopocalypseScript : MapScriptBase
         var clampedLevel = Math.Clamp(level, 1, 5);
         return $"{baseId}{clampedLevel}";
     }
-    
+
     private void OnBunnyTouchPlayer(Creature bunny, Aisling player)
     {
         RecordStats(player);
+
         player.SendMessage($"{bunny.Name} caught you and took the stolen eggs back!");
         player.Inventory.RemoveByTemplateKey("undinechickenegg");
         player.Inventory.RemoveByTemplateKey("undinegoldenchickenegg");
+        
+        player.Client.SendSound(176, false);
+
+        player.Legend.AddUnique(new LegendMark(
+            $"Reached Level {GameLevel} of Hopocalypse",
+            "hopmaze",
+            MarkIcon.Victory,
+            MarkColor.Pink,
+            1,
+            GameTime.Now));
+
+        player.Trackers.Enums.TryGetValue(out HopocalypseRewards rewardLevel);
+
+        if ((GameLevel >= 3) && (rewardLevel == HopocalypseRewards.None))
+        {
+            var chickBackpack = ItemFactory.Create("chickbackpack");
+            player.GiveItemOrSendToBank(chickBackpack);
+            player.SendMessage("Received Chick Backpack for reaching Hopocalypse Level 3+!");
+            rewardLevel = HopocalypseRewards.ChickBackPack;
+            player.Trackers.Enums.Set(rewardLevel); 
+            player.Client.SendSound(168, false);
+        }
+
+        if ((GameLevel >= 5) && (rewardLevel != HopocalypseRewards.CadburryBackPack))
+        {
+            var cadburryBackpack = ItemFactory.Create("cadburrybackpack");
+            player.GiveItemOrSendToBank(cadburryBackpack);
+            player.SendMessage("Received Cadburry Backpack for reaching Hopocalypse Level 5+!");
+            player.Trackers.Enums.Set(HopocalypseRewards.CadburryBackPack);
+            player.Client.SendSound(168, false);
+        }
+        
         var mapInstance = SimpleCache.Get<MapInstance>("undine");
         player.TraverseMap(mapInstance, new Point(21, 26));
-        player.Client.SendSound(176, false);
     }
-    
+
     private void RecordStats(Aisling player)
     {
         var leaderboard = LeaderboardStorage.Value;

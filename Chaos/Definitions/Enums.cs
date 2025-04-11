@@ -2362,3 +2362,10 @@ public enum AlchemyTrinketSelection
     PotentJuggernautBrew = 50,
     PotentAstralBrew = 51
 }
+
+public enum HopocalypseRewards
+{
+    None,
+    ChickBackPack = 1,
+    CadburryBackPack = 2
+}

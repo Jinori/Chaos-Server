@@ -83,7 +83,8 @@ public class RepairAllItemsScript(Dialog subject, ILogger<RepairAllItemsScript> 
     {
         CalculateRepairs(source);
 
-        if (!source.TryTakeGold((int)RepairCost))
+        // Only take gold if the repair cost is greater than 0
+        if ((RepairCost > 0) && !source.TryTakeGold((int)RepairCost))
         {
             Subject.Close(source);
             source.SendOrangeBarMessage($"You do not have enough. You need {(int)RepairCost} gold.");
@@ -113,7 +114,11 @@ public class RepairAllItemsScript(Dialog subject, ILogger<RepairAllItemsScript> 
                         repair.LastWarningLevel = 100;
                     });
 
-        source.SendOrangeBarMessage("Your items have been repaired.");
+        source.SendOrangeBarMessage(
+            RepairCost > 0
+                ? "Your items have been repaired."
+                : "Your slightly damaged items were repaired for free.");
+
         Subject.InjectTextParameters((int)RepairCost);
         source.Client.SendSound(172, false);
     }
