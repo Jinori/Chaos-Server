@@ -5,6 +5,7 @@ using Chaos.NLog.Logging.Definitions;
 using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.DialogScripts.BankScripts;
+using Chaos.Storage.Abstractions;
 using Chaos.Utilities;
 #endregion
 
@@ -13,11 +14,15 @@ namespace Chaos.Scripting.DialogScripts.GuildScripts.GuildBank;
 public class GuildDepositGoldScript : DialogScriptBase
 {
     private readonly ILogger<GuildDepositGoldScript> Logger;
+    private readonly IStorage<GuildHouseState> GuildHouseStateStorage;
 
     /// <inheritdoc />
-    public GuildDepositGoldScript(Dialog subject, ILogger<GuildDepositGoldScript> logger)
+    public GuildDepositGoldScript(Dialog subject, ILogger<GuildDepositGoldScript> logger, IStorage<GuildHouseState> guildHouseStateStorage)
         : base(subject)
-        => Logger = logger;
+    {
+        Logger = logger;
+        GuildHouseStateStorage = guildHouseStateStorage;
+    } 
 
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source) => Subject.InjectTextParameters(source.Gold);
@@ -50,6 +55,11 @@ public class GuildDepositGoldScript : DialogScriptBase
                       .WithProperty(source)
                       .WithProperty(source.Guild)
                       .LogInformation("Aisling {@AislingName} deposited {Amount} gold in the {GuildName} bank", source.Name, amount, source.Guild.Name);
+                
+                var guildHouseState = GuildHouseStateStorage.Value;
+                guildHouseState.SetStorage(GuildHouseStateStorage);
+                
+                guildHouseState.LogItemTransaction(source.Guild.Name, source.Name, amount.ToString(), GuildHouseState.TransactionType.GoldDeposit);
 
                 break;
             case ComplexActionHelper.DepositGoldResult.DontHaveThatMany:

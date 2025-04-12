@@ -159,6 +159,8 @@ public sealed class GuildHouseState
     public enum TransactionType
     {
         Deposit,
-        Withdrawal
+        Withdrawal,
+        GoldDeposit,
+        GoldWithdrawal,
     }
 }
