@@ -2,7 +2,7 @@ using Chaos.Models.World;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.DubhaimBoss;
+namespace Chaos.Scripting.MonsterScripts.Boss.DubhaimBoss.GargoyleLord;
 
 public class DubhaimBossScript : CompositeMonsterScript
 {

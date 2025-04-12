@@ -9,7 +9,7 @@ using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.DubhaimBoss;
+namespace Chaos.Scripting.MonsterScripts.Boss.DubhaimBoss.GargoyleLord;
 
 public sealed class DubhaimBossDefenseScript : MonsterScriptBase
 {

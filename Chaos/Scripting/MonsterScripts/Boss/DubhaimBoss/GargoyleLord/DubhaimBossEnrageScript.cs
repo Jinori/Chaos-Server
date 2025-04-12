@@ -3,7 +3,7 @@ using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.DubhaimBoss;
+namespace Chaos.Scripting.MonsterScripts.Boss.DubhaimBoss.GargoyleLord;
 
 public sealed class DubhaimBossEnrageScript : MonsterScriptBase
 {

@@ -8,7 +8,7 @@ using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Services.Servers.Options;
 
-namespace Chaos.Scripting.MonsterScripts.Boss.DubhaimBoss;
+namespace Chaos.Scripting.MonsterScripts.Boss.DubhaimBoss.GargoyleLord;
 
 // ReSharper disable once ClassCanBeSealed.Global
 public class DubhaimBossDeathScript : MonsterScriptBase
