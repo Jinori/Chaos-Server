@@ -78,7 +78,13 @@ public class RestrictionBehavior
 
     public virtual bool CanPickupMoney(Aisling aisling, Money money) => aisling.IsAlive;
 
-    public virtual bool CanTalk(Creature creature) => true;
+    public virtual bool CanTalk(Creature creature)
+    {
+        if (creature.Effects.Contains("KnightSilence"))
+            return false;
+
+        return true;
+    }
 
     public virtual bool CanTurn(Creature creature)
     {

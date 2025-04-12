@@ -93,6 +93,7 @@ public sealed class AislingMapperProfile(
             Options = Mapper.Map<UserOptions>(obj.UserOptions),
             UserStatSheet = Mapper.Map<UserStatSheet>(obj.StatSheet),
             IsAdmin = obj.IsAdmin,
+            IsKnight = obj.IsKnight,
             IsDead = obj.IsDead,
             ChannelSettings = new SynchronizedHashSet<ChannelSettings>(Mapper.MapMany<ChannelSettings>(obj.ChannelSettings))
         };
