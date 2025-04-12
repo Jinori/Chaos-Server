@@ -29,21 +29,38 @@ public class GuildManagementScript : GuildScriptBase
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
     {
-        //ensure the player is still in a guild
-        if (!IsInGuild(source, out _, out var sourceRank))
-            Subject.AddOption("Create", "generic_guild_create_initial");
-        else if (sourceRank.IsLeaderRank)
-            Subject.AddOptions(
-                ("Buffs", "generic_guildbuff_initial"),
+        if (Subject.DialogSource.Name is "Quill")
+        {
+            //ensure the player is still in a guild
+            if (!IsInGuild(source, out _, out var sourceRank))
+                Subject.AddOption("Create", "generic_guild_create_initial");
+            else if (sourceRank.IsLeaderRank)
+                Subject.AddOptions(
+                    ("Buffs", "generic_guildbuff_initial"),
                 ("Taxes", "generic_guild_tax_initial"),
-                ("Ranks", "generic_guild_ranks_initial"),
-                ("Members", "generic_guild_members_initial"),
-                ("Disband", "generic_guild_disband_initial"),
-                ("Leave", "generic_guild_leave_initial"));
-        else
-            Subject.AddOptions(
+                    ("Ranks", "generic_guild_ranks_initial"),
+                    ("Members", "generic_guild_members_initial"),
+                    ("Disband", "generic_guild_disband_initial"),
+                    ("Leave", "generic_guild_leave_initial"));
+            else
+                Subject.AddOptions(
                 ("Buffs", "generic_guildbuff_initial"),
                 ("Members", "generic_guild_members_initial"), 
                 ("Leave", "generic_guild_leave_initial"));
+        }
+        else
+        {
+            //ensure the player is still in a guild
+            if (!IsInGuild(source, out _, out var sourceRank))
+                Subject.AddOption("Create", "generic_guild_create_initial");
+            else if (sourceRank.IsLeaderRank)
+                Subject.AddOptions(
+                    ("Ranks", "generic_guild_ranks_initial"),
+                    ("Members", "generic_guild_members_initial"),
+                    ("Disband", "generic_guild_disband_initial"),
+                    ("Leave", "generic_guild_leave_initial"));
+            else
+                Subject.AddOptions(("Members", "generic_guild_members_initial"), ("Leave", "generic_guild_leave_initial"));
+        }
     }
 }

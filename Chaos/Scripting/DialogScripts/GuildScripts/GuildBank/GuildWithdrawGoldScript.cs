@@ -4,6 +4,7 @@ using Chaos.Models.World;
 using Chaos.NLog.Logging.Definitions;
 using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.Abstractions;
+using Chaos.Storage.Abstractions;
 using Chaos.Utilities;
 #endregion
 
@@ -12,11 +13,19 @@ namespace Chaos.Scripting.DialogScripts.GuildScripts.GuildBank;
 public class GuildWithdrawGoldScript : DialogScriptBase
 {
     private readonly ILogger<GuildWithdrawGoldScript> Logger;
+    private readonly IStorage<GuildHouseState> GuildHouseStateStorage;
 
     /// <inheritdoc />
-    public GuildWithdrawGoldScript(Dialog subject, ILogger<GuildWithdrawGoldScript> logger)
+    public GuildWithdrawGoldScript(
+        Dialog subject,
+        ILogger<GuildWithdrawGoldScript> logger,
+        IStorage<GuildHouseState> guildHouseStateStorage
+    )
         : base(subject)
-        => Logger = logger;
+    {
+        GuildHouseStateStorage = guildHouseStateStorage;
+        Logger = logger;
+    }
 
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source) => Subject.InjectTextParameters(source.Guild?.Bank.Gold!);
@@ -62,6 +71,11 @@ public class GuildWithdrawGoldScript : DialogScriptBase
                           source,
                           amount,
                           source.Guild.Name);
+                
+                var guildHouseState = GuildHouseStateStorage.Value;
+                guildHouseState.SetStorage(GuildHouseStateStorage);
+                
+                guildHouseState.LogItemTransaction(source.Guild.Name, source.Name, amount.ToString(), GuildHouseState.TransactionType.GoldDeposit);
 
                 break;
             case ComplexActionHelper.WithdrawGoldResult.TooMuchGold:

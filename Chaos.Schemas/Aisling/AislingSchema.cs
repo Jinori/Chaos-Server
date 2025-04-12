@@ -87,6 +87,11 @@ public sealed record AislingSchema
     public bool IsAdmin { get; set; }
 
     /// <summary>
+    ///     Whether or not this aisling has knight privileges
+    /// </summary>
+    public bool IsKnight { get; set; }
+    
+    /// <summary>
     ///     Whether or not this aisling is dead
     /// </summary>
     public bool IsDead { get; set; }

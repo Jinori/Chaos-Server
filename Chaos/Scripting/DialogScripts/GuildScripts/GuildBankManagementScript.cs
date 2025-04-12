@@ -89,6 +89,34 @@ public class GuildBankManagementScript(
                 Subject.Close(source);
                 break;
             }
+            
+            case "stash_guildbankgoldwithdrawlog":
+            {
+                var guildHouseState = guildHouseStateStorage.Value;
+                guildHouseState.SetStorage(guildHouseStateStorage);
+
+                if (!guildHouseState.GuildProperties.Entries.TryGetValue(source.Guild?.Name, out var houseProperties))
+                {
+                    source.SendServerMessage(ServerMessageType.ScrollWindow, "No withdrawal logs found for this guild.");
+                    return;
+                }
+
+                var withdrawals = houseProperties.ItemLogs
+                                                 .Where(log => log.Action == GuildHouseState.TransactionType.GoldWithdrawal)
+                                                 .OrderByDescending(log => log.Timestamp)
+                                                 .Take(30)
+                                                 .ToList();
+
+                if (withdrawals.Count == 0)
+                {
+                    source.SendServerMessage(ServerMessageType.ScrollWindow, "No recent withdrawals found.");
+                    return;
+                }
+
+                ShowGuildTransactionLog(source, withdrawals, "Recent Guild Gold Withdrawals:");
+                Subject.Close(source);
+                break;
+            }
 
             case "stash_guildbankdepositlog":
             {
@@ -114,6 +142,34 @@ public class GuildBankManagementScript(
                 }
 
                 ShowGuildTransactionLog(source, deposits, "Recent Guild Deposits:");
+                Subject.Close(source);
+                break;
+            }
+            
+            case "stash_guildbankgolddepositlog":
+            {
+                var guildHouseState = guildHouseStateStorage.Value;
+                guildHouseState.SetStorage(guildHouseStateStorage);
+
+                if (!guildHouseState.GuildProperties.Entries.TryGetValue(source.Guild?.Name, out var houseProperties))
+                {
+                    source.SendServerMessage(ServerMessageType.ScrollWindow, "No deposit logs found for this guild.");
+                    return;
+                }
+
+                var deposits = houseProperties.ItemLogs
+                                              .Where(log => log.Action == GuildHouseState.TransactionType.GoldDeposit)
+                                              .OrderByDescending(log => log.Timestamp)
+                                              .Take(30)
+                                              .ToList();
+
+                if (deposits.Count == 0)
+                {
+                    source.SendServerMessage(ServerMessageType.ScrollWindow, "No recent deposits found.");
+                    return;
+                }
+
+                ShowGuildTransactionLog(source, deposits, "Recent Guild Gold Deposits:");
                 Subject.Close(source);
                 break;
             }
