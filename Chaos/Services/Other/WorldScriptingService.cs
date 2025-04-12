@@ -1,4 +1,5 @@
 #region
+using System.Diagnostics;
 using Chaos.Extensions.Common;
 using Chaos.NLog.Logging.Definitions;
 using Chaos.NLog.Logging.Extensions;
@@ -48,6 +49,7 @@ public sealed class WorldScriptingService : BackgroundService
             try
             {
                 await timer.WaitForNextTickAsync(stoppingToken);
+                var start = Stopwatch.GetTimestamp();
                 var currentDelta = deltaTime.GetDelta;
                 monitor.Update(currentDelta);
 
@@ -65,6 +67,9 @@ public sealed class WorldScriptingService : BackgroundService
                                       script.GetType()
                                             .Name);
                         }
+                
+                var elapsed = Stopwatch.GetElapsedTime(start);
+                monitor.DigestDelta(elapsed);
             } catch (OperationCanceledException)
             {
                 return;

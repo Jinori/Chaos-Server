@@ -1,7 +1,9 @@
 #region
 using System.Diagnostics;
+using Chaos.Collections.Synchronized;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
+using Chaos.Extensions.Common;
 using Chaos.Formulae;
 using Chaos.Formulae.Abstractions;
 using Chaos.Models.World;
@@ -9,20 +11,29 @@ using Chaos.Models.World.Abstractions;
 using Chaos.NLog.Logging.Definitions;
 using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.Abstractions;
+using Chaos.Scripting.DialogScripts.GuildScripts;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.LevelUp;
+using Chaos.Scripting.WorldScripts.WorldBuffs;
 using Chaos.Services.Servers.Options;
+using Chaos.Storage.Abstractions;
 #endregion
 
 namespace Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 
-public class DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistributionScript> logger)
-    : ScriptBase, IExperienceDistributionScript
+public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistributionScript
 {
+    public DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistributionScript> logger, IStorage<GuildBuffs> guildBuffStorage)
+    {
+        Logger = logger;
+        GuildBuffStorage = guildBuffStorage;
+    }
     private const double EXPERIENCE_MULTIPLIER = 1.0; // Default is 1.0, can be lowered or raised as needed
     public IExperienceFormula ExperienceFormula { get; set; } = ExperienceFormulae.Default;
     public ILevelUpScript LevelUpScript { get; set; } = DefaultLevelUpScript.Create();
-    public ILogger<DefaultExperienceDistributionScript> Logger { get; set; } = logger;
+
+    private readonly ILogger<DefaultExperienceDistributionScript> Logger;
+    private readonly IStorage<GuildBuffs> GuildBuffStorage;
 
     /// <inheritdoc />
     public static string Key { get; } = GetScriptKey(typeof(DefaultExperienceDistributionScript));
@@ -57,6 +68,9 @@ public class DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistri
             // Apply an additional 5% bonus for mythic completion
             if (HasCompletedMythic(aisling))
                 totalBonus += 0.05m;
+
+            if (HasGuildBuff(aisling, GuildBuffScript.GUILD_25_EXP_BUFF_NAME))
+                totalBonus += 0.25m;
 
             if (HasEpicMaster(aisling))
                 totalBonus += 0.05m;
@@ -162,6 +176,16 @@ public class DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistri
         return false;
     }
 
+    private bool HasGuildBuff(Aisling aisling, string buffName)
+    {
+        if (aisling.Guild != null)
+            if (GuildBuffStorage.Value.ActiveBuffs.Any(
+                    buff => buff.GuildName.EqualsI(aisling.Guild.Name) && buff.BuffName.EqualsI(buffName)))
+                return true;
+
+        return false;
+    }
+    
     private bool HasEpicMaster(Aisling aisling)
     {
         if (aisling.Legend.ContainsKey("epicbountymark"))
