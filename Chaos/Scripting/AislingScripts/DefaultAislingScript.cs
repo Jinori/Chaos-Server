@@ -1557,7 +1557,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             if (IntegerRandomizer.RollChance(2))
                 if (!source.Script.Is<ThisIsABossScript>())
                 {
-                    var effect = EffectFactory.Create("Beag Suain");
+                    var effect = EffectFactory.Create("BeagSuain");
                     source.Effects.Apply(Subject, effect);
                 }
 
@@ -1631,21 +1631,24 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 monster.AggroList.AddOrUpdate(Subject.Id, _ => result, (_, currentAggro) => currentAggro + result);
         }
 
-        if (Subject.IsSmokeStanced() && IntegerRandomizer.RollChance(15))
+        if (Subject.IsSmokeStanced() && IntegerRandomizer.RollChance(35))
             if (!source.Script.Is<ThisIsABossScript>())
             {
                 var effect = EffectFactory.Create("Dall");
                 source.Effects.Apply(Subject, effect);
             }
 
-        if (Subject.IsFlameStanced() && IntegerRandomizer.RollChance(15))
+        if (Subject.IsFlameStanced())
         {
-            if (!source.Script.Is<ThisIsABossScript>())
+            if (IntegerRandomizer.RollChance(35))
             {
-                var effect = EffectFactory.Create("Dall");
-                source.Effects.Apply(Subject, effect);
+                if (!source.Script.Is<ThisIsABossScript>())
+                {
+                    var effect = EffectFactory.Create("Dall");
+                    source.Effects.Apply(Subject, effect);
+                }                
             }
-
+            
             var options = new AoeShapeOptions
             {
                 Source = new Point(Subject.X, Subject.Y),
@@ -1658,11 +1661,12 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                                  .GetEntitiesAtPoints<Creature>(points.Cast<IPoint>())
                                  .WithFilter(Subject, TargetFilter.HostileOnly)
                                  .ToList();
-
-            var flamedamage = (int)(Subject.StatSheet.EffectiveMaximumHp * .04);
+            
 
             foreach (var target in targets)
             {
+                var flamedamage = (int)(target.StatSheet.EffectiveMaximumHp * .007);
+                
                 ApplyDamageScript.ApplyDamage(
                     Subject,
                     target,
