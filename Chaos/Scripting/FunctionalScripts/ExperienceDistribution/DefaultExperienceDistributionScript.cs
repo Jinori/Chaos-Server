@@ -1,6 +1,5 @@
 #region
 using System.Diagnostics;
-using Chaos.Collections.Synchronized;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions.Common;
@@ -12,9 +11,11 @@ using Chaos.NLog.Logging.Definitions;
 using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.DialogScripts.GuildScripts;
+using Chaos.Scripting.DialogScripts.Religion.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.LevelUp;
-using Chaos.Scripting.WorldScripts.WorldBuffs;
+using Chaos.Scripting.WorldScripts.WorldBuffs.Guild;
+using Chaos.Scripting.WorldScripts.WorldBuffs.Religion;
 using Chaos.Services.Servers.Options;
 using Chaos.Storage.Abstractions;
 #endregion
@@ -23,10 +24,11 @@ namespace Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 
 public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistributionScript
 {
-    public DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistributionScript> logger, IStorage<GuildBuffs> guildBuffStorage)
+    public DefaultExperienceDistributionScript(ILogger<DefaultExperienceDistributionScript> logger, IStorage<GuildBuffs> guildBuffStorage, IStorage<ReligionBuffs> religionBuffStorage)
     {
         Logger = logger;
         GuildBuffStorage = guildBuffStorage;
+        ReligionBuffStorage = religionBuffStorage;
     }
     private const double EXPERIENCE_MULTIPLIER = 1.0; // Default is 1.0, can be lowered or raised as needed
     public IExperienceFormula ExperienceFormula { get; set; } = ExperienceFormulae.Default;
@@ -34,6 +36,7 @@ public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistri
 
     private readonly ILogger<DefaultExperienceDistributionScript> Logger;
     private readonly IStorage<GuildBuffs> GuildBuffStorage;
+    private readonly IStorage<ReligionBuffs> ReligionBuffStorage;
 
     /// <inheritdoc />
     public static string Key { get; } = GetScriptKey(typeof(DefaultExperienceDistributionScript));
@@ -59,7 +62,8 @@ public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistri
             if (HasStrongKnowledgeEffect(aisling))
                 totalBonus += 0.10m;
 
-            if (HasGMKnowledgeEffect(aisling))
+            // Apply a 25% experience bonus for "Skandara's World Buff" or "GM Trinket, but won't allow them to stack
+            if (HasGMKnowledgeEffect(aisling) || HasReligionBuff(ReligionScriptBase.SKANDARA_GLOBAL_BUFF_NAME))
                 totalBonus += 0.25m;
 
             if (HasValentinesCandyEffect(aisling))
@@ -71,7 +75,7 @@ public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistri
 
             if (HasGuildBuff(aisling, GuildBuffScript.GUILD_25_EXP_BUFF_NAME))
                 totalBonus += 0.25m;
-
+            
             if (HasEpicMaster(aisling))
                 totalBonus += 0.05m;
 
@@ -182,6 +186,14 @@ public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistri
             if (GuildBuffStorage.Value.ActiveBuffs.Any(
                     buff => buff.GuildName.EqualsI(aisling.Guild.Name) && buff.BuffName.EqualsI(buffName)))
                 return true;
+
+        return false;
+    }
+    
+    private bool HasReligionBuff(string buffName)
+    {
+        if (ReligionBuffStorage.Value.ActiveBuffs.Any(buff => buff.BuffName.EqualsI(buffName)))
+            return true;
 
         return false;
     }

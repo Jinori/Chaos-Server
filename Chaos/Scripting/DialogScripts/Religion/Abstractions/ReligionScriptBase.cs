@@ -11,8 +11,11 @@ using Chaos.Networking.Abstractions;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
+using Chaos.Scripting.WorldScripts.WorldBuffs.Religion;
 using Chaos.Services.Factories.Abstractions;
+using Chaos.Storage.Abstractions;
 using Chaos.Time;
+using Humanizer;
 
 namespace Chaos.Scripting.DialogScripts.Religion.Abstractions;
 
@@ -29,6 +32,11 @@ public class ReligionScriptBase : DialogScriptBase
         Champion
     }
 
+    public const string SERENDAEL_GLOBAL_BUFF_NAME = "Serendael's Dice";
+    public const string MIRAELIS_GLOBAL_BUFF_NAME = "Miraelis' Miracle";
+    public const string SKANDARA_GLOBAL_BUFF_NAME = "Skandara's Might";
+    public const string THESELENE_GLOBAL_BUFF_NAME = "Theselene's Cloak";
+     
     private const string MIRAELIS_LEGEND_KEY = "Miraelis";
     private const string THESELENE_LEGEND_KEY = "Theselene";
     private const string SERENDAEL_LEGEND_KEY = "Serendael";
@@ -307,14 +315,17 @@ public class ReligionScriptBase : DialogScriptBase
         TargetAnimation = 5
     };
 
+    private readonly IStorage<ReligionBuffs> ReligionBuffStorage;
+    
     /// <inheritdoc />
     public ReligionScriptBase(
         Dialog subject,
         IClientRegistry<IChaosWorldClient> clientRegistry,
         IItemFactory itemFactory,
-        IEffectFactory effectFactory)
+        IEffectFactory effectFactory, IStorage<ReligionBuffs> religionBuffStorage)
         : base(subject)
     {
+        ReligionBuffStorage = religionBuffStorage;
         ClientRegistry = clientRegistry;
         ItemFactory = itemFactory;
         EffectFactory = effectFactory;
@@ -395,29 +406,45 @@ public class ReligionScriptBase : DialogScriptBase
                     break;
             }
     }
-
-    private void ApplyGlobalBlessing(Aisling source, string deity)
+    
+    private bool HasReligionBuff(Aisling aisling, string deity)
     {
-        (var effect, var duration, var description) = deity switch
+        var effect = deity switch
         {
-            "Serendael" => ("dropboost", TimeSpan.FromMinutes(60), "+25% gold and item drops!"),
-            "Skandara"  => ("gmknowledge", TimeSpan.FromMinutes(60), "+25% monster experience."),
-            "Theselene" => ("preventrecradh", TimeSpan.FromMinutes(60), "protection from cradhs."),
-            "Miraelis"  => ("miracle", TimeSpan.FromMinutes(60), "+15% crafting & +10% healing."),
-            _           => (null, TimeSpan.Zero, null)
+            "Serendael" => "Serendael's Dice",
+            "Skandara"  => "Skandara's Might",
+            "Theselene" => "Theselene's Cloak",
+            "Miraelis"  => "Miraelis' Miracle",
+            _           => null
+        };
+        
+        if (ReligionBuffStorage.Value.ActiveBuffs.Any(buff => buff.BuffName.EqualsI(effect)))
+            return true;
+
+        return false;
+    }
+
+    public void AddGlobalReligionBuff(Aisling source, string deity, TimeSpan duration)
+    {
+        (var effect, var description) = deity switch
+        {
+            "Serendael" => ("Serendael's Dice", "+25% gold and item drops!"),
+            "Skandara"  => ("Skandara's Might", "+25% monster experience."),
+            "Theselene" => ("Theselene's Cloak", "protection from cradhs."),
+            "Miraelis"  => ("Miraelis' Miracle", "+15% crafting & +10% healing."),
         };
 
-        if (effect is null || description is null)
-            return;
-
-        foreach (var player in ClientRegistry)
+        
+        var buff = new ReligionBuff()
         {
-            var buff = EffectFactory.Create(effect);
-            buff.Remaining = duration;
+            BuffName = effect,
+            Duration = duration,
+        };
 
-            player.Aisling.Effects.Apply(source, buff);
-            player.Aisling.SendServerMessage(ServerMessageType.ActiveMessage, $"{source.Name} has blessed Unora with {description}");
-        }
+        ReligionBuffStorage.Value.ActiveBuffs.Add(buff);
+
+        foreach (var member in ClientRegistry)
+            member.Aisling.SendServerMessage(ServerMessageType.ActiveMessage, $"{source.Name} has blessed Unora with {description}");
     }
 
     private void ApplyGroupBlessing(Aisling source, string deity, int faithCost)
@@ -569,6 +596,13 @@ public class ReligionScriptBase : DialogScriptBase
 
     public void BuffGroup(Aisling source, string deity, int faithCost)
     {
+        if (HasReligionBuff(source, deity))
+        {
+            Subject.Reply(source, $"{deity}'s world blessing is already active. Try again later.", $"{deity}_temple_initial");
+
+            return;
+        }
+        
         if (!HasSufficientFaith(source, faithCost))
         {
             Subject.Reply(source, "Your faith is too low to receive the goddesses' blessing.", $"{deity}_temple_initial");
@@ -577,7 +611,7 @@ public class ReligionScriptBase : DialogScriptBase
         }
 
         if (faithCost == 300)
-            ApplyGlobalBlessing(source, deity);
+            AddGlobalReligionBuff(source, deity, TimeSpan.FromHours(1));
         else
         {
             if (source.Group is null)

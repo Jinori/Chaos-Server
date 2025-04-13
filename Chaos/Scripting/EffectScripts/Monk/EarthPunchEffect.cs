@@ -13,7 +13,7 @@ namespace Chaos.Scripting.EffectScripts.Monk;
 public sealed class EarthPunchEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(2);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(2.5);
 
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()

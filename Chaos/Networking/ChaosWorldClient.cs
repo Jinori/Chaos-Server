@@ -846,19 +846,26 @@ public sealed class ChaosWorldClient : WorldClientBase, IChaosWorldClient
         foreach (var aisling in orderedAislings)
         {
             var arg = Mapper.Map<WorldListMemberInfo>(aisling);
+            
 
             if (aisling.IsAdmin)
                 continue;
 
             if (Aisling.WithinLevelRange(aisling))
-                arg.Color = WorldListColor.WithinLevelRange;
+                arg.Color = WorldListColor.Orange;
 
             if (aisling.Guild is not null && (aisling.Guild == Aisling.Guild))
             {
                 arg.IsGuilded = true;
-                arg.Color = WorldListColor.Guilded;
+                arg.Color = WorldListColor.OliveBlue;
             }
 
+            if (aisling.IsKnight)
+            {
+                arg.Title = "Knight of Unora";
+                arg.Color = WorldListColor.Blue;              
+            }
+            
             worldList.Add(arg);
         }
 

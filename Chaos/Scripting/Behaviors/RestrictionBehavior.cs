@@ -169,7 +169,7 @@ public class RestrictionBehavior
         {
             case Aisling aisling:
             {
-                if (!aisling.IsGodModeEnabled() && IsSkillUsageRestricted(aisling))
+                if (!aisling.IsGodModeEnabled() && IsSkillUsageAislingRestricted(aisling))
                 {
                     aisling.SendOrangeBarMessage("You cannot use skills.");
                     return false;
@@ -197,17 +197,26 @@ public class RestrictionBehavior
                 break;
             }
             
-            case Monster monster when IsSkillUsageRestricted(monster):
+            case Monster monster when IsSkillUsageMonsterRestricted(monster):
                 return false;
         }
 
         return creature.IsAlive;
     }
     
-    private bool IsSkillUsageRestricted(Creature creature) =>
+    private bool IsSkillUsageAislingRestricted(Creature creature) =>
         creature.IsSuained()
         || creature.IsPramhed()
         || creature.IsStoned()
+        || creature.Trackers.TimedEvents.HasActiveEvent("Jail", out _)
+        || creature.MapInstance.Script.Is<NoSkillSpellUsageScript>()
+        || creature.MapInstance.Script.Is<NoSkillUsageScript>();
+    
+    private bool IsSkillUsageMonsterRestricted(Creature creature) =>
+        creature.IsSuained()
+        || creature.IsPramhed()
+        || creature.IsStoned()
+        || creature.IsBeagSuained()
         || creature.Trackers.TimedEvents.HasActiveEvent("Jail", out _)
         || creature.MapInstance.Script.Is<NoSkillSpellUsageScript>()
         || creature.MapInstance.Script.Is<NoSkillUsageScript>();

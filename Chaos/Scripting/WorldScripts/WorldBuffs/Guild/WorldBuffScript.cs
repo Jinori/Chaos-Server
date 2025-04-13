@@ -8,16 +8,16 @@ using Chaos.Storage.Abstractions;
 using Chaos.Time;
 using Chaos.Time.Abstractions;
 
-namespace Chaos.Scripting.WorldScripts.WorldBuffs;
+namespace Chaos.Scripting.WorldScripts.WorldBuffs.Guild;
 
 public class WorldBuffScript : IWorldScript
 {
     private readonly IIntervalTimer SaveInterval = new IntervalTimer(TimeSpan.FromMinutes(1), false);
     private readonly IStorage<GuildBuffs> GuildBuffStorage;
-    private readonly IStore<Guild> GuildStore;
+    private readonly IStore<Collections.Guild> GuildStore;
     private readonly ILogger<WorldBuffScript> Logger;
 
-    public WorldBuffScript(IStorage<GuildBuffs> guildBuffStorage, IStore<Guild> guildStore, ILogger<WorldBuffScript> logger)
+    public WorldBuffScript(IStorage<GuildBuffs> guildBuffStorage, IStore<Collections.Guild> guildStore, ILogger<WorldBuffScript> logger)
     {
         GuildBuffStorage = guildBuffStorage;
         GuildStore = guildStore;
@@ -45,6 +45,7 @@ public class WorldBuffScript : IWorldScript
 
                     foreach (var member in guild.GetOnlineMembers())
                         member.SendActiveMessage($"{buff.BuffName} has expired");
+                    
                 } catch
                 {
                     //ignored

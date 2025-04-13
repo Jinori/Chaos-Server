@@ -2,15 +2,19 @@
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
+using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.AbilityComponents;
 using Chaos.Scripting.Components.Execution;
+using Chaos.Scripting.DialogScripts.Religion.Abstractions;
 using Chaos.Scripting.MonsterScripts.Pet;
 using Chaos.Scripting.SpellScripts.Abstractions;
+using Chaos.Scripting.WorldScripts.WorldBuffs.Religion;
 using Chaos.Services.Factories.Abstractions;
+using Chaos.Storage.Abstractions;
 #endregion
 
 namespace Chaos.Scripting.SpellScripts.Buffs;
@@ -27,12 +31,26 @@ public class ApplyEffectScript : ConfigurableSpellScriptBase,
     public int SplashChance { get; init; }
     public int SplashDistance { get; init; }
     public TargetFilter SplashFilter { get; init; }
+    
+    private readonly IStorage<ReligionBuffs> ReligionBuffStorage;
 
     /// <inheritdoc />
-    public ApplyEffectScript(Spell subject, IEffectFactory effectFactory)
+    public ApplyEffectScript(Spell subject, IEffectFactory effectFactory, IStorage<ReligionBuffs> religionBuffStorage)
         : base(subject)
-        => EffectFactory = effectFactory;
+    {
+        EffectFactory = effectFactory;
+        ReligionBuffStorage = religionBuffStorage;
+    } 
 
+    private readonly List<string> CradhEffectKeys = [ "Dia Cradh", "Ard Cradh", "Mor Cradh", "Cradh", "Beag Cradh"];
+    private bool HasReligionBuff(string buffName)
+    {
+        if (ReligionBuffStorage.Value.ActiveBuffs.Any(buff => buff.BuffName.EqualsI(buffName)))
+            return true;
+
+        return false;
+    }
+    
     /// <inheritdoc />
     public override bool CanUse(SpellContext context)
     {
@@ -42,6 +60,10 @@ public class ApplyEffectScript : ConfigurableSpellScriptBase,
             if (context.TargetCreature is Monster monster && !monster.Script.Is<PetScript>())
                 return false;
 
+        
+        if (context.TargetCreature is Aisling && CradhEffectKeys.ContainsI(Subject.Template.Name) && HasReligionBuff(ReligionScriptBase.THESELENE_GLOBAL_BUFF_NAME))
+            return false;
+        
         return true;
     }
 

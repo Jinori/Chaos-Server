@@ -7,7 +7,7 @@ using Chaos.Networking.Abstractions;
 using Chaos.NLog.Logging.Definitions;
 using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.GuildScripts.Abstractions;
-using Chaos.Scripting.WorldScripts.WorldBuffs;
+using Chaos.Scripting.WorldScripts.WorldBuffs.Guild;
 using Chaos.Storage.Abstractions;
 using Humanizer;
 

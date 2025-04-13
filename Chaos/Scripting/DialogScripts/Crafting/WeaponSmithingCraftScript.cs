@@ -8,6 +8,8 @@ using Chaos.Models.Legend;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
+using Chaos.Scripting.DialogScripts.Crafting.Abstractions;
+using Chaos.Scripting.DialogScripts.Religion.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Time;
 
@@ -60,7 +62,7 @@ public class WeaponSmithingCraftScript : DialogScriptBase
 
     private double AdjustSuccessRateForEffects(double baseSuccessRate, Aisling source)
     {
-        if (source.Effects.Contains("Miracle"))
+        if (source.Effects.Contains("Miracle") || CraftingBaseScript.HasReligionBuff(ReligionScriptBase.MIRAELIS_GLOBAL_BUFF_NAME))
             return baseSuccessRate + 15.0;
 
         return baseSuccessRate;

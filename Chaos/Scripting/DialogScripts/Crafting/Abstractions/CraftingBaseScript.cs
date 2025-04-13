@@ -1,4 +1,5 @@
 using Chaos.DarkAges.Definitions;
+using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.Legend;
 using Chaos.Models.Menu;
@@ -6,7 +7,9 @@ using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.DialogScripts.Abstractions;
+using Chaos.Scripting.WorldScripts.WorldBuffs.Religion;
 using Chaos.Services.Factories.Abstractions;
+using Chaos.Storage.Abstractions;
 using Chaos.Time;
 
 namespace Chaos.Scripting.DialogScripts.Crafting.Abstractions;
@@ -39,6 +42,14 @@ public abstract class CraftingBaseScript : DialogScriptBase
         }
     ];
 
+    public static bool HasReligionBuff(string buffName)
+    {
+        if (ReligionBuffStorage.Value.ActiveBuffs.Any(buff => buff.BuffName.EqualsI(buffName)))
+            return true;
+
+        return false;
+    }
+    
     protected abstract double BaseSucessRate { get; }
 
     protected abstract Dictionary<string, string> DowngradeMappings { get; }
@@ -61,13 +72,16 @@ public abstract class CraftingBaseScript : DialogScriptBase
     protected abstract double SuccessRateMax { get; }
     protected abstract Dictionary<string, string> UpgradeMappings { get; }
     protected virtual string[] RankTitles => [];
+    
+    private static IStorage<ReligionBuffs> ReligionBuffStorage;
 
     /// <inheritdoc />
-    protected CraftingBaseScript(Dialog subject, IItemFactory itemFactory, IDialogFactory dialogFactory)
+    protected CraftingBaseScript(Dialog subject, IItemFactory itemFactory, IDialogFactory dialogFactory, IStorage<ReligionBuffs> religionBuffStorage)
         : base(subject)
     {
         ItemFactory = itemFactory;
         DialogFactory = dialogFactory;
+        ReligionBuffStorage = religionBuffStorage;
     }
 
     protected virtual void AddInitialLegendMark(Aisling source)

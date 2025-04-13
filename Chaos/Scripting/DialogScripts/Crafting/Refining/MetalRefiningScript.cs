@@ -3,7 +3,9 @@ using Chaos.Extensions.Common;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Crafting.Abstractions;
+using Chaos.Scripting.WorldScripts.WorldBuffs.Religion;
 using Chaos.Services.Factories.Abstractions;
+using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Crafting.Refining;
 
@@ -112,8 +114,8 @@ public class MetalRefiningScript : CraftingBaseScript
     protected override double SuccessRateMax => 90;
 
     /// <inheritdoc />
-    public MetalRefiningScript(Dialog subject, IItemFactory itemFactory, IDialogFactory dialogFactory)
-        : base(subject, itemFactory, dialogFactory) { }
+    public MetalRefiningScript(Dialog subject, IItemFactory itemFactory, IDialogFactory dialogFactory, IStorage<ReligionBuffs> religionBuffStorage)
+        : base(subject, itemFactory, dialogFactory, religionBuffStorage) { }
 
     public override void OnDisplaying(Aisling source)
     {
