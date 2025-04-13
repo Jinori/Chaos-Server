@@ -1,6 +1,3 @@
-using Chaos.Collections;
-using Chaos.Collections.Synchronized;
-using Chaos.Networking.Abstractions;
 using Chaos.NLog.Logging.Definitions;
 using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.WorldScripts.Abstractions;
@@ -37,7 +34,7 @@ public class WorldBuffScript : IWorldScript
 
             if (buff.Expired)
             {
-                Guild? guild = null;
+                Collections.Guild? guild = null;
                 
                 try
                 {
