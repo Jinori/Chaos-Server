@@ -1621,7 +1621,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             if (IntegerRandomizer.RollChance(2))
                 if (!source.Script.Is<ThisIsABossScript>())
                 {
-                    var effect = EffectFactory.Create("Suain");
+                    var effect = EffectFactory.Create("BeagSuain");
                     source.Effects.Apply(Subject, effect);
                 }
 
