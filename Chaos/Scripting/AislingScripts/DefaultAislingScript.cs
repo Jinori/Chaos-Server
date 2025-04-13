@@ -59,7 +59,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     private readonly IIntervalTimer SleepAnimationTimer;
     private readonly ISpellFactory SpellFactory;
 
-    public IApplyDamageScript ApplyDamageScript { get; init; }
+    public IApplyDamageScript MonkFormApplyDamageScript { get; init; }
 
     /// <inheritdoc />
     public IApplyHealScript ApplyHealScript { get; init; }
@@ -153,8 +153,9 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         MerchantFactory = merchantFactory;
         SimpleCache = simpleCache;
         ApplyHealScript = ApplyNonAlertingHealScript.Create();
-        ApplyDamageScript = ApplyAttackDamageScript.Create();
-        ApplyDamageScript.DamageFormula = DamageFormulae.Default;
+        MonkFormApplyDamageScript = ApplyNonAttackDamageScript.Create();
+        var damFormula = DamageFormulae.ElementalEffect;
+        MonkFormApplyDamageScript.DamageFormula = damFormula;
         ApplyHealScript.HealFormula = HealFormulae.Default;
     }
 
@@ -181,6 +182,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
                 break;
             case 99:
+                
                 AdjustAttributesBasedOnLevel(67);
                 Subject.Client.SendAttributes(StatUpdateType.Full);
 
@@ -1551,8 +1553,6 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
         if (Subject.IsLightningStanced())
         {
-            var result = damage * 30;
-
             // Apply additional effect with a 2% chance
             if (IntegerRandomizer.RollChance(2))
                 if (!source.Script.Is<ThisIsABossScript>())
@@ -1561,11 +1561,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                     source.Effects.Apply(Subject, effect);
                 }
 
-            // Update aggro list for monsters
-            if (source is Monster monster)
-                monster.AggroList.AddOrUpdate(Subject.Id, _ => result, (_, currentAggro) => currentAggro + result);
-
-            var nonWallPoints = Subject.SpiralSearch(4)
+            var nonWallPoints = Subject.SpiralSearch(3)
                                        .Where(x => !Subject.MapInstance.IsWall(x))
                                        .ToList();
 
@@ -1602,13 +1598,17 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
                     if (target != null)
                     {
-                        var areaDamage = (int)(target.StatSheet.EffectiveMaximumHp * 0.05); // 5% of max HP
+                        var airDamage = (int)(1000 + Subject.StatSheet.EffectiveCon * 50 + Subject.StatSheet.EffectiveMaximumHp * 0.05);
 
-                        ApplyDamageScript.ApplyDamage(
+                        MonkFormApplyDamageScript.ApplyDamage(
                             Subject,
                             target,
                             this,
-                            areaDamage);
+                            airDamage, Element.Wind);
+                        
+                        if (target is Monster monster)
+                            monster.AggroList.AddOrUpdate(Subject.Id, _ => airDamage, (_, currentAggro) => currentAggro + airDamage);
+                        
                         target.ShowHealth();
                     }
                 }
@@ -1616,7 +1616,6 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
         if (Subject.IsThunderStanced())
         {
-            var result = damage * 30;
 
             // Apply additional effect with a 2% chance
             if (IntegerRandomizer.RollChance(2))
@@ -1626,29 +1625,61 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                     source.Effects.Apply(Subject, effect);
                 }
 
-            // Update aggro list for monsters
-            if (source is Monster monster)
-                monster.AggroList.AddOrUpdate(Subject.Id, _ => result, (_, currentAggro) => currentAggro + result);
+            var nonWallPoints = Subject.SpiralSearch(3)
+                                       .Where(x => !Subject.MapInstance.IsWall(x))
+                                       .ToList();
+
+            if (nonWallPoints.Count <= 0)
+                return;
+
+            // Select a random non-wall point as the top-left corner of the 2x2 area
+            var topLeftPoint = nonWallPoints[Random.Shared.Next(nonWallPoints.Count)];
+
+            // Define the 2x2 area by generating points around the top-left corner
+            var areaPoints = new List<Point>
+            {
+                topLeftPoint,
+                new(topLeftPoint.X + 1, topLeftPoint.Y),
+                new(topLeftPoint.X, topLeftPoint.Y + 1),
+                new(topLeftPoint.X + 1, topLeftPoint.Y + 1)
+            };
+
+            // Show animation and apply damage to all entities within the 2x2 area
+            foreach (var point in areaPoints)
+
+                // Ensure the point is within the map bounds
+                if ((point.X >= 0)
+                    && (point.Y >= 0)
+                    && (point.X < Subject.MapInstance.Template.Width)
+                    && (point.Y < Subject.MapInstance.Template.Height))
+                {
+                    Subject.MapInstance.ShowAnimation(LightningStanceStrike.GetPointAnimation(point));
+
+                    // Check if an entity is standing on the point and apply damage
+                    var target = Subject.MapInstance
+                                        .GetEntitiesAtPoints<Creature>(point)
+                                        .FirstOrDefault(x => x.IsAlive && x.IsHostileTo(Subject));
+
+                    if (target != null)
+                    {
+                        var airDamage = (750 + Subject.StatSheet.EffectiveCon * 30);
+
+                        MonkFormApplyDamageScript.ApplyDamage(
+                            Subject,
+                            target,
+                            this,
+                            airDamage, Element.Wind);
+                        
+                        if (target is Monster monster)
+                            monster.AggroList.AddOrUpdate(Subject.Id, _ => airDamage, (_, currentAggro) => currentAggro + airDamage);
+                        
+                        target.ShowHealth();
+                    }
+                }
         }
 
-        if (Subject.IsSmokeStanced() && IntegerRandomizer.RollChance(35))
-            if (!source.Script.Is<ThisIsABossScript>())
-            {
-                var effect = EffectFactory.Create("Dall");
-                source.Effects.Apply(Subject, effect);
-            }
-
-        if (Subject.IsFlameStanced())
+        if (Subject.IsSmokeStanced())
         {
-            if (IntegerRandomizer.RollChance(35))
-            {
-                if (!source.Script.Is<ThisIsABossScript>())
-                {
-                    var effect = EffectFactory.Create("Dall");
-                    source.Effects.Apply(Subject, effect);
-                }                
-            }
-            
             var options = new AoeShapeOptions
             {
                 Source = new Point(Subject.X, Subject.Y),
@@ -1662,16 +1693,48 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                                  .WithFilter(Subject, TargetFilter.HostileOnly)
                                  .ToList();
             
-
+            
             foreach (var target in targets)
             {
-                var flamedamage = (int)(target.StatSheet.EffectiveMaximumHp * .007);
+                var flameDamage = (75 + Subject.StatSheet.EffectiveCon * 15);
                 
-                ApplyDamageScript.ApplyDamage(
+                MonkFormApplyDamageScript.ApplyDamage(
                     Subject,
                     target,
                     this,
-                    flamedamage);
+                    flameDamage, Element.Fire);
+
+                target.ShowHealth();
+                target.Animate(FlameHit, Subject.Id);
+            }
+        }
+
+
+        if (Subject.IsFlameStanced())
+        {
+            var options = new AoeShapeOptions
+            {
+                Source = new Point(Subject.X, Subject.Y),
+                Range = 1
+            };
+
+            var points = AoeShape.AllAround.ResolvePoints(options);
+
+            var targets = Subject.MapInstance
+                                 .GetEntitiesAtPoints<Creature>(points.Cast<IPoint>())
+                                 .WithFilter(Subject, TargetFilter.HostileOnly)
+                                 .ToList();
+            
+            
+            foreach (var target in targets)
+            {
+                var flameDamage = (int)(75 + Subject.StatSheet.EffectiveCon * 15 + Subject.StatSheet.EffectiveMaximumHp * 0.01);
+                
+                MonkFormApplyDamageScript.ApplyDamage(
+                    Subject,
+                    target,
+                    this,
+                    flameDamage, Element.Fire);
 
                 target.ShowHealth();
                 target.Animate(FlameHit, Subject.Id);
