@@ -1,17 +1,21 @@
 #region
 using Chaos.Collections;
 using Chaos.Extensions;
+using Chaos.Extensions.Common;
 using Chaos.Models.World;
+using Chaos.Scripting.DialogScripts.Religion.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Scripting.MonsterScripts.Abstractions;
 using Chaos.Scripting.ReactorTileScripts;
+using Chaos.Scripting.WorldScripts.WorldBuffs.Religion;
 using Chaos.Services.Servers.Options;
+using Chaos.Storage.Abstractions;
 #endregion
 
 namespace Chaos.Scripting.MonsterScripts;
 
-public class DeathScript(Monster subject) : MonsterScriptBase(subject)
+public class DeathScript(Monster subject, IStorage<ReligionBuffs> religionBuffStorage) : MonsterScriptBase(subject)
 {
     private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
 
@@ -32,7 +36,7 @@ public class DeathScript(Monster subject) : MonsterScriptBase(subject)
                 // Ensure only members on the same map as the Subject (monster) receive loot
                 rewardTarget.Group.DistributeRandomized(Subject.Items, Subject);
 
-                var hasDropBoost = rewardTarget.Group.Any(a => a.Effects.Contains("dropboost"));
+                var hasDropBoost = rewardTarget.Group.Any(a => a.Effects.Contains("DropBoost")) || HasReligionBuff(ReligionScriptBase.SERENDAEL_GLOBAL_BUFF_NAME);
                 var goldAmount = Subject.Gold;
 
                 // Apply gold boost if it's `true`
@@ -95,7 +99,7 @@ public class DeathScript(Monster subject) : MonsterScriptBase(subject)
 
     private void HandleLootDrop(Aisling[]? rewardTargets, bool lockToTargets = false, Aisling? lockToLeader = null)
     {
-        var hasGoldBoost = rewardTargets?.Any(a => a.Effects.Contains("DropBoost"));
+        var hasGoldBoost = rewardTargets?.Any(a => a.Effects.Contains("DropBoost") || HasReligionBuff(ReligionScriptBase.SERENDAEL_GLOBAL_BUFF_NAME));
         var originalGoldAmount = Subject.Gold;
 
         // Apply gold boost if it's active
@@ -166,7 +170,7 @@ public class DeathScript(Monster subject) : MonsterScriptBase(subject)
 
         var rewardTargets = rewardTarget != null ? GetRewardTargets(rewardTarget) : null;
 
-        var serendaelBuff = (rewardTargets != null) && rewardTargets.Any(x => x.Effects.Contains("dropboost"));
+        var serendaelBuff = (rewardTargets != null) && rewardTargets.Any(x => x.Effects.Contains("DropBoost") || HasReligionBuff(ReligionScriptBase.SERENDAEL_GLOBAL_BUFF_NAME));
 
         Subject.Items.AddRange(Subject.LootTable.GenerateLoot(serendaelBuff));
 
@@ -174,5 +178,13 @@ public class DeathScript(Monster subject) : MonsterScriptBase(subject)
             DistributeLootAndExperience(rewardTarget, rewardTargets);
         else
             DropLootAndExperience(rewardTargets);
+    }
+    
+    private bool HasReligionBuff(string buffName)
+    {
+        if (religionBuffStorage.Value.ActiveBuffs.Any(buff => buff.BuffName.EqualsI(buffName)))
+            return true;
+
+        return false;
     }
 }

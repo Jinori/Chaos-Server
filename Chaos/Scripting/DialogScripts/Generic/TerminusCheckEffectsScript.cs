@@ -1,5 +1,4 @@
 using System.Text;
-using Chaos.Collections.Synchronized;
 using Chaos.DarkAges.Definitions;
 using Chaos.DarkAges.Extensions;
 using Chaos.Definitions;
@@ -9,7 +8,8 @@ using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
 using Chaos.Scripting.ItemScripts.Abstractions;
-using Chaos.Scripting.WorldScripts.WorldBuffs;
+using Chaos.Scripting.WorldScripts.WorldBuffs.Guild;
+using Chaos.Scripting.WorldScripts.WorldBuffs.Religion;
 using Chaos.Storage.Abstractions;
 using Humanizer;
 
@@ -18,11 +18,15 @@ namespace Chaos.Scripting.DialogScripts.Generic;
 public class TerminusCheckEffectsScript : DialogScriptBase
 {
     private readonly IStorage<GuildBuffs> GuildBuffStorage;
-    
+    private readonly IStorage<ReligionBuffs> ReligionBuffStorage;
+
     /// <inheritdoc />
-    public TerminusCheckEffectsScript(Dialog subject, IStorage<GuildBuffs> guildBuffStorage)
+    public TerminusCheckEffectsScript(Dialog subject, IStorage<GuildBuffs> guildBuffStorage, IStorage<ReligionBuffs> religionBuffStorage)
         : base(subject)
-        => GuildBuffStorage = guildBuffStorage;
+    {
+        ReligionBuffStorage = religionBuffStorage;
+        GuildBuffStorage = guildBuffStorage;   
+    }
 
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
@@ -62,7 +66,7 @@ public class TerminusCheckEffectsScript : DialogScriptBase
                     sb.AppendLineF();
                     sb.Append($"{eff.Name}: {eff.Remaining.Humanize()} remaining.");
                 }
-
+                
                 sb.AppendLineF();
                 
                 //SET BONUSES
@@ -115,7 +119,21 @@ public class TerminusCheckEffectsScript : DialogScriptBase
                     foreach (var buff in activeGuildBuffs)
                         sb.AppendLineF($"{buff.BuffName}: {(buff.Duration - buff.Elapsed).Humanize()} remaining");
                 }
+                
+                sb.AppendLineF();
+                
+                //RELIGION BUFFS
+                sb.AppendLineFColored(MessageColor.Yellow, "Religion Buffs: ", MessageColor.Gray);
 
+
+                    var activeReligionBuffs = ReligionBuffStorage.Value
+                                                           .ActiveBuffs
+                                                           .OrderBy(buff => buff.Duration - buff.Elapsed)
+                                                           .ToList();
+
+                    foreach (var buff in activeReligionBuffs)
+                        sb.AppendLineF($"{buff.BuffName}: {(buff.Duration - buff.Elapsed).Humanize()} remaining");
+                
                 
                 source.Client.SendServerMessage(ServerMessageType.ScrollWindow, sb.ToString());
                 Subject.Close(source);

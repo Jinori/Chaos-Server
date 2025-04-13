@@ -4,7 +4,9 @@ using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Networking.Abstractions;
 using Chaos.Scripting.DialogScripts.Religion.Abstractions;
+using Chaos.Scripting.WorldScripts.WorldBuffs.Religion;
 using Chaos.Services.Factories.Abstractions;
+using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Religion;
 
@@ -17,12 +19,12 @@ public class SkandaraTempleScript : ReligionScriptBase
         Dialog subject,
         IClientRegistry<IChaosWorldClient> clientRegistry,
         IItemFactory itemFactory,
-        IEffectFactory effectFactory)
+        IEffectFactory effectFactory, IStorage<ReligionBuffs> religionBuffStorage)
         : base(
             subject,
             clientRegistry,
             itemFactory,
-            effectFactory) { }
+            effectFactory, religionBuffStorage) { }
 
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)

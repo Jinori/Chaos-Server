@@ -3,12 +3,14 @@ using Chaos.Extensions.Common;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Crafting.Abstractions;
+using Chaos.Scripting.WorldScripts.WorldBuffs.Religion;
 using Chaos.Services.Factories.Abstractions;
+using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Crafting.Refining;
 
-public class FabricRefiningScript(Dialog subject, IItemFactory itemFactory, IDialogFactory dialogFactory)
-    : CraftingBaseScript(subject, itemFactory, dialogFactory)
+public class FabricRefiningScript(Dialog subject, IItemFactory itemFactory, IDialogFactory dialogFactory, IStorage<ReligionBuffs> religionBuffStorage)
+    : CraftingBaseScript(subject, itemFactory, dialogFactory, religionBuffStorage)
 {
     private readonly string[] FabricTemplateKeys =
     [

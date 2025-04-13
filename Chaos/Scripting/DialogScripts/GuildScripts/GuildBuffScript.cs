@@ -5,7 +5,7 @@ using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Networking.Abstractions;
 using Chaos.Scripting.DialogScripts.GuildScripts.Abstractions;
-using Chaos.Scripting.WorldScripts.WorldBuffs;
+using Chaos.Scripting.WorldScripts.WorldBuffs.Guild;
 using Chaos.Storage.Abstractions;
 using Humanizer;
 

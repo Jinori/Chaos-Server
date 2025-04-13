@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using Chaos.Time.Abstractions;
 
-namespace Chaos.Scripting.WorldScripts.WorldBuffs;
+namespace Chaos.Scripting.WorldScripts.WorldBuffs.Guild;
 
 public class GuildBuff : IDeltaUpdatable
 {
