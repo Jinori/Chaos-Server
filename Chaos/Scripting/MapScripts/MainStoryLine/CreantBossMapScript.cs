@@ -1,6 +1,7 @@
 ﻿using Chaos.Collections;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
+using Chaos.Extensions;
 using Chaos.Models.World;
 using Chaos.Scripting.MapScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
@@ -24,13 +25,15 @@ public class CreantBossMapScript : MapScriptBase
     private readonly IMonsterFactory MonsterFactory;
     private readonly TimeSpan StartDelay;
     private readonly IIntervalTimer? UpdateTimer;
+    private readonly IEffectFactory EffectFactory;
     private DateTime? StartTime;
     public ScriptState State;
 
-    public CreantBossMapScript(MapInstance subject, IMonsterFactory monsterFactory)
+    public CreantBossMapScript(MapInstance subject, IMonsterFactory monsterFactory, IEffectFactory effectFactory)
         : base(subject)
     {
         MonsterFactory = monsterFactory;
+        EffectFactory = effectFactory;
         StartDelay = TimeSpan.FromSeconds(3);
         UpdateTimer = new IntervalTimer(TimeSpan.FromSeconds(UPDATE_INTERVAL_MS));
     }
@@ -40,6 +43,13 @@ public class CreantBossMapScript : MapScriptBase
         UpdateTimer?.Update(delta);
 
         if (UpdateTimer!.IntervalElapsed)
+        {
+            foreach(var aisling in Subject.GetEntities<Aisling>())
+                if (aisling.IsFullGrandMaster() && !aisling.Effects.Contains("Creant Power Limit"))
+                {
+                    var effect = EffectFactory.Create("creantPowerLimit");
+                    aisling.Effects.Apply(aisling, effect);
+                }
 
             // Switch statement to determine the current state of the script
             switch (State)
@@ -220,5 +230,6 @@ public class CreantBossMapScript : MapScriptBase
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
     }
 }

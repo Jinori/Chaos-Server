@@ -8,8 +8,8 @@ namespace Chaos.Scripting.EffectScripts.Rogue;
 
 public class Cunning5Effect : EffectBase
 {
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(16);
-
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromMinutes(8);
+    private Attributes BonusAttributes = null!;
     protected Animation Animation { get; } = new()
     {
         AnimationSpeed = 100,
@@ -24,37 +24,46 @@ public class Cunning5Effect : EffectBase
         base.OnApplied();
         AislingSubject?.Effects.Terminate("Cunning4");
 
-        var attributes = new Attributes
+        BonusAttributes = new Attributes
         {
-            Dmg = 60,
-            SkillDamagePct = 60
+            SkillDamagePct = GetVar<int>("skillDamagePct"),
+            FlatSkillDamage = GetVar<int>("flatSkillDamage")
         };
-
-        Subject.StatSheet.AddBonus(attributes);
+        
+        Subject.StatSheet.AddBonus(BonusAttributes);
         AislingSubject?.StatSheet.SubtractMp(64000);
-        AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
+        AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "{=bCunning 5 builds up inside you.");
         AislingSubject?.Animate(Animation);
     }
 
+    /// <inheritdoc />
+    public override void PrepareSnapshot(Creature source)
+    {
+        SetVar("skillDamagePct", 60);
+        SetVar("flatSkillDamage", 400);
+    }
+    
     public override void OnDispelled() => OnTerminated();
 
     public override void OnReApplied()
     {
+        BonusAttributes = new Attributes
+        {
+            SkillDamagePct = GetVar<int>("skillDamagePct"),
+            FlatSkillDamage = GetVar<int>("flatSkillDamage")
+        };
+        
+        Subject.StatSheet.AddBonus(BonusAttributes);
+        AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "{=bCunning 5 builds up inside you.");
         AislingSubject?.Animate(Animation);
     }
 
     public override void OnTerminated()
     {
-        var attributes = new Attributes
-        {
-            Dmg = 60,
-            SkillDamagePct = 60
-        };
-
-        Subject.StatSheet.SubtractBonus(attributes);
-        AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
+        Subject.StatSheet.SubtractBonus(BonusAttributes);
+        AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your cunning returns to normal.");
     }
 
@@ -62,7 +71,7 @@ public class Cunning5Effect : EffectBase
     {
         if (!target.Effects.Contains("Cunning5") && (target.StatSheet.CurrentMp <= 64000))
         {
-            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You need 128000 mana to enter Cunning 5.");
+            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You need 64000 mana to enter Cunning 5.");
 
             return false;
         }

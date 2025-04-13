@@ -18,43 +18,56 @@ public class Fury6Effect : EffectBase
 
     public override byte Icon => 87;
     public override string Name => "Fury6";
+    private Attributes BonusAttributes = null!;
 
     public override void OnApplied()
     {
         base.OnApplied();
         AislingSubject?.Effects.Terminate("Fury5");
 
-        var attributes = new Attributes
+        BonusAttributes = new Attributes
         {
-            Dmg = 100,
-            SkillDamagePct = 100
+            SkillDamagePct = GetVar<int>("skillDamagePct"),
+            Dmg = GetVar<int>("dmg"),
+            FlatSkillDamage = GetVar<int>("flatSkillDamage")
         };
-
-        Subject.StatSheet.AddBonus(attributes);
+        
+        Subject.StatSheet.AddBonus(BonusAttributes);
         AislingSubject?.StatSheet.SubtractHp(256000);
-        AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
+        AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "{=bFury 6 builds up inside you.");
         AislingSubject?.Animate(Animation);
     }
 
+    /// <inheritdoc />
+    public override void PrepareSnapshot(Creature source)
+    {
+        SetVar("skillDamagePct", 50);
+        SetVar("dmg", 50);
+        SetVar("flatSkillDamage", 500);
+    }
+    
     public override void OnDispelled() => OnTerminated();
 
     public override void OnReApplied()
     {
+        BonusAttributes = new Attributes
+        {
+            SkillDamagePct = GetVar<int>("skillDamagePct"),
+            Dmg = GetVar<int>("dmg"),
+            FlatSkillDamage = GetVar<int>("flatSkillDamage")
+        };
+        
+        Subject.StatSheet.AddBonus(BonusAttributes);
+        AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "{=bFury 6 builds up inside you.");
         AislingSubject?.Animate(Animation);
     }
 
     public override void OnTerminated()
     {
-        var attributes = new Attributes
-        {
-            Dmg = 100,
-            SkillDamagePct = 100
-        };
-
-        Subject.StatSheet.SubtractBonus(attributes);
-        AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
+        Subject.StatSheet.SubtractBonus(BonusAttributes);
+        AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your fury returns to normal.");
     }
 

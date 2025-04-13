@@ -60,12 +60,21 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
     public IgnoreList IgnoreList { get; init; }
     public IInventory Inventory { get; private set; }
     public bool IsAdmin { get; set; }
+    //admins and knights can talk on muted channels
+    bool IChannelSubscriber.IsAdmin => IsAdmin || IsKnight;
     public bool IsKnight { get; set; }
     public LanternSize LanternSize { get; private set; }
     public Collections.Legend Legend { get; private set; }
     public MailBox MailBox { get; set; } = null!;
     public string MonsterRacingLane { get; set; } = null!;
-    public bool Muted { get; set; }
+
+    //admins and knights cant be muted
+    public bool Muted
+    {
+        get => !IsAdmin && !IsKnight && field;
+        set;
+    }
+
     public Nation Nation { get; set; }
     public bool OnTwentyOneTile { get; set; }
     public UserOptions Options { get; init; }

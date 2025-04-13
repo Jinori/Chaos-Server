@@ -4,6 +4,8 @@ using Chaos.Extensions.Common;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Networking.Abstractions;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.DialogScripts.GuildScripts.Abstractions;
 using Chaos.Scripting.WorldScripts.WorldBuffs;
 using Chaos.Storage.Abstractions;
@@ -123,6 +125,7 @@ public class GuildBuffScript : GuildScriptBase
 
         var cost = GetCost(choice);
         var duration = GetDuration(choice);
+        var bankedGoldBefore = guild.Bank.Gold;
 
         if (!guild.Bank.RemoveGold(cost))
         {
@@ -131,7 +134,20 @@ public class GuildBuffScript : GuildScriptBase
             return;
         }
 
+        var bankedGoldAfter = guild.Bank.Gold;
+
         AddGuildBuff(guild, GUILD_25_EXP_BUFF_NAME, duration);
+
+        Logger.WithProperty(guild)
+              .WithProperty(source)
+              .WithProperty(bankedGoldBefore)
+              .WithProperty(bankedGoldAfter)
+              .LogInformation(
+                  "Aisling {AislingName} has activated the guild buff {BuffName} for {Duration} for the cost of {Cost:N} gold",
+                  source.Name,
+                  GUILD_25_EXP_BUFF_NAME,
+                  duration.Humanize(),
+                  cost);
     }
 
     private void On25ExpChoicesNext(Aisling source, byte? optionIndex = null)

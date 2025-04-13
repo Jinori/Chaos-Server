@@ -40,7 +40,7 @@ public class WithdrawGoldScript : DialogScriptBase
                       .WithProperty(Subject)
                       .WithProperty(Subject.DialogSource)
                       .WithProperty(source)
-                      .LogInformation("Aisling {@AislingName} withdrew {Amount} gold from the bank", source, amount);
+                      .LogInformation("Aisling {@AislingName} withdrew {Amount} gold from the bank", source.Name, amount);
 
                 break;
             case ComplexActionHelper.WithdrawGoldResult.TooMuchGold:

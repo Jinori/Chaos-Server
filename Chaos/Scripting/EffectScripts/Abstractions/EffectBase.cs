@@ -41,6 +41,18 @@ public abstract class EffectBase : IEffect
 
     /// <inheritdoc />
     public T GetVar<T>(string key) where T: notnull => SnapshotVars.GetRequired<T>(key);
+    
+    public T GetVarOrDefault<T>(string key, T defaultValue)
+    {
+        #pragma warning disable CA2263
+        var value = SnapshotVars.Get(typeof(T), key);
+        #pragma warning restore CA2263
+
+        if (value is null)
+            return defaultValue;
+
+        return (T)value;
+    }
 
     /// <inheritdoc />
     public virtual void OnApplied() { }

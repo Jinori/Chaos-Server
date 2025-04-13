@@ -68,7 +68,7 @@ public class GuildWithdrawGoldScript : DialogScriptBase
                       .WithProperty(source.Guild)
                       .LogInformation(
                           "Aisling {@AislingName} withdrew {Amount} gold from the {GuildName} bank",
-                          source,
+                          source.Name,
                           amount,
                           source.Guild.Name);
                 

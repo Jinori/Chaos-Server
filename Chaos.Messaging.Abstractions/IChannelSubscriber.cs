@@ -31,4 +31,9 @@ public interface IChannelSubscriber
     ///     The message being send
     /// </param>
     void SendMessage(string message);
+    
+    /// <summary>
+    ///     Whether or not the subscriber is an admin
+    /// </summary>
+    bool IsAdmin { get; }
 }

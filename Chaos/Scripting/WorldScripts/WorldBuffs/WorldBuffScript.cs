@@ -1,6 +1,8 @@
 using Chaos.Collections;
 using Chaos.Collections.Synchronized;
 using Chaos.Networking.Abstractions;
+using Chaos.NLog.Logging.Definitions;
+using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.WorldScripts.Abstractions;
 using Chaos.Storage.Abstractions;
 using Chaos.Time;
@@ -12,12 +14,14 @@ public class WorldBuffScript : IWorldScript
 {
     private readonly IIntervalTimer SaveInterval = new IntervalTimer(TimeSpan.FromMinutes(1), false);
     private readonly IStorage<GuildBuffs> GuildBuffStorage;
-    private readonly IStore<Guild> GuildStore; 
-    
-    public WorldBuffScript(IStorage<GuildBuffs> guildBuffStorage, IStore<Guild> guildStore)
+    private readonly IStore<Guild> GuildStore;
+    private readonly ILogger<WorldBuffScript> Logger;
+
+    public WorldBuffScript(IStorage<GuildBuffs> guildBuffStorage, IStore<Guild> guildStore, ILogger<WorldBuffScript> logger)
     {
         GuildBuffStorage = guildBuffStorage;
         GuildStore = guildStore;
+        Logger = logger;
     }
 
     /// <inheritdoc />
@@ -33,9 +37,11 @@ public class WorldBuffScript : IWorldScript
 
             if (buff.Expired)
             {
+                Guild? guild = null;
+                
                 try
                 {
-                    var guild = GuildStore.Load(buff.GuildName);
+                    guild = GuildStore.Load(buff.GuildName);
 
                     foreach (var member in guild.GetOnlineMembers())
                         member.SendActiveMessage($"{buff.BuffName} has expired");
@@ -45,6 +51,13 @@ public class WorldBuffScript : IWorldScript
                 }
 
                 GuildBuffStorage.Value.ActiveBuffs.Remove(buff);
+
+                var logEvent = Logger.WithTopics(Topics.Qualifiers.Expired);
+
+                if (guild is not null)
+                    logEvent = logEvent.WithProperty(guild);
+
+                logEvent.LogInformation("Buff {BuffName} for guild {GuildName} has expired", buff.BuffName, buff.GuildName);
             }
         }
 

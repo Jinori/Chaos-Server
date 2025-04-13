@@ -18,42 +18,52 @@ public class Cunning1Effect : EffectBase
 
     public override byte Icon => 74;
     public override string Name => "Cunning1";
+    private Attributes BonusAttributes = null!;
 
     public override void OnApplied()
     {
         base.OnApplied();
 
-        var attributes = new Attributes
+        BonusAttributes = new Attributes
         {
-            Dmg = 8,
-            SkillDamagePct = 8
+            SkillDamagePct = GetVar<int>("skillDamagePct"),
+            FlatSkillDamage = GetVar<int>("flatSkillDamage")
         };
-
-        Subject.StatSheet.AddBonus(attributes);
+        
+        Subject.StatSheet.AddBonus(BonusAttributes);
         AislingSubject?.StatSheet.SubtractMp(4000);
-        AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
+        AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "{=bCunning 1 builds up inside you.");
         AislingSubject?.Animate(Animation);
     }
 
     public override void OnDispelled() => OnTerminated();
 
+    /// <inheritdoc />
+    public override void PrepareSnapshot(Creature source)
+    {
+        SetVar("skillDamagePct", 30);
+        SetVar("flatSkillDamage", 200);
+    }
+    
     public override void OnReApplied()
     {
+        BonusAttributes = new Attributes
+        {
+            SkillDamagePct = GetVar<int>("skillDamagePct"),
+            FlatSkillDamage = GetVar<int>("flatSkillDamage")
+        };
+        
+        Subject.StatSheet.AddBonus(BonusAttributes);
+        AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "{=bCunning 1 builds up inside you.");
         AislingSubject?.Animate(Animation);
     }
 
     public override void OnTerminated()
     {
-        var attributes = new Attributes
-        {
-            Dmg = 8,
-            SkillDamagePct = 8
-        };
-
-        Subject.StatSheet.SubtractBonus(attributes);
-        AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
+        Subject.StatSheet.SubtractBonus(BonusAttributes);
+        AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your cunning returns to normal.");
     }
 
@@ -61,7 +71,7 @@ public class Cunning1Effect : EffectBase
     {
         if (!target.Effects.Contains("Cunning1") && (target.StatSheet.CurrentMp <= 4000))
         {
-            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You need 8000 mana to enter Cunning 1.");
+            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You need 4000 mana to enter Cunning 1.");
 
             return false;
         }

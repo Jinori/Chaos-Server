@@ -22,7 +22,7 @@ internal sealed class ChannelDetails
     {
         SendMessageAction = (fromSub, message) =>
         {
-            if (Muted)
+            if (!fromSub.IsAdmin && Muted)
                 return;
 
             sendMessageAction(fromSub, message);

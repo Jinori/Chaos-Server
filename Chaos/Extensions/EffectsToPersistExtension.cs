@@ -55,6 +55,12 @@ public static class EffectsToPersistExtension
         "Soup",
         "Steak Meal"
     ];
+    
+    private static readonly string[] PowerLimiters =
+    [
+        "Power Limit",
+        "Creant Power Limit"
+    ];
 
     // Additional temporary enhancements protected from AoSith
     private static readonly string[] FuryEffects =
@@ -73,6 +79,6 @@ public static class EffectsToPersistExtension
 
     public static readonly HashSet<string> EffectsToPersistThroughAoSith =
     [
-        ..CoreEffects.Concat(PersistentBuffs).Concat(FuryEffects)
+        ..CoreEffects.Concat(PersistentBuffs).Concat(FuryEffects).Concat(PowerLimiters)
     ];
 }

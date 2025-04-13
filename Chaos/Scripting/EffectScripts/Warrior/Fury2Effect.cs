@@ -15,6 +15,8 @@ public class Fury2Effect : EffectBase
         AnimationSpeed = 100,
         TargetAnimation = 291
     };
+    
+    private Attributes BonusAttributes = null!;
 
     public override byte Icon => 87;
     public override string Name => "Fury2";
@@ -24,37 +26,49 @@ public class Fury2Effect : EffectBase
         base.OnApplied();
         AislingSubject?.Effects.Terminate("Fury1");
 
-        var attributes = new Attributes
+        BonusAttributes = new Attributes
         {
-            Dmg = 20,
-            SkillDamagePct = 20
+            SkillDamagePct = GetVar<int>("skillDamagePct"),
+            Dmg = GetVar<int>("dmg"),
+            FlatSkillDamage = GetVar<int>("flatSkillDamage")
         };
-
-        Subject.StatSheet.AddBonus(attributes);
+        
+        Subject.StatSheet.AddBonus(BonusAttributes);
         AislingSubject?.StatSheet.SubtractHp(16000);
-        AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
+        AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "{=bFury 2 builds up inside you.");
         AislingSubject?.Animate(Animation);
     }
 
     public override void OnDispelled() => OnTerminated();
 
+    /// <inheritdoc />
+    public override void PrepareSnapshot(Creature source)
+    {
+        SetVar("skillDamagePct", 25);
+        SetVar("dmg", 25);
+        SetVar("flatSkillDamage", 250);
+    }
+    
     public override void OnReApplied()
     {
+        BonusAttributes = new Attributes
+        {
+            SkillDamagePct = GetVar<int>("skillDamagePct"),
+            Dmg = GetVar<int>("dmg"),
+            FlatSkillDamage = GetVar<int>("flatSkillDamage")
+        };
+        
+        Subject.StatSheet.AddBonus(BonusAttributes);
+        AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "{=bFury 2 builds up inside you.");
         AislingSubject?.Animate(Animation);
     }
 
     public override void OnTerminated()
     {
-        var attributes = new Attributes
-        {
-            Dmg = 20,
-            SkillDamagePct = 20
-        };
-
-        Subject.StatSheet.SubtractBonus(attributes);
-        AislingSubject?.Client.SendAttributes(StatUpdateType.Vitality);
+        Subject.StatSheet.SubtractBonus(BonusAttributes);
+        AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your fury returns to normal.");
     }
 

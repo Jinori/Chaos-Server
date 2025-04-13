@@ -31,6 +31,7 @@ public static class StatusExtensions
     public static bool IsEarthenStanced(this Creature creature) => creature.Effects.Contains("Earthen Stance");
     public static bool IsFlameStanced(this Creature creature) => creature.Effects.Contains("Flame Stance");
     public static bool IsGodModeEnabled(this Creature creature) => creature.Trackers.Enums.HasValue(GodMode.Yes);
+    public static bool IsFullGrandMaster(this Aisling aisling) => aisling.Trackers.Enums.HasValue(MainstoryMasterEnums.CompletedCreants);
     public static bool IsHidden(this Creature creature) =>
         creature.Effects.Contains("hide") || creature.Effects.Contains("gm hide") || creature.Effects.Contains("true hide");
     public static bool IsHotChocolated(this Creature creature) => creature.Effects.Contains("Hot Chocolate");
