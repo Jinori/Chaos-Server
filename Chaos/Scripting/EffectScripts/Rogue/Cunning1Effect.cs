@@ -17,7 +17,7 @@ public class Cunning1Effect : EffectBase
     };
 
     public override byte Icon => 74;
-    public override string Name => "Cunning1";
+    public override string Name => "Cunning 1";
     private Attributes BonusAttributes = null!;
 
     public override void OnApplied()
@@ -31,7 +31,6 @@ public class Cunning1Effect : EffectBase
         };
         
         Subject.StatSheet.AddBonus(BonusAttributes);
-        AislingSubject?.StatSheet.SubtractMp(4000);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "{=bCunning 1 builds up inside you.");
         AislingSubject?.Animate(Animation);
@@ -66,16 +65,6 @@ public class Cunning1Effect : EffectBase
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your cunning returns to normal.");
     }
-
-    public override bool ShouldApply(Creature source, Creature target)
-    {
-        if (!target.Effects.Contains("Cunning1") && (target.StatSheet.CurrentMp <= 4000))
-        {
-            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You need 4000 mana to enter Cunning 1.");
-
-            return false;
-        }
-
-        return true;
-    }
+    
+    public override bool ShouldApply(Creature source, Creature target) => true;
 }

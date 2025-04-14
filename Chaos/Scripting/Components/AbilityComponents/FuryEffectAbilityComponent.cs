@@ -6,7 +6,7 @@ using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.Components.AbilityComponents;
 
-public struct FuryEffectAbilityComponent : IComponent
+public readonly struct FuryEffectAbilityComponent : IComponent
 {
     private readonly IEffectFactory EffectFactory;
 
@@ -33,6 +33,7 @@ public struct FuryEffectAbilityComponent : IComponent
                 || (!target.Effects.Contains("Fury6") && (target.StatSheet.EffectiveMaximumHp >= 8000)))
             {
                 target.Effects.Apply(context.Source, effect1);
+                target.StatSheet.SubtractHp(8000);
 
                 return;
             }
@@ -41,6 +42,7 @@ public struct FuryEffectAbilityComponent : IComponent
             {
                 target.Effects.Terminate("Fury1");
                 target.Effects.Apply(context.Source, effect2);
+                target.StatSheet.SubtractHp(16000);
 
                 return;
             }
@@ -49,6 +51,7 @@ public struct FuryEffectAbilityComponent : IComponent
             {
                 target.Effects.Terminate("Fury2");
                 target.Effects.Apply(context.Source, effect3);
+                target.StatSheet.SubtractHp(32000);
 
                 return;
             }
@@ -57,6 +60,7 @@ public struct FuryEffectAbilityComponent : IComponent
             {
                 target.Effects.Terminate("Fury3");
                 target.Effects.Apply(context.Source, effect4);
+                target.StatSheet.SubtractHp(64000);
 
                 return;
             }
@@ -65,6 +69,7 @@ public struct FuryEffectAbilityComponent : IComponent
             {
                 target.Effects.Terminate("Fury4");
                 target.Effects.Apply(context.Source, effect5);
+                target.StatSheet.SubtractHp(128000);
 
                 return;
             }
@@ -73,6 +78,7 @@ public struct FuryEffectAbilityComponent : IComponent
             {
                 target.Effects.Terminate("Fury5");
                 target.Effects.Apply(context.Source, effect6);
+                target.StatSheet.SubtractHp(256000);
 
                 return;
             }

@@ -17,14 +17,12 @@ public class GuildBankManagementScript(
     IStore<Guild> guildStore,
     IFactory<Guild> guildFactory,
     ILogger<GuildBankManagementScript> logger,
-    IStorage<GuildHouseState> guildHouseStateStorage
-)
-    : GuildScriptBase(
-        subject,
-        clientRegistry,
-        guildStore,
-        guildFactory,
-        logger)
+    IStorage<GuildHouseState> guildHouseStateStorage) : GuildScriptBase(
+    subject,
+    clientRegistry,
+    guildStore,
+    guildFactory,
+    logger)
 {
     public override void OnDisplaying(Aisling source)
     {
@@ -35,11 +33,11 @@ public class GuildBankManagementScript(
                 if (!IsInGuild(source, out _, out var sourceRank))
                 {
                     Subject.AddOption("I must've fallen.", "Close");
+
                     break;
                 }
 
                 if (sourceRank.IsLeaderRank || sourceRank.IsOfficerRank)
-                {
                     Subject.AddOptions(
                         ("Deposit Item", "generic_depositguilditem_initial"),
                         ("Withdraw Item", "generic_withdrawguilditem_initial"),
@@ -48,16 +46,13 @@ public class GuildBankManagementScript(
                         ("View Bank", "generic_viewbank_initial"),
                         ("View Logs", "stash_guildbanklogs"),
                         ("Nevermind", "aricin_initial"));
-                }
                 else
-                {
                     Subject.AddOptions(
                         ("Deposit Item", "generic_depositguilditem_initial"),
                         ("Deposit Gold", "generic_depositguildgold_initial"),
                         ("View Bank", "generic_viewbank_initial"),
                         ("View Logs", "stash_guildbanklogs"),
                         ("Nevermind", "aricin_initial"));
-                }
 
                 break;
             }
@@ -67,29 +62,32 @@ public class GuildBankManagementScript(
                 var guildHouseState = guildHouseStateStorage.Value;
                 guildHouseState.SetStorage(guildHouseStateStorage);
 
-                if (!guildHouseState.GuildProperties.Entries.TryGetValue(source.Guild?.Name, out var houseProperties))
+                if (!guildHouseState.GuildProperties.Entries.TryGetValue(source.Guild!.Name, out var houseProperties))
                 {
                     source.SendServerMessage(ServerMessageType.ScrollWindow, "No withdrawal logs found for this guild.");
+
                     return;
                 }
 
                 var withdrawals = houseProperties.ItemLogs
-                    .Where(log => log.Action == GuildHouseState.TransactionType.Withdrawal)
-                    .OrderByDescending(log => log.Timestamp)
-                    .Take(30)
-                    .ToList();
+                                                 .Where(log => log.Action == GuildHouseState.TransactionType.Withdrawal)
+                                                 .OrderByDescending(log => log.Timestamp)
+                                                 .Take(30)
+                                                 .ToList();
 
                 if (withdrawals.Count == 0)
                 {
                     source.SendServerMessage(ServerMessageType.ScrollWindow, "No recent withdrawals found.");
+
                     return;
                 }
 
                 ShowGuildTransactionLog(source, withdrawals, "Recent Guild Withdrawals:");
                 Subject.Close(source);
+
                 break;
             }
-            
+
             case "stash_guildbankgoldwithdrawlog":
             {
                 var guildHouseState = guildHouseStateStorage.Value;
@@ -98,6 +96,7 @@ public class GuildBankManagementScript(
                 if (!guildHouseState.GuildProperties.Entries.TryGetValue(source.Guild?.Name, out var houseProperties))
                 {
                     source.SendServerMessage(ServerMessageType.ScrollWindow, "No withdrawal logs found for this guild.");
+
                     return;
                 }
 
@@ -110,11 +109,13 @@ public class GuildBankManagementScript(
                 if (withdrawals.Count == 0)
                 {
                     source.SendServerMessage(ServerMessageType.ScrollWindow, "No recent withdrawals found.");
+
                     return;
                 }
 
                 ShowGuildTransactionLog(source, withdrawals, "Recent Guild Gold Withdrawals:");
                 Subject.Close(source);
+
                 break;
             }
 
@@ -123,29 +124,32 @@ public class GuildBankManagementScript(
                 var guildHouseState = guildHouseStateStorage.Value;
                 guildHouseState.SetStorage(guildHouseStateStorage);
 
-                if (!guildHouseState.GuildProperties.Entries.TryGetValue(source.Guild?.Name, out var houseProperties))
+                if (!guildHouseState.GuildProperties.Entries.TryGetValue(source.Guild!.Name, out var houseProperties))
                 {
                     source.SendServerMessage(ServerMessageType.ScrollWindow, "No deposit logs found for this guild.");
+
                     return;
                 }
 
                 var deposits = houseProperties.ItemLogs
-                    .Where(log => log.Action == GuildHouseState.TransactionType.Deposit)
-                    .OrderByDescending(log => log.Timestamp)
-                    .Take(30)
-                    .ToList();
+                                              .Where(log => log.Action == GuildHouseState.TransactionType.Deposit)
+                                              .OrderByDescending(log => log.Timestamp)
+                                              .Take(30)
+                                              .ToList();
 
                 if (deposits.Count == 0)
                 {
                     source.SendServerMessage(ServerMessageType.ScrollWindow, "No recent deposits found.");
+
                     return;
                 }
 
                 ShowGuildTransactionLog(source, deposits, "Recent Guild Deposits:");
                 Subject.Close(source);
+
                 break;
             }
-            
+
             case "stash_guildbankgolddepositlog":
             {
                 var guildHouseState = guildHouseStateStorage.Value;
@@ -154,6 +158,7 @@ public class GuildBankManagementScript(
                 if (!guildHouseState.GuildProperties.Entries.TryGetValue(source.Guild?.Name, out var houseProperties))
                 {
                     source.SendServerMessage(ServerMessageType.ScrollWindow, "No deposit logs found for this guild.");
+
                     return;
                 }
 
@@ -166,20 +171,19 @@ public class GuildBankManagementScript(
                 if (deposits.Count == 0)
                 {
                     source.SendServerMessage(ServerMessageType.ScrollWindow, "No recent deposits found.");
+
                     return;
                 }
 
                 ShowGuildTransactionLog(source, deposits, "Recent Guild Gold Deposits:");
                 Subject.Close(source);
+
                 break;
             }
         }
     }
 
-    private static void ShowGuildTransactionLog(
-        Aisling source,
-        IEnumerable<GuildHouseState.ItemTransactionLog> logs,
-        string title)
+    private static void ShowGuildTransactionLog(Aisling source, IEnumerable<GuildHouseState.ItemTransactionLog> logs, string title)
     {
         var builder = new StringBuilder();
         builder.AppendLineFColored(MessageColor.Silver, title);
@@ -188,6 +192,7 @@ public class GuildBankManagementScript(
         builder.AppendLineFColored(MessageColor.Gainsboro, new string('-', 50));
 
         var isSilver = true;
+
         foreach (var log in logs)
         {
             var color = isSilver ? MessageColor.Silver : MessageColor.Gainsboro;

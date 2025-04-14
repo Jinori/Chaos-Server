@@ -30,6 +30,43 @@ public class GuardianDoorScript : ConfigurableReactorTileScriptBase
 
         var targetMap = SimpleCache.Get<MapInstance>(Destination.Map);
 
+        if (source.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact1))
+        {
+            if (aisling.MapInstance.Template.TemplateKey != "463")
+            {
+                aisling.SendOrangeBarMessage("You are not on this Guardian.");
+                WarpBack(aisling);
+
+                return;
+            }
+        }else if (source.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact2))
+        {
+            if (aisling.MapInstance.Template.TemplateKey != "98")
+            {
+                aisling.SendOrangeBarMessage("You are not on this Guardian.");
+                WarpBack(aisling);
+
+                return;
+            }
+        }else if (source.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact3))
+        {
+            if (aisling.MapInstance.Template.TemplateKey != "3066")
+            {
+                aisling.SendOrangeBarMessage("You are not on this Guardian.");
+                WarpBack(aisling);  
+                return;
+            }
+        }else if (source.Trackers.Enums.HasValue(MainStoryEnums.StartedArtifact4))
+        {
+            if (aisling.MapInstance.Template.TemplateKey != "4731")
+            {
+                aisling.SendOrangeBarMessage("You are not on this Guardian.");
+                WarpBack(aisling);
+
+                return;
+            }
+        }
+
         // Ensure the Aisling has a group and all members are nearby
         if (aisling.Group is null || !aisling.Group.All(member => member.OnSameMapAs(aisling) && member.WithinRange(aisling)))
         {
@@ -38,11 +75,6 @@ public class GuardianDoorScript : ConfigurableReactorTileScriptBase
 
             return;
         }
-
-        // Check quest status and inventory for each group member
-        bool AllMembersMeetRequirements(MainStoryEnums artifactEnum, MainstoryFlags artifactFlag, string artifactItem)
-            => aisling.Group.All(member => member.Trackers.Enums.HasValue(artifactEnum) || member.Trackers.Flags.HasFlag(artifactFlag))
-               && aisling.Group.All(member => !member.Inventory.HasCount(artifactItem, 1));
 
         // Define the artifact-specific logic
         var artifactChecks = new[]
@@ -88,6 +120,12 @@ public class GuardianDoorScript : ConfigurableReactorTileScriptBase
         // If no artifact checks pass, notify and warp back
         aisling.SendOrangeBarMessage("Someone in your group isn't on this quest.");
         WarpBack(aisling);
+
+        return;
+
+        bool AllMembersMeetRequirements(MainStoryEnums artifactEnum, MainstoryFlags artifactFlag, string artifactItem)
+            => aisling.Group.All(member => member.Trackers.Enums.HasValue(artifactEnum) || member.Trackers.Flags.HasFlag(artifactFlag))
+               && aisling.Group.All(member => !member.Inventory.HasCount(artifactItem, 1));
     }
 
     private void WarpBack(Aisling aisling)

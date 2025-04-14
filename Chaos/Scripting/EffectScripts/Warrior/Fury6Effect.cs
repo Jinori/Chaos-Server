@@ -17,13 +17,12 @@ public class Fury6Effect : EffectBase
     };
 
     public override byte Icon => 87;
-    public override string Name => "Fury6";
+    public override string Name => "Fury 6";
     private Attributes BonusAttributes = null!;
 
     public override void OnApplied()
     {
         base.OnApplied();
-        AislingSubject?.Effects.Terminate("Fury5");
 
         BonusAttributes = new Attributes
         {
@@ -33,7 +32,6 @@ public class Fury6Effect : EffectBase
         };
         
         Subject.StatSheet.AddBonus(BonusAttributes);
-        AislingSubject?.StatSheet.SubtractHp(256000);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "{=bFury 6 builds up inside you.");
         AislingSubject?.Animate(Animation);
@@ -71,22 +69,5 @@ public class Fury6Effect : EffectBase
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your fury returns to normal.");
     }
 
-    public override bool ShouldApply(Creature source, Creature target)
-    {
-        if (target.Effects.Contains("Fury6"))
-        {
-            AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You are already in Fury 6.");
-
-            return false;
-        }
-
-        if (!target.Effects.Contains("Fury6") && (target.StatSheet.CurrentHp <= 256000))
-        {
-            (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You need 256000 health to enter Fury 6.");
-
-            return false;
-        }
-
-        return true;
-    }
+    public override bool ShouldApply(Creature source, Creature target) => true;
 }

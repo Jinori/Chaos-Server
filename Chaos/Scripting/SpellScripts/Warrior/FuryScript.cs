@@ -5,47 +5,58 @@ using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.SpellScripts.Warrior;
 
-public class FuryScript(Spell subject, IEffectFactory effectFactory) : SpellScriptBase(subject)
+public sealed class FuryScript : SpellScriptBase
 {
+    private readonly IEffectFactory _effectFactory;
+
+    public FuryScript(Spell subject, IEffectFactory effectFactory)
+        : base(subject) =>
+        _effectFactory = effectFactory;
+    
+    private static readonly Dictionary<string, (string NextKey, string NextName, int HealthCost)> EFFECT_MAP = new()
+    {
+        ["Fury 0"] = ("Fury1", "Fury 1",     8_000),
+        ["Fury 1"] = ("Fury2", "Fury 2",     16_000),
+        ["Fury 2"] = ("Fury3", "Fury 3",    32_000),
+        ["Fury 3"] = ("Fury4", "Fury 4",    64_000),
+        ["Fury 4"] = ("Fury5", "Fury 5",    128_000),
+        ["Fury 5"] = ("Fury6", "Fury 6",   256_000)
+    };
+
     public override void OnUse(SpellContext context)
     {
-        var effectMap = new Dictionary<string, string>
+        if (context.Source.Effects.Contains("Fury 6"))
         {
-            {
-                "Fury1", "Fury2"
-            },
-            {
-                "Fury2", "Fury3"
-            },
-            {
-                "Fury3", "Fury4"
-            },
-            {
-                "Fury4", "Fury5"
-            },
-            {
-                "Fury5", "Fury6"
-            },
-            {
-                "Fury6", "Fury6"
-            }
-        };
+            context.SourceAisling?.SendOrangeBarMessage("You are already in Fury 6!");
 
-        string nextEffectName = null;
+            return;
+        }
+        
+        (var nextKey, var nextName, var healthCost) = EFFECT_MAP["Fury 0"];
 
-        foreach (var effect in effectMap.Keys)
-            if (context.Source.Effects.Contains(effect))
+        foreach (var kvp in EFFECT_MAP)
+        {
+            if (context.Source.Effects.Contains(kvp.Key))
             {
-                nextEffectName = effectMap[effect];
-
+                (nextKey, nextName, healthCost) = kvp.Value;
                 break;
             }
+        }
 
-        // If no effects are found, start with Fury1
-        nextEffectName ??= "Fury1";
+        // ---------- 2. Check resources ----------
+        if (context.Source.StatSheet.CurrentHp < healthCost)
+        {
+            context.SourceAisling?
+                   .SendOrangeBarMessage($"You need {healthCost:n0} health to cast {nextName}.");
+            return;
+        }
 
-        // Create and apply the effect
-        var nextEffect = effectFactory.Create(nextEffectName);
+        context.Source.StatSheet.SubtractHp(healthCost);
+        
+        foreach (var name in EFFECT_MAP.Keys)
+            context.Source.Effects.Terminate(name);
+
+        var nextEffect = _effectFactory.Create(nextKey);
         context.Source.Effects.Apply(context.Source, nextEffect);
     }
 }

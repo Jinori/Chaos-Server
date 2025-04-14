@@ -243,7 +243,7 @@ public class CookingDirectoryScript : DialogScriptBase
 
                             return;
 
-                        case true when meatStage && fruitsStage && vegetableStage && !extraIngredients2:
+                        case true when meatStage && fruitsStage && vegetableStage && !extraIngredients:
                             Subject.Reply(source, "Skip", "extraingredients_initial");
 
                             return;

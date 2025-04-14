@@ -65,6 +65,7 @@ public struct CunningEffectAbilityComponent : IComponent
             if (activeEffect == null)
             {
                 target.Effects.Apply(context.Source, _effectFactory.Create(effect));
+                target.StatSheet.SubtractMp(mpThreshold);
 
                 return;
             }
@@ -72,13 +73,14 @@ public struct CunningEffectAbilityComponent : IComponent
             if (effect == activeEffect)
             {
                 target.Effects.Terminate(effect);
-
+                
                 continue;
             }
 
             if (cunningEffects.TryGetValue(activeEffect, out var value) && (value < mpThreshold))
             {
                 target.Effects.Apply(context.Source, _effectFactory.Create(effect));
+                target.StatSheet.SubtractMp(mpThreshold);
 
                 return;
             }

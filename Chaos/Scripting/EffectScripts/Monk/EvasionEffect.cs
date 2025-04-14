@@ -18,8 +18,8 @@ public class EvasionEffect : EffectBase
         // Base AC reduction formula
         var baseReduction = -3 - 15.0 / 98.0 * (Subject.StatSheet.Level - 1);
 
-        // Additional reduction for every 15k HP
-        var bonusReduction = Subject.StatSheet.MaximumHp / 15000;
+        // Additional reduction for every 25 con.
+        var bonusReduction = Subject.StatSheet.Con / 25;
 
         return (int)Math.Round(baseReduction - bonusReduction);
     }

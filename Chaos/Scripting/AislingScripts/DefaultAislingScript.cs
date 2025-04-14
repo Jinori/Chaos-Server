@@ -2393,10 +2393,13 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         RemoveOldWarriorSkillsSpells(Subject);
     }
 
-    private void RemoveItemIfTitleMissing(string title1, string title2, string itemKey)
+    private void RemoveItemIfTitleMissing(string title1, string title2, string itemKey, string legendKey)
     {
         if (!Subject.Titles.ContainsI(title1) && !Subject.Titles.ContainsI(title2) && !Subject.IsAdmin)
+        {
+            Subject.Legend.Remove(legendKey, out _);
             Subject.Inventory.RemoveQuantityByTemplateKey(itemKey, 1);
+        }
     }
 
     private void RemoveNyxItemCounters()
@@ -2504,10 +2507,10 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
     private void RemoveRestrictedTrinkets()
     {
-        RemoveItemIfTitleMissing("Expert Enchanter", "Master Enchanter", "portaltrinket");
-        RemoveItemIfTitleMissing("Expert Weaponsmith", "Master Weaponsmith", "dmgtrinket");
-        RemoveItemIfTitleMissing("Expert Armorsmith", "Master Armorsmith", "repairtrinket");
-        RemoveItemIfTitleMissing("Expert Jewelcrafter", "Master Jewelcrafter", "exptrinket");
+        RemoveItemIfTitleMissing("Expert Enchanter", "Master Enchanter", "portaltrinket", "enchantingtrinket");
+        RemoveItemIfTitleMissing("Expert Weaponsmith", "Master Weaponsmith", "dmgtrinket", "weaponsmithtrinket");
+        RemoveItemIfTitleMissing("Expert Armorsmith", "Master Armorsmith", "repairtrinket", "armorsmithtrinket");
+        RemoveItemIfTitleMissing("Expert Jewelcrafter", "Master Jewelcrafter", "exptrinket", "jewelcrafttrinket");
     }
 
     private static void RemoveSkillsAndSpells(Aisling aisling, List<string> skills, List<string> spells)
