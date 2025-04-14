@@ -1,8 +1,12 @@
+using Chaos.Collections;
+using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Scripting.MonsterScripts.Abstractions;
+using Chaos.Scripting.ReactorTileScripts.Secret;
 using Chaos.Services.Factories.Abstractions;
+using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.MonsterScripts.Boss.SecretCowLevel.KingOfCows;
 
@@ -12,7 +16,8 @@ public sealed class KingOfCowsEnrageScript : MonsterScriptBase
     private bool Bonus30Applied;
     private bool Bonus50Applied;
     private bool Bonus75Applied;
-
+    private readonly ISimpleCache SimpleCache;
+    
     private Animation UpgradeAnimation { get; } = new()
     {
         AnimationSpeed = 100,
@@ -20,9 +25,24 @@ public sealed class KingOfCowsEnrageScript : MonsterScriptBase
     };
 
     /// <inheritdoc />
-    public KingOfCowsEnrageScript(Monster subject, IMonsterFactory monsterFactory)
+    public KingOfCowsEnrageScript(Monster subject, IMonsterFactory monsterFactory, ISimpleCache simpleCache)
         : base(subject)
-        => MonsterFactory = monsterFactory;
+    {
+        MonsterFactory = monsterFactory;
+        SimpleCache = simpleCache;
+    }
+
+    /// <inheritdoc />
+    public override void OnDeath()
+    {
+        var mileth = SimpleCache.Get<MapInstance>("mileth");
+        
+        foreach(var reactor in mileth.GetEntities<ReactorTile>().ToList())
+            if (reactor.Script.Is<cowPortal>(out var script) && (script.Instance == Subject.MapInstance))
+                mileth.RemoveEntity(reactor);
+        
+        base.OnDeath();
+    }
 
     public override void Update(TimeSpan delta)
     {
