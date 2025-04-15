@@ -1,4 +1,5 @@
 using Chaos.Common.Utilities;
+using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Panel;
@@ -62,17 +63,21 @@ public class LimboRogueScript : MonsterScriptBase
 
             if (possibleTargets.Count > 0)
             {
+                var classesByWeight = possibleTargets.Select(aisling => aisling.UserStatSheet.BaseClass)
+                                                     .Distinct()
+                                                     .Where(baseClass => baseClass is BaseClass.Wizard or BaseClass.Priest)
+                                                     .ToDictionary(@class => @class, @class => ClassWeights[(int)@class]);
 
-                var targetClass = possibleTargets.Select(aisling => aisling.UserStatSheet.BaseClass)
-                                                 .Distinct()
-                                                 .ToDictionary(@class => @class, @class => ClassWeights[(int)@class])
-                                                 .PickRandomWeighted();
+                if (classesByWeight.Count > 0)
+                {
+                    var targetClass = classesByWeight.PickRandomWeighted();
+                    
+                    Target = possibleTargets.Where(t => t.UserStatSheet.BaseClass == targetClass)
+                                            .ToList()
+                                            .PickRandom();
 
-                Target = possibleTargets.Where(t => t.UserStatSheet.BaseClass == targetClass)
-                                        .ToList()
-                                        .PickRandom();
-
-                Subject.AggroList[Target.Id] = 100_000;
+                    Subject.AggroList[Target.Id] = 100_000;
+                }
             }
         }
         
