@@ -14,7 +14,7 @@ public class DubhaimAltarScript(ReactorTile subject, IItemFactory itemFactory, I
     
     private static readonly Dictionary<string, SummonInfo> SUMMONABLES = new()
     { 
-        ["blood_diamond"]       = new SummonInfo("dc_kindlefiend",  true, true,  "Kindlefiend forges itself from the Blood Diamond!"),
+        ["blooddiamond"]       = new SummonInfo("dc_kindlefiend",  true, true,  "Kindlefiend forges itself from the Blood Diamond!"),
 ["centipedegland"]      = new SummonInfo("crypt_centipede5",  false,false,  "A centipede forms around the Centipede Gland!"),
 ["koboldskull"]         = new SummonInfo("astrid_koboldc",    false,false,  "A kobold rises from the Kobold Skull's lingering magic!"),
 ["mantiseye"]           = new SummonInfo("ew_mantis4",        false,false,  "From the glassy Mantis Eye, a mantis rebuilds itself!"),
