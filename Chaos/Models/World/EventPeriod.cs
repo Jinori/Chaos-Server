@@ -149,13 +149,15 @@ public class EventPeriod
 
             // Easter Event
             new(
-                "0 6 11 4 *", // April 16th at 6 AM
+                "0 6 8 4 *", // April 16th at 6 AM
                 "0 0 25 4 *", // April 25th at 12 AM
                 [
                     "undine",
                     "hopmaze",
                     "mileth",
-                    "floppyfields"
+                    "floppyfields_98",
+                    "floppyfields_GM",
+                    "floppyfields_Master"
                 ])
         ];
 

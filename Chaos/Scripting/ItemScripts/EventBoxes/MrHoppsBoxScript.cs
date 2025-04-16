@@ -23,9 +23,6 @@ public class MrHoppsBoxScript : ItemScriptBase
             "bunnyfairy", 0.08
         },
         {
-            "bunnyhairpin", 0.08
-        },
-        {
             "bunnyears", 0.03
         },
         {
@@ -45,9 +42,6 @@ public class MrHoppsBoxScript : ItemScriptBase
         },
         {
             "male_bunnytophat", 0.05
-        },
-        {
-            "bunnymuffs", 0.05
         },
         {
             "female_bluebow", 0.05

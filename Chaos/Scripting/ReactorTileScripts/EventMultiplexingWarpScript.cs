@@ -75,6 +75,10 @@ public class EventMultiplexingWarpScript : ConfigurableReactorTileScriptBase
 
     public override void Update(TimeSpan delta)
     {
+        var currentDate = DateTime.UtcNow;
+        if ((EventDestination != null) && !EventPeriod.IsEventActive(currentDate, EventDestination))
+            return;
+        
         AnimationTimer.Update(delta);
 
         if (AnimationTimer.IntervalElapsed)
