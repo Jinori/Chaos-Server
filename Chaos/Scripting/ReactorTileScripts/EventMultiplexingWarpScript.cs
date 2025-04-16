@@ -48,6 +48,9 @@ public class EventMultiplexingWarpScript : ConfigurableReactorTileScriptBase
                 if (w.MaxLevel.HasValue && (w.MaxLevel.Value < source.StatSheet.Level))
                     return false;
 
+                if (!w.RequiresMaster && aisling.UserStatSheet.Master)
+                    return false;
+
                 // Check MinVitality and MaxVitality conditions only if the player is level 99
                 if (source.StatSheet.Level == 99)
                 {
@@ -101,6 +104,8 @@ public class EventMultiplexingWarpScript : ConfigurableReactorTileScriptBase
         public int? MinLevel { get; set; }
         public int? MinLevelNotify { get; set; }
         public int? MinVitality { get; set; }
+        
+        public bool RequiresMaster { get; set; }
     }
 
     #region ScriptVars
