@@ -135,7 +135,7 @@ public sealed class MrHoppsMasterEnrageScript : MonsterScriptBase
         }
     }
 
-    private void RegenerateFromBats()
+    private void RegenerateFromFloppies()
     {
         var amountFloppies = Subject.MapInstance
                                     .GetEntities<Monster>()
@@ -183,7 +183,7 @@ public sealed class MrHoppsMasterEnrageScript : MonsterScriptBase
             CastASpell();
 
         if (RegenerateTimer.IntervalElapsed)
-            RegenerateFromBats();
+            RegenerateFromFloppies();
 
         if (RandomAbilityTimer.IntervalElapsed)
         {

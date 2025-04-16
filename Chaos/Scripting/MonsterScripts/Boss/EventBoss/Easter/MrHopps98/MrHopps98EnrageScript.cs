@@ -135,15 +135,15 @@ public sealed class MrHopps98EnrageScript : MonsterScriptBase
         }
     }
 
-    private void RegenerateFromBats()
+    private void RegenerateFromFloppies()
     {
-        var amountBats = Subject.MapInstance
+        var amountFloppy = Subject.MapInstance
                                 .GetEntities<Monster>()
                                 .Count(x => x.Name == "Field Floppy");
 
-        if (amountBats > 0)
+        if (amountFloppy > 0)
         {
-            var healamt = amountBats * 0.002;
+            var healamt = amountFloppy * 0.002;
             var amountToHeal = Subject.StatSheet.EffectiveMaximumHp * healamt;
 
             var newHp = Subject.StatSheet.CurrentHp + amountToHeal;
@@ -183,7 +183,7 @@ public sealed class MrHopps98EnrageScript : MonsterScriptBase
             CastASpell();
 
         if (RegenerateTimer.IntervalElapsed)
-            RegenerateFromBats();
+            RegenerateFromFloppies();
 
         if (RandomAbilityTimer.IntervalElapsed)
         {

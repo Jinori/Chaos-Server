@@ -8,6 +8,8 @@ using Chaos.Models.World;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ExperienceDistribution;
 using Chaos.Scripting.MonsterScripts.Abstractions;
+using Chaos.Scripting.MonsterScripts.Boss.EventBoss.Easter.MrHopps98;
+using Chaos.Scripting.MonsterScripts.Boss.EventBoss.Easter.MrHoppsMaster;
 using Chaos.Scripting.ReactorTileScripts;
 using Chaos.Services.Servers.Options;
 using Chaos.Time;
@@ -123,14 +125,15 @@ public sealed class MrHoppsDeathScript : MonsterScriptBase
         {
             ExperienceDistributionScript.GiveExp(aisling, Subject.Experience);
 
-            aisling.Legend.AddOrAccumulate(
-                new LegendMark(
-                    "Defeated Mr.Hopps",
-                    "mrhoppsfloppyfields",
-                    MarkIcon.Victory,
-                    MarkColor.White,
-                    1,
-                    GameTime.Now));
+            if (Subject.Script.Is<MrHopps98BossScript>() || Subject.Script.Is<MrHoppsMasterBossScript>())
+                aisling.Legend.AddOrAccumulate(
+                    new LegendMark(
+                        "Defeated Mr.Hopps",
+                        "mrhoppsfloppyfields",
+                        MarkIcon.Victory,
+                        MarkColor.White,
+                        1,
+                        GameTime.Now));
         }
 
         Subject.Items.Clear();
