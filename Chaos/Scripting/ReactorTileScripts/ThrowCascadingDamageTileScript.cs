@@ -1,5 +1,6 @@
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
+using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Models.Data;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -27,12 +28,14 @@ public sealed class ThrowCascadingDamageTileScript : ConfigurableReactorTileScri
     private readonly int EndingStage;
     private readonly IIntervalTimer SoundTimer;
     private readonly int StartingStage;
+    public bool AllAround { get; init; }
     public int? EffectApplyChance { get; init; }
 
     public TimeSpan? EffectDurationOverride { get; init; }
     public IEffectFactory EffectFactory { get; init; }
     public string? EffectKey { get; init; }
     public ComponentExecutor Executor { get; init; }
+    public Direction? ThrowDirection { get; init; }
     public int? ThrowRange { get; init; }
     private int Stages => Range;
 

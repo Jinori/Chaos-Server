@@ -20,7 +20,7 @@ public sealed class ChainLightningEffect : ContinuousAnimationEffectBase
 
     /// <inheritdoc />
     protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(1);
-    
+
     private Creature Target { get; set; } = null!;
 
     /// <inheritdoc />
@@ -80,7 +80,7 @@ public sealed class ChainLightningEffect : ContinuousAnimationEffectBase
 
         // Find nearby targets for the next bounce
         var nearbyTargets = target.MapInstance
-                                  .GetEntitiesWithinRange<Creature>(target, 2)
+                                  .GetEntitiesWithinRange<Creature>(target, 4)
                                   .OrderBy(t => t.ManhattanDistanceFrom(target))
                                   .Where(t => !HitTargetIds.Contains(t.Id) && ShouldApply(Source, t) && !t.MapInstance.IsWall(t))
                                   .ToList();

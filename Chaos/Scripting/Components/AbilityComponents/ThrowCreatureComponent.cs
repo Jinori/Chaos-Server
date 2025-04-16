@@ -18,10 +18,14 @@ public struct ThrowCreatureComponent : IComponent
         var targets = vars.GetTargets<Creature>();
 
         var throwDirection = context.Source.Direction;
+
         var throwRange = options.ThrowRange ?? 1; // Default to 1 if not specified
 
         foreach (var target in targets)
         {
+            if (options.AllAround)
+                throwDirection = target.DirectionalRelationTo(context.Source);
+
             // Calculate the target point based on the throw direction and range relative to the target's position
             var targetCurrentPoint = Point.From(target);
             var targetThrowPoint = targetCurrentPoint.DirectionalOffset(throwDirection, throwRange);
@@ -62,6 +66,7 @@ public struct ThrowCreatureComponent : IComponent
 
     public interface IDamageComponentOptions
     {
+        public bool AllAround { get; init; }
         int? ThrowRange { get; init; }
     }
 }

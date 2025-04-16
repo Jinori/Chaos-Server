@@ -138,9 +138,6 @@ public class MacabreBoxScript : ItemScriptBase
         },
         {
             "reaperbuddy", 0.04
-        },
-        {
-            "femalebunnyoutfit", 0.01
         }
     };
 

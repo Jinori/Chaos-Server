@@ -21,6 +21,7 @@ public class ThrowDamageScript : ConfigurableSpellScriptBase,
                                  ThrowCreatureComponent.IDamageComponentOptions,
                                  ApplyEffectAbilityComponent.IApplyEffectComponentOptions
 {
+    public bool AllAround { get; init; }
     public bool AnimatePoints { get; init; }
     public Animation? Animation { get; init; }
     public ushort? AnimationSpeed { get; init; }
