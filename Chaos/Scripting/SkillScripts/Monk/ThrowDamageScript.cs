@@ -18,6 +18,7 @@ public class ThrowDamageScript : ConfigurableSkillScriptBase,
                                  ThrowCreatureComponent.IDamageComponentOptions,
                                  ApplyEffectAbilityComponent.IApplyEffectComponentOptions
 {
+    public bool AllAround { get; init; }
     public int? EffectApplyChance { get; init; }
     public TimeSpan? EffectDurationOverride { get; init; }
     public IEffectFactory EffectFactory { get; init; }
