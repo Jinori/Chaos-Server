@@ -20,8 +20,8 @@ public class BurningGroundScript : ReactorTileScriptBase
 
     //burning ground for shamensyth creant fight
     //will damage aislings by 20% hp and 10% mp per second
-    //will heal shamensyth by 2% per second
-    //will heal shamensythFireElemental by 5% per second
+    //will heal shamensyth by 10% per second
+    //will heal shamensythFireElemental by 20% per second
     //removable via strong water spells (tidalbreeze, ardsal, morsal, aoe versions of ard/mor sal)
 
     private readonly IIntervalTimer ApplicationTimer;
@@ -86,8 +86,8 @@ public class BurningGroundScript : ReactorTileScriptBase
 
                 var healPct = templateKey switch
                 {
-                    "shamensyth"              => 2,
-                    "shamensythFireElemental" => 5,
+                    "shamensyth"              => 1,
+                    "shamensythFireElemental" => 2,
                     _                         => 0
                 };
 
