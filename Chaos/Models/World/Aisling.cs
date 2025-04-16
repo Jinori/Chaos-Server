@@ -195,7 +195,7 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         };
         Script = scriptProvider.CreateScript<IAislingScript, Aisling>(ScriptKeys, this);
     }
-
+    
     //default user
     public Aisling(
         string name,
@@ -219,6 +219,8 @@ public sealed class Aisling : Creature, IScripted<IAislingScript>, IDialogSource
         ChannelSettings.AddRange(WorldOptions.Instance.DefaultChannels.Select(x => new ChannelSettings(x.ChannelName)));
     }
 
+    public static Aisling Faux => new Aisling("Faux", null!, new Point(0, 0));
+    
     private Aisling(string name, MapInstance mapInstance, IPoint point)
         : base(
             name,

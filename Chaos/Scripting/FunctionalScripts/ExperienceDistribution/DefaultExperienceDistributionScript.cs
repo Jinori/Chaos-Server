@@ -31,12 +31,12 @@ public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistri
         ReligionBuffStorage = religionBuffStorage;
     }
     private const double EXPERIENCE_MULTIPLIER = 1.0; // Default is 1.0, can be lowered or raised as needed
-    public IExperienceFormula ExperienceFormula { get; set; } = ExperienceFormulae.Default;
-    public ILevelUpScript LevelUpScript { get; set; } = DefaultLevelUpScript.Create();
+    public virtual IExperienceFormula ExperienceFormula { get; set; } = ExperienceFormulae.Default;
+    public virtual ILevelUpScript LevelUpScript { get; set; } = DefaultLevelUpScript.Create();
 
-    private readonly ILogger<DefaultExperienceDistributionScript> Logger;
-    private readonly IStorage<GuildBuffs> GuildBuffStorage;
-    private readonly IStorage<ReligionBuffs> ReligionBuffStorage;
+    protected ILogger Logger { get; }
+    protected IStorage<GuildBuffs> GuildBuffStorage { get; }
+    protected IStorage<ReligionBuffs> ReligionBuffStorage { get; }
 
     /// <inheritdoc />
     public static string Key { get; } = GetScriptKey(typeof(DefaultExperienceDistributionScript));
@@ -52,38 +52,42 @@ public class DefaultExperienceDistributionScript : ScriptBase, IExperienceDistri
         // Distribute the experience to each Aisling
         foreach (var aisling in aislings)
         {
-            var totalBonus = 1m; // Start with 1 (no bonus)
-
-            // Apply a 5% experience bonus for "Knowledge"
-            if (HasKnowledgeEffect(aisling))
-                totalBonus += 0.05m;
-
-            // Apply a 10% experience bonus for "Strong Knowledge"
-            if (HasStrongKnowledgeEffect(aisling))
-                totalBonus += 0.10m;
-
-            // Apply a 25% experience bonus for "Skandara's World Buff" or "GM Trinket, but won't allow them to stack
-            if (HasGMKnowledgeEffect(aisling) || HasReligionBuff(ReligionScriptBase.SKANDARA_GLOBAL_BUFF_NAME))
-                totalBonus += 0.25m;
-
-            if (HasValentinesCandyEffect(aisling))
-                totalBonus += 0.4m;
-
-            // Apply an additional 5% bonus for mythic completion
-            if (HasCompletedMythic(aisling))
-                totalBonus += 0.05m;
-
-            if (HasGuildBuff(aisling, GuildBuffScript.GUILD_25_EXP_BUFF_NAME))
-                totalBonus += 0.25m;
-            
-            if (HasEpicMaster(aisling))
-                totalBonus += 0.05m;
-
-            // Calculate the final experience with bonuses applied
-            var finalExp = baseExp * totalBonus;
-
-            GiveExp(aisling, (long)finalExp);
+            var finalExp = ApplyBonuses(baseExp, aisling);
+            GiveExp(aisling, finalExp);
         }
+    }
+
+    protected virtual long ApplyBonuses(long exp, Aisling aisling)
+    {
+        var totalBonus = 1m; // Start with 1 (no bonus)
+
+        // Apply a 5% experience bonus for "Knowledge"
+        if (HasKnowledgeEffect(aisling))
+            totalBonus += 0.05m;
+
+        // Apply a 10% experience bonus for "Strong Knowledge"
+        if (HasStrongKnowledgeEffect(aisling))
+            totalBonus += 0.10m;
+
+        // Apply a 25% experience bonus for "Skandara's World Buff" or "GM Trinket, but won't allow them to stack
+        if (HasGMKnowledgeEffect(aisling) || HasReligionBuff(ReligionScriptBase.SKANDARA_GLOBAL_BUFF_NAME))
+            totalBonus += 0.25m;
+
+        if (HasValentinesCandyEffect(aisling))
+            totalBonus += 0.4m;
+
+        // Apply an additional 5% bonus for mythic completion
+        if (HasCompletedMythic(aisling))
+            totalBonus += 0.05m;
+
+        if (HasGuildBuff(aisling, GuildBuffScript.GUILD_25_EXP_BUFF_NAME))
+            totalBonus += 0.25m;
+            
+        if (HasEpicMaster(aisling))
+            totalBonus += 0.05m;
+
+        // Calculate the final experience with bonuses applied
+        return (long)(exp * totalBonus);
     }
 
     public virtual void GiveExp(Aisling aisling, long amount)

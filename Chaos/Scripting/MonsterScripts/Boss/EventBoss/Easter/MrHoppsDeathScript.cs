@@ -2,6 +2,7 @@ using Chaos.Collections;
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
+using Chaos.Extensions.Common;
 using Chaos.Models.Legend;
 using Chaos.Models.World;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -13,9 +14,15 @@ using Chaos.Time;
 
 namespace Chaos.Scripting.MonsterScripts.Boss.EventBoss.Easter;
 
-public sealed class MrHoppsDeathScript(Monster subject) : MonsterScriptBase(subject)
+public sealed class MrHoppsDeathScript : MonsterScriptBase
 {
-    private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
+    public MrHoppsDeathScript(Monster subject)
+        : base(subject)
+        => ExperienceDistributionScript = subject.Template.TemplateKey.ContainsI("98")
+            ? NonMasterScalingExperienceDistributionScript.Create()
+            : DefaultExperienceDistributionScript.Create();
+
+    private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     private void DistributeLootAndExperience(Aisling rewardTarget, Aisling[]? rewardTargets)
     {

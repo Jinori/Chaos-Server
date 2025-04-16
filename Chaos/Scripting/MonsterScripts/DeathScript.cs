@@ -15,9 +15,15 @@ using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.MonsterScripts;
 
-public class DeathScript(Monster subject, IStorage<ReligionBuffs> religionBuffStorage) : MonsterScriptBase(subject)
+public class DeathScript : MonsterScriptBase
 {
-    private IExperienceDistributionScript ExperienceDistributionScript { get; } = DefaultExperienceDistributionScript.Create();
+    private readonly IStorage<ReligionBuffs> ReligionBuffStorage;
+
+    public DeathScript(Monster subject, IStorage<ReligionBuffs> religionBuffStorage)
+        : base(subject)
+        => ReligionBuffStorage = religionBuffStorage;
+
+    protected IExperienceDistributionScript ExperienceDistributionScript { get; set; } = DefaultExperienceDistributionScript.Create();
 
     private void DistributeLootAndExperience(Aisling rewardTarget, Aisling[]? rewardTargets)
     {
@@ -84,7 +90,7 @@ public class DeathScript(Monster subject, IStorage<ReligionBuffs> religionBuffSt
         return trap.Any() ? lastDamage as Aisling : null;
     }
 
-    private static Aisling[] GetRewardTargets(Aisling rewardTarget)
+    protected virtual Aisling[] GetRewardTargets(Aisling rewardTarget)
     {
         IEnumerable<Aisling> groupOrSingle = rewardTarget.Group != null
             ? rewardTarget.Group
@@ -182,7 +188,7 @@ public class DeathScript(Monster subject, IStorage<ReligionBuffs> religionBuffSt
     
     private bool HasReligionBuff(string buffName)
     {
-        if (religionBuffStorage.Value.ActiveBuffs.Any(buff => buff.BuffName.EqualsI(buffName)))
+        if (ReligionBuffStorage.Value.ActiveBuffs.Any(buff => buff.BuffName.EqualsI(buffName)))
             return true;
 
         return false;

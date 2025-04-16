@@ -6,4 +6,6 @@ namespace Chaos.Formulae;
 public static class ExperienceFormulae
 {
     public static readonly IExperienceFormula Default = new DefaultExperienceFormula();
+    
+    public static readonly IExperienceFormula Pure = new PureExperienceFormula();
 }
