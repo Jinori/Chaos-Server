@@ -20,8 +20,8 @@ public class BurningGroundScript : ReactorTileScriptBase
 
     //burning ground for shamensyth creant fight
     //will damage aislings by 20% hp and 10% mp per second
-    //will heal shamensyth by 10% per second
-    //will heal shamensythFireElemental by 20% per second
+    //will heal shamensyth by 5% per second
+    //will heal shamensythFireElemental by 10% per second
     //removable via strong water spells (tidalbreeze, ardsal, morsal, aoe versions of ard/mor sal)
 
     private readonly IIntervalTimer ApplicationTimer;
@@ -31,7 +31,7 @@ public class BurningGroundScript : ReactorTileScriptBase
     public BurningGroundScript(ReactorTile subject)
         : base(subject)
     {
-        ApplicationTimer = new IntervalTimer(TimeSpan.FromMilliseconds(100));
+        ApplicationTimer = new IntervalTimer(TimeSpan.FromMilliseconds(200));
         Animationtimer = new IntervalTimer(TimeSpan.FromMilliseconds(700));
         ApplyDamageScript = ApplyNonAttackDamageScript.Create();
 
@@ -59,7 +59,7 @@ public class BurningGroundScript : ReactorTileScriptBase
                 if (aisling.IsDead)
                     continue;
 
-                var healthDamage = MathEx.GetPercentOf<int>((int)aisling.UserStatSheet.EffectiveMaximumHp, 2);
+                var healthDamage = MathEx.GetPercentOf<int>((int)aisling.UserStatSheet.EffectiveMaximumHp, 4);
 
                 aisling.UserStatSheet.SubtractManaPct(1);
 
