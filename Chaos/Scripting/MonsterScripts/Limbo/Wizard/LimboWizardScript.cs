@@ -1,6 +1,7 @@
 using Chaos.Common.Utilities;
 using Chaos.Extensions;
 using Chaos.Extensions.Common;
+using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
@@ -92,6 +93,13 @@ public class LimboWizardScript : MonsterScriptBase
                             Subject.StatSheet.AddManaPct(10);
                         } else
                             Subject.StatSheet.AddManaPct(5);
+
+                        Subject.Animate(
+                            new Animation
+                            {
+                                TargetAnimation = 1,
+                                AnimationSpeed = 100
+                            });
                     }
 
                     return true;
