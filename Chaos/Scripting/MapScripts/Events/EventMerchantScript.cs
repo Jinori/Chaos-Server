@@ -78,25 +78,19 @@ internal class EventMerchantScript : MapScriptBase
     private void SpawnMissingMerchants(IEnumerable<MerchantSpawn> merchants)
     {
         foreach (var merchant in merchants)
-        {
             if (Subject.GetEntities<Merchant>().All(x => !x.Template.TemplateKey.EqualsI(merchant.MerchantId)))
-            {
                 SpawnMerchant(merchant);
-            }
-        }
     }
 
     /// <summary>
     /// Removes merchants from the map if the event is no longer active.
     /// </summary>
-    private void RemoveEventMerchants(IEnumerable<MerchantSpawn> merchants)
+    private void RemoveEventMerchants(List<MerchantSpawn> merchants)
     {
         var merchantsOnMap = Subject.GetEntities<Merchant>().ToList();
-
-        foreach (var merchant in merchantsOnMap.Where(merchant => merchants.Any(m => m.MerchantId == merchant.Template.TemplateKey)))
-        {
+        
+        foreach (var merchant in merchantsOnMap.Where(merchant => merchants.Any(m => m.MerchantId.EqualsI(merchant.Template.TemplateKey))))
             Subject.RemoveEntity(merchant);
-        }
     }
 
     /// <summary>

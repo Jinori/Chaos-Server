@@ -3,6 +3,7 @@ using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Common;
+using Chaos.Formulae;
 using Chaos.Models.Legend;
 using Chaos.Models.World;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
@@ -20,9 +21,13 @@ public sealed class MrHoppsDeathScript : MonsterScriptBase
 {
     public MrHoppsDeathScript(Monster subject)
         : base(subject)
-        => ExperienceDistributionScript = subject.Template.TemplateKey.ContainsI("98")
+    {
+        ExperienceDistributionScript = subject.Template.TemplateKey.ContainsI("98")
             ? NonMasterScalingExperienceDistributionScript.Create()
             : DefaultExperienceDistributionScript.Create();
+
+        ExperienceDistributionScript.ExperienceFormula = ExperienceFormulae.Pure;
+    }
 
     private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
