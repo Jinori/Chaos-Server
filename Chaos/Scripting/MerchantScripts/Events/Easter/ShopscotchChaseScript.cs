@@ -72,7 +72,10 @@ public class ShopscotchChaseScript(Merchant subject) : MerchantScriptBase(subjec
         if (WalkTimer.IntervalElapsed)
         {
             var fleePoint = GetRandomPointAwayFrom(ChaseBounds, new Point(chicken.X, chicken.Y));
-            Subject.Pathfind(fleePoint, 0, ChasePathOptions);
+            var distance = Subject.ManhattanDistanceFrom(chicken);
+            
+            if (distance <= 4)
+                Subject.Pathfind(fleePoint, 1, ChasePathOptions);
         }
     }
 

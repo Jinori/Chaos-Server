@@ -31,6 +31,13 @@ public class EasterScript : DialogScriptBase
                 if (script == null)
                     shard.AddScript<HopocalypseScript>();
 
+                if (source.Inventory.ContainsByTemplateKey("undinechickenegg"))
+                    source.Inventory.RemoveByTemplateKey("undinechickenegg");
+
+                
+                if (source.Inventory.ContainsByTemplateKey("undinegoldenchickenegg"))
+                    source.Inventory.RemoveByTemplateKey("undinegoldenchickenegg");
+                
                 source.TraverseMap(shard, new Point(10,14));
                 Subject.Close(source);
                 break;

@@ -56,7 +56,10 @@ public class NuggetChaseScript(Merchant subject) : MerchantScriptBase(subject)
         if (WalkTimer.IntervalElapsed)
         {
             var clampedTarget = ClampToRectangle(targetPoint, ChaseBounds);
-            Subject.Pathfind(clampedTarget, 0, ChaseOptions);
+            var distance = Subject.ManhattanDistanceFrom(clampedTarget);
+
+            if (distance > 0)
+                Subject.Pathfind(clampedTarget, 0, ChaseOptions);
         }
     }
 

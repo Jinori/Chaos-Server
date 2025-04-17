@@ -397,13 +397,10 @@ public class SellMonsterPartsShopScript : DialogScriptBase
             return;
         }
 
-        // Get the custom sell value from the dictionary
-        if (!MonsterPartSellValueDictionary.TryGetValue(item.Template.TemplateKey, out var sellValue))
-        {
-            Subject.ReplyToUnknownInput(source);
+        var sellValue = MonsterPartSellValueDictionary.ContainsKey(item.Template.TemplateKey)
+            ? MonsterPartSellValueDictionary[item.Template.TemplateKey] * amount
+            : item.Template.SellValue * amount; // Fallback to template value if not found
 
-            return;
-        }
 
         // Get the appropriate Monster Extract type based on the item's level
         var extractTypeKey = GetMonsterExtractType(item.Template.Level);

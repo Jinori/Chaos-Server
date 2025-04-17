@@ -2,11 +2,11 @@ using Chaos.Collections;
 using Chaos.DarkAges.Definitions;
 using Chaos.Definitions;
 using Chaos.Extensions;
+using Chaos.Extensions.Common;
 using Chaos.Models.Legend;
 using Chaos.Models.World;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.MapScripts.Abstractions;
-using Chaos.Scripting.ReactorTileScripts.Events;
 using Chaos.Scripting.ReactorTileScripts.Events.Easter;
 using Chaos.Services.Factories.Abstractions;
 using Chaos.Storage.Abstractions;
@@ -16,7 +16,7 @@ using Humanizer;
 
 namespace Chaos.Scripting.MapScripts.Events.Easter;
 
-public sealed class HopocalypseScript : MapScriptBase
+public sealed partial class HopocalypseScript : MapScriptBase
 {
     private readonly IStorage<HopocalypseLeaderboardScript.HopocalypseLeaderboardObj> LeaderboardStorage;
     private bool AnnounceStart;
@@ -85,7 +85,7 @@ public sealed class HopocalypseScript : MapScriptBase
                 GameEnded = true;
                 MessageTimer.Reset();
                 
-                foreach (var bunny in Subject.GetEntities<Monster>())
+                foreach (var bunny in Subject.GetEntities<Monster>().ToList())
                     Subject.RemoveEntity(bunny);
     
                 Subject.Morph("26022");
@@ -170,6 +170,14 @@ public sealed class HopocalypseScript : MapScriptBase
 
     private void OnBunnyTouchPlayer(Creature bunny, Aisling player)
     {
+        const string LEGEND_KEY = "hopmaze";
+
+        if (player.MapInstance.InstanceId != "undine")
+        {
+            var mapInstance = SimpleCache.Get<MapInstance>("undine");
+            player.TraverseMap(mapInstance, new Point(21, 26)); 
+        }
+        
         RecordStats(player);
 
         player.SendMessage($"{bunny.Name} caught you and took the stolen eggs back!");
@@ -177,14 +185,32 @@ public sealed class HopocalypseScript : MapScriptBase
         player.Inventory.RemoveByTemplateKey("undinegoldenchickenegg");
         
         player.Client.SendSound(176, false);
+        
+        var existing = player.Legend
+                             .FirstOrDefault(m => m.Key.EqualsI(LEGEND_KEY));
 
-        player.Legend.AddUnique(new LegendMark(
-            $"Reached Level {GameLevel} of Hopocalypse",
-            "hopmaze",
-            MarkIcon.Victory,
-            MarkColor.Pink,
-            1,
-            GameTime.Now));
+        var previousLevel = 0;
+        if (existing != null)
+
+        {
+            var m = MyRegex().Match(existing.Text);
+            if (m.Success)
+                previousLevel = int.Parse(m.Value);
+        }
+
+        if (GameLevel > previousLevel)            // upgrade only when higher
+        {
+            if (player.Legend.ContainsKey("hopmaze"))
+                player.Legend.Remove("hopmaze", out _);
+            
+            player.Legend.AddUnique(new LegendMark(
+                $"Reached Level {GameLevel} of Hopocalypse",
+                LEGEND_KEY,
+                MarkIcon.Victory,
+                MarkColor.Pink,
+                1,
+                GameTime.Now));
+        }
 
         player.Trackers.Enums.TryGetValue(out HopocalypseRewards rewardLevel);
 
@@ -194,7 +220,7 @@ public sealed class HopocalypseScript : MapScriptBase
             player.GiveItemOrSendToBank(chickBackpack);
             player.SendMessage("Received Chick Backpack for reaching Hopocalypse Level 3+!");
             rewardLevel = HopocalypseRewards.ChickBackPack;
-            player.Trackers.Enums.Set(rewardLevel); 
+            player.Trackers.Enums.Set(rewardLevel);
             player.Client.SendSound(168, false);
         }
 
@@ -206,9 +232,6 @@ public sealed class HopocalypseScript : MapScriptBase
             player.Trackers.Enums.Set(HopocalypseRewards.CadburryBackPack);
             player.Client.SendSound(168, false);
         }
-        
-        var mapInstance = SimpleCache.Get<MapInstance>("undine");
-        player.TraverseMap(mapInstance, new Point(21, 26));
     }
 
     private void RecordStats(Aisling player)
@@ -251,4 +274,7 @@ public sealed class HopocalypseScript : MapScriptBase
             }
         }
     }
+
+    [System.Text.RegularExpressions.GeneratedRegex(@"\d+")]
+    private static partial System.Text.RegularExpressions.Regex MyRegex();
 }

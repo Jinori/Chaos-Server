@@ -60,7 +60,7 @@ public abstract class BunnyMazeBaseScript(Monster subject) : MonsterScriptBase(s
         if (HistoryTimer.IntervalElapsed)
             RecordTargetPosition();
 
-        if (AnyBunnyFrightened() && CurrentState != BunnyState.Frightened)
+        if (AnyBunnyFrightened() && (CurrentState != BunnyState.Frightened))
             EnterFrightenedState();
 
         switch (CurrentState)
@@ -155,13 +155,13 @@ public abstract class BunnyMazeBaseScript(Monster subject) : MonsterScriptBase(s
 
     protected virtual void DoScatter()
     {
-        if (Subject.EuclideanDistanceFrom(HomePoint) > 2 && Subject.MoveTimer.IntervalElapsed)
+        if ((Subject.EuclideanDistanceFrom(HomePoint) > 2) && Subject.MoveTimer.IntervalElapsed)
             Subject.Pathfind(HomePoint, 0, ChaseOptions, true);
     }
 
     protected virtual void DoFrightened()
     {
-        if (Subject.MoveTimer.IntervalElapsed && Subject.ManhattanDistanceFrom(HomePoint) >= 1)
+        if (Subject.MoveTimer.IntervalElapsed && (Subject.ManhattanDistanceFrom(HomePoint) >= 1))
             Subject.Pathfind(HomePoint, 0, FrightOptions, true);
 
         if (!PlayFrightSound && Target is Aisling ais)

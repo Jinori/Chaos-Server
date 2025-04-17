@@ -120,11 +120,11 @@ public sealed class MrHoppsDeathScript : MonsterScriptBase
 
         if (!playersOnEventMap.Any())
             return;
+        
+        ExperienceDistributionScript.DistributeExperience(Subject, playersOnEventMap);
 
         foreach (var aisling in playersOnEventMap)
         {
-            ExperienceDistributionScript.GiveExp(aisling, Subject.Experience);
-
             if (Subject.Script.Is<MrHopps98BossScript>() || Subject.Script.Is<MrHoppsMasterBossScript>())
                 aisling.Legend.AddOrAccumulate(
                     new LegendMark(
@@ -134,17 +134,12 @@ public sealed class MrHoppsDeathScript : MonsterScriptBase
                         MarkColor.White,
                         1,
                         GameTime.Now));
-        }
+            
+            Subject.Items.Clear();
+            Subject.Items.AddRange(Subject.LootTable.GenerateLoot());
 
-        Subject.Items.Clear();
-        Subject.Items.AddRange(Subject.LootTable.GenerateLoot());
-
-        // Now randomly assign loot from the regenerated loot table
-        foreach (var item in Subject.Items)
-        {
-            var randomMember = playersOnEventMap.PickRandom();
-            randomMember.GiveItemOrSendToBank(item);
-            randomMember.SendOrangeBarMessage($"You received {item.DisplayName} from {Subject.Name}");
+            foreach (var item in Subject.Items)
+                aisling.GiveItemOrSendToBank(item);
         }
     }
 

@@ -30,6 +30,9 @@ public class RepairAllItemsScript(Dialog subject, ILogger<RepairAllItemsScript> 
         // Apply multiplier for mythic items
         if (item.Template.TemplateKey.StartsWith("mythic", StringComparison.OrdinalIgnoreCase))
             repairCost *= 10;
+        
+        if (item.Template.TemplateKey.EndsWith("glove", StringComparison.OrdinalIgnoreCase))
+            repairCost *= 126;
 
         // Apply guild hall discount
         if (aisling.MapInstance.LoadedFromInstanceId == "guildhallmain")
