@@ -1,21 +1,19 @@
-using Chaos.Extensions;
+using Chaos.Collections;
 using Chaos.Models.Menu;
 using Chaos.Models.World;
 using Chaos.Scripting.DialogScripts.Abstractions;
-using Chaos.Scripting.ReactorTileScripts.Events;
-using Chaos.Scripting.ReactorTileScripts.Events.Easter;
-using Chaos.Services.Storage.Abstractions;
+using Chaos.Storage.Abstractions;
 
 namespace Chaos.Scripting.DialogScripts.Events.Easter;
 
 public class EasterScript : DialogScriptBase
 {
     /// <inheritdoc />
-    public EasterScript(Dialog subject, IShardGenerator shardGenerator)
+    public EasterScript(Dialog subject, ISimpleCache simpleCache)
         : base(subject) =>
-        ShardGenerator = shardGenerator;
+        SimpleCache = simpleCache;
 
-    private readonly IShardGenerator ShardGenerator;
+    private readonly ISimpleCache SimpleCache;
     
     /// <inheritdoc />
     public override void OnDisplaying(Aisling source)
@@ -24,21 +22,15 @@ public class EasterScript : DialogScriptBase
         {
             case "cadburry_accept":
             {
-                var shard = ShardGenerator.CreateShardOfInstance("hopmaze");
-                shard.Shards.TryAdd(shard.InstanceId, shard);
-                var script = shard.Script.As<HopocalypseScript>();
-
-                if (script == null)
-                    shard.AddScript<HopocalypseScript>();
+                var hopmaze = SimpleCache.Get<MapInstance>("hopmaze");
 
                 if (source.Inventory.ContainsByTemplateKey("undinechickenegg"))
                     source.Inventory.RemoveByTemplateKey("undinechickenegg");
-
                 
                 if (source.Inventory.ContainsByTemplateKey("undinegoldenchickenegg"))
                     source.Inventory.RemoveByTemplateKey("undinegoldenchickenegg");
                 
-                source.TraverseMap(shard, new Point(10,14));
+                source.TraverseMap(hopmaze, new Point(10,14));
                 Subject.Close(source);
                 break;
             }

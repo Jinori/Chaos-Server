@@ -14,7 +14,7 @@ public class HopocalypseLeaderboardScript : ReactorTileScriptBase
     private static IStorage<HopocalypseLeaderboardObj>? Leaderboard { get; set; }
 
     /// <inheritdoc />
-    public HopocalypseLeaderboardScript(ReactorTile subject, IStorage<HopocalypseLeaderboardObj>? storage)
+    public HopocalypseLeaderboardScript(ReactorTile subject, IStorage<HopocalypseLeaderboardObj> storage)
         : base(subject)
         => Leaderboard = storage;
 
@@ -50,42 +50,5 @@ public class HopocalypseLeaderboardScript : ReactorTileScriptBase
 
         // Send leaderboard to the player
         source.SendServerMessage(ServerMessageType.ScrollWindow, builder.ToString());
-    }
-
-    public sealed class HopocalypseLeaderboardObj
-    {
-        public Dictionary<string, PlayerStats> Entries { get; set; } = new(StringComparer.OrdinalIgnoreCase);
-        
-        public void UpdateBoard(string playerName, int silvereggs, int goldEggs, int highestLevelAchieved)
-        {
-            if (Entries.TryGetValue(playerName, out var stats))
-            {
-                if (highestLevelAchieved > stats.HighestLevelAchieved)
-                    stats.HighestLevelAchieved = highestLevelAchieved;
-                
-                if (silvereggs > stats.SilverEggsReturned)
-                    stats.SilverEggsReturned = silvereggs;
-                
-                if (goldEggs > stats.GoldenEggsReturned)
-                    stats.GoldenEggsReturned = goldEggs;
-            }
-            else
-            {
-                Entries[playerName] = new PlayerStats
-                {
-                    HighestLevelAchieved = highestLevelAchieved,
-                    GoldenEggsReturned = goldEggs,
-                    SilverEggsReturned = silvereggs
-                };   
-            }
-            Leaderboard?.Save();
-        }
-
-        public sealed class PlayerStats
-        {
-            public int HighestLevelAchieved { get; set; }
-            public int GoldenEggsReturned { get; set; }
-            public int SilverEggsReturned { get; set; }
-        }
     }
 }

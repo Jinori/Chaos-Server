@@ -1696,7 +1696,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             
             foreach (var target in targets)
             {
-                var flameDamage = (75 + Subject.StatSheet.EffectiveCon * 15);
+                var flameDamage = (25 + Subject.StatSheet.EffectiveCon * 10);
                 
                 MonkFormApplyDamageScript.ApplyDamage(
                     Subject,

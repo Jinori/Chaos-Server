@@ -1,4 +1,5 @@
 using Chaos.Collections;
+using Chaos.Extensions.Common;
 using Chaos.Geometry.Abstractions.Definitions;
 using Chaos.Models.World;
 using Chaos.Scripting.MapScripts.Abstractions;
@@ -78,7 +79,7 @@ internal class EventMerchantScript : MapScriptBase
     {
         foreach (var merchant in merchants)
         {
-            if (Subject.GetEntities<Merchant>().All(x => x.Template.TemplateKey != merchant.MerchantId))
+            if (Subject.GetEntities<Merchant>().All(x => !x.Template.TemplateKey.EqualsI(merchant.MerchantId)))
             {
                 SpawnMerchant(merchant);
             }

@@ -18,7 +18,7 @@ namespace Chaos.Scripting.MapScripts.Events.Easter;
 
 public sealed partial class HopocalypseScript : MapScriptBase
 {
-    private readonly IStorage<HopocalypseLeaderboardScript.HopocalypseLeaderboardObj> LeaderboardStorage;
+    private readonly IStorage<HopocalypseLeaderboardObj> LeaderboardStorage;
     private bool AnnounceStart;
     private bool SpawnedBunnies;
     private bool GameEnded;
@@ -34,7 +34,7 @@ public sealed partial class HopocalypseScript : MapScriptBase
     private readonly ISimpleCache SimpleCache;
 
     /// <inheritdoc />
-    public HopocalypseScript(MapInstance subject, IMonsterFactory monsterFactory, IItemFactory itemFactory, ISimpleCache simpleCache, IStorage<HopocalypseLeaderboardScript.HopocalypseLeaderboardObj> leaderboardStorage)
+    public HopocalypseScript(MapInstance subject, IMonsterFactory monsterFactory, IItemFactory itemFactory, ISimpleCache simpleCache, IStorage<HopocalypseLeaderboardObj> leaderboardStorage)
         : base(subject)
     {
         MessageTimer = new PeriodicMessageTimer(
@@ -234,12 +234,8 @@ public sealed partial class HopocalypseScript : MapScriptBase
         }
     }
 
-    private void RecordStats(Aisling player)
-    {
-        var leaderboard = LeaderboardStorage.Value;
-        leaderboard.UpdateBoard(player.Name, player.Inventory.CountOfByTemplateKey("undinechickenegg"), player.Inventory.CountOfByTemplateKey("undinegoldenchickenegg"), GameLevel);
-    }
-    
+    private void RecordStats(Aisling player) => UpdateBoard(player.Name, player.Inventory.CountOfByTemplateKey("undinechickenegg"), player.Inventory.CountOfByTemplateKey("undinegoldenchickenegg"), GameLevel);
+
     private void SpawnEggs()
     {
         var bounds = Subject.Template.Bounds;
@@ -277,4 +273,35 @@ public sealed partial class HopocalypseScript : MapScriptBase
 
     [System.Text.RegularExpressions.GeneratedRegex(@"\d+")]
     private static partial System.Text.RegularExpressions.Regex MyRegex();
+    
+    public void UpdateBoard(
+        string playerName,
+        int silvereggs,
+        int goldEggs,
+        int highestLevelAchieved
+    )
+    {
+        if (LeaderboardStorage.Value.Entries.TryGetValue(playerName, out var stats))
+        {
+            if (highestLevelAchieved > stats.HighestLevelAchieved)
+                stats.HighestLevelAchieved = highestLevelAchieved;
+
+            if (silvereggs > stats.SilverEggsReturned)
+                stats.SilverEggsReturned = silvereggs;
+
+            if (goldEggs > stats.GoldenEggsReturned)
+                stats.GoldenEggsReturned = goldEggs;
+        }
+        else
+        {
+            LeaderboardStorage.Value.Entries[playerName] = new HopPlayerStats()
+            {
+                HighestLevelAchieved = highestLevelAchieved,
+                GoldenEggsReturned = goldEggs,
+                SilverEggsReturned = silvereggs
+            };
+        }
+
+        LeaderboardStorage.Save();
+    }
 }
