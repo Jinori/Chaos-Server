@@ -40,7 +40,8 @@ internal class EventMerchantScript : MapScriptBase
         { "santas_room", [ new MerchantSpawn("santa", 3, 6, Direction.Down) ] },
         { "toy_shop", [ new MerchantSpawn("elf1", 6, 6, Direction.Down) ] },
         { "rucesion", [ new MerchantSpawn("slytherin", 32, 35, Direction.Down) ] },
-        { "mileth_village_way", [ new MerchantSpawn("lucky", 5, 9, Direction.Down) ] }
+        { "mileth_village_way", [ new MerchantSpawn("lucky", 5, 9, Direction.Down) ] },
+        { "undine", [ new MerchantSpawn("cadburry", 20, 21, Direction.Down), new MerchantSpawn("shopscotch", 17, 28, Direction.Right), new MerchantSpawn("nugget", 22, 29, Direction.Right) ] },
     };
 
     public override void Update(TimeSpan delta)

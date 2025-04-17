@@ -58,10 +58,9 @@ public class GuildHallEntrance : ConfigurableReactorTileScriptBase
 
             return;
         }
-
-        Subject.MapInstance.RemoveEntity(aisling);
+        
         var targetMap = SimpleCache.Get<MapInstance>(Destination.Map);
-        targetMap.AddEntity(aisling, new Point(98, 46));
+        aisling.TraverseMap(targetMap, new Point(98, 46));
         aisling.SendOrangeBarMessage($"You've entered {aisling.Guild?.Name}'s Guild Hall.");
     }
 

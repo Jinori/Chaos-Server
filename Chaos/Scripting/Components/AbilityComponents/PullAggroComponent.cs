@@ -33,7 +33,7 @@ public class PullAggroComponent : IComponent
             {
                 context.SourceAisling?.SendOrangeBarMessage("That target cannot be grasped.");
 
-                break;
+                continue;
             }
 
             var monster = target as Monster;

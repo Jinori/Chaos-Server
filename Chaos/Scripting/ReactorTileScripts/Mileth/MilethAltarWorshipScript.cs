@@ -28,7 +28,7 @@ public class MilethAltarWorshipScript(ReactorTile subject, IItemFactory itemFact
     {
         if (source is not Aisling aisling)
             return;
-
+        
         if (groundItem.Name == "Wirt's Leg")
         {
             if (!source.Trackers.Enums.HasValue(ClassStatBracket.Grandmaster))
@@ -83,7 +83,10 @@ public class MilethAltarWorshipScript(ReactorTile subject, IItemFactory itemFact
 
         aisling.MapInstance.RemoveEntity(groundItem);
 
-        ExperienceDistributionScript.GiveExp(aisling, groundItem.Item.Template is { BuyCost: < 1000, SellValue: < 1000 } ? 25 : 200);
+        if (groundItem.Item.Count > 1)
+            ExperienceDistributionScript.GiveExp(aisling, groundItem.Item.Template is { BuyCost: < 1000, SellValue: < 1000 } ? 25 * groundItem.Item.Count : 200 * groundItem.Item.Count);
+        else
+            ExperienceDistributionScript.GiveExp(aisling, groundItem.Item.Template is { BuyCost: < 1000, SellValue: < 1000 } ? 25 : 200);
 
         if (IntegerRandomizer.RollChance(10))
         {
