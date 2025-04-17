@@ -2022,11 +2022,8 @@ public sealed class WorldServer : ServerBase<IChaosWorldClient>, IWorldServer<IC
                 {
                     //if the player has an exchange open, cancel it so items are returned
                     var activeExchange = aisling.ActiveObject.TryGet<Exchange>();
-                activeExchange?.Cancel(aisling);
-
-                if (aisling.Effects.Contains("Mount"))
-                    aisling.Effects.Terminate("Mount");
-
+                    activeExchange?.Cancel(aisling);
+                    
                     try
                     {
                         activeExchange?.Cancel(aisling);

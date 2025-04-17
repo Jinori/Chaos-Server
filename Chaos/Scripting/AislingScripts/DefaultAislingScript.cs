@@ -2199,12 +2199,14 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
     {
         base.OnLogout();
 
-        if (Subject.Guild != null)
-            foreach (var player in ClientRegistry)
-                if (player.Aisling.Guild == Subject.Guild)
-                    player.Aisling.SendServerMessage(
-                        ServerMessageType.ActiveMessage,
-                        $"({Subject.Guild.Name}) - {Subject.Name} has gone offline.");
+        if (Subject.Effects.Contains("Mount"))
+            Subject.Effects.Terminate("Mount");
+        
+        var guild = Subject.Guild;
+
+        if (guild != null)
+            foreach (var member in guild.GetOnlineMembers())
+                member.SendServerMessage(ServerMessageType.ActiveMessage, $"({guild.Name}) - {Subject.Name} has gone offline.");
     }
 
     /// <inheritdoc />
