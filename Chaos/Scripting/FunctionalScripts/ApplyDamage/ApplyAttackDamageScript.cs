@@ -20,7 +20,7 @@ namespace Chaos.Scripting.FunctionalScripts.ApplyDamage;
 public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<ApplyAttackDamageScript> logger) : ScriptBase, IApplyDamageScript
 {
     protected readonly IEffectFactory EffectFactory = effectFactory;
-    
+
     public IDamageFormula DamageFormula { get; set; } = DamageFormulae.Default;
     public static string Key { get; } = GetScriptKey(typeof(ApplyAttackDamageScript));
 
@@ -42,17 +42,19 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
             return 0;
 
         if (!source.OnSameMapAs(target))
-            return;
+            return 0;
 
         target.Trackers.LastDamagedBy = source;
 
         if (ReflectDamage(source, target, damage))
-            return;
+            return damage;
 
         if (target is Aisling aislingTarget)
             ApplyDurabilityDamage(aislingTarget, source, script);
 
         ApplyDamageAndTriggerEvents(target, damage, source);
+
+        return damage;
     }
 
     public static IApplyDamageScript Create() => FunctionalScriptRegistry.Instance.Get<IApplyDamageScript>(Key);
@@ -252,8 +254,7 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
             }
 
             return true;
-    return damage;
-    }
+        }
 
         return false;
     }
