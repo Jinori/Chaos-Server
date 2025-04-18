@@ -45,13 +45,13 @@ public sealed class PublicInformationalBoardScript : ConfigurableBulletinBoardSc
 
     /// <inheritdoc />
     public override bool AllowedToDelete(Aisling aisling, Post post)
-        => aisling.Name.EqualsI(post.Author) || Moderators.ContainsI(aisling.Name);
+        => aisling.Name.EqualsI(post.Author) || Moderators.ContainsI(aisling.Name) || aisling.IsAdmin;
 
     /// <inheritdoc />
-    public override bool AllowedToHighlight(Aisling aisling) => Moderators.ContainsI(aisling.Name);
+    public override bool AllowedToHighlight(Aisling aisling) => Moderators.ContainsI(aisling.Name) || aisling.IsAdmin;
 
     /// <inheritdoc />
-    public override bool AllowedToPost(Aisling aisling) => Moderators.ContainsI(aisling.Name);
+    public override bool AllowedToPost(Aisling aisling) => Moderators.ContainsI(aisling.Name) || aisling.IsAdmin;
 
     /// <inheritdoc />
     public override bool AllowedToView(Aisling aisling) => true;

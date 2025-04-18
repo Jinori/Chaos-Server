@@ -291,6 +291,9 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         //mailbox board
         yield return MailStore.Load(Subject.Name);
 
+        if (BoardStore.Exists("announcements"))
+            yield return BoardStore.Load("announcements");
+
         //change this to whatever naming scheme you want to follow for guild boards
         if (Subject.Guild is not null && BoardStore.Exists(Subject.Guild.Name))
             yield return BoardStore.Load(Subject.Guild.Name);
