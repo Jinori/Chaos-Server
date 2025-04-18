@@ -4,6 +4,7 @@ using Chaos.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Common;
 using Chaos.Extensions.Geometry;
+using Chaos.Models.Data;
 using Chaos.Models.Panel;
 using Chaos.Models.World;
 using Chaos.Scripting.ItemScripts.Abstractions;
@@ -16,6 +17,8 @@ namespace Chaos.Scripting.ItemScripts.MainStoryQuestItems;
 public class CthonicDemiseBellScript(Item subject, ISimpleCache simpleCache, IMonsterFactory monsterFactory)
     : ItemScriptBase(subject)
 {
+    public Attributes BonusAttributes = null!;
+    
     private readonly Rectangle JaneRectangle = new(
         165,
         12,
@@ -78,232 +81,18 @@ public class CthonicDemiseBellScript(Item subject, ISimpleCache simpleCache, IMo
 
     private void Bell(Aisling source)
     {
-        var sourcePoint = new Point(source.X, source.Y);
-        var script = source.MapInstance.Script.As<CthonicDemiseScript>()!;
+        var s = source.MapInstance.Script.As<CthonicDemiseScript>()!;
 
-        // Check which rectangle the player is in and spawn the corresponding monster
-        if (RayRectangle.Contains(sourcePoint))
-        {
-            if (script is { RaySpawned: true })
-            {
-                source.SendOrangeBarMessage("The leader isn't here anymore.");
-
-                return;
-            }
-
-            script.RaySpawned = true;
-
-            source.SendOrangeBarMessage("You ring the bell loudly then it breaks.");
-            var monsterSpawn = new Rectangle(source, 5, 5);
-            var point1 = monsterSpawn.GetRandomPoint();
-            source.Inventory.RemoveQuantity(Subject.DisplayName, 1);
-            var monster1 = monsterFactory.Create("darkmasterray", source.MapInstance, point1);
-
-            do
-                point1 = monsterSpawn.GetRandomPoint();
-            while (!source.MapInstance.IsWalkable(point1, collisionType: CreatureType.Normal));
-
-            source.MapInstance.AddEntity(monster1, point1);
-        } else if (RoyRectangle.Contains(sourcePoint))
-        {
-            if (script is { RoySpawned: true })
-            {
-                source.SendOrangeBarMessage("The leader isn't here anymore.");
-
-                return;
-            }
-
-            script.RoySpawned = true;
-
-            source.Inventory.RemoveQuantity(Subject.DisplayName, 1);
-            source.SendOrangeBarMessage("You ring the bell loudly then it breaks.");
-            var monsterSpawn = new Rectangle(source, 5, 5);
-            var point1 = monsterSpawn.GetRandomPoint();
-            var monster1 = monsterFactory.Create("darkmasterroy", source.MapInstance, point1);
-
-            do
-                point1 = monsterSpawn.GetRandomPoint();
-            while (!source.MapInstance.IsWalkable(point1, collisionType: CreatureType.Normal));
-
-            source.MapInstance.AddEntity(monster1, point1);
-        } else if (JohnRectangle.Contains(sourcePoint))
-        {
-            if (script is { JohnSpawned: true })
-            {
-                source.SendOrangeBarMessage("The leader isn't here anymore.");
-
-                return;
-            }
-
-            script.JohnSpawned = true;
-
-            source.SendOrangeBarMessage("You ring the bell loudly and then breaks.");
-            source.Inventory.RemoveQuantity(Subject.DisplayName, 1);
-            var monsterSpawn = new Rectangle(source, 5, 5);
-            var point1 = monsterSpawn.GetRandomPoint();
-            var monster1 = monsterFactory.Create("darkmasterjohn", source.MapInstance, point1);
-
-            do
-                point1 = monsterSpawn.GetRandomPoint();
-            while (!source.MapInstance.IsWalkable(point1, collisionType: CreatureType.Normal));
-
-            source.MapInstance.AddEntity(monster1, point1);
-        } else if (JaneRectangle.Contains(sourcePoint))
-        {
-            if (script is { JaneSpawned: true })
-            {
-                source.SendOrangeBarMessage("The leader isn't here anymore.");
-
-                return;
-            }
-
-            script.JaneSpawned = true;
-
-            source.SendOrangeBarMessage("You ring the bell loudly then it breaks.");
-            source.Inventory.RemoveQuantity(Subject.DisplayName, 1);
-            var monsterSpawn = new Rectangle(source, 5, 5);
-            var point1 = monsterSpawn.GetRandomPoint();
-            var monster1 = monsterFactory.Create("darkmasterjane", source.MapInstance, point1);
-
-            do
-                point1 = monsterSpawn.GetRandomPoint();
-            while (!source.MapInstance.IsWalkable(point1, collisionType: CreatureType.Normal));
-
-            source.MapInstance.AddEntity(monster1, point1);
-        } else if (MikeRectangle.Contains(sourcePoint))
-        {
-            if (script is { MikeSpawned: true })
-            {
-                source.SendOrangeBarMessage("The leader isn't here anymore.");
-
-                return;
-            }
-
-            script.MikeSpawned = true;
-
-            source.SendOrangeBarMessage("You ring the bell loudly then it breaks.");
-            source.Inventory.RemoveQuantity(Subject.DisplayName, 1);
-            var monsterSpawn = new Rectangle(source, 5, 5);
-            var point1 = monsterSpawn.GetRandomPoint();
-            var monster1 = monsterFactory.Create("darkmastermike", source.MapInstance, point1);
-
-            do
-                point1 = monsterSpawn.GetRandomPoint();
-            while (!source.MapInstance.IsWalkable(point1, collisionType: CreatureType.Normal));
-
-            source.MapInstance.AddEntity(monster1, point1);
-        } else if (MaryRectangle.Contains(sourcePoint))
-        {
-            if (script is { MarySpawned: true })
-            {
-                source.SendOrangeBarMessage("The leader isn't here anymore.");
-
-                return;
-            }
-
-            script.MarySpawned = true;
-
-            source.SendOrangeBarMessage("You ring the bell loudly then it breaks.");
-            source.Inventory.RemoveQuantity(Subject.DisplayName, 1);
-            var monsterSpawn = new Rectangle(source, 5, 5);
-            var point1 = monsterSpawn.GetRandomPoint();
-            var monster1 = monsterFactory.Create("darkmastermary", source.MapInstance, point1);
-
-            do
-                point1 = monsterSpawn.GetRandomPoint();
-            while (!source.MapInstance.IsWalkable(point1, collisionType: CreatureType.Normal));
-
-            source.MapInstance.AddEntity(monster1, point1);
-        } else if (PhilRectangle.Contains(sourcePoint))
-        {
-            if (script is { PhilSpawned: true })
-            {
-                source.SendOrangeBarMessage("The leader isn't here anymore.");
-
-                return;
-            }
-
-            script.PhilSpawned = true;
-
-            source.SendOrangeBarMessage("You ring the bell loudly then it breaks.");
-            source.Inventory.RemoveQuantity(Subject.DisplayName, 1);
-            var monsterSpawn = new Rectangle(source, 5, 5);
-            var point1 = monsterSpawn.GetRandomPoint();
-            var monster1 = monsterFactory.Create("darkmasterphil", source.MapInstance, point1);
-
-            do
-                point1 = monsterSpawn.GetRandomPoint();
-            while (!source.MapInstance.IsWalkable(point1, collisionType: CreatureType.Normal));
-
-            source.MapInstance.AddEntity(monster1, point1);
-        } else if (PamRectangle.Contains(sourcePoint))
-        {
-            if (script is { PamSpawned: true })
-            {
-                source.SendOrangeBarMessage("The leader isn't here anymore.");
-
-                return;
-            }
-
-            script.PamSpawned = true;
-
-            source.SendOrangeBarMessage("You ring the bell loudly then it breaks.");
-            source.Inventory.RemoveQuantity(Subject.DisplayName, 1);
-            var monsterSpawn = new Rectangle(source, 5, 5);
-            var point1 = monsterSpawn.GetRandomPoint();
-            var monster1 = monsterFactory.Create("darkmasterpam", source.MapInstance, point1);
-
-            do
-                point1 = monsterSpawn.GetRandomPoint();
-            while (!source.MapInstance.IsWalkable(point1, collisionType: CreatureType.Normal));
-
-            source.MapInstance.AddEntity(monster1, point1);
-        } else if (WilliamRectangle.Contains(sourcePoint))
-        {
-            if (script is { WilliamSpawned: true })
-            {
-                source.SendOrangeBarMessage("The leader isn't here anymore.");
-
-                return;
-            }
-
-            script.WilliamSpawned = true;
-
-            source.SendOrangeBarMessage("You ring the bell loudly then it breaks.");
-            source.Inventory.RemoveQuantity(Subject.DisplayName, 1);
-            var monsterSpawn = new Rectangle(source, 5, 5);
-            var point1 = monsterSpawn.GetRandomPoint();
-            var monster1 = monsterFactory.Create("darkmasterwilliam", source.MapInstance, point1);
-
-            do
-                point1 = monsterSpawn.GetRandomPoint();
-            while (!source.MapInstance.IsWalkable(point1, collisionType: CreatureType.Normal));
-
-            source.MapInstance.AddEntity(monster1, point1);
-        } else if (WandaRectangle.Contains(sourcePoint))
-        {
-            if (script is { WandaSpawned: true })
-            {
-                source.SendOrangeBarMessage("The leader isn't here anymore.");
-
-                return;
-            }
-
-            script.WandaSpawned = true;
-
-            source.SendOrangeBarMessage("You ring the bell loudly then it breaks.");
-            source.Inventory.RemoveQuantity(Subject.DisplayName, 1);
-            var monsterSpawn = new Rectangle(source, 5, 5);
-            var point1 = monsterSpawn.GetRandomPoint();
-            var monster1 = monsterFactory.Create("darkmasterwanda", source.MapInstance, point1);
-
-            do
-                point1 = monsterSpawn.GetRandomPoint();
-            while (!source.MapInstance.IsWalkable(point1, collisionType: CreatureType.Normal));
-
-            source.MapInstance.AddEntity(monster1, point1);
-        } else
-            source.SendOrangeBarMessage("The bell echoes, but nothing happens.");
+        SpawnLeader(source, RayRectangle,     "darkmasterray",     ref s.RaySpawned);
+        SpawnLeader(source, RoyRectangle,     "darkmasterroy",     ref s.RoySpawned);
+        SpawnLeader(source, JohnRectangle,    "darkmasterjohn",    ref s.JohnSpawned);
+        SpawnLeader(source, JaneRectangle,    "darkmasterjane",    ref s.JaneSpawned);
+        SpawnLeader(source, MikeRectangle,    "darkmastermike",    ref s.MikeSpawned);
+        SpawnLeader(source, MaryRectangle,    "darkmastermary",    ref s.MarySpawned);
+        SpawnLeader(source, PhilRectangle,    "darkmasterphil",    ref s.PhilSpawned);
+        SpawnLeader(source, PamRectangle,     "darkmasterpam",     ref s.PamSpawned);
+        SpawnLeader(source, WilliamRectangle, "darkmasterwilliam", ref s.WilliamSpawned);
+        SpawnLeader(source, WandaRectangle,   "darkmasterwanda",   ref s.WandaSpawned);
     }
 
     private bool CanUseBell(Aisling source)
@@ -340,6 +129,67 @@ public class CthonicDemiseBellScript(Item subject, ISimpleCache simpleCache, IMo
 
         return true;
     }
+    
+    private void SpawnLeader(
+        Aisling source,
+        Rectangle zone,
+        string bossId,
+        ref bool flagAlreadySpawned)
+    {
+        var script = source.MapInstance.Script.As<CthonicDemiseScript>()!;
+
+        if (!zone.Contains(new Point(source.X, source.Y)))
+            return;                                
+
+        if (flagAlreadySpawned)
+        {
+            source.SendOrangeBarMessage("The leader isn't here anymore.");
+            return;
+        }
+
+        /* 1) Mark & message */
+        flagAlreadySpawned = true;
+        source.SendOrangeBarMessage("You ring the bell loudly.");
+
+        /* 2) Determine landing tile */
+        var spawnArea = new Rectangle(source, 5, 5);
+        Point p;
+        do p = spawnArea.GetRandomPoint();
+        while (!source.MapInstance.IsWalkable(p, CreatureType.Normal));
+
+        var boss = monsterFactory.Create(bossId, source.MapInstance, p);
+
+        /* --- bonus calculation ------------------------------------- */
+        var bonusPct   = Math.Min(script.BossesSpawned * 0.05f, 0.50f);   // 0 % .. 50 %
+        if (bonusPct > 0)
+        {
+            var b = boss.StatSheet;      // shorthand
+
+            // Build an additive Attributes block = base × bonusPct
+            var bonus = new Attributes
+            {
+                Dmg              = (short)(b.Dmg              * bonusPct),
+                Hit              = (short)(b.Hit              * bonusPct),
+                AtkSpeedPct      = (short)(b.AtkSpeedPct      * bonusPct),
+                MaximumHp        = (int)  (b.MaximumHp        * bonusPct),
+                MaximumMp        = (int)  (b.MaximumMp        * bonusPct),
+                Str              = (short)(b.Str              * bonusPct),
+                Dex              = (short)(b.Dex              * bonusPct),
+                Con              = (short)(b.Con              * bonusPct),
+                Wis              = (short)(b.Wis              * bonusPct),
+                Int              = (short)(b.Int              * bonusPct),
+                MagicResistance  = (short)(b.MagicResistance  * bonusPct),
+            };
+
+            b.AddBonus(bonus);
+        }
+        
+        boss.StatSheet.SetHealthPct(100);
+        boss.StatSheet.SetManaPct(100);
+        source.MapInstance.AddEntity(boss, p);
+        script.BossesSpawned++;                   
+    }
+
 
     public override void OnUse(Aisling source)
     {

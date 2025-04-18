@@ -31,6 +31,7 @@ public class CthonicDemiseScript : MapScriptBase
     public bool RoySpawned;
     public bool WandaSpawned;
     public bool WilliamSpawned;
+    public int BossesSpawned { get; set; }
 
     public CthonicDemiseScript(MapInstance subject, IReactorTileFactory reactorTileFactory)
         : base(subject)
@@ -77,7 +78,7 @@ public class CthonicDemiseScript : MapScriptBase
 
         foreach (var aisling in aislings)
         {
-            aisling.SendOrangeBarMessage("A portal opens nearby to Cthonic Remains 11 to rest.");
+            aisling.SendOrangeBarMessage("An escape portal opens, but you may continue if you dare.");
 
             if (!aisling.Trackers.Flags.HasFlag(CdDungeonBoss.CompletedDungeonOnce))
                 aisling.Trackers.Flags.AddFlag(CdDungeonBoss.CompletedDungeonOnce);
@@ -95,7 +96,7 @@ public class CthonicDemiseScript : MapScriptBase
                                 .Where(x => x.Template.TemplateKey.Contains("darkmaster"))
                                 .ToList();
 
-            if (bosses.Any())
+            if (bosses.Count != 0)
                 BossSpawned = true;
             else if (BossSpawned)
             {
