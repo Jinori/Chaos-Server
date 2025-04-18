@@ -56,7 +56,9 @@ public class MoveToTargetScript : MonsterScriptBase
             case 1:
             {
                 var direction = Target.DirectionalRelationTo(Subject);
-                Subject.Turn(direction);
+
+                if (Subject.Direction != direction)
+                    Subject.Turn(direction);
 
                 break;
             }

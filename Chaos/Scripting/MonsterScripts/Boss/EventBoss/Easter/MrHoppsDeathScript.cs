@@ -1,5 +1,4 @@
 using Chaos.Collections;
-using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
 using Chaos.Extensions.Common;
@@ -19,6 +18,8 @@ namespace Chaos.Scripting.MonsterScripts.Boss.EventBoss.Easter;
 
 public sealed class MrHoppsDeathScript : MonsterScriptBase
 {
+    private IExperienceDistributionScript ExperienceDistributionScript { get; }
+
     public MrHoppsDeathScript(Monster subject)
         : base(subject)
     {
@@ -28,8 +29,6 @@ public sealed class MrHoppsDeathScript : MonsterScriptBase
 
         ExperienceDistributionScript.ExperienceFormula = ExperienceFormulae.Pure;
     }
-
-    private IExperienceDistributionScript ExperienceDistributionScript { get; }
 
     private void DistributeLootAndExperience(Aisling rewardTarget, Aisling[]? rewardTargets)
     {
@@ -125,7 +124,7 @@ public sealed class MrHoppsDeathScript : MonsterScriptBase
 
         if (!playersOnEventMap.Any())
             return;
-        
+
         ExperienceDistributionScript.DistributeExperience(Subject, playersOnEventMap);
 
         foreach (var aisling in playersOnEventMap)
@@ -139,12 +138,22 @@ public sealed class MrHoppsDeathScript : MonsterScriptBase
                         MarkColor.White,
                         1,
                         GameTime.Now));
-            
+
             Subject.Items.Clear();
             Subject.Items.AddRange(Subject.LootTable.GenerateLoot());
 
             foreach (var item in Subject.Items)
+            {
                 aisling.GiveItemOrSendToBank(item);
+
+                var adminOnMap = aisling.MapInstance
+                                        .GetEntities<Aisling>()
+                                        .Where(x => x.IsGodModeEnabled())
+                                        .ToList();
+
+                foreach (var admin in adminOnMap)
+                    admin.SendServerMessage(ServerMessageType.ActiveMessage, $"{aisling.Name} received {item}.");
+            }
         }
     }
 

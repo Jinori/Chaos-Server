@@ -9,16 +9,17 @@ public class KindlefiendScript : CompositeMonsterScript
     private static readonly ICollection<string> ScriptKeys = new[]
     {
         GetScriptKey(typeof(DefaultBehaviorsScript)),
-        GetScriptKey(typeof(MoveToTargetScript)),
         GetScriptKey(typeof(KindlefiendEnrageScript)),
         GetScriptKey(typeof(AggroTargetingScript)),
         GetScriptKey(typeof(ContributionScript)),
         GetScriptKey(typeof(CastingScript)),
         GetScriptKey(typeof(AttackingScript)),
+        GetScriptKey(typeof(MoveToTargetScript)),
+        GetScriptKey(typeof(KindlefiendBossThrowHazardousScript)),
         GetScriptKey(typeof(WanderingScript)),
         GetScriptKey(typeof(KindlefiendDeathScript)),
         GetScriptKey(typeof(DisplayNameScript)),
-        GetScriptKey(typeof(ThisIsABossScript))
+        GetScriptKey(typeof(ThisIsAMajorBossScript))
     };
 
     //If you are not using BossMoveToTargetScript, you need: MoveToTargetScript.

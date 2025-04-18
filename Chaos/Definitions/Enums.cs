@@ -74,7 +74,7 @@ public enum TargetFilter : ulong
     GroupOnly = 1 << 16,
     PetOnly = 1 << 17,
     PetOwnerOnly = 1 << 18,
-    PetOwnerGroupOnly = 1 << 19,
+    PetOwnerGroupOnly = 1 << 19
 }
 
 public enum VisibilityType
@@ -1666,6 +1666,12 @@ public enum Erbie
     StartedQuest = 1
 }
 
+public enum BunnyRescue
+{
+    None,
+    StartedQuest = 1
+}
+
 public enum DirtyErbie
 {
     None,
@@ -2291,7 +2297,7 @@ public enum InvisibleGear
     HideArmor = 1 << 5,
     HideAccessoryOne = 1 << 6,
     HideAccessoryTwo = 1 << 7,
-    HideAccessoryThree = 1 << 8,
+    HideAccessoryThree = 1 << 8
 }
 
 public enum LuckyCharmsQuest

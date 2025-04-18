@@ -48,6 +48,24 @@ public class MrHoppsBoxScript : ItemScriptBase
         },
         {
             "bunnypolyp", 0.05
+        },
+        {
+            "scarletkimonodress", 0.02
+        },
+        {
+            "indigokimonodress", 0.02
+        },
+        {
+            "pinkkimonodress", 0.02
+        },
+        {
+            "cobaltkimonorobe", 0.02
+        },
+        {
+            "slatekimonorobe", 0.02
+        },
+        {
+            "crimsonkimonorobe", 0.02
         }
     };
 
