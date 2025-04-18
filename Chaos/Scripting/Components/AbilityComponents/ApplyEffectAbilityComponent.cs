@@ -1,8 +1,10 @@
 using Chaos.Common.Utilities;
+using Chaos.Extensions.Common;
 using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
 using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
+using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 
 namespace Chaos.Scripting.Components.AbilityComponents;
@@ -26,10 +28,35 @@ public struct ApplyEffectAbilityComponent : IComponent
 
             var effect = options.EffectFactory.Create(options.EffectKey);
 
+            SetEffectVars(effect, target, vars);
+
             if (options.EffectDurationOverride.HasValue)
                 effect.SetDuration(options.EffectDurationOverride.Value);
 
             target.Effects.Apply(context.Source, effect);
+        }
+    }
+
+    private void SetEffectVars(IEffect effect, Creature target, ComponentVars vars)
+    {
+        var baseDamage = vars.GetBaseDamage(target);
+        
+        switch (effect.Name.ToLower())
+        {
+            case "burn":
+            {
+                var damagePerTick = (int)(baseDamage * 0.25m);
+                effect.SetVar("dmgPerTick", damagePerTick);
+                
+                break;
+            }
+            case "salsplash":
+            {
+                var damagePerTick = (int)(baseDamage * 0.33m);
+                effect.SetVar("dmgPerTick", damagePerTick);
+                
+                break;
+            }
         }
     }
 

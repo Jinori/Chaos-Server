@@ -44,7 +44,7 @@ public class BurnEffect : ContinuousAnimationEffectBase, HierarchicalEffectCompo
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromSeconds(1), false);
 
-    protected virtual decimal BurnPercentage { get; } = 5m;
+    protected virtual decimal BurnPercentage => 5m;
 
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1000), false);
@@ -69,7 +69,11 @@ public class BurnEffect : ContinuousAnimationEffectBase, HierarchicalEffectCompo
     public BurnEffect()
     {
         var applyDamageScript = ApplyNonAttackDamageScript.Create();
-        applyDamageScript.DamageFormula = DamageFormulae.ElementalEffect;
+        var formula = DamageFormulae.ElementalEffect;
+        
+        formula.ShouldApplySourceModifiers = true;
+        
+        applyDamageScript.DamageFormula = formula;
         ApplyDamageScript = applyDamageScript;
     }
     
@@ -86,10 +90,6 @@ public class BurnEffect : ContinuousAnimationEffectBase, HierarchicalEffectCompo
 
         return execution is not null;
     }
-
-    /// <inheritdoc />
-    public override void PrepareSnapshot(Creature source)
-        => SetVar("dmgPerTick", 75 + Source.StatSheet.EffectiveInt * 15 + Source.StatSheet.EffectiveMaximumMp * 0.015);
     
     /// <inheritdoc />
     protected override void OnIntervalElapsed()
@@ -97,7 +97,7 @@ public class BurnEffect : ContinuousAnimationEffectBase, HierarchicalEffectCompo
         if (Subject.IsGodModeEnabled() || Subject.Effects.Contains("invulnerability"))
         {
             Subject.Effects.Terminate("burn");
-
+            
             return;
         }
 
