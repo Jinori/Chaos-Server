@@ -50,15 +50,15 @@ public class SalSplashEffect : ContinuousAnimationEffectBase
 
     public override void OnApplied()
         => AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Powerful water surrounds you.");
-
-    /// <inheritdoc />
-    public override void PrepareSnapshot(Creature source)
-        => SetVar("dmgPerTick", 100 + Source.StatSheet.EffectiveInt * 20 + Source.StatSheet.EffectiveMaximumMp * 0.02);
     
     public SalSplashEffect()
     {
         var applyDamageScript = ApplyNonAttackDamageScript.Create();
-        applyDamageScript.DamageFormula = DamageFormulae.ElementalEffect;
+        var formula = DamageFormulae.ElementalEffect;
+        
+        formula.ShouldApplySourceModifiers = true;
+        
+        applyDamageScript.DamageFormula = formula;
         ApplyDamageScript = applyDamageScript;
     }
     
@@ -81,7 +81,7 @@ public class SalSplashEffect : ContinuousAnimationEffectBase
                              .WithFilter(Source, TargetFilter.HostileOnly | TargetFilter.AliveOnly)
                              .Where(x => !x.Equals(Subject))
                              .ToList();
-
+        
         // Apply damage to each valid target
         foreach (var target in targets)
         {
