@@ -46,6 +46,18 @@ public static class MathEx
         => (TNumber)Convert.ChangeType(num / 100m * percent, typeof(TNumber));
 
     /// <summary>
+    ///     Rounds a number to the nearest multiple of 10
+    /// </summary>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    public static int Round(this int i, int nearest)
+    {
+        if ((nearest <= 0) || ((nearest % 10) != 0))
+            throw new ArgumentOutOfRangeException(nameof(nearest), "Must round to a positive multiple of 10");
+
+        return (i + 5 * nearest / 10) / nearest * nearest;
+    }
+    
+    /// <summary>
     ///     Whether the type is an integer type
     /// </summary>
     private static bool IsIntegerType<T>()
