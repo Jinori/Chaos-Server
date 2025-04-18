@@ -25,7 +25,7 @@ public struct DamageAbilityComponent : IComponent
 
         foreach (var target in targets)
         {
-            var damage = CalculateDamage(
+            var baseDamage = CalculateDamage(
                 context.Source,
                 target,
                 numberOfTargets,
@@ -40,16 +40,19 @@ public struct DamageAbilityComponent : IComponent
                 options.PctOfHealth,
                 options.PctOfHealthMultiplier);
 
-            if (!sourceScript.ScriptKey.Contains("AssassinStrike") && (damage > 1000000))
-                damage = 1000000;
+            vars.SetBaseDamage(target, baseDamage);
 
-            if (damage > 0)
-                options.ApplyDamageScript.ApplyDamage(
-                    context.Source,
-                    target,
-                    sourceScript,
-                    damage,
-                    options.Element);
+            if (baseDamage <= 0)
+                continue;
+
+            var finalDamage = options.ApplyDamageScript.ApplyDamage(
+                context.Source,
+                target,
+                sourceScript,
+                baseDamage,
+                options.Element);
+
+            vars.SetFinalDamage(target, finalDamage);
         }
     }
 

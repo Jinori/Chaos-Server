@@ -1,3 +1,4 @@
+#region
 using Chaos.Common.Utilities;
 using Chaos.DarkAges.Definitions;
 using Chaos.Extensions;
@@ -12,6 +13,7 @@ using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
+#endregion
 
 namespace Chaos.Scripting.FunctionalScripts.ApplyDamage;
 
@@ -22,7 +24,7 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
     public IDamageFormula DamageFormula { get; set; } = DamageFormulae.Default;
     public static string Key { get; } = GetScriptKey(typeof(ApplyAttackDamageScript));
 
-    public virtual void ApplyDamage(
+    public virtual int ApplyDamage(
         Creature source,
         Creature target,
         IScript script,
@@ -37,7 +39,7 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
             elementOverride);
 
         if (damage <= 0)
-            return;
+            return 0;
 
         if (!source.OnSameMapAs(target))
             return;
@@ -250,7 +252,8 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
             }
 
             return true;
-        }
+    return damage;
+    }
 
         return false;
     }
