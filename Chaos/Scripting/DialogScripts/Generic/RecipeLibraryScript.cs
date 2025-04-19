@@ -726,7 +726,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 2 Bocan Bough, 1 Greater Monster Extract and 1 Empty Bottle.",
+                            } requires 1 Bocan Bough, 1 Greater Monster Extract and 1 Empty Bottle.",
                             "alchemybook");
 
                         return;
@@ -766,7 +766,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 Spark Flower, 1 Superior Monster Extract and 1 Empty Bottle.",
+                            } requires 1 Spark Flower, 2 Greater Monster Extract and 1 Empty Bottle.",
                             "alchemybook");
 
                         return;
@@ -774,7 +774,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 Cactus Flower, 1 Superior Monster Extract and 1 Empty Bottle.",
+                            } requires 1 Cactus Flower, 2 Greater Monster Extract and 1 Empty Bottle.",
                             "alchemybook");
 
                         return;
@@ -782,7 +782,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 Kabine Blossom, 1 Superior Monster Extract and 1 Empty Bottle.",
+                            } requires 1 Kabine Blossom, 2 Greater Monster Extract and 1 Empty Bottle.",
                             "alchemybook");
 
                         return;
@@ -790,7 +790,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 Marauder's Spine, 1 Satyr's Hoof, 1 Polyp Sac, 1 Superior Monster Extract and 1 Empty Bottle.",
+                            } requires 1 Marauder's Spine, 1 Satyr's Hoof, 1 Polyp Sac, 2 Greater Monster Extract and 1 Empty Bottle.",
                             "alchemybook");
 
                         return;
@@ -798,7 +798,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 Ice Spore Sac, 2 Greater Monster Extract, 1 Lion Fish and 1 Empty Bottle.",
+                            } requires 1 Gruesomefly Wing, 2 Greater Monster Extract, 1 Lion Fish and 1 Empty Bottle.",
                             "alchemybook");
 
                         return;
@@ -831,7 +831,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 Spark Flower, 2 Superior Monster Extract and 1 Empty Bottle.",
+                            } requires 1 Spark Flower, 1 Superior Monster Extract and 1 Empty Bottle.",
                             "alchemybook");
 
                         return;
@@ -839,7 +839,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 Cactus Flower, 2 Superior Monster Extract and 1 Empty Bottle.",
+                            } requires 1 Cactus Flower, 1 Superior Monster Extract and 1 Empty Bottle.",
                             "alchemybook");
 
                         return;
@@ -847,7 +847,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 Kabine Blossom, 2 Superior Monster Extract and 1 Empty Bottle.",
+                            } requires 1 Kabine Blossom, 1 Superior Monster Extract and 1 Empty Bottle.",
                             "alchemybook");
 
                         return;
@@ -856,7 +856,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 Blossom of Betrayal, 3 Superior Monster Extract and 1 Empty Bottle.",
+                            } requires 1 Blossom of Betrayal, 2 Superior Monster Extract and 1 Empty Bottle.",
                             "alchemybook");
 
                         return;
@@ -865,7 +865,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 Passion Flower, 3 Superior Monster Extract and 1 Empty Bottle.",
+                            } requires 1 Passion Flower, 2 Superior Monster Extract and 1 Empty Bottle.",
                             "alchemybook");
 
                         return;
@@ -873,7 +873,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 Kobold Tail, 3 Superior Monster Extract and 1 Empty Bottle.",
+                            } requires 1 Kobold Tail, 2 Superior Monster Extract and 1 Empty Bottle.",
                             "alchemybook");
 
                         return;
@@ -929,7 +929,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 Losgann Tail, 1 Red Shocker Piece, 1 Ice Skeleton Skull, 3 Superior Monster Extract and 1 Empty Bottle.",
+                            } requires 1 Losgann Tail, 1 Red Shocker Piece, 1 Ice Skeleton Skull, 2 Superior Monster Extract and 1 Empty Bottle.",
                             "alchemybook");
 
                         return;
@@ -937,7 +937,7 @@ public class RecipeLibraryScript : DialogScriptBase
                         Subject.Reply(
                             source,
                             $"{FauxItem.Template.Name
-                            } requires 1 Skeleton Bones, 1 Lion Fish, 3 Superior Monster Extract and 1 Empty Bottle.",
+                            } requires 1 Skeleton Bones, 1 Lion Fish, 2 Superior Monster Extract and 1 Empty Bottle.",
                             "alchemybook");
 
                         return;

@@ -389,7 +389,7 @@ public static class CraftingRequirements
                 TemplateKey = "warmthpotionformula",
                 Ingredients =
                 [
-                    new Ingredient("bocanbough", "Bocan Bough", 2),
+                    new Ingredient("bocanbough", "Bocan Bough", 1),
                     new Ingredient("greatermonsterextract", "Greater Monster Extract", 1),
                     new Ingredient("emptybottle", "Empty Bottle", 1)
                 ],
@@ -468,7 +468,7 @@ public static class CraftingRequirements
                 [
                     new Ingredient("sparkflower", "Spark Flower", 1),
                     new Ingredient("emptybottle", "Empty Bottle", 1),
-                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 1)
+                    new Ingredient("greatermonsterextract", "Greater Monster Extract", 2)
                 ],
                 Rank = "Adept",
                 Level = 97,
@@ -482,7 +482,7 @@ public static class CraftingRequirements
                 TemplateKey = "strongpowerbrewformula",
                 Ingredients =
                 [
-                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 1),
+                    new Ingredient("greatermonsterextract", "Greater Monster Extract", 2),
                     new Ingredient("cactusflower", "Cactus Flower", 1),
                     new Ingredient("emptybottle", "Empty Bottle", 1)
                 ],
@@ -499,7 +499,7 @@ public static class CraftingRequirements
                 Ingredients =
                 [
                     new Ingredient("kabineblossom", "Kabine Blossom", 1),
-                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 1),
+                    new Ingredient("greatermonsterextract", "Greater Monster Extract", 2),
                     new Ingredient("emptybottle", "Empty Bottle", 1)
                 ],
                 Rank = "Adept",
@@ -514,7 +514,7 @@ public static class CraftingRequirements
                 TemplateKey = "statboostelixirformula",
                 Ingredients =
                 [
-                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 1),
+                    new Ingredient("greatermonsterextract", "Greater Monster Extract", 2),
                     new Ingredient("marauderspine", "Marauder's Spine", 1),
                     new Ingredient("satyrhoof", "Satyr's Hoof", 1),
                     new Ingredient("polypsac", "Polyp Sac", 1),
@@ -532,7 +532,7 @@ public static class CraftingRequirements
                 TemplateKey = "knowledgeelixirformula",
                 Ingredients =
                 [
-                    new Ingredient("icesporesac", "Ice Spore Sac", 1),
+                    new Ingredient("gruesomeflywing", "Gruesomefly Wing", 1),
                     new Ingredient("greatermonsterextract", "Greater Monster Extract", 2),
                     new Ingredient("lionfish", "Lion Fish", 1),
                     new Ingredient("emptybottle", "Empty Bottle", 1)
@@ -596,7 +596,7 @@ public static class CraftingRequirements
                 [
                     new Ingredient("sparkflower", "Spark Flower", 1),
                     new Ingredient("emptybottle", "Empty Bottle", 1),
-                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 2)
+                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 1)
                 ],
                 Rank = "Advanced",
                 Level = 99,
@@ -610,7 +610,7 @@ public static class CraftingRequirements
                 TemplateKey = "potentpowerbrewformula",
                 Ingredients =
                 [
-                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 2),
+                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 1),
                     new Ingredient("cactusflower", "Cactus Flower", 1),
                     new Ingredient("emptybottle", "Empty Bottle", 1)
                 ],
@@ -627,7 +627,7 @@ public static class CraftingRequirements
                 Ingredients =
                 [
                     new Ingredient("kabineblossom", "Kabine Blossom", 1),
-                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 2),
+                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 1),
                     new Ingredient("emptybottle", "Empty Bottle", 1)
                 ],
                 Rank = "Advanced",
@@ -643,7 +643,7 @@ public static class CraftingRequirements
                 Ingredients =
                 [
                     new Ingredient("blossomofbetrayal", "Blossom of Betrayal", 1),
-                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 3),
+                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 2),
                     new Ingredient("emptybottle", "Empty Bottle", 1)
                 ],
                 Rank = "Advanced",
@@ -659,7 +659,7 @@ public static class CraftingRequirements
                 Ingredients =
                 [
                     new Ingredient("passionflower", "Passion Flower", 1),
-                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 3),
+                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 2),
                     new Ingredient("emptybottle", "Empty Bottle", 1)
                 ],
                 Rank = "Advanced",
@@ -675,7 +675,7 @@ public static class CraftingRequirements
                 Ingredients =
                 [
                     new Ingredient("koboldtail", "Kobold Tail", 1),
-                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 3),
+                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 2),
                     new Ingredient("emptybottle", "Empty Bottle", 1)
                 ],
                 Rank = "Advanced",
@@ -786,7 +786,7 @@ public static class CraftingRequirements
                 TemplateKey = "strongstatboostelixirformula",
                 Ingredients =
                 [
-                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 3),
+                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 2),
                     new Ingredient("losganntail", "Losgann Tail", 1),
                     new Ingredient("redshockerpiece", "Red Shocker Piece", 1),
                     new Ingredient("iceskeletonskull", "Ice Skeleton Skull", 1),
@@ -805,7 +805,7 @@ public static class CraftingRequirements
                 Ingredients =
                 [
                     new Ingredient("skeletonbone", "Skeleton Bones", 1),
-                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 3),
+                    new Ingredient("superiormonsterextract", "Superior Monster Extract", 2),
                     new Ingredient("lionfish", "Lion Fish", 1),
                     new Ingredient("emptybottle", "Empty Bottle", 1)
                 ],
