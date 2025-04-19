@@ -1,3 +1,4 @@
+#region
 using Chaos.Common.Utilities;
 using Chaos.Extensions.Common;
 using Chaos.Models.Data;
@@ -6,6 +7,7 @@ using Chaos.Scripting.Components.Abstractions;
 using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
+#endregion
 
 namespace Chaos.Scripting.Components.AbilityComponents;
 
@@ -33,7 +35,7 @@ public struct ApplyEffectAbilityComponent : IComponent
             if (options.EffectDurationOverride.HasValue)
                 effect.SetDuration(options.EffectDurationOverride.Value);
 
-            target.Effects.Apply(context.Source, effect);
+            target.Effects.Apply(context.Source, effect, vars.GetSourceScript());
         }
     }
 

@@ -53,6 +53,8 @@ public sealed class WorldScriptingService : BackgroundService
                 var currentDelta = deltaTime.GetDelta;
                 monitor.Update(currentDelta);
 
+                var start = Stopwatch.GetTimestamp();
+
                 foreach (var script in serverScripts)
                     if (script.Enabled)
                         try
@@ -67,7 +69,7 @@ public sealed class WorldScriptingService : BackgroundService
                                       script.GetType()
                                             .Name);
                         }
-                
+
                 var elapsed = Stopwatch.GetElapsedTime(start);
                 monitor.DigestDelta(elapsed);
             } catch (OperationCanceledException)
