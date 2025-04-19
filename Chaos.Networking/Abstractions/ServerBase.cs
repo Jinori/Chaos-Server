@@ -198,13 +198,12 @@ public abstract class ServerBase<T> : BackgroundService, IServer<T> where T: ICo
             clientSocket = serverSocket.EndAccept(ar);
         } catch
         {
-            //ignored
-        } finally
-        {
-            serverSocket.BeginAccept(OnConnection, serverSocket);
+            return;
         }
+        
+        serverSocket.BeginAccept(OnConnection, serverSocket);
 
-        if (clientSocket is not null && clientSocket.Connected)
+        if (clientSocket.Connected)
         {
             clientSocket.NoDelay = true;
 
