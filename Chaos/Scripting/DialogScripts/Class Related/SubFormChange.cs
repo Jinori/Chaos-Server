@@ -115,7 +115,10 @@ public class SubFormChange : DialogScriptBase
         }
 
         if (source.UserStatSheet.BaseClass == BaseClass.Monk)
+        {
             Subject.Reply(source, "You are a monk. Please see Leadfoot");
+            return;
+        }
 
         var formConfirmMappings = new Dictionary<string, MonkElementForm>(StringComparer.OrdinalIgnoreCase)
         {
