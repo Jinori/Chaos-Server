@@ -120,6 +120,7 @@ public class DefaultDamageFormula : IDamageFormula
             }
         }
     }
+    
 
     protected virtual int GetDefenderAc(Creature defender)
         => defender switch
@@ -189,7 +190,7 @@ public class DefaultDamageFormula : IDamageFormula
         if (defender.Effects.Contains("Crit"))
             if (script is SubjectiveScriptBase<Skill> { Subject.Template.IsAssail: false } or SubjectiveScriptBase<Spell>)
             {
-                damageMultiplier += 1;
+                damageMultiplier += 0.3;
                 defender.Effects.Dispel("Crit");
             }
 

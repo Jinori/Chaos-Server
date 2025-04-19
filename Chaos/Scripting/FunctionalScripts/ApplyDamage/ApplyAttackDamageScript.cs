@@ -11,6 +11,8 @@ using Chaos.Models.World.Abstractions;
 using Chaos.NLog.Logging.Definitions;
 using Chaos.NLog.Logging.Extensions;
 using Chaos.Scripting.Abstractions;
+using Chaos.Scripting.EffectScripts.Monk;
+using Chaos.Scripting.EffectScripts.Warrior;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Services.Factories.Abstractions;
 #endregion
@@ -20,7 +22,6 @@ namespace Chaos.Scripting.FunctionalScripts.ApplyDamage;
 public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<ApplyAttackDamageScript> logger) : ScriptBase, IApplyDamageScript
 {
     protected readonly IEffectFactory EffectFactory = effectFactory;
-
     public IDamageFormula DamageFormula { get; set; } = DamageFormulae.Default;
     public static string Key { get; } = GetScriptKey(typeof(ApplyAttackDamageScript));
 
@@ -46,48 +47,52 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
 
         target.Trackers.LastDamagedBy = source;
 
-        if (ReflectDamage(source, target, damage))
+        if (ReflectDamage(source, target, script, damage))
             return damage;
 
         if (target is Aisling aislingTarget)
             ApplyDurabilityDamage(aislingTarget, source, script);
 
-        ApplyDamageAndTriggerEvents(target, damage, source);
+        ApplyDamageAndTriggerEvents(source, target, script, damage);
 
         return damage;
     }
 
     public static IApplyDamageScript Create() => FunctionalScriptRegistry.Instance.Get<IApplyDamageScript>(Key);
 
-    private void ApplyDamageAndTriggerEvents(Creature creature, int damage, Creature source)
+    private void ApplyDamageAndTriggerEvents(
+        Creature source,
+        Creature target,
+        IScript script,
+        int damage)
     {
         // ReSharper disable once ConvertIfStatementToSwitchStatement
-        if (creature is Merchant)
+        if (target is Merchant)
         {
-            creature.Script.OnAttacked(source, damage);
+            target.Script.OnAttacked(source, damage);
 
             return;
         }
 
         //Pets cannot be damaged by Aislings
-        if (creature is Monster { PetOwner: not null } && source is Aisling)
+        if (target is Monster { PetOwner: not null } && source is Aisling)
             return;
 
-        if (!creature.IsAlive || creature.IsDead)
+        if (!target.IsAlive || target.IsDead)
             return;
 
-        if ((damage > creature.StatSheet.CurrentHp) && creature.IsInLastStand())
-            damage = creature.StatSheet.CurrentHp - 1;
+        if ((damage > target.StatSheet.CurrentHp) && target.IsInLastStand())
+            damage = target.StatSheet.CurrentHp - 1;
 
-        creature.StatSheet.SubtractHp(damage);
-        creature.ShowHealth();
-        creature.Script.OnAttacked(source, damage);
+        target.StatSheet.SubtractHp(damage);
+        target.ShowHealth();
+        target.Script.OnAttacked(source, damage);
 
-        if (creature is Aisling aisling)
+        if (target is Aisling aisling)
             aisling.Client.SendAttributes(StatUpdateType.Vitality);
 
-        if (!creature.IsAlive)
-            switch (creature)
+        if (!target.IsAlive)
+            switch (target)
             {
                 case Aisling mAisling:
                     mAisling.Script.OnDeath();
@@ -98,8 +103,26 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
 
                     break;
             }
+        else if (source.Effects.TryGetEffect("Thunder Stance", out var effect)
+                 && effect is ThunderStanceEffect thunderStanceEffect
+                 && script is not ThunderStanceEffect
+                 && !IsAssail(script))
+            thunderStanceEffect.ApplyDamage(target, damage);
+        else if (source.Effects.TryGetEffect("Lightning Stance", out var effect2)
+                 && effect2 is LightningStanceEffect lightningStanceEffect
+                 && script is not LightningStanceEffect
+                 && !IsAssail(script))
+            lightningStanceEffect.ApplyDamage(target, damage);
     }
 
+    protected virtual bool IsAssail(IScript source)
+    {
+        if (source is SubjectiveScriptBase<Skill> { Subject.Template.IsAssail: true } or WrathEffect or WhirlwindEffect or InfernoEffect)
+            return true;
+
+        return false;
+    }
+    
     private void ApplyDurabilityDamage(Aisling aisling, Creature source, IScript skillSource)
     {
         if (skillSource is not SubjectiveScriptBase<Skill> skillScript)
@@ -222,36 +245,22 @@ public class ApplyAttackDamageScript(IEffectFactory effectFactory, ILogger<Apply
                       source.Name);
     }
 
-    private bool ReflectDamage(Creature source, Creature target, int damage)
+    private bool ReflectDamage(
+        Creature source,
+        Creature target,
+        IScript script,
+        int damage)
     {
-        if (source.IsConfused() && IntegerRandomizer.RollChance(100) && !source.IsGodModeEnabled())
-            switch (source)
-            {
-                case Aisling sourceAisling:
-                    ApplyDamageAndTriggerEvents(sourceAisling, damage, target);
-
-                    break;
-                case Monster monster:
-                    ApplyDamageAndTriggerEvents(monster, damage, monster);
-
-                    break;
-            }
-
-        if ((target.IsAsgalled() && IntegerRandomizer.RollChance(50))
+        if ((source.IsConfused() && IntegerRandomizer.RollChance(25) && !source.IsGodModeEnabled())
+            || (target.IsAsgalled() && IntegerRandomizer.RollChance(50))
             || (target.IsEarthenStanced() && IntegerRandomizer.RollChance(30))
             || (target.IsRockStanced() && IntegerRandomizer.RollChance(70)))
         {
-            switch (source)
-            {
-                case Aisling sourceAisling:
-                    ApplyDamageAndTriggerEvents(sourceAisling, damage, target);
-
-                    break;
-                case Monster monster:
-                    ApplyDamageAndTriggerEvents(monster, damage, target);
-
-                    break;
-            }
+            ApplyDamageAndTriggerEvents(
+                source,
+                source,
+                script,
+                damage);
 
             return true;
         }

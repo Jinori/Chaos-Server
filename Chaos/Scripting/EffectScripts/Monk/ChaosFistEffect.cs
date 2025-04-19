@@ -10,13 +10,15 @@ namespace Chaos.Scripting.EffectScripts.Monk;
 
 public class ChaosFistEffect : ContinuousAnimationEffectBase
 {
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(12);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(8);
 
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 300,
         TargetAnimation = 54
     };
+    
+    private Attributes BonusAttributes = null!;
 
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1500));
@@ -31,28 +33,34 @@ public class ChaosFistEffect : ContinuousAnimationEffectBase
     {
         base.OnApplied();
 
-        var attributes = new Attributes
+        BonusAttributes = new Attributes
         {
-            Dmg = 90
+            SkillDamagePct = GetVar<int>("skillDmgPct"),
+            FlatSkillDamage = GetVar<int>("flatSkillDmg")
         };
 
-        Subject.StatSheet.AddBonus(attributes);
+        Subject.StatSheet.AddBonus(BonusAttributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your fists rush with a burst of energy.");
     }
 
     public override void OnDispelled() => OnTerminated();
 
+    /// <inheritdoc />
+    public override void PrepareSnapshot(Creature source)
+    {
+        var pct = source.StatSheet.EffectiveCon / 10;
+        var flat = 200 + source.StatSheet.EffectiveCon * 2;
+
+        SetVar("skillDmgPct", pct);
+        SetVar("flatSkillDmg", flat);
+    }
+    
     protected override void OnIntervalElapsed() { }
 
     public override void OnTerminated()
     {
-        var attributes = new Attributes
-        {
-            Dmg = 90
-        };
-
-        Subject.StatSheet.SubtractBonus(attributes);
+        Subject.StatSheet.SubtractBonus(BonusAttributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your hands return to normal.");
     }

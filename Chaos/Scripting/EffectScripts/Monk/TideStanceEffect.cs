@@ -16,7 +16,7 @@ public class TideStanceEffect : EffectBase
         base.OnApplied();
 
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A heavy, soothing mist envelops your body.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your body is like crashing waves");
     }
 
     public override void OnDispelled() => OnTerminated();
@@ -24,7 +24,7 @@ public class TideStanceEffect : EffectBase
     public override void OnTerminated()
     {
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
-        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "The mist rolls off your body.");
+        AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "You body returns to calmness");
     }
 
     public override bool ShouldApply(Creature source, Creature target)

@@ -10,20 +10,22 @@ namespace Chaos.Scripting.EffectScripts.Monk;
 
 public class ClawFistEffect : ContinuousAnimationEffectBase
 {
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(10);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(8);
 
     protected override Animation Animation { get; } = new()
     {
         AnimationSpeed = 300,
         TargetAnimation = 54
     };
-
+    private Attributes BonusAttributes = null!;
+    
     /// <inheritdoc />
     protected override IIntervalTimer AnimationInterval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(1500), false);
 
     /// <inheritdoc />
     protected override IIntervalTimer Interval { get; } = new IntervalTimer(TimeSpan.FromMilliseconds(400), false);
 
+    
     public override byte Icon => 71;
     public override string Name => "Claw Fist";
 
@@ -31,14 +33,25 @@ public class ClawFistEffect : ContinuousAnimationEffectBase
     {
         base.OnApplied();
 
-        var attributes = new Attributes
+        BonusAttributes = new Attributes
         {
-            Dmg = 20
+            SkillDamagePct = GetVar<int>("skillDmgPct"),
+            FlatSkillDamage = GetVar<int>("flatSkillDmg")
         };
 
-        Subject.StatSheet.AddBonus(attributes);
+        Subject.StatSheet.AddBonus(BonusAttributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your fists rush with a burst of energy.");
+    }
+
+    /// <inheritdoc />
+    public override void PrepareSnapshot(Creature source)
+    {
+        var pct = source.StatSheet.EffectiveCon / 20;
+        var flat = 100 + source.StatSheet.EffectiveCon;
+
+        SetVar("skillDmgPct", pct);
+        SetVar("flatSkillDmg", flat);
     }
 
     public override void OnDispelled() => OnTerminated();
@@ -47,19 +60,14 @@ public class ClawFistEffect : ContinuousAnimationEffectBase
 
     public override void OnTerminated()
     {
-        var attributes = new Attributes
-        {
-            Dmg = 20
-        };
-
-        Subject.StatSheet.SubtractBonus(attributes);
+        Subject.StatSheet.SubtractBonus(BonusAttributes);
         AislingSubject?.Client.SendAttributes(StatUpdateType.Full);
         AislingSubject?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "Your hands return to normal.");
     }
 
     public override bool ShouldApply(Creature source, Creature target)
     {
-        if (target.Effects.Contains("Claw Fist"))
+        if (target.Effects.Contains("Claw Fist") || target.Effects.Contains("Chaos Fist"))
         {
             (source as Aisling)?.Client.SendServerMessage(ServerMessageType.OrangeBar1, "A stance has already been applied.");
 

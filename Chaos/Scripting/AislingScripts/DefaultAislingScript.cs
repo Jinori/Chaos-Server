@@ -1681,7 +1681,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 }
         }
 
-        if (Subject.IsSmokeStanced())
+        if (Subject.IsMistStanced())
         {
             var options = new AoeShapeOptions
             {
@@ -1699,7 +1699,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             
             foreach (var target in targets)
             {
-                var flameDamage = (25 + Subject.StatSheet.EffectiveCon * 10);
+                var flameDamage = 25 + Subject.StatSheet.EffectiveCon * 10;
                 
                 MonkFormApplyDamageScript.ApplyDamage(
                     Subject,
@@ -1713,7 +1713,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
         }
 
 
-        if (Subject.IsFlameStanced())
+        if (Subject.IsTideStanced())
         {
             var options = new AoeShapeOptions
             {
@@ -1743,85 +1743,7 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                 target.Animate(FlameHit, Subject.Id);
             }
         }
-
-        if (Subject.IsTideStanced())
-        {
-            var healAmount = Math.Round(damage * 0.15m);
-
-            if (Subject.Group is not null)
-                foreach (var person in Subject.Group)
-                {
-                    if (person.IsDead)
-                        continue;
-
-                    if (!person.WithinRange(Subject))
-                        continue;
-
-                    person.Animate(TideHeal, person.Id);
-
-                    ApplyHealScript.ApplyHeal(
-                        source,
-                        person,
-                        this,
-                        (int)healAmount);
-
-                    var manaReplenished = Math.Round(damage * 0.08m);
-                    person.StatSheet.AddMp((int)manaReplenished);
-                }
-            else
-            {
-                if (Subject.IsDead)
-                    return;
-
-                Subject.Animate(TideHeal, Subject.Id);
-
-                ApplyHealScript.ApplyHeal(
-                    source,
-                    Subject,
-                    this,
-                    (int)healAmount);
-
-                var manaReplenished = Math.Round(damage * 0.08m);
-                Subject.StatSheet.AddMp((int)manaReplenished);
-            }
-        }
-
-        if (Subject.IsMistStanced())
-        {
-            var result = Math.Round(damage * 0.15m);
-
-            if (Subject.Group is not null)
-                foreach (var person in Subject.Group)
-                {
-                    if (person.IsDead)
-                        continue;
-
-                    if (!person.WithinRange(Subject))
-                        continue;
-
-                    person.Animate(MistHeal, person.Id);
-
-                    ApplyHealScript.ApplyHeal(
-                        source,
-                        person,
-                        this,
-                        (int)result);
-                }
-            else
-            {
-                if (Subject.IsDead)
-                    return;
-
-                Subject.Animate(MistHeal, Subject.Id);
-
-                ApplyHealScript.ApplyHeal(
-                    source,
-                    Subject,
-                    this,
-                    (int)result);
-            }
-        }
-
+        
         if (Subject.Effects.Contains("Mount"))
         {
             Subject.Effects.Dispel("Mount");

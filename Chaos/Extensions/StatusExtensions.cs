@@ -22,14 +22,12 @@ public static class StatusExtensions
     public static bool IsBeagSuained(this Creature creature) =>
         creature.Effects.Contains("beagsuain") || creature.Effects.Contains("Earth Punch");
     public static bool IsBlessed(this Creature creature) => creature.Effects.Contains("Blessing");
-    public static bool IsClawFisted(this Creature creature) => creature.Effects.Contains("Claw Fist");
     public static bool IsConfused(this Creature creature) => creature.Effects.Contains("bewilderment");
     public static bool IsCradhLocked(this Creature creature) => creature.Effects.Contains("Prevent Affliction");
     public static bool IsCradhPrevented(this Creature creature) => creature.Effects.Contains("Prevent Recradh");
     public static bool IsDetectingTraps(this Creature creature) => creature.Effects.Contains("Detect Traps");
     public static bool IsDiacht(this Aisling aisling) => aisling.UserStatSheet.BaseClass == BaseClass.Diacht;
     public static bool IsEarthenStanced(this Creature creature) => creature.Effects.Contains("Earthen Stance");
-    public static bool IsFlameStanced(this Creature creature) => creature.Effects.Contains("Flame Stance");
     public static bool IsGodModeEnabled(this Creature creature) => creature.Trackers.Enums.HasValue(GodMode.Yes);
     public static bool IsFullGrandMaster(this Aisling aisling) => aisling.Trackers.Enums.HasValue(MainstoryMasterEnums.CompletedCreants);
     public static bool IsHidden(this Creature creature) =>
@@ -54,7 +52,6 @@ public static class StatusExtensions
     public static bool IsRockStanced(this Creature creature) => creature.Effects.Contains("Rock Stance");
     public static bool IsRooted(this Creature creature) => creature.Effects.Contains("Root");
     public static bool IsRuminating(this Creature creature) => creature.Effects.Contains("Rumination");
-    public static bool IsSmokeStanced(this Creature creature) => creature.Effects.Contains("Smoke Stance");
     public static bool IsStoned(this Creature creature) => creature.Effects.Contains("Stoned");
     public static bool IsSuained(this Creature creature) =>
         creature.Effects.Contains("Suain") || creature.Effects.Contains("Wolf Fang Fist");
