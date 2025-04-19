@@ -52,7 +52,7 @@ public struct ApplyEffectAbilityComponent : IComponent
                 
                 break;
             }
-            case "salsplash":
+            case "sal splash":
             {
                 var damagePerTick = (int)(finalDamage * 0.25m);
                 effect.SetVar("dmgPerTick", damagePerTick);
