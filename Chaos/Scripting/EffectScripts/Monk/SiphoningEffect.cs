@@ -15,7 +15,7 @@ namespace Chaos.Scripting.EffectScripts.Monk;
 public class SiphoningEffect : ContinuousAnimationEffectBase
 {
     /// <inheritdoc />
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(8);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(12);
 
     /// <inheritdoc />
     protected override Animation Animation { get; } = new()
@@ -85,7 +85,7 @@ public class SiphoningEffect : ContinuousAnimationEffectBase
         var damage = DamageHelper.CalculatePercentDamage(
             Source,
             Subject,
-            0.01m,
+            1,
             true);
         
         ApplyDamageScript.ApplyDamage(
