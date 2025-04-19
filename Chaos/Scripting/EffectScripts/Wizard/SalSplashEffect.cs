@@ -107,6 +107,18 @@ public class SalSplashEffect : ContinuousAnimationEffectBase
 
         if (target.StatSheet.DefenseElement == Element.Water)
             return false;
+        
+        if (target.Effects.TryGetEffect("salsplash", out var effect) && effect is SalSplashEffect salSplashEffect)
+        {
+            var existingDmgPerTick = salSplashEffect.GetVar<int>("dmgPerTick");
+
+            if (DmgPerTick > existingDmgPerTick)
+            {
+                target.Effects.Dispel("salsplash");
+
+                return false;
+            }
+        }
 
         var splashEffects = new[]
         {

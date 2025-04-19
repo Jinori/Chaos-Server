@@ -83,6 +83,18 @@ public class BurnEffect : ContinuousAnimationEffectBase, HierarchicalEffectCompo
         if (target.StatSheet.DefenseElement == Element.Fire)
             return false;
 
+        if (target.Effects.TryGetEffect("burn", out var effect) && effect is BurnEffect burnEffect)
+        {
+            var existingDmgPerTick = burnEffect.GetVar<int>("dmgPerTick");
+
+            if (DmgPerTick > existingDmgPerTick)
+            {
+                target.Effects.Dispel("burn");
+
+                return false;
+            }
+        }
+
         var execution = new ComponentExecutor(source, target).WithOptions(this)
                                                              .ExecuteAndCheck<HierarchicalEffectComponent>();
 
