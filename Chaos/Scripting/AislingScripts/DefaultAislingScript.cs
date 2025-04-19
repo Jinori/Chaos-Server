@@ -1705,10 +1705,10 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                     Subject,
                     target,
                     this,
-                    flameDamage, Element.Fire);
+                    flameDamage, Element.Water);
 
                 target.ShowHealth();
-                target.Animate(FlameHit, Subject.Id);
+                target.Animate(MistHeal, Subject.Id);
             }
         }
 
@@ -1731,16 +1731,16 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             
             foreach (var target in targets)
             {
-                var flameDamage = (int)(75 + Subject.StatSheet.EffectiveCon * 15 + Subject.StatSheet.EffectiveMaximumHp * 0.01);
+                var flameDamage = (int)(50 + Subject.StatSheet.EffectiveCon * 13 + Subject.StatSheet.EffectiveMaximumHp * 0.01);
                 
                 MonkFormApplyDamageScript.ApplyDamage(
                     Subject,
                     target,
                     this,
-                    flameDamage, Element.Fire);
+                    flameDamage, Element.Water);
 
                 target.ShowHealth();
-                target.Animate(FlameHit, Subject.Id);
+                target.Animate(MistHeal, Subject.Id);
             }
         }
         
