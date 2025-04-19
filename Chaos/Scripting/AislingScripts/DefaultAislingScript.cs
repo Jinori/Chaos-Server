@@ -1705,10 +1705,10 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
                     Subject,
                     target,
                     this,
-                    flameDamage, Element.Fire);
+                    flameDamage, Element.Water);
 
                 target.ShowHealth();
-                target.Animate(FlameHit, Subject.Id);
+                target.Animate(MistHeal, Subject.Id);
             }
         }
 
@@ -1731,16 +1731,16 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
             
             foreach (var target in targets)
             {
-                var flameDamage = (int)(75 + Subject.StatSheet.EffectiveCon * 15 + Subject.StatSheet.EffectiveMaximumHp * 0.01);
+                var flameDamage = (int)(50 + Subject.StatSheet.EffectiveCon * 13 + Subject.StatSheet.EffectiveMaximumHp * 0.01);
                 
                 MonkFormApplyDamageScript.ApplyDamage(
                     Subject,
                     target,
                     this,
-                    flameDamage, Element.Fire);
+                    flameDamage, Element.Water);
 
                 target.ShowHealth();
-                target.Animate(FlameHit, Subject.Id);
+                target.Animate(MistHeal, Subject.Id);
             }
         }
         
@@ -2515,6 +2515,37 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
     private void UpdateSkillBook()
     {
+        if (Subject.Legend.ContainsKey("dedicated") && Subject.Legend.ContainsKey("monkClass"))
+            if (!Subject.SpellBook.ContainsByTemplateKey("catsHearing"))
+            {
+                var catsHearing = SpellFactory.Create("catsHearing");
+                Subject.SpellBook.TryAddToNextSlot(catsHearing);
+            }
+
+        if (Subject.HasClass(BaseClass.Rogue))
+        {
+            if (!Subject.Legend.ContainsKey("monkClass"))
+                Subject.SpellBook.RemoveByTemplateKey("catsHearing");
+                    
+            if (!Subject.SpellBook.ContainsByTemplateKey("eisdcreutair"))
+            {
+                var eisd = SpellFactory.Create("eisdcreutair");
+                Subject.SpellBook.TryAddToNextSlot(eisd);
+            }
+        }
+
+        if (Subject.Legend.ContainsKey("dedicated") && Subject.Legend.ContainsKey("rogueClass"))
+        {
+            if (!Subject.SpellBook.ContainsByTemplateKey("eisdcreutair"))
+            {
+                if (!Subject.HasClass(BaseClass.Monk))
+                    Subject.SpellBook.RemoveByTemplateKey("catsHearing");
+
+                var eisd = SpellFactory.Create("eisdcreutair");
+                Subject.SpellBook.TryAddToNextSlot(eisd);
+            }
+        }
+
         ReplaceSkill("multistrike", "rupture");
         ReplaceSkill("gut", "backstab");
 
