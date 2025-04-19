@@ -144,7 +144,10 @@ public class RestrictionBehavior
             return true;
 
         // Status Restrictions
-        if (aisling.IsPramhed() || aisling.IsSuained())
+        if (aisling.IsPramhed())
+            return true;
+
+        if (aisling.IsSuained() && !item.Template.TemplateKey.EqualsI("warmthPotion"))
             return true;
 
         // Stoned: can only use specific item

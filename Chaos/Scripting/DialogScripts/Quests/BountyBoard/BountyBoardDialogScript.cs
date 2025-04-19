@@ -18,6 +18,10 @@ namespace Chaos.Scripting.DialogScripts.Quests.BountyBoard;
 
 public class BountyBoardDialogScript : DialogScriptBase
 {
+    private readonly int MaxBountyPerDay = 5;
+    private readonly int ResetBountyBoardInHours = 8;
+    private readonly int MaxBountyCountAtATime = 3;
+    
     private static readonly List<KeyValuePair<string, decimal>> EpicRewards =
     [
         new("nyxumbralshield", 4), // Lowest
@@ -77,7 +81,7 @@ public class BountyBoardDialogScript : DialogScriptBase
             {
                 if (!source.UserStatSheet.Master)
                 {
-                    Subject.Reply(source, "You don't understand anything on the board. (Requires Master)");
+                    Subject.Reply(source, "You don't understand anything on the board. (Master Required)");
 
                     return;
                 }
@@ -117,7 +121,7 @@ public class BountyBoardDialogScript : DialogScriptBase
 
                 var flags = flagCount.ToList();
 
-                if (flags.Count >= 3)
+                if (flags.Count >= MaxBountyCountAtATime)
                 {
                     Subject.Reply(source, "You may only have three active bounties at a time.", "bountyboard_initial");
 
@@ -126,7 +130,7 @@ public class BountyBoardDialogScript : DialogScriptBase
 
                 if (source.Trackers.TimedEvents.HasActiveEvent("bountyboard_reset", out _))
                 {
-                    if (source.Trackers.Counters.TryGetValue("bountycount", out var count) && (count >= 3))
+                    if (source.Trackers.Counters.TryGetValue("bountycount", out var count) && (count >= MaxBountyPerDay))
                     {
                         Subject.Reply(source, "You may not take anymore bounties today.", "bountyboard_initial");
 
@@ -154,7 +158,7 @@ public class BountyBoardDialogScript : DialogScriptBase
                     foreach (var bounty in possibleBounties)
                         source.Trackers.Flags.AddFlag(bounty.AvailableQuestFlag.GetType(), bounty.AvailableQuestFlag);
 
-                    source.Trackers.TimedEvents.AddEvent("bountyboard_reset", TimeSpan.FromHours(8), true);
+                    source.Trackers.TimedEvents.AddEvent("bountyboard_reset", TimeSpan.FromHours(ResetBountyBoardInHours), true);
                     source.Trackers.Counters.Remove("bountycount", out _);
                 }
 
@@ -166,7 +170,7 @@ public class BountyBoardDialogScript : DialogScriptBase
 
                 var flags = flagCount.ToList();
 
-                if (flags.Count >= 3)
+                if (flags.Count >= MaxBountyCountAtATime)
                     Subject.Reply(
                         source,
                         "You can only have three active bounties at a time. You must abandon or complete a normal bounty to free up a slot in order to accept an Epic Bounty.",
@@ -545,20 +549,20 @@ public class BountyBoardDialogScript : DialogScriptBase
                     source.Trackers.Flags.RemoveFlag(selectedBounty.BountyQuestFlag.GetType(), selectedBounty.BountyQuestFlag);
                     source.Trackers.Counters.Remove(selectedBounty.MonsterTemplateKey, out _);
 
-                    if (selectedBounty.KillRequirement == 100)
+                    if (selectedBounty.KillRequirement == 50)
                     {
-                        exp = 25000000;
-                        gamepoints = 20;
+                        exp = 15000000;
+                        gamepoints = 10;
                         bountyPoints = 1;
-                    } else if (selectedBounty.KillRequirement == 250)
+                    } else if (selectedBounty.KillRequirement == 125)
                     {
-                        exp = 60000000;
-                        gamepoints = 50;
+                        exp = 30000000;
+                        gamepoints = 25;
                         bountyPoints = 2;
-                    } else if (selectedBounty.KillRequirement == 400)
+                    } else if (selectedBounty.KillRequirement == 200)
                     {
-                        exp = 100000000;
-                        gamepoints = 75;
+                        exp = 50000000;
+                        gamepoints = 40;
                         bountyPoints = 3;
                     } else if (selectedBounty.KillRequirement == 10)
                     {
@@ -674,7 +678,7 @@ public class BountyBoardDialogScript : DialogScriptBase
                                 .Where(bounty => !activeMonsterKeys.Contains(bounty.MonsterTemplateKey))
                                 .Shuffle()
                                 .DistinctBy(bounty => bounty.MonsterTemplateKey)
-                                .Take(5)
+                                .Take(8)
                                 .ToList();
     }
 
