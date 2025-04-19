@@ -102,36 +102,9 @@ public class RelearnCraftScript : DialogScriptBase
                     var auraoftorment = SpellFactory.Create("auraoftorment");
                     source.SpellBook.TryAddToNextSlot(auraoftorment);
                 }
-
-                if (source.Legend.ContainsKey("dedicated") && source.Legend.ContainsKey("monkClass"))
-                    if (!source.SpellBook.ContainsByTemplateKey("catsHearing"))
-                    {
-                        var catsHearing = SpellFactory.Create("catsHearing");
-                        source.SpellBook.TryAddToNextSlot(catsHearing);
-                    }
-
-                if (source.HasClass(BaseClass.Rogue))
-                {
-                    if (!source.Legend.ContainsKey("monkClass"))
-                        source.SpellBook.RemoveByTemplateKey("catsHearing");
-                    
-                    if (!source.SpellBook.ContainsByTemplateKey("eisdcreutair"))
-                    {
-                        var eisd = SpellFactory.Create("eisdcreutair");
-                        source.SpellBook.TryAddToNextSlot(eisd);
-                    }
-                }
+                
                 if (source.Legend.ContainsKey("dedicated") && source.Legend.ContainsKey("rogueClass"))
                 {
-                    if (!source.SpellBook.ContainsByTemplateKey("eisdcreutair"))
-                    {
-                        if (!source.HasClass(BaseClass.Monk))
-                            source.SpellBook.RemoveByTemplateKey("catsHearing");
-
-                        var eisd = SpellFactory.Create("eisdcreutair");
-                        source.SpellBook.TryAddToNextSlot(eisd);
-                    }
-                    
                     if (!source.SkillBook.ContainsByTemplateKey("peek"))
                     {
                         var peek = SkillFactory.Create("peek");

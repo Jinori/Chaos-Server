@@ -2515,6 +2515,37 @@ public class DefaultAislingScript : AislingScriptBase, HealAbilityComponent.IHea
 
     private void UpdateSkillBook()
     {
+        if (Subject.Legend.ContainsKey("dedicated") && Subject.Legend.ContainsKey("monkClass"))
+            if (!Subject.SpellBook.ContainsByTemplateKey("catsHearing"))
+            {
+                var catsHearing = SpellFactory.Create("catsHearing");
+                Subject.SpellBook.TryAddToNextSlot(catsHearing);
+            }
+
+        if (Subject.HasClass(BaseClass.Rogue))
+        {
+            if (!Subject.Legend.ContainsKey("monkClass"))
+                Subject.SpellBook.RemoveByTemplateKey("catsHearing");
+                    
+            if (!Subject.SpellBook.ContainsByTemplateKey("eisdcreutair"))
+            {
+                var eisd = SpellFactory.Create("eisdcreutair");
+                Subject.SpellBook.TryAddToNextSlot(eisd);
+            }
+        }
+
+        if (Subject.Legend.ContainsKey("dedicated") && Subject.Legend.ContainsKey("rogueClass"))
+        {
+            if (!Subject.SpellBook.ContainsByTemplateKey("eisdcreutair"))
+            {
+                if (!Subject.HasClass(BaseClass.Monk))
+                    Subject.SpellBook.RemoveByTemplateKey("catsHearing");
+
+                var eisd = SpellFactory.Create("eisdcreutair");
+                Subject.SpellBook.TryAddToNextSlot(eisd);
+            }
+        }
+
         ReplaceSkill("multistrike", "rupture");
         ReplaceSkill("gut", "backstab");
 
