@@ -49,7 +49,6 @@ public sealed class WorldScriptingService : BackgroundService
             try
             {
                 await timer.WaitForNextTickAsync(stoppingToken);
-                var start = Stopwatch.GetTimestamp();
                 var currentDelta = deltaTime.GetDelta;
                 monitor.Update(currentDelta);
 

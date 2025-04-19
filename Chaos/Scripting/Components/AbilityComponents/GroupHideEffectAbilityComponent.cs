@@ -47,7 +47,7 @@ public struct GroupHideEffectAbilityComponent : IComponent
                 if (options.EffectDurationOverride.HasValue)
                     effect.SetDuration(options.EffectDurationOverride.Value);
 
-                member.Effects.Apply(context.Source, effect);
+                member.Effects.Apply(context.Source, effect, vars.GetSourceScript());
                 member.SendOrangeBarMessage($"{caster.Name} casts hide on you.");
             }
         else

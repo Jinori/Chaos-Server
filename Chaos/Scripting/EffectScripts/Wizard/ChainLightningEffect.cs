@@ -2,6 +2,7 @@ using Chaos.DarkAges.Definitions;
 using Chaos.Extensions.Geometry;
 using Chaos.Models.Data;
 using Chaos.Models.World.Abstractions;
+using Chaos.Scripting.Components.Execution;
 using Chaos.Scripting.EffectScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.Abstractions;
 using Chaos.Scripting.FunctionalScripts.ApplyDamage;
@@ -92,9 +93,9 @@ public sealed class ChainLightningEffect : ContinuousAnimationEffectBase
 
             // Assuming that your effect has a property or method to set the number of bounces or pass additional data
             if (effect is ChainLightningEffect chainLightningEffect)
-                chainLightningEffect.HitTargetIds = new HashSet<uint>(HitTargetIds);
+                chainLightningEffect.HitTargetIds = [..HitTargetIds];
 
-            nextTarget.Effects.Apply(Source, effect);
+            nextTarget.Effects.Apply(Source, effect, SourceScript);
             nextTarget.Animate(Animation);
         }
 

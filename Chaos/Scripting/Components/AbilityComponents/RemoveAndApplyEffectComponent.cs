@@ -62,7 +62,7 @@ public class RemoveAndApplyEffectComponent : IConditionalComponent
                 if (target.Effects.Contains("Beag Cradh") && options.EffectKeyToAddAfterRemoval is "preventrecradh")
                 {
                     var effect = options.EffectFactory.Create(options.EffectKeyToAddAfterRemoval);
-                    target.Effects.Apply(context.Source, effect);
+                    target.Effects.Apply(context.Source, effect, vars.GetSourceScript());
                     target.Effects.Dispel(options.EffectKeyToRemove);
                     context.SourceAisling?.SendOrangeBarMessage($"{target.Name}'s curse healed and prevent recradh is now active.");
 
@@ -97,7 +97,7 @@ public class RemoveAndApplyEffectComponent : IConditionalComponent
                     || (target.Effects.Contains("Beag Cradh") && options.EffectKeyToAddAfterRemoval is "preventrecradh"))
                 {
                     var effect = options.EffectFactory.Create(options.EffectKeyToAddAfterRemoval);
-                    target.Effects.Apply(context.Source, effect);
+                    target.Effects.Apply(context.Source, effect, vars.GetSourceScript());
                     target.Effects.Dispel("Beag Cradh");
                     target.Effects.Dispel(options.EffectKeyToRemove);
                     context.SourceAisling?.SendOrangeBarMessage($"{target.Name}'s curse healed and prevent recradh is now active.");
@@ -127,7 +127,7 @@ public class RemoveAndApplyEffectComponent : IConditionalComponent
                     || (target.Effects.Contains("Beag Cradh") && options.EffectKeyToAddAfterRemoval is "preventrecradh"))
                 {
                     var effect = options.EffectFactory.Create(options.EffectKeyToAddAfterRemoval);
-                    target.Effects.Apply(context.Source, effect);
+                    target.Effects.Apply(context.Source, effect, vars.GetSourceScript());
                     target.Effects.Dispel("Beag Cradh");
                     target.Effects.Dispel("Cradh");
                     target.Effects.Dispel(options.EffectKeyToRemove);
@@ -152,7 +152,7 @@ public class RemoveAndApplyEffectComponent : IConditionalComponent
                     || (target.Effects.Contains("Beag Cradh") && options.EffectKeyToAddAfterRemoval is "preventrecradh"))
                 {
                     var effect = options.EffectFactory.Create(options.EffectKeyToAddAfterRemoval);
-                    target.Effects.Apply(context.Source, effect);
+                    target.Effects.Apply(context.Source, effect, vars.GetSourceScript());
                     target.Effects.Dispel("Beag Cradh");
                     target.Effects.Dispel("Cradh");
                     target.Effects.Dispel("Mor Cradh");
@@ -168,7 +168,7 @@ public class RemoveAndApplyEffectComponent : IConditionalComponent
                 if (target.Effects.Contains("Dia Cradh") && options.EffectKeyToAddAfterRemoval is "preventrecradh")
                 {
                     var effect = options.EffectFactory.Create(options.EffectKeyToAddAfterRemoval);
-                    target.Effects.Apply(context.Source, effect);
+                    target.Effects.Apply(context.Source, effect, vars.GetSourceScript());
                     target.Effects.Dispel("Beag Cradh");
                     target.Effects.Dispel("Cradh");
                     target.Effects.Dispel("Mor Cradh");
@@ -185,7 +185,7 @@ public class RemoveAndApplyEffectComponent : IConditionalComponent
                 if (!string.IsNullOrEmpty(options.EffectKeyToAddAfterRemoval))
                 {
                     var effect = options.EffectFactory.Create(options.EffectKeyToAddAfterRemoval);
-                    target.Effects.Apply(context.Source, effect);
+                    target.Effects.Apply(context.Source, effect, vars.GetSourceScript());
                 }
 
                 return true;

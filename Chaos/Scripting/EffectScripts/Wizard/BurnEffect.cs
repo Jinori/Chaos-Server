@@ -71,8 +71,6 @@ public class BurnEffect : ContinuousAnimationEffectBase, HierarchicalEffectCompo
         var applyDamageScript = ApplyNonAttackDamageScript.Create();
         var formula = DamageFormulae.ElementalEffect;
         
-        formula.ShouldApplySourceModifiers = true;
-        
         applyDamageScript.DamageFormula = formula;
         ApplyDamageScript = applyDamageScript;
     }
@@ -104,14 +102,14 @@ public class BurnEffect : ContinuousAnimationEffectBase, HierarchicalEffectCompo
         if (Subject.StatSheet.DefenseElement == Element.Fire)
             return;
 
-        var maxPct = Subject is Aisling ? 2.5m : 5m;
+        var maxPct = Subject is Aisling ? 3.3m : 5m;
         var maxPctDmg = MathEx.GetPercentOf<int>((int)Subject.StatSheet.EffectiveMaximumHp, maxPct);
         var dmgPerTick = Math.Min(maxPctDmg, DmgPerTick);
 
         ApplyDamageScript.ApplyDamage(
             Source,
             Subject,
-            this,
+            SourceScript ?? this,
             dmgPerTick,
             Element.Fire);
     }

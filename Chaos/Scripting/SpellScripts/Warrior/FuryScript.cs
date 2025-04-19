@@ -57,6 +57,6 @@ public sealed class FuryScript : SpellScriptBase
             context.Source.Effects.Terminate(name);
 
         var nextEffect = _effectFactory.Create(nextKey);
-        context.Source.Effects.Apply(context.Source, nextEffect);
+        context.Source.Effects.Apply(context.Source, nextEffect, this);
     }
 }

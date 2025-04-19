@@ -45,13 +45,13 @@ public struct CunningEffectAbilityComponent : IComponent
         };
 
         foreach (var target in targets)
-            ApplyCunningEffect(target, context, cunningEffects);
+            ApplyCunningEffect(target, context, cunningEffects, vars);
     }
 
     /// <summary>
     ///     Applies the appropriate "Cunning" effect based on the target's current MP.
     /// </summary>
-    private void ApplyCunningEffect(Creature target, ActivationContext context, Dictionary<string, int> cunningEffects)
+    private void ApplyCunningEffect(Creature target, ActivationContext context, Dictionary<string, int> cunningEffects, ComponentVars vars)
     {
         var currentMp = target.StatSheet.EffectiveMaximumMp;
         var activeEffect = cunningEffects.Keys.FirstOrDefault(target.Effects.Contains);
@@ -64,7 +64,7 @@ public struct CunningEffectAbilityComponent : IComponent
 
             if (activeEffect == null)
             {
-                target.Effects.Apply(context.Source, _effectFactory.Create(effect));
+                target.Effects.Apply(context.Source, _effectFactory.Create(effect), vars.GetSourceScript());
                 target.StatSheet.SubtractMp(mpThreshold);
 
                 return;
@@ -79,7 +79,7 @@ public struct CunningEffectAbilityComponent : IComponent
 
             if (cunningEffects.TryGetValue(activeEffect, out var value) && (value < mpThreshold))
             {
-                target.Effects.Apply(context.Source, _effectFactory.Create(effect));
+                target.Effects.Apply(context.Source, _effectFactory.Create(effect), vars.GetSourceScript());
                 target.StatSheet.SubtractMp(mpThreshold);
 
                 return;

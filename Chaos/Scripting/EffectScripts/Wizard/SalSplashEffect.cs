@@ -56,8 +56,6 @@ public class SalSplashEffect : ContinuousAnimationEffectBase
         var applyDamageScript = ApplyNonAttackDamageScript.Create();
         var formula = DamageFormulae.ElementalEffect;
         
-        formula.ShouldApplySourceModifiers = true;
-        
         applyDamageScript.DamageFormula = formula;
         ApplyDamageScript = applyDamageScript;
     }
@@ -91,7 +89,7 @@ public class SalSplashEffect : ContinuousAnimationEffectBase
             ApplyDamageScript.ApplyDamage(
                 Source,
                 target,
-                this,
+                SourceScript ?? this,
                 DmgPerTick,
                 Element.Water);
             

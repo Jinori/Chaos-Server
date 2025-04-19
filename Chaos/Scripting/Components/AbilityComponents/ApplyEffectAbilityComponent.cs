@@ -41,20 +41,20 @@ public struct ApplyEffectAbilityComponent : IComponent
 
     private void SetEffectVars(IEffect effect, Creature target, ComponentVars vars)
     {
-        var baseDamage = vars.GetBaseDamage(target);
+        var finalDamage = vars.GetFinalDamage(target);
         
         switch (effect.Name.ToLower())
         {
             case "burn":
             {
-                var damagePerTick = (int)(baseDamage * 0.25m);
+                var damagePerTick = (int)(finalDamage * 0.25m);
                 effect.SetVar("dmgPerTick", damagePerTick);
                 
                 break;
             }
             case "salsplash":
             {
-                var damagePerTick = (int)(baseDamage * 0.33m);
+                var damagePerTick = (int)(finalDamage * 0.25m);
                 effect.SetVar("dmgPerTick", damagePerTick);
                 
                 break;

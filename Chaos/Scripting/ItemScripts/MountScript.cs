@@ -150,7 +150,7 @@ public class MountScript(Item subject, IEffectFactory effectFactory) : ItemScrip
                 source.SetSprite((ushort)sprite);
                 source.SendOrangeBarMessage("You jump on your mount.");
                 var effect = effectFactory.Create("Mount");
-                source.Effects.Apply(source, effect);
+                source.Effects.Apply(source, effect, this);
             }
         }
     }

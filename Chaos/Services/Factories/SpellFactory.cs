@@ -65,7 +65,9 @@ public sealed class SpellFactory(ISimpleCache simpleCache, IScriptProvider scrip
             ScriptVars = new Dictionary<string, IScriptVars>(StringComparer.OrdinalIgnoreCase),
             CastLines = 0,
             Prompt = null,
-            SpellType = SpellType.NoTarget
+            SpellType = SpellType.NoTarget,
+            WizardElement = null,
+            SpellSchools = null
         };
 
         var spell = new Spell(

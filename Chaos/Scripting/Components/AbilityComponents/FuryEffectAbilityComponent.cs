@@ -32,7 +32,7 @@ public readonly struct FuryEffectAbilityComponent : IComponent
                 || !target.Effects.Contains("Fury5")
                 || (!target.Effects.Contains("Fury6") && (target.StatSheet.EffectiveMaximumHp >= 8000)))
             {
-                target.Effects.Apply(context.Source, effect1);
+                target.Effects.Apply(context.Source, effect1, vars.GetSourceScript());
                 target.StatSheet.SubtractHp(8000);
 
                 return;
@@ -41,7 +41,7 @@ public readonly struct FuryEffectAbilityComponent : IComponent
             if (target.Effects.Contains("Fury1") && (target.StatSheet.EffectiveMaximumHp >= 16000))
             {
                 target.Effects.Terminate("Fury1");
-                target.Effects.Apply(context.Source, effect2);
+                target.Effects.Apply(context.Source, effect2, vars.GetSourceScript());
                 target.StatSheet.SubtractHp(16000);
 
                 return;
@@ -50,7 +50,7 @@ public readonly struct FuryEffectAbilityComponent : IComponent
             if (target.Effects.Contains("Fury2") && (target.StatSheet.EffectiveMaximumHp >= 32000))
             {
                 target.Effects.Terminate("Fury2");
-                target.Effects.Apply(context.Source, effect3);
+                target.Effects.Apply(context.Source, effect3, vars.GetSourceScript());
                 target.StatSheet.SubtractHp(32000);
 
                 return;
@@ -59,7 +59,7 @@ public readonly struct FuryEffectAbilityComponent : IComponent
             if (target.Effects.Contains("Fury3") && (target.StatSheet.EffectiveMaximumHp >= 64000))
             {
                 target.Effects.Terminate("Fury3");
-                target.Effects.Apply(context.Source, effect4);
+                target.Effects.Apply(context.Source, effect4, vars.GetSourceScript());
                 target.StatSheet.SubtractHp(64000);
 
                 return;
@@ -68,7 +68,7 @@ public readonly struct FuryEffectAbilityComponent : IComponent
             if (target.Effects.Contains("Fury4") && (target.StatSheet.EffectiveMaximumHp >= 128000))
             {
                 target.Effects.Terminate("Fury4");
-                target.Effects.Apply(context.Source, effect5);
+                target.Effects.Apply(context.Source, effect5, vars.GetSourceScript());
                 target.StatSheet.SubtractHp(128000);
 
                 return;
@@ -77,7 +77,7 @@ public readonly struct FuryEffectAbilityComponent : IComponent
             if (target.Effects.Contains("Fury5") && (target.StatSheet.EffectiveMaximumHp >= 256000))
             {
                 target.Effects.Terminate("Fury5");
-                target.Effects.Apply(context.Source, effect6);
+                target.Effects.Apply(context.Source, effect6, vars.GetSourceScript());
                 target.StatSheet.SubtractHp(256000);
 
                 return;
