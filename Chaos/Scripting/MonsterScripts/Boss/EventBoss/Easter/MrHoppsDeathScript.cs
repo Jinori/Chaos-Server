@@ -152,7 +152,7 @@ public sealed class MrHoppsDeathScript : MonsterScriptBase
                                         .ToList();
 
                 foreach (var admin in adminOnMap)
-                    admin.SendServerMessage(ServerMessageType.ActiveMessage, $"{aisling.Name} received {item}.");
+                    admin.SendServerMessage(ServerMessageType.ActiveMessage, $"{aisling.Name} received {item.DisplayName}.");
             }
         }
     }
