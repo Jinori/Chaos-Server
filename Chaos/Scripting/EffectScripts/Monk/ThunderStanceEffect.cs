@@ -33,8 +33,8 @@ public class ThunderStanceEffect : EffectBase
         var damage = sourceDamage / 10;
 
         ApplyDamageScript.ApplyDamage(
-            Source,
             Subject,
+            target,
             this,
             damage,
             Element.Wind);

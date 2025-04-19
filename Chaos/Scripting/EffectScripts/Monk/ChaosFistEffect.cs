@@ -10,7 +10,7 @@ namespace Chaos.Scripting.EffectScripts.Monk;
 
 public class ChaosFistEffect : ContinuousAnimationEffectBase
 {
-    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(8);
+    protected override TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(12);
 
     protected override Animation Animation { get; } = new()
     {

@@ -32,8 +32,8 @@ public class LightningStanceEffect : EffectBase
         var damage = sourceDamage / 5;
 
         ApplyDamageScript.ApplyDamage(
-            Source,
             Subject,
+            target,
             this,
             damage,
             Element.Wind);
